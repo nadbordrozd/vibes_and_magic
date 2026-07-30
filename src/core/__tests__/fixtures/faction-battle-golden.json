@@ -1,24 +1,17 @@
 {
-  "winner": "attacker",
-  "round": 4,
+  "winner": "defender",
+  "round": 5,
   "casualties": {
-    "attacker": { "yeoman": 15 },
-    "defender": { "tinSoldier": 30, "hobbyKnight": 4 }
+    "attacker": { "yeoman": 25, "longbowman": 6 },
+    "defender": { "tinSoldier": 15, "hobbyKnight": 4 }
   },
   "survivors": [
     {
-      "side": "attacker",
+      "side": "defender",
       "slot": 0,
-      "unitId": "yeoman",
-      "count": 10,
-      "topHp": 6
-    },
-    {
-      "side": "attacker",
-      "slot": 1,
-      "unitId": "longbowman",
-      "count": 6,
-      "topHp": 11
+      "unitId": "tinSoldier",
+      "count": 15,
+      "topHp": 3
     }
   ]
 }
