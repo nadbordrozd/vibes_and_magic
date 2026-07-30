@@ -25,7 +25,7 @@ describe('mechanics regressions', () => {
     let state = createGame({ seed: 1, p1: 'human', p2: 'human' });
     for (let turn = 0; turn < 14; turn += 1) state = apply(state, { type: 'END_TURN' });
     expect(state.day).toBe(8);
-    expect(state.castles[0].available[0]).toBe(28);
+    expect(state.castles[0].available[0]).toBe(34);
   });
 
   it('adds treasury income at turn start', () => {
@@ -61,8 +61,8 @@ describe('mechanics regressions', () => {
       createGame({ seed: 1, p1: 'human', p2: 'human' }),
       { type: 'SWAP_ARMY', castleId: 'p1-castle', heroSlot: 0, garrisonSlot: 0 },
     );
-    expect(state.castles[0].garrison[0]).toEqual({ unitId: 'militia', count: 20 });
-    expect(state.players.p1.hero!.army[0]).toEqual({ unitId: 'berserker', count: 4 });
+    expect(state.castles[0].garrison[0]).toEqual({ unitId: 'yeoman', count: 25 });
+    expect(state.players.p1.hero!.army[0]).toEqual({ unitId: 'longbowman', count: 6 });
   });
 
   it('starts combat on entering a guarded mine', () => {
@@ -86,10 +86,10 @@ describe('mechanics regressions', () => {
     const game = createGame({ seed: 1, p1: 'human', p2: 'human' });
     const [battle] = createBattle(
       makeArmy([
-        { unitId: 'drake', count: 1 },
-        { unitId: 'militia', count: 1 },
+        { unitId: 'lanceKnight', count: 1 },
+        { unitId: 'yeoman', count: 1 },
       ]),
-      makeArmy([{ unitId: 'militia', count: 1 }]),
+      makeArmy([{ unitId: 'yeoman', count: 1 }]),
       game.players.p1.hero!,
       null,
       {
@@ -98,21 +98,21 @@ describe('mechanics regressions', () => {
       },
       1,
     );
-    const drake = battle.stacks.find((stack) => stack.unitId === 'drake')!;
+    const drake = battle.stacks.find((stack) => stack.unitId === 'lanceKnight')!;
     const defender = battle.stacks.find((stack) => stack.side === 'defender')!;
     defender.position = { x: 1, y: drake.position.y };
     runAttackPipeline(battle, drake.id, defender.id);
-    expect(drake.morale).toBe(25);
-    expect(battle.stacks.find((stack) => stack.unitId === 'militia'
-      && stack.side === 'attacker')!.morale).toBe(10);
+    expect(drake.morale).toBe(30);
+    expect(battle.stacks.find((stack) => stack.unitId === 'yeoman'
+      && stack.side === 'attacker')!.morale).toBe(15);
   });
 
   it('applies a hero morale bonus at round start', () => {
     const game = createGame({ seed: 1, p1: 'human', p2: 'human' });
     game.players.p1.hero!.moraleBonus = 8;
     const [battle] = createBattle(
-      makeArmy([{ unitId: 'militia', count: 2 }]),
-      makeArmy([{ unitId: 'slinger', count: 2 }]),
+      makeArmy([{ unitId: 'yeoman', count: 2 }]),
+      makeArmy([{ unitId: 'longbowman', count: 2 }]),
       game.players.p1.hero!,
       game.players.p2.hero!,
       {
@@ -127,8 +127,8 @@ describe('mechanics regressions', () => {
   it('grants an immediate bonus action at one hundred morale', () => {
     const game = createGame({ seed: 1, p1: 'human', p2: 'human' });
     const [battle] = createBattle(
-      makeArmy([{ unitId: 'drake', count: 1 }]),
-      makeArmy([{ unitId: 'militia', count: 1 }]),
+      makeArmy([{ unitId: 'lanceKnight', count: 1 }]),
+      makeArmy([{ unitId: 'yeoman', count: 1 }]),
       game.players.p1.hero!,
       null,
       {
@@ -149,8 +149,8 @@ describe('mechanics regressions', () => {
   it('uses deterministic obstacle generation for the same battle seed', () => {
     const game = createGame({ seed: 1, p1: 'human', p2: 'human' });
     const args = [
-      makeArmy([{ unitId: 'militia', count: 2 }]),
-      makeArmy([{ unitId: 'slinger', count: 2 }]),
+      makeArmy([{ unitId: 'yeoman', count: 2 }]),
+      makeArmy([{ unitId: 'longbowman', count: 2 }]),
       game.players.p1.hero!,
       game.players.p2.hero!,
       {

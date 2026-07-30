@@ -9,15 +9,16 @@ import {
   createBorderMarches, validateMap,
 } from '../../content/maps/borderMarches';
 import { FACTION_UNITS, UNITS, validateUnits } from '../../content/units';
+import { SCHOOL_SPELLS } from '../../content/spells';
 import { emptyArmy, makeArmy } from '../army';
 import { sameCoord } from '../map/pathfinding';
 import { revealForPlayer } from '../map/visibility';
 import type {
-  Castle, GameState, Hero, NewGameOptions, Player, PlayerId, Resources,
+  BuildingId, Castle, GameState, Hero, NewGameOptions, Player, PlayerId, Resources,
 } from '../types';
 
 function makeHero(playerId: PlayerId): Hero {
-  const faction = FACTIONS[playerId === 'p1' ? 'crimson' : 'azure'];
+  const faction = FACTIONS[playerId === 'p1' ? 'hearthguard' : 'woundWrights'];
   return {
     id: `${playerId}-hero`, owner: playerId,
     faction: faction.id,
@@ -26,26 +27,46 @@ function makeHero(playerId: PlayerId): Hero {
     luck: faction.luck, moraleBonus: faction.moraleBonus,
     mana: faction.heroStats.knowledge * 10, movement: HERO_MOVE_POINTS,
     level: 1, xp: 0, alive: true,
+    knownSpells: [faction.id === 'hearthguard' ? 'rally' : 'wither'],
+    upgradedSpells: [], visitedShrines: [],
     army: makeArmy(faction.startingArmy),
   };
 }
 
 function makePlayer(id: PlayerId, controller: 'human' | 'ai'): Player {
-  const crimson = id === 'p1';
+  const hearthguard = id === 'p1';
   return {
-    id, name: crimson ? 'Player 1' : 'Player 2',
-    faction: crimson ? 'crimson' : 'azure', controller,
+    id, name: hearthguard ? 'Player 1' : 'Player 2',
+    faction: hearthguard ? 'hearthguard' : 'woundWrights', controller,
     resources: { ...STARTING_RESOURCES }, hero: makeHero(id), explored: [],
   };
 }
 
-function makeCastle(owner: PlayerId): Castle {
-  const crimson = owner === 'p1';
+function guildDeck(owner: PlayerId, seed: number): Castle['guildDeck'] {
+  const primary = owner === 'p1'
+    ? [...SCHOOL_SPELLS('rite'), ...SCHOOL_SPELLS('craft')]
+    : [...SCHOOL_SPELLS('craft'), ...SCHOOL_SPELLS('grave')];
+  const offPair = owner === 'p1' ? SCHOOL_SPELLS('grave') : SCHOOL_SPELLS('rite');
+  const order = (ids: typeof primary, salt: number) => [...ids].sort((a, b) => {
+    const hash = (value: string) => [...value].reduce(
+      (total, char) => Math.imul(total ^ char.charCodeAt(0), 16777619), seed ^ salt,
+    ) >>> 0;
+    return hash(a) - hash(b) || a.localeCompare(b);
+  });
+  return [...order(primary, owner === 'p1' ? 11 : 17).slice(0, 6),
+    ...order(offPair, owner === 'p1' ? 23 : 29).slice(0, 2)];
+}
+
+function makeCastle(owner: PlayerId, seed: number): Castle {
+  const hearthguard = owner === 'p1';
   return {
-    id: `${owner}-castle`, owner, faction: crimson ? 'crimson' : 'azure',
-    position: crimson ? { x: 3, y: 10 } : { x: 24, y: 10 },
+    id: `${owner}-castle`, owner,
+    faction: hearthguard ? 'hearthguard' : 'woundWrights',
+    position: hearthguard ? { x: 3, y: 10 } : { x: 24, y: 10 },
     buildings: ['townHall', 'dwelling1'],
-    available: [14, 0, 0], garrison: emptyArmy(), builtOnDay: null,
+    available: [UNITS[FACTION_UNITS[hearthguard ? 'hearthguard' : 'woundWrights'][0]].growth,
+      0, 0, 0, 0], garrison: emptyArmy(), builtOnDay: null,
+    guildDeck: guildDeck(owner, seed),
   };
 }
 
@@ -55,7 +76,7 @@ export function createGame(options: NewGameOptions): GameState {
   validateFactions();
   const map = createBorderMarches();
   validateMap(map);
-  const castles = [makeCastle('p1'), makeCastle('p2')];
+  const castles = [makeCastle('p1', options.seed), makeCastle('p2', options.seed)];
   const p1 = makePlayer('p1', options.p1);
   const p2 = makePlayer('p2', options.p2);
   p1.resources.gold += BASE_CASTLE_GOLD_INCOME;
@@ -66,7 +87,12 @@ export function createGame(options: NewGameOptions): GameState {
     day: 1, week: 1, activePlayer: 'p1', phase: 'adventure',
     players: { p1, p2 }, castles, map, battle: null,
     pendingChoice: null, winner: null, replay: [],
-    metrics: { battles: 0, casualties: { p1: 0, p2: 0, neutral: 0 } },
+    metrics: {
+      battles: 0, casualties: { p1: 0, p2: 0, neutral: 0 },
+      battleRounds: [], spellCasts: 0, battleOutcomes: [],
+    },
+    magicDisabled: false,
+    lastBattleRecovered: {},
     lastMessage: 'Day 1 — Player 1 begins.',
   };
 }
@@ -114,7 +140,11 @@ function replenishDwellings(state: GameState): void {
     const units = FACTION_UNITS[castle.faction];
     castle.available[0] += UNITS[units[0]].growth;
     if (castle.buildings.includes('dwelling2')) castle.available[1] += UNITS[units[1]].growth;
-    if (castle.buildings.includes('dwelling3')) castle.available[2] += UNITS[units[2]].growth;
+    for (const tier of [2, 3, 4, 5] as const) {
+      if (castle.buildings.includes(`dwelling${tier}` as BuildingId)) {
+        castle.available[tier - 1] += UNITS[units[tier - 1]].growth;
+      }
+    }
   }
 }
 

@@ -33,13 +33,13 @@ export function MainMenu({ onStart, savedGame, onLoad }: Props) {
             </select>
           </label>
           <div className="slot-row crimson">
-            <span><b>01</b> Crimson</span>
+            <span><b>01</b> Hearthguard</span>
             <button onClick={() => setP1(p1 === 'human' ? 'ai' : 'human')}>
               {p1 === 'human' ? 'Human' : 'AI'}
             </button>
           </div>
           <div className="slot-row azure">
-            <span><b>02</b> Azure</span>
+            <span><b>02</b> Wound-Wrights</span>
             <button onClick={() => setP2(p2 === 'human' ? 'ai' : 'human')}>
               {p2 === 'human' ? 'Human' : 'AI'}
             </button>

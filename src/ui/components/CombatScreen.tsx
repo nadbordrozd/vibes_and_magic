@@ -4,11 +4,15 @@ import {
   activeBattleStack, estimateDamageRange,
 } from '../../core/combat/battle';
 import { activeBattleOptions } from '../../core/selectors';
-import type { Action, BattleStack, Coord, GameState } from '../../core/types';
+import type {
+  Action, BattleStack, Coord, GameState, SpellId, UnitId,
+} from '../../core/types';
 import type {
   AnimationSpeed, CombatAnimation,
 } from '../animation';
 import { CombatUnitPanel } from './CombatUnitPanel';
+import { SpellbookPanel } from './SpellbookPanel';
+import { legalSpellCasts } from '../../core/combat/spells';
 
 const SIZE = 32;
 const HEX_W = Math.sqrt(3) * SIZE;
@@ -43,17 +47,35 @@ function stackColor(stack: BattleStack): string {
   return stack.side === 'attacker' ? 'crimson' : 'azure';
 }
 
+const UNIT_GLYPHS: Record<UnitId, string> = {
+  yeoman: 'Y', longbowman: 'L', bannerman: 'B',
+  lanceKnight: 'K', oriflammeWarden: 'W',
+  tinSoldier: 'T', hobbyKnight: 'H', marionette: 'M',
+  stuffedSentinel: 'S', woodenColossus: 'C',
+};
+const ALLY_SPELLS = new Set<SpellId>([
+  'rally', 'blessing', 'sanctuary', 'oathOfIron', 'consecrate',
+  'ward', 'quicksilver', 'mournersVeil', 'remembrance',
+]);
+const GLOBAL_SPELLS = new Set<SpellId>([
+  'standardOfDawn', 'hymnOfTheHost', 'forgefire',
+  'clockworkEscort', 'ironclad', 'reckoning',
+]);
+
 export function CombatScreen({
   state, dispatch, humanControl, onSave, animation,
   animationSpeed, onAnimationSpeedChange,
 }: Props) {
   const battle = state.battle!;
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [spellbookOpen, setSpellbookOpen] = useState(false);
+  const [casting, setCasting] = useState<{ spellId: SpellId; effectId?: string } | null>(null);
   const active = activeBattleStack(battle);
   const selected = battle.stacks.find(
     (stack) => stack.id === selectedId && stack.count > 0,
   ) ?? null;
   const { actions, reachable } = activeBattleOptions(state);
+  const spellCasts = legalSpellCasts(battle);
   const reachableSet = new Set(reachable.map((coord) => `${coord.x},${coord.y}`));
 
   useEffect(() => {
@@ -73,6 +95,61 @@ export function CombatScreen({
       (action) => action.type === 'BATTLE_MOVE_ATTACK' && action.targetId === target.id,
     );
     if (moveAttack) dispatch(moveAttack);
+  };
+
+  const chooseSpell = (spellId: SpellId, effectId?: string) => {
+    if (['amplify', 'sour', 'unmake'].includes(spellId)) {
+      const counterTarget = battle.stacks.find((stack) =>
+        Object.values(stack.counters).some((count) => count > 0));
+      dispatch({
+        type: 'BATTLE_CAST', spellId, effectId,
+        targetId: spellId === 'unmake' ? counterTarget?.id : undefined,
+      });
+      setSpellbookOpen(false);
+      return;
+    }
+    if (GLOBAL_SPELLS.has(spellId)) {
+      dispatch({ type: 'BATTLE_CAST', spellId, replaceEnchantment: 0 });
+      setSpellbookOpen(false);
+      return;
+    }
+    if (spellId === 'wallOfTheMaker') {
+      const occupied = new Set([
+        ...battle.stacks.map((stack) => `${stack.position.x},${stack.position.y}`),
+        ...battle.obstacles.map((coord) => `${coord.x},${coord.y}`),
+      ]);
+      const positions = Array.from({ length: 9 }, (_, y) => ({ x: 6, y }))
+        .filter((coord) => !occupied.has(`${coord.x},${coord.y}`)).slice(0, 3);
+      dispatch({ type: 'BATTLE_CAST', spellId, positions });
+      setSpellbookOpen(false);
+      return;
+    }
+    setCasting({ spellId, effectId });
+    setSpellbookOpen(false);
+  };
+
+  const isSpellTarget = (stack: BattleStack) => {
+    if (!casting || !active) return false;
+    if (casting.spellId === 'reflect') return stack.count > 0;
+    const ally = ALLY_SPELLS.has(casting.spellId);
+    return stack.count > 0 && (ally ? stack.side === active.side : stack.side !== active.side)
+      && !(stack.side !== active.side
+        && stack.effects.some((effect) => effect.spellId === 'sanctuary'));
+  };
+
+  const clickStack = (stack: BattleStack) => {
+    if (casting && isSpellTarget(stack)) {
+      const secondAlly = casting.spellId === 'rally'
+        ? battle.stacks.find((item) =>
+          item.side === stack.side && item.id !== stack.id && item.count > 0)?.id
+        : undefined;
+      dispatch({
+        type: 'BATTLE_CAST', spellId: casting.spellId,
+        targetId: stack.id, secondaryTargetId: secondAlly,
+        effectId: casting.effectId,
+      });
+      setCasting(null);
+    } else setSelectedId(stack.id);
   };
 
   return (
@@ -98,9 +175,34 @@ export function CombatScreen({
         <button className="combat-save" disabled={Boolean(animation)} onClick={onSave}>
           Save game
         </button>
+        <button
+          className="spellbook-button"
+          disabled={!humanControl || spellCasts.length === 0}
+          title={!humanControl ? 'Wait for your stack'
+            : spellCasts.length === 0 ? 'Already cast this round or insufficient mana' : 'Cast a spell'}
+          onClick={() => setSpellbookOpen(true)}
+        >Spellbook · {active?.side === 'defender'
+            ? battle.defenderHero?.mana ?? 0 : battle.attackerHero.mana}</button>
       </header>
       <div className="combat-layout">
         <section className="battle-board">
+          {battle.resonance && (
+            <div className={`resonance-banner ${battle.resonance}`}>
+              {battle.resonance} resonance · matching spells use their + face
+            </div>
+          )}
+          <div className="enchantment-row">
+            {(['attacker', 'defender'] as const).map((side) => (
+              <div key={side}><b>{side}</b>
+                {[0, 1].map((slot) => {
+                  const effect = battle.enchantments[side][slot];
+                  return <span key={slot} title={effect?.spellId ?? 'Empty enchantment slot'}>
+                    {effect ? effect.spellId : '—'}
+                  </span>;
+                })}
+              </div>
+            ))}
+          </div>
           <svg viewBox={`0 0 ${13 * HEX_W + 80} ${9 * ROW_H + 80}`}>
             {Array.from({ length: 9 }, (_, y) =>
               Array.from({ length: 13 }, (_, x) => {
@@ -148,9 +250,9 @@ export function CombatScreen({
               return (
                 <g
                   key={stack.id}
-                  className={`battle-stack ${stackColor(stack)} ${active?.id === stack.id ? 'active' : ''} ${selected?.id === stack.id ? 'inspected' : ''}`}
+                  className={`battle-stack ${stackColor(stack)} ${active?.id === stack.id ? 'active' : ''} ${selected?.id === stack.id ? 'inspected' : ''} ${isSpellTarget(stack) ? 'spell-target' : ''}`}
                   transform={`translate(${c.x} ${c.y})`}
-                  onClick={() => setSelectedId(stack.id)}
+                  onClick={() => clickStack(stack)}
                   onDoubleClick={() => attackTarget(stack)}
                 >
                   <title>
@@ -174,8 +276,15 @@ export function CombatScreen({
                       } as CSSProperties}
                     >
                       <circle className="stack-shadow" cy="4" r="23" />
-                      <circle className="stack-body" r="22" />
-                      <text className="stack-mark" y="5">{unit.name.slice(0, 2)}</text>
+                      {unit.faction === 'hearthguard' ? (
+                        <rect className="stack-body" x="-18" y="-25" width="36" height="48" rx="5" />
+                      ) : (
+                        <>
+                          <circle className="stack-body" r="22" />
+                          <line className="joint-line" x1="-18" y1="7" x2="18" y2="-7" />
+                        </>
+                      )}
+                      <text className="stack-mark" y="5">{UNIT_GLYPHS[stack.unitId]}</text>
                       <circle className="morale-track" r="27" pathLength="100" />
                       <circle
                         className="morale-value" r="27" pathLength="100"
@@ -183,6 +292,15 @@ export function CombatScreen({
                       />
                       <rect className="count-plate" x="-16" y="19" width="32" height="17" rx="8" />
                       <text className="stack-count" y="31">{stack.count}</text>
+                      <g className="counter-pips">
+                        {(Object.entries(stack.counters) as Array<[string, number]>)
+                          .filter(([, count]) => count > 0).map(([counter, count], index) => (
+                            <g key={counter} transform={`translate(${-24 + index * 16} -31)`}>
+                              <circle className={counter} r="7" />
+                              <text y="3">{count}</text>
+                            </g>
+                          ))}
+                      </g>
                       {stack.defended && <text className="status-mark" x="20" y="-18">◆</text>}
                     </g>
                   </g>
@@ -215,6 +333,12 @@ export function CombatScreen({
             humanControl={humanControl} onAttack={() => attackTarget(selected)}
           />
           <div className="combat-actions">
+            {actions.some((action) => action.type === 'BATTLE_OVERWIND') && (
+              <button
+                disabled={!humanControl}
+                onClick={() => dispatch({ type: 'BATTLE_OVERWIND' })}
+              ><span>↻</span> Overwind</button>
+            )}
             <button
               disabled={!humanControl || !actions.some((action) => action.type === 'BATTLE_WAIT')}
               onClick={() => dispatch({ type: 'BATTLE_WAIT' })}
@@ -242,6 +366,13 @@ export function CombatScreen({
           </div>
         </aside>
       </div>
+      {spellbookOpen && active && (
+        <SpellbookPanel
+          battle={battle} side={active.side}
+          onClose={() => setSpellbookOpen(false)}
+          onSelect={chooseSpell}
+        />
+      )}
     </main>
   );
 }

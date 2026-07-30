@@ -1,6 +1,6 @@
 import { LEVEL_THRESHOLD } from '../content/constants';
 import { FACTIONS } from '../content/factions';
-import type { Hero, PrimaryStat } from './types';
+import type { Hero, LevelChoice, PrimaryStat } from './types';
 import { nextRandom } from './rng';
 
 const STATS: PrimaryStat[] = ['attack', 'defense', 'spellPower', 'knowledge'];
@@ -16,13 +16,17 @@ export function needsLevel(hero: Hero): boolean {
 export function drawLevelOptions(
   hero: Hero,
   rngState: number,
-): [PrimaryStat[], number] {
-  const available = [...STATS];
-  const result: PrimaryStat[] = [];
+): [LevelChoice[], number] {
+  const available: LevelChoice[] = [
+    ...STATS, ...(hero.level >= 4 && hero.knownSpells.some((id) =>
+      !hero.upgradedSpells.includes(id)) ? ['inscribe' as const] : []),
+  ];
+  const result: LevelChoice[] = [];
   let rng = rngState;
   while (result.length < 3) {
     const total = available.reduce(
-      (sum, stat) => sum + FACTIONS[hero.faction].classWeights[stat],
+      (sum, stat) => sum + (stat === 'inscribe'
+        ? 10 : FACTIONS[hero.faction].classWeights[stat]),
       0,
     );
     let random: number;
@@ -30,7 +34,7 @@ export function drawLevelOptions(
     let cursor = random * total;
     let chosen = available[0];
     for (const stat of available) {
-      cursor -= FACTIONS[hero.faction].classWeights[stat];
+      cursor -= stat === 'inscribe' ? 10 : FACTIONS[hero.faction].classWeights[stat];
       if (cursor <= 0) {
         chosen = stat;
         break;
@@ -42,10 +46,10 @@ export function drawLevelOptions(
   return [result, rng];
 }
 
-export function bestLevelOption(hero: Hero, options: PrimaryStat[]): PrimaryStat {
+export function bestLevelOption(hero: Hero, options: LevelChoice[]): LevelChoice {
   return [...options].sort(
-    (a, b) => FACTIONS[hero.faction].classWeights[b]
-      - FACTIONS[hero.faction].classWeights[a]
+    (a, b) => (b === 'inscribe' ? 10 : FACTIONS[hero.faction].classWeights[b])
+      - (a === 'inscribe' ? 10 : FACTIONS[hero.faction].classWeights[a])
       || a.localeCompare(b),
   )[0];
 }

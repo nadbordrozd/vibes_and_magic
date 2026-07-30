@@ -43,6 +43,13 @@ export function CombatUnitPanel({
               ? unit.abilities.map((ability) => <i key={ability}>{ability}</i>)
               : <i>no special abilities</i>}
           </div>
+          <div className="ability-list counters">
+            {Object.entries(shown.counters).filter(([, count]) => count > 0)
+              .map(([counter, count]) => <i key={counter}>{counter} {count}</i>)}
+            {shown.effects.map((effect) => (
+              <i key={effect.id}>{effect.spellId} · {effect.duration} turns</i>
+            ))}
+          </div>
           {selected && (
             <div className={`inspection-side ${selected.side}`}>
               {selected.side} · slot {selected.slot + 1}

@@ -14,30 +14,30 @@ export interface FactionDefinition {
 }
 
 export const FACTIONS: Record<FactionId, FactionDefinition> = {
-  crimson: {
-    id: 'crimson',
-    name: 'Crimson',
+  hearthguard: {
+    id: 'hearthguard',
+    name: 'The Hearthguard',
     heroStart: { x: 3, y: 10 },
     heroStats: { attack: 2, defense: 2, spellPower: 1, knowledge: 1 },
     luck: 0,
-    moraleBonus: 0,
-    classWeights: { attack: 40, defense: 30, spellPower: 15, knowledge: 15 },
+    moraleBonus: 5,
+    classWeights: { attack: 35, defense: 35, spellPower: 10, knowledge: 20 },
     startingArmy: [
-      { unitId: 'militia', count: 20 },
-      { unitId: 'berserker', count: 4 },
+      { unitId: 'yeoman', count: 25 },
+      { unitId: 'longbowman', count: 6 },
     ],
   },
-  azure: {
-    id: 'azure',
-    name: 'Azure',
+  woundWrights: {
+    id: 'woundWrights',
+    name: 'The Wound-Wrights',
     heroStart: { x: 24, y: 10 },
-    heroStats: { attack: 1, defense: 1, spellPower: 2, knowledge: 2 },
+    heroStats: { attack: 1, defense: 2, spellPower: 1, knowledge: 2 },
     luck: 0,
     moraleBonus: 0,
-    classWeights: { attack: 15, defense: 15, spellPower: 40, knowledge: 30 },
+    classWeights: { attack: 20, defense: 35, spellPower: 15, knowledge: 30 },
     startingArmy: [
-      { unitId: 'slinger', count: 20 },
-      { unitId: 'frostAdept', count: 4 },
+      { unitId: 'tinSoldier', count: 30 },
+      { unitId: 'hobbyKnight', count: 4 },
     ],
   },
 };

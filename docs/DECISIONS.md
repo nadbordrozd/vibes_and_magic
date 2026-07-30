@@ -14,3 +14,21 @@
 - Local saves use a versioned, optional `localStorage` adapter in the UI layer; the saved payload is the unchanged JSON-serializable core state.
 - Adventure movement is committed after its legal path animation; combat actions are queued until movement, bump, and damage feedback finish, preventing animation timing from affecting deterministic rules.
 - One shared UI motion setting controls both adventure and combat timing and defaults to Fast; Off commits actions immediately.
+## 2026-07-30 — Real factions and magic milestone
+
+- Faction balance baseline (seeds 1–200): Hearthguard 0.5%, Wound-Wrights
+  99.5%, zero crashes. Following document 06's tuning order, final tuning is
+  Yeoman growth 14→17, Tin Soldier growth 16→12, and (only after testing growth)
+  Hobby Knight damage 3–5→3–4. The post-tuning gate (same seeds) is Hearthguard
+  49.5%, Wound-Wrights 50.5%, zero crashes.
+- `charge` uses the hex distance of the immediately preceding move action as its
+  straight-line distance because the current combat action records a destination,
+  not individual path nodes.
+- Initial magic diagnostic (seeds 1–20) produced Wound-Wrights 100%, zero
+  matched winner flips, median battle length 3, and 80 casts. Unit stats remain
+  locked; Rally was raised 30→50 meter so Rite can generate an action within the
+  observed short battles. Further spell-only tuning and its accepted run follow.
+- Strategy AI intercepts an enemy hero that is within one day’s movement of its
+  home castle when the defender can reach that hero this turn. Matched diagnostics
+  were otherwise decided by empty-castle races with no final battle, making the
+  required spell-decisive battle metric meaningless.

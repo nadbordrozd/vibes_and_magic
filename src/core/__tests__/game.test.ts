@@ -35,15 +35,15 @@ describe('game state and economy', () => {
 
   it('starts with fixed factions and resources', () => {
     const game = createGame({ seed: 1, p1: 'human', p2: 'ai' });
-    expect(game.players.p1.faction).toBe('crimson');
-    expect(game.players.p2.faction).toBe('azure');
+    expect(game.players.p1.faction).toBe('hearthguard');
+    expect(game.players.p2.faction).toBe('woundWrights');
     expect(game.players.p1.resources.timber).toBe(10);
   });
 
   it('starts heroes with specified armies', () => {
     const game = createGame({ seed: 1, p1: 'human', p2: 'ai' });
-    expect(game.players.p1.hero!.army[0]).toEqual({ unitId: 'militia', count: 20 });
-    expect(game.players.p2.hero!.army[1]).toEqual({ unitId: 'frostAdept', count: 4 });
+    expect(game.players.p1.hero!.army[0]).toEqual({ unitId: 'yeoman', count: 25 });
+    expect(game.players.p2.hero!.army[1]).toEqual({ unitId: 'hobbyKnight', count: 4 });
   });
 
   it('starts with full mana', () => {
@@ -96,8 +96,8 @@ describe('game state and economy', () => {
       createGame({ seed: 1, p1: 'human', p2: 'ai' }),
       { type: 'RECRUIT', castleId: 'p1-castle', tier: 1, count: 2 },
     );
-    expect(game.players.p1.hero!.army[0]!.count).toBe(22);
-    expect(game.castles[0].available[0]).toBe(12);
+    expect(game.players.p1.hero!.army[0]!.count).toBe(27);
+    expect(game.castles[0].available[0]).toBe(15);
   });
 
   it('recruits into a remote castle garrison when the hero is away', () => {
@@ -106,8 +106,8 @@ describe('game state and economy', () => {
     game = apply(game, {
       type: 'RECRUIT', castleId: 'p1-castle', tier: 1, count: 2,
     });
-    expect(game.castles[0].garrison[0]).toEqual({ unitId: 'militia', count: 2 });
-    expect(game.players.p1.hero!.army[0]!.count).toBe(20);
+    expect(game.castles[0].garrison[0]).toEqual({ unitId: 'yeoman', count: 2 });
+    expect(game.players.p1.hero!.army[0]!.count).toBe(25);
   });
 
   it('moves a hero and pays movement points', () => {
@@ -142,19 +142,19 @@ describe('game state and economy', () => {
 
   it('merges identical army stacks', () => {
     const army = compactArmy(makeArmy([
-      { unitId: 'militia', count: 3 },
-      { unitId: 'militia', count: 4 },
+      { unitId: 'yeoman', count: 3 },
+      { unitId: 'yeoman', count: 4 },
     ]));
-    expect(army[0]).toEqual({ unitId: 'militia', count: 7 });
+    expect(army[0]).toEqual({ unitId: 'yeoman', count: 7 });
   });
 
   it('adds new units to a free slot', () => {
-    expect(addUnits(makeArmy([]), 'drake', 2)?.[0]).toEqual({ unitId: 'drake', count: 2 });
+    expect(addUnits(makeArmy([]), 'lanceKnight', 2)?.[0]).toEqual({ unitId: 'lanceKnight', count: 2 });
   });
 
   it('calculates army power from hp and average damage', () => {
-    expect(armyPower(makeArmy([{ unitId: 'militia', count: 1 }])))
-      .toBe(UNITS.militia.hp * 1.5);
+    expect(armyPower(makeArmy([{ unitId: 'yeoman', count: 1 }])))
+      .toBe(UNITS.yeoman.hp * 1.5);
   });
 
   it('checks and pays resource costs', () => {

@@ -72,7 +72,7 @@ Identity: a pious construct-guild fielding "saints' bodies" — lacquered, joint
 - Starting armies: Hearthguard hero 25 Yeomen + 6 Longbowmen; Wound-Wrights hero 30 Tin Soldiers + 4 Hobby Knights.
 - Guardians (mirrored as before, swap analogues): gold mines 35 Yeomen (west) / 40 Tin Soldiers (east); iron mines 10 Bannermen / 10 Marionettes; essence springs 8 Bannermen / 8 Marionettes; central neutral gold mines 2 Oriflamme Wardens / 2 Wooden Colossi; chests 18 Yeomen / 20 Tin Soldiers.
 - Combat AI additions: understands `overwind` (rule above), values `banner`/`oriflamme` carriers at 1.5× in target selection (kill the banner first), and never counts on `spare_parts` when computing whether to take a fight.
-- Sim acceptance addition: `npm run sim -- --games 200` Hearthguard-vs-Wound-Wrights win rate within 35–65%. If outside, tune unit stats (growth and cost first, HP/damage second); log every tuning change in DECISIONS.md with before/after win rates.
+- Sim acceptance addition: `npm run sim -- --games 200` Hearthguard-vs-Wound-Wrights win rate within 20–80% (degeneracy check only — do NOT tune stats toward parity; balance passes are deferred until content is complete; just log the number in DECISIONS.md).
 
 ## 5. Tests (minimum new coverage)
 

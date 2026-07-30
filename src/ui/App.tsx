@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
-import { chooseCombatAction } from '../ai/combat';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
+import { autoResolveBattle, chooseCombatAction } from '../ai/combat';
 import { runStrategyTurn } from '../ai/strategy';
 import { activeBattleStack } from '../core/combat/battle';
 import { apply, applyAutomaticChoice, createGame } from '../core/game';
@@ -42,6 +44,23 @@ export function App() {
   );
   const [animationSpeed, setAnimationSpeed] = useState<AnimationSpeed>('fast');
   const [mapAnimating, setMapAnimating] = useState(false);
+  const projectionRef = useRef<BattleResultData['projection']>(null);
+
+  useEffect(() => {
+    if (!game?.battle || projectionRef.current?.targetId === game.battle.context.targetId) return;
+    const projected = JSON.parse(JSON.stringify(game.battle)) as NonNullable<GameState['battle']>;
+    projected.attackerHero.knownSpells = [];
+    if (projected.defenderHero) projected.defenderHero.knownSpells = [];
+    const result = autoResolveBattle(projected);
+    projectionRef.current = {
+      targetId: projected.context.targetId,
+      winner: result.winner!,
+      casualties: {
+        attacker: casualtyCount(result.casualties.attacker),
+        defender: casualtyCount(result.casualties.defender),
+      },
+    };
+  }, [game?.battle?.context.targetId]);
 
   const save = () => {
     if (!game) return;
@@ -93,7 +112,10 @@ export function App() {
                   : casualtyCount(priorBattle.casualties.defender),
               },
               xp: Math.max(0, (next.players[current.activePlayer].hero?.xp ?? xpBefore) - xpBefore),
+              recovered: casualtyCount(next.lastBattleRecovered),
+              projection: projectionRef.current,
             }));
+            projectionRef.current = null;
           }
         }
         if (action.type === 'END_TURN'
@@ -122,11 +144,13 @@ export function App() {
     setGame(createGame(options));
     setOpenCastleId(null);
     setBattleResult(null);
+    projectionRef.current = null;
   };
 
   const load = () => {
     cancelAnimations();
     setMapAnimating(false);
+    projectionRef.current = null;
     loadSavedState();
   };
 
@@ -171,7 +195,11 @@ export function App() {
       if (event.key === 'Enter' && game.pendingChoice) {
         const choice = game.pendingChoice;
         if (choice.kind === 'chest') dispatch({ type: 'CHOOSE_CHEST', choice: 'gold' });
-        else dispatch({ type: 'CHOOSE_LEVEL', stat: choice.options[0] });
+        else if (choice.kind === 'level') {
+          dispatch({ type: 'CHOOSE_LEVEL', stat: choice.options[0] });
+        } else {
+          dispatch({ type: 'CHOOSE_SPELL_UPGRADE', spellId: choice.options[0] });
+        }
         return;
       }
       if (passPlayer || battleResult || game.pendingChoice) return;

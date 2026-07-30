@@ -11,8 +11,8 @@ import { makeArmy } from '../army';
 function battleFixture() {
   const game = createGame({ seed: 1, p1: 'human', p2: 'ai' });
   return createBattle(
-    makeArmy([{ unitId: 'militia', count: 10 }]),
-    makeArmy([{ unitId: 'slinger', count: 10 }]),
+    makeArmy([{ unitId: 'yeoman', count: 10 }]),
+    makeArmy([{ unitId: 'longbowman', count: 10 }]),
     game.players.p1.hero!,
     game.players.p2.hero!,
     {
@@ -33,7 +33,7 @@ describe('battle state machine', () => {
   });
 
   it('splits guardians into up to five stacks', () => {
-    const army = splitGuardianArmy([{ unitId: 'militia', count: 30 }]);
+    const army = splitGuardianArmy([{ unitId: 'yeoman', count: 30 }]);
     expect(army.filter(Boolean)).toHaveLength(5);
     expect(army.filter(Boolean).map((stack) => stack!.count)).toEqual([6, 6, 6, 6, 6]);
   });
@@ -81,7 +81,7 @@ describe('battle state machine', () => {
   it('preserves surviving armies by slot', () => {
     const battle = battleFixture();
     expect(armyAfterBattle(battle, 'attacker')[0]).toEqual({
-      unitId: 'militia', count: 10,
+      unitId: 'yeoman', count: 10,
     });
   });
 
@@ -92,10 +92,14 @@ describe('battle state machine', () => {
     )).toThrow('Illegal battle action');
   });
 
-  it('ranged AI shoots while unengaged', () => {
-    const battle = battleFixture();
+  it('ranged AI casts, then shoots while unengaged', () => {
+    let battle = battleFixture();
     battle.currentStackId = 'defender-0';
     battle.order = ['defender-0', 'attacker-0'];
+    expect(chooseCombatAction(battle)).toEqual({
+      type: 'BATTLE_CAST', spellId: 'wither', targetId: 'attacker-0',
+    });
+    battle = applyBattleAction(battle, chooseCombatAction(battle));
     expect(chooseCombatAction(battle)).toEqual({
       type: 'BATTLE_ATTACK', targetId: 'attacker-0',
     });

@@ -37,21 +37,24 @@ export interface DamageContext {
   ranged: boolean;
   adjacentEnemy: boolean;
   wallsPenalty: boolean;
+  rollPosition?: 'luck' | 'minimum' | 'maximum';
+  abilityMultiplier?: number;
 }
 
 export function computeDamage(context: DamageContext): number {
   const attackerUnit = UNITS[context.attacker.unitId];
   const defenderUnit = UNITS[context.defender.unitId];
-  const positioned = luckPosition(
-    attackerUnit.damage[0],
-    attackerUnit.damage[1],
-    context.luck,
-  );
+  const positioned = context.rollPosition === 'minimum'
+    ? attackerUnit.damage[0]
+    : context.rollPosition === 'maximum'
+      ? attackerUnit.damage[1]
+      : luckPosition(attackerUnit.damage[0], attackerUnit.damage[1], context.luck);
   const attack = attackerUnit.attack + context.attackerHeroAttack;
   const defense = defenderUnit.defense + context.defenderHeroDefense
     + (context.defender.defended ? 2 : 0);
   let damage = context.attacker.count * positioned
     * attackDefenseMultiplier(attack, defense);
+  damage *= context.abilityMultiplier ?? 1;
   if (context.ranged && (context.adjacentEnemy
       || hexDistance(context.attacker.position, context.defender.position) > 7)) {
     damage *= 0.5;

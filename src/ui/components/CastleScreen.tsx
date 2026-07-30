@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { BUILDINGS } from '../../content/buildings';
 import { FACTION_UNITS, UNITS } from '../../content/units';
+import { SPELLS } from '../../content/spells';
 import {
   buildingStatus, maxRecruitable, visitingCastle,
 } from '../../core/selectors';
 import type {
-  Action, BuildingId, Castle, GameState,
+  Action, BuildingId, Castle, GameState, UnitTier,
 } from '../../core/types';
 import { ArmySlots } from './ArmySlots';
+import { guildSpellCount } from '../../core/game/magic';
 
 interface Props {
   state: GameState;
@@ -16,17 +18,27 @@ interface Props {
   onClose: () => void;
 }
 
-const BUILDABLE: BuildingId[] = ['dwelling2', 'dwelling3', 'treasury', 'walls'];
+const COMMON_BUILDABLE: BuildingId[] = [
+  'dwelling2', 'dwelling3', 'dwelling4', 'dwelling5', 'treasury', 'walls',
+  'mageGuild1', 'mageGuild2', 'mageGuild3',
+];
 
 function costLabel(cost: typeof BUILDINGS[BuildingId]['cost']): string {
   return Object.entries(cost).map(([resource, amount]) => `${amount} ${resource}`).join(' · ');
 }
 
 export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
-  const [counts, setCounts] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0 });
+  const [counts, setCounts] = useState<Record<number, number>>({
+    1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
+  });
   const [heroSlot, setHeroSlot] = useState<number | null>(null);
   const hero = state.players[state.activePlayer].hero;
   const heroIsVisiting = visitingCastle(state)?.id === castle.id;
+  const buildable = [
+    ...COMMON_BUILDABLE,
+    castle.faction === 'hearthguard' ? 'chapelOfTheBanner' : 'guildWorkshop',
+  ] as BuildingId[];
+  const guildSpells = castle.guildDeck.slice(0, guildSpellCount(castle));
 
   const transfer = (garrisonSlot: number) => {
     if (heroSlot === null || !heroIsVisiting) return;
@@ -40,7 +52,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
         <header>
           <div>
             <span>{castle.faction} stronghold</span>
-            <h2>{castle.faction === 'crimson' ? 'Westwatch' : 'Eastwatch'}</h2>
+            <h2>{castle.faction === 'hearthguard' ? 'Westwatch' : 'Eastwatch'}</h2>
           </div>
           <button className="close-button" onClick={onClose}>×</button>
         </header>
@@ -50,7 +62,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             <div className="building-grid">
               <div className="building built"><b>Town Hall</b><small>+500 gold daily</small></div>
               <div className="building built"><b>Tier 1 Dwelling</b><small>Basic troops</small></div>
-              {BUILDABLE.map((id) => {
+              {buildable.map((id) => {
                 const status = buildingStatus(state, castle, id);
                 return (
                   <button
@@ -71,7 +83,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
           <div>
             <h3>Recruitment</h3>
             <div className="recruit-list">
-              {([1, 2, 3] as const).map((tier) => {
+              {([1, 2, 3, 4, 5] as UnitTier[]).map((tier) => {
                 const unit = UNITS[FACTION_UNITS[castle.faction][tier - 1]];
                 const max = maxRecruitable(state, castle, tier);
                 const count = Math.min(counts[tier], max);
@@ -117,6 +129,33 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             </>
           )}
         </div>
+        <section className="guild-panel">
+          <h3>Mage Guild</h3>
+          {guildSpells.length === 0 ? (
+            <p>Build Mage Guild I to reveal this castle’s spell deal.</p>
+          ) : (
+            <div className="guild-spells">
+              {guildSpells.map((spellId) => {
+                const known = hero?.knownSpells.includes(spellId);
+                const upgraded = hero?.upgradedSpells.includes(spellId);
+                return (
+                  <article key={spellId} className={known ? 'known' : ''}>
+                    <b>{SPELLS[spellId].name}{upgraded ? '+' : ''}</b>
+                    <small>{SPELLS[spellId].school} · {SPELLS[spellId].mana} mana</small>
+                    <span>{upgraded ? SPELLS[spellId].plus : SPELLS[spellId].base}</span>
+                    <button
+                      disabled={!heroIsVisiting || !known || upgraded
+                        || state.players[state.activePlayer].resources.essence < 4}
+                      onClick={() => dispatch({
+                        type: 'GUILD_INSCRIBE', castleId: castle.id, spellId,
+                      })}
+                    >Inscribe · 4 essence</button>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </section>
         <footer>One building may be constructed in each castle per day.</footer>
       </section>
     </div>

@@ -12,9 +12,11 @@ function argument(name: string, fallback: number): number {
 const games = Math.max(1, Math.floor(argument('games', 1)));
 const seed = argument('seed', 1) >>> 0;
 const maxDays = Math.max(1, Math.floor(argument('days', 70)));
+const noMagic = process.argv.includes('--no-magic');
+const compareMagic = process.argv.includes('--compare-magic');
 const results = Array.from(
   { length: games },
-  (_, index) => simulateGame(seed + index, maxDays),
+  (_, index) => simulateGame(seed + index, maxDays, noMagic),
 );
 const crashes = results.filter((result) => result.crashed);
 for (const crash of crashes) {
@@ -44,13 +46,32 @@ const casualtyTotal = results.reduce(
 const withinEightWeeks = results.filter((result) => result.winner && result.days <= 56).length;
 
 console.log(`Games: ${games} | seed range: ${seed}–${seed + games - 1}`);
+console.log(`Magic: ${noMagic ? 'off' : 'on'}`);
 console.log(`Crashes: ${crashes.length}`);
-console.log(`Wins: Crimson ${wins.p1} (${(wins.p1 / games * 100).toFixed(1)}%) | Azure ${wins.p2} (${(wins.p2 / games * 100).toFixed(1)}%) | unresolved ${wins.unresolved}`);
+console.log(`Wins: Hearthguard ${wins.p1} (${(wins.p1 / games * 100).toFixed(1)}%) | Wound-Wrights ${wins.p2} (${(wins.p2 / games * 100).toFixed(1)}%) | unresolved ${wins.unresolved}`);
 console.log(`Length days: min ${lengths[0]} | median ${percentile(0.5)} | p90 ${percentile(0.9)} | max ${lengths.at(-1)}`);
 console.log(`Finished within 8 weeks: ${withinEightWeeks}/${games} (${(withinEightWeeks / games * 100).toFixed(1)}%)`);
-console.log(`Casualties: Crimson ${casualtyTotal.p1} | Azure ${casualtyTotal.p2} | neutral ${casualtyTotal.neutral}`);
+console.log(`Casualties: Hearthguard ${casualtyTotal.p1} | Wound-Wrights ${casualtyTotal.p2} | neutral ${casualtyTotal.neutral}`);
+const rounds = results.flatMap((result) => result.battleRounds).sort((a, b) => a - b);
+console.log(`Battle rounds: median ${rounds.length ? rounds[Math.floor(rounds.length / 2)] : 0} | spell casts ${results.reduce((sum, result) => sum + result.spellCasts, 0)}`);
 for (const result of results.filter((item) => !item.winner).slice(0, 5)) {
   console.log(`Unresolved seed ${result.seed}: ${result.summary}`);
 }
 
 if (crashes.length > 0) process.exitCode = 1;
+
+if (compareMagic) {
+  const opposite = Array.from(
+    { length: games },
+    (_, index) => simulateGame(seed + index, maxDays, !noMagic),
+  );
+  const pairedFlips = results.filter((result, index) =>
+    result.winner !== opposite[index].winner).length;
+  const casualty = (result: typeof results[number]) =>
+    result.casualties.p1 + result.casualties.p2 + result.casualties.neutral;
+  const casualtyDelta = results.reduce(
+    (sum, result, index) => sum + casualty(result) - casualty(opposite[index]),
+    0,
+  ) / games;
+  console.log(`Matched comparison: winner flips ${pairedFlips}/${games} (${(pairedFlips / games * 100).toFixed(1)}%) | average casualty delta ${casualtyDelta.toFixed(1)}`);
+}

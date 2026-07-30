@@ -12,6 +12,7 @@ import type {
   Army, Castle, GameState, Hero, MapObject,
 } from '../types';
 import { checkVictory } from './outcomes';
+import { learnGuildSpells, visitShrine } from './magic';
 
 function activeHero(state: GameState): Hero {
   const hero = state.players[state.activePlayer].hero;
@@ -44,6 +45,17 @@ function beginBattle(
   );
   state.rng = nextRng;
   state.battle = battle;
+  const terrain = state.map.terrain[context.destination.y][context.destination.x];
+  const object = state.map.objects.find((item) =>
+    sameCoord(item.position, context.destination));
+  battle.resonance = context.kind === 'castle' ? 'rite'
+    : object?.kind === 'mine' ? 'craft'
+      : terrain === 'barrow' ? 'grave'
+        : terrain === 'forest' ? 'wild' : null;
+  if (state.magicDisabled) {
+    battle.attackerHero.knownSpells = [];
+    if (battle.defenderHero) battle.defenderHero.knownSpells = [];
+  }
   state.phase = 'combat';
 }
 
@@ -67,6 +79,15 @@ function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
     }
     return;
   }
+  if (object.kind === 'shrine') {
+    if (!object.cleared) {
+      beginBattle(state, splitGuardianArmy(object.guard.army), {
+        kind: 'guardian', targetId: object.id,
+        destination: object.position, attackerHeroId: hero.id,
+      });
+    } else visitShrine(state, object.id, hero);
+    return;
+  }
   if (object.guard && !object.cleared) {
     beginBattle(state, splitGuardianArmy(object.guard.army), {
       kind: 'guardian', targetId: object.id,
@@ -80,7 +101,10 @@ function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
 function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
   if (castle.owner === hero.owner) {
     hero.mana = hero.knowledge * 10;
-    state.lastMessage = 'Hero entered the castle.';
+    const learned = learnGuildSpells(hero, castle);
+    state.lastMessage = learned.length
+      ? `Hero learned ${learned.length} Mage Guild spell${learned.length === 1 ? '' : 's'}.`
+      : 'Hero entered the castle.';
     return;
   }
   const defenderPlayer = state.players[castle.owner];
@@ -120,7 +144,9 @@ function blockedMapTiles(state: GameState, hero: Hero): Set<string> {
       ? !object.collected
       : object.kind === 'chest'
         ? !object.collected
-        : object.owner !== hero.owner || !object.cleared;
+        : object.kind === 'shrine'
+          ? !object.cleared
+          : object.owner !== hero.owner || !object.cleared;
     if (active) blocked.add(coordKey(object.position));
   }
   for (const castle of state.castles) {

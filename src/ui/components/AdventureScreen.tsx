@@ -14,7 +14,8 @@ import {
 
 const TILE = 32;
 const TERRAIN_COLOR = {
-  grass: '#769c45', forest: '#365f3c', mountain: '#777a78', water: '#397b91',
+  grass: '#769c45', forest: '#365f3c', barrow: '#6f6674',
+  mountain: '#777a78', water: '#397b91',
 };
 const RESOURCE_MARK: Record<ResourceId, string> = {
   gold: 'G', timber: 'T', iron: 'I', essence: 'E',
@@ -34,6 +35,7 @@ interface Props {
 function objectTitle(object: MapObject): string {
   if (object.kind === 'pile') return `${object.amount} ${object.resource}`;
   if (object.kind === 'chest') return object.cleared ? 'Treasure chest' : 'Guarded treasure chest';
+  if (object.kind === 'shrine') return `${object.school} shrine · teaches ${object.teaches}`;
   return `${object.resource} mine · ${object.owner ?? 'neutral'}`;
 }
 
@@ -57,6 +59,16 @@ function MapObjectGlyph({ object }: { object: MapObject }) {
         <title>{objectTitle(object)}</title>
         <rect className="chest" x="-9" y="-6" width="18" height="13" rx="2" />
         <path d="M-9 -2 H9" className="glyph-line" />
+        {guardCount > 0 && <text className="guard-count" x="10" y="-9">{guardCount}</text>}
+      </g>
+    );
+  }
+  if (object.kind === 'shrine') {
+    return (
+      <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
+        <title>{objectTitle(object)}</title>
+        <path className={`shrine-glyph ${object.school}`} d="M0 -12 L10 8 L-10 8 Z" />
+        <text y="5">✦</text>
         {guardCount > 0 && <text className="guard-count" x="10" y="-9">{guardCount}</text>}
       </g>
     );
@@ -196,6 +208,9 @@ export function AdventureScreen({
                   {seen && terrain === 'mountain' && (
                     <path className="mountain-glyph" d={`M${x * TILE + 4} ${y * TILE + 27} L${x * TILE + 16} ${y * TILE + 5} L${x * TILE + 29} ${y * TILE + 27} Z`} />
                   )}
+                  {seen && terrain === 'barrow' && (
+                    <text className="terrain-glyph" x={x * TILE + 16} y={y * TILE + 21}>†</text>
+                  )}
                 </g>
               );
             }))}
@@ -251,7 +266,7 @@ export function AdventureScreen({
           {hero && (
             <>
               <div className="hero-portrait">
-                <div className={hero.faction}>{hero.faction === 'crimson' ? 'C' : 'A'}</div>
+                <div className={hero.faction}>{hero.faction === 'hearthguard' ? 'H' : 'W'}</div>
                 <span><b>Level {hero.level}</b><small>{hero.xp} XP</small></span>
               </div>
               <div className="stat-grid">
@@ -276,7 +291,7 @@ export function AdventureScreen({
                 onClick={() => onOpenCastle(castle.id)}
               >
                 {castleHere?.id === castle.id ? 'Enter' : 'View'} {
-                  castle.faction === 'crimson' ? 'Westwatch' : 'Eastwatch'
+                  castle.faction === 'hearthguard' ? 'Westwatch' : 'Eastwatch'
                 }
               </button>
             ))}

@@ -34,6 +34,7 @@ export const STARTING_RESOURCES = {
 export const TERRAIN_COST = {
   grass: 100,
   forest: 150,
+  barrow: 120,
   mountain: Number.POSITIVE_INFINITY,
   water: Number.POSITIVE_INFINITY,
 } as const;

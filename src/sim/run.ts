@@ -11,10 +11,14 @@ export interface SimResult {
   replay: Action[];
   summary: string;
   crashed?: string;
+  battleRounds: number[];
+  spellCasts: number;
+  battleOutcomes: GameState['metrics']['battleOutcomes'];
 }
 
-export function simulateGame(seed: number, maxDays = 70): SimResult {
+export function simulateGame(seed: number, maxDays = 70, noMagic = false): SimResult {
   let state = createGame({ seed, p1: 'ai', p2: 'ai' });
+  state.magicDisabled = noMagic;
   try {
     while (!state.winner && state.day <= maxDays) {
       state = runStrategyTurn(state);
@@ -24,6 +28,9 @@ export function simulateGame(seed: number, maxDays = 70): SimResult {
       battles: state.metrics.battles,
       casualties: state.metrics.casualties,
       replay: state.replay,
+      battleRounds: state.metrics.battleRounds,
+      spellCasts: state.metrics.spellCasts,
+      battleOutcomes: state.metrics.battleOutcomes,
       summary: `heroes p1=${state.players.p1.hero
         ? `${state.players.p1.hero.position.x},${state.players.p1.hero.position.y}` : 'dead'} `
         + `p2=${state.players.p2.hero
@@ -46,6 +53,9 @@ export function simulateGame(seed: number, maxDays = 70): SimResult {
     return {
       seed, winner: null, days: state.day, battles: state.metrics.battles,
       casualties: state.metrics.casualties, replay: state.replay,
+      battleRounds: state.metrics.battleRounds,
+      spellCasts: state.metrics.spellCasts,
+      battleOutcomes: state.metrics.battleOutcomes,
       summary: `active=${state.activePlayer}`,
       crashed: error instanceof Error ? error.stack ?? error.message : String(error),
     };

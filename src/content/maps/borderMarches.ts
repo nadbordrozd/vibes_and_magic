@@ -6,6 +6,8 @@ import type {
 function makeTerrain(): TerrainId[][] {
   return Array.from({ length: MAP_HEIGHT }, (_, y) =>
     Array.from({ length: MAP_WIDTH }, (_, x): TerrainId => {
+      if ([[6, 3], [21, 3], [8, 17], [19, 17]]
+        .some(([barrowX, barrowY]) => x === barrowX && y === barrowY)) return 'barrow';
       const mirroredX = Math.min(x, MAP_WIDTH - 1 - x);
       if ((x < 2 || x > 25) && (y < 3 || y > 16)) return 'water';
       if ((x === 13 || x === 14) && ![3, 4, 14, 15].includes(y)) return 'mountain';
@@ -55,31 +57,47 @@ const WEST_PILES: ReadonlyArray<[Coord, ResourceId, number]> = [
 
 function makeObjects(): MapObject[] {
   const objects: MapObject[] = [
-    mine('west-gold', { x: 7, y: 10 }, 'gold', 1000, 'militia', 30),
+    mine('west-gold', { x: 7, y: 10 }, 'gold', 1000, 'yeoman', 35),
     mine('west-timber', { x: 4, y: 5 }, 'timber', 2),
-    mine('west-iron', { x: 8, y: 15 }, 'iron', 1, 'berserker', 10),
-    mine('west-essence', { x: 9, y: 7 }, 'essence', 1, 'berserker', 8),
-    mine('east-gold', mirror({ x: 7, y: 10 }), 'gold', 1000, 'slinger', 30),
+    mine('west-iron', { x: 8, y: 15 }, 'iron', 1, 'bannerman', 10),
+    mine('west-essence', { x: 9, y: 7 }, 'essence', 1, 'bannerman', 8),
+    mine('east-gold', mirror({ x: 7, y: 10 }), 'gold', 1000, 'tinSoldier', 40),
     mine('east-timber', mirror({ x: 4, y: 5 }), 'timber', 2),
-    mine('east-iron', mirror({ x: 8, y: 15 }), 'iron', 1, 'frostAdept', 10),
-    mine('east-essence', mirror({ x: 9, y: 7 }), 'essence', 1, 'frostAdept', 8),
-    mine('north-gap-gold', { x: 12, y: 4 }, 'gold', 1000, 'drake', 2),
-    mine('south-gap-gold', { x: 15, y: 15 }, 'gold', 1000, 'golem', 2),
+    mine('east-iron', mirror({ x: 8, y: 15 }), 'iron', 1, 'marionette', 10),
+    mine('east-essence', mirror({ x: 9, y: 7 }), 'essence', 1, 'marionette', 8),
+    mine('north-gap-gold', { x: 12, y: 4 }, 'gold', 1000, 'oriflammeWarden', 2),
+    mine('south-gap-gold', { x: 15, y: 15 }, 'gold', 1000, 'woodenColossus', 2),
     {
       id: 'west-chest-1', kind: 'chest', position: { x: 5, y: 3 },
-      guard: guard('militia', 15), cleared: false, collected: false,
+      guard: guard('yeoman', 18), cleared: false, collected: false,
     },
     {
       id: 'west-chest-2', kind: 'chest', position: { x: 11, y: 17 },
-      guard: guard('militia', 15), cleared: false, collected: false,
+      guard: guard('yeoman', 18), cleared: false, collected: false,
     },
     {
       id: 'east-chest-1', kind: 'chest', position: mirror({ x: 5, y: 3 }),
-      guard: guard('slinger', 15), cleared: false, collected: false,
+      guard: guard('tinSoldier', 20), cleared: false, collected: false,
     },
     {
       id: 'east-chest-2', kind: 'chest', position: mirror({ x: 11, y: 17 }),
-      guard: guard('slinger', 15), cleared: false, collected: false,
+      guard: guard('tinSoldier', 20), cleared: false, collected: false,
+    },
+    {
+      id: 'rite-shrine', kind: 'shrine', position: { x: 6, y: 4 },
+      school: 'rite', teaches: 'rally', guard: guard('bannerman', 8),
+      cleared: false, visitedBy: [],
+    },
+    {
+      id: 'craft-shrine', kind: 'shrine', position: { x: 13, y: 3 },
+      school: 'craft', teaches: 'forgeSpark',
+      guard: { army: [{ unitId: 'bannerman', count: 4 }, { unitId: 'marionette', count: 4 }] },
+      cleared: false, visitedBy: [],
+    },
+    {
+      id: 'grave-shrine', kind: 'shrine', position: { x: 21, y: 4 },
+      school: 'grave', teaches: 'wither', guard: guard('marionette', 8),
+      cleared: false, visitedBy: [],
     },
   ];
   WEST_PILES.forEach(([position, resource, amount], index) => {
@@ -112,7 +130,7 @@ export function validateMap(map: GameMap): void {
     throw new Error('Map width mismatch');
   }
   const seen = new Set<string>();
-  const terrains = new Set<TerrainId>(['grass', 'forest', 'mountain', 'water']);
+  const terrains = new Set<TerrainId>(['grass', 'forest', 'barrow', 'mountain', 'water']);
   if (map.terrain.some((row) => row.some((terrain) => !terrains.has(terrain)))) {
     throw new Error('Unknown terrain in map');
   }

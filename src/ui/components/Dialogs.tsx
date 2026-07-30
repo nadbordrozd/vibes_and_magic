@@ -2,6 +2,7 @@ import type {
   Action, GameState, PlayerId, PrimaryStat,
 } from '../../core/types';
 import { CHEST_GOLD, CHEST_XP } from '../../content/constants';
+import { SPELLS } from '../../content/spells';
 
 interface ChoiceProps {
   state: GameState;
@@ -39,6 +40,29 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
       </div>
     );
   }
+  if (pending.kind === 'shrine' || pending.kind === 'inscribe') {
+    return (
+      <div className="modal-backdrop choice-backdrop">
+        <section className="choice-dialog spell-choice">
+          <span className="dialog-kicker">
+            {pending.kind === 'shrine' ? 'Shrine inscription' : 'Rare inscription'}
+          </span>
+          <h2>Upgrade one known spell</h2>
+          <div className="choice-cards three">
+            {pending.options.map((spellId) => (
+              <button
+                key={spellId}
+                onClick={() => dispatch({ type: 'CHOOSE_SPELL_UPGRADE', spellId })}
+              >
+                <i>✦</i><b>{SPELLS[spellId].name}+</b>
+                <small>{SPELLS[spellId].plus}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+      </div>
+    );
+  }
   return (
     <div className="modal-backdrop choice-backdrop">
       <section className="choice-dialog level-choice">
@@ -48,9 +72,11 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
         <div className="choice-cards three">
           {pending.options.map((stat) => (
             <button key={stat} onClick={() => dispatch({ type: 'CHOOSE_LEVEL', stat })}>
-              <i>{stat.slice(0, 1).toUpperCase()}</i>
-              <b>+1 {stat.replace(/([A-Z])/g, ' $1')}</b>
-              <small>{STAT_COPY[stat]}</small>
+              <i>{stat === 'inscribe' ? '✦' : stat.slice(0, 1).toUpperCase()}</i>
+              <b>{stat === 'inscribe' ? 'Inscribe a spell' : `+1 ${stat.replace(/([A-Z])/g, ' $1')}`}</b>
+              <small>{stat === 'inscribe'
+                ? 'Permanently unlock a known spell’s + face.'
+                : STAT_COPY[stat]}</small>
             </button>
           ))}
         </div>
@@ -64,10 +90,10 @@ export function PassDevice({
 }: { playerId: PlayerId; onReady: () => void }) {
   return (
     <div className="pass-device">
-      <div className={`pass-sigil ${playerId}`}><span>{playerId === 'p1' ? 'C' : 'A'}</span></div>
+      <div className={`pass-sigil ${playerId}`}><span>{playerId === 'p1' ? 'H' : 'W'}</span></div>
       <span className="dialog-kicker">Hot seat</span>
       <h1>Pass the device</h1>
-      <p>{playerId === 'p1' ? 'Player 1 · Crimson' : 'Player 2 · Azure'}, your turn is ready.</p>
+      <p>{playerId === 'p1' ? 'Player 1 · Hearthguard' : 'Player 2 · Wound-Wrights'}, your turn is ready.</p>
       <button className="primary" onClick={onReady}>Reveal the map</button>
     </div>
   );
@@ -80,6 +106,12 @@ export interface BattleResultData {
     defender: number;
   };
   xp: number;
+  recovered: number;
+  projection: {
+    targetId: string;
+    winner: 'attacker' | 'defender';
+    casualties: { attacker: number; defender: number };
+  } | null;
 }
 
 export function BattleResult({
@@ -94,7 +126,16 @@ export function BattleResult({
           <div><span>Attacker losses</span><b>{result.casualties.attacker}</b></div>
           <div><span>Defender losses</span><b>{result.casualties.defender}</b></div>
           <div><span>Experience</span><b>+{result.xp}</b></div>
+          {result.recovered > 0 && (
+            <div><span>Spare parts recovered</span><b>+{result.recovered}</b></div>
+          )}
         </div>
+        {result.projection && (
+          <div className="projection-result">
+            <b>No-magic auto-resolve projection: {result.projection.winner}</b>
+            <span>Losses {result.projection.casualties.attacker} / {result.projection.casualties.defender}</span>
+          </div>
+        )}
         <button className="primary" onClick={onClose}>Continue</button>
       </section>
     </div>

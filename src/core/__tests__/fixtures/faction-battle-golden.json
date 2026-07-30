@@ -1,0 +1,24 @@
+{
+  "winner": "attacker",
+  "round": 4,
+  "casualties": {
+    "attacker": { "yeoman": 15 },
+    "defender": { "tinSoldier": 30, "hobbyKnight": 4 }
+  },
+  "survivors": [
+    {
+      "side": "attacker",
+      "slot": 0,
+      "unitId": "yeoman",
+      "count": 10,
+      "topHp": 6
+    },
+    {
+      "side": "attacker",
+      "slot": 1,
+      "unitId": "longbowman",
+      "count": 6,
+      "topHp": 11
+    }
+  ]
+}

@@ -3,10 +3,13 @@ import {
 } from '../../content/constants';
 import { UNITS } from '../../content/units';
 import type { BattleStack, BattleState } from '../types';
+import { hasAbility } from './abilities';
+import { isAdjacent } from './hex';
+import { effectiveSpeed } from './magicEffects';
 
 export function turnOrder(stacks: BattleStack[]): string[] {
   return stacks.filter((stack) => stack.count > 0).sort((a, b) => {
-    const speed = UNITS[b.unitId].speed - UNITS[a.unitId].speed;
+    const speed = effectiveSpeed(b) - effectiveSpeed(a);
     if (speed) return speed;
     if (a.side !== b.side) return a.side === 'attacker' ? -1 : 1;
     return a.slot - b.slot;
@@ -21,9 +24,20 @@ export function applyRoundMorale(battle: BattleState): void {
       battle.stacks.filter((other) => other.side === stack.side && other.count > 0)
         .map((other) => UNITS[other.unitId].faction),
     );
+    const allies = battle.stacks.filter(
+      (other) => other.side === stack.side && other.count > 0,
+    );
+    const bannerGain = allies.filter(
+      (other) => hasAbility(other.unitId, 'banner')
+        && isAdjacent(other.position, stack.position),
+    ).length * 10;
+    const oriflammeGain = allies.some(
+      (other) => hasAbility(other.unitId, 'oriflamme'),
+    ) ? 5 : 0;
     stack.morale = Math.max(
       0,
       stack.morale + (hero?.moraleBonus ?? 0)
+        + bannerGain + oriflammeGain
         - (factions.size > 1 ? MIXED_FACTION_MORALE_PENALTY : 0),
     );
     while (stack.morale >= MORALE_THRESHOLD) {

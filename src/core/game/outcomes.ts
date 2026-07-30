@@ -10,8 +10,28 @@ import {
   drawLevelOptions, needsLevel,
 } from '../progression';
 import type {
-  GameState, PlayerId, PrimaryStat,
+  BattleSide, BattleState, GameState, LevelChoice, PlayerId, PrimaryStat,
 } from '../types';
+import { visitShrine } from './magic';
+
+export function recoverSpareParts(
+  battle: BattleState,
+  side: BattleSide,
+  rate: number,
+): Partial<Record<keyof typeof UNITS, number>> {
+  const recovered: Partial<Record<keyof typeof UNITS, number>> = {};
+  for (const stack of battle.stacks) {
+    if (stack.side !== side || stack.count <= 0 || stack.summoned
+        || UNITS[stack.unitId].faction !== 'woundWrights') continue;
+    const losses = Math.max(0, (battle.initialCounts[stack.id] ?? stack.count) - stack.count);
+    const restored = Math.floor(losses * rate);
+    if (restored <= 0) continue;
+    stack.count += restored;
+    recovered[stack.unitId] = (recovered[stack.unitId] ?? 0) + restored;
+  }
+  battle.recovered[side] = recovered;
+  return recovered;
+}
 
 export function checkVictory(state: GameState): void {
   for (const playerId of ['p1', 'p2'] as PlayerId[]) {
@@ -47,18 +67,24 @@ export function chooseChest(state: GameState, choice: 'gold' | 'xp'): void {
   checkLevel(state, pending.playerId);
 }
 
-export function chooseLevel(state: GameState, stat: PrimaryStat): void {
+export function chooseLevel(state: GameState, stat: LevelChoice): void {
   const pending = state.pendingChoice;
   if (pending?.kind !== 'level' || !pending.options.includes(stat)) {
     throw new Error('Invalid level option');
   }
   const hero = state.players[pending.playerId].hero;
   if (!hero) throw new Error('Hero missing');
-  hero[stat] += 1;
   hero.level += 1;
-  if (stat === 'knowledge') hero.mana = Math.min(hero.mana, hero.knowledge * 10);
-  state.pendingChoice = null;
-  state.lastMessage = `Level ${hero.level}: +1 ${stat}.`;
+  if (stat === 'inscribe') {
+    const options = hero.knownSpells.filter((id) => !hero.upgradedSpells.includes(id));
+    state.pendingChoice = { kind: 'inscribe', playerId: pending.playerId, options };
+    state.lastMessage = `Level ${hero.level}: choose a spell to inscribe.`;
+  } else {
+    hero[stat as PrimaryStat] += 1;
+    if (stat === 'knowledge') hero.mana = Math.min(hero.mana, hero.knowledge * 10);
+    state.pendingChoice = null;
+    state.lastMessage = `Level ${hero.level}: +1 ${stat}.`;
+  }
   checkLevel(state, pending.playerId);
 }
 
@@ -69,7 +95,30 @@ export function finalizeBattle(state: GameState): void {
   const attackerHero = attackerPlayer.hero;
   if (!attackerHero) throw new Error('Battle attacker disappeared');
   const context = battle.context;
+  attackerHero.mana = battle.attackerHero.mana;
+  if (context.defenderPlayerId && battle.defenderHero) {
+    const defenderHero = state.players[context.defenderPlayerId].hero;
+    if (defenderHero) defenderHero.mana = battle.defenderHero.mana;
+  }
+  state.lastBattleRecovered = {};
+  const winningPlayerId = battle.winner === 'attacker'
+    ? state.activePlayer : context.defenderPlayerId;
+  const winningPlayer = winningPlayerId ? state.players[winningPlayerId] : null;
+  if (winningPlayer?.faction === 'woundWrights') {
+    const workshop = state.castles.some(
+      (castle) => castle.owner === winningPlayerId
+        && castle.buildings.includes('guildWorkshop'),
+    );
+    state.lastBattleRecovered = recoverSpareParts(
+      battle, battle.winner, workshop ? 0.5 : 0.3,
+    );
+  }
   state.metrics.battles += 1;
+  state.metrics.battleRounds.push(battle.round);
+  state.metrics.spellCasts += battle.spellCasts;
+  state.metrics.battleOutcomes.push({
+    targetId: battle.context.targetId, winner: battle.winner,
+  });
   const attackerLosses = Object.values(battle.casualties.attacker)
     .reduce((sum, count) => sum + (count ?? 0), 0);
   const defenderLosses = Object.values(battle.casualties.defender)
@@ -98,7 +147,9 @@ export function finalizeBattle(state: GameState): void {
   state.battle = null;
   state.phase = 'adventure';
   checkVictory(state);
-  if (!state.winner && attackerPlayer.hero) checkLevel(state, attackerPlayer.id);
+  if (!state.winner && attackerPlayer.hero && !state.pendingChoice) {
+    checkLevel(state, attackerPlayer.id);
+  }
 }
 
 function applyAttackerVictory(state: GameState): void {
@@ -113,6 +164,9 @@ function applyAttackerVictory(state: GameState): void {
     } else if (object?.kind === 'chest') {
       object.cleared = true;
       state.pendingChoice = { kind: 'chest', objectId: object.id, playerId: hero.owner };
+    } else if (object?.kind === 'shrine') {
+      object.cleared = true;
+      visitShrine(state, object.id, hero);
     }
   } else if (context.kind === 'castle') {
     const castle = state.castles.find((item) => item.id === context.targetId)!;

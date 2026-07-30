@@ -1,4 +1,5 @@
 import { FACTION_UNITS, UNITS } from '../content/units';
+import { HERO_MOVE_POINTS } from '../content/constants';
 import { armyPower, canAfford, makeArmy } from '../core/army';
 import {
   apply, applyAutomaticChoice, firstAffordableBuilding,
@@ -7,8 +8,10 @@ import {
   findPath, movementCost, pathCost, sameCoord,
 } from '../core/map/pathfinding';
 import type {
-  Action, Coord, GameState, MapObject, PlayerId,
+  Action, BuildingId, Coord, GameState, MapObject, PlayerId,
 } from '../core/types';
+import { guildSpellCount } from '../core/game/magic';
+import { adventurePath } from '../core/game/exploration';
 
 interface Objective {
   id: string;
@@ -44,6 +47,16 @@ function collectObjectives(state: GameState): Objective[] {
   if (!hero) return [];
   const power = armyPower(hero.army);
   const objectives: Objective[] = [];
+  for (const castle of state.castles.filter((item) => item.owner === playerId)) {
+    const learnable = castle.guildDeck.slice(0, guildSpellCount(castle))
+      .some((spellId) => !hero.knownSpells.includes(spellId));
+    if (learnable && !sameCoord(hero.position, castle.position)) {
+      objectives.push({
+        id: `${castle.id}-guild`, position: castle.position,
+        priority: 0, power: 0,
+      });
+    }
+  }
   for (const object of state.map.objects) {
     if (object.kind === 'pile' && !object.collected) {
       objectives.push({ id: object.id, position: object.position, priority: 0, power: 0 });
@@ -61,6 +74,15 @@ function collectObjectives(state: GameState): Objective[] {
         objectives.push({
           id: object.id, position: object.position,
           priority: guard ? 2 : 1, power: guard,
+        });
+      }
+    } else if (object.kind === 'shrine') {
+      const primary = playerId === 'p1' ? 'rite' : 'grave';
+      const guard = object.cleared ? 0 : guardedPower(object);
+      if (object.school === primary && !object.visitedBy.includes(hero.id)
+          && guard <= power * 0.8) {
+        objectives.push({
+          id: object.id, position: object.position, priority: 0, power: guard,
         });
       }
     }
@@ -88,6 +110,19 @@ function chooseObjective(state: GameState): Objective | null {
   const hero = state.players[state.activePlayer].hero;
   if (!hero) return null;
   const ownPower = armyPower(hero.army);
+  const enemy = state.players[state.activePlayer === 'p1' ? 'p2' : 'p1'].hero;
+  const home = state.castles.find((castle) => castle.owner === state.activePlayer);
+  if (enemy?.alive && home) {
+    const threatPath = findPath(state.map, enemy.position, home.position);
+    const interceptPath = findPath(state.map, hero.position, enemy.position);
+    if (threatPath && pathCost(state.map, threatPath) <= HERO_MOVE_POINTS * 0.25
+        && interceptPath && pathCost(state.map, interceptPath) <= hero.movement) {
+      return {
+        id: enemy.id, position: enemy.position, priority: -2,
+        power: armyPower(enemy.army),
+      };
+    }
+  }
   const immediateAttack = collectObjectives(state).filter(
     (objective) => objective.priority === 3
       && objective.power * 1.2 <= ownPower
@@ -109,8 +144,8 @@ function recruitAtCastle(state: GameState): GameState {
   );
   if (!castle) return state;
   let next = state;
-  for (const tier of [3, 2, 1] as const) {
-    if (tier > 1 && !castle.buildings.includes(`dwelling${tier}` as 'dwelling2' | 'dwelling3')) {
+  for (const tier of [5, 4, 3, 2, 1] as const) {
+    if (tier > 1 && !castle.buildings.includes(`dwelling${tier}` as BuildingId)) {
       continue;
     }
     const currentCastle = next.castles.find((item) => item.id === castle.id)!;
@@ -166,7 +201,7 @@ export function runStrategyTurn(initial: GameState, maxSteps = 100): GameState {
     if (!objective || sameCoord(objective.position, hero.position)) {
       return apply(state, { type: 'END_TURN' });
     }
-    const path = findPath(state.map, hero.position, objective.position);
+    const path = adventurePath(state, objective.position);
     if (!path || path.length < 2
         || movementCost(state.map, path[0], path[1]) > hero.movement) {
       return apply(state, { type: 'END_TURN' });

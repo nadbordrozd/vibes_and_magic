@@ -5,8 +5,9 @@ import {
 } from '../army';
 import { sameCoord } from '../map/pathfinding';
 import type {
-  BuildingId, Castle, GameState,
+  BuildingId, Castle, GameState, UnitTier,
 } from '../types';
+import { learnGuildSpells } from './magic';
 
 export function build(
   state: GameState,
@@ -19,6 +20,10 @@ export function build(
   if (!definition || ['townHall', 'dwelling1'].includes(buildingId)) {
     throw new Error('Building cannot be constructed');
   }
+  if ((buildingId === 'chapelOfTheBanner' && castle.faction !== 'hearthguard')
+      || (buildingId === 'guildWorkshop' && castle.faction !== 'woundWrights')) {
+    throw new Error('Wrong faction building');
+  }
   if (castle.buildings.includes(buildingId)) throw new Error('Already built');
   if (castle.builtOnDay === state.day) throw new Error('Already built today');
   if (definition.prerequisite && !castle.buildings.includes(definition.prerequisite)) {
@@ -28,6 +33,13 @@ export function build(
   if (!canAfford(player.resources, definition.cost)) throw new Error('Cannot afford');
   player.resources = pay(player.resources, definition.cost);
   castle.buildings.push(buildingId);
+  if (buildingId === 'chapelOfTheBanner' && player.hero) {
+    player.hero.moraleBonus += 5;
+  }
+  if (buildingId.startsWith('mageGuild') && player.hero
+      && sameCoord(player.hero.position, castle.position)) {
+    learnGuildSpells(player.hero, castle);
+  }
   castle.builtOnDay = state.day;
   state.lastMessage = `${definition.name} constructed.`;
 }
@@ -35,7 +47,7 @@ export function build(
 export function recruit(
   state: GameState,
   castleId: string,
-  tier: 1 | 2 | 3,
+  tier: UnitTier,
   count: number,
 ): void {
   const castle = state.castles.find((item) => item.id === castleId);
@@ -91,6 +103,8 @@ export function firstAffordableBuilding(
   const player = state.players[castle.owner];
   return AI_BUILD_ORDER.find((id) => {
     const building = BUILDINGS[id];
+    if ((id === 'chapelOfTheBanner' && castle.faction !== 'hearthguard')
+        || (id === 'guildWorkshop' && castle.faction !== 'woundWrights')) return false;
     return !castle.buildings.includes(id)
       && castle.builtOnDay !== state.day
       && (!building.prerequisite || castle.buildings.includes(building.prerequisite))

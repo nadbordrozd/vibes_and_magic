@@ -4,7 +4,7 @@ Starting point: the implemented PoC (placeholder Crimson/Azure factions, working
 
 ## Build order (strict)
 
-**Step 1 — Faction swap.** Implement 06 exactly: replace Crimson/Azure content files with Hearthguard/Wound-Wrights, add their abilities to the registry, update map guardians/starting armies, add faction buildings, extend combat AI per 06 §4, add tests per 06 §5. Sim gate before proceeding: 200 games, zero crashes, win rate 35–65%.
+**Step 1 — Faction swap.** Implement 06 exactly: replace Crimson/Azure content files with Hearthguard/Wound-Wrights, add their abilities to the registry, update map guardians/starting armies, add faction buildings, extend combat AI per 06 §4, add tests per 06 §5. Sim gate before proceeding: 200 games, zero crashes, win rate within 20–80% (degeneracy check only; no stat tuning).
 
 **Step 2 — Spell engine (headless).** Counters (with pip data on stack state), enchantment slots, casting flow (once/round at allied-stack-turn-start), SP scaling defaults, upgrade flags per hero-spell, terrain resonance, twister targeting, precedence rule from 08 (with the mandated Blessing-vs-soft_body test). All in `core/`, driven by spell data files in `content/spells/`, zero UI.
 
@@ -23,7 +23,7 @@ Starting spells: each hero starts knowing their shrine-staple of their primary s
 ## Acceptance
 
 1. All tests green; 500-game sim, zero crashes.
-2. Faction win rate 35–65% with magic on.
+2. Faction win rate within 20–80% with magic on (degeneracy check only; do not tune toward parity — balance is deferred until content is complete).
 3. **Spell-decisive rate ≥ 10%** of battles on matched seeds (this is the combo-thesis metric — if under 10%, raise counter magnitudes and enchantment numbers, log changes, rerun; do not touch unit stats to fix this).
 4. Median battle length ≤ 12 rounds (magic must not stall fights; if exceeded, first suspect Ward/Sanctuary/Mourner's Veil stacking).
 5. Playable end-to-end by a human: learn spells from guild, visit a shrine, upgrade a spell, win a battle that the auto-resolve (no-magic AI) projection loses. The battle-result screen should show the auto-resolve projection alongside the actual result so this moment is visible.

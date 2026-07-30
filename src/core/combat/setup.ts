@@ -9,6 +9,7 @@ import type {
   BattleState, Coord, Hero,
 } from '../types';
 import { applyRoundMorale, turnOrder } from './round';
+import { beginStackTurn } from './magicEffects';
 
 const DEPLOY_ROWS = [4, 2, 6, 0, 8, 1, 7];
 
@@ -22,6 +23,9 @@ function armyToBattleStacks(army: Army, side: BattleSide): BattleStack[] {
       position: { x: side === 'attacker' ? 0 : BATTLE_COLS - 1, y: DEPLOY_ROWS[slot] },
       shots: unit.shots ?? 0, morale: 0, retaliated: false,
       defended: false, waited: false, bonusActions: 0,
+      attacksMade: 0, movedHexes: 0, overwindPrimed: false,
+      overwindUsed: false, skipRound: null, summoned: false,
+      counters: { burn: 0, chill: 0, hex: 0, bloom: 0 }, effects: [],
     }];
   });
 }
@@ -83,15 +87,30 @@ export function createBattle(
     attackerHero: {
       attack: attackerHero.attack, defense: attackerHero.defense,
       luck: attackerHero.luck, moraleBonus: attackerHero.moraleBonus,
+      spellPower: attackerHero.spellPower, mana: attackerHero.mana,
+      knownSpells: [...attackerHero.knownSpells],
+      upgradedSpells: [...attackerHero.upgradedSpells],
     },
     defenderHero: defenderHero
       ? {
         attack: defenderHero.attack, defense: defenderHero.defense,
         luck: defenderHero.luck, moraleBonus: defenderHero.moraleBonus,
+        spellPower: defenderHero.spellPower, mana: defenderHero.mana,
+        knownSpells: [...defenderHero.knownSpells],
+        upgradedSpells: [...defenderHero.upgradedSpells],
       } : null,
     defenderWalls, context, log: ['Battle begins.'],
-    casualties: { attacker: {}, defender: {} }, winner: null,
+    casualties: { attacker: {}, defender: {} },
+    initialCounts: Object.fromEntries(stacks.map((stack) => [stack.id, stack.count])),
+    recovered: { attacker: {}, defender: {} }, winner: null,
+    enchantments: { attacker: [], defender: [] },
+    castRound: { attacker: 0, defender: 0 }, resonance: null,
+    destroyedStacks: 0, extraActions: { attacker: 0, defender: 0 },
+    spellWalls: [],
+    spellCasts: 0,
   };
   applyRoundMorale(battle);
+  const first = battle.stacks.find((stack) => stack.id === battle.currentStackId);
+  if (first) beginStackTurn(battle, first);
   return [battle, nextRng];
 }

@@ -33,6 +33,31 @@
 .stack-shadow { fill: #0008; }.stack-body { stroke-width: 3; }
 .battle-stack.crimson .stack-body { fill: #8d342e; stroke: #e2685d; }
 .battle-stack.azure .stack-body { fill: #28647a; stroke: #64aac3; }
+.joint-line { stroke: #c9ced6; stroke-width: 2; pointer-events: none; }
+.battle-stack.spell-target .stack-body { stroke: #e8d052; stroke-width: 6; filter: drop-shadow(0 0 8px #e8d052); }
+.counter-pips circle { stroke: #fff9; stroke-width: 1; }
+.counter-pips circle.burn { fill: #dc6a27; }.counter-pips circle.chill { fill: #4a9bd4; }
+.counter-pips circle.hex { fill: #8d55ae; }.counter-pips circle.bloom { fill: #55a65d; }
+.counter-pips text { fill: white; text-anchor: middle; font: 800 8px sans-serif; }
+.spellbook-button { background: #473d67; color: #f2e9ff; }
+.resonance-banner { position: absolute; z-index: 4; top: 8px; left: 50%; transform: translateX(-50%); background: #241f2be8; border: 1px solid #bba3cf; padding: 5px 12px; text-transform: capitalize; font-size: 11px; }
+.enchantment-row { position: absolute; z-index: 3; top: 38px; left: 12px; right: 12px; display: flex; justify-content: space-between; pointer-events: none; }
+.enchantment-row > div { display: flex; gap: 5px; align-items: center; font-size: 9px; text-transform: capitalize; }
+.enchantment-row span { min-width: 56px; padding: 3px 5px; background: #111912dd; border: 1px solid #ffffff2b; overflow: hidden; text-overflow: ellipsis; }
+.spellbook-backdrop { position: fixed; z-index: 30; inset: 0; background: #050806d9; display: grid; place-items: center; }
+.spellbook { width: min(1000px, 92vw); max-height: 86vh; overflow: auto; background: #111712; border: 1px solid #aa9862; box-shadow: 0 20px 80px #000; padding: 18px; }
+.spellbook > header { display: flex; align-items: center; justify-content: space-between; }
+.spellbook > header span { color: #aab5a8; font-size: 10px; text-transform: uppercase; }
+.spellbook > header h2 { margin: 2px 0; }.spellbook > header button { font-size: 22px; }
+.spell-scaling { color: #aab5a8; font-size: 11px; }
+.spell-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.spell-card { border: 1px solid #ffffff20; background: #172019; padding: 10px; display: grid; gap: 7px; }
+.spell-card.rite { border-color: #bcae5d; }.spell-card.craft { border-color: #b57742; }
+.spell-card.grave { border-color: #76568d; }.spell-card.plus { box-shadow: inset 0 0 20px #d6bc4a20; }
+.spell-card > div { display: flex; justify-content: space-between; }.spell-card em { color: #aab5a8; font-size: 10px; }
+.spell-card p { min-height: 30px; margin: 0; color: #cad1c8; font-size: 11px; }
+.effect-targets { display: flex !important; flex-wrap: wrap; gap: 3px; }
+.effect-targets button { font-size: 9px; padding: 4px; }
 .battle-stack.active .stack-body { stroke: #f3d56d; stroke-width: 5; filter: drop-shadow(0 0 8px #e9c850); }
 .battle-stack.inspected .stack-body { stroke: #fff3bd; stroke-dasharray: 4 2; }
 .stack-mark { fill: #fff5df; text-anchor: middle; text-transform: uppercase; font: 800 13px Georgia, serif; pointer-events: none; }

@@ -6,7 +6,7 @@ import { findPath, pathCost, sameCoord } from './map/pathfinding';
 import { reachablePathPrefix } from './map/pathfinding';
 import { adventurePath } from './game/exploration';
 import type {
-  BattleStack, BuildingId, Castle, Coord, GameState, PlayerId,
+  BattleStack, BuildingId, Castle, Coord, GameState, PlayerId, UnitTier,
 } from './types';
 
 export interface BuildingStatus {
@@ -36,7 +36,7 @@ export function buildingStatus(
 export function maxRecruitable(
   state: GameState,
   castle: Castle,
-  tier: 1 | 2 | 3,
+  tier: UnitTier,
 ): number {
   if (tier > 1 && !castle.buildings.includes(`dwelling${tier}` as BuildingId)) return 0;
   const unit = UNITS[FACTION_UNITS[castle.faction][tier - 1]];

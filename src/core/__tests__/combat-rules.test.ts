@@ -10,10 +10,13 @@ import type { BattleStack } from '../types';
 
 function stack(overrides: Partial<BattleStack> = {}): BattleStack {
   return {
-    id: 'a', side: 'attacker', slot: 0, unitId: 'militia',
+    id: 'a', side: 'attacker', slot: 0, unitId: 'yeoman',
     count: 10, topHp: 6, position: { x: 0, y: 4 }, shots: 0,
     morale: 0, retaliated: false, defended: false, waited: false,
-    bonusActions: 0, ...overrides,
+    bonusActions: 0, attacksMade: 0, movedHexes: 0,
+    overwindPrimed: false, overwindUsed: false, skipRound: null,
+    summoned: false, counters: { burn: 0, chill: 0, hex: 0, bloom: 0 },
+    effects: [], ...overrides,
   };
 }
 
@@ -54,7 +57,7 @@ describe('combat rules', () => {
     const target = stack({ count: 3, topHp: 6 });
     expect(applyDamage(target, 7)).toBe(1);
     expect(target.count).toBe(2);
-    expect(target.topHp).toBe(5);
+    expect(target.topHp).toBe(6);
   });
 
   it('removes a stack at lethal damage', () => {
@@ -64,22 +67,22 @@ describe('combat rules', () => {
   });
 
   it('recognizes ranged stacks with shots', () => {
-    expect(canUseRanged(stack({ unitId: 'slinger', shots: 3 }))).toBe(true);
-    expect(canUseRanged(stack({ unitId: 'slinger', shots: 0 }))).toBe(false);
+    expect(canUseRanged(stack({ unitId: 'longbowman', shots: 3 }))).toBe(true);
+    expect(canUseRanged(stack({ unitId: 'longbowman', shots: 0 }))).toBe(false);
   });
 
   it('halves long-range damage', () => {
-    const attacker = stack({ unitId: 'slinger', shots: 12, position: { x: 0, y: 0 } });
+    const attacker = stack({ unitId: 'longbowman', shots: 12, position: { x: 0, y: 0 } });
     const defender = stack({ id: 'd', side: 'defender', position: { x: 12, y: 8 } });
     const damage = computeDamage({
       attacker, defender, attackerHeroAttack: 0, defenderHeroDefense: 0,
       luck: 0, ranged: true, adjacentEnemy: false, wallsPenalty: false,
     });
-    expect(damage).toBe(11);
+    expect(damage).toBe(17);
   });
 
   it('applies castle walls to attacker ranged damage', () => {
-    const attacker = stack({ unitId: 'slinger', shots: 12 });
+    const attacker = stack({ unitId: 'longbowman', shots: 12 });
     const defender = stack({ id: 'd', side: 'defender', position: { x: 4, y: 4 } });
     const normal = computeDamage({
       attacker, defender, attackerHeroAttack: 0, defenderHeroDefense: 0,
