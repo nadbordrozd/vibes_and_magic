@@ -1,0 +1,26 @@
+import type { Coord } from '../core/types';
+
+export type AnimationSpeed = 'instant' | 'fast' | 'normal' | 'slow';
+
+export interface AnimationTiming {
+  mapStep: number;
+  combatMoveStep: number;
+  attack: number;
+  damage: number;
+}
+
+export const ANIMATION_TIMINGS: Record<AnimationSpeed, AnimationTiming> = {
+  instant: { mapStep: 0, combatMoveStep: 0, attack: 0, damage: 0 },
+  fast: { mapStep: 55, combatMoveStep: 45, attack: 160, damage: 260 },
+  normal: { mapStep: 140, combatMoveStep: 90, attack: 280, damage: 420 },
+  slow: { mapStep: 300, combatMoveStep: 180, attack: 480, damage: 700 },
+};
+
+export interface CombatAnimation {
+  phase: 'move' | 'attack' | 'damage';
+  actorId: string;
+  targetId?: string;
+  displayPosition: Coord;
+  targetPosition?: Coord;
+  duration: number;
+}

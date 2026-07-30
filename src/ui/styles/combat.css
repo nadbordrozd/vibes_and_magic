@@ -1,0 +1,89 @@
+.combat-shell { min-height: 100vh; background: radial-gradient(circle at 35% 45%, #243025, #0b0f0c 72%); }
+.combat-header {
+  height: 76px; display: flex; align-items: center; padding: 0 28px; gap: 25px;
+  border-bottom: 1px solid #3e493d; background: #151b16;
+}
+.combat-header > div:first-child span { color: var(--gold); font-size: 9px; text-transform: uppercase; letter-spacing: .16em; }
+.combat-header h2 { margin: 3px 0 0; font: 700 20px Georgia, serif; text-transform: uppercase; }
+.round-counter { margin-left: auto; text-align: center; padding: 0 25px; border-left: 1px solid #3e493d; border-right: 1px solid #3e493d; }
+.round-counter span { display: block; color: #849080; text-transform: uppercase; font-size: 8px; }.round-counter b { font: 700 27px Georgia, serif; }
+.versus { display: flex; gap: 10px; align-items: center; text-transform: uppercase; font-size: 10px; letter-spacing: .11em; }
+.versus .crimson { color: #e06459; }.versus .azure { color: #69a9c0; }.versus i { color: #697467; font-style: normal; }
+.combat-speed { height: 100%; }
+.combat-save {
+  align-self: stretch; color: var(--gold); border: 0; border-left: 1px solid #3e493d;
+  background: #101510; padding: 0 17px; text-transform: uppercase; letter-spacing: .1em; font-size: 8px;
+}
+.combat-save:disabled { opacity: .35; }
+.combat-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; height: calc(100vh - 76px); }
+.battle-board { position: relative; overflow: auto; padding: 15px; }
+.battle-board > svg { display: block; width: 100%; min-width: 730px; height: 100%; min-height: 550px; }
+.battle-hex { fill: #344635; stroke: #667262; stroke-width: 1; cursor: default; }
+.battle-hex:nth-child(2n) { fill: #304131; }
+.battle-hex.reachable { fill: #667445; stroke: #ddc767; stroke-width: 2; cursor: pointer; }
+.battle-hex.reachable:hover { fill: #819052; }
+.battle-rock { fill: #616762; stroke: #9ba19a; stroke-width: 2; pointer-events: none; }
+.battle-stack { cursor: pointer; }
+.stack-motion { transition-property: transform; transition-timing-function: linear; }
+.attack-bump { animation-name: attack-bump; animation-timing-function: ease-in-out; }
+@keyframes attack-bump {
+  0%, 100% { transform: translate(0, 0); }
+  48%, 62% { transform: translate(var(--bump-x), var(--bump-y)); }
+}
+.stack-shadow { fill: #0008; }.stack-body { stroke-width: 3; }
+.battle-stack.crimson .stack-body { fill: #8d342e; stroke: #e2685d; }
+.battle-stack.azure .stack-body { fill: #28647a; stroke: #64aac3; }
+.battle-stack.active .stack-body { stroke: #f3d56d; stroke-width: 5; filter: drop-shadow(0 0 8px #e9c850); }
+.battle-stack.inspected .stack-body { stroke: #fff3bd; stroke-dasharray: 4 2; }
+.stack-mark { fill: #fff5df; text-anchor: middle; text-transform: uppercase; font: 800 13px Georgia, serif; pointer-events: none; }
+.count-plate { fill: #0a0e0b; stroke: #d7c997; }.stack-count { fill: #fff; text-anchor: middle; font-size: 10px; font-weight: 800; }
+.morale-track, .morale-value { fill: none; stroke-width: 3; transform: rotate(-90deg); }
+.morale-track { stroke: #101510; }.morale-value { stroke: #f2c64e; stroke-linecap: round; }
+.status-mark { fill: #8cc2d0; font-size: 12px; }
+.damage-effect { animation-name: blood-fall; animation-timing-function: ease-out; pointer-events: none; }
+.damage-effect path, .damage-effect circle { fill: #b62420; stroke: #f36c5f; stroke-width: 1; }
+@keyframes blood-fall {
+  0% { opacity: 0; transform: translateY(-16px) scale(.5); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(22px) scale(1.05); }
+}
+.thinking-badge {
+  position: absolute; left: 28px; bottom: 25px; padding: 8px 12px; color: #b6beaf;
+  border: 1px solid #485246; background: #111711d9; font-size: 9px; text-transform: uppercase; letter-spacing: .13em;
+}
+.combat-sidebar { display: flex; flex-direction: column; border-left: 1px solid #3e493d; background: #161c17; overflow: hidden; }
+.active-unit { padding: 20px; border-bottom: 1px solid #3e493d; }
+.active-unit > span { color: var(--gold); font-size: 9px; text-transform: uppercase; letter-spacing: .14em; }
+.active-unit h3 { margin: 5px 0 14px; font: 700 24px Georgia, serif; text-transform: uppercase; }
+.combat-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.combat-stats.detailed span { padding: 7px; }
+.ability-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; }
+.ability-list i {
+  color: #b8c2b3; border: 1px solid #465044; padding: 4px 6px;
+  font-style: normal; font-size: 8px; text-transform: uppercase;
+}
+.inspection-side { margin-top: 9px; color: #7f8a7c; font-size: 8px; text-transform: uppercase; letter-spacing: .11em; }
+.inspection-side.attacker { color: #df6b60; }.inspection-side.defender { color: #71afc5; }
+.attack-selected {
+  width: 100%; margin-top: 10px; color: #19140b; border: 0; background: var(--gold);
+  padding: 9px; text-transform: uppercase; font-size: 9px; font-weight: 900;
+}
+.attack-selected:disabled { opacity: .35; }
+.combat-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 14px 20px; border-bottom: 1px solid #3e493d; }
+.combat-actions button {
+  display: flex; align-items: center; justify-content: center; gap: 7px; color: var(--cream);
+  border: 1px solid #4b5749; background: #242c25; padding: 10px 4px; font-size: 10px; text-transform: uppercase;
+}
+.combat-actions button:hover:not(:disabled) { border-color: var(--gold); }
+.combat-actions button:disabled { opacity: .35; }.combat-actions .auto { grid-column: 1 / 3; color: var(--gold); }
+.battle-log { min-height: 0; display: flex; flex: 1; flex-direction: column; padding: 15px 20px; }
+.battle-log h4 { color: #939d90; text-transform: uppercase; letter-spacing: .13em; font-size: 9px; margin: 0 0 10px; }
+.battle-log > div { overflow-y: auto; display: flex; flex-direction: column; }
+.battle-log p { margin: 0; padding: 8px 0; border-bottom: 1px solid #30372f; color: #9ca597; font-size: 10px; line-height: 1.4; }
+.battle-log p:first-child { color: #eee9d9; }
+.combat-help { padding: 12px 20px; color: #6f796d; border-top: 1px solid #3e493d; font-size: 9px; }
+@media (max-width: 850px) {
+  .combat-layout { grid-template-columns: 1fr; height: auto; }
+  .combat-sidebar { border-left: 0; border-top: 1px solid #3e493d; min-height: 400px; }
+  .versus { display: none; }
+}
