@@ -2,16 +2,26 @@ import {
   BATTLE_COLS, BATTLE_ROWS,
 } from '../../content/constants';
 import { UNITS } from '../../content/units';
+import { ITEMS } from '../../content/items';
 import { coordKey } from '../map/pathfinding';
 import { randomInt } from '../rng';
 import type {
   Army, ArmyStack, BattleContext, BattleSide, BattleStack,
-  BattleState, Coord, Hero,
+  BattleState, Coord, Hero, ItemSlot,
 } from '../types';
 import { applyRoundMorale, turnOrder } from './round';
 import { beginStackTurn } from './magicEffects';
 
 const DEPLOY_ROWS = [4, 2, 6, 0, 8, 1, 7];
+
+function passiveAbilities(inventory: ItemSlot[]) {
+  return inventory.flatMap((item) => {
+    if (!item || typeof item === 'string') return [];
+    const definition = ITEMS[item.id];
+    return definition.behavior === 'passiveAbility' && definition.ability
+      ? [definition.ability] : [];
+  });
+}
 
 function armyToBattleStacks(army: Army, side: BattleSide): BattleStack[] {
   return army.flatMap((stack, slot) => {
@@ -30,7 +40,14 @@ function armyToBattleStacks(army: Army, side: BattleSide): BattleStack[] {
   });
 }
 
-export function splitGuardianArmy(stacks: ArmyStack[]): Army {
+export function splitGuardianArmy(stacks: ArmyStack[], split = true): Army {
+  if (!split) {
+    const result: Array<ArmyStack | null> = Array(7).fill(null);
+    stacks.slice(0, 7).forEach((stack, index) => {
+      result[index] = { ...stack };
+    });
+    return result;
+  }
   const result: Array<ArmyStack | null> = Array(7).fill(null);
   let slot = 0;
   for (const stack of stacks) {
@@ -93,6 +110,8 @@ export function createBattle(
       knownSpells: [...attackerHero.knownSpells],
       upgradedSpells: [...attackerHero.upgradedSpells],
       skills: { ...attackerHero.skills },
+      inventory: attackerHero.inventory.map((item) =>
+        item && typeof item !== 'string' ? { ...item, origin: item.origin && { ...item.origin } } : item),
     },
     defenderHero: defenderHero
       ? {
@@ -104,6 +123,8 @@ export function createBattle(
         knownSpells: [...defenderHero.knownSpells],
         upgradedSpells: [...defenderHero.upgradedSpells],
         skills: { ...defenderHero.skills },
+        inventory: defenderHero.inventory.map((item) =>
+          item && typeof item !== 'string' ? { ...item, origin: item.origin && { ...item.origin } } : item),
       } : null,
     defenderWalls, context, log: ['Battle begins.'],
     casualties: { attacker: {}, defender: {} },
@@ -111,9 +132,14 @@ export function createBattle(
     recovered: { attacker: {}, defender: {} }, winner: null,
     enchantments: { attacker: [], defender: [] },
     castRound: { attacker: 0, defender: 0 }, resonance: null,
+    sideAbilities: {
+      attacker: passiveAbilities(attackerHero.inventory),
+      defender: defenderHero ? passiveAbilities(defenderHero.inventory) : [],
+    },
     destroyedStacks: 0, extraActions: { attacker: 0, defender: 0 },
     spellWalls: [],
     spellCasts: 0,
+    lastSpellCast: null,
   };
   applyRoundMorale(battle);
   const first = battle.stacks.find((stack) => stack.id === battle.currentStackId);

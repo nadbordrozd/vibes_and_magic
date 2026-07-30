@@ -18,7 +18,7 @@ export interface StrategyObjective {
 }
 
 function guardedPower(object: MapObject): number {
-  if (object.kind === 'pile' || !object.guard) return 0;
+  if (!('guard' in object) || !object.guard) return 0;
   return armyPower(makeArmy(object.guard.army));
 }
 
@@ -44,7 +44,12 @@ function objectValue(object: MapObject): number {
   if (object.kind === 'mine') {
     return object.income * 7 * (object.resource === 'gold' ? 1 : 500);
   }
-  return 1000;
+  if (object.kind === 'item') return 1200;
+  if (object.kind === 'richVein') return object.income * object.days * 500;
+  if (object.kind === 'lock') {
+    return (object.reward.gold ?? 0) + (object.reward.essence ?? 0) * 500;
+  }
+  return object.kind === 'waystation' ? 300 : 1000;
 }
 
 function gathererThreat(state: GameState, hero: Hero): StrategyObjective | null {
@@ -121,12 +126,15 @@ function collectObjectives(
   const objectives: StrategyObjective[] = [];
   for (const object of state.map.objects) {
     if (claims.has(object.id)) continue;
-    const guard = object.kind === 'pile' || object.cleared ? 0 : guardedPower(object);
+    const cleared = 'cleared' in object ? object.cleared : false;
+    const guard = cleared ? 0 : guardedPower(object);
     if (role === 'gatherer') {
       const valid = object.kind === 'pile' ? !object.collected
         : object.kind === 'chest' ? !object.collected && guard === 0
           : object.kind === 'mine' ? object.owner !== hero.owner && guard === 0
-            : false;
+            : object.kind === 'item' ? !object.collected && hero.inventory.includes(null)
+              : object.kind === 'richVein' ? !object.depleted && object.owner !== hero.owner
+                : false;
       if (valid) {
         objectives.push({
           id: object.id, position: object.position,
@@ -157,6 +165,11 @@ function collectObjectives(
       objectives.push({
         id: object.id, position: object.position, priority: 0,
         power: guard, value: 1000,
+      });
+    } else if (object.kind === 'lock' && !object.cleared && guard <= power * 0.8) {
+      objectives.push({
+        id: object.id, position: object.position, priority: 2,
+        power: guard, value: objectValue(object),
       });
     }
   }

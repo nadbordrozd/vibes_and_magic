@@ -14,6 +14,7 @@ import {
 import { ExchangeScreen } from './ExchangeScreen';
 import { AdventureMap } from './AdventureMap';
 import { logisticsRate } from '../../core/heroBehaviors';
+import { ITEMS, itemName } from '../../content/items';
 const RESOURCE_MARK: Record<ResourceId, string> = {
   gold: 'G', timber: 'T', iron: 'I', essence: 'E',
 };
@@ -41,6 +42,7 @@ export function AdventureScreen({
     destination: Coord;
   } | null>(null);
   const [exchangeHeroId, setExchangeHeroId] = useState<string | null>(null);
+  const [usingItemSlot, setUsingItemSlot] = useState<number | null>(null);
   const player = state.players[state.activePlayer];
   const hero = player.hero;
   const reachable = useMemo(() => reachableAdventureTiles(state), [state]);
@@ -76,6 +78,14 @@ export function AdventureScreen({
 
   const clickTile = (destination: Coord) => {
     if (!hero || player.controller !== 'human' || movement) return;
+    if (usingItemSlot !== null) {
+      dispatch({
+        type: 'USE_ADVENTURE_ITEM', inventorySlot: usingItemSlot,
+        target: destination,
+      });
+      setUsingItemSlot(null);
+      return;
+    }
     if (preview && preview.x === destination.x && preview.y === destination.y) {
       const movingPath = animatedAdventurePath(state, destination);
       if (timing.mapStep === 0 || movingPath.length < 2) {
@@ -165,6 +175,32 @@ export function AdventureScreen({
               <div className="meter"><i style={{ width: `${hero.movement / maxMovement * 100}%` }} /></div>
               <div className="meter-label"><span>Mana</span><b>{hero.mana} / {hero.knowledge * 10}</b></div>
               <ArmySlots army={hero.army} title="Army" />
+              <div className="item-inventory">
+                <h4>Inventory</h4>
+                <div className="army-slots">
+                  {hero.inventory.map((item, index) => {
+                    const definition = item && typeof item !== 'string'
+                      ? ITEMS[item.id] : null;
+                    const canUse = definition?.use === 'adventure';
+                    return (
+                      <button
+                        key={`item-${index}`}
+                        className={`army-slot ${usingItemSlot === index ? 'selected' : ''}`}
+                        disabled={!canUse}
+                        title={definition?.description ?? itemName(item)}
+                        onClick={() => {
+                          if (!definition) return;
+                          if (definition.behavior === 'reveal') setUsingItemSlot(index);
+                          else dispatch({ type: 'USE_ADVENTURE_ITEM', inventorySlot: index });
+                        }}
+                      >
+                        {item ? itemName(item) : '+'}
+                      </button>
+                    );
+                  })}
+                </div>
+                {usingItemSlot !== null && <small>Select a map center for the Case.</small>}
+              </div>
               {Object.entries(hero.skills).length > 0 && (
                 <div className="skill-summary">
                   {Object.entries(hero.skills).map(([skill, rank]) => (

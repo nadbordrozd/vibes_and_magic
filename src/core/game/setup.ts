@@ -7,6 +7,7 @@ import { FACTIONS, validateFactions } from '../../content/factions';
 import { validateBuildings } from '../../content/buildings';
 import { FACTION_HEROES, HEROES, validateHeroes } from '../../content/heroes';
 import { validateSkills } from '../../content/skills';
+import { ITEMS, validateItems } from '../../content/items';
 import { SKILLS } from '../../content/skills';
 import {
   createBorderMarches, validateMap,
@@ -115,7 +116,8 @@ export function createGame(options: NewGameOptions): GameState {
   validateFactions();
   validateHeroes();
   validateSkills();
-  const map = createBorderMarches();
+  validateItems();
+  const map = createBorderMarches(options.seed);
   validateMap(map);
   const castles = [makeCastle('p1', options.seed), makeCastle('p2', options.seed)];
   let rng = options.seed >>> 0;
@@ -149,7 +151,13 @@ export function incomeForPlayer(state: GameState, playerId: PlayerId): Resources
   }
   for (const object of state.map.objects) {
     if (object.kind === 'mine' && object.owner === playerId) {
-      income[object.resource] += object.income;
+      const charterBonus = (ITEMS.overseersCharter.amount ?? 0) / 100;
+      income[object.resource] += object.income * (object.chartered ? 1 + charterBonus : 1);
+    }
+    if (object.kind === 'richVein' && object.owner === playerId
+        && object.flaggedOnDay !== null && !object.depleted) {
+      const elapsed = state.day - object.flaggedOnDay;
+      if (elapsed >= 1 && elapsed <= object.days) income.essence += object.income;
     }
   }
   return income;
@@ -202,6 +210,10 @@ export function endTurn(state: GameState): void {
     return;
   }
   state.day += 1;
+  for (const object of state.map.objects) {
+    if (object.kind === 'richVein' && object.flaggedOnDay !== null
+        && state.day - object.flaggedOnDay > object.days) object.depleted = true;
+  }
   state.week = Math.floor((state.day - 1) / DAYS_PER_WEEK) + 1;
   if ((state.day - 1) % DAYS_PER_WEEK === 0) {
     replenishDwellings(state);

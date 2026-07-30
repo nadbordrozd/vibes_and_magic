@@ -51,3 +51,30 @@
   conserve items before Milestone 12 supplies the item catalog and acquisition rules.
 - Strategy AI intentionally ignores Diplomacy and Spellthief draft cards, continues
   to read exact hidden state, and uses straight-line threat reach for Gatherer flight.
+
+## 2026-07-30 — Tricks on the map milestone
+
+- Item inventory entries are JSON item instances rather than bare IDs so a scroll can
+  retain its stored face and Trade Goods can retain their pickup coordinate; legacy
+  string slots remain transferable for Milestone-11 replay/test compatibility.
+- A base scroll uses its stored base face even under terrain resonance; a barrow
+  scroll uses its stored plus face. Bottled Echo repeats the recorded face and, for
+  an X-cost spell, its recorded spend, while recomputing scaling from the user’s SP.
+- Trade Goods use floored Euclidean distance for “straight-line tile distance,” so
+  prices remain whole multiples of 25 gold.
+- Rich Vein income begins at the owner’s next daily income, pays on ten dates, and
+  does not refresh when captured by another side.
+- Cartographer’s Case accepts a center within Chebyshev distance 3 of any explored
+  tile and reveals a true Euclidean radius-7 circle.
+- Marketplace exchange requires a visiting hero, matching other hero-mediated town
+  services; direct resource-to-resource exchange is two explicit trades through gold.
+- Puzzle-lock neutral stats were authored at roughly four times the supplied forced
+  week-six army power. The assault harness uses that fixed mixed Hearthguard army so
+  it measures puzzle resistance rather than strategy routing.
+- M12 item and Rich Vein objectives are assigned to Gatherers, not the Main. Giving
+  them Main priority displaced every guarded expansion fight in short simulations
+  and collapsed play into premature faction combat.
+- The Mask remains an inventory passive copied into battle-side ability tags; no
+  artifact slots or equipment rules were introduced.
+- Sieges beyond Walls, the artifact/equipment system proper, Hagwood/Wild/bargains,
+  the ultimate artifact, and recruitable Seamborn remain deferred as specified.

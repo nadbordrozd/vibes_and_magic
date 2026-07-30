@@ -1,15 +1,24 @@
+import type {
+  AbilityId, ItemInstance, ItemSlot,
+} from './contentTypes';
+import type { Action } from './actionTypes';
+export type {
+  AbilityId, ItemId, ItemInstance, ItemSlot,
+} from './contentTypes';
+export type { Action } from './actionTypes';
+
 export type PlayerId = 'p1' | 'p2';
 export type FactionId = 'hearthguard' | 'woundWrights';
 export type UnitId =
   | 'yeoman' | 'longbowman' | 'bannerman' | 'lanceKnight' | 'oriflammeWarden'
   | 'tinSoldier' | 'hobbyKnight' | 'marionette' | 'stuffedSentinel'
-  | 'woodenColossus';
+  | 'woodenColossus' | 'sleeper' | 'mirrorBound';
 export type ResourceId = 'gold' | 'timber' | 'iron' | 'essence';
 export type TerrainId = 'grass' | 'forest' | 'barrow' | 'mountain' | 'water';
 export type BuildingId =
   | 'townHall' | 'dwelling1' | 'dwelling2' | 'dwelling3' | 'dwelling4' | 'dwelling5'
   | 'treasury' | 'walls' | 'chapelOfTheBanner' | 'guildWorkshop'
-  | 'mageGuild1' | 'mageGuild2' | 'mageGuild3' | 'tavern';
+  | 'mageGuild1' | 'mageGuild2' | 'mageGuild3' | 'tavern' | 'marketplace';
 export type UnitTier = 1 | 2 | 3 | 4 | 5;
 export type PrimaryStat = 'attack' | 'defense' | 'spellPower' | 'knowledge';
 export type SecondarySkillId =
@@ -65,7 +74,7 @@ export interface Hero {
   skills: Partial<Record<SecondarySkillId, SkillRank>>;
   pathMemory: Coord[];
   defeated: boolean;
-  inventory: Array<string | null>;
+  inventory: ItemSlot[];
 }
 
 export interface Player {
@@ -99,15 +108,39 @@ export interface Castle {
 
 export interface Guardian {
   army: ArmyStack[];
+  split?: boolean;
+  drop?: ItemInstance;
+}
+
+export interface GuardianReward {
+  gold?: number;
+  essence?: number;
+  items?: ItemInstance[];
 }
 
 export type MapObject =
-  | { id: string; kind: 'mine'; position: Coord; resource: ResourceId; income: number; owner: PlayerId | null; guard?: Guardian; cleared: boolean }
+  | {
+    id: string; kind: 'mine'; position: Coord; resource: ResourceId; income: number;
+    owner: PlayerId | null; guard?: Guardian; cleared: boolean; chartered: boolean;
+  }
   | { id: string; kind: 'pile'; position: Coord; resource: ResourceId; amount: number; collected: boolean }
   | { id: string; kind: 'chest'; position: Coord; guard?: Guardian; cleared: boolean; collected: boolean }
   | {
     id: string; kind: 'shrine'; position: Coord; school: SpellSchool;
     teaches: SpellId; guard: Guardian; cleared: boolean; visitedBy: string[];
+  }
+  | { id: string; kind: 'item'; position: Coord; item: ItemInstance; collected: boolean }
+  | {
+    id: string; kind: 'richVein'; position: Coord; owner: PlayerId | null;
+    flaggedOnDay: number | null; depleted: boolean; income: number; days: number;
+  }
+  | {
+    id: string; kind: 'waystation'; position: Coord;
+    visitedOnDay: Record<string, number>;
+  }
+  | {
+    id: string; kind: 'lock'; position: Coord; name: string; tell: string;
+    guard: Guardian; reward: GuardianReward; cleared: boolean;
   };
 
 export interface GameMap {
@@ -174,6 +207,7 @@ export interface BattleHero {
   knownSpells: SpellId[];
   upgradedSpells: SpellId[];
   skills: Partial<Record<SecondarySkillId, SkillRank>>;
+  inventory: ItemSlot[];
 }
 
 export interface BattleContext {
@@ -202,17 +236,22 @@ export interface BattleState {
   recovered: Record<BattleSide, Partial<Record<UnitId, number>>>;
   enchantments: Record<BattleSide, BattleEnchantment[]>;
   castRound: Record<BattleSide, number>;
+  sideAbilities: Record<BattleSide, AbilityId[]>;
   resonance: SpellSchool | null;
   destroyedStacks: number;
   extraActions: Record<BattleSide, number>;
   spellWalls: Coord[];
   spellCasts: number;
+  lastSpellCast: { spellId: SpellId; plus: boolean; manaSpent: number } | null;
   winner: BattleSide | null;
 }
 
 export type LevelChoice = PrimaryStat | SecondarySkillId | 'inscribe';
 export type PendingChoice =
-  | { kind: 'chest'; objectId: string; playerId: PlayerId; heroId: string }
+  | {
+    kind: 'chest'; objectId: string; playerId: PlayerId; heroId: string;
+    item: ItemInstance;
+  }
   | { kind: 'level'; playerId: PlayerId; heroId: string; options: LevelChoice[] }
   | {
     kind: 'shrine'; objectId: string; playerId: PlayerId; heroId: string;
@@ -258,46 +297,6 @@ export interface GameState {
   lastMessage: string;
   lastBattleRecovered: Partial<Record<UnitId, number>>;
 }
-
-export type Action =
-  | { type: 'MOVE_HERO'; destination: Coord; heroId?: string }
-  | { type: 'SELECT_HERO'; heroId: string }
-  | { type: 'NEXT_HERO' }
-  | { type: 'END_TURN' }
-  | { type: 'BUILD'; castleId: string; buildingId: BuildingId }
-  | { type: 'RECRUIT'; castleId: string; tier: UnitTier; count: number }
-  | { type: 'SWAP_ARMY'; castleId: string; heroSlot: number; garrisonSlot: number }
-  | {
-    type: 'TRANSFER_ARMY'; source: ArmyHolder; sourceSlot: number;
-    destination: ArmyHolder; destinationSlot: number; count: number;
-  }
-  | {
-    type: 'TRANSFER_ITEM'; sourceHeroId: string; destinationHeroId: string;
-    sourceSlot: number; destinationSlot: number;
-  }
-  | { type: 'HIRE_HERO'; castleId: string; heroId: string }
-  | { type: 'CHOOSE_CHEST'; choice: 'gold' | 'xp' }
-  | { type: 'CHOOSE_LEVEL'; stat: LevelChoice }
-  | { type: 'CHOOSE_DIPLOMACY'; choice: 'fight' | 'disband' | 'recruit' }
-  | { type: 'CHOOSE_STOLEN_SPELL'; spellId: SpellId }
-  | { type: 'CHOOSE_SPELL_UPGRADE'; spellId: SpellId }
-  | { type: 'GUILD_INSCRIBE'; castleId: string; spellId: SpellId }
-  | { type: 'BATTLE_MOVE'; destination: Coord }
-  | { type: 'BATTLE_ATTACK'; targetId: string }
-  | { type: 'BATTLE_MOVE_ATTACK'; destination: Coord; targetId: string }
-  | { type: 'BATTLE_WAIT' }
-  | { type: 'BATTLE_DEFEND' }
-  | { type: 'BATTLE_OVERWIND' }
-  | {
-    type: 'BATTLE_CAST';
-    spellId: SpellId;
-    targetId?: string;
-    secondaryTargetId?: string;
-    effectId?: string;
-    positions?: Coord[];
-    replaceEnchantment?: number;
-  }
-  | { type: 'AUTO_COMBAT' };
 
 export interface NewGameOptions {
   seed: number;

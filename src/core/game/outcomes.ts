@@ -18,6 +18,8 @@ import type {
   SecondarySkillId, SpellId,
 } from '../types';
 import { visitShrine } from './magic';
+import { addItem, sellTradeGoods } from './items';
+import { offerChestChoice } from './chests';
 
 export function recoverSpareParts(
   battle: BattleState,
@@ -75,19 +77,23 @@ export function checkLevel(
   state.pendingChoice = { kind: 'level', playerId, heroId: hero.id, options };
 }
 
-export function chooseChest(state: GameState, choice: 'gold' | 'xp'): void {
+export function chooseChest(state: GameState, choice: 'gold' | 'xp' | 'item'): void {
   const pending = state.pendingChoice;
   if (pending?.kind !== 'chest') throw new Error('No chest choice pending');
   const object = state.map.objects.find((item) => item.id === pending.objectId);
   if (!object || object.kind !== 'chest') throw new Error('Chest missing');
   object.collected = true;
   if (choice === 'gold') state.players[pending.playerId].resources.gold += CHEST_GOLD;
-  else {
+  else if (choice === 'xp') {
     const hero = findOwnedHero(state, pending.playerId, pending.heroId);
     if (hero) hero.xp += CHEST_XP;
+  } else {
+    const hero = findOwnedHero(state, pending.playerId, pending.heroId);
+    if (!hero || !addItem(hero, pending.item)) throw new Error('Inventory full');
   }
   state.pendingChoice = null;
-  state.lastMessage = choice === 'gold' ? 'Claimed 1500 gold.' : 'Claimed 1000 XP.';
+  state.lastMessage = choice === 'gold' ? 'Claimed 1500 gold.'
+    : choice === 'xp' ? 'Claimed 1000 XP.' : 'Claimed an item.';
   checkLevel(state, pending.playerId, pending.heroId);
 }
 
@@ -151,7 +157,11 @@ export function finalizeBattle(state: GameState): void {
   const defenderHero = context.defenderHeroId
     ? findHero(state, context.defenderHeroId) : null;
   attackerHero.mana = battle.attackerHero.mana;
-  if (defenderHero && battle.defenderHero) defenderHero.mana = battle.defenderHero.mana;
+  attackerHero.inventory = [...battle.attackerHero.inventory];
+  if (defenderHero && battle.defenderHero) {
+    defenderHero.mana = battle.defenderHero.mana;
+    defenderHero.inventory = [...battle.defenderHero.inventory];
+  }
   const defeatedHero = battle.winner === 'attacker' ? defenderHero : attackerHero;
   const winningHero = battle.winner === 'attacker' ? attackerHero : defenderHero;
 
@@ -225,22 +235,33 @@ function applyAttackerVictory(state: GameState, hero: Hero): void {
   const context = state.battle!.context;
   if (context.kind === 'guardian') {
     const object = state.map.objects.find((item) => item.id === context.targetId);
+    if (object && 'guard' in object && object.guard?.drop
+        && addItem(hero, object.guard.drop)) {
+      object.guard!.drop = undefined;
+    }
     if (object?.kind === 'mine') {
       object.cleared = true;
       object.owner = hero.owner;
     } else if (object?.kind === 'chest') {
       object.cleared = true;
-      state.pendingChoice = {
-        kind: 'chest', objectId: object.id, playerId: hero.owner, heroId: hero.id,
-      };
+      offerChestChoice(state, object.id, hero);
     } else if (object?.kind === 'shrine') {
       object.cleared = true;
       visitShrine(state, object.id, hero);
+    } else if (object?.kind === 'lock') {
+      object.cleared = true;
+      const player = state.players[hero.owner];
+      player.resources.gold += object.reward.gold ?? 0;
+      player.resources.essence += object.reward.essence ?? 0;
+      object.reward.gold = undefined;
+      object.reward.essence = undefined;
+      object.reward.items = (object.reward.items ?? []).filter((item) => !addItem(hero, item));
     }
   } else if (context.kind === 'castle') {
     const castle = state.castles.find((item) => item.id === context.targetId)!;
     castle.owner = hero.owner;
     castle.garrison = emptyArmy();
+    sellTradeGoods(state, hero, castle.position);
     if (context.defenderHeroId) defeatHero(state, context.defenderHeroId);
   } else if (context.defenderHeroId) {
     defeatHero(state, context.defenderHeroId);
@@ -253,7 +274,7 @@ function applyDefenderVictory(state: GameState, defenderHero: Hero | null): void
   const survivors = compactArmy(armyAfterBattle(battle, 'defender'));
   if (context.kind === 'guardian') {
     const object = state.map.objects.find((item) => item.id === context.targetId);
-    if (object && object.kind !== 'pile' && object.guard) {
+    if (object && 'guard' in object && object.guard) {
       object.guard.army = survivors.filter(
         (stack): stack is NonNullable<typeof stack> => stack !== null,
       );

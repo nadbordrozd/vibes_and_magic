@@ -13,8 +13,11 @@ import {
   canBeginSpellCast, canCastSpell, castSpell, legalSpellCasts,
 } from './spells';
 import { isSpellTargetLegal } from './spellTargets';
-import { runAttackPipeline } from './pipeline';
+import { runAttackPipeline, runTurnAdvancePipeline } from './pipeline';
 import { applyRoundMorale, turnOrder } from './round';
+import {
+  canUseCombatItem, legalCombatItemUses, useCombatItem,
+} from './items';
 export { createBattle, splitGuardianArmy } from './setup';
 
 function cloneBattle(battle: BattleState): BattleState {
@@ -33,12 +36,20 @@ function cloneBattle(battle: BattleState): BattleState {
       knownSpells: [...battle.attackerHero.knownSpells],
       upgradedSpells: [...battle.attackerHero.upgradedSpells],
       skills: { ...battle.attackerHero.skills },
+      inventory: battle.attackerHero.inventory.map((item) =>
+        item && typeof item !== 'string' ? {
+          ...item, origin: item.origin && { ...item.origin },
+        } : item),
     },
     defenderHero: battle.defenderHero ? {
       ...battle.defenderHero,
       knownSpells: [...battle.defenderHero.knownSpells],
       upgradedSpells: [...battle.defenderHero.upgradedSpells],
       skills: { ...battle.defenderHero.skills },
+      inventory: battle.defenderHero.inventory.map((item) =>
+        item && typeof item !== 'string' ? {
+          ...item, origin: item.origin && { ...item.origin },
+        } : item),
     } : null,
     context: { ...battle.context, destination: { ...battle.context.destination } },
     log: [...battle.log],
@@ -56,8 +67,13 @@ function cloneBattle(battle: BattleState): BattleState {
       defender: battle.enchantments.defender.map((effect) => ({ ...effect })),
     },
     castRound: { ...battle.castRound },
+    sideAbilities: {
+      attacker: [...battle.sideAbilities.attacker],
+      defender: [...battle.sideAbilities.defender],
+    },
     extraActions: { ...battle.extraActions },
     spellWalls: battle.spellWalls.map((coord) => ({ ...coord })),
+    lastSpellCast: battle.lastSpellCast && { ...battle.lastSpellCast },
   };
 }
 
@@ -92,6 +108,7 @@ function checkWinner(battle: BattleState): void {
 }
 
 function startNextRound(battle: BattleState): void {
+  runTurnAdvancePipeline(battle);
   battle.round += 1;
   for (const stack of battle.stacks) {
     stack.retaliated = false;
@@ -174,6 +191,7 @@ export function legalBattleActions(battle: BattleState): Action[] {
     ...reachable.map((destination) => ({ type: 'BATTLE_MOVE', destination } as const)),
   ];
   actions.push(...legalSpellCasts(battle));
+  actions.push(...legalCombatItemUses(battle));
   if (hasAbility(active.unitId, 'overwind')
       && !active.overwindUsed && !active.overwindPrimed) {
     actions.push({ type: 'BATTLE_OVERWIND' });
@@ -202,7 +220,10 @@ export function applyBattleAction(battle: BattleState, action: Action): BattleSt
   const serialized = JSON.stringify(action);
   const legalCast = action.type === 'BATTLE_CAST'
     && canCastSpell(next, action.spellId);
-  if (!legalCast && !legal.some((candidate) => JSON.stringify(candidate) === serialized)) {
+  const legalItem = action.type === 'BATTLE_USE_ITEM'
+    && canUseCombatItem(next, action.inventorySlot);
+  if (!legalCast && !legalItem
+      && !legal.some((candidate) => JSON.stringify(candidate) === serialized)) {
     throw new Error(`Illegal battle action: ${action.type}`);
   }
 
@@ -233,6 +254,8 @@ export function applyBattleAction(battle: BattleState, action: Action): BattleSt
     next.log.push(`${UNITS[active.unitId].name} is overwound.`);
   } else if (action.type === 'BATTLE_CAST') {
     castSpell(next, action);
+  } else if (action.type === 'BATTLE_USE_ITEM') {
+    useCombatItem(next, action);
   }
   return next;
 }

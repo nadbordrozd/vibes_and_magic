@@ -18,6 +18,17 @@ function revealCircle(
   }
 }
 
+export function revealArea(
+  current: string[],
+  map: GameMap,
+  center: Coord,
+  radius: number,
+): string[] {
+  const explored = new Set(current);
+  revealCircle(explored, map, center, radius);
+  return [...explored].sort();
+}
+
 export function revealForPlayer(
   current: string[],
   map: GameMap,

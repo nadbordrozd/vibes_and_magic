@@ -121,6 +121,7 @@ export interface GuardianIntel {
   label: string;
   count: number | null;
   abilities: string[];
+  tell?: string;
 }
 
 export function guardianIntel(
@@ -128,7 +129,8 @@ export function guardianIntel(
   object: MapObject,
   hero = selectedHero(state.players[state.activePlayer]),
 ): GuardianIntel | null {
-  if (object.kind === 'pile' || !object.guard || object.cleared) return null;
+  if (!['mine', 'chest', 'shrine', 'lock'].includes(object.kind)
+      || !('guard' in object) || !object.guard || object.cleared) return null;
   const count = object.guard.army.reduce((sum, stack) => sum + stack.count, 0);
   const distance = hero
     ? Math.max(Math.abs(hero.position.x - object.position.x),
@@ -143,5 +145,6 @@ export function guardianIntel(
   return {
     exact, label: exact ? String(count) : guardianSizeBand(count),
     count: exact ? count : null, abilities,
+    ...(exact && object.kind === 'lock' ? { tell: object.tell } : {}),
   };
 }

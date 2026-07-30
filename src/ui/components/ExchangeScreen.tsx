@@ -3,6 +3,7 @@ import type {
   Action, Hero,
 } from '../../core/types';
 import { ArmySlots } from './ArmySlots';
+import { itemName } from '../../content/items';
 
 interface Props {
   source: Hero;
@@ -58,7 +59,7 @@ export function ExchangeScreen({
                 key={`source-item-${index}`}
                 className={`army-slot ${itemSlot === index ? 'selected' : ''}`}
                 onClick={() => setItemSlot(index)}
-              >{item ?? '+'}</button>
+              >{item ? itemName(item) : '+'}</button>
             ))}
             <span className="transfer-arrow">⇄</span>
             {destination.inventory.map((item, index) => (
@@ -75,7 +76,7 @@ export function ExchangeScreen({
                   });
                   setItemSlot(null);
                 }}
-              >{item ?? '+'}</button>
+              >{item ? itemName(item) : '+'}</button>
             ))}
           </div>
         </div>

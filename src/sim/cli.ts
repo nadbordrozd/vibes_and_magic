@@ -1,5 +1,5 @@
 import { writeFileSync } from 'node:fs';
-import { simulateGame } from './run';
+import { simulateGame, simulateLockAssaults } from './run';
 
 function argument(name: string, fallback: number): number {
   const index = process.argv.indexOf(`--${name}`);
@@ -14,6 +14,7 @@ const seed = argument('seed', 1) >>> 0;
 const maxDays = Math.max(1, Math.floor(argument('days', 70)));
 const noMagic = process.argv.includes('--no-magic');
 const compareMagic = process.argv.includes('--compare-magic');
+const assaultLocks = process.argv.includes('--assault-locks');
 const results = Array.from(
   { length: games },
   (_, index) => simulateGame(seed + index, maxDays, noMagic),
@@ -74,4 +75,25 @@ if (compareMagic) {
     0,
   ) / games;
   console.log(`Matched comparison: winner flips ${pairedFlips}/${games} (${(pairedFlips / games * 100).toFixed(1)}%) | average casualty delta ${casualtyDelta.toFixed(1)}`);
+}
+
+if (assaultLocks) {
+  const assaults = Array.from(
+    { length: games },
+    (_, index) => simulateLockAssaults(seed + index),
+  ).flat();
+  const lockCrashes = assaults.filter((result) => result.crashed);
+  const losses = assaults.filter((result) => result.attackerLost).length;
+  console.log(`Forced lock assaults: ${assaults.length} | crashes ${lockCrashes.length}`);
+  console.log(`Naive AI lock losses: ${losses}/${assaults.length} (${(
+    losses / assaults.length * 100
+  ).toFixed(1)}%)`);
+  for (const lockId of ['the-sleeper', 'the-mirror-bound']) {
+    const attempts = assaults.filter((result) => result.lockId === lockId);
+    const lost = attempts.filter((result) => result.attackerLost).length;
+    console.log(`${lockId}: ${lost}/${attempts.length} losses (${(
+      lost / attempts.length * 100
+    ).toFixed(1)}%)`);
+  }
+  if (lockCrashes.length > 0) process.exitCode = 1;
 }

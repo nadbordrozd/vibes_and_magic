@@ -1,15 +1,11 @@
 import type {
-  FactionId, ResourceCost, UnitId, UnitTier,
+  AbilityId, FactionId, ResourceCost, UnitId, UnitTier,
 } from '../core/types';
-
-export type AbilityId =
-  | 'ranged' | 'banner' | 'charge' | 'oriflamme'
-  | 'springloaded' | 'no_retaliation' | 'soft_body' | 'overwind';
 
 export interface UnitDefinition {
   id: UnitId;
   name: string;
-  faction: FactionId;
+  faction: FactionId | 'seamborn' | 'gloamingCourt';
   tier: UnitTier;
   hp: number;
   damage: readonly [number, number];
@@ -72,6 +68,16 @@ export const UNITS: Record<UnitId, UnitDefinition> = {
     id: 'woodenColossus', name: 'Wooden Colossus', faction: 'woundWrights', tier: 5,
     hp: 150, damage: [15, 25], attack: 13, defense: 12, speed: 5,
     growth: 2, cost: { gold: 1500, iron: 2, essence: 1 }, abilities: ['overwind'],
+  },
+  sleeper: {
+    id: 'sleeper', name: 'The Sleeper', faction: 'seamborn', tier: 5,
+    hp: 250, damage: [25, 40], attack: 18, defense: 24, speed: 3,
+    growth: 1, cost: {}, abilities: ['full_heal'],
+  },
+  mirrorBound: {
+    id: 'mirrorBound', name: 'The Mirror-Bound', faction: 'gloamingCourt', tier: 5,
+    hp: 150, damage: [22, 32], attack: 18, defense: 18, speed: 6,
+    growth: 1, cost: {}, abilities: ['melee_reflect'],
   },
 };
 

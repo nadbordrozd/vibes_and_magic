@@ -1,15 +1,21 @@
 import { UNITS } from '../../content/units';
-import type { AbilityId } from '../../content/units';
-import type { BattleStack, UnitId } from '../types';
+import { ITEMS } from '../../content/items';
+import type {
+  AbilityId, BattleStack, BattleState, UnitId,
+} from '../types';
 
 export interface AbilityHandler {
   id: AbilityId;
+  stage?: 'damage-routing' | 'turn-advance';
   canRangedAttack?: (stack: BattleStack) => boolean;
   ignoresMovementBlockers?: () => boolean;
   attackMultiplier?: (stack: BattleStack) => number;
   pinsIncomingRollToMinimum?: () => boolean;
   preventsRetaliation?: () => boolean;
   targetPriority?: number;
+  meleeReflection?: number;
+  replacesMeleeDamage?: boolean;
+  healsToInitialAtRoundEnd?: boolean;
 }
 
 export const ABILITY_REGISTRY: Record<AbilityId, AbilityHandler> = {
@@ -30,6 +36,17 @@ export const ABILITY_REGISTRY: Record<AbilityId, AbilityHandler> = {
   no_retaliation: { id: 'no_retaliation', preventsRetaliation: () => true },
   soft_body: { id: 'soft_body', pinsIncomingRollToMinimum: () => true },
   overwind: { id: 'overwind' },
+  full_heal: {
+    id: 'full_heal', stage: 'turn-advance', healsToInitialAtRoundEnd: true,
+  },
+  melee_reflect: {
+    id: 'melee_reflect', stage: 'damage-routing',
+    meleeReflection: 1, replacesMeleeDamage: true,
+  },
+  mask_reflect: {
+    id: 'mask_reflect', stage: 'damage-routing',
+    meleeReflection: (ITEMS.mirrorMask.amount ?? 0) / 100,
+  },
 };
 
 export function abilityHandlers(unitId: UnitId): AbilityHandler[] {
@@ -38,6 +55,20 @@ export function abilityHandlers(unitId: UnitId): AbilityHandler[] {
     if (!handler) throw new Error(`Unknown ability handler: ${abilityId}`);
     return handler;
   });
+}
+
+export function battleAbilityHandlers(
+  battle: BattleState,
+  stack: BattleStack,
+): AbilityHandler[] {
+  return [
+    ...abilityHandlers(stack.unitId),
+    ...battle.sideAbilities[stack.side].map((abilityId) => {
+      const handler = ABILITY_REGISTRY[abilityId];
+      if (!handler) throw new Error(`Unknown side ability handler: ${abilityId}`);
+      return handler;
+    }),
+  ];
 }
 
 export function hasAbility(unitId: UnitId, ability: AbilityId): boolean {

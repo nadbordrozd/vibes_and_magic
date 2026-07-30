@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { runStrategyTurn } from '../../ai/strategy';
+import { chooseStrategyObjective } from '../../ai/strategyObjectives';
 import { apply, createGame } from '../game';
 import type { GameState } from '../types';
 
@@ -57,5 +58,44 @@ describe('multi-hero strategy AI', () => {
     const finalGatherer = state.players.p1.heroes.find((hero) => hero.id === gatherer.id)!;
     expect(finalMain.army[0]!.count).toBe(mainBefore + 10);
     expect(finalGatherer.army[0]!.count).toBe(8);
+  });
+
+  it('keeps M12 collector pickups from displacing the Main guarded route', () => {
+    const state = createGame({ seed: 70, p1: 'ai', p2: 'ai' });
+    const hero = state.players.p1.heroes[0];
+    for (const object of state.map.objects) {
+      if (object.kind === 'pile' || object.kind === 'item') object.collected = true;
+      else if (object.kind === 'richVein') object.depleted = true;
+      else if (object.kind === 'chest') {
+        object.cleared = true;
+        object.collected = true;
+      } else if (object.kind === 'mine') {
+        object.cleared = true;
+        object.owner = hero.owner;
+      } else if (object.kind === 'shrine') {
+        object.cleared = true;
+        object.visitedBy.push(hero.id);
+      } else if (object.kind === 'lock') object.cleared = true;
+    }
+    const mine = state.map.objects.find((object) => object.id === 'west-gold')!;
+    const item = state.map.objects.find((object) => object.id === 'west-charter')!;
+    const vein = state.map.objects.find((object) => object.id === 'west-rich-vein')!;
+    if (mine.kind !== 'mine' || item.kind !== 'item' || vein.kind !== 'richVein') {
+      throw new Error('Strategy fixture objects missing');
+    }
+    mine.cleared = false;
+    mine.owner = null;
+    mine.guard = { army: [{ unitId: 'yeoman', count: 1 }], split: true };
+    mine.position = { x: 6, y: 10 };
+    item.collected = false;
+    item.position = { x: 4, y: 10 };
+    vein.depleted = false;
+    vein.owner = null;
+    vein.position = { x: 5, y: 10 };
+
+    expect(chooseStrategyObjective(state, hero, 'main', new Set())?.id)
+      .toBe('west-gold');
+    expect(chooseStrategyObjective(state, hero, 'gatherer', new Set())?.id)
+      .toBe('west-rich-vein');
   });
 });

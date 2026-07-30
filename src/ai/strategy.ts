@@ -3,6 +3,11 @@ import {
   AI_SECOND_HERO_GOLD, AI_THIRD_HERO_GOLD,
 } from '../content/constants';
 import { FACTION_UNITS, UNITS } from '../content/units';
+import { AI_BUILD_ORDER, BUILDINGS } from '../content/buildings';
+import {
+  MARKET_AI_MAX_SHORTFALL, MARKET_BUY_GOLD, MARKET_SELL_GOLD,
+  MARKET_SURPLUS_RESERVE,
+} from '../content/marketplace';
 import { armyPower, canAfford } from '../core/army';
 import {
   apply, applyAutomaticChoice, firstAffordableBuilding,
@@ -38,8 +43,69 @@ function recruitAtCastle(state: GameState, hero: Hero): GameState {
 
 function buildAtCastle(state: GameState): GameState {
   for (const castle of state.castles.filter((item) => item.owner === state.activePlayer)) {
-    const buildingId = firstAffordableBuilding(state, castle);
-    if (buildingId) return apply(state, { type: 'BUILD', castleId: castle.id, buildingId });
+    const prepared = useMarketplace(state, castle.id);
+    const current = prepared.castles.find((candidate) => candidate.id === castle.id)!;
+    const buildingId = firstAffordableBuilding(prepared, current);
+    if (buildingId) {
+      return apply(prepared, { type: 'BUILD', castleId: castle.id, buildingId });
+    }
+    state = prepared;
+  }
+  return state;
+}
+
+function nextPlannedBuilding(state: GameState, castleId: string): BuildingId | null {
+  const castle = state.castles.find((candidate) => candidate.id === castleId)!;
+  return AI_BUILD_ORDER.find((id) => {
+    if (castle.buildings.includes(id)) return false;
+    if ((id === 'chapelOfTheBanner' && castle.faction !== 'hearthguard')
+        || (id === 'guildWorkshop' && castle.faction !== 'woundWrights')) return false;
+    const prerequisite = BUILDINGS[id].prerequisite;
+    return !prerequisite || castle.buildings.includes(prerequisite);
+  }) ?? null;
+}
+
+function useMarketplace(initial: GameState, castleId: string): GameState {
+  let state = initial;
+  for (let step = 0; step < 6; step += 1) {
+    const castle = state.castles.find((candidate) => candidate.id === castleId)!;
+    const player = state.players[castle.owner];
+    const visiting = player.heroes.some((hero) =>
+      hero.alive && sameCoord(hero.position, castle.position));
+    if (!castle.buildings.includes('marketplace') || !visiting) return state;
+    const buildingId = nextPlannedBuilding(state, castleId);
+    if (!buildingId) return state;
+    const cost = BUILDINGS[buildingId].cost;
+    const missing = (['timber', 'iron', 'essence'] as const).find((resource) => {
+      const shortfall = (cost[resource] ?? 0) - player.resources[resource];
+      return shortfall >= 1 && shortfall <= MARKET_AI_MAX_SHORTFALL
+        && player.resources.gold >= MARKET_BUY_GOLD[resource] * shortfall;
+    });
+    if (missing) {
+      const amount = (cost[missing] ?? 0) - player.resources[missing];
+      state = apply(state, {
+        type: 'MARKET_TRADE', castleId, direction: 'buy',
+        resource: missing, amount,
+      });
+      continue;
+    }
+    const otherCostsMet = (['timber', 'iron', 'essence'] as const).every(
+      (resource) => player.resources[resource] >= (cost[resource] ?? 0),
+    );
+    const goldShortfall = (cost.gold ?? 0) - player.resources.gold;
+    if (!otherCostsMet || goldShortfall <= 0) return state;
+    const surplus = (['timber', 'iron', 'essence'] as const).find(
+      (resource) => player.resources[resource] > MARKET_SURPLUS_RESERVE,
+    );
+    if (!surplus) return state;
+    const amount = Math.min(
+      player.resources[surplus] - MARKET_SURPLUS_RESERVE,
+      Math.ceil(goldShortfall / MARKET_SELL_GOLD),
+    );
+    state = apply(state, {
+      type: 'MARKET_TRADE', castleId, direction: 'sell',
+      resource: surplus, amount,
+    });
   }
   return state;
 }

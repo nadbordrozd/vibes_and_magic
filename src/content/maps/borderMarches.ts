@@ -1,6 +1,7 @@
 import { MAP_HEIGHT, MAP_WIDTH } from '../constants';
+import { SCROLL_ITEM_IDS } from '../items';
 import type {
-  ArmyStack, Coord, GameMap, MapObject, ResourceId, TerrainId, UnitId,
+  ArmyStack, Coord, GameMap, ItemInstance, MapObject, ResourceId, TerrainId, UnitId,
 } from '../../core/types';
 
 function makeTerrain(): TerrainId[][] {
@@ -19,8 +20,13 @@ function makeTerrain(): TerrainId[][] {
   );
 }
 
-function guard(unitId: UnitId, count: number): { army: ArmyStack[] } {
-  return { army: [{ unitId, count }] };
+function guard(
+  unitId: UnitId,
+  count: number,
+  drop?: ItemInstance,
+  split = true,
+): { army: ArmyStack[]; drop?: ItemInstance; split: boolean } {
+  return { army: [{ unitId, count }], drop, split };
 }
 
 function mirror(position: Coord): Coord {
@@ -34,11 +40,11 @@ function mine(
   income: number,
   unitId?: UnitId,
   count?: number,
-): MapObject {
+): Extract<MapObject, { kind: 'mine' }> {
   return {
     id, kind: 'mine', position, resource, income, owner: null,
     guard: unitId && count ? guard(unitId, count) : undefined,
-    cleared: !unitId,
+    cleared: !unitId, chartered: false,
   };
 }
 
@@ -55,7 +61,15 @@ const WEST_PILES: ReadonlyArray<[Coord, ResourceId, number]> = [
   [{ x: 10, y: 7 }, 'essence', 2],
 ];
 
-function makeObjects(): MapObject[] {
+function scrollAt(seed: number, salt: number, plus = false): ItemInstance {
+  return {
+    id: SCROLL_ITEM_IDS[(Math.imul(seed ^ salt, 2654435761) >>> 0)
+      % SCROLL_ITEM_IDS.length],
+    plus,
+  };
+}
+
+function makeObjects(seed: number): MapObject[] {
   const objects: MapObject[] = [
     mine('west-gold', { x: 7, y: 10 }, 'gold', 1000, 'yeoman', 35),
     mine('west-timber', { x: 4, y: 5 }, 'timber', 2),
@@ -65,8 +79,14 @@ function makeObjects(): MapObject[] {
     mine('east-timber', mirror({ x: 4, y: 5 }), 'timber', 2),
     mine('east-iron', mirror({ x: 8, y: 15 }), 'iron', 1, 'marionette', 10),
     mine('east-essence', mirror({ x: 9, y: 7 }), 'essence', 1, 'marionette', 8),
-    mine('north-gap-gold', { x: 12, y: 4 }, 'gold', 1000, 'oriflammeWarden', 2),
-    mine('south-gap-gold', { x: 15, y: 15 }, 'gold', 1000, 'woodenColossus', 2),
+    {
+      ...mine('north-gap-gold', { x: 12, y: 4 }, 'gold', 1000),
+      guard: guard('oriflammeWarden', 2, scrollAt(seed, 101)), cleared: false,
+    },
+    {
+      ...mine('south-gap-gold', { x: 15, y: 15 }, 'gold', 1000),
+      guard: guard('woodenColossus', 2, scrollAt(seed, 103)), cleared: false,
+    },
     {
       id: 'west-chest-1', kind: 'chest', position: { x: 5, y: 3 },
       guard: guard('yeoman', 18), cleared: false, collected: false,
@@ -99,7 +119,75 @@ function makeObjects(): MapObject[] {
       school: 'grave', teaches: 'wither', guard: guard('marionette', 8),
       cleared: false, visitedBy: [],
     },
+    {
+      id: 'the-sleeper', kind: 'lock', position: { x: 13, y: 4 },
+      name: 'The Sleeper',
+      tell: 'It does not wake. It mends. Whatever is done to it must be done in one breath.',
+      guard: guard('sleeper', 18, undefined, false),
+      reward: {
+        gold: 6000, essence: 12,
+        items: [scrollAt(seed, 211, true), scrollAt(seed, 223, true)],
+      },
+      cleared: false,
+    },
+    {
+      id: 'the-mirror-bound', kind: 'lock', position: { x: 14, y: 15 },
+      name: 'The Mirror-Bound',
+      tell: 'Blades return to their wielders. The mirror does not care for arrows.',
+      guard: guard('mirrorBound', 30, undefined, false),
+      reward: {
+        gold: 4000, essence: 8, items: [{ id: 'mirrorMask' }],
+      },
+      cleared: false,
+    },
+    {
+      id: 'north-waystation', kind: 'waystation', position: { x: 12, y: 3 },
+      visitedOnDay: {},
+    },
+    {
+      id: 'south-waystation', kind: 'waystation', position: { x: 15, y: 14 },
+      visitedOnDay: {},
+    },
+    {
+      id: 'west-rich-vein', kind: 'richVein', position: { x: 11, y: 1 },
+      owner: null, flaggedOnDay: null, depleted: false, income: 3, days: 10,
+    },
+    {
+      id: 'east-rich-vein', kind: 'richVein', position: mirror({ x: 11, y: 18 }),
+      owner: null, flaggedOnDay: null, depleted: false, income: 3, days: 10,
+    },
+    {
+      id: 'west-charter', kind: 'item', position: { x: 7, y: 14 },
+      item: { id: 'overseersCharter' }, collected: false,
+    },
+    {
+      id: 'east-charter', kind: 'item', position: mirror({ x: 7, y: 14 }),
+      item: { id: 'overseersCharter' }, collected: false,
+    },
+    {
+      id: 'west-trade-goods-1', kind: 'item', position: { x: 11, y: 6 },
+      item: { id: 'tradeGoods', origin: { x: 11, y: 6 } }, collected: false,
+    },
+    {
+      id: 'west-trade-goods-2', kind: 'item', position: { x: 11, y: 13 },
+      item: { id: 'tradeGoods', origin: { x: 11, y: 13 } }, collected: false,
+    },
+    {
+      id: 'east-trade-goods-1', kind: 'item', position: mirror({ x: 11, y: 6 }),
+      item: { id: 'tradeGoods', origin: mirror({ x: 11, y: 6 }) }, collected: false,
+    },
+    {
+      id: 'east-trade-goods-2', kind: 'item', position: mirror({ x: 11, y: 13 }),
+      item: { id: 'tradeGoods', origin: mirror({ x: 11, y: 13 }) }, collected: false,
+    },
   ];
+  const barrows = [
+    { x: 6, y: 3 }, { x: 21, y: 3 }, { x: 8, y: 17 }, { x: 19, y: 17 },
+  ];
+  barrows.forEach((position, index) => objects.push({
+    id: `barrow-scroll-${index + 1}`, kind: 'item', position,
+    item: scrollAt(seed, 307 + index * 13, true), collected: false,
+  }));
   WEST_PILES.forEach(([position, resource, amount], index) => {
     objects.push({
       id: `west-pile-${index}`, kind: 'pile', position,
@@ -113,14 +201,14 @@ function makeObjects(): MapObject[] {
   return objects;
 }
 
-export function createBorderMarches(): GameMap {
+export function createBorderMarches(seed = 1): GameMap {
   return {
     id: 'border-marches',
     name: 'Border Marches',
     width: MAP_WIDTH,
     height: MAP_HEIGHT,
     terrain: makeTerrain(),
-    objects: makeObjects(),
+    objects: makeObjects(seed),
   };
 }
 
@@ -144,7 +232,7 @@ export function validateMap(map: GameMap): void {
     if (object.kind === 'pile' && object.amount <= 0) {
       throw new Error(`Invalid pickup amount: ${object.id}`);
     }
-    if (object.kind !== 'pile' && object.guard
+    if ('guard' in object && object.guard
         && object.guard.army.some((stack) => stack.count <= 0)) {
       throw new Error(`Invalid guardian: ${object.id}`);
     }

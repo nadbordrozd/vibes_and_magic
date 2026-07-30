@@ -298,29 +298,60 @@ function castGrave(
   }
 }
 
+function resolveSpellFace(
+  battle: BattleState,
+  side: BattleSide,
+  hero: BattleHero,
+  action: CastAction,
+  plus: boolean,
+  manaSpent: number,
+): void {
+  const target = stackById(battle, action.targetId);
+  if (!isSpellTargetLegal(battle, action)) throw new Error('Invalid active effect target');
+  if (ALLY_TARGETS.has(action.spellId)
+      && (!target || target.side !== side)) throw new Error('An allied target is required');
+  if (ENEMY_TARGETS.has(action.spellId)
+      && (!target || target.side === side)) throw new Error('An enemy target is required');
+  if (target && target.side !== side && target.effects.some(
+    (effect) => effect.spellId === 'sanctuary',
+  )) throw new Error('Target is protected by Sanctuary');
+  const definition = SPELLS[action.spellId];
+  if (definition.school === 'rite') castRite(battle, side, hero, action, plus);
+  else if (definition.school === 'craft') castCraft(battle, side, hero, action, plus);
+  else castGrave(battle, side, hero, action, plus, manaSpent);
+}
+
+export function castStoredSpell(
+  battle: BattleState,
+  side: BattleSide,
+  action: CastAction,
+  plus: boolean,
+  recordAsLastSpell = true,
+  manaSpent = 0,
+): void {
+  const hero = heroFor(battle, side);
+  if (!hero) throw new Error('This side has no hero');
+  resolveSpellFace(battle, side, hero, action, plus, manaSpent);
+  if (recordAsLastSpell) {
+    battle.lastSpellCast = { spellId: action.spellId, plus, manaSpent };
+  }
+  battle.spellCasts += 1;
+}
+
 export function castSpell(battle: BattleState, action: CastAction): void {
   const side = actorSide(battle);
   const hero = side ? heroFor(battle, side) : null;
   if (!side || !hero || !canBeginSpellCast(battle, action.spellId)) {
     throw new Error('Spell cannot be cast now');
   }
-  if (!isSpellTargetLegal(battle, action)) return;
   const definition = SPELLS[action.spellId];
-  const target = stackById(battle, action.targetId);
-  if (ALLY_TARGETS.has(action.spellId)
-      && (!target || target.side !== side)) throw new Error('An allied target is required');
-  if (ENEMY_TARGETS.has(action.spellId)
-      && (!target || target.side === side)) throw new Error('An enemy target is required');
-  if (target?.side !== side && target?.effects.some(
-    (effect) => effect.spellId === 'sanctuary',
-  )) throw new Error('Target is protected by Sanctuary');
+  if (!isSpellTargetLegal(battle, action)) return;
   const manaSpent = definition.mana === 'X' ? hero.mana : definition.mana;
   const plus = isUpgraded(battle, hero, action.spellId);
-  if (definition.school === 'rite') castRite(battle, side, hero, action, plus);
-  else if (definition.school === 'craft') castCraft(battle, side, hero, action, plus);
-  else castGrave(battle, side, hero, action, plus, manaSpent);
+  resolveSpellFace(battle, side, hero, action, plus, manaSpent);
   hero.mana -= manaSpent;
   battle.castRound[side] = battle.round;
   battle.spellCasts += 1;
+  battle.lastSpellCast = { spellId: action.spellId, plus, manaSpent };
   battle.log.push(`${definition.name}${plus ? '+' : ''} cast for ${manaSpent} mana.`);
 }

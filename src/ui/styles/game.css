@@ -112,6 +112,17 @@
   color: #eee9d9; border: 1px solid #424c40; background: #0c110d; padding: 2px;
 }
 .army-slot:disabled { cursor: default; }.army-slot.selected { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.item-inventory { margin: 14px 0; }
+.item-inventory h4, .combat-items h4 {
+  margin: 0 0 7px; color: #899386; text-transform: uppercase;
+  letter-spacing: .14em; font-size: 9px;
+}
+.item-inventory .army-slots, .combat-items .army-slots {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.item-inventory .army-slot, .combat-items .army-slot {
+  aspect-ratio: auto; min-height: 34px; font-size: 8px; line-height: 1.15;
+}
 .unit-mark { color: var(--gold); font: 800 9px Georgia, serif; text-transform: uppercase; }.army-slot b { font-size: 10px; }
 .empty-mark { color: #475044; }.secondary { color: var(--cream); background: #252d26; border: 1px solid #566151; padding: 11px; }
 .wide { width: 100%; margin-top: 8px; }.end-turn { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }

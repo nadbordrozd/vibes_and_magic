@@ -16,6 +16,8 @@ import {
   createGame, endTurn, incomeForPlayer,
 } from './game/setup';
 import { hireHero } from './game/tavern';
+import { useAdventureItem } from './game/items';
+import { marketTrade } from './game/marketplace';
 import {
   findOwnedHero, nextHero, selectHero, syncAllHeroViews, syncLegacyHeroIntoRoster,
 } from './heroes';
@@ -29,9 +31,14 @@ function cloneState(state: GameState): GameState {
 export function legalActions(state: GameState): Action[] {
   if (state.phase === 'gameOver') return [];
   if (state.pendingChoice?.kind === 'chest') {
+    const hero = findOwnedHero(
+      state, state.pendingChoice.playerId, state.pendingChoice.heroId,
+    );
     return [
       { type: 'CHOOSE_CHEST', choice: 'gold' },
       { type: 'CHOOSE_CHEST', choice: 'xp' },
+      ...(hero?.inventory.includes(null)
+        ? [{ type: 'CHOOSE_CHEST', choice: 'item' } as const] : []),
     ];
   }
   if (state.pendingChoice?.kind === 'level') {
@@ -93,6 +100,14 @@ export function apply(state: GameState, action: Action): GameState {
   else if (action.type === 'HIRE_HERO') hireHero(next, action.castleId, action.heroId);
   else if (action.type === 'GUILD_INSCRIBE') {
     guildInscribe(next, action.castleId, action.spellId);
+  }
+  else if (action.type === 'USE_ADVENTURE_ITEM') {
+    useAdventureItem(next, action.inventorySlot, action.target);
+  }
+  else if (action.type === 'MARKET_TRADE') {
+    marketTrade(
+      next, action.castleId, action.direction, action.resource, action.amount,
+    );
   }
   else if (action.type === 'AUTO_COMBAT') {
     if (!next.battle) throw new Error('No battle to resolve');

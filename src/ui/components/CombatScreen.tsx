@@ -13,6 +13,8 @@ import type {
 import { CombatUnitPanel } from './CombatUnitPanel';
 import { SpellbookPanel } from './SpellbookPanel';
 import { legalSpellCasts } from '../../core/combat/spells';
+import { legalCombatItemUses } from '../../core/combat/items';
+import { itemName } from '../../content/items';
 
 const SIZE = 32;
 const HEX_W = Math.sqrt(3) * SIZE;
@@ -52,6 +54,7 @@ const UNIT_GLYPHS: Record<UnitId, string> = {
   lanceKnight: 'K', oriflammeWarden: 'W',
   tinSoldier: 'T', hobbyKnight: 'H', marionette: 'M',
   stuffedSentinel: 'S', woodenColossus: 'C',
+  sleeper: '⌁', mirrorBound: '◈',
 };
 const ALLY_SPELLS = new Set<SpellId>([
   'rally', 'blessing', 'sanctuary', 'oathOfIron', 'consecrate',
@@ -70,12 +73,14 @@ export function CombatScreen({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [spellbookOpen, setSpellbookOpen] = useState(false);
   const [casting, setCasting] = useState<{ spellId: SpellId; effectId?: string } | null>(null);
+  const [usingItemSlot, setUsingItemSlot] = useState<number | null>(null);
   const active = activeBattleStack(battle);
   const selected = battle.stacks.find(
     (stack) => stack.id === selectedId && stack.count > 0,
   ) ?? null;
   const { actions, reachable } = activeBattleOptions(state);
   const spellCasts = legalSpellCasts(battle);
+  const itemUses = legalCombatItemUses(battle);
   const reachableSet = new Set(reachable.map((coord) => `${coord.x},${coord.y}`));
 
   useEffect(() => {
@@ -98,6 +103,7 @@ export function CombatScreen({
   };
 
   const chooseSpell = (spellId: SpellId, effectId?: string) => {
+    setUsingItemSlot(null);
     if (['amplify', 'sour', 'unmake'].includes(spellId)) {
       const counterTarget = battle.stacks.find((stack) =>
         Object.values(stack.counters).some((count) => count > 0));
@@ -129,6 +135,10 @@ export function CombatScreen({
   };
 
   const isSpellTarget = (stack: BattleStack) => {
+    if (usingItemSlot !== null) {
+      return itemUses.some((action) =>
+        action.inventorySlot === usingItemSlot && action.targetId === stack.id);
+    }
     if (!casting || !active) return false;
     if (casting.spellId === 'reflect') return stack.count > 0;
     const ally = ALLY_SPELLS.has(casting.spellId);
@@ -138,7 +148,14 @@ export function CombatScreen({
   };
 
   const clickStack = (stack: BattleStack) => {
-    if (casting && isSpellTarget(stack)) {
+    if (usingItemSlot !== null) {
+      const use = itemUses.find((action) =>
+        action.inventorySlot === usingItemSlot && action.targetId === stack.id);
+      if (use) {
+        dispatch(use);
+        setUsingItemSlot(null);
+      } else setSelectedId(stack.id);
+    } else if (casting && isSpellTarget(stack)) {
       const secondAlly = casting.spellId === 'rally'
         ? battle.stacks.find((item) =>
           item.side === stack.side && item.id !== stack.id && item.count > 0)?.id
@@ -332,6 +349,33 @@ export function CombatScreen({
             active={active} selected={selected} actions={actions}
             humanControl={humanControl} onAttack={() => attackTarget(selected)}
           />
+          <div className="combat-items">
+            <h4>Inventory</h4>
+            <div className="army-slots">
+              {(active?.side === 'defender'
+                ? battle.defenderHero?.inventory ?? []
+                : battle.attackerHero.inventory).map((item, index) => {
+                const options = itemUses.filter((action) => action.inventorySlot === index);
+                return (
+                  <button
+                    key={`combat-item-${index}`}
+                    className={`army-slot ${usingItemSlot === index ? 'selected' : ''}`}
+                    disabled={!humanControl || options.length === 0}
+                    onClick={() => {
+                      const immediate = options.find((action) => !action.targetId);
+                      if (immediate) dispatch(immediate);
+                      else {
+                        setCasting(null);
+                        setUsingItemSlot(index);
+                      }
+                    }}
+                  >
+                    {item ? itemName(item) : '+'}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           <div className="combat-actions">
             {actions.some((action) => action.type === 'BATTLE_OVERWIND') && (
               <button

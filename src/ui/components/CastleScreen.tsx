@@ -11,6 +11,9 @@ import type {
 import { ArmySlots } from './ArmySlots';
 import { guildSpellCount } from '../../core/game/magic';
 import { heroHireCost } from '../../core/game/tavern';
+import {
+  MARKET_BUY_GOLD, MARKET_SELL_GOLD,
+} from '../../content/marketplace';
 
 interface Props {
   state: GameState;
@@ -21,7 +24,7 @@ interface Props {
 
 const COMMON_BUILDABLE: BuildingId[] = [
   'dwelling2', 'dwelling3', 'dwelling4', 'dwelling5', 'treasury', 'walls',
-  'mageGuild1', 'mageGuild2', 'mageGuild3', 'tavern',
+  'mageGuild1', 'mageGuild2', 'mageGuild3', 'tavern', 'marketplace',
 ];
 
 function costLabel(cost: typeof BUILDINGS[BuildingId]['cost']): string {
@@ -190,6 +193,40 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                   </article>
                 );
               }) : <p>No heroes remain in this week’s pool.</p>}
+            </div>
+          )}
+        </section>
+        <section className="tavern-panel marketplace-panel">
+          <h3>Marketplace</h3>
+          {!castle.buildings.includes('marketplace') ? (
+            <p>Build the Marketplace to exchange resources at concessionary rates.</p>
+          ) : !heroIsVisiting ? (
+            <p>A hero must visit this castle to trade.</p>
+          ) : (
+            <div className="tavern-offers">
+              {(['timber', 'iron', 'essence'] as const).map((resource) => (
+                <article key={resource}>
+                  <div>
+                    <b>{resource}</b>
+                    <small>{state.players[state.activePlayer].resources[resource]} held</small>
+                  </div>
+                  <button
+                    disabled={state.players[state.activePlayer].resources[resource] < 1}
+                    onClick={() => dispatch({
+                      type: 'MARKET_TRADE', castleId: castle.id,
+                      direction: 'sell', resource, amount: 1,
+                    })}
+                  >Sell 1 · {MARKET_SELL_GOLD}g</button>
+                  <button
+                    disabled={state.players[state.activePlayer].resources.gold
+                      < MARKET_BUY_GOLD[resource]}
+                    onClick={() => dispatch({
+                      type: 'MARKET_TRADE', castleId: castle.id,
+                      direction: 'buy', resource, amount: 1,
+                    })}
+                  >Buy 1 · {MARKET_BUY_GOLD[resource]}g</button>
+                </article>
+              ))}
             </div>
           )}
         </section>

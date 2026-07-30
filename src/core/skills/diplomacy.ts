@@ -8,7 +8,9 @@ import type {
   Hero, MapObject,
 } from '../types';
 
-type GuardedObject = Exclude<MapObject, { kind: 'pile' }>;
+type GuardedObject = Extract<
+  MapObject, { kind: 'mine' | 'chest' | 'shrine' | 'lock' }
+>;
 
 export interface DiplomacyTerms {
   disbandCost: number;

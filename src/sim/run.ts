@@ -1,5 +1,8 @@
 import { runStrategyTurn } from '../ai/strategy';
+import { autoResolveBattle } from '../ai/combat';
 import { createGame } from '../core/game';
+import { makeArmy } from '../core/army';
+import { createBattle, splitGuardianArmy } from '../core/combat/battle';
 import type { Action, GameState, PlayerId } from '../core/types';
 
 export interface SimResult {
@@ -14,6 +17,47 @@ export interface SimResult {
   battleRounds: number[];
   spellCasts: number;
   battleOutcomes: GameState['metrics']['battleOutcomes'];
+}
+
+export interface LockAssaultResult {
+  seed: number;
+  lockId: string;
+  attackerLost: boolean;
+  crashed?: string;
+}
+
+export function simulateLockAssaults(seed: number): LockAssaultResult[] {
+  const game = createGame({ seed, p1: 'ai', p2: 'ai' });
+  const hero = game.players.p1.hero!;
+  hero.army = makeArmy([
+    { unitId: 'yeoman', count: 110 },
+    { unitId: 'longbowman', count: 45 },
+    { unitId: 'bannerman', count: 28 },
+    { unitId: 'lanceKnight', count: 18 },
+    { unitId: 'oriflammeWarden', count: 8 },
+  ]);
+  return game.map.objects.filter((object) => object.kind === 'lock').map((lock) => {
+    try {
+      const battle = createBattle(
+        hero.army, splitGuardianArmy(lock.guard.army, lock.guard.split),
+        hero, null,
+        {
+          kind: 'guardian', targetId: lock.id, destination: lock.position,
+          attackerHeroId: hero.id,
+        },
+        seed ^ lock.position.x ^ (lock.position.y << 8),
+      )[0];
+      const result = autoResolveBattle(battle);
+      return {
+        seed, lockId: lock.id, attackerLost: result.winner === 'defender',
+      };
+    } catch (error) {
+      return {
+        seed, lockId: lock.id, attackerLost: false,
+        crashed: error instanceof Error ? error.stack ?? error.message : String(error),
+      };
+    }
+  });
 }
 
 export function simulateGame(seed: number, maxDays = 70, noMagic = false): SimResult {

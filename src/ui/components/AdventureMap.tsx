@@ -2,6 +2,7 @@ import { guardianIntel } from '../../core/selectors';
 import type {
   Coord, GameState, Hero, MapObject, ResourceId,
 } from '../../core/types';
+import { itemName } from '../../content/items';
 
 const TILE = 32;
 const TERRAIN_COLOR = {
@@ -20,7 +21,13 @@ function objectTitle(object: MapObject): string {
   if (object.kind === 'shrine') {
     return `${object.school} shrine · teaches ${object.teaches}`;
   }
-  return `${object.resource} mine · ${object.owner ?? 'neutral'}`;
+  if (object.kind === 'mine') return `${object.resource} mine · ${object.owner ?? 'neutral'}`;
+  if (object.kind === 'item') return itemName(object.item);
+  if (object.kind === 'richVein') {
+    return object.depleted ? 'Depleted Rich Vein' : `Rich Vein · ${object.owner ?? 'neutral'}`;
+  }
+  if (object.kind === 'waystation') return 'Waystation';
+  return object.name;
 }
 
 function MapObjectGlyph({ object, state }: { object: MapObject; state: GameState }) {
@@ -30,7 +37,8 @@ function MapObjectGlyph({ object, state }: { object: MapObject; state: GameState
   const guardLabel = intel?.label ?? '';
   const title = `${objectTitle(object)}${intel
     ? ` · Guard: ${intel.label}${intel.abilities.length
-      ? ` · ${intel.abilities.join(', ')}` : ''}` : ''}`;
+      ? ` · ${intel.abilities.join(', ')}` : ''}${intel.tell
+        ? ` · “${intel.tell}”` : ''}` : ''}`;
   const guard = guardLabel
     ? <text className="guard-count" x="10" y="-9">{guardLabel}</text> : null;
   if (object.kind === 'pile') {
@@ -57,6 +65,42 @@ function MapObjectGlyph({ object, state }: { object: MapObject; state: GameState
         <title>{title}</title>
         <path className={`shrine-glyph ${object.school}`} d="M0 -12 L10 8 L-10 8 Z" />
         <text y="5">✦</text>{guard}
+      </g>
+    );
+  }
+  if (object.kind === 'item') {
+    return (
+      <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
+        <title>{title}</title>
+        <path className="pile essence" d="M0 -9 L9 0 L0 9 L-9 0 Z" />
+        <text y="4">◇</text>
+      </g>
+    );
+  }
+  if (object.kind === 'richVein') {
+    return (
+      <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
+        <title>{title}</title>
+        <circle className={`mine-ring ${object.owner ?? 'neutral'}`} r="11" />
+        <text y="4">{object.depleted ? '×' : 'E'}</text>
+      </g>
+    );
+  }
+  if (object.kind === 'waystation') {
+    return (
+      <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
+        <title>{title}</title>
+        <rect className="chest" x="-10" y="-9" width="20" height="18" rx="4" />
+        <text y="4">↟</text>
+      </g>
+    );
+  }
+  if (object.kind === 'lock') {
+    return (
+      <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
+        <title>{title}</title>
+        <circle className="mine-ring neutral" r="13" />
+        <text y="4">{object.id === 'the-sleeper' ? '⌁' : '◈'}</text>{guard}
       </g>
     );
   }
@@ -124,6 +168,8 @@ export function AdventureMap({
           if (!explored.has(`${object.position.x},${object.position.y}`)) return false;
           if (object.kind === 'pile') return !object.collected;
           if (object.kind === 'chest') return !object.collected;
+          if (object.kind === 'item') return !object.collected;
+          if (object.kind === 'lock') return !object.cleared;
           return true;
         }).map((object) => (
           <MapObjectGlyph key={object.id} object={object} state={state} />

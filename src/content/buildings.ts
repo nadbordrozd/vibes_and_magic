@@ -55,10 +55,13 @@ export const BUILDINGS: Record<BuildingId, BuildingDefinition> = {
   tavern: {
     id: 'tavern', name: 'Tavern', cost: { gold: 800, timber: 2 },
   },
+  marketplace: {
+    id: 'marketplace', name: 'Marketplace', cost: { gold: 500, timber: 2 },
+  },
 };
 
 export const AI_BUILD_ORDER: readonly BuildingId[] = [
-  'treasury', 'mageGuild1', 'tavern', 'dwelling2', 'walls', 'dwelling3',
+  'treasury', 'marketplace', 'mageGuild1', 'tavern', 'dwelling2', 'walls', 'dwelling3',
   'chapelOfTheBanner', 'guildWorkshop', 'dwelling4', 'dwelling5',
 ];
 

@@ -4,6 +4,7 @@ import type {
 import { CHEST_GOLD, CHEST_XP } from '../../content/constants';
 import { SPELLS } from '../../content/spells';
 import { SKILLS } from '../../content/skills';
+import { itemName } from '../../content/items';
 
 interface ChoiceProps {
   state: GameState;
@@ -35,6 +36,14 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
             </button>
             <button onClick={() => dispatch({ type: 'CHOOSE_CHEST', choice: 'xp' })}>
               <i>✦</i><b>{CHEST_XP.toLocaleString()} Experience</b><small>Advance your hero’s build.</small>
+            </button>
+            <button
+              disabled={!player.heroes.find((hero) => hero.id === pending.heroId)
+                ?.inventory.includes(null)}
+              onClick={() => dispatch({ type: 'CHOOSE_CHEST', choice: 'item' })}
+            >
+              <i>◇</i><b>{itemName(pending.item)}</b>
+              <small>Take this campaign trick for later.</small>
             </button>
           </div>
         </section>

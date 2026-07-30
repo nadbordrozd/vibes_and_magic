@@ -5,7 +5,7 @@ import {
 } from '../../content/constants';
 import type { BattleState, BattleStack } from '../types';
 import {
-  attackAbilityMultiplier, hasAbility, pinsIncomingRollToMinimum,
+  attackAbilityMultiplier, battleAbilityHandlers, hasAbility, pinsIncomingRollToMinimum,
   preventsRetaliation,
 } from './abilities';
 import {
@@ -40,6 +40,8 @@ interface AttackResolution {
   ranged: boolean;
   damage: number;
   kills: number;
+  reflectedDamage: number;
+  reflectedKills: number;
 }
 
 type StageHook = (resolution: AttackResolution) => void;
@@ -134,13 +136,22 @@ hooks['damage-routing'].push((resolution) => {
       resolution.damage *= 0.5 ** ironclad.multiplier;
     }
   }
+  if (!resolution.ranged) {
+    for (const handler of battleAbilityHandlers(battle, defender)) {
+      if (handler.stage !== 'damage-routing' || !handler.meleeReflection) continue;
+      resolution.reflectedDamage += resolution.damage * handler.meleeReflection;
+      if (handler.replacesMeleeDamage) resolution.damage = 0;
+    }
+  }
   resolution.damage = Math.max(0, Math.round(resolution.damage));
+  resolution.reflectedDamage = Math.max(0, Math.round(resolution.reflectedDamage));
 });
 
 hooks.apply.push((resolution) => {
   const { attacker, defender } = resolution;
   if (!attacker || !defender) return;
   resolution.kills = applyDamage(defender, resolution.damage);
+  resolution.reflectedKills = applyDamage(attacker, resolution.reflectedDamage);
   attacker.attacksMade += 1;
   attacker.movedHexes = 0;
   const blessing = effectOn(attacker, 'blessing');
@@ -158,6 +169,14 @@ hooks.apply.push((resolution) => {
   );
   const losses = resolution.battle.casualties[defender.side];
   losses[defender.unitId] = (losses[defender.unitId] ?? 0) + resolution.kills;
+  if (resolution.reflectedDamage > 0) {
+    resolution.battle.log.push(
+      `${UNITS[attacker.unitId].name} suffers ${resolution.reflectedDamage} reflected damage.`,
+    );
+    const reflectedLosses = resolution.battle.casualties[attacker.side];
+    reflectedLosses[attacker.unitId] =
+      (reflectedLosses[attacker.unitId] ?? 0) + resolution.reflectedKills;
+  }
 });
 
 hooks['death-triggers'].push((resolution) => {
@@ -221,9 +240,22 @@ export function runAttackPipeline(
   isRetaliation = false,
 ): void {
   const resolution: AttackResolution = {
-    battle, actorId, targetId, isRetaliation, ranged: false, damage: 0, kills: 0,
+    battle, actorId, targetId, isRetaliation, ranged: false,
+    damage: 0, kills: 0, reflectedDamage: 0, reflectedKills: 0,
   };
   for (const stage of RESOLUTION_STAGES) {
     for (const hook of hooks[stage]) hook(resolution);
+  }
+}
+
+export function runTurnAdvancePipeline(battle: BattleState): void {
+  for (const stack of battle.stacks.filter((candidate) => candidate.count > 0)) {
+    for (const handler of battleAbilityHandlers(battle, stack)) {
+      if (handler.stage !== 'turn-advance' || !handler.healsToInitialAtRoundEnd) continue;
+      const initial = battle.initialCounts[stack.id] ?? stack.count;
+      stack.count = initial;
+      stack.topHp = UNITS[stack.unitId].hp;
+      battle.log.push(`${UNITS[stack.unitId].name} mends to full.`);
+    }
   }
 }
