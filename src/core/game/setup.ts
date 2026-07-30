@@ -5,41 +5,80 @@ import {
 } from '../../content/constants';
 import { FACTIONS, validateFactions } from '../../content/factions';
 import { validateBuildings } from '../../content/buildings';
+import { FACTION_HEROES, HEROES, validateHeroes } from '../../content/heroes';
+import { validateSkills } from '../../content/skills';
+import { SKILLS } from '../../content/skills';
 import {
   createBorderMarches, validateMap,
 } from '../../content/maps/borderMarches';
 import { FACTION_UNITS, UNITS, validateUnits } from '../../content/units';
 import { SCHOOL_SPELLS } from '../../content/spells';
 import { emptyArmy, makeArmy } from '../army';
+import { logisticsRate, skillRank } from '../heroBehaviors';
+import { syncHeroView } from '../heroes';
 import { sameCoord } from '../map/pathfinding';
 import { revealForPlayer } from '../map/visibility';
+import { randomInt, shuffle } from '../rng';
 import type {
-  BuildingId, Castle, GameState, Hero, NewGameOptions, Player, PlayerId, Resources,
+  BuildingId, Castle, GameState, Hero, NewGameOptions, Player, PlayerId, Resources, SpellId,
 } from '../types';
+import { checkVictory, updateCastlelessCountdowns } from './outcomes';
+import { refreshAllTaverns } from './tavern';
 
-function makeHero(playerId: PlayerId): Hero {
+function makeHero(playerId: PlayerId, definitionId: Hero['definitionId']): Hero {
   const faction = FACTIONS[playerId === 'p1' ? 'hearthguard' : 'woundWrights'];
+  const definition = HEROES[definitionId];
+  const factionStaple: SpellId = faction.id === 'hearthguard' ? 'rally' : 'wither';
+  const knownSpells: SpellId[] = [factionStaple, ...definition.startingSpells]
+    .filter((spell, index, spells) => spells.indexOf(spell) === index);
   return {
-    id: `${playerId}-hero`, owner: playerId,
+    id: `${playerId}-${definition.id}`, definitionId, name: definition.name,
+    specialtyId: definition.specialty.id, owner: playerId,
     faction: faction.id,
     position: { ...faction.heroStart },
     ...faction.heroStats,
     luck: faction.luck, moraleBonus: faction.moraleBonus,
     mana: faction.heroStats.knowledge * 10, movement: HERO_MOVE_POINTS,
-    level: 1, xp: 0, alive: true,
-    knownSpells: [faction.id === 'hearthguard' ? 'rally' : 'wither'],
+    level: 1, xp: 0, alive: true, defeated: false,
+    knownSpells,
     upgradedSpells: [], visitedShrines: [],
-    army: makeArmy(faction.startingArmy),
+    shrineChoices: {}, skills: { ...definition.startingSkills }, pathMemory: [],
+    inventory: Array(6).fill(null),
+    army: emptyArmy(),
   };
 }
 
-function makePlayer(id: PlayerId, controller: 'human' | 'ai'): Player {
+function makePlayer(
+  id: PlayerId,
+  controller: 'human' | 'ai',
+  rngState: number,
+): [Player, number] {
   const hearthguard = id === 'p1';
-  return {
+  const factionId = hearthguard ? 'hearthguard' : 'woundWrights';
+  let startIndex: number;
+  let rng: number;
+  [startIndex, rng] = randomInt(rngState, FACTION_HEROES[factionId].length);
+  const definitions = FACTION_HEROES[factionId];
+  const starting = makeHero(id, definitions[startIndex]);
+  starting.army = makeArmy(FACTIONS[factionId].startingArmy);
+  starting.movement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(starting)));
+  let pool = definitions.filter((_, index) => index !== startIndex)
+    .map((definitionId) => makeHero(id, definitionId));
+  for (const candidate of pool) {
+    candidate.alive = false;
+    candidate.movement = 0;
+  }
+  [pool, rng] = shuffle(pool, rng);
+  const offers = pool.slice(0, 2).map((hero) => hero.id);
+  const player: Player = {
     id, name: hearthguard ? 'Player 1' : 'Player 2',
-    faction: hearthguard ? 'hearthguard' : 'woundWrights', controller,
-    resources: { ...STARTING_RESOURCES }, hero: makeHero(id), explored: [],
+    faction: factionId, controller,
+    resources: { ...STARTING_RESOURCES },
+    heroes: [starting], activeHeroId: starting.id, hero: starting,
+    tavernPool: pool, tavernOffers: offers, tavernOfferWeek: 1,
+    castlelessDays: 0, explored: [],
   };
+  return [player, rng];
 }
 
 function guildDeck(owner: PlayerId, seed: number): Castle['guildDeck'] {
@@ -74,16 +113,21 @@ export function createGame(options: NewGameOptions): GameState {
   validateUnits();
   validateBuildings();
   validateFactions();
+  validateHeroes();
+  validateSkills();
   const map = createBorderMarches();
   validateMap(map);
   const castles = [makeCastle('p1', options.seed), makeCastle('p2', options.seed)];
-  const p1 = makePlayer('p1', options.p1);
-  const p2 = makePlayer('p2', options.p2);
+  let rng = options.seed >>> 0;
+  let p1: Player;
+  let p2: Player;
+  [p1, rng] = makePlayer('p1', options.p1, rng);
+  [p2, rng] = makePlayer('p2', options.p2, rng);
   p1.resources.gold += BASE_CASTLE_GOLD_INCOME;
-  p1.explored = revealForPlayer([], map, p1.hero, castles.filter((c) => c.owner === 'p1'));
-  p2.explored = revealForPlayer([], map, p2.hero, castles.filter((c) => c.owner === 'p2'));
+  p1.explored = revealForPlayer([], map, p1.heroes, castles.filter((c) => c.owner === 'p1'));
+  p2.explored = revealForPlayer([], map, p2.heroes, castles.filter((c) => c.owner === 'p2'));
   return {
-    version: 1, seed: options.seed >>> 0, rng: options.seed >>> 0,
+    version: 1, seed: options.seed >>> 0, rng,
     day: 1, week: 1, activePlayer: 'p1', phase: 'adventure',
     players: { p1, p2 }, castles, map, battle: null,
     pendingChoice: null, winner: null, replay: [],
@@ -118,18 +162,22 @@ function startTurn(state: GameState, playerId: PlayerId): void {
   for (const resource of Object.keys(income) as Array<keyof Resources>) {
     player.resources[resource] += income[resource];
   }
-  if (player.hero?.alive) {
-    player.hero.movement = HERO_MOVE_POINTS;
+  for (const hero of player.heroes.filter((candidate) => candidate.alive)) {
+    hero.movement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero)));
     const inCastle = state.castles.some(
       (castle) => castle.owner === playerId
-        && sameCoord(castle.position, player.hero!.position),
+        && sameCoord(castle.position, hero.position),
     );
-    player.hero.mana = inCastle
-      ? player.hero.knowledge * 10
-      : Math.min(player.hero.knowledge * 10, player.hero.mana + FIELD_MANA_REGEN);
+    const attunement = skillRank(hero, 'attunement');
+    const bonus = attunement === 1 ? SKILLS.attunement.values.rank1Regen
+      : attunement === 2 ? SKILLS.attunement.values.rank2Regen : 0;
+    hero.mana = inCastle
+      ? hero.knowledge * 10
+      : Math.min(hero.knowledge * 10, hero.mana + FIELD_MANA_REGEN + bonus);
   }
+  syncHeroView(player);
   player.explored = revealForPlayer(
-    player.explored, state.map, player.hero,
+    player.explored, state.map, player.heroes,
     state.castles.filter((castle) => castle.owner === playerId),
   );
   state.lastMessage = `Day ${state.day} — ${player.name}'s turn.`;
@@ -155,6 +203,12 @@ export function endTurn(state: GameState): void {
   }
   state.day += 1;
   state.week = Math.floor((state.day - 1) / DAYS_PER_WEEK) + 1;
-  if ((state.day - 1) % DAYS_PER_WEEK === 0) replenishDwellings(state);
+  if ((state.day - 1) % DAYS_PER_WEEK === 0) {
+    replenishDwellings(state);
+    refreshAllTaverns(state);
+  }
+  updateCastlelessCountdowns(state);
+  checkVictory(state);
+  if (state.phase === 'gameOver') return;
   startTurn(state, 'p1');
 }

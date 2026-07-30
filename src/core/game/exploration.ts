@@ -1,6 +1,7 @@
 import {
-  addUnits, armyAlive,
+  addUnits, armyAlive, canAfford, pay,
 } from '../army';
+import { SKILLS } from '../../content/skills';
 import {
   createBattle, splitGuardianArmy,
 } from '../combat/battle';
@@ -8,17 +9,15 @@ import {
   coordKey, findPath, pathCost, reachablePathPrefix, sameCoord,
 } from '../map/pathfinding';
 import { revealForPlayer } from '../map/visibility';
+import { foragerRate, skillRank } from '../heroBehaviors';
+import { activeHero as selectedActiveHero, findOwnedHero } from '../heroes';
 import type {
   Army, Castle, GameState, Hero, MapObject,
 } from '../types';
 import { checkVictory } from './outcomes';
 import { learnGuildSpells, visitShrine } from './magic';
-
-function activeHero(state: GameState): Hero {
-  const hero = state.players[state.activePlayer].hero;
-  if (!hero?.alive) throw new Error('Active player has no living hero');
-  return hero;
-}
+import { diplomacyTerms } from '../skills/diplomacy';
+export { diplomacyTerms } from '../skills/diplomacy';
 
 function objectAt(
   state: GameState,
@@ -39,7 +38,7 @@ function beginBattle(
   defenderHero: Hero | null = null,
   walls = false,
 ): void {
-  const hero = activeHero(state);
+  const hero = selectedActiveHero(state);
   const [battle, nextRng] = createBattle(
     hero.army, defenderArmy, hero, defenderHero, context, state.rng, walls,
   );
@@ -61,17 +60,15 @@ function beginBattle(
 
 function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
   if (object.kind === 'pile') {
-    state.players[hero.owner].resources[object.resource] += object.amount;
+    const amount = Math.floor(object.amount * (1 + foragerRate(hero)));
+    state.players[hero.owner].resources[object.resource] += amount;
     object.collected = true;
-    state.lastMessage = `Collected ${object.amount} ${object.resource}.`;
+    state.lastMessage = `Collected ${amount} ${object.resource}.`;
     return;
   }
   if (object.kind === 'mine') {
     if (object.guard && !object.cleared) {
-      beginBattle(state, splitGuardianArmy(object.guard.army), {
-        kind: 'guardian', targetId: object.id,
-        destination: object.position, attackerHeroId: hero.id,
-      });
+      if (!offerDiplomacy(state, object, hero)) beginGuardianBattle(state, object, hero);
     } else {
       object.owner = hero.owner;
       object.cleared = true;
@@ -81,21 +78,84 @@ function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
   }
   if (object.kind === 'shrine') {
     if (!object.cleared) {
-      beginBattle(state, splitGuardianArmy(object.guard.army), {
-        kind: 'guardian', targetId: object.id,
-        destination: object.position, attackerHeroId: hero.id,
-      });
+      if (!offerDiplomacy(state, object, hero)) beginGuardianBattle(state, object, hero);
     } else visitShrine(state, object.id, hero);
     return;
   }
   if (object.guard && !object.cleared) {
-    beginBattle(state, splitGuardianArmy(object.guard.army), {
-      kind: 'guardian', targetId: object.id,
-      destination: object.position, attackerHeroId: hero.id,
-    });
+    if (!offerDiplomacy(state, object, hero)) beginGuardianBattle(state, object, hero);
   } else {
-    state.pendingChoice = { kind: 'chest', objectId: object.id, playerId: hero.owner };
+    state.pendingChoice = {
+      kind: 'chest', objectId: object.id, playerId: hero.owner, heroId: hero.id,
+    };
   }
+}
+
+function beginGuardianBattle(state: GameState, object: Exclude<MapObject, { kind: 'pile' }>, hero: Hero): void {
+  if (!object.guard) throw new Error('Guardian missing');
+  beginBattle(state, splitGuardianArmy(object.guard.army), {
+    kind: 'guardian', targetId: object.id,
+    destination: object.position, attackerHeroId: hero.id,
+  });
+}
+
+function offerDiplomacy(
+  state: GameState,
+  object: Exclude<MapObject, { kind: 'pile' }>,
+  hero: Hero,
+): boolean {
+  const terms = diplomacyTerms(hero, object);
+  if (!terms) return false;
+  state.pendingChoice = {
+    kind: 'diplomacy', objectId: object.id, playerId: hero.owner, heroId: hero.id,
+    ...terms,
+  };
+  state.lastMessage = 'The guardians are willing to bargain.';
+  return true;
+}
+
+function clearGuardianObject(state: GameState, object: Exclude<MapObject, { kind: 'pile' }>, hero: Hero): void {
+  object.cleared = true;
+  if (object.kind === 'mine') {
+    object.owner = hero.owner;
+    state.lastMessage = `${object.resource} mine claimed.`;
+  } else if (object.kind === 'chest') {
+    state.pendingChoice = {
+      kind: 'chest', objectId: object.id, playerId: hero.owner, heroId: hero.id,
+    };
+  } else {
+    visitShrine(state, object.id, hero);
+  }
+}
+
+export function chooseDiplomacy(
+  state: GameState,
+  choice: 'fight' | 'disband' | 'recruit',
+): void {
+  const pending = state.pendingChoice;
+  if (pending?.kind !== 'diplomacy') throw new Error('No diplomacy choice pending');
+  const hero = findOwnedHero(state, pending.playerId, pending.heroId);
+  const object = state.map.objects.find((candidate) => candidate.id === pending.objectId);
+  if (!hero || !object || object.kind === 'pile' || !object.guard) {
+    throw new Error('Diplomacy encounter missing');
+  }
+  state.pendingChoice = null;
+  if (choice === 'fight') {
+    beginGuardianBattle(state, object, hero);
+    return;
+  }
+  const cost = choice === 'recruit' ? pending.recruitCost : pending.disbandCost;
+  if (cost === null || !canAfford(state.players[pending.playerId].resources, { gold: cost })) {
+    throw new Error('Cannot afford diplomacy');
+  }
+  state.players[pending.playerId].resources =
+    pay(state.players[pending.playerId].resources, { gold: cost });
+  if (choice === 'recruit') {
+    for (const stack of object.guard.army) {
+      hero.army = addUnits(hero.army, stack.unitId, stack.count)!;
+    }
+  }
+  clearGuardianObject(state, object, hero);
 }
 
 function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
@@ -108,9 +168,8 @@ function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
     return;
   }
   const defenderPlayer = state.players[castle.owner];
-  const defenderHero = defenderPlayer.hero?.alive
-    && sameCoord(defenderPlayer.hero.position, castle.position)
-    ? defenderPlayer.hero : null;
+  const defenderHero = defenderPlayer.heroes.find((candidate) =>
+    candidate.alive && sameCoord(candidate.position, castle.position)) ?? null;
   const combined = castle.garrison.map((stack) => stack ? { ...stack } : null);
   if (defenderHero) {
     for (const stack of defenderHero.army) {
@@ -135,8 +194,8 @@ function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
 function blockedMapTiles(state: GameState, hero: Hero): Set<string> {
   const blocked = new Set(
     Object.values(state.players).flatMap((player) =>
-      player.hero?.alive && player.hero.id !== hero.id
-        ? [coordKey(player.hero.position)] : [],
+      player.heroes.filter((candidate) => candidate.alive && candidate.id !== hero.id)
+        .map((candidate) => coordKey(candidate.position)),
     ),
   );
   for (const object of state.map.objects) {
@@ -159,24 +218,29 @@ export function adventurePath(
   state: GameState,
   destination: { x: number; y: number },
 ): ReturnType<typeof findPath> {
-  const hero = activeHero(state);
-  return findPath(state.map, hero.position, destination, blockedMapTiles(state, hero));
+  const hero = selectedActiveHero(state);
+  return findPath(
+    state.map, hero.position, destination, blockedMapTiles(state, hero), hero,
+  );
 }
 
 export function moveHero(
   state: GameState,
   destination: { x: number; y: number },
 ): void {
-  const hero = activeHero(state);
+  const hero = selectedActiveHero(state);
   const path = adventurePath(state, destination);
   if (!path || path.length < 2) throw new Error('No path to destination');
-  const prefix = reachablePathPrefix(state.map, path, hero.movement);
+  const prefix = reachablePathPrefix(state.map, path, hero.movement, hero);
   if (prefix.length < 2) throw new Error('Not enough movement');
   const reached = prefix[prefix.length - 1];
-  hero.movement -= pathCost(state.map, prefix);
+  hero.movement -= pathCost(state.map, prefix, hero);
   hero.position = { ...reached };
+  const reachedIndex = path.findIndex((coord) => sameCoord(coord, reached));
+  hero.pathMemory = path.slice(Math.max(0, reachedIndex))
+    .map((coord) => ({ ...coord }));
   state.players[hero.owner].explored = revealForPlayer(
-    state.players[hero.owner].explored, state.map, hero,
+    state.players[hero.owner].explored, state.map, state.players[hero.owner].heroes,
     state.castles.filter((castle) => castle.owner === hero.owner),
   );
   if (!sameCoord(reached, destination)) {
@@ -184,7 +248,7 @@ export function moveHero(
     return;
   }
 
-  const enemyHero = Object.values(state.players).map((player) => player.hero)
+  const enemyHero = Object.values(state.players).flatMap((player) => player.heroes)
     .find((other) => other?.alive && other.owner !== hero.owner
       && sameCoord(other.position, destination));
   const castle = state.castles.find((item) => sameCoord(item.position, destination));
@@ -199,5 +263,16 @@ export function moveHero(
   } else {
     const object = objectAt(state, destination);
     if (object) enterMapObject(state, object, hero);
+  }
+  if (skillRank(hero, 'forager') === 2 && state.phase === 'adventure'
+      && !state.pendingChoice) {
+    for (const object of state.map.objects) {
+      if (object.kind === 'pile' && !object.collected
+          && Math.max(Math.abs(object.position.x - hero.position.x),
+            Math.abs(object.position.y - hero.position.y))
+            <= SKILLS.forager.values.adjacentRange) {
+        enterMapObject(state, object, hero);
+      }
+    }
   }
 }

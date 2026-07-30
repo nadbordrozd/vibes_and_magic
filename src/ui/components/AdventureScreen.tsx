@@ -5,18 +5,15 @@ import {
   animatedAdventurePath, previewPath, reachableAdventureTiles, visitingCastle,
 } from '../../core/selectors';
 import type {
-  Action, Coord, GameState, MapObject, ResourceId,
+  Action, Coord, GameState, Hero, ResourceId,
 } from '../../core/types';
 import { ArmySlots } from './ArmySlots';
 import {
   ANIMATION_TIMINGS, type AnimationSpeed,
 } from '../animation';
-
-const TILE = 32;
-const TERRAIN_COLOR = {
-  grass: '#769c45', forest: '#365f3c', barrow: '#6f6674',
-  mountain: '#777a78', water: '#397b91',
-};
+import { ExchangeScreen } from './ExchangeScreen';
+import { AdventureMap } from './AdventureMap';
+import { logisticsRate } from '../../core/heroBehaviors';
 const RESOURCE_MARK: Record<ResourceId, string> = {
   gold: 'G', timber: 'T', iron: 'I', essence: 'E',
 };
@@ -32,56 +29,6 @@ interface Props {
   onMovementStateChange: (moving: boolean) => void;
 }
 
-function objectTitle(object: MapObject): string {
-  if (object.kind === 'pile') return `${object.amount} ${object.resource}`;
-  if (object.kind === 'chest') return object.cleared ? 'Treasure chest' : 'Guarded treasure chest';
-  if (object.kind === 'shrine') return `${object.school} shrine · teaches ${object.teaches}`;
-  return `${object.resource} mine · ${object.owner ?? 'neutral'}`;
-}
-
-function MapObjectGlyph({ object }: { object: MapObject }) {
-  const x = object.position.x * TILE;
-  const y = object.position.y * TILE;
-  const guardCount = object.kind !== 'pile' && object.guard && !object.cleared
-    ? object.guard.army.reduce((sum, stack) => sum + stack.count, 0) : 0;
-  if (object.kind === 'pile') {
-    return (
-      <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
-        <title>{objectTitle(object)}</title>
-        <path className={`pile ${object.resource}`} d="M0 -8 L8 0 L0 8 L-8 0 Z" />
-        <text y="3">{RESOURCE_MARK[object.resource]}</text>
-      </g>
-    );
-  }
-  if (object.kind === 'chest') {
-    return (
-      <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
-        <title>{objectTitle(object)}</title>
-        <rect className="chest" x="-9" y="-6" width="18" height="13" rx="2" />
-        <path d="M-9 -2 H9" className="glyph-line" />
-        {guardCount > 0 && <text className="guard-count" x="10" y="-9">{guardCount}</text>}
-      </g>
-    );
-  }
-  if (object.kind === 'shrine') {
-    return (
-      <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
-        <title>{objectTitle(object)}</title>
-        <path className={`shrine-glyph ${object.school}`} d="M0 -12 L10 8 L-10 8 Z" />
-        <text y="5">✦</text>
-        {guardCount > 0 && <text className="guard-count" x="10" y="-9">{guardCount}</text>}
-      </g>
-    );
-  }
-  return (
-    <g className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
-      <title>{objectTitle(object)}</title>
-      <circle className={`mine-ring ${object.owner ?? 'neutral'}`} r="11" />
-      <text y="4">{RESOURCE_MARK[object.resource]}</text>
-      {guardCount > 0 && <text className="guard-count" x="10" y="-9">{guardCount}</text>}
-    </g>
-  );
-}
 
 export function AdventureScreen({
   state, dispatch, onOpenCastle, onMenu, onSave,
@@ -93,18 +40,20 @@ export function AdventureScreen({
     index: number;
     destination: Coord;
   } | null>(null);
+  const [exchangeHeroId, setExchangeHeroId] = useState<string | null>(null);
   const player = state.players[state.activePlayer];
   const hero = player.hero;
-  const explored = new Set(player.explored);
   const reachable = useMemo(() => reachableAdventureTiles(state), [state]);
   const path = useMemo(
-    () => preview ? previewPath(state, preview) : [],
-    [state, preview],
+    () => preview ? previewPath(state, preview) : hero?.pathMemory ?? [],
+    [state, preview, hero],
   );
   const castleHere = visitingCastle(state);
   const ownedCastles = state.castles.filter((castle) => castle.owner === state.activePlayer);
   const income = incomeForPlayer(state, state.activePlayer);
   const timing = ANIMATION_TIMINGS[animationSpeed];
+  const maxMovement = hero
+    ? Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero))) : HERO_MOVE_POINTS;
 
   useEffect(() => {
     if (!movement) return;
@@ -177,97 +126,34 @@ export function AdventureScreen({
       </header>
 
       <div className="adventure-layout">
-        <section className="map-frame">
-          <div className="map-caption">
-            <span>Border Marches</span>
-            <small>Click a destination twice to travel</small>
-          </div>
-          <svg
-            className="adventure-map"
-            viewBox={`0 0 ${state.map.width * TILE} ${state.map.height * TILE}`}
-            aria-label="Adventure map"
-          >
-            <defs>
-              <marker id="path-arrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto">
-                <path d="M0,0 L0,6 L6,3 Z" fill="#f4d875" />
-              </marker>
-            </defs>
-            {state.map.terrain.flatMap((row, y) => row.map((terrain, x) => {
-              const key = `${x},${y}`;
-              const seen = explored.has(key);
-              return (
-                <g key={key} onClick={() => clickTile({ x, y })}>
-                  <rect
-                    x={x * TILE} y={y * TILE} width={TILE} height={TILE}
-                    fill={seen ? TERRAIN_COLOR[terrain] : '#0a0d0b'}
-                    className={seen && reachable.has(key) ? 'reachable-map-tile' : ''}
-                  />
-                  {seen && terrain === 'forest' && (
-                    <text className="terrain-glyph" x={x * TILE + 16} y={y * TILE + 21}>♠</text>
-                  )}
-                  {seen && terrain === 'mountain' && (
-                    <path className="mountain-glyph" d={`M${x * TILE + 4} ${y * TILE + 27} L${x * TILE + 16} ${y * TILE + 5} L${x * TILE + 29} ${y * TILE + 27} Z`} />
-                  )}
-                  {seen && terrain === 'barrow' && (
-                    <text className="terrain-glyph" x={x * TILE + 16} y={y * TILE + 21}>†</text>
-                  )}
-                </g>
-              );
-            }))}
-            {state.map.objects.filter((object) => {
-              if (!explored.has(`${object.position.x},${object.position.y}`)) return false;
-              if (object.kind === 'pile') return !object.collected;
-              if (object.kind === 'chest') return !object.collected;
-              return true;
-            }).map((object) => <MapObjectGlyph key={object.id} object={object} />)}
-            {state.castles.filter((castle) =>
-              explored.has(`${castle.position.x},${castle.position.y}`)).map((castle) => (
-              <g className="map-overlay-glyph" key={castle.id} transform={`translate(${castle.position.x * TILE + 16} ${castle.position.y * TILE + 16})`}>
-                <title>{`${castle.faction} castle · ${castle.owner}`}</title>
-                <rect className={`castle-glyph ${castle.owner}`} x="-12" y="-12" width="24" height="24" />
-                <text y="5">♜</text>
-              </g>
-            ))}
-            {Object.values(state.players).map((mapPlayer) => mapPlayer.hero?.alive
-              && explored.has(`${mapPlayer.hero.position.x},${mapPlayer.hero.position.y}`)
-              ? (
-                <g
-                  className="map-overlay-glyph"
-                  key={mapPlayer.hero.id}
-                  style={{
-                    transition: `transform ${timing.mapStep}ms linear`,
-                    transform: (() => {
-                      const position = movement && mapPlayer.id === state.activePlayer
-                        ? movement.path[movement.index] : mapPlayer.hero.position;
-                      return `translate(${position.x * TILE + 16}px, ${position.y * TILE + 16}px)`;
-                    })(),
-                  }}
-                >
-                  <title>{`${mapPlayer.name}'s hero`}</title>
-                  <circle className={`hero-glyph ${mapPlayer.id}`} r="9" />
-                  <path className="hero-flag" d="M0 -6 V5 M1 -6 L7 -3 L1 0" />
-                </g>
-              ) : null)}
-            {path.length > 1 && (
-              <polyline
-                className="path-preview"
-                markerEnd="url(#path-arrow)"
-                points={path.map((coord) => `${coord.x * TILE + 16},${coord.y * TILE + 16}`).join(' ')}
-              />
-            )}
-          </svg>
-        </section>
+        <AdventureMap
+          state={state} hero={hero} reachable={reachable} path={path}
+          movement={movement} mapStep={timing.mapStep} onTile={clickTile}
+        />
 
         <aside className="hero-panel">
           <div className="panel-heading">
             <span>Field command</span>
-            <b>{hero ? 'Hero' : 'No living hero'}</b>
+            <b>{hero ? hero.name : 'No living hero'}</b>
+          </div>
+          <div className="hero-list">
+            {player.heroes.filter((candidate) => candidate.alive).map((candidate) => (
+              <button
+                key={candidate.id}
+                className={candidate.id === hero?.id ? 'selected' : ''}
+                disabled={Boolean(movement)}
+                onClick={() => dispatch({ type: 'SELECT_HERO', heroId: candidate.id })}
+              >
+                <i className={candidate.faction}>{candidate.name[0]}</i>
+                <span><b>{candidate.name}</b><small>Move {candidate.movement}</small></span>
+              </button>
+            ))}
           </div>
           {hero && (
             <>
               <div className="hero-portrait">
                 <div className={hero.faction}>{hero.faction === 'hearthguard' ? 'H' : 'W'}</div>
-                <span><b>Level {hero.level}</b><small>{hero.xp} XP</small></span>
+                <span><b>{hero.name} · Level {hero.level}</b><small>{hero.xp} XP</small></span>
               </div>
               <div className="stat-grid">
                 <span>Attack <b>{hero.attack}</b></span>
@@ -275,10 +161,17 @@ export function AdventureScreen({
                 <span>Spell power <b>{hero.spellPower}</b></span>
                 <span>Knowledge <b>{hero.knowledge}</b></span>
               </div>
-              <div className="meter-label"><span>Movement</span><b>{hero.movement} / {HERO_MOVE_POINTS}</b></div>
-              <div className="meter"><i style={{ width: `${hero.movement / HERO_MOVE_POINTS * 100}%` }} /></div>
+              <div className="meter-label"><span>Movement</span><b>{hero.movement} / {maxMovement}</b></div>
+              <div className="meter"><i style={{ width: `${hero.movement / maxMovement * 100}%` }} /></div>
               <div className="meter-label"><span>Mana</span><b>{hero.mana} / {hero.knowledge * 10}</b></div>
               <ArmySlots army={hero.army} title="Army" />
+              {Object.entries(hero.skills).length > 0 && (
+                <div className="skill-summary">
+                  {Object.entries(hero.skills).map(([skill, rank]) => (
+                    <span key={skill}>{skill} R{rank}</span>
+                  ))}
+                </div>
+              )}
             </>
           )}
           <div className="castle-shortcuts">
@@ -296,7 +189,33 @@ export function AdventureScreen({
               </button>
             ))}
           </div>
-          <button className="secondary wide" disabled>Next hero · 1/1</button>
+          {hero && player.heroes.filter((candidate) => candidate.id !== hero.id
+            && candidate.alive
+            && Math.max(Math.abs(candidate.position.x - hero.position.x),
+              Math.abs(candidate.position.y - hero.position.y)) <= 1)
+            .map((candidate) => (
+              <button
+                className="secondary wide"
+                key={`exchange-${candidate.id}`}
+                onClick={() => setExchangeHeroId(candidate.id)}
+              >
+                Exchange with {candidate.name}
+              </button>
+            ))}
+          <button
+            className="secondary wide"
+            disabled={!hero || Boolean(movement)}
+            onClick={() => dispatch({ type: 'NEXT_HERO' })}
+          >
+            Next hero · {player.heroes.indexOf(hero as Hero) + 1}/{player.heroes.length}
+          </button>
+          {player.castlelessDays > 0 && (
+            <div className="loss-countdown">
+              No castle: {7 - player.castlelessDays} day{
+                7 - player.castlelessDays === 1 ? '' : 's'
+              } remaining
+            </div>
+          )}
           <button
             className="primary wide end-turn"
             disabled={player.controller !== 'human' || Boolean(movement)}
@@ -307,6 +226,14 @@ export function AdventureScreen({
           <div className="message-strip">{state.lastMessage}</div>
         </aside>
       </div>
+      {hero && exchangeHeroId && (
+        <ExchangeScreen
+          source={hero}
+          destination={player.heroes.find((candidate) => candidate.id === exchangeHeroId)!}
+          dispatch={dispatch}
+          onClose={() => setExchangeHeroId(null)}
+        />
+      )}
     </main>
   );
 }

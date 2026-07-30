@@ -111,12 +111,14 @@ describe('game state and economy', () => {
   });
 
   it('moves a hero and pays movement points', () => {
+    const initial = createGame({ seed: 1, p1: 'human', p2: 'ai' });
+    const movement = initial.players.p1.hero!.movement;
     const game = apply(
-      createGame({ seed: 1, p1: 'human', p2: 'ai' }),
+      initial,
       { type: 'MOVE_HERO', destination: { x: 4, y: 10 } },
     );
     expect(game.players.p1.hero!.position).toEqual({ x: 4, y: 10 });
-    expect(game.players.p1.hero!.movement).toBeLessThan(2000);
+    expect(game.players.p1.hero!.movement).toBeLessThan(movement);
   });
 
   it('collects a resource pile deterministically', () => {

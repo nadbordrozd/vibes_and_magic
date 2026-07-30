@@ -9,7 +9,10 @@ import { hexDistance, isAdjacent, reachableHexes } from './hex';
 import {
   beginStackTurn, effectOn, effectiveSpeed, endStackTurn,
 } from './magicEffects';
-import { canCastSpell, castSpell, legalSpellCasts } from './spells';
+import {
+  canBeginSpellCast, canCastSpell, castSpell, legalSpellCasts,
+} from './spells';
+import { isSpellTargetLegal } from './spellTargets';
 import { runAttackPipeline } from './pipeline';
 import { applyRoundMorale, turnOrder } from './round';
 export { createBattle, splitGuardianArmy } from './setup';
@@ -25,8 +28,18 @@ function cloneBattle(battle: BattleState): BattleState {
     obstacles: battle.obstacles.map((coord) => ({ ...coord })),
     order: [...battle.order],
     waiting: [...battle.waiting],
-    attackerHero: { ...battle.attackerHero },
-    defenderHero: battle.defenderHero ? { ...battle.defenderHero } : null,
+    attackerHero: {
+      ...battle.attackerHero,
+      knownSpells: [...battle.attackerHero.knownSpells],
+      upgradedSpells: [...battle.attackerHero.upgradedSpells],
+      skills: { ...battle.attackerHero.skills },
+    },
+    defenderHero: battle.defenderHero ? {
+      ...battle.defenderHero,
+      knownSpells: [...battle.defenderHero.knownSpells],
+      upgradedSpells: [...battle.defenderHero.upgradedSpells],
+      skills: { ...battle.defenderHero.skills },
+    } : null,
     context: { ...battle.context, destination: { ...battle.context.destination } },
     log: [...battle.log],
     casualties: {
@@ -182,6 +195,9 @@ export function applyBattleAction(battle: BattleState, action: Action): BattleSt
   const next = cloneBattle(battle);
   const active = activeBattleStack(next);
   if (!active) throw new Error('No active battle stack');
+  if (action.type === 'BATTLE_CAST'
+      && canBeginSpellCast(next, action.spellId)
+      && !isSpellTargetLegal(next, action)) return next;
   const legal = legalBattleActions(next);
   const serialized = JSON.stringify(action);
   const legalCast = action.type === 'BATTLE_CAST'

@@ -54,4 +54,15 @@ describe('local game persistence', () => {
     }));
     expect(loadGame(storage)).toBeNull();
   });
+
+  it('rejects pre-roster single-hero saves instead of guessing a migration', () => {
+    const storage = new MemoryStorage();
+    const state = createGame({ seed: 1, p1: 'human', p2: 'ai' });
+    const legacy = JSON.parse(JSON.stringify(state));
+    delete legacy.players.p1.heroes;
+    storage.setItem('border-marches.save.v1', JSON.stringify({
+      format: 1, savedAt: Date.now(), state: legacy,
+    }));
+    expect(loadGame(storage)).toBeNull();
+  });
 });

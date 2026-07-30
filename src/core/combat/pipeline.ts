@@ -15,6 +15,7 @@ import { isAdjacent } from './hex';
 import {
   addCounter, effectOn, enchantmentMultiplier, grantMeter,
 } from './magicEffects';
+import { specialtyHandler } from '../heroBehaviors';
 
 export const RESOLUTION_STAGES = [
   'declare',
@@ -86,15 +87,21 @@ hooks['damage-computation'].push((resolution) => {
     ? battle.attackerHero : battle.defenderHero;
   const defenderHero = defender.side === 'attacker'
     ? battle.attackerHero : battle.defenderHero;
+  const attackerSpecialty = attackerHero ? specialtyHandler(attackerHero) : null;
+  const defenderSpecialty = defenderHero ? specialtyHandler(defenderHero) : null;
   resolution.damage = computeDamage({
     attacker,
     defender,
-    attackerHeroAttack: attackerHero?.attack ?? 0,
+    attackerHeroAttack: (attackerHero?.attack ?? 0)
+      + (attackerSpecialty?.unitAttackBonus?.(attacker.unitId) ?? 0),
     defenderHeroDefense: (defenderHero?.defense ?? 0)
+      + (defenderSpecialty?.unitDefenseBonus?.(defender.unitId) ?? 0)
       + (battle.defenderWalls && defender.side === 'defender' ? 2 : 0),
     luck: attackerHero?.luck ?? 0,
     ranged: resolution.ranged,
     adjacentEnemy: hasAdjacentEnemy(attacker, battle.stacks),
+    ignoreAdjacentRangedPenalty:
+      attackerSpecialty?.rangedAdjacentPenalty?.(attackerHero!, attacker.unitId) ?? false,
     wallsPenalty: battle.defenderWalls
       && attacker.side === 'attacker' && defender.side === 'defender',
     rollPosition: pinsIncomingRollToMinimum(defender)

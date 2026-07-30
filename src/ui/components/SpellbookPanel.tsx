@@ -1,6 +1,6 @@
 import { SPELLS } from '../../content/spells';
 import {
-  canCastSpell,
+  canCastSpell, isUpgraded,
 } from '../../core/combat/spells';
 import type {
   BattleSide, BattleState, CounterId, SpellId,
@@ -67,8 +67,7 @@ export function SpellbookPanel({
         <div className="spell-card-grid">
           {hero.knownSpells.map((spellId) => {
             const spell = SPELLS[spellId];
-            const plus = hero.upgradedSpells.includes(spellId)
-              || battle.resonance === spell.school;
+            const plus = isUpgraded(battle, hero, spellId);
             const castable = canCastSpell(battle, spellId);
             return (
               <article className={`spell-card ${spell.school} ${plus ? 'plus' : ''}`} key={spellId}>

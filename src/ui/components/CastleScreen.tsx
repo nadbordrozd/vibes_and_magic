@@ -10,6 +10,7 @@ import type {
 } from '../../core/types';
 import { ArmySlots } from './ArmySlots';
 import { guildSpellCount } from '../../core/game/magic';
+import { heroHireCost } from '../../core/game/tavern';
 
 interface Props {
   state: GameState;
@@ -20,7 +21,7 @@ interface Props {
 
 const COMMON_BUILDABLE: BuildingId[] = [
   'dwelling2', 'dwelling3', 'dwelling4', 'dwelling5', 'treasury', 'walls',
-  'mageGuild1', 'mageGuild2', 'mageGuild3',
+  'mageGuild1', 'mageGuild2', 'mageGuild3', 'tavern',
 ];
 
 function costLabel(cost: typeof BUILDINGS[BuildingId]['cost']): string {
@@ -39,6 +40,10 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
     castle.faction === 'hearthguard' ? 'chapelOfTheBanner' : 'guildWorkshop',
   ] as BuildingId[];
   const guildSpells = castle.guildDeck.slice(0, guildSpellCount(castle));
+  const tavernHeroes = state.players[state.activePlayer].tavernOffers
+    .map((id) => state.players[state.activePlayer].tavernPool.find(
+      (candidate) => candidate.id === id,
+    )).filter((candidate) => candidate !== undefined);
 
   const transfer = (garrisonSlot: number) => {
     if (heroSlot === null || !heroIsVisiting) return;
@@ -153,6 +158,38 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                   </article>
                 );
               })}
+            </div>
+          )}
+        </section>
+        <section className="tavern-panel">
+          <h3>Tavern</h3>
+          {!castle.buildings.includes('tavern') ? (
+            <p>Build the Tavern to hire named heroes.</p>
+          ) : (
+            <div className="tavern-offers">
+              {tavernHeroes.length ? tavernHeroes.map((candidate) => {
+                const cost = heroHireCost(candidate);
+                return (
+                  <article key={candidate.id}>
+                    <i className={candidate.faction}>{candidate.name[0]}</i>
+                    <div>
+                      <b>{candidate.name}</b>
+                      <small>Level {candidate.level} · {
+                        candidate.defeated ? 'returning veteran' : 'new company'
+                      }</small>
+                    </div>
+                    <button
+                      disabled={state.players[state.activePlayer].heroes.length >= 3
+                        || state.players[state.activePlayer].resources.gold < cost}
+                      onClick={() => dispatch({
+                        type: 'HIRE_HERO', castleId: castle.id, heroId: candidate.id,
+                      })}
+                    >
+                      Hire · {cost.toLocaleString()}g
+                    </button>
+                  </article>
+                );
+              }) : <p>No heroes remain in this week’s pool.</p>}
             </div>
           )}
         </section>

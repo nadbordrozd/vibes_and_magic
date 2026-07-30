@@ -1,6 +1,14 @@
 export const MAP_WIDTH = 28;
 export const MAP_HEIGHT = 20;
 export const HERO_MOVE_POINTS = 2000;
+export const MAX_HEROES_PER_PLAYER = 3;
+export const HERO_HIRE_COST = 1500;
+export const HERO_REHIRE_COST = 2500;
+export const CASTLELESS_LOSS_DAYS = 7;
+export const AI_SECOND_HERO_GOLD = 3500;
+export const AI_THIRD_HERO_GOLD = 8000;
+export const AI_GATHERER_THREAT_RATIO = 1.5;
+export const AI_GATHERER_THREAT_TURNS = 1.5;
 export const HERO_REVEAL_RADIUS = 5;
 export const CASTLE_REVEAL_RADIUS = 7;
 export const BATTLE_COLS = 13;

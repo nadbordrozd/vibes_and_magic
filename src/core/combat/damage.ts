@@ -39,6 +39,7 @@ export interface DamageContext {
   wallsPenalty: boolean;
   rollPosition?: 'luck' | 'minimum' | 'maximum';
   abilityMultiplier?: number;
+  ignoreAdjacentRangedPenalty?: boolean;
 }
 
 export function computeDamage(context: DamageContext): number {
@@ -55,7 +56,7 @@ export function computeDamage(context: DamageContext): number {
   let damage = context.attacker.count * positioned
     * attackDefenseMultiplier(attack, defense);
   damage *= context.abilityMultiplier ?? 1;
-  if (context.ranged && (context.adjacentEnemy
+  if (context.ranged && ((context.adjacentEnemy && !context.ignoreAdjacentRangedPenalty)
       || hexDistance(context.attacker.position, context.defender.position) > 7)) {
     damage *= 0.5;
   }

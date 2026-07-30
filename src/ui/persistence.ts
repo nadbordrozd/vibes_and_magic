@@ -39,6 +39,7 @@ function parseEnvelope(raw: string | null): SaveEnvelope | null {
         || !state.players || !state.castles || !state.replay) {
       return null;
     }
+    if (!state.players.p1?.heroes || !state.players.p2?.heroes) return null;
     return envelope as SaveEnvelope;
   } catch {
     return null;

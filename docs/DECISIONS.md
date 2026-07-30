@@ -32,3 +32,22 @@
   home castle when the defender can reach that hero this turn. Matched diagnostics
   were otherwise decided by empty-castle races with no final battle, making the
   required spell-decisive battle metric meaningless.
+## 2026-07-30 — Hero layer milestone
+
+- `Player.heroes` plus `activeHeroId` is authoritative; the existing `Player.hero`
+  field remains a synchronized selected-hero compatibility view for Milestone-10
+  callers while old single-hero saves are rejected rather than guessed into a roster.
+- A defeated hero replaces one current Tavern offer immediately, making the
+  documented 2500g re-hire available without waiting for the next weekly refresh.
+- Diplomacy recruitment is offered only when every guardian stack can merge into
+  or occupy the hero's seven army slots; a partly recruitable guardian cannot be bought.
+- Attunement R2's two shrine choices resolve consecutively on the first visit, with
+  the first chosen upgrade removed from the second offer.
+- Spellthief R2 copies the alphabetically first still-unowned upgrade known by the
+  defeated hero after the player chooses which spell to learn.
+- When several allied heroes occupy a defending castle, the first roster hero is
+  the field commander; other heroes do not merge additional armies into that siege.
+- Six empty consumable slots are present on heroes so Milestone-11 exchanges
+  conserve items before Milestone 12 supplies the item catalog and acquisition rules.
+- Strategy AI intentionally ignores Diplomacy and Spellthief draft cards, continues
+  to read exact hidden state, and uses straight-line threat reach for Gatherer flight.

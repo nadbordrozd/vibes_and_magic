@@ -7,19 +7,13 @@ import { targetPriority } from '../core/combat/abilities';
 import { canUseRanged, hasAdjacentEnemy } from '../core/combat/damage';
 import { hexDistance, nearestReachableToTarget } from '../core/combat/hex';
 import type { Action, BattleStack, BattleState } from '../core/types';
-import { canCastSpell } from '../core/combat/spells';
+import { canCastSpell, isUpgraded } from '../core/combat/spells';
+import { legalTwistEffectIds } from '../core/combat/spellTargets';
 import { SPELLS } from '../content/spells';
 
 function stackStrength(stack: BattleStack): number {
   const unit = UNITS[stack.unitId];
   return stack.count * unit.hp * ((unit.damage[0] + unit.damage[1]) / 2);
-}
-
-function largestCounterEffect(battle: BattleState): string | undefined {
-  return battle.stacks.flatMap((stack) =>
-    Object.entries(stack.counters).map(([counter, count]) => ({
-      id: `counter:${stack.id}:${counter}`, count,
-    }))).sort((a, b) => b.count - a.count)[0]?.id;
 }
 
 export function chooseSpellCast(battle: BattleState): Action | null {
@@ -51,10 +45,10 @@ export function chooseSpellCast(battle: BattleState): Action | null {
     if (spellId === 'reckoning' || spellId === 'hymnOfTheHost'
         || spellId === 'clockworkEscort') return { type: 'BATTLE_CAST', spellId };
     if (spellId === 'wallOfTheMaker') continue;
-    if (['amplify', 'sour', 'reflect', 'unmake'].includes(spellId)) {
-      const effectId = largestCounterEffect(battle);
+    if (spell.effectOperation) {
+      const effectId = legalTwistEffectIds(battle, spellId)[0];
       if (!effectId) continue;
-      if (spellId === 'reflect') {
+      if (spell.effectOperation === 'reflect') {
         return { type: 'BATTLE_CAST', spellId, effectId, targetId: allies.at(-1)?.id };
       }
       return { type: 'BATTLE_CAST', spellId, effectId };
@@ -71,7 +65,11 @@ export function chooseSpellCast(battle: BattleState): Action | null {
       if (!valid) continue;
       return { type: 'BATTLE_CAST', spellId, targetId: valid.id };
     }
-    return { type: 'BATTLE_CAST', spellId, targetId: target.id };
+    return {
+      type: 'BATTLE_CAST', spellId, targetId: target.id,
+      secondaryTargetId: spellId === 'rally' && isUpgraded(battle, hero, spellId)
+        ? allies.find((stack) => stack.id !== target.id)?.id : undefined,
+    };
   }
   return null;
 }

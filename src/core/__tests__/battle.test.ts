@@ -5,6 +5,7 @@ import {
   splitGuardianArmy,
 } from '../combat/battle';
 import { RESOLUTION_STAGES } from '../combat/pipeline';
+import { canCastSpell } from '../combat/spells';
 import { createGame } from '../game';
 import { makeArmy } from '../army';
 
@@ -103,5 +104,23 @@ describe('battle state machine', () => {
     expect(chooseCombatAction(battle)).toEqual({
       type: 'BATTLE_ATTACK', targetId: 'attacker-0',
     });
+  });
+
+  it('rejects a twister with no compatible effect and AI chooses another action', () => {
+    const battle = battleFixture();
+    battle.attackerHero.knownSpells = ['sour'];
+    battle.attackerHero.mana = 20;
+    battle.stacks.find((stack) => stack.id === 'defender-0')!.counters.burn = 2;
+    expect(canCastSpell(battle, 'sour')).toBe(false);
+    const rejected = applyBattleAction(battle, {
+      type: 'BATTLE_CAST',
+      spellId: 'sour',
+      effectId: 'counter:defender-0:burn',
+    });
+    expect(rejected.attackerHero.mana).toBe(20);
+    expect(rejected.spellCasts).toBe(0);
+    const chosen = chooseCombatAction(battle);
+    expect(chosen.type).not.toBe('BATTLE_CAST');
+    expect(legalBattleActions(battle)).toContainEqual(chosen);
   });
 });

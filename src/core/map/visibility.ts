@@ -1,4 +1,5 @@
 import { CASTLE_REVEAL_RADIUS, HERO_REVEAL_RADIUS } from '../../content/constants';
+import { SKILLS } from '../../content/skills';
 import type { Castle, Coord, GameMap, Hero } from '../types';
 import { coordKey } from './pathfinding';
 
@@ -20,11 +21,17 @@ function revealCircle(
 export function revealForPlayer(
   current: string[],
   map: GameMap,
-  hero: Hero | null,
+  heroOrHeroes: Hero | Hero[] | null,
   castles: Castle[],
 ): string[] {
   const explored = new Set(current);
-  if (hero?.alive) revealCircle(explored, map, hero.position, HERO_REVEAL_RADIUS);
+  const heroes = Array.isArray(heroOrHeroes)
+    ? heroOrHeroes : heroOrHeroes ? [heroOrHeroes] : [];
+  for (const hero of heroes.filter((candidate) => candidate.alive)) {
+    const radius = HERO_REVEAL_RADIUS + (hero.skills.scouting === 2
+      ? SKILLS.scouting.values.revealBonus : 0);
+    revealCircle(explored, map, hero.position, radius);
+  }
   for (const castle of castles) revealCircle(explored, map, castle.position, CASTLE_REVEAL_RADIUS);
   return [...explored].sort();
 }

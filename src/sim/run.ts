@@ -31,10 +31,10 @@ export function simulateGame(seed: number, maxDays = 70, noMagic = false): SimRe
       battleRounds: state.metrics.battleRounds,
       spellCasts: state.metrics.spellCasts,
       battleOutcomes: state.metrics.battleOutcomes,
-      summary: `heroes p1=${state.players.p1.hero
-        ? `${state.players.p1.hero.position.x},${state.players.p1.hero.position.y}` : 'dead'} `
-        + `p2=${state.players.p2.hero
-          ? `${state.players.p2.hero.position.x},${state.players.p2.hero.position.y}` : 'dead'}; `
+      summary: `heroes p1=${state.players.p1.heroes.map((hero) =>
+        `${hero.name}@${hero.position.x},${hero.position.y}`).join('|') || 'none'} `
+        + `p2=${state.players.p2.heroes.map((hero) =>
+          `${hero.name}@${hero.position.x},${hero.position.y}`).join('|') || 'none'}; `
         + `castles=${state.castles.map((castle) => castle.owner).join(',')}; `
         + `remaining piles=${state.map.objects.filter((object) =>
           object.kind === 'pile' && !object.collected).length} `

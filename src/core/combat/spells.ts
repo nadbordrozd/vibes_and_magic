@@ -10,6 +10,10 @@ import {
   addCounter, addTimedEffect, clearCounters, healWithoutResurrection,
   grantMeter, scaledCounter, scaledDuration, scaledPercent, totalStackHp,
 } from './magicEffects';
+import { specialtyHandler } from '../heroBehaviors';
+import {
+  isSpellTargetLegal, legalTwistEffectIds,
+} from './spellTargets';
 
 type CastAction = Extract<Action, { type: 'BATTLE_CAST' }>;
 const enemySide = (side: BattleSide): BattleSide =>
@@ -34,16 +38,23 @@ export function isUpgraded(
   spellId: SpellId,
 ): boolean {
   return hero.upgradedSpells.includes(spellId)
+    || specialtyHandler(hero).spellAlwaysUpgraded?.(spellId) === true
     || battle.resonance === SPELLS[spellId].school;
 }
 
-export function canCastSpell(battle: BattleState, spellId: SpellId): boolean {
+export function canBeginSpellCast(battle: BattleState, spellId: SpellId): boolean {
   const side = actorSide(battle);
   const hero = side ? heroFor(battle, side) : null;
   if (!side || !hero || battle.castRound[side] === battle.round
       || !hero.knownSpells.includes(spellId)) return false;
-  const cost = SPELLS[spellId].mana;
-  return cost === 'X' ? hero.mana > 0 : hero.mana >= cost;
+  const definition = SPELLS[spellId];
+  return definition.mana === 'X' ? hero.mana > 0 : hero.mana >= definition.mana;
+}
+
+export function canCastSpell(battle: BattleState, spellId: SpellId): boolean {
+  const definition = SPELLS[spellId];
+  return canBeginSpellCast(battle, spellId) && (!definition.effectOperation
+    || legalTwistEffectIds(battle, spellId).length > 0);
 }
 
 export function legalSpellCasts(battle: BattleState): CastAction[] {
@@ -51,6 +62,11 @@ export function legalSpellCasts(battle: BattleState): CastAction[] {
   const hero = side ? heroFor(battle, side) : null;
   if (!hero || !side) return [];
   return hero.knownSpells.filter((id) => canCastSpell(battle, id)).flatMap((spellId) => {
+    if (SPELLS[spellId].effectOperation) {
+      return legalTwistEffectIds(battle, spellId).map((effectId): CastAction => ({
+        type: 'BATTLE_CAST', spellId, effectId,
+      }));
+    }
     if (ALLY_TARGETS.has(spellId)) {
       return battle.stacks.filter((stack) => stack.side === side && stack.count > 0)
         .map((stack): CastAction => ({
@@ -285,9 +301,10 @@ function castGrave(
 export function castSpell(battle: BattleState, action: CastAction): void {
   const side = actorSide(battle);
   const hero = side ? heroFor(battle, side) : null;
-  if (!side || !hero || !canCastSpell(battle, action.spellId)) {
+  if (!side || !hero || !canBeginSpellCast(battle, action.spellId)) {
     throw new Error('Spell cannot be cast now');
   }
+  if (!isSpellTargetLegal(battle, action)) return;
   const definition = SPELLS[action.spellId];
   const target = stackById(battle, action.targetId);
   if (ALLY_TARGETS.has(action.spellId)

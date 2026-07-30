@@ -9,9 +9,19 @@ export type TerrainId = 'grass' | 'forest' | 'barrow' | 'mountain' | 'water';
 export type BuildingId =
   | 'townHall' | 'dwelling1' | 'dwelling2' | 'dwelling3' | 'dwelling4' | 'dwelling5'
   | 'treasury' | 'walls' | 'chapelOfTheBanner' | 'guildWorkshop'
-  | 'mageGuild1' | 'mageGuild2' | 'mageGuild3';
+  | 'mageGuild1' | 'mageGuild2' | 'mageGuild3' | 'tavern';
 export type UnitTier = 1 | 2 | 3 | 4 | 5;
 export type PrimaryStat = 'attack' | 'defense' | 'spellPower' | 'knowledge';
+export type SecondarySkillId =
+  | 'logistics' | 'scouting' | 'wayfaring' | 'diplomacy'
+  | 'attunement' | 'command' | 'forager' | 'spellthief';
+export type SkillRank = 1 | 2;
+export type HeroDefinitionId =
+  | 'aldith' | 'corwin' | 'berta' | 'osric'
+  | 'petra' | 'silas' | 'grigor' | 'mirele';
+export type SpecialtyId =
+  | 'steadyAim' | 'brightRally' | 'roadwise' | 'highBanner'
+  | 'tinCaptain' | 'brightWither' | 'masterForager' | 'masterMender';
 export type SpellSchool = 'rite' | 'craft' | 'grave' | 'wild';
 export type CounterId = 'burn' | 'chill' | 'hex' | 'bloom';
 export type SpellId =
@@ -30,6 +40,9 @@ export type Army = Array<ArmyStack | null>;
 
 export interface Hero {
   id: string;
+  definitionId: HeroDefinitionId;
+  name: string;
+  specialtyId: SpecialtyId;
   owner: PlayerId;
   faction: FactionId;
   position: Coord;
@@ -48,6 +61,11 @@ export interface Hero {
   knownSpells: SpellId[];
   upgradedSpells: SpellId[];
   visitedShrines: string[];
+  shrineChoices: Record<string, number>;
+  skills: Partial<Record<SecondarySkillId, SkillRank>>;
+  pathMemory: Coord[];
+  defeated: boolean;
+  inventory: Array<string | null>;
 }
 
 export interface Player {
@@ -56,7 +74,14 @@ export interface Player {
   faction: FactionId;
   controller: 'human' | 'ai';
   resources: Resources;
+  heroes: Hero[];
+  activeHeroId: string | null;
+  /** Compatibility view of the selected hero. Core rules use heroes + activeHeroId. */
   hero: Hero | null;
+  tavernPool: Hero[];
+  tavernOffers: string[];
+  tavernOfferWeek: number;
+  castlelessDays: number;
   explored: string[];
 }
 
@@ -137,6 +162,9 @@ export interface BattleEnchantment {
 }
 
 export interface BattleHero {
+  id: string;
+  definitionId: HeroDefinitionId;
+  specialtyId: SpecialtyId;
   attack: number;
   defense: number;
   luck: number;
@@ -145,6 +173,7 @@ export interface BattleHero {
   mana: number;
   knownSpells: SpellId[];
   upgradedSpells: SpellId[];
+  skills: Partial<Record<SecondarySkillId, SkillRank>>;
 }
 
 export interface BattleContext {
@@ -181,12 +210,27 @@ export interface BattleState {
   winner: BattleSide | null;
 }
 
-export type LevelChoice = PrimaryStat | 'inscribe';
+export type LevelChoice = PrimaryStat | SecondarySkillId | 'inscribe';
 export type PendingChoice =
-  | { kind: 'chest'; objectId: string; playerId: PlayerId }
-  | { kind: 'level'; playerId: PlayerId; options: LevelChoice[] }
-  | { kind: 'shrine'; objectId: string; playerId: PlayerId; options: SpellId[] }
-  | { kind: 'inscribe'; playerId: PlayerId; options: SpellId[] };
+  | { kind: 'chest'; objectId: string; playerId: PlayerId; heroId: string }
+  | { kind: 'level'; playerId: PlayerId; heroId: string; options: LevelChoice[] }
+  | {
+    kind: 'shrine'; objectId: string; playerId: PlayerId; heroId: string;
+    options: SpellId[]; choicesRemaining: number;
+  }
+  | { kind: 'inscribe'; playerId: PlayerId; heroId: string; options: SpellId[] }
+  | {
+    kind: 'diplomacy'; objectId: string; playerId: PlayerId; heroId: string;
+    disbandCost: number; recruitCost: number | null;
+  }
+  | {
+    kind: 'spellthief'; playerId: PlayerId; heroId: string;
+    options: SpellId[]; upgradeOptions: SpellId[];
+  };
+
+export type ArmyHolder =
+  | { kind: 'hero'; id: string }
+  | { kind: 'garrison'; id: string };
 
 export interface GameState {
   version: 1;
@@ -216,13 +260,26 @@ export interface GameState {
 }
 
 export type Action =
-  | { type: 'MOVE_HERO'; destination: Coord }
+  | { type: 'MOVE_HERO'; destination: Coord; heroId?: string }
+  | { type: 'SELECT_HERO'; heroId: string }
+  | { type: 'NEXT_HERO' }
   | { type: 'END_TURN' }
   | { type: 'BUILD'; castleId: string; buildingId: BuildingId }
   | { type: 'RECRUIT'; castleId: string; tier: UnitTier; count: number }
   | { type: 'SWAP_ARMY'; castleId: string; heroSlot: number; garrisonSlot: number }
+  | {
+    type: 'TRANSFER_ARMY'; source: ArmyHolder; sourceSlot: number;
+    destination: ArmyHolder; destinationSlot: number; count: number;
+  }
+  | {
+    type: 'TRANSFER_ITEM'; sourceHeroId: string; destinationHeroId: string;
+    sourceSlot: number; destinationSlot: number;
+  }
+  | { type: 'HIRE_HERO'; castleId: string; heroId: string }
   | { type: 'CHOOSE_CHEST'; choice: 'gold' | 'xp' }
   | { type: 'CHOOSE_LEVEL'; stat: LevelChoice }
+  | { type: 'CHOOSE_DIPLOMACY'; choice: 'fight' | 'disband' | 'recruit' }
+  | { type: 'CHOOSE_STOLEN_SPELL'; spellId: SpellId }
   | { type: 'CHOOSE_SPELL_UPGRADE'; spellId: SpellId }
   | { type: 'GUILD_INSCRIBE'; castleId: string; spellId: SpellId }
   | { type: 'BATTLE_MOVE'; destination: Coord }

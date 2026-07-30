@@ -3,6 +3,7 @@ import type {
 } from '../../core/types';
 import { CHEST_GOLD, CHEST_XP } from '../../content/constants';
 import { SPELLS } from '../../content/spells';
+import { SKILLS } from '../../content/skills';
 
 interface ChoiceProps {
   state: GameState;
@@ -40,6 +41,58 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
       </div>
     );
   }
+  if (pending.kind === 'diplomacy') {
+    return (
+      <div className="modal-backdrop choice-backdrop">
+        <section className="choice-dialog">
+          <span className="dialog-kicker">Diplomacy</span>
+          <h2>The guardians will bargain</h2>
+          <div className="choice-cards three">
+            <button onClick={() => dispatch({ type: 'CHOOSE_DIPLOMACY', choice: 'fight' })}>
+              <i>⚔</i><b>Fight</b><small>Keep your gold and settle it in battle.</small>
+            </button>
+            <button
+              disabled={player.resources.gold < pending.disbandCost}
+              onClick={() => dispatch({ type: 'CHOOSE_DIPLOMACY', choice: 'disband' })}
+            >
+              <i>G</i><b>Pay {pending.disbandCost.toLocaleString()}g</b>
+              <small>The guardians disband.</small>
+            </button>
+            {pending.recruitCost !== null && (
+              <button
+                disabled={player.resources.gold < pending.recruitCost}
+                onClick={() => dispatch({ type: 'CHOOSE_DIPLOMACY', choice: 'recruit' })}
+              >
+                <i>+</i><b>Recruit · {pending.recruitCost.toLocaleString()}g</b>
+                <small>The guardians join this army.</small>
+              </button>
+            )}
+          </div>
+        </section>
+      </div>
+    );
+  }
+  if (pending.kind === 'spellthief') {
+    return (
+      <div className="modal-backdrop choice-backdrop">
+        <section className="choice-dialog spell-choice">
+          <span className="dialog-kicker">Spellthief</span>
+          <h2>Steal one defeated rival spell</h2>
+          <div className="choice-cards three">
+            {pending.options.map((spellId) => (
+              <button
+                key={spellId}
+                onClick={() => dispatch({ type: 'CHOOSE_STOLEN_SPELL', spellId })}
+              >
+                <i>✦</i><b>{SPELLS[spellId].name}</b>
+                <small>{SPELLS[spellId].base}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+      </div>
+    );
+  }
   if (pending.kind === 'shrine' || pending.kind === 'inscribe') {
     return (
       <div className="modal-backdrop choice-backdrop">
@@ -66,17 +119,31 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
   return (
     <div className="modal-backdrop choice-backdrop">
       <section className="choice-dialog level-choice">
-        <span className="dialog-kicker">Level {player.hero?.level ? player.hero.level + 1 : ''}</span>
+        <span className="dialog-kicker">Level {
+          player.heroes.find((hero) => hero.id === pending.heroId)?.level
+            ? player.heroes.find((hero) => hero.id === pending.heroId)!.level + 1 : ''
+        }</span>
         <h2>Choose your path</h2>
         <p>One lesson endures. The other possibilities are lost to this campaign.</p>
         <div className="choice-cards three">
           {pending.options.map((stat) => (
             <button key={stat} onClick={() => dispatch({ type: 'CHOOSE_LEVEL', stat })}>
               <i>{stat === 'inscribe' ? '✦' : stat.slice(0, 1).toUpperCase()}</i>
-              <b>{stat === 'inscribe' ? 'Inscribe a spell' : `+1 ${stat.replace(/([A-Z])/g, ' $1')}`}</b>
+              <b>{stat === 'inscribe' ? 'Inscribe a spell'
+                : stat in SKILLS
+                  ? `${SKILLS[stat as keyof typeof SKILLS].name} · Rank ${
+                    (player.heroes.find((hero) => hero.id === pending.heroId)
+                      ?.skills[stat as keyof typeof SKILLS] ?? 0) + 1
+                  }`
+                  : `+1 ${stat.replace(/([A-Z])/g, ' $1')}`}</b>
               <small>{stat === 'inscribe'
                 ? 'Permanently unlock a known spell’s + face.'
-                : STAT_COPY[stat]}</small>
+                : stat in SKILLS
+                  ? SKILLS[stat as keyof typeof SKILLS].ranks[
+                    ((player.heroes.find((hero) => hero.id === pending.heroId)
+                      ?.skills[stat as keyof typeof SKILLS] ?? 0) + 1) as 1 | 2
+                  ]
+                  : STAT_COPY[stat as PrimaryStat]}</small>
             </button>
           ))}
         </div>

@@ -6,8 +6,11 @@ import { findPath, pathCost, sameCoord } from './map/pathfinding';
 import { reachablePathPrefix } from './map/pathfinding';
 import { adventurePath } from './game/exploration';
 import type {
-  BattleStack, BuildingId, Castle, Coord, GameState, PlayerId, UnitTier,
+  BattleStack, BuildingId, Castle, Coord, GameState, MapObject, PlayerId, UnitTier,
 } from './types';
+import { selectedHero } from './heroes';
+import { skillRank } from './heroBehaviors';
+import { SKILLS } from '../content/skills';
 
 export interface BuildingStatus {
   state: 'built' | 'available' | 'locked';
@@ -48,7 +51,7 @@ export function maxRecruitable(
 }
 
 export function visitingCastle(state: GameState): Castle | null {
-  const hero = state.players[state.activePlayer].hero;
+  const hero = selectedHero(state.players[state.activePlayer]);
   if (!hero) return null;
   return state.castles.find(
     (castle) => castle.owner === state.activePlayer
@@ -57,27 +60,27 @@ export function visitingCastle(state: GameState): Castle | null {
 }
 
 export function reachableAdventureTiles(state: GameState): Set<string> {
-  const hero = state.players[state.activePlayer].hero;
+  const hero = selectedHero(state.players[state.activePlayer]);
   const result = new Set<string>();
   if (!hero) return result;
   for (let y = 0; y < state.map.height; y += 1) {
     for (let x = 0; x < state.map.width; x += 1) {
-      const path = findPath(state.map, hero.position, { x, y });
-      if (path && pathCost(state.map, path) <= hero.movement) result.add(`${x},${y}`);
+      const path = findPath(state.map, hero.position, { x, y }, new Set(), hero);
+      if (path && pathCost(state.map, path, hero) <= hero.movement) result.add(`${x},${y}`);
     }
   }
   return result;
 }
 
 export function previewPath(state: GameState, destination: Coord): Coord[] {
-  return state.players[state.activePlayer].hero
+  return selectedHero(state.players[state.activePlayer])
     ? adventurePath(state, destination) ?? [] : [];
 }
 
 export function animatedAdventurePath(state: GameState, destination: Coord): Coord[] {
-  const hero = state.players[state.activePlayer].hero;
+  const hero = selectedHero(state.players[state.activePlayer]);
   const path = hero ? adventurePath(state, destination) : null;
-  return path ? reachablePathPrefix(state.map, path, hero!.movement) : [];
+  return path ? reachablePathPrefix(state.map, path, hero!.movement, hero!) : [];
 }
 
 export function battleStackController(
@@ -102,4 +105,43 @@ export function activeBattleOptions(state: GameState) {
 
 export function opponent(playerId: PlayerId): PlayerId {
   return playerId === 'p1' ? 'p2' : 'p1';
+}
+
+export type GuardianSizeBand = 'Few' | 'Dozens' | 'Scores' | 'Hundreds';
+
+export function guardianSizeBand(count: number): GuardianSizeBand {
+  if (count <= 9) return 'Few';
+  if (count <= 24) return 'Dozens';
+  if (count <= 74) return 'Scores';
+  return 'Hundreds';
+}
+
+export interface GuardianIntel {
+  exact: boolean;
+  label: string;
+  count: number | null;
+  abilities: string[];
+}
+
+export function guardianIntel(
+  state: GameState,
+  object: MapObject,
+  hero = selectedHero(state.players[state.activePlayer]),
+): GuardianIntel | null {
+  if (object.kind === 'pile' || !object.guard || object.cleared) return null;
+  const count = object.guard.army.reduce((sum, stack) => sum + stack.count, 0);
+  const distance = hero
+    ? Math.max(Math.abs(hero.position.x - object.position.x),
+      Math.abs(hero.position.y - object.position.y))
+    : Number.POSITIVE_INFINITY;
+  const exact = distance <= 1 || Boolean(hero
+    && skillRank(hero, 'scouting') >= 1
+    && distance <= SKILLS.scouting.values.inspectRange);
+  const abilities = exact
+    ? [...new Set(object.guard.army.flatMap((stack) => UNITS[stack.unitId].abilities))]
+    : [];
+  return {
+    exact, label: exact ? String(count) : guardianSizeBand(count),
+    count: exact ? count : null, abilities,
+  };
 }

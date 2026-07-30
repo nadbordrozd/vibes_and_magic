@@ -1,16 +1,21 @@
-import { UNITS } from '../../content/units';
 import {
-  CHEST_GOLD, CHEST_XP, GUARDIAN_VICTORY_XP,
+  CASTLELESS_LOSS_DAYS, CHEST_GOLD, CHEST_XP, GUARDIAN_VICTORY_XP,
 } from '../../content/constants';
+import { UNITS } from '../../content/units';
 import {
   compactArmy, emptyArmy,
 } from '../army';
 import { armyAfterBattle } from '../combat/battle';
+import { specialtyHandler, skillRank } from '../heroBehaviors';
+import {
+  defeatHero, findHero, findOwnedHero, selectedHero, syncAllHeroViews,
+} from '../heroes';
 import {
   drawLevelOptions, needsLevel,
 } from '../progression';
 import type {
-  BattleSide, BattleState, GameState, LevelChoice, PlayerId, PrimaryStat,
+  BattleSide, BattleState, GameState, Hero, LevelChoice, PlayerId, PrimaryStat,
+  SecondarySkillId, SpellId,
 } from '../types';
 import { visitShrine } from './magic';
 
@@ -33,22 +38,41 @@ export function recoverSpareParts(
   return recovered;
 }
 
+export function updateCastlelessCountdowns(state: GameState): void {
+  for (const player of Object.values(state.players)) {
+    player.castlelessDays = state.castles.some((castle) => castle.owner === player.id)
+      ? 0 : player.castlelessDays + 1;
+  }
+}
+
 export function checkVictory(state: GameState): void {
+  if (state.winner) return;
   for (const playerId of ['p1', 'p2'] as PlayerId[]) {
-    if (!state.castles.some((castle) => castle.owner === playerId)) {
+    const player = state.players[playerId];
+    const hasCastle = state.castles.some((castle) => castle.owner === playerId);
+    const hasHero = player.heroes.some((hero) => hero.alive);
+    if (hasCastle) player.castlelessDays = 0;
+    if ((!hasHero && !hasCastle) || player.castlelessDays >= CASTLELESS_LOSS_DAYS) {
       state.winner = playerId === 'p1' ? 'p2' : 'p1';
       state.phase = 'gameOver';
       state.lastMessage = `${state.players[state.winner].name} wins!`;
+      return;
     }
   }
 }
 
-export function checkLevel(state: GameState, playerId: PlayerId): void {
-  const hero = state.players[playerId].hero;
+export function checkLevel(
+  state: GameState,
+  playerId: PlayerId,
+  heroId?: string,
+): void {
+  const hero = heroId
+    ? findOwnedHero(state, playerId, heroId)
+    : selectedHero(state.players[playerId]);
   if (!hero || !needsLevel(hero)) return;
   const [options, nextRng] = drawLevelOptions(hero, state.rng);
   state.rng = nextRng;
-  state.pendingChoice = { kind: 'level', playerId, options };
+  state.pendingChoice = { kind: 'level', playerId, heroId: hero.id, options };
 }
 
 export function chooseChest(state: GameState, choice: 'gold' | 'xp'): void {
@@ -59,74 +83,90 @@ export function chooseChest(state: GameState, choice: 'gold' | 'xp'): void {
   object.collected = true;
   if (choice === 'gold') state.players[pending.playerId].resources.gold += CHEST_GOLD;
   else {
-    const hero = state.players[pending.playerId].hero;
+    const hero = findOwnedHero(state, pending.playerId, pending.heroId);
     if (hero) hero.xp += CHEST_XP;
   }
   state.pendingChoice = null;
   state.lastMessage = choice === 'gold' ? 'Claimed 1500 gold.' : 'Claimed 1000 XP.';
-  checkLevel(state, pending.playerId);
+  checkLevel(state, pending.playerId, pending.heroId);
 }
 
-export function chooseLevel(state: GameState, stat: LevelChoice): void {
+const PRIMARY_STATS: PrimaryStat[] = ['attack', 'defense', 'spellPower', 'knowledge'];
+
+export function chooseLevel(state: GameState, choice: LevelChoice): void {
   const pending = state.pendingChoice;
-  if (pending?.kind !== 'level' || !pending.options.includes(stat)) {
+  if (pending?.kind !== 'level' || !pending.options.includes(choice)) {
     throw new Error('Invalid level option');
   }
-  const hero = state.players[pending.playerId].hero;
+  const hero = findOwnedHero(state, pending.playerId, pending.heroId);
   if (!hero) throw new Error('Hero missing');
   hero.level += 1;
-  if (stat === 'inscribe') {
+  if (choice === 'inscribe') {
     const options = hero.knownSpells.filter((id) => !hero.upgradedSpells.includes(id));
-    state.pendingChoice = { kind: 'inscribe', playerId: pending.playerId, options };
+    state.pendingChoice = {
+      kind: 'inscribe', playerId: pending.playerId, heroId: hero.id, options,
+    };
     state.lastMessage = `Level ${hero.level}: choose a spell to inscribe.`;
-  } else {
-    hero[stat as PrimaryStat] += 1;
-    if (stat === 'knowledge') hero.mana = Math.min(hero.mana, hero.knowledge * 10);
+  } else if (PRIMARY_STATS.includes(choice as PrimaryStat)) {
+    hero[choice as PrimaryStat] += 1;
+    if (choice === 'knowledge') hero.mana = Math.min(hero.mana, hero.knowledge * 10);
     state.pendingChoice = null;
-    state.lastMessage = `Level ${hero.level}: +1 ${stat}.`;
+    state.lastMessage = `Level ${hero.level}: +1 ${choice}.`;
+  } else {
+    const skillId = choice as SecondarySkillId;
+    hero.skills[skillId] = hero.skills[skillId] === 1 ? 2 : 1;
+    state.pendingChoice = null;
+    state.lastMessage = `Level ${hero.level}: ${skillId} rank ${hero.skills[skillId]}.`;
   }
-  checkLevel(state, pending.playerId);
+  if (!state.pendingChoice) checkLevel(state, pending.playerId, hero.id);
+}
+
+export function chooseStolenSpell(state: GameState, spellId: SpellId): void {
+  const pending = state.pendingChoice;
+  if (pending?.kind !== 'spellthief' || !pending.options.includes(spellId)) {
+    throw new Error('Invalid stolen spell');
+  }
+  const hero = findOwnedHero(state, pending.playerId, pending.heroId);
+  if (!hero) throw new Error('Spellthief missing');
+  if (!hero.knownSpells.includes(spellId)) hero.knownSpells.push(spellId);
+  if (skillRank(hero, 'spellthief') === 2) {
+    const upgrade = [...pending.upgradeOptions].sort().find((id) =>
+      !hero.upgradedSpells.includes(id));
+    if (upgrade) {
+      if (!hero.knownSpells.includes(upgrade)) hero.knownSpells.push(upgrade);
+      hero.upgradedSpells.push(upgrade);
+    }
+  }
+  state.pendingChoice = null;
+  state.lastMessage = `${hero.name} stole ${spellId}.`;
+  checkLevel(state, pending.playerId, hero.id);
 }
 
 export function finalizeBattle(state: GameState): void {
   const battle = state.battle;
   if (!battle?.winner) return;
-  const attackerPlayer = state.players[state.activePlayer];
-  const attackerHero = attackerPlayer.hero;
-  if (!attackerHero) throw new Error('Battle attacker disappeared');
   const context = battle.context;
+  const attackerHero = findHero(state, context.attackerHeroId);
+  if (!attackerHero) throw new Error('Battle attacker disappeared');
+  const defenderHero = context.defenderHeroId
+    ? findHero(state, context.defenderHeroId) : null;
   attackerHero.mana = battle.attackerHero.mana;
-  if (context.defenderPlayerId && battle.defenderHero) {
-    const defenderHero = state.players[context.defenderPlayerId].hero;
-    if (defenderHero) defenderHero.mana = battle.defenderHero.mana;
-  }
+  if (defenderHero && battle.defenderHero) defenderHero.mana = battle.defenderHero.mana;
+  const defeatedHero = battle.winner === 'attacker' ? defenderHero : attackerHero;
+  const winningHero = battle.winner === 'attacker' ? attackerHero : defenderHero;
+
   state.lastBattleRecovered = {};
-  const winningPlayerId = battle.winner === 'attacker'
-    ? state.activePlayer : context.defenderPlayerId;
-  const winningPlayer = winningPlayerId ? state.players[winningPlayerId] : null;
-  if (winningPlayer?.faction === 'woundWrights') {
+  if (winningHero?.faction === 'woundWrights') {
     const workshop = state.castles.some(
-      (castle) => castle.owner === winningPlayerId
+      (castle) => castle.owner === winningHero.owner
         && castle.buildings.includes('guildWorkshop'),
     );
+    const specialty = specialtyHandler(winningHero).recoveryBonus?.() ?? 0;
     state.lastBattleRecovered = recoverSpareParts(
-      battle, battle.winner, workshop ? 0.5 : 0.3,
+      battle, battle.winner, (workshop ? 0.5 : 0.3) + specialty,
     );
   }
-  state.metrics.battles += 1;
-  state.metrics.battleRounds.push(battle.round);
-  state.metrics.spellCasts += battle.spellCasts;
-  state.metrics.battleOutcomes.push({
-    targetId: battle.context.targetId, winner: battle.winner,
-  });
-  const attackerLosses = Object.values(battle.casualties.attacker)
-    .reduce((sum, count) => sum + (count ?? 0), 0);
-  const defenderLosses = Object.values(battle.casualties.defender)
-    .reduce((sum, count) => sum + (count ?? 0), 0);
-  state.metrics.casualties[state.activePlayer] += attackerLosses;
-  const defenderMetric = context.kind === 'guardian'
-    ? 'neutral' : context.defenderPlayerId;
-  if (defenderMetric) state.metrics.casualties[defenderMetric] += defenderLosses;
+  recordBattleMetrics(state, battle);
 
   if (battle.winner === 'attacker') {
     attackerHero.army = compactArmy(armyAfterBattle(battle, 'attacker'));
@@ -137,25 +177,52 @@ export function finalizeBattle(state: GameState): void {
       context.kind === 'guardian' ? GUARDIAN_VICTORY_XP : 0,
     );
     attackerHero.xp += xp;
-    applyAttackerVictory(state);
+    applyAttackerVictory(state, attackerHero);
     state.lastMessage = `Victory! ${xp} XP gained.`;
+    if (defeatedHero) offerSpellthief(state, attackerHero, defeatedHero);
   } else {
-    attackerPlayer.hero = null;
-    applyDefenderVictory(state);
+    defeatHero(state, attackerHero.id);
+    applyDefenderVictory(state, defenderHero);
     state.lastMessage = 'The attacking hero was defeated.';
   }
   state.battle = null;
   state.phase = 'adventure';
+  syncAllHeroViews(state);
   checkVictory(state);
-  if (!state.winner && attackerPlayer.hero && !state.pendingChoice) {
-    checkLevel(state, attackerPlayer.id);
+  if (!state.winner && battle.winner === 'attacker' && !state.pendingChoice) {
+    checkLevel(state, attackerHero.owner, attackerHero.id);
   }
 }
 
-function applyAttackerVictory(state: GameState): void {
-  const battle = state.battle!;
-  const context = battle.context;
-  const hero = state.players[state.activePlayer].hero!;
+function recordBattleMetrics(state: GameState, battle: BattleState): void {
+  state.metrics.battles += 1;
+  state.metrics.battleRounds.push(battle.round);
+  state.metrics.spellCasts += battle.spellCasts;
+  state.metrics.battleOutcomes.push({
+    targetId: battle.context.targetId, winner: battle.winner!,
+  });
+  const attackerLosses = Object.values(battle.casualties.attacker)
+    .reduce((sum, count) => sum + (count ?? 0), 0);
+  const defenderLosses = Object.values(battle.casualties.defender)
+    .reduce((sum, count) => sum + (count ?? 0), 0);
+  state.metrics.casualties[state.activePlayer] += attackerLosses;
+  const defenderMetric = battle.context.kind === 'guardian'
+    ? 'neutral' : battle.context.defenderPlayerId;
+  if (defenderMetric) state.metrics.casualties[defenderMetric] += defenderLosses;
+}
+
+function offerSpellthief(state: GameState, winner: Hero, loser: Hero): void {
+  if (!skillRank(winner, 'spellthief')) return;
+  const options = loser.knownSpells.filter((id) => !winner.knownSpells.includes(id));
+  if (!options.length) return;
+  state.pendingChoice = {
+    kind: 'spellthief', playerId: winner.owner, heroId: winner.id,
+    options, upgradeOptions: [...loser.upgradedSpells],
+  };
+}
+
+function applyAttackerVictory(state: GameState, hero: Hero): void {
+  const context = state.battle!.context;
   if (context.kind === 'guardian') {
     const object = state.map.objects.find((item) => item.id === context.targetId);
     if (object?.kind === 'mine') {
@@ -163,7 +230,9 @@ function applyAttackerVictory(state: GameState): void {
       object.owner = hero.owner;
     } else if (object?.kind === 'chest') {
       object.cleared = true;
-      state.pendingChoice = { kind: 'chest', objectId: object.id, playerId: hero.owner };
+      state.pendingChoice = {
+        kind: 'chest', objectId: object.id, playerId: hero.owner, heroId: hero.id,
+      };
     } else if (object?.kind === 'shrine') {
       object.cleared = true;
       visitShrine(state, object.id, hero);
@@ -172,15 +241,13 @@ function applyAttackerVictory(state: GameState): void {
     const castle = state.castles.find((item) => item.id === context.targetId)!;
     castle.owner = hero.owner;
     castle.garrison = emptyArmy();
-    const defender = context.defenderPlayerId
-      ? state.players[context.defenderPlayerId] : null;
-    if (defender?.hero && context.defenderHeroId) defender.hero = null;
-  } else if (context.defenderPlayerId) {
-    state.players[context.defenderPlayerId].hero = null;
+    if (context.defenderHeroId) defeatHero(state, context.defenderHeroId);
+  } else if (context.defenderHeroId) {
+    defeatHero(state, context.defenderHeroId);
   }
 }
 
-function applyDefenderVictory(state: GameState): void {
+function applyDefenderVictory(state: GameState, defenderHero: Hero | null): void {
   const battle = state.battle!;
   const context = battle.context;
   const survivors = compactArmy(armyAfterBattle(battle, 'defender'));
@@ -192,16 +259,14 @@ function applyDefenderVictory(state: GameState): void {
       );
     }
   } else if (context.kind === 'castle' && context.defenderPlayerId) {
-    const defender = state.players[context.defenderPlayerId];
     const castle = state.castles.find((item) => item.id === context.targetId)!;
-    if (defender.hero && context.defenderHeroId) {
-      defender.hero.army = survivors;
+    if (defenderHero) {
+      defenderHero.army = survivors;
       castle.garrison = emptyArmy();
     } else {
       castle.garrison = survivors;
     }
-  } else if (context.kind === 'hero' && context.defenderPlayerId) {
-    const defender = state.players[context.defenderPlayerId];
-    if (defender.hero) defender.hero.army = survivors;
+  } else if (context.kind === 'hero' && defenderHero) {
+    defenderHero.army = survivors;
   }
 }

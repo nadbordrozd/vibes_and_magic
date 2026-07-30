@@ -1,160 +1,34 @@
+import { FACTIONS } from '../content/factions';
+import {
+  AI_SECOND_HERO_GOLD, AI_THIRD_HERO_GOLD,
+} from '../content/constants';
 import { FACTION_UNITS, UNITS } from '../content/units';
-import { HERO_MOVE_POINTS } from '../content/constants';
-import { armyPower, canAfford, makeArmy } from '../core/army';
+import { armyPower, canAfford } from '../core/army';
 import {
   apply, applyAutomaticChoice, firstAffordableBuilding,
 } from '../core/game';
+import { adventurePath } from '../core/game/exploration';
+import { heroHireCost } from '../core/game/tavern';
 import {
-  findPath, movementCost, pathCost, sameCoord,
+  movementCost, sameCoord,
 } from '../core/map/pathfinding';
 import type {
-  Action, BuildingId, Coord, GameState, MapObject, PlayerId,
+  Action, BuildingId, GameState, Hero,
 } from '../core/types';
-import { guildSpellCount } from '../core/game/magic';
-import { adventurePath } from '../core/game/exploration';
+import { chooseStrategyObjective } from './strategyObjectives';
 
-interface Objective {
-  id: string;
-  position: Coord;
-  priority: number;
-  power: number;
-}
-
-function guardedPower(object: MapObject): number {
-  if (object.kind === 'pile' || !object.guard) return 0;
-  return armyPower(makeArmy(object.guard.army));
-}
-
-function pathDistance(state: GameState, position: Coord): number {
-  const hero = state.players[state.activePlayer].hero;
-  if (!hero) return Number.POSITIVE_INFINITY;
-  const path = findPath(state.map, hero.position, position);
-  return path ? pathCost(state.map, path) : Number.POSITIVE_INFINITY;
-}
-
-function enemyArmyPower(state: GameState, playerId: PlayerId): number {
-  const player = state.players[playerId];
-  const heroPower = player.hero ? armyPower(player.hero.army) : 0;
-  const garrisonPower = state.castles
-    .filter((castle) => castle.owner === playerId)
-    .reduce((sum, castle) => sum + armyPower(castle.garrison), 0);
-  return heroPower + garrisonPower;
-}
-
-function collectObjectives(state: GameState): Objective[] {
-  const playerId = state.activePlayer;
-  const hero = state.players[playerId].hero;
-  if (!hero) return [];
-  const power = armyPower(hero.army);
-  const objectives: Objective[] = [];
-  for (const castle of state.castles.filter((item) => item.owner === playerId)) {
-    const learnable = castle.guildDeck.slice(0, guildSpellCount(castle))
-      .some((spellId) => !hero.knownSpells.includes(spellId));
-    if (learnable && !sameCoord(hero.position, castle.position)) {
-      objectives.push({
-        id: `${castle.id}-guild`, position: castle.position,
-        priority: 0, power: 0,
-      });
-    }
-  }
-  for (const object of state.map.objects) {
-    if (object.kind === 'pile' && !object.collected) {
-      objectives.push({ id: object.id, position: object.position, priority: 0, power: 0 });
-    } else if (object.kind === 'chest' && !object.collected) {
-      const guard = object.cleared ? 0 : guardedPower(object);
-      if (guard === 0 || guard <= power * 0.8) {
-        objectives.push({
-          id: object.id, position: object.position,
-          priority: guard ? 2 : 0, power: guard,
-        });
-      }
-    } else if (object.kind === 'mine' && object.owner !== playerId) {
-      const guard = object.cleared ? 0 : guardedPower(object);
-      if (guard === 0 || guard <= power * 0.8) {
-        objectives.push({
-          id: object.id, position: object.position,
-          priority: guard ? 2 : 1, power: guard,
-        });
-      }
-    } else if (object.kind === 'shrine') {
-      const primary = playerId === 'p1' ? 'rite' : 'grave';
-      const guard = object.cleared ? 0 : guardedPower(object);
-      if (object.school === primary && !object.visitedBy.includes(hero.id)
-          && guard <= power * 0.8) {
-        objectives.push({
-          id: object.id, position: object.position, priority: 0, power: guard,
-        });
-      }
-    }
-  }
-  for (const castle of state.castles.filter((item) => item.owner !== playerId)) {
-    objectives.push({
-      id: castle.id, position: castle.position,
-      priority: state.day >= 15 ? -1 : 3,
-      power: enemyArmyPower(state, castle.owner),
-    });
-  }
-  const enemy = state.players[playerId === 'p1' ? 'p2' : 'p1'].hero;
-  if (enemy?.alive && !state.castles.some((castle) =>
-    sameCoord(castle.position, enemy.position) && castle.owner === enemy.owner)) {
-    objectives.push({
-      id: enemy.id, position: enemy.position,
-      priority: state.day >= 15 ? -1 : 3,
-      power: armyPower(enemy.army),
-    });
-  }
-  return objectives.filter((objective) => Number.isFinite(pathDistance(state, objective.position)));
-}
-
-function chooseObjective(state: GameState): Objective | null {
-  const hero = state.players[state.activePlayer].hero;
-  if (!hero) return null;
-  const ownPower = armyPower(hero.army);
-  const enemy = state.players[state.activePlayer === 'p1' ? 'p2' : 'p1'].hero;
-  const home = state.castles.find((castle) => castle.owner === state.activePlayer);
-  if (enemy?.alive && home) {
-    const threatPath = findPath(state.map, enemy.position, home.position);
-    const interceptPath = findPath(state.map, hero.position, enemy.position);
-    if (threatPath && pathCost(state.map, threatPath) <= HERO_MOVE_POINTS * 0.25
-        && interceptPath && pathCost(state.map, interceptPath) <= hero.movement) {
-      return {
-        id: enemy.id, position: enemy.position, priority: -2,
-        power: armyPower(enemy.army),
-      };
-    }
-  }
-  const immediateAttack = collectObjectives(state).filter(
-    (objective) => objective.priority === 3
-      && objective.power * 1.2 <= ownPower
-      && pathDistance(state, objective.position) <= hero.movement,
-  ).sort((a, b) => pathDistance(state, a.position) - pathDistance(state, b.position))[0];
-  if (immediateAttack) return immediateAttack;
-  return collectObjectives(state).sort(
-    (a, b) => a.priority - b.priority
-      || pathDistance(state, a.position) - pathDistance(state, b.position)
-      || a.id.localeCompare(b.id),
-  )[0] ?? null;
-}
-
-function recruitAtCastle(state: GameState): GameState {
-  const hero = state.players[state.activePlayer].hero;
-  const castle = hero && state.castles.find(
-    (item) => item.owner === state.activePlayer
-      && sameCoord(item.position, hero.position),
-  );
+function recruitAtCastle(state: GameState, hero: Hero): GameState {
+  const castle = state.castles.find((item) => item.owner === hero.owner
+    && sameCoord(item.position, hero.position));
   if (!castle) return state;
   let next = state;
   for (const tier of [5, 4, 3, 2, 1] as const) {
-    if (tier > 1 && !castle.buildings.includes(`dwelling${tier}` as BuildingId)) {
-      continue;
-    }
-    const currentCastle = next.castles.find((item) => item.id === castle.id)!;
-    const unitId = FACTION_UNITS[currentCastle.faction][tier - 1];
-    const cost = UNITS[unitId].cost;
-    let count = currentCastle.available[tier - 1];
-    while (count > 0 && !canAfford(next.players[next.activePlayer].resources, cost, count)) {
-      count -= 1;
-    }
+    const current = next.castles.find((item) => item.id === castle.id)!;
+    if (tier > 1 && !current.buildings.includes(`dwelling${tier}` as BuildingId)) continue;
+    const unitId = FACTION_UNITS[current.faction][tier - 1];
+    let count = current.available[tier - 1];
+    while (count > 0 && !canAfford(next.players[hero.owner].resources,
+      UNITS[unitId].cost, count)) count -= 1;
     if (count > 0) {
       next = apply(next, { type: 'RECRUIT', castleId: castle.id, tier, count });
     }
@@ -163,19 +37,67 @@ function recruitAtCastle(state: GameState): GameState {
 }
 
 function buildAtCastle(state: GameState): GameState {
-  const castle = state.castles.find((item) => item.owner === state.activePlayer);
-  if (!castle) return state;
-  const buildingId = firstAffordableBuilding(state, castle);
-  return buildingId
-    ? apply(state, { type: 'BUILD', castleId: castle.id, buildingId })
-    : state;
+  for (const castle of state.castles.filter((item) => item.owner === state.activePlayer)) {
+    const buildingId = firstAffordableBuilding(state, castle);
+    if (buildingId) return apply(state, { type: 'BUILD', castleId: castle.id, buildingId });
+  }
+  return state;
 }
 
-export function runStrategyTurn(initial: GameState, maxSteps = 100): GameState {
-  const startingPlayer = initial.activePlayer;
+function hireAtTavern(state: GameState): GameState {
+  const player = state.players[state.activePlayer];
+  const count = player.heroes.length;
+  const threshold = count === 0 ? 0
+    : count === 1 ? AI_SECOND_HERO_GOLD
+      : count === 2 ? AI_THIRD_HERO_GOLD : Number.POSITIVE_INFINITY;
+  if (player.resources.gold <= threshold) return state;
+  const castle = state.castles.find((item) => item.owner === player.id
+    && item.buildings.includes('tavern'));
+  const heroId = player.tavernOffers[0];
+  const candidate = player.tavernPool.find((hero) => hero.id === heroId);
+  return castle && heroId && candidate
+    && player.resources.gold >= heroHireCost(candidate)
+    ? apply(state, { type: 'HIRE_HERO', castleId: castle.id, heroId }) : state;
+}
+
+function deliverSurplus(state: GameState, gatherer: Hero, main: Hero): GameState {
+  if (Math.max(Math.abs(gatherer.position.x - main.position.x),
+    Math.abs(gatherer.position.y - main.position.y)) > 1) return state;
+  let next = state;
+  let reserve = FACTIONS[gatherer.faction].hireArmy.reduce(
+    (sum, stack) => sum + stack.count, 0,
+  );
+  for (let sourceSlot = 0; sourceSlot < gatherer.army.length; sourceSlot += 1) {
+    const stack = gatherer.army[sourceSlot];
+    if (!stack) continue;
+    const keep = Math.min(reserve, stack.count);
+    reserve -= keep;
+    const count = stack.count - keep;
+    if (count <= 0) continue;
+    const currentMain = next.players[main.owner].heroes.find((hero) => hero.id === main.id)!;
+    const destinationSlot = currentMain.army.findIndex((candidate) =>
+      candidate?.unitId === stack.unitId) >= 0
+      ? currentMain.army.findIndex((candidate) => candidate?.unitId === stack.unitId)
+      : currentMain.army.findIndex((candidate) => !candidate);
+    if (destinationSlot < 0) continue;
+    next = apply(next, {
+      type: 'TRANSFER_ARMY',
+      source: { kind: 'hero', id: gatherer.id }, sourceSlot,
+      destination: { kind: 'hero', id: main.id }, destinationSlot, count,
+    });
+  }
+  return next;
+}
+
+export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
+  const playerId = initial.activePlayer;
   let state = initial;
+  const claims = new Set<string>();
+  const finished = new Set<string>();
+  let economyDone = false;
+  let deliveryDone = false;
   for (let step = 0; step < maxSteps; step += 1) {
-    if (state.phase === 'gameOver' || state.activePlayer !== startingPlayer) return state;
+    if (state.phase === 'gameOver' || state.activePlayer !== playerId) return state;
     if (state.pendingChoice) {
       state = applyAutomaticChoice(state);
       continue;
@@ -186,28 +108,54 @@ export function runStrategyTurn(initial: GameState, maxSteps = 100): GameState {
       state = apply(state, { type: 'AUTO_COMBAT' });
       continue;
     }
-    const hero = state.players[startingPlayer].hero;
-    if (!hero?.alive) return apply(state, { type: 'END_TURN' });
-
-    const recruited = recruitAtCastle(state);
-    const built = buildAtCastle(recruited);
-    if (built !== state) {
-      state = built;
+    if (!economyDone) {
+      state = buildAtCastle(state);
+      state = hireAtTavern(state);
+      economyDone = true;
+    }
+    const living = state.players[playerId].heroes.filter((hero) => hero.alive)
+      .sort((a, b) => armyPower(b.army) - armyPower(a.army) || a.id.localeCompare(b.id));
+    if (!living.length) return apply(state, { type: 'END_TURN' });
+    const main = living[0];
+    if (!deliveryDone) {
+      for (const gatherer of living.slice(1)) {
+        state = deliverSurplus(state, gatherer, main);
+      }
+      deliveryDone = true;
       continue;
     }
-
-    if (hero.movement <= 0) return apply(state, { type: 'END_TURN' });
-    const objective = chooseObjective(state);
-    if (!objective || sameCoord(objective.position, hero.position)) {
-      return apply(state, { type: 'END_TURN' });
+    const hero = living.find((candidate) => !finished.has(candidate.id));
+    if (!hero) return apply(state, { type: 'END_TURN' });
+    if (state.players[playerId].activeHeroId !== hero.id) {
+      state = apply(state, { type: 'SELECT_HERO', heroId: hero.id });
+      continue;
+    }
+    state = recruitAtCastle(state, hero);
+    if (hero.id !== main.id) state = deliverSurplus(state, hero, main);
+    const current = state.players[playerId].heroes.find((candidate) => candidate.id === hero.id)!;
+    if (current.movement <= 0) {
+      finished.add(current.id);
+      continue;
+    }
+    const objective = chooseStrategyObjective(
+      state, current, current.id === main.id ? 'main' : 'gatherer', claims,
+    );
+    if (!objective || sameCoord(objective.position, current.position)) {
+      finished.add(current.id);
+      continue;
     }
     const path = adventurePath(state, objective.position);
     if (!path || path.length < 2
-        || movementCost(state.map, path[0], path[1]) > hero.movement) {
-      return apply(state, { type: 'END_TURN' });
+        || movementCost(state.map, path[0], path[1], current) > current.movement) {
+      finished.add(current.id);
+      continue;
     }
-    const move: Action = { type: 'MOVE_HERO', destination: objective.position };
+    claims.add(objective.id);
+    const move: Action = {
+      type: 'MOVE_HERO', heroId: current.id, destination: objective.position,
+    };
     state = apply(state, move);
+    finished.add(current.id);
   }
   throw new Error(`Strategy AI exceeded ${maxSteps} actions on day ${state.day}`);
 }

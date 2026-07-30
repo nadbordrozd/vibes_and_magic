@@ -91,14 +91,17 @@ export function App() {
       if (!current) return current;
       try {
         const priorBattle = current.battle;
-        const xpBefore = current.players[current.activePlayer].hero?.xp ?? 0;
+        const attackerId = priorBattle?.context.attackerHeroId;
+        const xpBefore = attackerId
+          ? current.players[current.activePlayer].heroes.find(
+            (hero) => hero.id === attackerId,
+          )?.xp ?? 0 : 0;
         const next = apply(current, action);
         if (priorBattle && !next.battle && priorBattle.winner === null) {
           const resolved = action.type === 'AUTO_COMBAT'
             ? next.metrics.battles > current.metrics.battles : true;
           if (resolved) {
-            const finalWinner = next.players[current.activePlayer].hero
-              ? 'attacker' : 'defender';
+            const finalWinner = next.metrics.battleOutcomes.at(-1)?.winner ?? 'defender';
             const defenderMetric = priorBattle.context.kind === 'guardian'
               ? 'neutral' : priorBattle.context.defenderPlayerId;
             queueMicrotask(() => setBattleResult({
@@ -111,7 +114,10 @@ export function App() {
                     - current.metrics.casualties[defenderMetric]
                   : casualtyCount(priorBattle.casualties.defender),
               },
-              xp: Math.max(0, (next.players[current.activePlayer].hero?.xp ?? xpBefore) - xpBefore),
+              xp: Math.max(0, (attackerId
+                ? next.players[current.activePlayer].heroes.find(
+                  (hero) => hero.id === attackerId,
+                )?.xp ?? xpBefore : xpBefore) - xpBefore),
               recovered: casualtyCount(next.lastBattleRecovered),
               projection: projectionRef.current,
             }));
@@ -198,7 +204,13 @@ export function App() {
         else if (choice.kind === 'level') {
           dispatch({ type: 'CHOOSE_LEVEL', stat: choice.options[0] });
         } else {
-          dispatch({ type: 'CHOOSE_SPELL_UPGRADE', spellId: choice.options[0] });
+          if (choice.kind === 'diplomacy') {
+            dispatch({ type: 'CHOOSE_DIPLOMACY', choice: 'fight' });
+          } else if (choice.kind === 'spellthief') {
+            dispatch({ type: 'CHOOSE_STOLEN_SPELL', spellId: choice.options[0] });
+          } else {
+            dispatch({ type: 'CHOOSE_SPELL_UPGRADE', spellId: choice.options[0] });
+          }
         }
         return;
       }

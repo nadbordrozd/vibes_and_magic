@@ -1,5 +1,6 @@
 import { TERRAIN_COST } from '../../content/constants';
-import type { Coord, GameMap } from '../types';
+import { SKILLS } from '../../content/skills';
+import type { Coord, GameMap, Hero } from '../types';
 
 const DIRECTIONS: Coord[] = [
   { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 },
@@ -16,10 +17,19 @@ export function inBounds(map: GameMap, coord: Coord): boolean {
   return coord.x >= 0 && coord.y >= 0 && coord.x < map.width && coord.y < map.height;
 }
 
-export function movementCost(map: GameMap, from: Coord, to: Coord): number {
+export function movementCost(
+  map: GameMap,
+  from: Coord,
+  to: Coord,
+  hero?: Pick<Hero, 'skills'>,
+): number {
   const terrain = map.terrain[to.y]?.[to.x];
   if (!terrain) return Number.POSITIVE_INFINITY;
-  const base = TERRAIN_COST[terrain];
+  const wayfaring = hero?.skills.wayfaring ?? 0;
+  const base = wayfaring === 2 && Number.isFinite(TERRAIN_COST[terrain])
+    ? SKILLS.wayfaring.values.terrainCost
+    : wayfaring === 1 && terrain === 'forest'
+      ? SKILLS.wayfaring.values.terrainCost : TERRAIN_COST[terrain];
   return from.x !== to.x && from.y !== to.y ? Math.round(base * 1.41) : base;
 }
 
@@ -28,8 +38,10 @@ export function findPath(
   start: Coord,
   goal: Coord,
   blocked: ReadonlySet<string> = new Set(),
+  hero?: Pick<Hero, 'skills'>,
 ): Coord[] | null {
-  if (!inBounds(map, goal) || !Number.isFinite(movementCost(map, start, goal))) return null;
+  if (!inBounds(map, goal)
+      || !Number.isFinite(movementCost(map, start, goal, hero))) return null;
   const open = new Set([coordKey(start)]);
   const coords = new Map([[coordKey(start), start]]);
   const cameFrom = new Map<string, string>();
@@ -48,7 +60,7 @@ export function findPath(
       const next = { x: current.x + direction.x, y: current.y + direction.y };
       const nextKey = coordKey(next);
       if (!inBounds(map, next) || (blocked.has(nextKey) && !sameCoord(next, goal))) continue;
-      const cost = movementCost(map, current, next);
+      const cost = movementCost(map, current, next, hero);
       if (!Number.isFinite(cost)) continue;
       const tentative = (g.get(currentKey) ?? Infinity) + cost;
       if (tentative >= (g.get(nextKey) ?? Infinity)) continue;
@@ -82,19 +94,28 @@ function reconstruct(
   return path;
 }
 
-export function pathCost(map: GameMap, path: Coord[]): number {
+export function pathCost(
+  map: GameMap,
+  path: Coord[],
+  hero?: Pick<Hero, 'skills'>,
+): number {
   let total = 0;
   for (let index = 1; index < path.length; index += 1) {
-    total += movementCost(map, path[index - 1], path[index]);
+    total += movementCost(map, path[index - 1], path[index], hero);
   }
   return total;
 }
 
-export function reachablePathPrefix(map: GameMap, path: Coord[], budget: number): Coord[] {
+export function reachablePathPrefix(
+  map: GameMap,
+  path: Coord[],
+  budget: number,
+  hero?: Pick<Hero, 'skills'>,
+): Coord[] {
   const reachable = [path[0]];
   let spent = 0;
   for (let index = 1; index < path.length; index += 1) {
-    const step = movementCost(map, path[index - 1], path[index]);
+    const step = movementCost(map, path[index - 1], path[index], hero);
     if (spent + step > budget) break;
     spent += step;
     reachable.push(path[index]);

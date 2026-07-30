@@ -11,6 +11,7 @@ export interface FactionDefinition {
   moraleBonus: number;
   classWeights: Record<PrimaryStat, number>;
   startingArmy: ArmyStack[];
+  hireArmy: ArmyStack[];
 }
 
 export const FACTIONS: Record<FactionId, FactionDefinition> = {
@@ -26,6 +27,7 @@ export const FACTIONS: Record<FactionId, FactionDefinition> = {
       { unitId: 'yeoman', count: 25 },
       { unitId: 'longbowman', count: 6 },
     ],
+    hireArmy: [{ unitId: 'yeoman', count: 8 }],
   },
   woundWrights: {
     id: 'woundWrights',
@@ -39,6 +41,7 @@ export const FACTIONS: Record<FactionId, FactionDefinition> = {
       { unitId: 'tinSoldier', count: 30 },
       { unitId: 'hobbyKnight', count: 4 },
     ],
+    hireArmy: [{ unitId: 'tinSoldier', count: 10 }],
   },
 };
 
