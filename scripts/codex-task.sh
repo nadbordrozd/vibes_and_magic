@@ -42,8 +42,10 @@ MODEL_ARG=(); [ -n "${MODEL:-}" ] && MODEL_ARG=(-m "$MODEL")
 # --- dispatch to Codex ------------------------------------------------------
 echo "▶ Codex (sandbox=$SANDBOX${MODEL:+, model=$MODEL}${RESUME:+, resume})"
 if [ "$RESUME" = "1" ]; then
+  # NOTE: `codex exec resume` inherits cwd + sandbox from the recorded session;
+  # it does NOT accept --cd or -s (unlike plain `codex exec`). Only -o/-m/--json etc.
   codex exec resume --last \
-    --cd "$REPO" -s "$SANDBOX" "${MODEL_ARG[@]}" -o "$LAST" \
+    --skip-git-repo-check "${MODEL_ARG[@]}" -o "$LAST" \
     "$TASK" 2>&1 | tee "$LOG"
 else
   codex exec \
