@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tsbuildinfo
+replay-crash-*.json
+smoke-*.png
+menu.png
+.DS_Store
+.codex-runs/
