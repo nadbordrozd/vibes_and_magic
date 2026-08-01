@@ -7,17 +7,18 @@ export interface AnimationTiming {
   combatMoveStep: number;
   attack: number;
   damage: number;
+  death: number;
 }
 
 export const ANIMATION_TIMINGS: Record<AnimationSpeed, AnimationTiming> = {
-  instant: { mapStep: 0, combatMoveStep: 0, attack: 0, damage: 0 },
-  fast: { mapStep: 55, combatMoveStep: 45, attack: 160, damage: 260 },
-  normal: { mapStep: 140, combatMoveStep: 90, attack: 280, damage: 420 },
-  slow: { mapStep: 300, combatMoveStep: 180, attack: 480, damage: 700 },
+  instant: { mapStep: 0, combatMoveStep: 0, attack: 0, damage: 0, death: 0 },
+  fast: { mapStep: 55, combatMoveStep: 45, attack: 160, damage: 210, death: 190 },
+  normal: { mapStep: 140, combatMoveStep: 90, attack: 280, damage: 340, death: 280 },
+  slow: { mapStep: 300, combatMoveStep: 180, attack: 480, damage: 520, death: 440 },
 };
 
 export interface CombatAnimation {
-  phase: 'move' | 'attack' | 'damage';
+  phase: 'move' | 'attack' | 'damage' | 'death';
   actorId: string;
   targetId?: string;
   displayPosition: Coord;

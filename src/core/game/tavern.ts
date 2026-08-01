@@ -6,9 +6,11 @@ import { canAfford, makeArmy, pay } from '../army';
 import { logisticsRate } from '../heroBehaviors';
 import { syncHeroView } from '../heroes';
 import { randomInt } from '../rng';
+import { castleEntrance } from '../map/occupancy';
 import type {
   GameState, Hero, Player,
 } from '../types';
+import { buildingIsActive } from './buildingStatus';
 
 function drawOffers(
   pool: Hero[],
@@ -42,7 +44,7 @@ export function refreshAllTaverns(state: GameState): void {
 }
 
 export function heroHireCost(hero: Hero): number {
-  return hero.defeated ? HERO_REHIRE_COST : HERO_HIRE_COST;
+  return hero.defeated ? HERO_REHIRE_COST * hero.rehireMultiplier : HERO_HIRE_COST;
 }
 
 export function hireHero(
@@ -52,7 +54,7 @@ export function hireHero(
 ): void {
   const player = state.players[state.activePlayer];
   const castle = state.castles.find((candidate) => candidate.id === castleId);
-  if (!castle || castle.owner !== player.id || !castle.buildings.includes('tavern')) {
+  if (!castle || castle.owner !== player.id || !buildingIsActive(castle, 'tavern')) {
     throw new Error('Tavern unavailable');
   }
   if (player.heroes.filter((hero) => hero.alive).length >= MAX_HEROES_PER_PLAYER) {
@@ -69,14 +71,18 @@ export function hireHero(
   player.tavernOffers = player.tavernOffers.filter((id) => id !== heroId);
   const returning = hero.defeated;
   hero.alive = true;
-  hero.position = { ...castle.position };
+  hero.position = castleEntrance(castle);
   hero.mana = hero.knowledge * 10;
   hero.movement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero)));
   hero.pathMemory = [];
-  hero.army = returning ? makeArmy([]) : makeArmy(FACTIONS[player.faction].hireArmy);
+  hero.army = returning
+    ? (hero.tavernArmyRetained ? hero.army : makeArmy([]))
+    : makeArmy(FACTIONS[player.faction].hireArmy);
+  hero.tavernArmyRetained = false;
   hero.defeated = false;
+  hero.rehireMultiplier = 1;
   if (state.castles.some((owned) => owned.owner === player.id
-      && owned.buildings.includes('chapelOfTheBanner'))) {
+      && buildingIsActive(owned, 'chapelOfTheBanner'))) {
     hero.moraleBonus = FACTIONS[player.faction].moraleBonus + 5;
   }
   player.heroes.push(hero);

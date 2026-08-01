@@ -5,6 +5,8 @@ import { armyPower, makeArmy } from '../core/army';
 import {
   findPath, pathCost, sameCoord,
 } from '../core/map/pathfinding';
+import { adventurePath } from '../core/game/navigation';
+import { castleEntrance, objectEntranceTile } from '../core/map/occupancy';
 import type {
   Coord, GameState, Hero, MapObject, PlayerId,
 } from '../core/types';
@@ -15,16 +17,27 @@ export interface StrategyObjective {
   priority: number;
   power: number;
   value: number;
+  guardianId?: string;
 }
 
-function guardedPower(object: MapObject): number {
-  if (!('guard' in object) || !object.guard) return 0;
-  return armyPower(makeArmy(object.guard.army));
+function guarding(state: GameState, object: MapObject) {
+  return state.map.objects.find((candidate) => candidate.kind === 'guardian'
+    && (candidate.protects === object.id || object.guardedBy?.includes(candidate.id)));
+}
+
+function guardedPower(state: GameState, object: MapObject): number {
+  const guard = guarding(state, object);
+  return guard?.kind === 'guardian' ? armyPower(makeArmy(guard.army)) : 0;
 }
 
 function distance(state: GameState, hero: Hero, position: Coord): number {
-  const path = findPath(state.map, hero.position, position, new Set(), hero);
-  return path ? pathCost(state.map, path, hero) : Number.POSITIVE_INFINITY;
+  const selected = state.activePlayer === hero.owner
+    && state.players[hero.owner].activeHeroId === hero.id;
+  const path = selected ? adventurePath(state, position) : findPath(
+    state.map, hero.position, position, new Set(), hero, state.omen);
+  return path
+    ? selected ? path.length * 100 : pathCost(state.map, path, hero, state.omen)
+    : Number.POSITIVE_INFINITY;
 }
 
 function playerPower(state: GameState, playerId: PlayerId): number {
@@ -45,6 +58,11 @@ function objectValue(object: MapObject): number {
     return object.income * 7 * (object.resource === 'gold' ? 1 : 500);
   }
   if (object.kind === 'item') return 1200;
+  if (object.kind === 'flotsam') return object.gold + object.timber * 250;
+  if (object.kind === 'sealedCask') return 1500;
+  if (object.kind === 'castaway') return 1000;
+  if (object.kind === 'messageBottle') return 300;
+  if (object.kind === 'lighthouse') return 2500;
   if (object.kind === 'richVein') return object.income * object.days * 500;
   if (object.kind === 'lock') {
     return (object.reward.gold ?? 0) + (object.reward.essence ?? 0) * 500;
@@ -64,10 +82,10 @@ function gathererThreat(state: GameState, hero: Hero): StrategyObjective | null 
   ) * 100 <= HERO_MOVE_POINTS * AI_GATHERER_THREAT_TURNS);
   if (!threatened) return null;
   const castle = state.castles.filter((candidate) => candidate.owner === hero.owner)
-    .sort((a, b) => distance(state, hero, a.position)
-      - distance(state, hero, b.position))[0];
+    .sort((a, b) => distance(state, hero, castleEntrance(a))
+      - distance(state, hero, castleEntrance(b)))[0];
   return castle ? {
-    id: `${hero.id}-flee`, position: castle.position,
+    id: `${hero.id}-flee`, position: castleEntrance(castle),
     priority: -10, power: 0, value: 0,
   } : null;
 }
@@ -79,10 +97,17 @@ function homeIntercept(state: GameState, hero: Hero): StrategyObjective | null {
     .filter((player) => player.id !== hero.owner)
     .flatMap((player) => player.heroes).filter((enemy) => enemy.alive);
   for (const enemy of enemies) {
-    const threatPath = findPath(state.map, enemy.position, home.position);
-    const interceptPath = findPath(state.map, hero.position, enemy.position);
-    if (threatPath && pathCost(state.map, threatPath) <= HERO_MOVE_POINTS * 0.25
-        && interceptPath && pathCost(state.map, interceptPath, hero) <= hero.movement) {
+    const threatPath = findPath(
+      state.map, enemy.position, castleEntrance(home), new Set(), enemy, state.omen,
+    );
+    const interceptPath = findPath(
+      state.map, hero.position, enemy.position, new Set(), hero, state.omen,
+    );
+    if (threatPath
+        && pathCost(state.map, threatPath, enemy, state.omen)
+          <= HERO_MOVE_POINTS * 0.25
+        && interceptPath
+        && pathCost(state.map, interceptPath, hero, state.omen) <= hero.movement) {
       return {
         id: enemy.id, position: enemy.position,
         priority: -2, power: armyPower(enemy.army), value: 6000,
@@ -99,15 +124,16 @@ function addEnemyObjectives(
 ): void {
   for (const castle of state.castles.filter((item) => item.owner !== hero.owner)) {
     objectives.push({
-      id: castle.id, position: castle.position,
+      id: castle.id, position: castleEntrance(castle),
       priority: state.day >= 15 ? -1 : 3,
-      power: playerPower(state, castle.owner), value: 5000,
+      power: castle.owner === 'neutral' ? armyPower(castle.garrison)
+        : playerPower(state, castle.owner), value: 5000,
     });
   }
   for (const enemy of Object.values(state.players)
     .filter((player) => player.id !== hero.owner).flatMap((player) => player.heroes)) {
     if (!enemy.alive || state.castles.some((castle) =>
-      castle.owner === enemy.owner && sameCoord(castle.position, enemy.position))) continue;
+      castle.owner === enemy.owner && sameCoord(castleEntrance(castle), enemy.position))) continue;
     objectives.push({
       id: enemy.id, position: enemy.position,
       priority: state.day >= 15 ? -1 : 3,
@@ -125,51 +151,94 @@ function collectObjectives(
   const power = armyPower(hero.army);
   const objectives: StrategyObjective[] = [];
   for (const object of state.map.objects) {
+    if (object.kind === 'guardian') continue;
     if (claims.has(object.id)) continue;
     const cleared = 'cleared' in object ? object.cleared : false;
-    const guard = cleared ? 0 : guardedPower(object);
+    const guardian = cleared ? undefined : guarding(state, object);
+    const guard = guardian?.kind === 'guardian' ? guardedPower(state, object) : 0;
+    const targetId = object.id;
+    const targetPosition = guardian?.kind === 'guardian'
+      ? guardian.position : objectEntranceTile(object);
     if (role === 'gatherer') {
       const valid = object.kind === 'pile' ? !object.collected
         : object.kind === 'chest' ? !object.collected && guard === 0
           : object.kind === 'mine' ? object.owner !== hero.owner && guard === 0
             : object.kind === 'item' ? !object.collected && hero.inventory.includes(null)
               : object.kind === 'richVein' ? !object.depleted && object.owner !== hero.owner
-                : false;
+                : ['flotsam', 'sealedCask', 'castaway', 'messageBottle'].includes(object.kind)
+                  ? !('collected' in object) || !object.collected : false;
       if (valid) {
         objectives.push({
-          id: object.id, position: object.position,
+          id: targetId, position: targetPosition,
           priority: 0, power: 0, value: objectValue(object),
+          guardianId: guardian?.id,
         });
       }
       continue;
     }
-    if (object.kind === 'pile' && !object.collected) {
+    if ((object.kind === 'pile' || object.kind === 'flotsam'
+        || object.kind === 'sealedCask' || object.kind === 'castaway'
+        || object.kind === 'messageBottle') && !object.collected) {
       objectives.push({
-        id: object.id, position: object.position, priority: 0, power: 0,
+        id: targetId, position: targetPosition, priority: 0, power: 0,
+        guardianId: guardian?.id,
         value: objectValue(object),
       });
     } else if (object.kind === 'chest' && !object.collected
         && (guard === 0 || guard <= power * 0.8)) {
       objectives.push({
-        id: object.id, position: object.position, priority: guard ? 2 : 0,
-        power: guard, value: objectValue(object),
+        id: targetId, position: targetPosition, priority: guard ? 2 : 0,
+        power: guard, value: objectValue(object), guardianId: guardian?.id,
       });
     } else if (object.kind === 'mine' && object.owner !== hero.owner
         && (guard === 0 || guard <= power * 0.8)) {
       objectives.push({
-        id: object.id, position: object.position, priority: guard ? 2 : 1,
-        power: guard, value: objectValue(object),
+        id: targetId, position: targetPosition, priority: guard ? 2 : 1,
+        power: guard, value: objectValue(object), guardianId: guardian?.id,
       });
     } else if (object.kind === 'shrine' && !object.visitedBy.includes(hero.id)
         && guard <= power * 0.8) {
       objectives.push({
-        id: object.id, position: object.position, priority: 0,
-        power: guard, value: 1000,
+        id: targetId, position: targetPosition, priority: 0,
+        power: guard, value: 1000, guardianId: guardian?.id,
       });
     } else if (object.kind === 'lock' && !object.cleared && guard <= power * 0.8) {
       objectives.push({
-        id: object.id, position: object.position, priority: 2,
-        power: guard, value: objectValue(object),
+        id: targetId, position: targetPosition, priority: 2,
+        power: guard, value: objectValue(object), guardianId: guardian?.id,
+      });
+    } else if (object.kind === 'lighthouse' && object.owner !== hero.owner
+        && guard <= power * 0.8) {
+      objectives.push({
+        id: targetId, position: targetPosition, priority: 1,
+        power: guard, value: objectValue(object), guardianId: guardian?.id,
+      });
+    } else if ((object.kind === 'shipwreck' || object.kind === 'sirenRocks')
+        && !object.cleared && guard <= power * 0.8) {
+      objectives.push({
+        id: targetId, position: targetPosition, priority: 2,
+        power: guard, value: objectValue(object), guardianId: guardian?.id,
+      });
+    } else if (object.kind === 'drownedBell' && !object.visitedBy.includes(hero.id)) {
+      objectives.push({
+        id: targetId, position: targetPosition, priority: 0,
+        power: 0, value: 1200,
+      });
+    }
+  }
+  if (role === 'main' && state.map.victory.type !== 'conquest'
+      && state.map.victory.type !== 'none') {
+    const objectiveId = state.map.victory.type === 'assemble' ? undefined
+      : state.map.victory.objectId;
+    const object = objectiveId ? state.map.objects.find((candidate) =>
+      candidate.id === objectiveId) : undefined;
+    if (object && !objectives.some((candidate) => candidate.id === object.id)) {
+      const guardian = guarding(state, object);
+      const guard = guardedPower(state, object);
+      objectives.push({
+        id: object.id,
+        position: guardian?.kind === 'guardian' ? guardian.position : objectEntranceTile(object),
+        priority: 1, power: guard, value: 3000, guardianId: guardian?.id,
       });
     }
   }

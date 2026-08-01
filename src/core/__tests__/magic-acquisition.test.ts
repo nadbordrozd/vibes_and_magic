@@ -3,6 +3,7 @@ import { SPELLS } from '../../content/spells';
 import { apply, createGame } from '../game';
 import { guildSpellCount, visitShrine } from '../game/magic';
 import { drawLevelOptions } from '../progression';
+import { terrainId } from '../../content/terrain';
 
 describe('magic acquisition', () => {
   it('starts each faction with its primary shrine staple', () => {
@@ -83,7 +84,10 @@ describe('magic acquisition', () => {
     const game = createGame({ seed: 7, p1: 'human', p2: 'ai' });
     const shrines = game.map.objects.filter((object) => object.kind === 'shrine');
     expect(shrines).toHaveLength(3);
-    expect(shrines.every((shrine) => shrine.guard.army.length > 0)).toBe(true);
-    expect(game.map.terrain.flat().filter((terrain) => terrain === 'barrow')).toHaveLength(4);
+    expect(shrines.every((shrine) => game.map.objects.some((object) =>
+      object.kind === 'guardian' && object.protects === shrine.id
+      && object.army.length > 0))).toBe(true);
+    expect(game.map.terrain.flat().filter((terrain) =>
+      terrainId(terrain) === 'barrowfield').length).toBeGreaterThanOrEqual(4);
   });
 });

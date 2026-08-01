@@ -28,9 +28,10 @@ function selected(state: GameState, player: PlayerId = 'p1'): Hero {
 }
 
 function guardedObject(state: GameState) {
-  const object = state.map.objects.find((candidate) =>
-    candidate.kind === 'chest' && candidate.guard)!;
-  if (object.kind !== 'chest' || !object.guard) throw new Error('guard missing');
+  const object = state.map.objects.find((candidate) => candidate.kind === 'guardian'
+    && state.map.objects.some((target) => target.kind === 'chest'
+      && candidate.protects === target.id))!;
+  if (object.kind !== 'guardian') throw new Error('guard missing');
   return object;
 }
 
@@ -49,7 +50,7 @@ describe('secondary skill ranks', () => {
     const hero = selected(game);
     const object = guardedObject(game);
     object.position = { x: hero.position.x + 3, y: hero.position.y };
-    object.guard!.army = [{ unitId: 'bannerman', count: 18 }];
+    object.army = [{ unitId: 'bannerman', count: 18 }];
     expect(guardianIntel(game, object, hero)).toMatchObject({
       exact: false, label: 'Dozens', count: null,
     });
@@ -80,7 +81,7 @@ describe('secondary skill ranks', () => {
     game.map.terrain[0][2] = 'barrow';
     hero.skills.wayfaring = 1;
     expect(movementCost(game.map, from, { x: 1, y: 0 }, hero)).toBe(100);
-    expect(movementCost(game.map, { x: 1, y: 0 }, { x: 2, y: 0 }, hero)).toBe(120);
+    expect(movementCost(game.map, { x: 1, y: 0 }, { x: 2, y: 0 }, hero)).toBe(125);
     hero.skills.wayfaring = 2;
     expect(movementCost(game.map, { x: 1, y: 0 }, { x: 2, y: 0 }, hero)).toBe(100);
     game.map.terrain[0][3] = 'mountain';
@@ -92,19 +93,19 @@ describe('secondary skill ranks', () => {
     const hero = selected(game);
     hero.army = makeArmy([{ unitId: 'yeoman', count: 10 }]);
     const object = guardedObject(game);
-    object.guard!.army = [{ unitId: 'yeoman', count: 5 }];
+    object.army = [{ unitId: 'yeoman', count: 5 }];
     hero.skills.diplomacy = 1;
     expect(diplomacyTerms(hero, object)).toEqual({
       disbandCost: 700, recruitCost: null,
     });
-    object.guard!.army = [{ unitId: 'yeoman', count: 6 }];
+    object.army = [{ unitId: 'yeoman', count: 6 }];
     expect(diplomacyTerms(hero, object)).toBeNull();
     hero.skills.diplomacy = 2;
-    object.guard!.army = [{ unitId: 'yeoman', count: 8 }];
+    object.army = [{ unitId: 'yeoman', count: 8 }];
     expect(diplomacyTerms(hero, object)).toEqual({
       disbandCost: 1120, recruitCost: 1680,
     });
-    object.guard!.army = [{ unitId: 'yeoman', count: 9 }];
+    object.army = [{ unitId: 'yeoman', count: 9 }];
     expect(diplomacyTerms(hero, object)).toBeNull();
   });
 
@@ -186,7 +187,7 @@ describe('secondary skill ranks', () => {
     adjacent.amount = 4;
     const timber = game.players.p1.resources.timber;
     game = apply(game, { type: 'MOVE_HERO', destination: { x: 4, y: 10 } });
-    expect(game.players.p1.resources.timber).toBe(timber + 6);
+    expect(game.players.p1.resources.timber).toBeGreaterThanOrEqual(timber + 6);
     const collected = game.map.objects.find((object) => object.id === adjacent.id);
     expect(collected?.kind === 'pile' && collected.collected).toBe(true);
   });

@@ -4,12 +4,12 @@ import {
   coordKey, findPath, inBounds, movementCost, pathCost,
   reachablePathPrefix, sameCoord,
 } from '../map/pathfinding';
-import type { GameMap, TerrainId } from '../types';
+import type { GameMap, TerrainTile } from '../types';
 import { createGame } from '../game';
 import { animatedAdventurePath } from '../selectors';
 
 const map = createBorderMarches();
-const tinyMap = (terrain: TerrainId[][]): GameMap => ({
+const tinyMap = (terrain: TerrainTile[][]): GameMap => ({
   ...map, terrain, width: terrain[0].length, height: terrain.length, objects: [],
 });
 
@@ -75,7 +75,7 @@ describe('adventure map pathfinding', () => {
 
   it('provides the legal prefix used by map movement animation', () => {
     const game = createGame({ seed: 1, p1: 'human', p2: 'ai' });
-    game.players.p1.hero!.movement = 100;
+    game.players.p1.hero!.movement = 141;
     const path = animatedAdventurePath(game, { x: 10, y: 10 });
     expect(path[0]).toEqual({ x: 3, y: 10 });
     expect(path).toHaveLength(2);

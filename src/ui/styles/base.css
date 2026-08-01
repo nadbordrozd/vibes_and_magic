@@ -13,6 +13,22 @@
   --azure: #2e5fb0;
 }
 
+.inspect-toggle { position: fixed; right: 18px; bottom: 18px; z-index: 80; border: 1px solid #cfb36b; background: #171b19; color: #eadcb2; padding: 9px 14px; border-radius: 999px; box-shadow: 0 4px 16px #0008; }
+.inspect-toggle.active { background: #cfb36b; color: #151713; }
+.inspect-label { position: fixed; z-index: 120; pointer-events: none; max-width: 240px; padding: 5px 8px; border: 1px solid #766846; border-radius: 4px; background: #111713ee; color: #f0e7ce; font-size: 12px; box-shadow: 0 3px 12px #0009; }
+.inspect-label span { display: block; margin-top: 2px; color: #c9bfa7; font-style: italic; }
+.inspection-backdrop { position: fixed; inset: 0; z-index: 110; display: grid; place-items: center; padding: 20px; background: #050806a8; }
+.inspection-card { position: relative; width: min(520px, 92vw); max-height: 82vh; overflow: auto; padding: 24px 26px; border: 1px solid #bda66a; border-radius: 8px; background: linear-gradient(145deg, #242722, #171a17); color: #eee4ca; box-shadow: 0 18px 55px #000d; }
+.inspection-card h2 { margin: 0 34px 12px 0; color: #f4d875; }
+.inspection-card h3 { margin: 18px 0 8px; font-size: 13px; letter-spacing: .11em; text-transform: uppercase; color: #bda66a; }
+.inspection-card p { line-height: 1.45; }
+.inspection-flavor { font-family: Georgia, serif; font-style: italic; color: #ddd0ac; }
+.inspection-close { position: absolute; right: 12px; top: 10px; border: 0; background: transparent; color: #eee4ca; font-size: 24px; }
+.journal-state { display: inline-block; border: 1px solid #6c6554; padding: 2px 7px; border-radius: 99px; color: #aaa18c; }
+.journal-state.learned { border-color: #769c45; color: #aaca79; }
+.inspection-mechanics { border-top: 1px solid #4d493e; margin-top: 16px; }
+.inspection-mechanics p { margin: 5px 0; color: #d1c9b5; }
+
 * { box-sizing: border-box; }
 html, body, #root { width: 100%; min-width: 320px; min-height: 100%; margin: 0; }
 button, input, select { font: inherit; }
@@ -139,12 +155,17 @@ button:disabled { cursor: not-allowed; }
 .pass-sigil { width: 100px; height: 100px; display: grid; place-items: center; border: 1px solid; transform: rotate(45deg); margin-bottom: 44px; }
 .pass-sigil span { transform: rotate(-45deg); font: 800 44px Georgia, serif; }
 .pass-sigil.p1 { color: var(--crimson); }.pass-sigil.p2 { color: var(--azure); }
+.pass-sigil.p3 { color: #75b879; }.pass-sigil.p4 { color: #d19a4a; }
 .pass-device h1 { margin: 8px; font: 800 48px Georgia, serif; text-transform: uppercase; }
 .pass-device p { color: var(--muted); margin-bottom: 28px; }
 .victory-backdrop { background: #050806ed; }
 .victory-dialog { width: min(620px, 100%); padding: 60px; text-align: center; border: 1px solid; background: #151b16; }
 .victory-dialog.crimson, .victory-dialog.hearthguard { border-color: var(--crimson); }
 .victory-dialog.azure, .victory-dialog.woundWrights { border-color: var(--azure); }
+.victory-dialog.unfinished { border-color: #d5bd76; }
+.victory-dialog.vespiary { border-color: #d89d28; }
+.victory-dialog.hagwood { border-color: #9a2f4e; }
+.victory-dialog.wildergrass { border-color: #a36536; }
 .victory-dialog h1 { font: 800 52px/.95 Georgia, serif; text-transform: uppercase; margin: 14px 0; }
 .victory-dialog p { color: var(--muted); }
 .victory-dialog > div { display: grid; grid-template-columns: repeat(4, auto); justify-content: center; gap: 14px; margin: 28px; }

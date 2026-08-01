@@ -9,13 +9,6 @@ function tavernGame(gold: number): GameState {
   state.players.p1.resources = {
     gold: 10000, timber: 20, iron: 3, essence: 10,
   };
-  state = apply(state, {
-    type: 'BUILD', castleId: 'p1-castle', buildingId: 'mageGuild1',
-  });
-  state.castles[0].builtOnDay = null;
-  state = apply(state, {
-    type: 'BUILD', castleId: 'p1-castle', buildingId: 'tavern',
-  });
   state.players.p1.resources.gold = gold;
   state.castles[0].builtOnDay = state.day;
   state.castles[0].available = [0, 0, 0, 0, 0];
@@ -83,10 +76,15 @@ describe('multi-hero strategy AI', () => {
     if (mine.kind !== 'mine' || item.kind !== 'item' || vein.kind !== 'richVein') {
       throw new Error('Strategy fixture objects missing');
     }
+    const guardian = state.map.objects.find((object) => object.kind === 'guardian'
+      && object.protects === mine.id);
+    if (!guardian || guardian.kind !== 'guardian') throw new Error('Mine guardian missing');
     mine.cleared = false;
     mine.owner = null;
-    mine.guard = { army: [{ unitId: 'yeoman', count: 1 }], split: true };
     mine.position = { x: 6, y: 10 };
+    guardian.army = [{ unitId: 'yeoman', count: 1 }];
+    guardian.split = true;
+    guardian.position = { x: 6, y: 12 };
     item.collected = false;
     item.position = { x: 4, y: 10 };
     vein.depleted = false;

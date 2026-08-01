@@ -15,9 +15,15 @@ const maxDays = Math.max(1, Math.floor(argument('days', 70)));
 const noMagic = process.argv.includes('--no-magic');
 const compareMagic = process.argv.includes('--compare-magic');
 const assaultLocks = process.argv.includes('--assault-locks');
+const aiIndex = process.argv.indexOf('--ai');
+const ai = aiIndex === -1 ? 'ai' : process.argv[aiIndex + 1];
+if (ai !== 'ai' && ai !== 'standard' && ai !== 'dormant') {
+  throw new Error('Invalid --ai value; use standard or dormant');
+}
+const opponent = ai === 'dormant' ? 'dormant' : 'ai';
 const results = Array.from(
   { length: games },
-  (_, index) => simulateGame(seed + index, maxDays, noMagic),
+  (_, index) => simulateGame(seed + index, maxDays, noMagic, opponent),
 );
 const crashes = results.filter((result) => result.crashed);
 for (const crash of crashes) {
@@ -48,6 +54,7 @@ const withinEightWeeks = results.filter((result) => result.winner && result.days
 
 console.log(`Games: ${games} | seed range: ${seed}–${seed + games - 1}`);
 console.log(`Magic: ${noMagic ? 'off' : 'on'}`);
+console.log(`Opponent AI: ${opponent === 'dormant' ? 'dormant' : 'standard'}`);
 console.log(`Crashes: ${crashes.length}`);
 console.log(`Wins: Hearthguard ${wins.p1} (${(wins.p1 / games * 100).toFixed(1)}%) | Wound-Wrights ${wins.p2} (${(wins.p2 / games * 100).toFixed(1)}%) | unresolved ${wins.unresolved}`);
 console.log(`Length days: min ${lengths[0]} | median ${percentile(0.5)} | p90 ${percentile(0.9)} | max ${lengths.at(-1)}`);
@@ -64,7 +71,7 @@ if (crashes.length > 0) process.exitCode = 1;
 if (compareMagic) {
   const opposite = Array.from(
     { length: games },
-    (_, index) => simulateGame(seed + index, maxDays, !noMagic),
+    (_, index) => simulateGame(seed + index, maxDays, !noMagic, opponent),
   );
   const pairedFlips = results.filter((result, index) =>
     result.winner !== opposite[index].winner).length;

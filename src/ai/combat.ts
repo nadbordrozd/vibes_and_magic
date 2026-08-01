@@ -1,7 +1,8 @@
 import { UNITS } from '../content/units';
 import {
   activeBattleStack, applyBattleAction, battleReachableHexes,
-  closestEnemy, estimateDamageRange, legalBattleActions,
+  closestEnemy, estimateDamageRange, legalBattleActions, recoverInactiveBattleTurn,
+  surrenderCost,
 } from '../core/combat/battle';
 import { targetPriority } from '../core/combat/abilities';
 import { canUseRanged, hasAdjacentEnemy } from '../core/combat/damage';
@@ -10,6 +11,7 @@ import type { Action, BattleStack, BattleState } from '../core/types';
 import { canCastSpell, isUpgraded } from '../core/combat/spells';
 import { legalTwistEffectIds } from '../core/combat/spellTargets';
 import { SPELLS } from '../content/spells';
+import { stackDistance } from '../core/combat/footprint';
 
 function stackStrength(stack: BattleStack): number {
   const unit = UNITS[stack.unitId];
@@ -88,8 +90,46 @@ export function chooseCombatAction(battle: BattleState): Action {
     (stack) => stack.count > 0 && stack.side !== actor.side,
   );
   const legal = legalBattleActions(battle);
+  const alliesForWithdrawal = battle.stacks.filter((stack) =>
+    stack.count > 0 && stack.side === actor.side);
+  const projectedLosing = alliesForWithdrawal.reduce(
+    (sum, stack) => sum + stackStrength(stack), 0,
+  ) < enemies.reduce((sum, stack) => sum + stackStrength(stack), 0);
+  const withdrawingHero = actor.side === 'attacker'
+    ? battle.attackerHero : battle.defenderHero;
+  if (projectedLosing && (withdrawingHero?.level ?? 0) >= 4) {
+    const cost = surrenderCost(battle, actor.side);
+    if (cost * 4 > 3000 && (withdrawingHero?.withdrawalGold ?? 0) >= cost
+        && legal.some((action) => action.type === 'BATTLE_SURRENDER')) {
+      return { type: 'BATTLE_SURRENDER' };
+    }
+    if (legal.some((action) => action.type === 'BATTLE_RETREAT')) {
+      return { type: 'BATTLE_RETREAT' };
+    }
+  }
+  const freeMoves = legal.filter(
+    (action): action is Extract<Action, { type: 'BATTLE_FREE_MOVE' }> =>
+      action.type === 'BATTLE_FREE_MOVE',
+  );
+  if (freeMoves.length) {
+    return [...freeMoves].sort((a, b) => {
+      const enemyDistance = (action: typeof a) => {
+        const mover = battle.stacks.find((stack) => stack.id === action.targetId)!;
+        return Math.min(...battle.stacks.filter((stack) => stack.count > 0
+          && stack.side !== mover.side).map((stack) =>
+          stackDistance({ ...mover, position: action.destination }, stack)));
+      };
+      return enemyDistance(a) - enemyDistance(b);
+    })[0];
+  }
   const spell = chooseSpellCast(battle);
   if (spell) return spell;
+  const horn = legal.find((action) => action.type === 'BATTLE_USE_ARTIFACT'
+    && action.artifactId === 'hornOfTheBroadWorld');
+  if (horn) return horn;
+  const clapper = legal.find((action) => action.type === 'BATTLE_USE_ARTIFACT'
+    && action.artifactId === 'bellsClapper');
+  if (clapper && enemies.some((enemy) => enemy.morale >= 60)) return clapper;
   const overwind = legal.find((action) => action.type === 'BATTLE_OVERWIND');
   if (overwind && enemies.some((enemy) => {
     const canReach = legal.some((action) =>
@@ -97,6 +137,13 @@ export function chooseCombatAction(battle: BattleState): Action {
       && action.targetId === enemy.id);
     return canReach && estimateDamageRange(battle, actor, enemy)[1] >= enemy.count;
   })) return overwind;
+  const activated = legal.find((action) => action.type === 'BATTLE_USE_ABILITY'
+    && (action.abilityId === 'brood_call' || action.abilityId === 'beckoning_song'))
+    ?? legal.find((action) => action.type === 'BATTLE_USE_ABILITY'
+      && action.abilityId === 'procession_of_repair'
+      && battle.stacks.some((stack) => stack.side === actor.side && stack.count > 0
+        && stack.count < (battle.initialCounts[stack.id] ?? stack.count)));
+  if (activated) return activated;
 
   if (canUseRanged(actor) && !hasAdjacentEnemy(actor, battle.stacks)) {
     const target = [...enemies].sort(
@@ -114,8 +161,8 @@ export function chooseCombatAction(battle: BattleState): Action {
     const moveAttack = legal.filter(
       (candidate): candidate is Extract<Action, { type: 'BATTLE_MOVE_ATTACK' }> =>
         candidate.type === 'BATTLE_MOVE_ATTACK' && candidate.targetId === nearest.id,
-    ).sort((a, b) => hexDistance(a.destination, nearest.position)
-      - hexDistance(b.destination, nearest.position)
+    ).sort((a, b) => stackDistance({ ...actor, position: a.destination }, nearest)
+      - stackDistance({ ...actor, position: b.destination }, nearest)
       || a.destination.y - b.destination.y || a.destination.x - b.destination.x)[0];
     if (moveAttack) return moveAttack;
 
@@ -128,8 +175,8 @@ export function chooseCombatAction(battle: BattleState): Action {
     const reachable = battleReachableHexes(battle, actor);
     const destination = nearestReachableToTarget(reachable, nearest.position);
     if (destination
-        && hexDistance(destination, nearest.position)
-          < hexDistance(actor.position, nearest.position)) {
+        && stackDistance({ ...actor, position: destination }, nearest)
+          < stackDistance(actor, nearest)) {
       const move = legal.find(
         (candidate) => candidate.type === 'BATTLE_MOVE'
           && candidate.destination.x === destination.x
@@ -144,6 +191,8 @@ export function chooseCombatAction(battle: BattleState): Action {
 export function autoResolveBattle(initial: BattleState, maxActions = 2000): BattleState {
   let battle = initial;
   for (let step = 0; step < maxActions && !battle.winner; step += 1) {
+    battle = recoverInactiveBattleTurn(battle);
+    if (battle.winner) break;
     battle = applyBattleAction(battle, chooseCombatAction(battle));
   }
   if (!battle.winner) throw new Error(`Combat exceeded ${maxActions} actions`);

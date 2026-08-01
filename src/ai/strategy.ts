@@ -1,9 +1,10 @@
 import { FACTIONS } from '../content/factions';
 import {
-  AI_SECOND_HERO_GOLD, AI_THIRD_HERO_GOLD,
+  AI_SECOND_HERO_GOLD, AI_THIRD_HERO_GOLD, RANGED_PICKUP_MOVE_COST,
 } from '../content/constants';
 import { FACTION_UNITS, UNITS } from '../content/units';
-import { AI_BUILD_ORDER, BUILDINGS } from '../content/buildings';
+import { AI_BUILD_ORDER, BUILDINGS, buildingBelongsToFaction } from '../content/buildings';
+import { terrainId } from '../content/terrain';
 import {
   MARKET_AI_MAX_SHORTFALL, MARKET_BUY_GOLD, MARKET_SELL_GOLD,
   MARKET_SURPLUS_RESERVE,
@@ -13,18 +14,21 @@ import {
   apply, applyAutomaticChoice, firstAffordableBuilding,
 } from '../core/game';
 import { adventurePath } from '../core/game/exploration';
+import { adventureMovementCost } from '../core/game/navigation';
 import { heroHireCost } from '../core/game/tavern';
-import {
-  movementCost, sameCoord,
-} from '../core/map/pathfinding';
+import { movementCost, pathCost, sameCoord } from '../core/map/pathfinding';
 import type {
   Action, BuildingId, GameState, Hero,
 } from '../core/types';
 import { chooseStrategyObjective } from './strategyObjectives';
+import { castleEntrance, castleFootprintTiles } from '../core/map/occupancy';
+import { skillRank } from '../core/heroBehaviors';
+import { SKILLS } from '../content/skills';
+import { castleSupportsBuilding } from '../core/game/economy';
 
 function recruitAtCastle(state: GameState, hero: Hero): GameState {
   const castle = state.castles.find((item) => item.owner === hero.owner
-    && sameCoord(item.position, hero.position));
+    && sameCoord(castleEntrance(item), hero.position));
   if (!castle) return state;
   let next = state;
   for (const tier of [5, 4, 3, 2, 1] as const) {
@@ -45,6 +49,21 @@ function buildAtCastle(state: GameState): GameState {
   for (const castle of state.castles.filter((item) => item.owner === state.activePlayer)) {
     const prepared = useMarketplace(state, castle.id);
     const current = prepared.castles.find((candidate) => candidate.id === castle.id)!;
+    if (current.owner === 'neutral') continue;
+    const coastal = castleFootprintTiles(current).some((tile) =>
+      prepared.map.terrain.some((row, y) => row.some((terrain, x) => terrainId(terrain) === 'water'
+        && Math.max(Math.abs(x - tile.x), Math.abs(y - tile.y)) <= 3)));
+    if (coastal && !current.buildings.includes('shipyard')
+        && current.builtOnDay !== prepared.day
+        && canAfford(prepared.players[current.owner].resources, BUILDINGS.shipyard.cost)) {
+      return apply(prepared, { type: 'BUILD', castleId: current.id, buildingId: 'shipyard' });
+    }
+    if (current.buildings.includes('shipyard')
+        && !prepared.map.objects.some((object) => object.kind === 'boat'
+          && object.owner === current.owner)
+        && canAfford(prepared.players[current.owner].resources, { gold: 1000, timber: 3 })) {
+      return apply(prepared, { type: 'BUILD_BOAT', castleId: current.id });
+    }
     const buildingId = firstAffordableBuilding(prepared, current);
     if (buildingId) {
       return apply(prepared, { type: 'BUILD', castleId: castle.id, buildingId });
@@ -58,8 +77,8 @@ function nextPlannedBuilding(state: GameState, castleId: string): BuildingId | n
   const castle = state.castles.find((candidate) => candidate.id === castleId)!;
   return AI_BUILD_ORDER.find((id) => {
     if (castle.buildings.includes(id)) return false;
-    if ((id === 'chapelOfTheBanner' && castle.faction !== 'hearthguard')
-        || (id === 'guildWorkshop' && castle.faction !== 'woundWrights')) return false;
+    if (!buildingBelongsToFaction(id, castle.faction)
+        || !castleSupportsBuilding(state, castle, id)) return false;
     const prerequisite = BUILDINGS[id].prerequisite;
     return !prerequisite || castle.buildings.includes(prerequisite);
   }) ?? null;
@@ -69,9 +88,10 @@ function useMarketplace(initial: GameState, castleId: string): GameState {
   let state = initial;
   for (let step = 0; step < 6; step += 1) {
     const castle = state.castles.find((candidate) => candidate.id === castleId)!;
+    if (castle.owner === 'neutral') return state;
     const player = state.players[castle.owner];
     const visiting = player.heroes.some((hero) =>
-      hero.alive && sameCoord(hero.position, castle.position));
+      hero.alive && sameCoord(hero.position, castleEntrance(castle)));
     if (!castle.buildings.includes('marketplace') || !visiting) return state;
     const buildingId = nextPlannedBuilding(state, castleId);
     if (!buildingId) return state;
@@ -130,6 +150,7 @@ function deliverSurplus(state: GameState, gatherer: Hero, main: Hero): GameState
   if (Math.max(Math.abs(gatherer.position.x - main.position.x),
     Math.abs(gatherer.position.y - main.position.y)) > 1) return state;
   let next = state;
+  let delivered = false;
   let reserve = FACTIONS[gatherer.faction].hireArmy.reduce(
     (sum, stack) => sum + stack.count, 0,
   );
@@ -151,11 +172,19 @@ function deliverSurplus(state: GameState, gatherer: Hero, main: Hero): GameState
       source: { kind: 'hero', id: gatherer.id }, sourceSlot,
       destination: { kind: 'hero', id: main.id }, destinationSlot, count,
     });
+    delivered = true;
+  }
+  if (delivered) {
+    const receiver = next.players[main.owner].heroes.find((hero) => hero.id === main.id);
+    if (receiver) receiver.movement = 0;
   }
   return next;
 }
 
 export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
+  if (initial.players[initial.activePlayer].controller === 'dormant') {
+    return apply(initial, { type: 'END_TURN' });
+  }
   const playerId = initial.activePlayer;
   let state = initial;
   const claims = new Set<string>();
@@ -206,13 +235,32 @@ export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
     const objective = chooseStrategyObjective(
       state, current, current.id === main.id ? 'main' : 'gatherer', claims,
     );
+    const pickup = objective && state.map.objects.find((object) => object.id === objective.id
+      && ['pile', 'item', 'chest', 'flotsam', 'sealedCask', 'castaway',
+        'messageBottle'].includes(object.kind));
+    if (pickup) {
+      const rank = skillRank(current, 'forager');
+      const range = rank >= 3 ? SKILLS.forager.values.rank3Range
+        : rank >= 2 ? SKILLS.forager.values.rank2Range : 1;
+      const distance = Math.max(Math.abs(pickup.position.x - current.position.x),
+        Math.abs(pickup.position.y - current.position.y));
+      const route = adventurePath(state, objective.position, { avoidAggro: true });
+      if (distance <= range && current.movement >= RANGED_PICKUP_MOVE_COST
+          && route && pathCost(state.map, route, current, state.omen) > RANGED_PICKUP_MOVE_COST) {
+        claims.add(objective.id);
+        state = apply(state, { type: 'PICKUP_OBJECT', objectId: objective.id });
+        continue;
+      }
+    }
     if (!objective || sameCoord(objective.position, current.position)) {
       finished.add(current.id);
       continue;
     }
-    const path = adventurePath(state, objective.position);
+    const path = adventurePath(state, objective.position, {
+      avoidAggro: true, fightGuardianId: objective.guardianId,
+    });
     if (!path || path.length < 2
-        || movementCost(state.map, path[0], path[1], current) > current.movement) {
+        || adventureMovementCost(state, current, path[0], path[1]) > current.movement) {
       finished.add(current.id);
       continue;
     }

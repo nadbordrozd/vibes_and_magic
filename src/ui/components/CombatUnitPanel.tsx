@@ -23,7 +23,8 @@ export function CombatUnitPanel({
       && action.targetId === selected.id),
   );
   return (
-    <div className="active-unit">
+    <div className="active-unit" data-inspect-kind={unit ? 'unit' : undefined}
+      data-inspect-id={unit?.id}>
       <span>{selected ? 'Inspected unit' : 'Active stack'}</span>
       <h3>{unit?.name ?? 'Resolving'}</h3>
       {shown && unit && (
@@ -37,6 +38,7 @@ export function CombatUnitPanel({
             <span>Speed <b>{unit.speed}</b></span>
             <span>Morale <b>{shown.morale}</b></span>
             <span>Shots <b>{unit.abilities.includes('ranged') ? shown.shots : '—'}</b></span>
+            <span>Footprint <b>{unit.hexSize} hex{unit.hexSize === 1 ? '' : 'es'}</b></span>
           </div>
           <div className="ability-list">
             {unit.abilities.length
@@ -45,9 +47,11 @@ export function CombatUnitPanel({
           </div>
           <div className="ability-list counters">
             {Object.entries(shown.counters).filter(([, count]) => count > 0)
-              .map(([counter, count]) => <i key={counter}>{counter} {count}</i>)}
+              .map(([counter, count]) => <i key={counter} data-inspect-kind="counter"
+                data-inspect-id={counter}>{counter} {count}</i>)}
             {shown.effects.map((effect) => (
-              <i key={effect.id}>{effect.spellId} · {effect.duration} turns</i>
+              <i key={effect.id} data-inspect-kind="enchantment"
+                data-inspect-id={effect.spellId}>{effect.spellId} · {effect.duration} turns</i>
             ))}
           </div>
           {selected && (

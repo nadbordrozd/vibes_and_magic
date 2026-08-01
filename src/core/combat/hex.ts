@@ -37,14 +37,25 @@ export function reachableHexes(
   occupied: Coord[],
   obstacles: Coord[],
   flying: boolean,
+  canLandOnObstacles = false,
+  extraEntryCost: (coord: Coord) => number = () => 0,
+  footprintSize: 1 | 2 | 3 = 1,
 ): Coord[] {
+  const footprint = (anchor: Coord) => Array.from({ length: footprintSize }, (_, index) => ({
+    x: anchor.x + index, y: anchor.y,
+  }));
+  const inBattle = (coord: Coord) => coord.x >= 0 && coord.y >= 0
+    && coord.x < BATTLE_COLS && coord.y < BATTLE_ROWS;
   if (flying) {
-    const blockedLanding = new Set([...occupied, ...obstacles].map(coordKey));
+    const blockedLanding = new Set(
+      [...occupied, ...(canLandOnObstacles ? [] : obstacles)].map(coordKey),
+    );
     const result: Coord[] = [];
     for (let y = 0; y < BATTLE_ROWS; y += 1) {
       for (let x = 0; x < BATTLE_COLS; x += 1) {
         const coord = { x, y };
-        if (hexDistance(start, coord) <= speed && !blockedLanding.has(coordKey(coord))) {
+        if (hexDistance(start, coord) <= speed && footprint(coord).every((hex) =>
+          inBattle(hex) && !blockedLanding.has(coordKey(hex)))) {
           result.push(coord);
         }
       }
@@ -53,17 +64,23 @@ export function reachableHexes(
   }
 
   const blocked = new Set([...occupied, ...obstacles].map(coordKey));
-  blocked.delete(coordKey(start));
+  footprint(start).forEach((coord) => blocked.delete(coordKey(coord)));
   const visited = new Map([[coordKey(start), 0]]);
   const queue = [start];
   while (queue.length) {
+    queue.sort((a, b) => visited.get(coordKey(a))! - visited.get(coordKey(b))!
+      || a.y - b.y || a.x - b.x);
     const current = queue.shift()!;
     const distance = visited.get(coordKey(current))!;
     if (distance >= speed) continue;
     for (const next of hexNeighbors(current)) {
       const key = coordKey(next);
-      if (blocked.has(key) || visited.has(key)) continue;
-      visited.set(key, distance + 1);
+      if (!footprint(next).every((hex) => inBattle(hex) && !blocked.has(coordKey(hex)))) continue;
+      const nextDistance = distance + 1 + Math.max(
+        0, ...footprint(next).map(extraEntryCost),
+      );
+      if (nextDistance > speed || nextDistance >= (visited.get(key) ?? Infinity)) continue;
+      visited.set(key, nextDistance);
       queue.push(next);
     }
   }

@@ -20,7 +20,12 @@
 .resource-bar b { font-size: 13px; }.resource-bar small { color: #778274; font-size: 9px; }
 .player-chip { display: flex; align-items: center; gap: 10px; min-width: 150px; padding: 0 24px; border-left: 1px solid #3b443a; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
 .player-chip i { width: 9px; height: 9px; border-radius: 50%; }
-.player-chip.crimson i { background: var(--crimson); }.player-chip.azure i { background: var(--azure); }
+.player-chip.hearthguard i, .player-chip.crimson i { background: #b03a2e; }
+.player-chip.woundWrights i, .player-chip.azure i { background: #2e5fb0; }
+.player-chip.unfinished i { background: #d5bd76; }
+.player-chip.vespiary i { background: #d89d28; }
+.player-chip.hagwood i { background: #9a2f4e; }
+.player-chip.wildergrass i { background: #a36536; }
 .topbar-action {
   min-width: 66px; color: var(--gold); border: 0; border-left: 1px solid #3b443a;
   background: #101510; text-transform: uppercase; letter-spacing: .12em; font-size: 9px;
@@ -37,7 +42,20 @@
 }
 
 .adventure-layout { height: calc(100vh - 68px); display: grid; grid-template-columns: minmax(0, 1fr) 320px; }
-.map-frame { min-width: 0; overflow: auto; padding: 18px; background: #0b0f0c; }
+.map-frame { min-width: 0; overflow: auto; padding: 18px; background: #0b0f0c; position: relative; }
+.road-overlay { stroke: #c6a86b; stroke-width: 6px; stroke-dasharray: 6 3; opacity: .75; pointer-events: none; }
+.minimap { position: sticky; width: 150px; height: 110px; left: calc(100% - 160px); bottom: 10px; z-index: 4; background: #080a09; border: 2px solid #d8c991; box-shadow: 0 3px 18px #000b; cursor: crosshair; }
+.minimap.large { width: 280px; height: 210px; }
+.minimap circle { stroke: #111; stroke-width: .15; }
+.minimap circle.p1 { fill: #d95e54; }.minimap circle.p2 { fill: #54a0d9; }.minimap circle.p3 { fill: #58a96a; }.minimap circle.p4 { fill: #d7a84e; }
+.minimap-viewport { fill: none; stroke: #fff; stroke-width: .3; pointer-events: none; }
+.objective-banner { display: flex; gap: 16px; align-items: center; padding: 8px 18px; background: #171b15; color: #e9e0c4; border-bottom: 1px solid #4c513d; }
+.objective-banner span { opacity: .75; flex: 1; }.objective-banner button { padding: 5px 9px; }
+.world-view .map-object-glyph:not(.guardian-object), .world-view .terrain-glyph,
+.world-view .mountain-glyph, .world-view .guardian-aggro { display: none; }
+.army-slot-wrap { position: relative; display: inline-flex; }
+.split-stack { position: absolute; right: -3px; bottom: -3px; width: 20px; height: 20px; padding: 0; border-radius: 50%; z-index: 2; font-size: 10px; }
+.split-dialog input[type="range"] { width: 100%; }
 .map-caption {
   display: flex; justify-content: space-between; color: #a6afa2; text-transform: uppercase;
   letter-spacing: .12em; font-size: 10px; margin-bottom: 10px;
@@ -49,7 +67,21 @@
 }
 .adventure-map rect { stroke: #111a1177; stroke-width: .7; }
 .adventure-map g { cursor: pointer; }
-.map-object-glyph, .map-overlay-glyph { pointer-events: none; }
+.map-overlay-glyph { pointer-events: none; }
+.terrain-decoration { fill: #f1d978aa; stroke: #253423; stroke-width: .7; cursor: help; }
+.map-object-glyph { pointer-events: none; }
+.object-footprint { fill: #111a12aa; stroke: #b8aa7b88 !important; stroke-width: 1.5 !important; pointer-events: none; }
+.guardian-aggro { fill: #a9222240; stroke: #ec6b5a66 !important; opacity: 0; pointer-events: none; }
+.guardian-object { pointer-events: auto; }
+.guardian-object:hover .guardian-aggro { opacity: 1; }
+.guardian-shield { fill: #772922; stroke: #ffc9a3; stroke-width: 2; }
+.pickup-eligible { pointer-events: auto; cursor: pointer; filter: drop-shadow(0 0 5px #f5d96b); animation: pickup-bob 1.2s ease-in-out infinite; }
+@keyframes pickup-bob { 50% { opacity: .65; } }
+.pickup-flight { pointer-events: none; animation: pickup-flight .55s ease-in forwards; }
+.pickup-flight circle { fill: #d8ab39; stroke: #fff0a8; stroke-width: 2; }
+@keyframes pickup-flight {
+  to { transform: translate(240px, -140px) scale(.45); opacity: 0; }
+}
 .reachable-map-tile { stroke: #dfcc7b !important; stroke-width: 1.3 !important; filter: brightness(1.07); }
 .terrain-glyph { text-anchor: middle; fill: #1e472a; font-size: 15px; pointer-events: none; }
 .mountain-glyph { fill: #595d5a; stroke: #989b97; stroke-width: 1; pointer-events: none; }
@@ -60,15 +92,21 @@
 .chest { fill: #754a24; stroke: #e2b75b; stroke-width: 1.5; }.glyph-line { stroke: #e2b75b; }
 .mine-ring { fill: #182019; stroke-width: 3; }.mine-ring.neutral { stroke: #a9aa9e; }
 .mine-ring.p1 { stroke: var(--crimson); }.mine-ring.p2 { stroke: var(--azure); }
+.mine-ring.p3 { stroke: #75b879; }.mine-ring.p4 { stroke: #d19a4a; }
 .guard-count { fill: #fff !important; font-size: 7px !important; paint-order: stroke; stroke: #8b211b; stroke-width: 3; }
 .shrine-glyph { stroke: #f5ead6; stroke-width: 2; }
 .shrine-glyph.rite { fill: #c7a842; }.shrine-glyph.craft { fill: #9b6d32; }
 .shrine-glyph.grave { fill: #65507b; }
 .castle-glyph { stroke: #e8dcb6; stroke-width: 1.5; }.castle-glyph.p1 { fill: #9b3932; }.castle-glyph.p2 { fill: #34778e; }
+.castle-glyph.p3 { fill: #3f8054; }.castle-glyph.p4 { fill: #a66e2d; }
 .hero-glyph { stroke: #f7e9bc; stroke-width: 2; }.hero-glyph.p1 { fill: var(--crimson); }.hero-glyph.p2 { fill: var(--azure); }
+.hero-glyph.p3 { fill: #4d9b63; }.hero-glyph.p4 { fill: #be7d34; }
 .hero-flag { fill: none; stroke: #fff5d5; stroke-width: 1.3; }
 .hero-initial { fill: #fff5d5; font-size: 8px; text-anchor: middle; pointer-events: none; }
 .path-preview { fill: none; stroke: #f4d875; stroke-width: 3; stroke-dasharray: 7 4; pointer-events: none; filter: drop-shadow(0 1px 2px #000); }
+.path-preview.out-of-range { stroke: #dc6a58; }
+.path-preview.aggro-path { stroke: #d94736; }
+.aggro-swords { fill: #fff1dd !important; font-size: 14px !important; paint-order: stroke; stroke: #801e18; stroke-width: 3; }
 
 .hero-panel { padding: 20px; border-left: 1px solid #3b443a; background: linear-gradient(160deg, #1d241e, #131814); overflow-y: auto; }
 .hero-list { display: grid; gap: 6px; margin: 10px 0; }
@@ -77,6 +115,10 @@
 .hero-list i, .tavern-offers i { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; font-style: normal; background: #555; }
 .hero-list i.hearthguard, .tavern-offers i.hearthguard { background: #b03a2e; }
 .hero-list i.woundWrights, .tavern-offers i.woundWrights { background: #2e5fb0; }
+.hero-list i.unfinished, .tavern-offers i.unfinished { color: #29261e; background: #d5bd76; }
+.hero-list i.vespiary, .tavern-offers i.vespiary { color: #16130b; background: #d89d28; }
+.hero-list i.hagwood, .tavern-offers i.hagwood { background: #7f243e; }
+.hero-list i.wildergrass, .tavern-offers i.wildergrass { background: #9a6032; }
 .hero-list span { display: grid; }
 .hero-list small, .skill-summary { color: var(--muted); }
 .skill-summary { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0; font-size: 10px; text-transform: capitalize; }
@@ -98,6 +140,10 @@
 }
 .hero-portrait > div.crimson, .hero-portrait > div.hearthguard { color: #f5ead6; background: #b03a2e; }
 .hero-portrait > div.azure, .hero-portrait > div.woundWrights { color: #c9ced6; background: #2e5fb0; }
+.hero-portrait > div.unfinished { color: #2b281f; background: #d5bd76; }
+.hero-portrait > div.vespiary { color: #171208; background: linear-gradient(135deg, #e2aa2f 50%, #25221b 50%); }
+.hero-portrait > div.hagwood { color: #f0e7d8; background: #7f243e; }
+.hero-portrait > div.wildergrass { color: #efe1c8; background: #935c34; }
 .hero-portrait span { display: flex; flex-direction: column; gap: 5px; }
 .hero-portrait small { color: var(--muted); font-size: 10px; }
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 18px; }
@@ -123,6 +169,60 @@
 .item-inventory .army-slot, .combat-items .army-slot {
   aspect-ratio: auto; min-height: 34px; font-size: 8px; line-height: 1.15;
 }
+.map-service-card {
+  display: grid; gap: 7px; margin: 14px 0; padding: 11px;
+  border: 1px solid #77643d; background: linear-gradient(145deg, #211e14, #141913);
+}
+.map-service-card h4 { margin: 0; color: #d6be77; text-transform: uppercase; letter-spacing: .14em; font-size: 9px; }
+.map-service-card > small { color: #9ba295; line-height: 1.4; }
+.map-service-card > button, .map-service-card > div > button,
+.map-service-card .service-options button {
+  padding: 6px 8px; border: 1px solid #5e624c; background: #252b20;
+  color: #e3dcc5; font-size: 9px;
+}
+.map-service-card > div, .service-options { display: flex; flex-wrap: wrap; gap: 5px; }
+
+.omen-banner {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  min-height: 34px; padding: 5px 18px; border-bottom: 1px solid #4b4435;
+  background: #171811; color: #d9c89c; font-size: 11px;
+}
+.omen-banner span { color: #9d988a; font-style: italic; }
+.artifact-paper-doll { margin: 14px 0; border-top: 1px solid #30362f; padding-top: 10px; }
+.equipment-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+.equipment-grid button, .artifact-backpack > button, .artifact-backpack > article {
+  min-height: 38px; padding: 4px 6px; border: 1px solid #343c34;
+  background: #151a16; color: #b9c1b8; text-align: left;
+}
+.equipment-grid button small, .equipment-grid button b,
+.artifact-backpack button small, .artifact-backpack button b { display: block; }
+.equipment-grid button small, .artifact-backpack button small {
+  color: #778078; font-size: 8px; text-transform: uppercase;
+}
+.equipment-grid button.equipped { border-color: #8d7440; }
+.artifact-backpack { display: grid; gap: 4px; max-height: 120px; overflow: auto; }
+.kit-bonus { color: #d0b86f; font-size: 10px; }
+.debt-list article, .spellbook-debts article {
+  display: grid; gap: 2px; margin: 4px 0; padding: 6px;
+  border-left: 2px solid #74566f; background: #211b21;
+}
+.debt-list article span, .debt-list article small,
+.spellbook-debts article small { color: #a99da8; font-size: 9px; }
+.adventure-spell-button { margin: 8px 0; border-color: #8b76ad; color: #eadfff; }
+.map-cast-prompt { display: grid; gap: 4px; padding: 9px; margin: 6px 0; background: #211b2b; border: 1px solid #725d8a; }
+.map-cast-prompt span { color: #c7bbd3; font-size: 11px; }
+.map-effect { pointer-events: none; }
+.map-effect text { text-anchor: middle; fill: #f5eecf; font-size: 16px; }
+.thicket-effect rect { fill: #173d22e6; stroke: #75aa5b; stroke-width: 2px; }
+.passage-effect circle { fill: #28213ee6; stroke: #c6a8eb; stroke-width: 2px; }
+.resonance-effect circle { fill: #32263be6; stroke: #f0d080; stroke-width: 2px; }
+.seam-mark { stroke: #b78ac9aa; stroke-width: 2px; stroke-dasharray: 3 3; pointer-events: none; }
+.creative-object text { fill: #f0dfb0; }
+.resonance-picker button, .omen-preview button, .draft-tools button {
+  margin: 2px; padding: 4px 6px; border: 1px solid #465247;
+  background: #171d18; color: #b9c2b9; text-transform: capitalize;
+}
+.omen-preview { margin: 10px 0; }
 .unit-mark { color: var(--gold); font: 800 9px Georgia, serif; text-transform: uppercase; }.army-slot b { font-size: 10px; }
 .empty-mark { color: #475044; }.secondary { color: var(--cream); background: #252d26; border: 1px solid #566151; padding: 11px; }
 .wide { width: 100%; margin-top: 8px; }.end-turn { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }

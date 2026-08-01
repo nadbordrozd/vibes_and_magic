@@ -5,8 +5,8 @@ import {
   MAX_DEFENSE_REDUCTION, MAX_LUCK_MAGNITUDE,
 } from '../../content/constants';
 import type { BattleSide, BattleStack } from '../types';
-import { abilityHandlers } from './abilities';
-import { hexDistance, isAdjacent } from './hex';
+import { stackAbilityHandlers } from './abilities';
+import { stackDistance, stacksAdjacent } from './footprint';
 
 export function luckPosition(min: number, max: number, luck: number): number {
   const midpoint = (min + max) / 2;
@@ -57,7 +57,7 @@ export function computeDamage(context: DamageContext): number {
     * attackDefenseMultiplier(attack, defense);
   damage *= context.abilityMultiplier ?? 1;
   if (context.ranged && ((context.adjacentEnemy && !context.ignoreAdjacentRangedPenalty)
-      || hexDistance(context.attacker.position, context.defender.position) > 7)) {
+      || stackDistance(context.attacker, context.defender) > 7)) {
     damage *= 0.5;
   }
   if (context.ranged && context.wallsPenalty) damage *= 0.7;
@@ -65,7 +65,7 @@ export function computeDamage(context: DamageContext): number {
 }
 
 export function applyDamage(stack: BattleStack, damage: number): number {
-  const hp = UNITS[stack.unitId].hp;
+  const hp = stackUnitHp(stack);
   const before = stack.count;
   const totalHp = (stack.count - 1) * hp + stack.topHp;
   const remaining = Math.max(0, totalHp - damage);
@@ -74,12 +74,16 @@ export function applyDamage(stack: BattleStack, damage: number): number {
   return before - stack.count;
 }
 
+export function stackUnitHp(stack: BattleStack): number {
+  return stack.hpOverride ?? UNITS[stack.unitId].hp;
+}
+
 export function sideOfEnemy(side: BattleSide): BattleSide {
   return side === 'attacker' ? 'defender' : 'attacker';
 }
 
 export function canUseRanged(stack: BattleStack): boolean {
-  return abilityHandlers(stack.unitId).some(
+  return stackAbilityHandlers(stack).some(
     (handler) => handler.canRangedAttack?.(stack) === true,
   );
 }
@@ -87,6 +91,6 @@ export function canUseRanged(stack: BattleStack): boolean {
 export function hasAdjacentEnemy(stack: BattleStack, stacks: BattleStack[]): boolean {
   return stacks.some(
     (other) => other.count > 0 && other.side !== stack.side
-      && isAdjacent(stack.position, other.position),
+      && stacksAdjacent(stack, other),
   );
 }

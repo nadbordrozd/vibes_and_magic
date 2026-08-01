@@ -13,6 +13,8 @@ import { offerChestChoice } from '../game/chests';
 import type {
   BattleState, GameState, Hero, MapObject,
 } from '../types';
+import { objectEntranceTile } from '../map/occupancy';
+import { terrainIdAt } from '../../content/terrain';
 
 function battle(
   attackerUnit: 'marionette' | 'longbowman' = 'marionette',
@@ -117,14 +119,16 @@ describe('Milestone 12 tricks', () => {
     const map = createBorderMarches(12);
     const barrowItems = map.objects.filter((object) =>
       object.kind === 'item'
-      && map.terrain[object.position.y][object.position.x] === 'barrow');
+      && terrainIdAt(map, object.position) === 'barrowfield');
     expect(barrowItems).toHaveLength(4);
     expect(barrowItems.every((object) =>
       object.kind === 'item' && object.item.plus === true)).toBe(true);
     const centralDrops = ['north-gap-gold', 'south-gap-gold'].map((id) =>
-      map.objects.find((object) => object.id === id)).map((object) =>
-      object && 'guard' in object ? object.guard?.drop : null);
-    expect(centralDrops.every((item) => item?.id.startsWith('scroll'))).toBe(true);
+      map.objects.find((object) => object.kind === 'guardian'
+        && object.protects === id)).map((object) =>
+      object?.kind === 'guardian' ? object.drop : null);
+    expect(centralDrops.every((item) => item?.id === 'spellScroll'
+      && Boolean(item.storedSpellId))).toBe(true);
     const sleeper = map.objects.find((object) => object.id === 'the-sleeper');
     expect(sleeper?.kind === 'lock' ? sleeper.reward : null).toMatchObject({
       gold: 6000, essence: 12,
@@ -149,7 +153,7 @@ describe('Milestone 12 tricks', () => {
       MapObject, { kind: 'mine' }
     > => object.id === 'west-timber')!;
     mine.owner = 'p1';
-    hero.position = { ...mine.position };
+    hero.position = objectEntranceTile(mine);
     hero.inventory[0] = { id: 'overseersCharter' };
     const action = { type: 'USE_ADVENTURE_ITEM', inventorySlot: 0 } as const;
     const saved = JSON.parse(JSON.stringify(apply(before, action))) as GameState;
@@ -228,7 +232,7 @@ describe('Milestone 12 tricks', () => {
     });
 
     state = createGame({ seed: 21, p1: 'ai', p2: 'ai' });
-    state.castles[0].buildings.push('marketplace', 'treasury');
+    state.castles[0].buildings.push('marketplace', 'townHall');
     state.players.p1.resources.essence = 1;
     state.players.p1.resources.gold = 5000;
     state = runStrategyTurn(state);
@@ -307,7 +311,7 @@ describe('Milestone 12 tricks', () => {
 
   it('applies the Mask passive without replacing incoming melee damage', () => {
     const game = createGame({ seed: 15, p1: 'human', p2: 'human' });
-    game.players.p2.hero!.inventory[0] = { id: 'mirrorMask' };
+    game.players.p2.hero!.artifacts.equipment.misc1 = { id: 'mirrorMask' };
     const state = createBattle(
       makeArmy([{ unitId: 'marionette', count: 10 }]),
       makeArmy([{ unitId: 'tinSoldier', count: 20 }]),

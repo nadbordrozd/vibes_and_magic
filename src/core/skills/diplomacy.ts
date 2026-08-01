@@ -8,23 +8,22 @@ import type {
   Hero, MapObject,
 } from '../types';
 
-type GuardedObject = Extract<
-  MapObject, { kind: 'mine' | 'chest' | 'shrine' | 'lock' }
->;
+type GuardianObject = Extract<MapObject, { kind: 'guardian' }>;
 
 export interface DiplomacyTerms {
   disbandCost: number;
   recruitCost: number | null;
+  canStandAside?: boolean;
 }
 
-function guardianGoldValue(object: GuardedObject): number {
-  return object.guard?.army.reduce((sum, stack) =>
-    sum + (UNITS[stack.unitId].cost.gold ?? 0) * stack.count, 0) ?? 0;
+function guardianGoldValue(guardian: GuardianObject): number {
+  return guardian.army.reduce((sum, stack) =>
+    sum + (UNITS[stack.unitId].cost.gold ?? 0) * stack.count, 0);
 }
 
-function guardianFits(hero: Hero, object: GuardedObject): boolean {
+function guardianFits(hero: Hero, guardian: GuardianObject): boolean {
   let army = hero.army;
-  for (const stack of object.guard?.army ?? []) {
+  for (const stack of guardian.army) {
     const next = addUnits(army, stack.unitId, stack.count);
     if (!next) return false;
     army = next;
@@ -34,20 +33,22 @@ function guardianFits(hero: Hero, object: GuardedObject): boolean {
 
 export function diplomacyTerms(
   hero: Hero,
-  object: GuardedObject,
+  guardian: GuardianObject,
 ): DiplomacyTerms | null {
   const rank = skillRank(hero, 'diplomacy');
-  if (!rank || !object.guard) return null;
+  if (!rank) return null;
   const threshold = rank === 1
     ? SKILLS.diplomacy.values.rank1Threshold
-    : SKILLS.diplomacy.values.rank2Threshold;
-  if (armyPower(makeArmy(object.guard.army)) > armyPower(hero.army) * threshold) {
+    : rank === 2 ? SKILLS.diplomacy.values.rank2Threshold
+      : SKILLS.diplomacy.values.rank3Threshold;
+  if (armyPower(makeArmy(guardian.army)) > armyPower(hero.army) * threshold) {
     return null;
   }
-  const value = guardianGoldValue(object);
+  const value = guardianGoldValue(guardian);
   return {
     disbandCost: value * SKILLS.diplomacy.values.disbandCost,
-    recruitCost: rank === 2 && guardianFits(hero, object)
+    recruitCost: rank >= 2 && guardianFits(hero, guardian)
       ? value * SKILLS.diplomacy.values.recruitCost : null,
+    ...(rank === 3 ? { canStandAside: true } : {}),
   };
 }

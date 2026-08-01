@@ -16,9 +16,6 @@ function twoHeroGame(): GameState {
   let state = createGame({ seed: 60, p1: 'human', p2: 'human' });
   state.players.p1.resources.gold = 10000;
   state = apply(state, {
-    type: 'BUILD', castleId: 'p1-castle', buildingId: 'tavern',
-  });
-  state = apply(state, {
     type: 'HIRE_HERO', castleId: 'p1-castle',
     heroId: state.players.p1.tavernOffers[0],
   });

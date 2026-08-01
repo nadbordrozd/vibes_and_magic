@@ -45,6 +45,7 @@ function accepts(operation: EffectOperation, effect: EffectCandidate): boolean {
   if (operation === 'amplify') return true;
   if (operation === 'reflect') return effect.kind !== 'enchantment';
   if (operation === 'unmake') return effect.kind !== 'timed';
+  if (operation === 'overgrow') return effect.kind !== 'enchantment';
   return effect.kind === 'enchantment'
     || (effect.kind === 'timed' && effect.beneficial === true)
     || (effect.kind === 'counter' && effect.counter === 'bloom');

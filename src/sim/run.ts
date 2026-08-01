@@ -38,11 +38,16 @@ export function simulateLockAssaults(seed: number): LockAssaultResult[] {
   ]);
   return game.map.objects.filter((object) => object.kind === 'lock').map((lock) => {
     try {
+      const guardian = game.map.objects.find((object) =>
+        object.kind === 'guardian' && object.protects === lock.id);
+      if (!guardian || guardian.kind !== 'guardian') {
+        throw new Error(`Guardian missing for ${lock.id}`);
+      }
       const battle = createBattle(
-        hero.army, splitGuardianArmy(lock.guard.army, lock.guard.split),
+        hero.army, splitGuardianArmy(guardian.army, guardian.split),
         hero, null,
         {
-          kind: 'guardian', targetId: lock.id, destination: lock.position,
+          kind: 'guardian', targetId: guardian.id, destination: guardian.position,
           attackerHeroId: hero.id,
         },
         seed ^ lock.position.x ^ (lock.position.y << 8),
@@ -60,8 +65,10 @@ export function simulateLockAssaults(seed: number): LockAssaultResult[] {
   });
 }
 
-export function simulateGame(seed: number, maxDays = 70, noMagic = false): SimResult {
-  let state = createGame({ seed, p1: 'ai', p2: 'ai' });
+export function simulateGame(
+  seed: number, maxDays = 70, noMagic = false, opponent: 'ai' | 'dormant' = 'ai',
+): SimResult {
+  let state = createGame({ seed, p1: 'ai', p2: opponent });
   state.magicDisabled = noMagic;
   try {
     while (!state.winner && state.day <= maxDays) {

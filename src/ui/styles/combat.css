@@ -1,4 +1,11 @@
 .combat-shell { min-height: 100vh; background: radial-gradient(circle at 35% 45%, #243025, #0b0f0c 72%); }
+.combat-shell.terrain-deepwood { background: radial-gradient(circle at 35% 45%, #29422c, #080d09 72%); }
+.combat-shell.terrain-mosswold { background: radial-gradient(circle at 35% 45%, #43543a, #10120d 72%); }
+.combat-shell.terrain-ashsteppe { background: radial-gradient(circle at 35% 45%, #55462e, #120e09 72%); }
+.combat-shell.terrain-barrowfield { background: radial-gradient(circle at 35% 45%, #4f4958, #100e13 72%); }
+.combat-shell.terrain-lacquer { background: radial-gradient(circle at 35% 45%, #574b45, #130e0d 72%); }
+.combat-shell.terrain-hush { background: radial-gradient(circle at 35% 45%, #829092, #202728 72%); }
+.combat-shell.terrain-mire { background: radial-gradient(circle at 35% 45%, #405849, #0a100d 72%); }
 .combat-header {
   height: 76px; display: flex; align-items: center; padding: 0 28px; gap: 25px;
   border-bottom: 1px solid #3e493d; background: #151b16;
@@ -20,10 +27,13 @@
 .battle-board > svg { display: block; width: 100%; min-width: 730px; height: 100%; min-height: 550px; }
 .battle-hex { fill: #344635; stroke: #667262; stroke-width: 1; cursor: default; }
 .battle-hex:nth-child(2n) { fill: #304131; }
+.battle-hex.shallow { fill: #477e82; stroke: #7bb1b0; }
 .battle-hex.reachable { fill: #667445; stroke: #ddc767; stroke-width: 2; cursor: pointer; }
 .battle-hex.reachable:hover { fill: #819052; }
+.battle-hex.footprint-preview { fill: #a29450; stroke: #fff0a8; stroke-width: 3; }
 .battle-rock { fill: #616762; stroke: #9ba19a; stroke-width: 2; pointer-events: none; }
 .battle-stack { cursor: pointer; }
+.wide-stack-pill { fill: #121812cc; stroke: #d8c57b99; stroke-width: 2; }
 .stack-motion { transition-property: transform; transition-timing-function: linear; }
 .attack-bump { animation-name: attack-bump; animation-timing-function: ease-in-out; }
 @keyframes attack-bump {
@@ -33,14 +43,32 @@
 .stack-shadow { fill: #0008; }.stack-body { stroke-width: 3; }
 .battle-stack.crimson .stack-body { fill: #8d342e; stroke: #e2685d; }
 .battle-stack.azure .stack-body { fill: #28647a; stroke: #64aac3; }
+.battle-stack.unfinished .stack-body { fill: #e0d8bd; }
+.battle-stack.vespiary .stack-body { fill: #b47b16; }
+.battle-stack.hagwood .stack-body { fill: #68253b; }
+.battle-stack.wildergrass .stack-body { fill: #8a5937; }
 .joint-line { stroke: #c9ced6; stroke-width: 2; pointer-events: none; }
 .battle-stack.spell-target .stack-body { stroke: #e8d052; stroke-width: 6; filter: drop-shadow(0 0 8px #e8d052); }
 .counter-pips circle { stroke: #fff9; stroke-width: 1; }
 .counter-pips circle.burn { fill: #dc6a27; }.counter-pips circle.chill { fill: #4a9bd4; }
 .counter-pips circle.hex { fill: #8d55ae; }.counter-pips circle.bloom { fill: #55a65d; }
 .counter-pips text { fill: white; text-anchor: middle; font: 800 8px sans-serif; }
+.effect-pips rect { stroke: #fff8; stroke-width: 1; }
+.effect-pips rect.buff { fill: #3d8957; }.effect-pips rect.debuff { fill: #934c67; }
+.effect-pips text { fill: white; text-anchor: middle; font: 800 8px sans-serif; }
+.battle-stack.taking-damage .stack-body { animation: damage-flash .16s steps(2) infinite; }
+.battle-stack.dying .stack-motion { transform-box: fill-box; transform-origin: center; animation: stack-death .35s ease-in forwards; }
+@keyframes damage-flash { 50% { fill: #f3e4c4; stroke: #fff; filter: drop-shadow(0 0 12px #ff553d); } }
+@keyframes stack-death {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  65% { opacity: .75; transform: translateY(8px) rotate(9deg) scale(.86); }
+  100% { opacity: 0; transform: translateY(22px) rotate(22deg) scale(.35); }
+}
 .spellbook-button { background: #473d67; color: #f2e9ff; }
 .resonance-banner { position: absolute; z-index: 4; top: 8px; left: 50%; transform: translateX(-50%); background: #241f2be8; border: 1px solid #bba3cf; padding: 5px 12px; text-transform: capitalize; font-size: 11px; }
+.battle-tile { pointer-events: none; font-size: 23px; fill: #bd9b64; }
+.battle-tile.test { fill: #74a8a0; font-size: 15px; }
+.spellbook-debts { margin: 8px 0 14px; padding: 8px; border: 1px solid #493a48; }
 .enchantment-row { position: absolute; z-index: 3; top: 38px; left: 12px; right: 12px; display: flex; justify-content: space-between; pointer-events: none; }
 .enchantment-row > div { display: flex; gap: 5px; align-items: center; font-size: 9px; text-transform: capitalize; }
 .enchantment-row span { min-width: 56px; padding: 3px 5px; background: #111912dd; border: 1px solid #ffffff2b; overflow: hidden; text-overflow: ellipsis; }
@@ -96,6 +124,8 @@
 }
 .attack-selected:disabled { opacity: .35; }
 .combat-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 14px 20px; border-bottom: 1px solid #3e493d; }
+.hourglass-choice { grid-column: 1 / 3; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 7px; border: 1px solid #8b76ad; background: #211b2b; }
+.hourglass-choice b { grid-column: 1 / 4; color: #d9cae7; font-size: 9px; text-transform: uppercase; }
 .combat-actions button {
   display: flex; align-items: center; justify-content: center; gap: 7px; color: var(--cream);
   border: 1px solid #4b5749; background: #242c25; padding: 10px 4px; font-size: 10px; text-transform: uppercase;
@@ -113,3 +143,6 @@
   .combat-sidebar { border-left: 0; border-top: 1px solid #3e493d; min-height: 400px; }
   .versus { display: none; }
 }
+.replay-controls { display: inline-flex; align-items: center; gap: 6px; padding: 3px 6px; border: 1px solid #746b50; background: #181810; }
+.replay-controls span { min-width: 44px; text-align: center; color: #d8c991; }
+.replay-controls button { padding: 4px 8px; }

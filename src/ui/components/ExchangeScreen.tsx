@@ -44,11 +44,19 @@ export function ExchangeScreen({
           <ArmySlots
             army={source.army} title={source.name}
             selected={sourceSlot} onSelect={setSourceSlot}
+            onSplit={(sourceIndex, destinationSlot, count) => dispatch({
+              type: 'SPLIT_ARMY', holder: { kind: 'hero', id: source.id },
+              sourceSlot: sourceIndex, destinationSlot, count,
+            })}
           />
           <div className="transfer-arrow">⇄</div>
           <ArmySlots
             army={destination.army} title={destination.name}
             onSelect={transfer}
+            onSplit={(sourceIndex, destinationSlot, count) => dispatch({
+              type: 'SPLIT_ARMY', holder: { kind: 'hero', id: destination.id },
+              sourceSlot: sourceIndex, destinationSlot, count,
+            })}
           />
         </div>
         <div className="item-exchange">
@@ -58,6 +66,8 @@ export function ExchangeScreen({
               <button
                 key={`source-item-${index}`}
                 className={`army-slot ${itemSlot === index ? 'selected' : ''}`}
+                data-inspect-kind={item && typeof item !== 'string' ? 'item' : undefined}
+                data-inspect-id={item && typeof item !== 'string' ? item.id : undefined}
                 onClick={() => setItemSlot(index)}
               >{item ? itemName(item) : '+'}</button>
             ))}
@@ -67,6 +77,8 @@ export function ExchangeScreen({
                 key={`destination-item-${index}`}
                 className="army-slot"
                 disabled={itemSlot === null}
+                data-inspect-kind={item && typeof item !== 'string' ? 'item' : undefined}
+                data-inspect-id={item && typeof item !== 'string' ? item.id : undefined}
                 onClick={() => {
                   if (itemSlot === null) return;
                   dispatch({

@@ -215,9 +215,6 @@ describe('tavern, defeat pool, and loss conditions', () => {
     const firstOffers = [...game.players.p1.tavernOffers];
     for (let turn = 0; turn < 14; turn += 1) game = apply(game, { type: 'END_TURN' });
     expect(game.players.p1.tavernOffers).not.toEqual(firstOffers);
-    game = apply(game, {
-      type: 'BUILD', castleId: 'p1-castle', buildingId: 'tavern',
-    });
     const offer = game.players.p1.tavernOffers[0];
     game = apply(game, { type: 'HIRE_HERO', castleId: 'p1-castle', heroId: offer });
     const hired = game.players.p1.heroes.find((hero) => hero.id === offer)!;
@@ -242,9 +239,6 @@ describe('tavern, defeat pool, and loss conditions', () => {
   it('limits each player to three heroes', () => {
     let game = createGame({ seed: 21, p1: 'human', p2: 'human' });
     game.players.p1.resources.gold = 10000;
-    game = apply(game, {
-      type: 'BUILD', castleId: 'p1-castle', buildingId: 'tavern',
-    });
     for (const heroId of [...game.players.p1.tavernOffers]) {
       game = apply(game, { type: 'HIRE_HERO', castleId: 'p1-castle', heroId });
     }
@@ -272,9 +266,9 @@ describe('tavern, defeat pool, and loss conditions', () => {
     expect(countdown.winner).toBe('p2');
   });
 
-  it('defines all eight heroes in four-per-faction rosters', () => {
-    expect(Object.values(HEROES).filter((hero) => hero.faction === 'hearthguard')).toHaveLength(4);
-    expect(Object.values(HEROES).filter((hero) => hero.faction === 'woundWrights')).toHaveLength(4);
+  it('defines the expanded six-per-faction hero rosters', () => {
+    expect(Object.values(HEROES).filter((hero) => hero.faction === 'hearthguard')).toHaveLength(6);
+    expect(Object.values(HEROES).filter((hero) => hero.faction === 'woundWrights')).toHaveLength(6);
     expect(FACTIONS.hearthguard.hireArmy).toEqual([{ unitId: 'yeoman', count: 8 }]);
   });
 });

@@ -1,20 +1,31 @@
-import { BUILDINGS } from '../content/buildings';
+import {
+  BUILDINGS, COMMON_BUILDING_SLOT_ROOTS, FACTION_BUILDING_SLOTS, buildingPresentation,
+} from '../content/buildings';
 import { FACTION_UNITS, UNITS } from '../content/units';
 import { canAfford } from './army';
 import { battleReachableHexes, legalBattleActions } from './combat/battle';
 import { findPath, pathCost, sameCoord } from './map/pathfinding';
 import { reachablePathPrefix } from './map/pathfinding';
+import { castleEntrance } from './map/occupancy';
 import { adventurePath } from './game/exploration';
 import type {
-  BattleStack, BuildingId, Castle, Coord, GameState, MapObject, PlayerId, UnitTier,
+  BattleStack, BuildingId, Castle, Coord, GameState, Hero, MapObject, PlayerId,
+  UnitTier,
 } from './types';
 import { selectedHero } from './heroes';
 import { skillRank } from './heroBehaviors';
 import { SKILLS } from '../content/skills';
+import { artifactEffectTotal } from './artifacts';
+import { itemName } from '../content/items';
+import { buildingIsActive } from './game/buildingStatus';
+import { guardianAt, guardiansCovering } from './map/occupancy';
+import { castleSupportsBuilding } from './game/economy';
 
 export interface BuildingStatus {
-  state: 'built' | 'available' | 'locked';
+  state: 'built' | 'available' | 'locked' | 'unavailable';
+  color: 'gold' | 'green' | 'red' | 'grey';
   reason: string;
+  reasons: string[];
 }
 
 export function buildingStatus(
@@ -22,18 +33,52 @@ export function buildingStatus(
   castle: Castle,
   buildingId: BuildingId,
 ): BuildingStatus {
-  if (castle.buildings.includes(buildingId)) return { state: 'built', reason: 'Built' };
+  if (castle.buildings.includes(buildingId)) return {
+    color: 'gold',
+    state: 'built', reason: castle.dormantBuildings[buildingId]
+      ? 'Dormant — Debt unpaid.' : 'Built.',
+    reasons: [castle.dormantBuildings[buildingId] ? 'Dormant — Debt unpaid.' : 'Built.'],
+  };
+  if (castle.owner === 'neutral') return {
+    state: 'unavailable', color: 'grey', reason: 'Cannot be built in this castle.',
+    reasons: ['Cannot be built in this castle.'],
+  };
   const definition = BUILDINGS[buildingId];
+  if (!castleSupportsBuilding(state, castle, buildingId)) return {
+    state: 'unavailable', color: 'grey', reason: 'Cannot be built in this castle.',
+    reasons: ['Cannot be built in this castle.'],
+  };
+  const reasons: string[] = [];
   if (definition.prerequisite && !castle.buildings.includes(definition.prerequisite)) {
-    return { state: 'locked', reason: `Requires ${BUILDINGS[definition.prerequisite].name}` };
+    reasons.push(`Requires ${buildingPresentation(
+      definition.prerequisite, castle.faction,
+    ).name}.`);
   }
   if (castle.builtOnDay === state.day) {
-    return { state: 'locked', reason: 'Already built in this castle today' };
+    reasons.push('Already built today.');
   }
   if (!canAfford(state.players[castle.owner].resources, definition.cost)) {
-    return { state: 'locked', reason: 'Not enough resources' };
+    reasons.push('Not enough resources.');
   }
-  return { state: 'available', reason: 'Available to build' };
+  if (reasons.length) return {
+    state: 'locked', color: 'red', reason: reasons.join(' '), reasons,
+  };
+  return {
+    state: 'available', color: 'green', reason: 'Available to build.', reasons: [],
+  };
+}
+
+export function visibleUpgradeStage(castle: Castle, root: BuildingId): BuildingId {
+  let stage = root;
+  while (castle.buildings.includes(stage) && BUILDINGS[stage].upgrades) {
+    stage = BUILDINGS[stage].upgrades!;
+  }
+  return stage;
+}
+
+export function castleBuildingSlots(castle: Castle): BuildingId[] {
+  return [...COMMON_BUILDING_SLOT_ROOTS, ...FACTION_BUILDING_SLOTS[castle.faction]]
+    .map((root) => visibleUpgradeStage(castle, root));
 }
 
 export function maxRecruitable(
@@ -41,7 +86,8 @@ export function maxRecruitable(
   castle: Castle,
   tier: UnitTier,
 ): number {
-  if (tier > 1 && !castle.buildings.includes(`dwelling${tier}` as BuildingId)) return 0;
+  if (castle.owner === 'neutral') return 0;
+  if (!buildingIsActive(castle, `dwelling${tier}` as BuildingId)) return 0;
   const unit = UNITS[FACTION_UNITS[castle.faction][tier - 1]];
   let count = castle.available[tier - 1];
   while (count > 0 && !canAfford(state.players[castle.owner].resources, unit.cost, count)) {
@@ -55,7 +101,7 @@ export function visitingCastle(state: GameState): Castle | null {
   if (!hero) return null;
   return state.castles.find(
     (castle) => castle.owner === state.activePlayer
-      && sameCoord(castle.position, hero.position),
+      && sameCoord(castleEntrance(castle), hero.position),
   ) ?? null;
 }
 
@@ -65,8 +111,19 @@ export function reachableAdventureTiles(state: GameState): Set<string> {
   if (!hero) return result;
   for (let y = 0; y < state.map.height; y += 1) {
     for (let x = 0; x < state.map.width; x += 1) {
-      const path = findPath(state.map, hero.position, { x, y }, new Set(), hero);
-      if (path && pathCost(state.map, path, hero) <= hero.movement) result.add(`${x},${y}`);
+      const path = adventurePath(state, { x, y });
+      const passage = state.mapEffects.some((effect) => effect.kind === 'passage'
+        && effect.owner === hero.owner && effect.expiresDay >= state.day
+        && effect.entrances.some((entry) => sameCoord(entry, hero.position))
+        && effect.entrances.some((entry) => sameCoord(entry, { x, y })));
+      const freeForest = state.players[hero.owner].adventureEffects.greenTideUntilWeek
+        >= state.week;
+      const stopped = path ? truncateAtAggro(state, path, hero) : null;
+      if (path && stopped && sameCoord(stopped.at(-1)!, { x, y }) && (passage || pathCost(
+        state.map, path, hero, state.omen, freeForest,
+      ) <= hero.movement)) {
+        result.add(`${x},${y}`);
+      }
     }
   }
   return result;
@@ -80,25 +137,49 @@ export function previewPath(state: GameState, destination: Coord): Coord[] {
 export function animatedAdventurePath(state: GameState, destination: Coord): Coord[] {
   const hero = selectedHero(state.players[state.activePlayer]);
   const path = hero ? adventurePath(state, destination) : null;
-  return path ? reachablePathPrefix(state.map, path, hero!.movement, hero!) : [];
+  const passage = hero && state.mapEffects.some((effect) => effect.kind === 'passage'
+    && effect.owner === hero.owner && effect.expiresDay >= state.day
+    && effect.entrances.some((entry) => sameCoord(entry, hero.position))
+    && effect.entrances.some((entry) => sameCoord(entry, destination)));
+  const freeForest = hero
+    ? state.players[hero.owner].adventureEffects.greenTideUntilWeek >= state.week : false;
+  const reachable = path ? passage ? path : reachablePathPrefix(
+    state.map, path, hero!.movement, hero!, state.omen, freeForest,
+  ) : [];
+  return hero ? truncateAtAggro(state, reachable, hero) : reachable;
+}
+
+function truncateAtAggro(state: GameState, path: Coord[], hero: Hero): Coord[] {
+  const index = path.findIndex((coord, step) => step > 0
+    && (Boolean(guardianAt(state.map, coord))
+      || guardiansCovering(state.map, coord, hero.id).length > 0));
+  return index < 0 ? path : path.slice(0, index + 1);
 }
 
 export function battleStackController(
   state: GameState,
   stack: BattleStack,
 ): 'human' | 'ai' {
-  if (stack.side === 'attacker') return state.players[state.activePlayer].controller;
+  if (stack.side === 'attacker') {
+    return state.players[state.activePlayer].controller === 'human' ? 'human' : 'ai';
+  }
   const defenderId = state.battle?.context.defenderPlayerId;
-  return defenderId ? state.players[defenderId].controller : 'ai';
+  return defenderId && state.players[defenderId].controller === 'human' ? 'human' : 'ai';
 }
 
 export function activeBattleOptions(state: GameState) {
   if (!state.battle) return { actions: [], reachable: [] as Coord[] };
+  const actions = legalBattleActions(state.battle);
+  if (state.battle.pendingFreeMove) return {
+    actions,
+    reachable: actions.flatMap((action) => action.type === 'BATTLE_FREE_MOVE'
+      ? [action.destination] : []),
+  };
   const stack = state.battle.stacks.find(
     (item) => item.id === state.battle!.currentStackId && item.count > 0,
   );
   return {
-    actions: legalBattleActions(state.battle),
+    actions,
     reachable: stack ? battleReachableHexes(state.battle, stack) : [],
   };
 }
@@ -122,6 +203,25 @@ export interface GuardianIntel {
   count: number | null;
   abilities: string[];
   tell?: string;
+  drop?: string;
+}
+
+export interface EnemyHeroIntel {
+  army: Hero['army'] | null;
+  spells: Hero['knownSpells'] | null;
+  items: Hero['inventory'] | null;
+  mana: number | null;
+}
+
+export function enemyHeroIntel(viewer: Hero, target: Hero): EnemyHeroIntel {
+  const rank = skillRank(viewer, 'scouting');
+  return {
+    army: rank >= 2 ? target.army.map((stack) => stack && { ...stack }) : null,
+    spells: rank >= 3 ? [...target.knownSpells] : null,
+    items: rank >= 3 ? target.inventory.map((item) =>
+      item && typeof item !== 'string' ? { ...item } : item) : null,
+    mana: rank >= 3 ? target.mana : null,
+  };
 }
 
 export function guardianIntel(
@@ -129,22 +229,27 @@ export function guardianIntel(
   object: MapObject,
   hero = selectedHero(state.players[state.activePlayer]),
 ): GuardianIntel | null {
-  if (!['mine', 'chest', 'shrine', 'lock'].includes(object.kind)
-      || !('guard' in object) || !object.guard || object.cleared) return null;
-  const count = object.guard.army.reduce((sum, stack) => sum + stack.count, 0);
+  const guardian = object.kind === 'guardian' ? object : state.map.objects.find((candidate) =>
+    candidate.kind === 'guardian'
+    && (candidate.protects === object.id || object.guardedBy?.includes(candidate.id)));
+  if (!guardian || guardian.kind !== 'guardian') return null;
+  const count = guardian.army.reduce((sum, stack) => sum + stack.count, 0);
   const distance = hero
-    ? Math.max(Math.abs(hero.position.x - object.position.x),
-      Math.abs(hero.position.y - object.position.y))
+    ? Math.max(Math.abs(hero.position.x - guardian.position.x),
+      Math.abs(hero.position.y - guardian.position.y))
     : Number.POSITIVE_INFINITY;
   const exact = distance <= 1 || Boolean(hero
     && skillRank(hero, 'scouting') >= 1
-    && distance <= SKILLS.scouting.values.inspectRange);
+    && distance <= SKILLS.scouting.values.inspectRange)
+    || Boolean(hero && artifactEffectTotal(hero, 'scouting') >= distance);
   const abilities = exact
-    ? [...new Set(object.guard.army.flatMap((stack) => UNITS[stack.unitId].abilities))]
+    ? [...new Set(guardian.army.flatMap((stack) => UNITS[stack.unitId].abilities))]
     : [];
   return {
     exact, label: exact ? String(count) : guardianSizeBand(count),
     count: exact ? count : null, abilities,
     ...(exact && object.kind === 'lock' ? { tell: object.tell } : {}),
+    ...(hero && artifactEffectTotal(hero, 'reveal_drops') > 0 && guardian.drop
+      ? { drop: itemName(guardian.drop) } : {}),
   };
 }

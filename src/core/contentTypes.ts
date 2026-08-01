@@ -1,20 +1,87 @@
 export type AbilityId =
-  | 'ranged' | 'banner' | 'charge' | 'oriflamme'
+  | 'ranged' | 'flying' | 'beast' | 'construct' | 'spirit'
+  | 'banner' | 'charge' | 'oriflamme' | 'rampant'
   | 'springloaded' | 'no_retaliation' | 'soft_body' | 'overwind'
+  | 'procession_of_repair' | 'hallowed_cargo'
+  | 'last_light' | 'the_errand_passes' | 'still_on_watch'
+  | 'swelling_dirge' | 'unfinished_vow' | 'crossing'
+  | 'sting_and_circle' | 'web' | 'resin_trail' | 'skim' | 'brood_call'
+  | 'pecking_order' | 'boundary' | 'sweep' | 'beckoning_song'
+  | 'home_ground' | 'thicket_walk' | 'fowl_legs' | 'crone_favor'
+  | 'skirmish' | 'war_drums' | 'pack_hunger' | 'trample'
+  | 'undergrass' | 'storm_wake'
+  | 'siege_wall' | 'siege_ram' | 'immobile' | 'mirror_hex'
+  | 'aquatic' | 'the_song' | 'still_aboard' | 'shellback' | 'the_lure'
   | 'full_heal' | 'melee_reflect' | 'mask_reflect';
 
 export type ItemId =
+  | 'spellScroll'
   | 'scrollRally' | 'scrollBlessing' | 'scrollForgeSpark' | 'scrollWard'
   | 'scrollWither' | 'scrollQuiet' | 'scrollDirge' | 'scrollSour'
   | 'scrollAmplify' | 'scrollReflect'
   | 'potionOfVigor' | 'draughtOfIron' | 'smellingSalts' | 'bottledEcho'
   | 'cartographersCase' | 'waybread' | 'overseersCharter'
-  | 'tradeGoods' | 'mirrorMask';
+  | 'tradeGoods'
+  | 'haresHeel' | 'blackfireOil' | 'graveDust' | 'hornetJar'
+  | 'milkOfTheMoon' | 'chalkOfWalls' | 'waxSeal' | 'powderOfUnmaking'
+  | 'bannerWhistle' | 'secondCandle'
+  | 'saltedMeat' | 'tavernTales' | 'hearthstone' | 'ferrymansCoin'
+  | 'militiaWrit' | 'beggarsCoin' | 'foundersTin' | 'cronesBundle';
 
 export interface ItemInstance {
   id: ItemId;
   plus?: boolean;
   origin?: { x: number; y: number };
+  storedSpellId?: string;
 }
 
 export type ItemSlot = ItemInstance | string | null;
+
+export type ArtifactSlot =
+  | 'head' | 'cloak' | 'amulet' | 'weapon' | 'shield' | 'armor'
+  | 'ring' | 'boots' | 'misc';
+
+export type EquipmentSlotId =
+  | 'head' | 'cloak' | 'amulet' | 'weapon' | 'shield' | 'armor'
+  | 'ring1' | 'ring2' | 'boots' | 'misc1' | 'misc2';
+
+export type ArtifactId =
+  | 'skirmishersBlade' | 'marchwardensSword' | 'swordOfTheFirstField'
+  | 'yeomansBuckler' | 'kiteOfTheOldWall' | 'aegisOfTheKeptOath'
+  | 'circletOfSmallRites' | 'hoodOfTheHedgeMage' | 'crownOfThePatternedSky'
+  | 'chapbookLocket' | 'reliquaryPendant' | 'deepWellAmulet'
+  | 'quiltedCoat' | 'lamellarOfTheMarches' | 'panoplyOfTheGreyKeep'
+  | 'travelersCloak' | 'wayfarersMantle' | 'cloakOfTheOpenRoad'
+  | 'cobblersPride' | 'bootsOfTheDrover' | 'sevenLeagueBoots'
+  | 'ringOfSmallMendings' | 'ringOfTheSteadyHand' | 'ringOfTheLongVigil'
+  | 'falconersGlove' | 'whetstoneOfTheClans' | 'tinkersSpectacles'
+  | 'quietHorseshoe' | 'standardBearersBaldric' | 'saltCrustedCompass'
+  | 'gravebindersSash' | 'forgeAshGauntlets' | 'beeCharmersVeil'
+  | 'purseOfThePrudentToad' | 'chalkmastersRing' | 'secondQuiver'
+  | 'sunderedHourglass' | 'longestCandle' | 'crookedDistaff'
+  | 'bannerOfTheFirstField' | 'patchworkStandard' | 'seamstone'
+  | 'mirrorshardPendant' | 'bellsClapper' | 'queensAmber'
+  | 'wolfMothersTorc' | 'hornOfTheBroadWorld' | 'toyKnightsHeart'
+  | 'tailorsNeedle' | 'goldenThread' | 'tailorsThimble' | 'patternbook'
+  | 'knucklebonesOfTheSaint' | 'drumOfTheDeepGrass'
+  | 'censerOfStillness' | 'pocketSundial' | 'ironNail' | 'mirrorMask'
+  | 'sashOfTheLeviedMile' | 'scribesCuff' | 'captainsWeathercoat'
+  | 'lanternScholarsCap' | 'pilgrimsBelt' | 'surveyorsBoots'
+  | 'fieldClerksSeal' | 'ashwoodBracer' | 'quietWard'
+  | 'marchGlass' | 'keepersHalfCloak' | 'mendersGorget'
+  | 'gauntletSecondThrow' | 'candleSnuffersRing' | 'fairScale' | 'droversCrook'
+  | 'hexKeepersLocket' | 'thirdBoot' | 'bellMetalTorque' | 'unsentLetter'
+  | 'mothEatenMap' | 'spareFace'
+  | 'longSpoon' | 'firstDrum' | 'crownHollowTown' | 'weathercockIllOmen'
+  | 'seamRipper' | 'lastToy'
+  | 'leadenCrown' | 'hungryBlade' | 'beggarsRing' | 'patternlessCoat';
+
+export interface ArtifactInstance {
+  id: ArtifactId;
+  chosenSchool?: 'rite' | 'craft' | 'grave' | 'wild';
+}
+
+export interface HeroArtifacts {
+  equipment: Record<EquipmentSlotId, ArtifactInstance | null>;
+  backpack: ArtifactInstance[];
+}

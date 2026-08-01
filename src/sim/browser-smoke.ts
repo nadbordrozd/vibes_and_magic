@@ -17,6 +17,8 @@ try {
   await page.screenshot({ path: 'smoke-menu.png' });
   await page.locator('.start-button').click();
   await page.waitForSelector('.adventure-map');
+  await page.locator('.choice-dialog .primary').click();
+  await page.waitForSelector('.choice-dialog', { hidden: true });
   await page.screenshot({ path: 'smoke-adventure.png' });
   await page.locator('.topbar-action').click();
   await page.waitForSelector('.notice-toast');
@@ -24,10 +26,33 @@ try {
   await page.waitForSelector('.load-button');
   await page.locator('.load-button').click();
   await page.waitForSelector('.adventure-map');
+  await page.locator('.choice-dialog .primary').click();
+  await page.waitForSelector('.choice-dialog', { hidden: true });
+  await page.$eval('.map-object-glyph[data-inspect-kind="object"]', (node) =>
+    node.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true })));
+  await page.waitForSelector('.inspection-card .inspection-flavor');
+  await page.screenshot({ path: 'smoke-inspection-undiscovered.png' });
+  await page.locator('.inspection-close').click();
+  await page.waitForSelector('.inspection-card', { hidden: true });
 
-  await page.locator('.hero-panel .secondary').click();
+  await page.locator('.castle-shortcuts .secondary').click();
   await page.waitForSelector('.castle-screen');
   await page.screenshot({ path: 'smoke-castle.png' });
+  const forbiddenDwellingLabel = await page.$eval('.castle-screen', (node) =>
+    /Tier [1-6] Dwelling/.test(node.textContent ?? ''));
+  if (forbiddenDwellingLabel) throw new Error('Castle still shows a generic dwelling name');
+  await page.waitForSelector('.building-card.gold[data-inspect-id="tavern@hearthguard"]');
+  await page.locator('.building-card.red[data-inspect-id="dwelling3@hearthguard"]').click();
+  await page.waitForSelector('.building-detail .building-state-line.locked');
+  await page.locator('.building-detail .inspection-close').click();
+  await page.$eval('.building-card[data-inspect-id="tavern@hearthguard"]', (node) =>
+    node.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true })));
+  await page.waitForSelector('.building-detail .building-state-line.built');
+  await page.locator('.building-detail .inspection-close').click();
+  await page.locator('.building-card.green[data-inspect-id="marketplace@hearthguard"]').click();
+  await page.locator('.building-detail .primary').click();
+  await page.waitForSelector('.building-card.gold[data-inspect-id="marketplace@hearthguard"]');
+  await page.waitForSelector('.building-card.red[data-inspect-id="townHall@hearthguard"]');
   await page.locator('.castle-screen .close-button').click();
   await page.waitForSelector('.castle-screen', { hidden: true });
 
@@ -47,11 +72,17 @@ try {
   await page.locator('.castle-screen .close-button').click();
   await page.waitForSelector('.castle-screen', { hidden: true });
   const mineX = box.x + box.width * (7.5 / 28);
-  const mineY = box.y + box.height * (10.5 / 20);
+  const mineY = box.y + box.height * (11.5 / 20);
   await page.mouse.click(mineX, mineY);
   await page.mouse.click(mineX, mineY);
   await page.waitForSelector('.combat-shell');
   await page.screenshot({ path: 'smoke-combat.png' });
+  await page.$eval('.battle-stack[data-inspect-kind="unit"]', (node) =>
+    node.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true })));
+  await page.waitForSelector('.inspection-card .inspection-mechanics');
+  await page.screenshot({ path: 'smoke-inspection-unit.png' });
+  await page.locator('.inspection-close').click();
+  await page.waitForSelector('.inspection-card', { hidden: true });
   await (await page.$('.battle-stack.azure'))!.click();
   await page.waitForFunction(
     () => document.querySelector('.active-unit')?.textContent?.includes('Top HP'),
@@ -97,7 +128,8 @@ try {
   if (title !== 'Border Marches') throw new Error(`Unexpected page title: ${title}`);
   console.log(
     'Browser smoke passed: save/load → remote castle → map animation '
-    + '→ combat movement/attack/damage → unit inspection → result',
+    + '→ castle cards/detail/build → flavor inspection → combat movement/attack/damage '
+    + '→ generated unit card → result',
   );
 } finally {
   await browser.close();

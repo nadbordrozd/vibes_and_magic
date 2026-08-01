@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "map-lint": "tsx src/tools/mapLint.ts",
+    "spec-link-check": "tsx src/tools/specLinkCheck.ts",
+    "pretest": "npm run map-lint && npm run spec-link-check",
     "test": "vitest run",
     "test:watch": "vitest",
     "sim": "tsx src/sim/cli.ts",

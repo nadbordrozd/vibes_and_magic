@@ -1,19 +1,29 @@
 import { SPELLS } from '../../content/spells';
 import { UNITS } from '../../content/units';
 import type {
-  Action, BattleHero, BattleSide, BattleStack, BattleState, CounterId,
+  Action, BattleHero, BattleSide, BattleStack, BattleState,
   SpellId,
 } from '../types';
 import { applyDamage } from './damage';
-import { isAdjacent } from './hex';
+import { occupiedByStacks, stacksAdjacent } from './footprint';
 import {
-  addCounter, addTimedEffect, clearCounters, healWithoutResurrection,
+  addBattleCounter, addTimedEffect, clearCounters, healWithoutResurrection,
   grantMeter, scaledCounter, scaledDuration, scaledPercent, totalStackHp,
 } from './magicEffects';
-import { specialtyHandler } from '../heroBehaviors';
+import { stackUnitHp } from './damage';
+import { skillRank, specialtyHandler } from '../heroBehaviors';
+import { artifactEffectTotal, hasEquippedArtifact } from '../artifacts';
+import { createBattleTile, placeBattleTile } from './tiles';
 import {
   isSpellTargetLegal, legalTwistEffectIds,
 } from './spellTargets';
+import { applyEffectTwister } from './twisters';
+import {
+  effectiveResonances, isUpgraded, spellManaCost,
+} from './spellModifiers';
+import { resolveExpansionCombatSpell } from './expansionSpellEffects';
+import { stackHasAbility } from './abilities';
+export { effectiveResonances, isUpgraded };
 
 type CastAction = Extract<Action, { type: 'BATTLE_CAST' }>;
 const enemySide = (side: BattleSide): BattleSide =>
@@ -27,28 +37,26 @@ const stackById = (battle: BattleState, id?: string) =>
 const ALLY_TARGETS = new Set<SpellId>([
   'rally', 'blessing', 'sanctuary', 'oathOfIron', 'consecrate',
   'ward', 'quicksilver', 'mournersVeil', 'remembrance',
+  'clarion', 'bloom', 'shedSkin', 'loyalUntoDeath',
 ]);
 const ENEMY_TARGETS = new Set<SpellId>([
   'trial', 'forgeSpark', 'wither', 'graveChill', 'dirge', 'quiet',
+  'oathbind', 'brittle', 'gale',
 ]);
-
-export function isUpgraded(
-  battle: BattleState,
-  hero: BattleHero,
-  spellId: SpellId,
-): boolean {
-  return hero.upgradedSpells.includes(spellId)
-    || specialtyHandler(hero).spellAlwaysUpgraded?.(spellId) === true
-    || battle.resonance === SPELLS[spellId].school;
-}
 
 export function canBeginSpellCast(battle: BattleState, spellId: SpellId): boolean {
   const side = actorSide(battle);
   const hero = side ? heroFor(battle, side) : null;
-  if (!side || !hero || battle.castRound[side] === battle.round
+  const hourglassSecondCast = Boolean(side && hero && battle.round % 2 === 0
+    && battle.castRound[side] === battle.round
+    && battle.doubleCastUsedRound[side] !== battle.round
+    && hasEquippedArtifact(hero, 'sunderedHourglass'));
+  if (!side || !hero || (battle.castRound[side] === battle.round && !hourglassSecondCast)
       || !hero.knownSpells.includes(spellId)) return false;
   const definition = SPELLS[spellId];
-  return definition.mana === 'X' ? hero.mana > 0 : hero.mana >= definition.mana;
+  if (definition.kind === 'adventure' || definition.kind === 'topology') return false;
+  return definition.mana === 'X'
+    ? hero.mana > 0 : hero.mana >= spellManaCost(battle, side, hero, spellId);
 }
 
 export function canCastSpell(battle: BattleState, spellId: SpellId): boolean {
@@ -67,6 +75,25 @@ export function legalSpellCasts(battle: BattleState): CastAction[] {
         type: 'BATTLE_CAST', spellId, effectId,
       }));
     }
+    if (spellId === 'borrowShape') {
+      const plus = isUpgraded(battle, hero, spellId);
+      return battle.stacks.filter((stack) => stack.side === side && stack.count > 0)
+        .flatMap((target) => battle.stacks.filter((source) => source.side !== side
+          && source.count > 0 && (plus || stacksAdjacent(target, source)))
+          .map((source): CastAction => ({
+            type: 'BATTLE_CAST', spellId, targetId: target.id,
+            secondaryTargetId: source.id,
+          })));
+    }
+    if (spellId === 'hourglassCrack') {
+      const plus = isUpgraded(battle, hero, spellId);
+      return battle.stacks.filter((stack) => stack.count > 0).flatMap((stack) =>
+        (plus ? [battle.round + 1, battle.round + 2, battle.round + 3] : [undefined])
+          .map((skipRound): CastAction => ({
+            type: 'BATTLE_CAST', spellId, targetId: stack.id, skipRound,
+          })));
+    }
+    if (spellId === 'echo' && !battle.lastSpellCast) return [];
     if (ALLY_TARGETS.has(spellId)) {
       return battle.stacks.filter((stack) => stack.side === side && stack.count > 0)
         .map((stack): CastAction => ({
@@ -110,70 +137,6 @@ function spellDamage(battle: BattleState, stack: BattleStack, percent: number): 
   if (wasAlive && stack.count === 0) battle.destroyedStacks += 1;
 }
 
-function applyEffectTwister(
-  battle: BattleState,
-  side: BattleSide,
-  action: CastAction,
-  mode: 'amplify' | 'sour' | 'unmake' | 'reflect',
-  upgraded: boolean,
-): void {
-  const parts = action.effectId?.split(':') ?? [];
-  if (parts[0] === 'counter') {
-    const source = stackById(battle, parts[1]);
-    const counter = parts[2] as CounterId;
-    if (!source || !counter) throw new Error('Invalid counter effect target');
-    if (mode === 'amplify') {
-      source.counters[counter] = Math.min(9, source.counters[counter] * 2 + (upgraded ? 1 : 0));
-    } else if (mode === 'sour' && counter === 'bloom') {
-      const amount = source.counters.bloom;
-      source.counters.bloom = 0;
-      addCounter(source, 'hex', amount);
-    } else if (mode === 'unmake') {
-      clearCounters(source);
-    } else if (mode === 'reflect') {
-      const targets = [action.targetId, action.secondaryTargetId]
-        .filter(Boolean).slice(0, upgraded ? 2 : 1);
-      for (const id of targets) addCounter(stackById(battle, id)!, counter, source.counters[counter]);
-    } else throw new Error('Effect cannot be twisted');
-    return;
-  }
-  if (parts[0] === 'timed') {
-    const source = stackById(battle, parts[1]);
-    const effect = source?.effects.find((item) => item.id === parts.slice(2).join(':'));
-    if (!source || !effect) throw new Error('Invalid timed effect target');
-    if (mode === 'amplify') {
-      effect.magnitude *= 2;
-      if (upgraded) effect.duration += 1;
-    } else if (mode === 'sour' && effect.beneficial) {
-      source.effects = source.effects.filter((item) => item.id !== effect.id);
-      addCounter(source, 'hex', 2);
-    } else if (mode === 'reflect') {
-      for (const id of [action.targetId, action.secondaryTargetId]
-        .filter(Boolean).slice(0, upgraded ? 2 : 1)) {
-        const target = stackById(battle, id)!;
-        target.effects.push({ ...effect, id: `${effect.id}-${target.id}` });
-      }
-    } else throw new Error('Effect cannot be twisted');
-    return;
-  }
-  if (parts[0] === 'enchantment') {
-    const targetSide = parts[1] as BattleSide;
-    const row = battle.enchantments[targetSide];
-    const index = row.findIndex((item) => item.id === parts.slice(2).join(':'));
-    if (index < 0) throw new Error('Invalid enchantment target');
-    if (mode === 'amplify') row[index].multiplier *= 2;
-    else if (mode === 'sour' || mode === 'unmake') {
-      row.splice(index, 1);
-      if (mode === 'sour' && upgraded) {
-        battle.stacks.filter((stack) => stack.side === enemySide(side) && stack.count > 0)
-          .forEach((stack) => addCounter(stack, 'hex', 3));
-      }
-    } else throw new Error('Enchantment cannot be reflected');
-    return;
-  }
-  throw new Error('An active effect target is required');
-}
-
 function castRite(
   battle: BattleState, side: BattleSide, hero: BattleHero,
   action: CastAction, plus: boolean,
@@ -192,11 +155,11 @@ function castRite(
     applyEffectTwister(battle, side, action, 'amplify', plus);
   } else if (action.spellId === 'sanctuary') {
     addTimedEffect(target!, action.spellId, scaledDuration(2, sp), 1, true, side);
-    if (plus) clearCounters(target!);
+    if (plus) clearCounters(target!, battle);
   } else if (action.spellId === 'oathOfIron') {
     addTimedEffect(target!, action.spellId, scaledDuration(2, sp), plus ? 2 : 1, true, side);
   } else if (action.spellId === 'consecrate') {
-    const removed = clearCounters(target!);
+    const removed = clearCounters(target!, battle);
     healWithoutResurrection(target!, scaledPercent(plus ? 15 : 8, sp));
     if (plus) grantMeter(target!, removed * 5);
   } else if (action.spellId === 'hymnOfTheHost') {
@@ -218,10 +181,10 @@ function castCraft(
   const target = stackById(battle, action.targetId);
   const sp = hero.spellPower;
   if (action.spellId === 'forgeSpark') {
-    addCounter(target!, 'burn', scaledCounter(plus ? 4 : 3, sp));
+    addBattleCounter(battle, target!, 'burn', scaledCounter(plus ? 4 : 3, sp), side);
     if (plus) battle.stacks.filter((stack) =>
-      stack.side === target!.side && isAdjacent(stack.position, target!.position))
-      .forEach((stack) => addCounter(stack, 'burn', 1));
+      stack.side === target!.side && stacksAdjacent(stack, target!))
+      .forEach((stack) => addBattleCounter(battle, stack, 'burn', 1, side));
   } else if (action.spellId === 'ward') {
     addTimedEffect(target!, action.spellId, 99, plus ? 2 : 1, true, side);
   } else if (action.spellId === 'reflect') {
@@ -231,8 +194,8 @@ function castCraft(
   } else if (action.spellId === 'clockworkEscort') {
     const unitId = plus ? 'marionette' : 'tinSoldier';
     const count = (plus ? 2 : 5) * (sp + 1);
-    const used = new Set(battle.stacks.map((stack) => `${stack.position.x},${stack.position.y}`));
-    const x = side === 'attacker' ? 0 : 12;
+    const used = occupiedByStacks(battle.stacks);
+    const x = side === 'attacker' ? 0 : 13 - UNITS[unitId].hexSize;
     const y = Array.from({ length: 9 }, (_, index) => index)
       .find((row) => !used.has(`${x},${row}`));
     if (y === undefined) throw new Error('No summon hex');
@@ -245,14 +208,52 @@ function castCraft(
       counters: { burn: 0, chill: 0, hex: 0, bloom: 0 }, effects: [],
     });
   } else if (action.spellId === 'wallOfTheMaker') {
-    if (action.positions?.length !== 3) throw new Error('Choose three wall hexes');
-    battle.spellWalls.push(...action.positions.map((position) => ({ ...position })));
-    if (plus) addEnchantment(battle, side, action.spellId, true);
+    const expected = 3 + artifactEffectTotal(hero, 'extra_wall');
+    if (action.positions?.length !== expected) {
+      throw new Error(`Choose ${expected} wall hexes`);
+    }
+    const occupied = [
+      ...[...occupiedByStacks(battle.stacks)].map((key) => {
+        const [x, y] = key.split(',').map(Number); return { x, y };
+      }),
+      ...battle.obstacles,
+      ...battle.tiles.map((tile) => tile.position),
+    ];
+    if (action.positions.some((position, index) =>
+      occupied.some((coord) => coord.x === position.x && coord.y === position.y)
+      || action.positions!.some((other, otherIndex) =>
+        otherIndex !== index && other.x === position.x && other.y === position.y))) {
+      throw new Error('Wall tiles require distinct empty hexes');
+    }
+    for (const position of action.positions) {
+      if (skillRank(hero, 'siegewright') >= 2) {
+        battle.stacks.push({
+          id: `maker-wall-${side}-${battle.round}-${battle.stacks.length}`,
+          side, slot: 50 + battle.stacks.length, unitId: 'makerWall', count: 1,
+          topHp: 40, position: { ...position }, shots: 0, morale: 0,
+          retaliated: false, defended: false, waited: false, bonusActions: 0,
+          attacksMade: 0, movedHexes: 0, overwindPrimed: false, overwindUsed: false,
+          skipRound: null, summoned: true,
+          counters: { burn: 0, chill: 0, hex: 0, bloom: 0 },
+          effects: plus ? [{
+            id: `heated-maker-wall-${battle.round}-${battle.stacks.length}`,
+            spellId: 'wallOfTheMaker', duration: 99, magnitude: 2,
+            beneficial: true, sourceSide: side,
+          }] : [],
+          abilityUses: {}, countAtTurnStart: 1, temporaryAbilities: [],
+        });
+      } else {
+        placeBattleTile(
+          battle,
+          createBattleTile(battle, 'wall', position, -1, side, plus),
+        );
+      }
+    }
   } else if (action.spellId === 'quicksilver') {
     addTimedEffect(target!, action.spellId, plus ? 99 : scaledDuration(2, sp), 3, true, side);
   } else if (action.spellId === 'unmake') {
     applyEffectTwister(battle, side, action, 'unmake', plus);
-    if (plus && target) clearCounters(target);
+    if (plus && target) clearCounters(target, battle);
   }
 }
 
@@ -263,10 +264,10 @@ function castGrave(
   const target = stackById(battle, action.targetId);
   const sp = hero.spellPower;
   if (action.spellId === 'wither') {
-    addCounter(target!, 'hex', scaledCounter(plus ? 8 : 6, sp));
-    if (plus) addCounter(target!, 'chill', scaledCounter(2, sp));
+    addBattleCounter(battle, target!, 'hex', scaledCounter(plus ? 8 : 6, sp), side);
+    if (plus) addBattleCounter(battle, target!, 'chill', scaledCounter(2, sp), side);
   } else if (action.spellId === 'graveChill') {
-    addCounter(target!, 'chill', scaledCounter(3, sp));
+    addBattleCounter(battle, target!, 'chill', scaledCounter(3, sp), side);
     if (plus) target!.morale = Math.max(0, target!.morale - 20);
   } else if (action.spellId === 'mournersVeil') {
     const effect = addTimedEffect(
@@ -274,7 +275,9 @@ function castGrave(
     );
     if (plus) effect.id += ':plus';
   } else if (action.spellId === 'dirge') {
-    spellDamage(battle, target!, scaledPercent(plus ? 5 : 3, sp) * battle.destroyedStacks);
+    const multiplier = specialtyHandler(hero).dirgeMultiplier?.() ?? 1;
+    spellDamage(battle, target!, scaledPercent(plus ? 5 : 3, sp)
+      * battle.destroyedStacks * multiplier);
   } else if (action.spellId === 'lastCandle') {
     addEnchantment(battle, side, action.spellId, plus, action.replaceEnchantment);
   } else if (action.spellId === 'sour') {
@@ -285,7 +288,7 @@ function castGrave(
     const losses = Math.max(0, initial - target.count);
     const revive = Math.min(losses, Math.ceil(losses * scaledPercent(plus ? 35 : 20, sp) / 100));
     target.count += revive;
-    if (target.count > 0 && target.topHp === 0) target.topHp = UNITS[target.unitId].hp;
+    if (target.count > 0 && target.topHp === 0) target.topHp = stackUnitHp(target);
   } else if (action.spellId === 'reckoning') {
     for (const stack of battle.stacks.filter((item) => item.count > 0)) {
       const percent = Math.min(60, manaSpent * scaledPercent(2, sp))
@@ -294,7 +297,7 @@ function castGrave(
     }
   } else if (action.spellId === 'quiet') {
     addTimedEffect(target!, action.spellId, scaledDuration(2, sp), 1, false, side);
-    if (plus) addCounter(target!, 'chill', scaledCounter(2, sp));
+    if (plus) addBattleCounter(battle, target!, 'chill', scaledCounter(2, sp), side);
   }
 }
 
@@ -316,6 +319,16 @@ function resolveSpellFace(
     (effect) => effect.spellId === 'sanctuary',
   )) throw new Error('Target is protected by Sanctuary');
   const definition = SPELLS[action.spellId];
+  if (resolveExpansionCombatSpell(battle, side, hero, action, plus)) return;
+  if (action.spellId === 'echo') {
+    const last = battle.lastSpellCast;
+    if (!last || last.spellId === 'echo') throw new Error('There is no spell to Echo');
+    resolveSpellFace(
+      battle, side, hero, { ...action, spellId: last.spellId },
+      plus ? true : last.plus, last.manaSpent,
+    );
+    return;
+  }
   if (definition.school === 'rite') castRite(battle, side, hero, action, plus);
   else if (definition.school === 'craft') castCraft(battle, side, hero, action, plus);
   else castGrave(battle, side, hero, action, plus, manaSpent);
@@ -336,6 +349,7 @@ export function castStoredSpell(
     battle.lastSpellCast = { spellId: action.spellId, plus, manaSpent };
   }
   battle.spellCasts += 1;
+  battle.spellCastsBySide[side] = (battle.spellCastsBySide[side] ?? 0) + 1;
 }
 
 export function castSpell(battle: BattleState, action: CastAction): void {
@@ -346,12 +360,54 @@ export function castSpell(battle: BattleState, action: CastAction): void {
   }
   const definition = SPELLS[action.spellId];
   if (!isSpellTargetLegal(battle, action)) return;
-  const manaSpent = definition.mana === 'X' ? hero.mana : definition.mana;
-  const plus = isUpgraded(battle, hero, action.spellId);
+  const manaSpent = spellManaCost(battle, side, hero, action.spellId);
+  const twister = definition.kind === 'twister';
+  const freeTwister = twister && skillRank(hero, 'twicetold') >= 1
+    && !battle.twisterFreeUsed[side];
+  const plus = isUpgraded(battle, hero, action.spellId)
+    || (twister && skillRank(hero, 'twicetold') >= 2);
   resolveSpellFace(battle, side, hero, action, plus, manaSpent);
+  const wasSecondHourglassCast = battle.castRound[side] === battle.round;
+  const mirrorSide = enemySide(side);
+  const mirror = battle.stacks.find((stack) => stack.side === mirrorSide
+    && stack.count > 0 && stackHasAbility(stack, 'mirror_hex'));
+  const mirrorHero = heroFor(battle, mirrorSide);
+  const artifactMirror = Boolean(mirrorHero && !battle.mirrorArtifactUsed[mirrorSide]
+    && hasEquippedArtifact(mirrorHero, 'mirrorshardPendant'));
+  if ((mirror || artifactMirror) && mirrorHero && action.spellId !== 'standingMirror'
+      && action.spellId !== 'echo' && !definition.effectOperation) {
+    const originalTarget = stackById(battle, action.targetId);
+    const mirroredTarget = originalTarget
+      ? battle.stacks.find((stack) => stack.count > 0
+        && stack.side === (originalTarget.side === side ? mirrorSide : side))
+      : undefined;
+    const mirroredAction: CastAction = {
+      ...action, targetId: mirroredTarget?.id, secondaryTargetId: undefined,
+      replaceEnchantment: 0,
+    };
+    try {
+      resolveSpellFace(battle, mirrorSide, mirrorHero, mirroredAction, plus, manaSpent);
+      battle.log.push(`${mirror ? 'Standing Mirror' : 'The Mirrorshard Pendant'} copies ${definition.name}.`);
+    } catch {
+      battle.log.push(`${mirror ? 'Standing Mirror' : 'The Mirrorshard Pendant'} finds no legal reflection for ${definition.name}.`);
+    }
+    if (artifactMirror) {
+      battle.mirrorArtifactUsed[mirrorSide] = true;
+    }
+  }
   hero.mana -= manaSpent;
-  battle.castRound[side] = battle.round;
+  battle.firstSpellTaxPaid[side] = true;
+  if (freeTwister) battle.twisterFreeUsed[side] = true;
+  if (wasSecondHourglassCast) battle.doubleCastUsedRound[side] = battle.round;
+  if (twister && skillRank(hero, 'twicetold') >= 3
+      && !battle.twisterActSaved[side]) {
+    battle.twisterActSaved[side] = true;
+  } else {
+    battle.castRound[side] = battle.round;
+  }
   battle.spellCasts += 1;
+  battle.spellCastsBySide[side] = (battle.spellCastsBySide[side] ?? 0) + 1;
+  battle.spellsCastAgainst[enemySide(side)].push(action.spellId);
   battle.lastSpellCast = { spellId: action.spellId, plus, manaSpent };
   battle.log.push(`${definition.name}${plus ? '+' : ''} cast for ${manaSpent} mana.`);
 }

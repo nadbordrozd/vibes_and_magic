@@ -1,5 +1,5 @@
 import type {
-  GameState, Hero, Player, PlayerId,
+  Army, GameState, Hero, Player, PlayerId,
 } from './types';
 
 export function selectedHero(player: Player): Hero | null {
@@ -71,14 +71,15 @@ export function nextHero(state: GameState): void {
   state.lastMessage = `${next.name} selected.`;
 }
 
-export function defeatHero(state: GameState, heroId: string): Hero | null {
+export function defeatHero(state: GameState, heroId: string, retainedArmy?: Army): Hero | null {
   for (const player of Object.values(state.players)) {
     const index = player.heroes.findIndex((hero) => hero.id === heroId);
     if (index < 0) continue;
     const [hero] = player.heroes.splice(index, 1);
     hero.alive = false;
     hero.defeated = true;
-    hero.army = Array(7).fill(null);
+    hero.army = retainedArmy ?? (hero.tavernArmyRetained ? hero.army : Array(7).fill(null));
+    hero.tavernArmyRetained = Boolean(retainedArmy) || hero.tavernArmyRetained;
     hero.movement = 0;
     hero.pathMemory = [];
     player.tavernPool.push(hero);

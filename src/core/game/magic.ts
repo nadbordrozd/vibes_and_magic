@@ -4,15 +4,18 @@ import type {
   Castle, GameState, Hero, SpellId,
 } from '../types';
 import { sameCoord } from '../map/pathfinding';
+import { castleEntrance } from '../map/occupancy';
 import { drawLevelOptions, needsLevel } from '../progression';
 import { findOwnedHero, selectedHero } from '../heroes';
 import { skillRank } from '../heroBehaviors';
 import { SKILLS } from '../../content/skills';
+import { buildingIsActive } from './buildingStatus';
+import { consumeEquippedArtifact, hasEquippedArtifact } from '../artifacts';
 
 export function guildSpellCount(castle: Castle): number {
-  if (castle.buildings.includes('mageGuild3')) return 8;
-  if (castle.buildings.includes('mageGuild2')) return 6;
-  if (castle.buildings.includes('mageGuild1')) return 3;
+  if (buildingIsActive(castle, 'mageGuild3')) return 8;
+  if (buildingIsActive(castle, 'mageGuild2')) return 6;
+  if (buildingIsActive(castle, 'mageGuild1')) return 3;
   return 0;
 }
 
@@ -35,8 +38,18 @@ export function visitShrine(
   const shrine = state.map.objects.find((object) =>
     object.id === objectId && object.kind === 'shrine');
   if (!shrine || shrine.kind !== 'shrine' || !shrine.cleared) return;
+  if (hasEquippedArtifact(hero, 'leadenCrown')) {
+    const player = state.players[hero.owner];
+    if (player.resources.essence >= 5) {
+      player.resources.essence -= 5;
+      consumeEquippedArtifact(hero, 'leadenCrown');
+      state.eventLog.push('The shrine takes five essence and lifts the Leaden Crown.');
+    }
+  }
   if (!hero.knownSpells.includes(shrine.teaches)) hero.knownSpells.push(shrine.teaches);
-  const maxChoices = skillRank(hero, 'attunement') === 2
+  const maxChoices = skillRank(hero, 'ritualist') >= 1
+    || skillRank(hero, 'attunement') >= 2 ? 2 : 1;
+  const choicesThisVisit = skillRank(hero, 'attunement') >= 2
     ? SKILLS.attunement.values.rank2ShrineChoices : 1;
   const used = hero.shrineChoices[shrine.id] ?? 0;
   if (used < maxChoices) {
@@ -48,7 +61,7 @@ export function visitShrine(
     if (options.length) {
       state.pendingChoice = {
         kind: 'shrine', objectId: shrine.id, playerId: hero.owner, heroId: hero.id,
-        options, choicesRemaining: maxChoices - used,
+        options, choicesRemaining: Math.min(choicesThisVisit, maxChoices - used),
       };
     }
   }
@@ -83,6 +96,8 @@ export function chooseSpellUpgrade(state: GameState, spellId: SpellId): void {
     state.rng = rng;
     state.pendingChoice = {
       kind: 'level', playerId: hero.owner, heroId: hero.id, options,
+      canSkip: skillRank(hero, 'chronicler') >= 2,
+      canReroll: skillRank(hero, 'chronicler') >= 3,
     };
   }
 }
@@ -96,7 +111,7 @@ export function guildInscribe(
   const player = state.players[state.activePlayer];
   const hero = selectedHero(player);
   if (!castle || castle.owner !== player.id || !hero
-      || !sameCoord(hero.position, castle.position)
+      || !sameCoord(hero.position, castleEntrance(castle))
       || guildSpellCount(castle) === 0) throw new Error('Mage Guild unavailable');
   if (!hero.knownSpells.includes(spellId) || hero.upgradedSpells.includes(spellId)
       || !castle.guildDeck.slice(0, guildSpellCount(castle))

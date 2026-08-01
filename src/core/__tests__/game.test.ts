@@ -6,6 +6,7 @@ import {
 } from '../army';
 import { apply, createGame, incomeForPlayer } from '../game';
 import { revealForPlayer } from '../map/visibility';
+import { terrainId } from '../../content/terrain';
 
 describe('game state and economy', () => {
   it('validates content data', () => {
@@ -21,7 +22,7 @@ describe('game state and economy', () => {
   it('authors terrain with left-right mirror fairness', () => {
     const map = createBorderMarches();
     expect(map.terrain.every((row) => row.every(
-      (terrain, x) => terrain === row[map.width - 1 - x],
+      (terrain, x) => terrainId(terrain) === terrainId(row[map.width - 1 - x]),
     ))).toBe(true);
   });
 
@@ -77,7 +78,7 @@ describe('game state and economy', () => {
   it('builds at most once per castle each day', () => {
     let game = createGame({ seed: 1, p1: 'human', p2: 'ai' });
     game = apply(game, {
-      type: 'BUILD', castleId: 'p1-castle', buildingId: 'treasury',
+      type: 'BUILD', castleId: 'p1-castle', buildingId: 'townHall',
     });
     expect(() => apply(game, {
       type: 'BUILD', castleId: 'p1-castle', buildingId: 'dwelling2',

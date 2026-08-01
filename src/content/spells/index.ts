@@ -1,13 +1,17 @@
 import type { SpellId, SpellSchool } from '../../core/types';
+import { spellFlavor } from '../flavor';
 
-export type EffectOperation = 'amplify' | 'reflect' | 'sour' | 'unmake';
+export type EffectOperation = 'amplify' | 'reflect' | 'sour' | 'unmake' | 'overgrow';
 
 export interface SpellDefinition {
   id: SpellId;
   name: string;
+  flavor: string;
   school: SpellSchool;
   mana: number | 'X';
-  kind: 'staple' | 'enchantment' | 'twister' | 'scaling' | 'build-around';
+  kind: 'staple' | 'enchantment' | 'twister' | 'scaling' | 'build-around'
+    | 'adventure' | 'topology';
+  rarity?: 'common' | 'uncommon' | 'rare';
   base: string;
   plus: string;
   aiHints: {
@@ -18,6 +22,7 @@ export interface SpellDefinition {
   };
   effectOperation?: EffectOperation;
 }
+import { EXPANSION_SPELLS } from './expansion';
 
 const spell = (
   id: SpellId, name: string, school: SpellSchool, mana: number | 'X',
@@ -26,7 +31,7 @@ const spell = (
   castWhen: SpellDefinition['aiHints']['castWhen'] = 'always',
   effectOperation?: EffectOperation,
 ): SpellDefinition => ({
-  id, name, school, mana, kind, base, plus,
+  id, name, flavor: spellFlavor(name), school, mana, kind, base, plus,
   aiHints: { target, castWhen }, effectOperation,
 });
 
@@ -58,10 +63,39 @@ export const SPELLS: Record<SpellId, SpellDefinition> = Object.fromEntries([
   spell('remembrance', 'Remembrance', 'grave', 5, 'staple', 'Revive 20% of stack losses.', 'Revive 35%.', 'weakestAlly'),
   spell('reckoning', 'Reckoning', 'grave', 'X', 'build-around', 'All stacks take 2% current HP per mana.', 'Allies take half.', 'self', 'losing'),
   spell('quiet', 'Quiet', 'grave', 4, 'staple', 'Enemy cannot retaliate.', 'Also Chill 2.'),
+  ...EXPANSION_SPELLS,
 ].map((entry) => [entry.id, entry])) as Record<SpellId, SpellDefinition>;
+
+const BASE_COMMON = new Set<SpellId>([
+  'rally', 'blessing', 'sanctuary', 'oathOfIron', 'consecrate',
+  'forgeSpark', 'ward', 'clockworkEscort', 'wallOfTheMaker', 'quicksilver',
+  'wither', 'graveChill', 'mournersVeil', 'remembrance',
+]);
+for (const id of Object.keys(SPELLS) as SpellId[]) {
+  if (SPELLS[id].rarity) continue;
+  SPELLS[id].rarity = BASE_COMMON.has(id) ? 'common'
+    : id === 'trial' || id === 'reckoning' ? 'rare' : 'uncommon';
+}
 
 SPELLS.reckoning.aiHints.manaAbove = 12;
 
 export const SPELL_IDS = Object.keys(SPELLS) as SpellId[];
 export const SCHOOL_SPELLS = (school: SpellSchool) =>
   SPELL_IDS.filter((id) => SPELLS[id].school === school);
+const PROVENANCE = new Set<SpellId>([
+  'hourglassCrack', 'borrowShape', 'echo', 'loyalUntoDeath',
+]);
+export const ACQUIRABLE_SCHOOL_SPELLS = (school: SpellSchool) =>
+  SCHOOL_SPELLS(school).filter((id) => !PROVENANCE.has(id) && id !== 'summonSkiff');
+
+export const SCROLL_SPELL_IDS = SPELL_IDS.filter((id) =>
+  SPELLS[id].rarity !== 'rare'
+  && !['adventure', 'topology'].includes(SPELLS[id].kind));
+
+export function validateSpells(): void {
+  for (const definition of Object.values(SPELLS)) {
+    if (!definition.name || !definition.flavor.trim() || !definition.base || !definition.plus) {
+      throw new Error(`Invalid spell definition: ${definition.id}`);
+    }
+  }
+}

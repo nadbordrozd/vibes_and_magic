@@ -10,6 +10,7 @@ import {
   scaledCounter, scaledDuration, scaledPercent,
 } from '../combat/magicEffects';
 import { castSpell } from '../combat/spells';
+import { createBattleTile, placeBattleTile } from '../combat/tiles';
 import { createGame } from '../game';
 import { recoverSpareParts } from '../game/outcomes';
 import type {
@@ -17,6 +18,8 @@ import type {
 } from '../types';
 
 type Cast = Extract<Action, { type: 'BATTLE_CAST' }>;
+const COMBAT_SPELL_IDS = SPELL_IDS.filter((id) =>
+  !['adventure', 'topology'].includes(SPELLS[id].kind));
 
 function magicBattle(): BattleState {
   const game = createGame({ seed: 91, p1: 'human', p2: 'ai' });
@@ -51,7 +54,8 @@ function preparedCast(id: SpellId, upgraded: boolean): [BattleState, Cast] {
   const enemy = state.stacks.find((stack) => stack.side === 'defender')!;
   const action: Cast = { type: 'BATTLE_CAST', spellId: id, targetId: enemy.id };
   if (['rally', 'blessing', 'sanctuary', 'oathOfIron', 'consecrate',
-    'ward', 'quicksilver', 'mournersVeil', 'remembrance'].includes(id)) {
+    'ward', 'quicksilver', 'mournersVeil', 'remembrance', 'clarion',
+    'bloom', 'shedSkin', 'hourglassCrack', 'loyalUntoDeath'].includes(id)) {
     action.targetId = ally.id;
   }
   if (id === 'rally') action.secondaryTargetId = ally2.id;
@@ -73,8 +77,24 @@ function preparedCast(id: SpellId, upgraded: boolean): [BattleState, Cast] {
     addCounter(enemy, 'burn', 3);
     action.effectId = `counter:${enemy.id}:burn`;
   }
+  if (id === 'overgrow') {
+    addCounter(enemy, 'hex', 2);
+    action.effectId = `counter:${enemy.id}:hex`;
+  }
   if (id === 'wallOfTheMaker') {
-    action.positions = [{ x: 5, y: 1 }, { x: 5, y: 2 }, { x: 5, y: 3 }];
+    action.positions = [{ x: 5, y: 1 }, { x: 5, y: 3 }, { x: 5, y: 4 }];
+  }
+  if (id === 'thicket') {
+    action.positions = [{ x: 4, y: 1 }, { x: 4, y: 3 }, { x: 4, y: 5 }];
+  }
+  if (id === 'shedSkin') addCounter(ally, 'burn', 2);
+  if (id === 'borrowShape') {
+    enemy.position = { x: ally.position.x + 1, y: ally.position.y };
+    action.targetId = ally.id;
+    action.secondaryTargetId = enemy.id;
+  }
+  if (id === 'echo') {
+    state.lastSpellCast = { spellId: 'forgeSpark', plus: false, manaSpent: 3 };
   }
   if (id === 'remembrance') {
     state.initialCounts[ally.id] = 10;
@@ -119,13 +139,13 @@ describe('spell engine', () => {
     expect(state.stacks.find((stack) => stack.id === 'defender-0')!.counters.burn).toBe(4);
   });
 
-  it.each(SPELL_IDS)('%s base face resolves', (id) => {
+  it.each(COMBAT_SPELL_IDS)('%s base face resolves', (id) => {
     const [state, action] = preparedCast(id, false);
     expect(() => castSpell(state, action)).not.toThrow();
     expect(state.log.at(-1)).toContain(SPELLS[id].name);
   });
 
-  it.each(SPELL_IDS)('%s plus face resolves', (id) => {
+  it.each(COMBAT_SPELL_IDS)('%s plus face resolves', (id) => {
     const [state, action] = preparedCast(id, true);
     expect(() => castSpell(state, action)).not.toThrow();
     expect(state.log.at(-1)).toContain(`${SPELLS[id].name}+`);
@@ -201,7 +221,10 @@ describe('spell engine', () => {
 
   it('Wall hexes block pathing and summons never enter persistent armies', () => {
     const state = magicBattle();
-    state.spellWalls.push({ x: 1, y: 4 });
+    placeBattleTile(
+      state,
+      createBattleTile(state, 'wall', { x: 1, y: 4 }, -1, 'attacker'),
+    );
     expect(battleReachableHexes(state, state.stacks[0])).not.toContainEqual({ x: 1, y: 4 });
     state.stacks.push({
       ...state.stacks[0], id: 'summoned', slot: 6, summoned: true, count: 4,

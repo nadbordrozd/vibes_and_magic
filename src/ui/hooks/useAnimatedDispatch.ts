@@ -1,7 +1,7 @@
 import {
   useCallback, useRef, useState,
 } from 'react';
-import { activeBattleStack } from '../../core/combat/battle';
+import { activeBattleStack, applyBattleAction } from '../../core/combat/battle';
 import { hexDistance } from '../../core/combat/hex';
 import type {
   Action, GameState,
@@ -43,6 +43,15 @@ export function useAnimatedDispatch(
       || action.type === 'BATTLE_MOVE_ATTACK' ? action.targetId : undefined;
     const target = targetId
       ? battle.stacks.find((stack) => stack.id === targetId) : undefined;
+    let targetDies = false;
+    if (target) {
+      try {
+        const projected = applyBattleAction(battle, action);
+        targetDies = (projected.stacks.find((stack) => stack.id === target.id)?.count ?? 0) <= 0;
+      } catch {
+        targetDies = false;
+      }
+    }
     const displayPosition = action.type === 'BATTLE_MOVE'
       || action.type === 'BATTLE_MOVE_ATTACK'
       ? action.destination : actor.position;
@@ -60,6 +69,17 @@ export function useAnimatedDispatch(
       commitAction(action);
       setAnimation(null);
     };
+    const showDeath = () => {
+      if (!target || !targetDies) {
+        finish();
+        return;
+      }
+      setAnimation({
+        phase: 'death', actorId: actor.id, targetId: target.id,
+        displayPosition, targetPosition: target.position, duration: timing.death,
+      });
+      later(finish, timing.death);
+    };
     const showDamage = () => {
       if (!target) {
         finish();
@@ -69,7 +89,7 @@ export function useAnimatedDispatch(
         phase: 'damage', actorId: actor.id, targetId: target.id,
         displayPosition, targetPosition: target.position, duration: timing.damage,
       });
-      later(finish, timing.damage);
+      later(showDeath, timing.damage);
     };
     const showAttack = () => {
       if (!target) {

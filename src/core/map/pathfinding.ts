@@ -1,6 +1,9 @@
-import { TERRAIN_COST } from '../../content/constants';
+import { ROAD_MOVE_COST, TERRAIN_COST } from '../../content/constants';
 import { SKILLS } from '../../content/skills';
-import type { Coord, GameMap, Hero } from '../types';
+import { OMENS } from '../../content/omens';
+import type { Coord, GameMap, Hero, OmenId } from '../types';
+import { heroIsNative, terrainIdAt } from '../../content/terrain';
+import { UNITS } from '../../content/units';
 
 const DIRECTIONS: Coord[] = [
   { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 },
@@ -21,16 +24,30 @@ export function movementCost(
   map: GameMap,
   from: Coord,
   to: Coord,
-  hero?: Pick<Hero, 'skills'>,
+  hero?: Pick<Hero, 'skills' | 'faction' | 'army'>,
+  omen: OmenId = 'quiet',
+  freeForest = false,
 ): number {
-  const terrain = map.terrain[to.y]?.[to.x];
-  if (!terrain) return Number.POSITIVE_INFINITY;
+  const terrain = terrainIdAt(map, to);
+  if (map.roads?.some((road) => sameCoord(road, to))) return ROAD_MOVE_COST;
+  if (map.seams?.some((seam) => sameCoord(seam, to))) return 100;
+  if (freeForest && terrain === 'deepwood') return 0;
+  const native = hero && heroIsNative(hero, terrain);
+  const aquaticMire = terrain === 'mire' && hero?.army.some((stack) =>
+    stack && UNITS[stack.unitId].abilities.includes('aquatic'));
   const wayfaring = hero?.skills.wayfaring ?? 0;
-  const base = wayfaring === 2 && Number.isFinite(TERRAIN_COST[terrain])
-    ? SKILLS.wayfaring.values.terrainCost
-    : wayfaring === 1 && terrain === 'forest'
-      ? SKILLS.wayfaring.values.terrainCost : TERRAIN_COST[terrain];
-  return from.x !== to.x && from.y !== to.y ? Math.round(base * 1.41) : base;
+  const omenTerrainCost = OMENS[omen].effects.terrainCost;
+  const base = native ? 100 : aquaticMire ? 125
+    : wayfaring === 3 && Number.isFinite(TERRAIN_COST[terrain])
+    ? SKILLS.wayfaring.values.rank3TerrainCost
+    : omenTerrainCost !== undefined && Number.isFinite(TERRAIN_COST[terrain])
+      ? omenTerrainCost
+      : wayfaring === 2 && Number.isFinite(TERRAIN_COST[terrain])
+        ? SKILLS.wayfaring.values.terrainCost
+        : wayfaring === 1 && terrain === 'deepwood'
+          ? SKILLS.wayfaring.values.terrainCost : TERRAIN_COST[terrain];
+  return from.x !== to.x && from.y !== to.y && wayfaring !== 3
+    ? Math.round(base * 1.41) : base;
 }
 
 export function findPath(
@@ -38,15 +55,17 @@ export function findPath(
   start: Coord,
   goal: Coord,
   blocked: ReadonlySet<string> = new Set(),
-  hero?: Pick<Hero, 'skills'>,
+  hero?: Pick<Hero, 'skills' | 'faction' | 'army'>,
+  omen: OmenId = 'quiet',
+  freeForest = false,
 ): Coord[] | null {
   if (!inBounds(map, goal)
-      || !Number.isFinite(movementCost(map, start, goal, hero))) return null;
+      || !Number.isFinite(movementCost(map, start, goal, hero, omen, freeForest))) return null;
   const open = new Set([coordKey(start)]);
   const coords = new Map([[coordKey(start), start]]);
   const cameFrom = new Map<string, string>();
   const g = new Map([[coordKey(start), 0]]);
-  const f = new Map([[coordKey(start), heuristic(start, goal)]]);
+  const f = new Map([[coordKey(start), freeForest ? 0 : heuristic(start, goal)]]);
 
   while (open.size > 0) {
     const currentKey = [...open].sort(
@@ -60,14 +79,14 @@ export function findPath(
       const next = { x: current.x + direction.x, y: current.y + direction.y };
       const nextKey = coordKey(next);
       if (!inBounds(map, next) || (blocked.has(nextKey) && !sameCoord(next, goal))) continue;
-      const cost = movementCost(map, current, next, hero);
+      const cost = movementCost(map, current, next, hero, omen, freeForest);
       if (!Number.isFinite(cost)) continue;
       const tentative = (g.get(currentKey) ?? Infinity) + cost;
       if (tentative >= (g.get(nextKey) ?? Infinity)) continue;
       cameFrom.set(nextKey, currentKey);
       coords.set(nextKey, next);
       g.set(nextKey, tentative);
-      f.set(nextKey, tentative + heuristic(next, goal));
+      f.set(nextKey, tentative + (freeForest ? 0 : heuristic(next, goal)));
       open.add(nextKey);
     }
   }
@@ -97,11 +116,13 @@ function reconstruct(
 export function pathCost(
   map: GameMap,
   path: Coord[],
-  hero?: Pick<Hero, 'skills'>,
+  hero?: Pick<Hero, 'skills' | 'faction' | 'army'>,
+  omen: OmenId = 'quiet',
+  freeForest = false,
 ): number {
   let total = 0;
   for (let index = 1; index < path.length; index += 1) {
-    total += movementCost(map, path[index - 1], path[index], hero);
+    total += movementCost(map, path[index - 1], path[index], hero, omen, freeForest);
   }
   return total;
 }
@@ -110,12 +131,14 @@ export function reachablePathPrefix(
   map: GameMap,
   path: Coord[],
   budget: number,
-  hero?: Pick<Hero, 'skills'>,
+  hero?: Pick<Hero, 'skills' | 'faction' | 'army'>,
+  omen: OmenId = 'quiet',
+  freeForest = false,
 ): Coord[] {
   const reachable = [path[0]];
   let spent = 0;
   for (let index = 1; index < path.length; index += 1) {
-    const step = movementCost(map, path[index - 1], path[index], hero);
+    const step = movementCost(map, path[index - 1], path[index], hero, omen, freeForest);
     if (spent + step > budget) break;
     spent += step;
     reachable.push(path[index]);

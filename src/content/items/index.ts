@@ -1,15 +1,22 @@
 import type {
-  AbilityId, ItemId, ItemInstance, SpellId,
+  ItemId, ItemInstance, SpellId,
 } from '../../core/types';
+import { SPELLS } from '../spells';
+import { itemFlavor } from '../flavor';
 
-export type ItemUse = 'combat' | 'adventure' | 'passive' | 'automatic';
+export type ItemUse = 'combat' | 'adventure' | 'automatic';
 export type ItemBehavior =
   | 'scroll' | 'vigor' | 'iron' | 'cleanse' | 'echo'
-  | 'reveal' | 'movement' | 'charter' | 'tradeGoods' | 'passiveAbility';
+  | 'speed' | 'burnWeapon' | 'enemyHex' | 'hornet' | 'disable'
+  | 'walls' | 'seal' | 'unmakeEnchantment' | 'banner' | 'revive'
+  | 'reveal' | 'movement' | 'remoteMovement' | 'rumour' | 'recall'
+  | 'impassableStep' | 'militiaWrit' | 'draftBoost' | 'foundersTin'
+  | 'cronesBundle' | 'charter' | 'tradeGoods';
 
 export interface ItemDefinition {
   id: ItemId;
   name: string;
+  flavor: string;
   use: ItemUse;
   behavior: ItemBehavior;
   description: string;
@@ -17,18 +24,23 @@ export interface ItemDefinition {
   amount?: number;
   duration?: number;
   radius?: number;
-  ability?: AbilityId;
   baseGold?: number;
+  target?: 'ally' | 'enemy' | 'enchantment' | 'global' | 'positions';
 }
 
 const scroll = (
   id: ItemId, name: string, spellId: SpellId,
 ): ItemDefinition => ({
-  id, name: `Scroll of ${name}`, use: 'combat', behavior: 'scroll', spellId,
+  id, name: `Scroll of ${name}`, flavor: itemFlavor(`Scroll of ${name}`),
+  use: 'combat', behavior: 'scroll', spellId,
   description: `Cast ${name}'s stored face without spending mana.`,
 });
 
-export const ITEMS: Record<ItemId, ItemDefinition> = {
+const RAW_ITEMS = {
+  spellScroll: {
+    id: 'spellScroll', name: 'Spell Scroll', use: 'combat', behavior: 'scroll',
+    description: 'Cast the spell stored on this scroll without spending mana.',
+  },
   scrollRally: scroll('scrollRally', 'Rally', 'rally'),
   scrollBlessing: scroll('scrollBlessing', 'Blessing', 'blessing'),
   scrollForgeSpark: scroll('scrollForgeSpark', 'Forge-Spark', 'forgeSpark'),
@@ -54,6 +66,47 @@ export const ITEMS: Record<ItemId, ItemDefinition> = {
     behavior: 'cleanse',
     description: 'Remove every counter from one allied company.',
   },
+  haresHeel: {
+    id: 'haresHeel', name: "Hare's Heel", use: 'combat', behavior: 'speed',
+    amount: 3, duration: 2, target: 'ally', description: '+3 speed for two rounds.',
+  },
+  blackfireOil: {
+    id: 'blackfireOil', name: 'Blackfire Oil', use: 'combat', behavior: 'burnWeapon',
+    duration: 3, target: 'ally', description: 'Attacks apply Burn 1 for three rounds.',
+  },
+  graveDust: {
+    id: 'graveDust', name: 'Grave Dust', use: 'combat', behavior: 'enemyHex',
+    amount: 3, target: 'enemy', description: 'One enemy gains Hex 3.',
+  },
+  hornetJar: {
+    id: 'hornetJar', name: 'Hornet Jar', use: 'combat', behavior: 'hornet',
+    duration: 1, target: 'enemy', description: 'Enemy cannot retaliate this round and gains Chill 1.',
+  },
+  milkOfTheMoon: {
+    id: 'milkOfTheMoon', name: 'Milk of the Moon', use: 'combat', behavior: 'disable',
+    duration: 2, target: 'enemy', description: 'Disable an enemy company’s abilities for two rounds.',
+  },
+  chalkOfWalls: {
+    id: 'chalkOfWalls', name: 'Chalk of Walls', use: 'combat', behavior: 'walls',
+    target: 'positions', description: 'Create three Wall of the Maker hexes.',
+  },
+  waxSeal: {
+    id: 'waxSeal', name: 'Wax Seal', use: 'combat', behavior: 'seal',
+    target: 'enchantment', description: 'Protect one enchantment from effect manipulation.',
+  },
+  powderOfUnmaking: {
+    id: 'powderOfUnmaking', name: 'Powder of Unmaking', use: 'combat',
+    behavior: 'unmakeEnchantment', target: 'enchantment',
+    description: 'Destroy one enchantment.',
+  },
+  bannerWhistle: {
+    id: 'bannerWhistle', name: 'Banner Whistle', use: 'combat', behavior: 'banner',
+    amount: 10, target: 'global', description: 'Every allied company gains 10 meter.',
+  },
+  secondCandle: {
+    id: 'secondCandle', name: 'Second Candle', use: 'combat', behavior: 'revive',
+    amount: 10, target: 'ally', description: 'Revive 10% of a company’s battle losses.',
+  },
   bottledEcho: {
     id: 'bottledEcho', name: 'Bottled Echo', use: 'combat',
     behavior: 'echo',
@@ -69,6 +122,39 @@ export const ITEMS: Record<ItemId, ItemDefinition> = {
     behavior: 'movement', amount: 600,
     description: 'Gain 600 movement points today.',
   },
+  saltedMeat: {
+    id: 'saltedMeat', name: 'Salted Meat', use: 'adventure', behavior: 'remoteMovement',
+    amount: 300, description: 'Give any allied hero 300 movement points today.',
+  },
+  tavernTales: {
+    id: 'tavernTales', name: 'Tavern Tales', use: 'adventure', behavior: 'rumour',
+    description: 'Reveal a seeded shrine, lock hint, or barrow content.',
+  },
+  hearthstone: {
+    id: 'hearthstone', name: 'Hearthstone', use: 'adventure', behavior: 'recall',
+    description: 'Return to the nearest owned castle.',
+  },
+  ferrymansCoin: {
+    id: 'ferrymansCoin', name: "Ferryman's Coin", use: 'adventure',
+    behavior: 'impassableStep', amount: 3,
+    description: 'Step across up to three impassable tiles in a straight line.',
+  },
+  militiaWrit: {
+    id: 'militiaWrit', name: 'Militia Writ', use: 'adventure', behavior: 'militiaWrit',
+    description: 'Recruit a castle’s available tier-one growth remotely at double gold cost.',
+  },
+  beggarsCoin: {
+    id: 'beggarsCoin', name: "Beggar's Coin", use: 'adventure', behavior: 'draftBoost',
+    amount: 1, description: 'Your next level-up draft deals one additional card.',
+  },
+  foundersTin: {
+    id: 'foundersTin', name: "Founders' Tin", use: 'adventure', behavior: 'foundersTin',
+    amount: 10, description: 'Ten Tin Soldiers join this hero.',
+  },
+  cronesBundle: {
+    id: 'cronesBundle', name: "Crone's Bundle", use: 'adventure', behavior: 'cronesBundle',
+    description: 'Open one of three seed-determined rare bundles.',
+  },
   overseersCharter: {
     id: 'overseersCharter', name: "Overseer's Charter", use: 'adventure',
     behavior: 'charter', amount: 50,
@@ -79,12 +165,11 @@ export const ITEMS: Record<ItemId, ItemDefinition> = {
     behavior: 'tradeGoods', amount: 25, baseGold: 300,
     description: 'Sold at a friendly castle for 300 gold plus 25 per straight-line tile.',
   },
-  mirrorMask: {
-    id: 'mirrorMask', name: 'The Mirror-Bound Mask', use: 'passive',
-    behavior: 'passiveAbility', ability: 'mask_reflect', amount: 20,
-    description: 'Enemy melee attackers suffer 20% of the damage they deal.',
-  },
-};
+} satisfies Record<ItemId, Omit<ItemDefinition, 'flavor'> | ItemDefinition>;
+
+export const ITEMS = Object.fromEntries(Object.entries(RAW_ITEMS).map(([id, item]) => [
+  id, { ...item, flavor: 'flavor' in item ? item.flavor : itemFlavor(item.name) },
+])) as Record<ItemId, ItemDefinition>;
 
 export const SCROLL_ITEM_IDS = [
   'scrollRally', 'scrollBlessing', 'scrollForgeSpark', 'scrollWard',
@@ -93,23 +178,29 @@ export const SCROLL_ITEM_IDS = [
 ] as const satisfies readonly ItemId[];
 
 export const CHEST_ITEM_POOL = [
-  'potionOfVigor', 'draughtOfIron', 'smellingSalts', 'bottledEcho',
-  'cartographersCase', 'waybread',
-  ...SCROLL_ITEM_IDS,
+  'potionOfVigor', 'draughtOfIron', 'smellingSalts', 'haresHeel',
+  'blackfireOil', 'graveDust', 'hornetJar', 'milkOfTheMoon', 'chalkOfWalls',
+  'waxSeal', 'powderOfUnmaking', 'bannerWhistle', 'secondCandle', 'bottledEcho',
+  'cartographersCase', 'waybread', 'saltedMeat', 'tavernTales', 'hearthstone',
+  'ferrymansCoin', 'militiaWrit', 'beggarsCoin', 'foundersTin', 'cronesBundle',
+  'spellScroll',
 ] as const satisfies readonly ItemId[];
 
 export function itemName(item: ItemInstance | string | null): string {
   if (!item) return '';
   if (typeof item === 'string') return item;
-  return `${ITEMS[item.id].name}${item.plus ? '+' : ''}`;
+  const stored = item.id === 'spellScroll' && item.storedSpellId
+    ? ` of ${SPELLS[item.storedSpellId as SpellId]?.name ?? item.storedSpellId}` : '';
+  return `${ITEMS[item.id].name}${stored}${item.plus ? '+' : ''}`;
 }
 
 export function validateItems(): void {
   for (const definition of Object.values(ITEMS)) {
-    if (!definition.name || !definition.description) {
+    if (!definition.name || !definition.flavor.trim() || !definition.description) {
       throw new Error(`Invalid item definition: ${definition.id}`);
     }
-    if (definition.behavior === 'scroll' && !definition.spellId) {
+    if (definition.behavior === 'scroll' && !definition.spellId
+        && definition.id !== 'spellScroll') {
       throw new Error(`Scroll has no spell: ${definition.id}`);
     }
   }
