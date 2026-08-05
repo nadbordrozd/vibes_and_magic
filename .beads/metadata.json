@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "vibes_and_magic",
+  "project_id": "7ac135e8-638f-4307-ac20-b1e30698e24e"
+}
