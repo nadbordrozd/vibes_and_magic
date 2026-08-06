@@ -19,6 +19,7 @@ import {
 } from './components/Dialogs';
 import { MainMenu } from './components/MainMenu';
 import { InspectionLayer } from './components/InspectionLayer';
+import { ContextHelp, type HelpContext } from './components/ContextHelp';
 import {
   autoSaveGame, createBattleReplayLink, createGameLink, exportSaveFile, importSaveFile,
   loadBattleReplayLink, loadGame, loadGameLink, saveGame, savedGameSummary,
@@ -353,11 +354,12 @@ export function App() {
   if (!game) {
     return <><MainMenu onStart={start} savedGame={savedSummary}
       manualSaves={manualSummaries} autoSaves={autoSummaries} onLoad={load}
-      onImport={importFile} />
+      onImport={importFile} /><ContextHelp state={null} context="menu" />
       {error && <button className="error-toast" role="alert"
         onClick={() => setError('')}>{error} · Dismiss ×</button>}</>;
   }
-  if (passPlayer) return <PassDevice playerId={passPlayer} onReady={() => setPassPlayer(null)} />;
+  if (passPlayer) return <><PassDevice playerId={passPlayer}
+    onReady={() => setPassPlayer(null)} /><ContextHelp state={game} context="adventure" /></>;
 
   const castle = game.castles.find((item) => item.id === openCastleId) ?? null;
   const battleStack = game.battle?.pendingFreeMove
@@ -367,6 +369,11 @@ export function App() {
   const humanControl = Boolean(
     !battleReplay && battleStack && battleStackController(game, battleStack) === 'human',
   );
+  const helpContext: HelpContext = game.phase === 'gameOver' ? 'campaign'
+    : battleResult ? 'result'
+      : game.pendingChoice ? 'choice'
+        : openCastleId ? 'castle'
+          : game.phase === 'combat' ? 'combat' : 'adventure';
 
   return (
     <>
@@ -418,7 +425,8 @@ export function App() {
       {!battleResult && <VictoryDialog state={game} onMenu={returnToMenu} />}
       {error && <button className="error-toast" onClick={() => setError('')}>{error} ×</button>}
       {notice && <div className="notice-toast">{notice}</div>}
-      <InspectionLayer state={game} />
+      {!game.winner && <InspectionLayer state={game} />}
+      <ContextHelp state={game} context={helpContext} />
     </>
   );
 }

@@ -7,6 +7,7 @@ import { SKILLS } from '../../content/skills';
 import { itemName } from '../../content/items';
 import { BARGAINS } from '../../content/bargains';
 import { ARTIFACTS } from '../../content/artifacts';
+import { campaignOutcome } from '../campaignOutcome';
 
 interface ChoiceProps {
   state: GameState;
@@ -387,14 +388,26 @@ export function BattleResult({
 export function VictoryDialog({
   state, onMenu,
 }: { state: GameState; onMenu: () => void }) {
-  if (!state.winner) return null;
+  const outcome = campaignOutcome(state);
+  if (!state.winner || !outcome) return null;
   return (
     <div className="modal-backdrop victory-backdrop">
-      <section className={`victory-dialog ${state.players[state.winner].faction}`}>
-        <span className="dialog-kicker">Campaign complete</span>
-        <h1>{state.players[state.winner].name}<br />is victorious</h1>
-        <p>The rival banner falls. The Border Marches answer to one throne.</p>
-        <div><span>Days</span><b>{state.day}</b><span>Battles</span><b>{state.metrics.battles}</b></div>
+      <section className={`victory-dialog ${state.players[state.winner].faction} ${outcome.perspective}`}
+        aria-labelledby="campaign-outcome-heading">
+        <span className="dialog-kicker">{outcome.kicker}</span>
+        <h1 id="campaign-outcome-heading">{outcome.heading}</h1>
+        <p className="outcome-reason">{outcome.reason}</p>
+        <section className="outcome-objective">
+          <span>Authored objective</span><b>{outcome.objective}</b><em>{outcome.flavor}</em>
+          {outcome.defeatCondition && <small>Defeat condition: {outcome.defeatCondition}</small>}
+        </section>
+        <div className="outcome-facts">
+          <span>{outcome.actorLabel}</span><b>{outcome.actor}</b>
+          {outcome.affected && <><span>{outcome.affectedLabel}</span><b>{outcome.affected}</b></>}
+          <span>Outcome</span><b>{outcome.outcomeLabel}</b>
+          <span>Final day</span><b>{state.day}</b><span>Battles</span><b>{state.metrics.battles}</b>
+        </div>
+        <h2>Final campaign record</h2>
         <table className="game-totals"><thead><tr><th>Player</th><th>Damage</th><th>Taken</th><th>Spells</th><th>Extra acts</th><th>Loss value</th></tr></thead>
           <tbody>{Object.values(state.players).filter((player) => player.heroes.length
             || player.active).map((player) => {
@@ -403,6 +416,9 @@ export function VictoryDialog({
               <td>{totals.damageTaken}</td><td>{totals.spellsCast}</td>
               <td>{totals.extraActions}</td><td>{totals.casualtyValue.toLocaleString()}g</td></tr>;
           })}</tbody></table>
+        <p className="outcome-next">This concluded state and its statistics remain authoritative
+          for the loaded save or replay. Open Help to revisit the objective and reference, or
+          return to the title to start or load another campaign.</p>
         <button className="primary" onClick={onMenu}>Return to title</button>
       </section>
     </div>
