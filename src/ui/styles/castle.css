@@ -65,6 +65,8 @@
   padding: 18px; border: 1px solid #3e483d; background: #0e130f;
 }
 .transfer-area .army-block { margin: 0; }.transfer-arrow { color: var(--gold); text-align: center; font-size: 23px; }
+.castle-exchange { padding: 18px; border: 1px solid #3e483d; background: #0e130f; }
+.castle-exchange .transfer-area { padding: 0; border: 0; }
 .remote-castle-note { display: flex; flex-direction: column; gap: 5px; padding: 14px; border-left: 2px solid var(--gold); }
 .remote-castle-note b { font: 700 15px Georgia, serif; text-transform: uppercase; }
 .remote-castle-note span { color: #899386; font-size: 10px; line-height: 1.45; }
@@ -78,6 +80,7 @@
 @media (max-width: 760px) {
   .exchange-screen .transfer-area, .item-transfer-area { grid-template-columns: 1fr; gap: 10px; }
   .exchange-screen .transfer-arrow { transform: rotate(90deg); }
+  .equipment-destinations { grid-template-columns: 1fr; }
 }
 .guild-panel { border-top: 1px solid #ffffff22; padding: 14px 20px 18px; }
 .guild-panel > p { color: #9fa99c; }

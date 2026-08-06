@@ -251,6 +251,17 @@
 .exchange-screen > p { max-width: 760px; color: #aeb6a9; line-height: 1.45; }
 .exchange-screen > p b { color: #eee6cf; }
 .exchange-screen .transfer-area .army-block, .exchange-screen .army-slot-wrap { min-width: 0; }
+.explicit-exchange { margin-top: 14px; }
+.transfer-instruction { min-height: 32px; margin: 7px 0; color: #c1c8bc; line-height: 1.4; }
+.army-slot.valid-destination { border-color: #6fa777; box-shadow: inset 0 0 0 1px #365b3b; }
+.army-slot.valid-destination:hover { background: #203224; border-color: #9bd7a2; }
+.transfer-dialog { width: min(560px, calc(100vw - 28px)); }
+.transfer-dialog > label { display: grid; gap: 6px; color: #d5c687; }
+.transfer-dialog input[type="number"] { width: 120px; }
+.transfer-dialog input[type="range"] { width: 100%; }
+.transfer-preview { padding: 9px; border-left: 3px solid #d0b255; background: #121713; color: #d8ddcf; line-height: 1.45; }
+.disabled-reason { padding: 9px; border-left: 3px solid #b65750; background: #281918; color: #efaaa5; line-height: 1.45; }
+.deferred-mechanic { padding: 8px 10px; border: 1px solid #3b423a; background: #111612; color: #8f998d; font-size: 10px; }
 .item-exchange { margin-top: 20px; }
 .item-exchange h3 { margin-bottom: 9px; }
 .item-transfer-area { display: grid; grid-template-columns: minmax(0, 1fr) 45px minmax(0, 1fr); align-items: center; padding: 18px; border: 1px solid #3e483d; background: #0e130f; }
@@ -335,7 +346,20 @@
   color: #778078; font-size: 8px; text-transform: uppercase;
 }
 .equipment-grid button.equipped { border-color: #8d7440; }
+.equipment-grid .burden-mark { display: block; color: #d68983; font-size: 8px; }
 .artifact-backpack { display: grid; gap: 4px; max-height: 120px; overflow: auto; }
+.equipment-dialog { width: min(650px, calc(100vw - 28px)); max-height: calc(100vh - 40px); overflow: auto; }
+.equipment-destinations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.equipment-destinations button { display: grid; gap: 3px; text-align: left; }
+.equipment-destinations button.selected, .split-destinations button.selected,
+.resonance-choice button.selected { border-color: #e0c35e; background: #40371d; box-shadow: inset 0 0 0 1px #e0c35e; }
+.equipment-destinations button:disabled { opacity: .55; }
+.equipment-destinations small { color: #aab1a6; }
+.resonance-choice { display: flex; flex-wrap: wrap; gap: 5px; border: 1px solid #ffffff24; }
+.resonance-choice legend { color: #d8c57d; }
+.split-destinations { display: flex; flex-wrap: wrap; gap: 5px; }
+.split-dialog label { display: grid; gap: 4px; color: #d5c687; }
+.split-dialog input[type="number"] { width: 100px; }
 .kit-bonus { color: #d0b86f; font-size: 10px; }
 .debt-list article, .spellbook-debts article {
   display: grid; gap: 2px; margin: 4px 0; padding: 6px;

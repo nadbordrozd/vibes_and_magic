@@ -10,6 +10,7 @@ import {
 import type {
   Action, BuildingId, Castle, GameState, ResourceId, UnitTier,
 } from '../../core/types';
+import { ArmyExchange } from './ArmyExchange';
 import { ArmySlots } from './ArmySlots';
 import { guildSpellCount } from '../../core/game/magic';
 import { heroHireCost } from '../../core/game/tavern';
@@ -65,7 +66,6 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
   const [counts, setCounts] = useState<Record<number, number>>({
     1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0,
   });
-  const [heroSlot, setHeroSlot] = useState<number | null>(null);
   const [selectedBuilding, setSelectedBuilding] = useState<BuildingId | null>(null);
   const hero = state.players[state.activePlayer].hero;
   const heroIsVisiting = visitingCastle(state)?.id === castle.id;
@@ -87,12 +87,6 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
       && !state.map.objects.some((object) => object.position.x === x && object.position.y === y)
       ? [{ x, y }] : [];
   });
-
-  const transfer = (garrisonSlot: number) => {
-    if (heroSlot === null || !heroIsVisiting) return;
-    dispatch({ type: 'SWAP_ARMY', castleId: castle.id, heroSlot, garrisonSlot });
-    setHeroSlot(null);
-  };
 
   useEffect(() => {
     const inspectBuilding = (event: Event) => {
@@ -193,19 +187,22 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             </div>
           </div>
         </div>
-        <div className="transfer-area">
+        <section className="castle-exchange" aria-label="Castle company exchange">
           {hero && heroIsVisiting ? (
-            <>
-              <ArmySlots army={hero.army} title="Visiting hero · select a stack" selected={heroSlot} onSelect={setHeroSlot}
-                onSplit={(sourceSlot, destinationSlot, count) => dispatch({ type: 'SPLIT_ARMY',
-                  holder: { kind: 'hero', id: hero.id }, sourceSlot, destinationSlot, count })} />
-              <div className="transfer-arrow">⇄</div>
-              <ArmySlots army={castle.garrison} title="Garrison · select destination" onSelect={transfer}
-                onSplit={(sourceSlot, destinationSlot, count) => dispatch({ type: 'SPLIT_ARMY',
-                  holder: { kind: 'garrison', id: castle.id }, sourceSlot, destinationSlot, count })} />
-            </>
+            <ArmyExchange
+              left={{
+                label: `${hero.name} (visiting hero)`,
+                holder: { kind: 'hero', id: hero.id },
+                army: hero.army,
+              }}
+              right={{
+                label: `${CASTLE_NAMES[castle.faction]} garrison`,
+                holder: { kind: 'garrison', id: castle.id },
+                army: castle.garrison,
+              }}
+              dispatch={dispatch} />
           ) : (
-            <>
+            <div className="transfer-area">
               <div className="remote-castle-note">
                 <b>Remote command</b>
                 <span>Build and recruit here. Move your hero into the castle to transfer troops.</span>
@@ -214,9 +211,9 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
               <ArmySlots army={castle.garrison} title="Castle garrison"
                 onSplit={(sourceSlot, destinationSlot, count) => dispatch({ type: 'SPLIT_ARMY',
                   holder: { kind: 'garrison', id: castle.id }, sourceSlot, destinationSlot, count })} />
-            </>
+            </div>
           )}
-        </div>
+        </section>
         <section className="guild-panel">
           <h3>Mage Guild</h3>
           {guildSpells.length === 0 ? (
