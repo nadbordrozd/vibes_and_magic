@@ -60,54 +60,98 @@ export function canBeginSpellCast(battle: BattleState, spellId: SpellId): boolea
 }
 
 export function canCastSpell(battle: BattleState, spellId: SpellId): boolean {
-  const definition = SPELLS[spellId];
-  return canBeginSpellCast(battle, spellId) && (!definition.effectOperation
-    || legalTwistEffectIds(battle, spellId).length > 0);
+  return canBeginSpellCast(battle, spellId)
+    && legalSpellCasts(battle).some((action) => action.spellId === spellId);
 }
 
 export function legalSpellCasts(battle: BattleState): CastAction[] {
   const side = actorSide(battle);
   const hero = side ? heroFor(battle, side) : null;
   if (!hero || !side) return [];
-  return hero.knownSpells.filter((id) => canCastSpell(battle, id)).flatMap((spellId) => {
-    if (SPELLS[spellId].effectOperation) {
-      return legalTwistEffectIds(battle, spellId).map((effectId): CastAction => ({
-        type: 'BATTLE_CAST', spellId, effectId,
-      }));
+  const enumerate = (
+    actionSpellId: SpellId, resolvedSpellId: SpellId, plus: boolean,
+  ): CastAction[] => {
+    const make = (choice: Omit<CastAction, 'type' | 'spellId'>): CastAction => ({
+      type: 'BATTLE_CAST', spellId: actionSpellId, ...choice,
+    });
+    const definition = SPELLS[resolvedSpellId];
+    if (definition.effectOperation) {
+      return legalTwistEffectIds(battle, resolvedSpellId).flatMap((effectId) => {
+        if (definition.effectOperation === 'reflect') {
+          const targets = battle.stacks.filter((stack) => stack.count > 0);
+          if (!plus) return targets.map((target) => make({ effectId, targetId: target.id }));
+          return targets.flatMap((target) => targets
+            .filter((secondary) => secondary.id !== target.id)
+            .map((secondary) => make({
+              effectId, targetId: target.id, secondaryTargetId: secondary.id,
+            })));
+        }
+        if (definition.effectOperation === 'overgrow' && plus) {
+          const sourceId = effectId.split(':')[1];
+          const source = stackById(battle, sourceId);
+          const exclusions = source ? battle.stacks.filter((stack) => stack.count > 0
+            && stack.id !== source.id && stacksAdjacent(stack, source)) : [];
+          return exclusions.length > 0
+            ? exclusions.map((stack) => make({ effectId, secondaryTargetId: stack.id }))
+            : [make({ effectId })];
+        }
+        return [make({ effectId })];
+      });
     }
-    if (spellId === 'borrowShape') {
-      const plus = isUpgraded(battle, hero, spellId);
+    if (resolvedSpellId === 'borrowShape') {
       return battle.stacks.filter((stack) => stack.side === side && stack.count > 0)
         .flatMap((target) => battle.stacks.filter((source) => source.side !== side
           && source.count > 0 && (plus || stacksAdjacent(target, source)))
-          .map((source): CastAction => ({
-            type: 'BATTLE_CAST', spellId, targetId: target.id,
-            secondaryTargetId: source.id,
+          .map((source) => make({
+            targetId: target.id, secondaryTargetId: source.id,
           })));
     }
-    if (spellId === 'hourglassCrack') {
-      const plus = isUpgraded(battle, hero, spellId);
+    if (resolvedSpellId === 'hourglassCrack') {
       return battle.stacks.filter((stack) => stack.count > 0).flatMap((stack) =>
         (plus ? [battle.round + 1, battle.round + 2, battle.round + 3] : [undefined])
-          .map((skipRound): CastAction => ({
-            type: 'BATTLE_CAST', spellId, targetId: stack.id, skipRound,
+          .map((skipRound) => make({
+            targetId: stack.id, ...(skipRound === undefined ? {} : { skipRound }),
           })));
     }
-    if (spellId === 'echo' && !battle.lastSpellCast) return [];
-    if (ALLY_TARGETS.has(spellId)) {
-      return battle.stacks.filter((stack) => stack.side === side && stack.count > 0)
-        .map((stack): CastAction => ({
-          type: 'BATTLE_CAST', spellId, targetId: stack.id,
-        }));
+    if (ALLY_TARGETS.has(resolvedSpellId)) {
+      const allies = battle.stacks.filter((stack) => stack.side === side && stack.count > 0
+        && (resolvedSpellId !== 'remembrance' || !stack.summoned));
+      if (resolvedSpellId === 'rally' && plus) {
+        return allies.flatMap((target) => allies
+          .filter((secondary) => secondary.id !== target.id)
+          .map((secondary) => make({
+            targetId: target.id, secondaryTargetId: secondary.id,
+          })));
+      }
+      return allies.map((stack) => make({ targetId: stack.id }));
     }
-    if (ENEMY_TARGETS.has(spellId)) {
+    if (resolvedSpellId === 'trial') {
+      const largestOwn = Math.max(...battle.stacks.filter((stack) =>
+        stack.side === side && stack.count > 0).map((stack) => stack.count));
+      return battle.stacks.filter((stack) => stack.side !== side && stack.count > largestOwn
+        && !stack.effects.some((effect) => effect.spellId === 'sanctuary'))
+        .map((stack) => make({ targetId: stack.id }));
+    }
+    if (ENEMY_TARGETS.has(resolvedSpellId)) {
       return battle.stacks.filter((stack) => stack.side !== side && stack.count > 0
         && !stack.effects.some((effect) => effect.spellId === 'sanctuary'))
-        .map((stack): CastAction => ({
-          type: 'BATTLE_CAST', spellId, targetId: stack.id,
-        }));
+        .map((stack) => make({ targetId: stack.id }));
     }
-    return [{ type: 'BATTLE_CAST', spellId }];
+    if (definition.kind === 'enchantment' && battle.enchantments[side].length >= 2) {
+      return battle.enchantments[side].map((_, replaceEnchantment) =>
+        make({ replaceEnchantment }));
+    }
+    return [make({})];
+  };
+  return hero.knownSpells.filter((id) => canBeginSpellCast(battle, id)).flatMap((spellId) => {
+    if (spellId === 'echo') {
+      const last = battle.lastSpellCast;
+      if (!last || last.spellId === 'echo') return [];
+      return enumerate(spellId, last.spellId,
+        isUpgraded(battle, hero, spellId) ? true : last.plus);
+    }
+    return enumerate(spellId, spellId, isUpgraded(battle, hero, spellId)
+      || (SPELLS[spellId].kind === 'twister' && skillRank(hero, 'twicetold') >= 2));
   });
 }
 

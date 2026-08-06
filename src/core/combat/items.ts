@@ -11,7 +11,7 @@ import { UNITS } from '../../content/units';
 import { legalTwistEffectIds } from './spellTargets';
 import { castStoredSpell } from './spells';
 import { skillRank } from '../heroBehaviors';
-import { occupiedByStacks, stacksAdjacent } from './footprint';
+import { stacksAdjacent } from './footprint';
 
 type UseItem = Extract<Action, { type: 'BATTLE_USE_ITEM' }>;
 type Cast = Extract<Action, { type: 'BATTLE_CAST' }>;
@@ -26,16 +26,6 @@ const ENEMY_SPELLS = new Set<SpellId>([
   'oathbind', 'brittle', 'gale',
 ]);
 
-function openPositions(battle: BattleState, count: number): Array<{ x: number; y: number }> {
-  const occupied = new Set([
-    ...occupiedByStacks(battle.stacks),
-    ...battle.obstacles.map((coord) => `${coord.x},${coord.y}`),
-    ...battle.tiles.map((tile) => `${tile.position.x},${tile.position.y}`),
-  ]);
-  return Array.from({ length: 9 }, (_, y) => ({ x: 6, y }))
-    .filter((position) => !occupied.has(`${position.x},${position.y}`)).slice(0, count);
-}
-
 function actingSide(battle: BattleState): BattleSide | null {
   return battle.stacks.find((stack) => stack.id === battle.currentStackId)?.side ?? null;
 }
@@ -49,7 +39,7 @@ function castAction(action: UseItem, spellId: SpellId): Cast {
     type: 'BATTLE_CAST', spellId,
     targetId: action.targetId, secondaryTargetId: action.secondaryTargetId,
     effectId: action.effectId, positions: action.positions,
-    replaceEnchantment: action.replaceEnchantment,
+    replaceEnchantment: action.replaceEnchantment, skipRound: action.skipRound,
   };
 }
 
@@ -65,21 +55,36 @@ function actionsForSpell(
   });
   if (SPELLS[spellId].effectOperation) {
     return legalTwistEffectIds(battle, spellId).flatMap((effectId) => {
-      if (spellId !== 'reflect') return [make({ effectId })];
-      const allies = battle.stacks.filter((stack) => stack.side === side && stack.count > 0);
-      return allies.map((target, index) => make({
-        effectId, targetId: target.id,
-        secondaryTargetId: plus ? allies[index + 1]?.id : undefined,
-      }));
+      if (spellId === 'reflect') {
+        const targets = battle.stacks.filter((stack) => stack.count > 0);
+        if (!plus) return targets.map((target) => make({ effectId, targetId: target.id }));
+        return targets.flatMap((target) => targets
+          .filter((secondary) => secondary.id !== target.id)
+          .map((secondary) => make({
+            effectId, targetId: target.id, secondaryTargetId: secondary.id,
+          })));
+      }
+      if (spellId === 'overgrow' && plus) {
+        const source = battle.stacks.find((stack) => stack.id === effectId.split(':')[1]);
+        const exclusions = source ? battle.stacks.filter((stack) => stack.count > 0
+          && stack.id !== source.id && stacksAdjacent(stack, source)) : [];
+        return exclusions.length
+          ? exclusions.map((stack) => make({ effectId, secondaryTargetId: stack.id }))
+          : [make({ effectId })];
+      }
+      return [make({ effectId })];
     });
   }
   if (ALLY_SPELLS.has(spellId)) {
     const allies = battle.stacks.filter((stack) => stack.side === side && stack.count > 0);
-    return allies.map((target, index) => make({
-      targetId: target.id,
-      secondaryTargetId: spellId === 'rally' && plus
-        ? allies[index + 1]?.id ?? allies[index - 1]?.id : undefined,
-    }));
+    if (spellId === 'rally' && plus) {
+      return allies.flatMap((target) => allies
+        .filter((secondary) => secondary.id !== target.id)
+        .map((secondary) => make({
+          targetId: target.id, secondaryTargetId: secondary.id,
+        })));
+    }
+    return allies.map((target) => make({ targetId: target.id }));
   }
   if (ENEMY_SPELLS.has(spellId)) {
     return battle.stacks.filter((stack) => stack.side !== side && stack.count > 0
@@ -87,7 +92,7 @@ function actionsForSpell(
       .map((target) => make({ targetId: target.id }));
   }
   if (spellId === 'wallOfTheMaker' || spellId === 'thicket') {
-    return [make({ positions: openPositions(battle, 3) })];
+    return [make({})];
   }
   if (spellId === 'borrowShape') {
     return battle.stacks.filter((target) => target.side === side && target.count > 0)
@@ -97,10 +102,17 @@ function actionsForSpell(
       })));
   }
   if (spellId === 'hourglassCrack') {
-    return battle.stacks.filter((stack) => stack.count > 0)
-      .map((stack) => make({ targetId: stack.id }));
+    return battle.stacks.filter((stack) => stack.count > 0).flatMap((stack) =>
+      (plus ? [battle.round + 1, battle.round + 2, battle.round + 3] : [undefined])
+        .map((skipRound) => make({
+          targetId: stack.id, ...(skipRound === undefined ? {} : { skipRound }),
+        })));
   }
-  return [make({ replaceEnchantment: 0 })];
+  if (SPELLS[spellId].kind === 'enchantment' && battle.enchantments[side].length >= 2) {
+    return battle.enchantments[side].map((_, replaceEnchantment) =>
+      make({ replaceEnchantment }));
+  }
+  return [make({})];
 }
 
 export function canUseCombatItem(battle: BattleState, inventorySlot: number): boolean {
@@ -139,7 +151,9 @@ export function legalCombatItemUses(battle: BattleState): UseItem[] {
     }
     if (definition.target === 'enchantment') {
       return (['attacker', 'defender'] as const).flatMap((targetSide) =>
-        battle.enchantments[targetSide].map((effect) => ({
+        battle.enchantments[targetSide].filter((effect) =>
+          definition.behavior !== 'unmakeEnchantment'
+          || !battle.sealedEnchantments.includes(effect.id)).map((effect) => ({
           type: 'BATTLE_USE_ITEM' as const, inventorySlot, effectId: effect.id,
         })));
     }
@@ -148,10 +162,16 @@ export function legalCombatItemUses(battle: BattleState): UseItem[] {
     }
     const validTargets = battle.stacks.filter((stack) => stack.count > 0
       && (definition.target === 'enemy' ? stack.side !== side : stack.side === side));
-    return validTargets.map((stack, index) => ({
+    if (skillRank(hero, 'alchemist') === 3) {
+      return validTargets.flatMap((target) => validTargets
+        .filter((secondary) => secondary.id !== target.id)
+        .map((secondary) => ({
+          type: 'BATTLE_USE_ITEM' as const, inventorySlot,
+          targetId: target.id, secondaryTargetId: secondary.id,
+        })));
+    }
+    return validTargets.map((stack) => ({
       type: 'BATTLE_USE_ITEM', inventorySlot, targetId: stack.id,
-      secondaryTargetId: skillRank(hero, 'alchemist') === 3
-        ? validTargets[index + 1]?.id ?? validTargets[index - 1]?.id : undefined,
     }));
   });
 }

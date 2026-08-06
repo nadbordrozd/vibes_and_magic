@@ -15,17 +15,23 @@ import type {
 import { CombatUnitPanel } from './CombatUnitPanel';
 import { SpellbookPanel } from './SpellbookPanel';
 import {
-  effectiveResonances, isUpgraded, legalSpellCasts,
+  effectiveResonances, legalSpellCasts,
 } from '../../core/combat/spells';
 import { legalCombatItemUses } from '../../core/combat/items';
 import { ITEMS, itemName } from '../../content/items';
-import { artifactEffectTotal } from '../../core/artifacts';
 import { ResourceAmount } from './ResourceToken';
-import { occupiedByStacks, stackHexes } from '../../core/combat/footprint';
-import { stackContains } from '../../core/combat/footprint';
+import { stackHexes, stackContains } from '../../core/combat/footprint';
 import { canUseRanged } from '../../core/combat/damage';
 import { PixelSprite, battleUnitSpriteId } from '../assets';
 import { BATTLE_COLS, BATTLE_ROWS, MORALE_THRESHOLD } from '../../content/constants';
+import {
+  backCombatTarget, beginItemTargeting, beginSpellTargeting,
+  chooseCombatTarget, combatTargetChoices, combatTargetConsequence,
+  combatTargetCost, combatTargetFace, combatTargetName, combatTargetStackIds,
+  combatTargetStage, combatTargetStagePrompt, confirmedCombatTargetAction,
+  effectTargetLabel, legalCombatPlacements, requiredCombatPositions,
+  toggleCombatPosition, type CombatTargetDraft, type CombatTargetField,
+} from '../combatTargeting';
 
 const SIZE = 42;
 const HEX_W = Math.sqrt(3) * SIZE;
@@ -144,18 +150,6 @@ const UNIT_GLYPHS: Partial<Record<UnitId, string>> = {
   standingMirror: '◩',
   makerWall: '▥',
 };
-const ALLY_SPELLS = new Set<SpellId>([
-  'rally', 'blessing', 'sanctuary', 'oathOfIron', 'consecrate',
-  'ward', 'quicksilver', 'mournersVeil', 'remembrance',
-  'clarion', 'bloom', 'shedSkin', 'loyalUntoDeath',
-]);
-const GLOBAL_SPELLS = new Set<SpellId>([
-  'standardOfDawn', 'hymnOfTheHost', 'forgefire',
-  'clockworkEscort', 'ironclad', 'reckoning',
-  'vigilOfTheHost', 'standingMirror', 'silenceThePassing', 'theToll',
-  'rains', 'stampedeCall', 'storm', 'hedgerowMarch',
-]);
-
 type AttackAction = Extract<Action, { type: 'BATTLE_ATTACK' | 'BATTLE_MOVE_ATTACK' }>;
 
 interface AttackCursorState {
@@ -174,9 +168,7 @@ export function CombatScreen({
   const battle = state.battle!;
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [spellbookOpen, setSpellbookOpen] = useState(false);
-  const [casting, setCasting] = useState<{ spellId: SpellId; effectId?: string } | null>(null);
-  const [usingItemSlot, setUsingItemSlot] = useState<number | null>(null);
-  const [hourglassTarget, setHourglassTarget] = useState<string | null>(null);
+  const [targeting, setTargeting] = useState<CombatTargetDraft | null>(null);
   const [movePreview, setMovePreview] = useState<Coord | null>(null);
   const [attackCursor, setAttackCursor] = useState<AttackCursorState | null>(null);
   const active = activeBattleStack(battle);
@@ -194,16 +186,12 @@ export function CombatScreen({
   const activeInventory = active?.side === 'defender'
     ? battle.defenderHero?.inventory ?? [] : battle.attackerHero.inventory;
   const resonances = activeHero ? effectiveResonances(battle, activeHero) : [];
-  const targetMode = casting ? {
-    name: SPELLS[casting.spellId].name,
-    instruction: casting.spellId === 'reflect' || casting.spellId === 'hourglassCrack'
-      ? 'Choose a highlighted company.'
-      : ALLY_SPELLS.has(casting.spellId)
-        ? 'Choose a highlighted allied company.' : 'Choose a highlighted enemy company.',
-  } : usingItemSlot !== null ? {
-    name: itemName(activeInventory[usingItemSlot]),
-    instruction: 'Choose a highlighted valid target.',
-  } : null;
+  const targetingStage = targeting ? combatTargetStage(battle, targeting) : null;
+  const targetStackIds = new Set(targeting ? combatTargetStackIds(targeting) : []);
+  const placementKeys = new Set(targeting && targetingStage === 'positions'
+    ? legalCombatPlacements(battle).map((coord) => `${coord.x},${coord.y}`) : []);
+  const selectedPositionKeys = new Set(targeting?.positions
+    .map((coord) => `${coord.x},${coord.y}`) ?? []);
 
   const attackActionsFor = (target: BattleStack): AttackAction[] => actions.filter(
     (action): action is AttackAction => (action.type === 'BATTLE_ATTACK'
@@ -213,8 +201,7 @@ export function CombatScreen({
   const aimAttack = (
     target: BattleStack, hoveredHex: Coord, event: React.MouseEvent<SVGPolygonElement>,
   ) => {
-    if (!humanControl || !active || target.side === active.side || casting
-        || usingItemSlot !== null) {
+    if (!humanControl || !active || target.side === active.side || targeting) {
       setAttackCursor(null);
       return;
     }
@@ -263,6 +250,21 @@ export function CombatScreen({
     if (selectedId && !selected) setSelectedId(null);
   }, [selected, selectedId]);
 
+  useEffect(() => {
+    if (!targeting) return undefined;
+    const cancel = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      setTargeting(null);
+    };
+    window.addEventListener('keydown', cancel);
+    return () => window.removeEventListener('keydown', cancel);
+  }, [targeting]);
+
+  useEffect(() => {
+    setTargeting(null);
+  }, [battle.currentStackId, battle.round]);
+
   const attackTarget = (target: BattleStack | null) => {
     if (!humanControl || !active || !target || target.side === active.side) return;
     const direct = actions.find(
@@ -279,90 +281,21 @@ export function CombatScreen({
   };
 
   const chooseSpell = (spellId: SpellId, effectId?: string) => {
-    setUsingItemSlot(null);
-    if (['amplify', 'sour', 'unmake', 'overgrow'].includes(spellId)) {
-      const counterTarget = battle.stacks.find((stack) =>
-        Object.values(stack.counters).some((count) => count > 0));
-      dispatch({
-        type: 'BATTLE_CAST', spellId, effectId,
-        targetId: spellId === 'unmake' ? counterTarget?.id : undefined,
-      });
-      setSpellbookOpen(false);
-      return;
-    }
-    if (spellId === 'borrowShape') {
-      const use = spellCasts.find((action) => action.spellId === spellId);
-      if (use) dispatch(use);
-      setSpellbookOpen(false);
-      return;
-    }
-    if (GLOBAL_SPELLS.has(spellId)) {
-      dispatch({ type: 'BATTLE_CAST', spellId, replaceEnchantment: 0 });
-      setSpellbookOpen(false);
-      return;
-    }
-    if (spellId === 'wallOfTheMaker' || spellId === 'thicket') {
-      const occupied = new Set([
-        ...occupiedByStacks(battle.stacks),
-        ...battle.obstacles.map((coord) => `${coord.x},${coord.y}`),
-        ...battle.tiles.map((tile) => `${tile.position.x},${tile.position.y}`),
-      ]);
-      const hero = active?.side === 'defender'
-        ? battle.defenderHero : battle.attackerHero;
-      const count = spellId === 'wallOfTheMaker'
-        ? 3 + (hero ? artifactEffectTotal(hero, 'extra_wall') : 0) : 3;
-      const positions = Array.from({ length: 9 }, (_, y) => ({ x: 6, y }))
-        .filter((coord) => !occupied.has(`${coord.x},${coord.y}`)).slice(0, count);
-      dispatch({ type: 'BATTLE_CAST', spellId, positions });
-      setSpellbookOpen(false);
-      return;
-    }
-    setCasting({ spellId, effectId });
+    setTargeting(beginSpellTargeting(battle, spellId, effectId));
     setSpellbookOpen(false);
   };
 
-  const isSpellTarget = (stack: BattleStack) => {
-    if (usingItemSlot !== null) {
-      return itemUses.some((action) =>
-        action.inventorySlot === usingItemSlot && action.targetId === stack.id);
-    }
-    if (!casting || !active) return false;
-    if (casting.spellId === 'reflect') return stack.count > 0;
-    if (casting.spellId === 'hourglassCrack') return stack.count > 0;
-    const effectiveSpell = casting.spellId === 'echo'
-      ? battle.lastSpellCast?.spellId ?? casting.spellId : casting.spellId;
-    const ally = ALLY_SPELLS.has(effectiveSpell);
-    return stack.count > 0 && (ally ? stack.side === active.side : stack.side !== active.side)
-      && !(stack.side !== active.side
-        && stack.effects.some((effect) => effect.spellId === 'sanctuary'));
-  };
+  const isTargetChoice = (stack: BattleStack) => targetStackIds.has(stack.id);
 
   const clickStack = (stack: BattleStack) => {
-    if (usingItemSlot !== null) {
-      const use = itemUses.find((action) =>
-        action.inventorySlot === usingItemSlot && action.targetId === stack.id);
-      if (use) {
-        dispatch(use);
-        setUsingItemSlot(null);
-      } else setSelectedId(stack.id);
-    } else if (casting && isSpellTarget(stack)) {
-      if (casting.spellId === 'hourglassCrack' && activeHero
-          && isUpgraded(battle, activeHero, 'hourglassCrack')) {
-        setHourglassTarget(stack.id);
-        setCasting(null);
-        return;
-      }
-      const secondAlly = casting.spellId === 'rally'
-        ? battle.stacks.find((item) =>
-          item.side === stack.side && item.id !== stack.id && item.count > 0)?.id
-        : undefined;
-      dispatch({
-        type: 'BATTLE_CAST', spellId: casting.spellId,
-        targetId: stack.id, secondaryTargetId: secondAlly,
-        effectId: casting.effectId,
-      });
-      setCasting(null);
-    } else setSelectedId(stack.id);
+    if (targeting && (targetingStage === 'targetId'
+        || targetingStage === 'secondaryTargetId') && isTargetChoice(stack)) {
+      setTargeting(chooseCombatTarget(
+        targeting, targetingStage, stack.id,
+      ));
+      return;
+    }
+    setSelectedId(stack.id);
   };
 
   return (
@@ -424,10 +357,65 @@ export function CombatScreen({
       </header>
       <div className="combat-layout">
         <section className="battle-board">
-          {targetMode && (
-            <div className="combat-targeting-banner" role="status">
-              <span><b>Targeting: {targetMode.name}</b>{targetMode.instruction}</span>
-              <button onClick={() => { setCasting(null); setUsingItemSlot(null); setHourglassTarget(null); }}>Cancel</button>
+          {targeting && targetingStage && (
+            <div className="combat-targeting-banner" role="dialog" aria-modal="false"
+              aria-label={`${combatTargetName(battle, targeting.source)} targeting`}
+              data-target-stage={targetingStage}>
+              <div className="combat-targeting-copy">
+                <span className="targeting-kicker">Explicit combat choice · {targeting.source.kind}</span>
+                <h3>{combatTargetName(battle, targeting.source)} <em>{combatTargetFace(battle, targeting.source)} face</em></h3>
+                <p className="targeting-stage"><b>{targetingStage === 'confirm' ? 'Confirm' : `Stage: ${targetingStage.replace(/([A-Z])/g, ' $1')}`}</b>{combatTargetStagePrompt(battle, targeting)}</p>
+                <p className="targeting-cost">Cost · {combatTargetCost(battle, targeting.source)}</p>
+                <p className="targeting-consequence">Prediction · {combatTargetConsequence(battle, targeting)}</p>
+                {(targetingStage === 'effectId' || targetingStage === 'replaceEnchantment'
+                    || targetingStage === 'skipRound') && (
+                  <div className="combat-targeting-choices" role="group"
+                    aria-label={combatTargetStagePrompt(battle, targeting)}>
+                    {combatTargetChoices(targeting, targetingStage).map((value) => {
+                      const effect = targetingStage === 'effectId'
+                        ? effectTargetLabel(battle, String(value)) : null;
+                      const replacement = targetingStage === 'replaceEnchantment' && active
+                        ? battle.enchantments[active.side][Number(value)] : null;
+                      return (
+                        <button key={String(value)}
+                          data-choice-value={String(value)}
+                          data-inspect-kind={effect ? 'enchantment' : undefined}
+                          data-inspect-id={replacement?.spellId}
+                          onClick={() => setTargeting(chooseCombatTarget(
+                            targeting, targetingStage, value,
+                          ))}>
+                          {effect ?? (replacement
+                            ? `Slot ${Number(value) + 1} · ${SPELLS[replacement.spellId].name}`
+                            : `Round ${value}`)}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+                {targetingStage === 'positions' && (
+                  <small className="targeting-position-count">
+                    {targeting.positions.length}/{requiredCombatPositions(battle, targeting.source)} hexes chosen · click again to remove
+                  </small>
+                )}
+              </div>
+              <div className="combat-targeting-controls">
+                <button disabled={targeting.history.length === 0}
+                  title={targeting.history.length === 0
+                    ? 'This is the first targeting stage; use Cancel to leave it.'
+                    : 'Return to the previous targeting choice.'}
+                  onClick={() => setTargeting(backCombatTarget(targeting))}>Back</button>
+                <button onClick={() => setTargeting(null)}>Cancel <kbd>Esc</kbd></button>
+                <button className="confirm-target" disabled={targetingStage !== 'confirm'}
+                  title={targetingStage !== 'confirm'
+                    ? 'Complete every required targeting choice before confirming.'
+                    : `Commit ${combatTargetName(battle, targeting.source)} with the choices shown.`}
+                  onClick={() => {
+                    const action = confirmedCombatTargetAction(battle, targeting);
+                    if (!action) return;
+                    dispatch(action);
+                    setTargeting(null);
+                  }}>Confirm</button>
+              </div>
             </div>
           )}
           {resonances.length > 0 && (
@@ -464,20 +452,54 @@ export function CombatScreen({
                 const occupantEnemy = Boolean(active && occupant && occupant.side !== active.side);
                 const occupantAttackable = Boolean(active && occupant
                   && occupant.side !== active.side && attackActionsFor(occupant).length > 0);
+                const key = `${x},${y}`;
+                const targetChoice = Boolean(occupant && targetStackIds.has(occupant.id));
+                const placementChoice = targetingStage === 'positions' && placementKeys.has(key);
+                const positionSelected = selectedPositionKeys.has(key);
+                const activateHex = () => {
+                  if (!humanControl) return;
+                  if (targeting) {
+                    if (occupant && targetChoice) clickStack(occupant);
+                    else if (!occupant && placementChoice) {
+                      setTargeting(toggleCombatPosition(battle, targeting, coord));
+                    }
+                    return;
+                  }
+                  if (occupant) {
+                    if (occupant.side !== active?.side) {
+                      const options = attackActionsFor(occupant);
+                      const aimed = attackCursor?.targetId === occupant.id
+                        && attackCursor.hoveredHex.x === coord.x
+                        && attackCursor.hoveredHex.y === coord.y
+                        ? attackCursor.action : options[0];
+                      if (aimed) dispatch(aimed);
+                    } else setSelectedId(occupant.id);
+                  } else if (reachableSet.has(key)) {
+                    const freeMove = actions.find((action) =>
+                      action.type === 'BATTLE_FREE_MOVE'
+                      && action.destination.x === coord.x && action.destination.y === coord.y);
+                    dispatch(freeMove ?? { type: 'BATTLE_MOVE', destination: coord });
+                  }
+                };
                 return (
-                  <g key={`${x},${y}`}>
+                  <g key={key}>
                     <polygon
                       points={points(coord)}
                       data-occupant-id={occupant?.id}
                       data-occupant-side={occupant?.side}
                       data-inspect-kind={!occupant && tile ? 'battleTile' : undefined}
                       data-inspect-id={!occupant && tile ? tile.type : undefined}
-                      className={`battle-hex ${battle.shallowHexes.some((hex) => hex.x === x && hex.y === y) ? 'shallow' : ''} ${reachableSet.has(`${x},${y}`) ? 'reachable' : ''} ${movePreviewSet.has(`${x},${y}`) ? 'footprint-preview' : ''} ${occupant ? 'occupied' : ''} ${occupantEnemy ? 'enemy-occupied' : ''} ${occupantAttackable ? 'attackable' : ''}`}
+                      role={targetChoice || placementChoice ? 'button' : undefined}
+                      tabIndex={targetChoice || placementChoice ? 0 : undefined}
+                      aria-label={targetChoice && occupant
+                        ? `Choose ${UNITS[occupant.unitId].name}`
+                        : placementChoice ? `Choose battlefield hex ${x}, ${y}` : undefined}
+                      className={`battle-hex ${battle.shallowHexes.some((hex) => hex.x === x && hex.y === y) ? 'shallow' : ''} ${!targeting && reachableSet.has(key) ? 'reachable' : ''} ${!targeting && movePreviewSet.has(key) ? 'footprint-preview' : ''} ${occupant ? 'occupied' : ''} ${!targeting && occupantEnemy ? 'enemy-occupied' : ''} ${!targeting && occupantAttackable ? 'attackable' : ''} ${targetChoice ? 'target-choice' : ''} ${placementChoice ? 'placement-choice' : ''} ${positionSelected ? 'position-selected' : ''}`}
                       onMouseEnter={() => {
-                        if (!occupant && reachableSet.has(`${x},${y}`)) setMovePreview(coord);
+                        if (!targeting && !occupant && reachableSet.has(key)) setMovePreview(coord);
                       }}
                       onMouseMove={(event) => {
-                        if (occupant) aimAttack(occupant, coord, event);
+                        if (!targeting && occupant) aimAttack(occupant, coord, event);
                       }}
                       onMouseLeave={() => {
                         setMovePreview(null);
@@ -489,24 +511,11 @@ export function CombatScreen({
                         event.stopPropagation();
                         setSelectedId(occupant.id);
                       }}
-                      onClick={() => {
-                        if (!humanControl) return;
-                        if (occupant) {
-                          if (casting || usingItemSlot !== null) clickStack(occupant);
-                          else if (occupant.side !== active?.side) {
-                            const options = attackActionsFor(occupant);
-                            const aimed = attackCursor?.targetId === occupant.id
-                              && attackCursor.hoveredHex.x === coord.x
-                              && attackCursor.hoveredHex.y === coord.y
-                              ? attackCursor.action : options[0];
-                            if (aimed) dispatch(aimed);
-                          } else setSelectedId(occupant.id);
-                        } else if (reachableSet.has(`${x},${y}`)) {
-                          const freeMove = actions.find((action) =>
-                            action.type === 'BATTLE_FREE_MOVE'
-                            && action.destination.x === coord.x && action.destination.y === coord.y);
-                          dispatch(freeMove ?? { type: 'BATTLE_MOVE', destination: coord });
-                        }
+                      onClick={activateHex}
+                      onKeyDown={(event) => {
+                        if (event.key !== 'Enter' && event.key !== ' ') return;
+                        event.preventDefault();
+                        activateHex();
                       }}
                     >
                       {occupant && <title>{UNITS[occupant.unitId].name} · {occupant.count} remaining · morale {occupant.morale}/{occupant.meterThreshold ?? MORALE_THRESHOLD}</title>}
@@ -559,7 +568,7 @@ export function CombatScreen({
                   data-inspect-kind="unit" data-inspect-id={stack.unitId}
                   data-hex-size={unit.hexSize}
                   data-unit-scale={BATTLE_UNIT_SCALE[stack.unitId] ?? 1}
-                  className={`battle-stack ${stackColor(stack)} ${unit.faction} ${active?.id === stack.id ? 'active' : ''} ${selected?.id === stack.id ? 'inspected' : ''} ${isSpellTarget(stack) ? 'spell-target' : ''} ${impact === 'damage' ? 'taking-damage' : ''} ${impact === 'death' ? 'dying' : ''}`}
+                  className={`battle-stack ${stackColor(stack)} ${unit.faction} ${active?.id === stack.id ? 'active' : ''} ${selected?.id === stack.id ? 'inspected' : ''} ${isTargetChoice(stack) ? 'target-choice' : ''} ${impact === 'damage' ? 'taking-damage' : ''} ${impact === 'death' ? 'dying' : ''}`}
                   transform={`translate(${c.x} ${c.y})`}
                 >
                   <title>
@@ -724,7 +733,8 @@ export function CombatScreen({
                 return (
                   <button
                     key={`combat-item-${index}`}
-                    className={`army-slot ${usingItemSlot === index ? 'selected' : ''}`}
+                    className={`army-slot ${targeting?.source.kind === 'item'
+                      && targeting.source.inventorySlot === index ? 'selected' : ''}`}
                     disabled={!humanControl || options.length === 0}
                     title={!item ? 'Empty item slot.' : !humanControl
                       ? 'Wait for a human-controlled company to act.'
@@ -734,12 +744,7 @@ export function CombatScreen({
                     data-inspect-kind={item && typeof item !== 'string' ? 'item' : undefined}
                     data-inspect-id={item && typeof item !== 'string' ? item.id : undefined}
                     onClick={() => {
-                      const immediate = options.find((action) => !action.targetId);
-                      if (immediate) dispatch(immediate);
-                      else {
-                        setCasting(null);
-                        setUsingItemSlot(index);
-                      }
+                      setTargeting(beginItemTargeting(battle, index));
                     }}
                   >
                     {item ? itemName(item) : '+'}
@@ -749,21 +754,6 @@ export function CombatScreen({
             </div>
           </div>
           <div className="combat-actions">
-            {hourglassTarget && (
-              <div className="hourglass-choice">
-                <b>Choose the skipped round</b>
-                {[1, 2, 3].map((offset) => (
-                  <button key={offset} onClick={() => {
-                    dispatch({
-                      type: 'BATTLE_CAST', spellId: 'hourglassCrack',
-                      targetId: hourglassTarget, skipRound: battle.round + offset,
-                    });
-                    setHourglassTarget(null);
-                  }}>Round {battle.round + offset}</button>
-                ))}
-                <button onClick={() => setHourglassTarget(null)}>Cancel</button>
-              </div>
-            )}
             {actions.filter((action) => action.type === 'BATTLE_USE_ARTIFACT').map((action) => (
               <button
                 key={action.artifactId}

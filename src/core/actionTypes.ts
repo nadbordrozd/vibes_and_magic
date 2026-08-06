@@ -113,6 +113,6 @@ export type Action =
   | {
     type: 'BATTLE_USE_ITEM'; inventorySlot: number; targetId?: string;
     secondaryTargetId?: string; effectId?: string; positions?: Coord[];
-    replaceEnchantment?: number;
+    replaceEnchantment?: number; skipRound?: number;
   }
   | { type: 'AUTO_COMBAT' };
