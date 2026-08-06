@@ -4,13 +4,14 @@ import {
 import { FACTION_UNITS, UNITS } from '../content/units';
 import { canAfford } from './army';
 import { battleReachableHexes, legalBattleActions } from './combat/battle';
-import { findPath, pathCost, sameCoord } from './map/pathfinding';
+import { sameCoord } from './map/pathfinding';
 import { reachablePathPrefix } from './map/pathfinding';
 import { castleEntrance } from './map/occupancy';
 import { adventurePath } from './game/exploration';
+import { reachableAdventureTileKeys } from './game/navigation';
 import type {
-  BattleStack, BuildingId, Castle, Coord, GameState, Hero, MapObject, PlayerId,
-  UnitTier,
+  AbilityId, BattleStack, BuildingId, Castle, Coord, GameState, Hero, MapObject, PlayerId,
+  UnitId, UnitTier,
 } from './types';
 import { selectedHero } from './heroes';
 import { skillRank } from './heroBehaviors';
@@ -107,26 +108,7 @@ export function visitingCastle(state: GameState): Castle | null {
 
 export function reachableAdventureTiles(state: GameState): Set<string> {
   const hero = selectedHero(state.players[state.activePlayer]);
-  const result = new Set<string>();
-  if (!hero) return result;
-  for (let y = 0; y < state.map.height; y += 1) {
-    for (let x = 0; x < state.map.width; x += 1) {
-      const path = adventurePath(state, { x, y });
-      const passage = state.mapEffects.some((effect) => effect.kind === 'passage'
-        && effect.owner === hero.owner && effect.expiresDay >= state.day
-        && effect.entrances.some((entry) => sameCoord(entry, hero.position))
-        && effect.entrances.some((entry) => sameCoord(entry, { x, y })));
-      const freeForest = state.players[hero.owner].adventureEffects.greenTideUntilWeek
-        >= state.week;
-      const stopped = path ? truncateAtAggro(state, path, hero) : null;
-      if (path && stopped && sameCoord(stopped.at(-1)!, { x, y }) && (passage || pathCost(
-        state.map, path, hero, state.omen, freeForest,
-      ) <= hero.movement)) {
-        result.add(`${x},${y}`);
-      }
-    }
-  }
-  return result;
+  return hero ? reachableAdventureTileKeys(state, hero) : new Set<string>();
 }
 
 export function previewPath(state: GameState, destination: Coord): Coord[] {
@@ -188,20 +170,27 @@ export function opponent(playerId: PlayerId): PlayerId {
   return playerId === 'p1' ? 'p2' : 'p1';
 }
 
-export type GuardianSizeBand = 'Few' | 'Dozens' | 'Scores' | 'Hundreds';
+export type GuardianSizeBand = 'Few' | 'Several' | 'Pack' | 'Lots' | 'Horde'
+  | 'Throng' | 'Swarm' | 'Zounds' | 'Legion';
 
 export function guardianSizeBand(count: number): GuardianSizeBand {
-  if (count <= 9) return 'Few';
-  if (count <= 24) return 'Dozens';
-  if (count <= 74) return 'Scores';
-  return 'Hundreds';
+  if (count <= 4) return 'Few';
+  if (count <= 9) return 'Several';
+  if (count <= 19) return 'Pack';
+  if (count <= 49) return 'Lots';
+  if (count <= 99) return 'Horde';
+  if (count <= 249) return 'Throng';
+  if (count <= 499) return 'Swarm';
+  if (count <= 999) return 'Zounds';
+  return 'Legion';
 }
 
 export interface GuardianIntel {
   exact: boolean;
   label: string;
   count: number | null;
-  abilities: string[];
+  abilities: AbilityId[];
+  units: Array<{ unitId: UnitId; name: string; label: string; count: number | null }>;
   tell?: string;
   drop?: string;
 }
@@ -246,8 +235,17 @@ export function guardianIntel(
     ? [...new Set(guardian.army.flatMap((stack) => UNITS[stack.unitId].abilities))]
     : [];
   return {
-    exact, label: exact ? String(count) : guardianSizeBand(count),
+    exact,
+    label: guardian.army.map((stack) => `${exact ? stack.count : guardianSizeBand(stack.count)} ${
+      UNITS[stack.unitId].name
+    }`).join(' · '),
     count: exact ? count : null, abilities,
+    units: guardian.army.map((stack) => ({
+      unitId: stack.unitId,
+      name: UNITS[stack.unitId].name,
+      label: exact ? String(stack.count) : guardianSizeBand(stack.count),
+      count: exact ? stack.count : null,
+    })),
     ...(exact && object.kind === 'lock' ? { tell: object.tell } : {}),
     ...(hero && artifactEffectTotal(hero, 'reveal_drops') > 0 && guardian.drop
       ? { drop: itemName(guardian.drop) } : {}),

@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/mountain-rocky-backbone-variety-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:rocky-backbone-variety-b",
+      "assets": [
+        "decoration:mountain:rocky-backbone-3",
+        "decoration:mountain:rocky-backbone-4",
+        "decoration:mountain:rocky-boundary-3",
+        "decoration:mountain:rocky-boundary-4"
+      ],
+      "output": ".pixel-work/pixelgen/mountain-rocky-backbone-variety/backbone-b",
+      "prompt": "Rework this transparent init silhouette into ONE CONTINUOUS native 192 by 128 rocky mountain spine for a classic fantasy adventure map. CAMERA: viewer south of the range looking north from about 45 degrees above the terrain, neither front elevation nor overhead. Show broad south-facing rock faces and partial east/west planes; hide northern slopes behind the crest. STRUCTURE: a low western shoulder rises through many unequal joined crags to one off-centre high crown, then descends through two saddles into a broken eastern shoulder. Fuse everything with uninterrupted diagonal ridgelines and foothills; no transparent or grassy channel may split the range. Avoid the existing repeated tall-central-peak and broad-double-hump silhouettes. LIGHT: southeast/lower-right sun; warm light on southeast and right planes, cool charcoal shadow on west and left planes, shadows northwest/upper-left. Hand-pixelled Heroes II-era storybook slate and warm-grey rock, sparse olive lichen, transparent outside the mountain, no scenery plate.",
+      "endpoint": "create-image-pixflux",
+      "size": [192, 128],
+      "candidates": 3,
+      "seed": 98521,
+      "parameters": {
+        "negative_description": "separate mountains, detached rock piles, repeated identical peaks, isolated 2x1 formations, transparent cuts through the range, grass corridors, front elevation, side view, completely top-down, isometric diamond, visible northern slopes, snow, volcano, trees, buildings, cave, rectangular ground plate, sky, horizon, text, UI, logo, watermark",
+        "text_guidance_scale": 15,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 160
+      },
+      "references": [{
+        "file": "assets/guides/rocky-mountain-backbone-variety-b-init.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-backbone-variety-c",
+      "assets": [
+        "decoration:mountain:rocky-backbone-5",
+        "decoration:mountain:rocky-backbone-6",
+        "decoration:mountain:rocky-boundary-5",
+        "decoration:mountain:rocky-boundary-6"
+      ],
+      "output": ".pixel-work/pixelgen/mountain-rocky-backbone-variety/backbone-c",
+      "prompt": "Rework this transparent init silhouette into ONE CONTINUOUS native 192 by 128 rocky mountain spine for a classic fantasy adventure map. CAMERA: viewer south of the obstacle looking north from roughly 45 degrees above ground, neither frontal panorama nor bird's-eye. Southern rock faces and partial side planes are visible; northern slopes stay concealed. STRUCTURE: a long ascending ridge from the west reaches two unequal crowns separated by a shallow saddle, then falls in stepped shelves toward a very low eastern end. Many small secondary peaks must connect through one uninterrupted stone base. No transparent gap or grass valley may cross the interior. Create a materially different skyline from the existing tall-centre and broad-double-hump backbones. LIGHT: southeast/lower-right illumination with bright right-facing planes, deep cool western/left shadow, and northwest/upper-left cast shadow. Heroes II-era hand-pixelled charcoal, slate and warm-grey rock; sparse olive lichen; transparent outside; no ground or scenery plate.",
+      "endpoint": "create-image-pixflux",
+      "size": [192, 128],
+      "candidates": 3,
+      "seed": 98633,
+      "parameters": {
+        "negative_description": "separate mountains, detached rock piles, repeated identical peaks, isolated 2x1 formations, transparent cuts through the range, grass corridors, front elevation, side view, completely top-down, isometric diamond, visible northern slopes, snow, volcano, trees, buildings, cave, rectangular ground plate, sky, horizon, text, UI, logo, watermark",
+        "text_guidance_scale": 15,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 165
+      },
+      "references": [{
+        "file": "assets/guides/rocky-mountain-backbone-variety-c-init.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-backbone-variety-d",
+      "assets": [
+        "decoration:mountain:rocky-backbone-7",
+        "decoration:mountain:rocky-backbone-8",
+        "decoration:mountain:rocky-boundary-7",
+        "decoration:mountain:rocky-boundary-8"
+      ],
+      "output": ".pixel-work/pixelgen/mountain-rocky-backbone-variety/backbone-d",
+      "prompt": "Rework this transparent init silhouette into ONE CONTINUOUS native 192 by 128 rocky mountain spine for a classic fantasy adventure map. CAMERA: viewer south of the range looking north from about 45 degrees above the terrain, neither front elevation nor overhead. Broad southern faces and partial east/west facets are visible; the north face is hidden. STRUCTURE: begin with a compact high western massif, cross a low uneven central saddle crowded with small joined crags, and finish at a narrow high eastern crown with a long descending shoulder. Connect every summit with continuous ridges, talus, and foothills; no transparent or grassy split through the interior. Its asymmetry and skyline must differ strongly from all other backbones. LIGHT: southeast/lower-right sun, warm highlights on southeast/right planes, western/left planes in deep cool shadow, shadows falling northwest/upper-left. Hand-pixelled Heroes II-era charcoal, slate-grey and warm-grey rock, sparse olive lichen, transparent outside the silhouette, no landscape plate.",
+      "endpoint": "create-image-pixflux",
+      "size": [192, 128],
+      "candidates": 3,
+      "seed": 98747,
+      "parameters": {
+        "negative_description": "separate mountains, detached rock piles, repeated identical peaks, isolated 2x1 formations, transparent cuts through the range, grass corridors, front elevation, side view, completely top-down, isometric diamond, visible northern slopes, snow, volcano, trees, buildings, cave, rectangular ground plate, sky, horizon, text, UI, logo, watermark",
+        "text_guidance_scale": 15,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 155
+      },
+      "references": [{
+        "file": "assets/guides/rocky-mountain-backbone-variety-d-init.png",
+        "parameter": "init_image"
+      }]
+    }
+  ]
+}

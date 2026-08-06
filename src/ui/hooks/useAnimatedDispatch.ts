@@ -3,6 +3,7 @@ import {
 } from 'react';
 import { activeBattleStack, applyBattleAction } from '../../core/combat/battle';
 import { hexDistance } from '../../core/combat/hex';
+import { canUseRanged } from '../../core/combat/damage';
 import type {
   Action, GameState,
 } from '../../core/types';
@@ -29,7 +30,7 @@ export function useAnimatedDispatch(
     const animated = action.type === 'BATTLE_MOVE'
       || action.type === 'BATTLE_ATTACK'
       || action.type === 'BATTLE_MOVE_ATTACK';
-    if (!battle || !animated || timing.combatMoveStep === 0) {
+    if (!battle) {
       commitAction(action);
       return;
     }
@@ -39,18 +40,24 @@ export function useAnimatedDispatch(
       commitAction(action);
       return;
     }
+    let projected = battle;
+    try {
+      projected = applyBattleAction(battle, action);
+    } catch {
+      projected = battle;
+    }
+    const projectedActor = projected.stacks.find((stack) => stack.id === actor.id);
+    const moraleTriggered = Boolean(projectedActor
+      && (projectedActor.extraActionsTaken ?? 0) > (actor.extraActionsTaken ?? 0)
+      && projected.currentStackId === actor.id);
     const targetId = action.type === 'BATTLE_ATTACK'
       || action.type === 'BATTLE_MOVE_ATTACK' ? action.targetId : undefined;
     const target = targetId
       ? battle.stacks.find((stack) => stack.id === targetId) : undefined;
+    const rangedAttack = action.type === 'BATTLE_ATTACK' && canUseRanged(actor);
     let targetDies = false;
     if (target) {
-      try {
-        const projected = applyBattleAction(battle, action);
-        targetDies = (projected.stacks.find((stack) => stack.id === target.id)?.count ?? 0) <= 0;
-      } catch {
-        targetDies = false;
-      }
+      targetDies = (projected.stacks.find((stack) => stack.id === target.id)?.count ?? 0) <= 0;
     }
     const displayPosition = action.type === 'BATTLE_MOVE'
       || action.type === 'BATTLE_MOVE_ATTACK'
@@ -64,10 +71,23 @@ export function useAnimatedDispatch(
         if (valid()) callback();
       }, delay);
     };
+    const showMorale = () => {
+      if (!valid()) return;
+      if (!moraleTriggered || timing.morale === 0) {
+        setAnimation(null);
+        return;
+      }
+      setAnimation({
+        phase: 'morale', actorId: actor.id,
+        displayPosition: projectedActor?.position ?? displayPosition,
+        duration: timing.morale,
+      });
+      later(() => setAnimation(null), timing.morale);
+    };
     const finish = () => {
       if (!valid()) return;
       commitAction(action);
-      setAnimation(null);
+      showMorale();
     };
     const showDeath = () => {
       if (!target || !targetDies) {
@@ -97,12 +117,14 @@ export function useAnimatedDispatch(
         return;
       }
       setAnimation({
-        phase: 'attack', actorId: actor.id, targetId: target.id,
+        phase: rangedAttack ? 'projectile' : 'attack', actorId: actor.id, targetId: target.id,
         displayPosition, targetPosition: target.position, duration: timing.attack,
       });
       later(showDamage, timing.attack);
     };
-    if (moveDuration > 0) {
+    if (!animated || timing.combatMoveStep === 0) {
+      finish();
+    } else if (moveDuration > 0) {
       setAnimation({
         phase: 'move', actorId: actor.id, targetId,
         displayPosition, targetPosition: target?.position, duration: moveDuration,

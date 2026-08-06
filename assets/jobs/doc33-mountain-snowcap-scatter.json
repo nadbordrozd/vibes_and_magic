@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Approve and promote the canonical granite scatter style reference first.",
+  "contact_sheet": "assets/jobs/doc33-mountain-snowcap-scatter-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:snowcap-scatter-1",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-1"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-scatter/scatter-1",
+      "prompt": "a low snow-dusted granite outcrop, blue-grey stone with pale wind-packed snow, one split slab leaning over two smaller rocks and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 96310,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {
+          "file": "public/assets/decorations/mountain-granite-scatter-1.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-scatter-color-32x48.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-scatter-2",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-2"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-scatter/scatter-2",
+      "prompt": "a squat snow-dusted granite spur, blue-grey stone with pale wind-packed snow, two unequal blunt points with loose chips spreading wider than the peaks and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 96320,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {
+          "file": "public/assets/decorations/mountain-granite-scatter-1.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-scatter-color-32x48.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-scatter-3",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-3"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-scatter/scatter-3",
+      "prompt": "three weathered snow-dusted boulders, blue-grey stone with pale wind-packed snow, largest rock on one side with two low companions and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 96330,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {
+          "file": "public/assets/decorations/mountain-granite-scatter-1.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-scatter-color-32x48.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-scatter-4",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-4"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-scatter/scatter-4",
+      "prompt": "a broken snow-dusted granite shelf, blue-grey stone with pale wind-packed snow, one long low ledge with a short raised shoulder and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 96340,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {
+          "file": "public/assets/decorations/mountain-granite-scatter-1.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-scatter-color-32x48.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-scatter-5",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-5"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-scatter/scatter-5",
+      "prompt": "two angular snow-dusted boulders, blue-grey stone with pale wind-packed snow, offset rocks divided by a narrow dark crack with small scree and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 96350,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {
+          "file": "public/assets/decorations/mountain-granite-scatter-1.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-scatter-color-32x48.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-scatter-6",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-6"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-scatter/scatter-6",
+      "prompt": "a jagged snow-dusted granite ledge, blue-grey stone with pale wind-packed snow, three low uneven teeth over a broad skirt of broken chips and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 96360,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {
+          "file": "public/assets/decorations/mountain-granite-scatter-1.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-scatter-color-32x48.png",
+          "parameter": "color_image"
+        }
+      ]
+    }
+  ]
+}

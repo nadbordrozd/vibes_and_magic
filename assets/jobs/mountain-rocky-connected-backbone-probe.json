@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Exploratory prompt-only candidates baked an opaque scene background; production uses the compact transparent-init request in mountain-rocky-connected-backbones.json",
+  "contact_sheet": "assets/jobs/mountain-rocky-connected-backbone-probe-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:rocky-backbone-probe",
+      "assets": ["decoration:mountain:rocky-backbone-1"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-connected-backbone-probe/backbone",
+      "prompt": "A native 256 by 160 transparent pixel-art sprite of ONE CONTINUOUS rocky mountain range for a classic 1990s fantasy adventure map. The camera is south of the range looking north from about 45 degrees above the ground: neither front elevation nor overhead bird's-eye. Show the broad south-facing rock wall and partial east and west side planes; the northern slopes stay hidden behind the crest. STRUCTURE: an irregular chain of many unequal peaks joined continuously by saddles, ridgelines, foothills, and one broad uninterrupted foreground stone mass. The whole eight-tile-wide range must read as a single geological formation, not separate rock piles. No transparent cuts, grass channels, or valleys reaching through the interior. Low broad shoulders at the left and right ends make the sprite overlap naturally with another range section. LIGHTING: the sun is in the southeast, at the lower-right of the map. Southeast and right-facing planes are warm light grey; west and left-facing slopes are deep cool charcoal shadow; cast shadows fall toward the northwest and upper-left. Rugged slate-grey and warm-grey rock, dark fissures, extremely sparse muted olive lichen only in sheltered cracks. Varied silhouette and peak heights, dense readable clusters, deliberate hand-pixelled Heroes II-era storybook style. Transparent outside the mountain silhouette; exact final-resolution canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [256, 160],
+      "candidates": 3,
+      "seed": 98137,
+      "parameters": {
+        "negative_description": "separate mountains, detached rock piles, repeated identical peaks, isolated 2x1 formations, transparent gaps through the range, grass corridors, front elevation, side view, completely top-down, bird's-eye, isometric diamond, visible northern slopes, snow, volcano, trees, flowers, buildings, cave entrance, rectangular ground plate, landscape background, sky, horizon, text, UI, logo, watermark",
+        "text_guidance_scale": 15,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/game-terrain-native-wang-retry-candidates.html",
+  "requests": [
+    {
+      "id": "review:game-terrain:ashsteppe:wang-v2",
+      "assets": [
+        "review:game-terrain:ashsteppe:wang-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-wang-retry/ashsteppe",
+      "prompt": "Native 32x32 corrected Ashsteppe-to-dirt Wang tileset for the adventure-map showcase. Desaturated taupe-grey and subdued dry ochre only; no bright orange, yellow sand, white sand, checkerboard, repeated dots or woven grid. Keep H2 reference influence to edge geometry and native detail scale; the upper two guide rows own the game-family palette.",
+      "endpoint": "create-tileset",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 435867,
+      "parameters": {
+        "lower_description": "quiet ordinary warm brown dirt with compact irregular grains, uniform illumination and no road, border, object, repeated row, gradient or tile extrusion. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark.",
+        "upper_description": "dry ochre-grey steppe grass with fine black ash beneath and low wind-combed blades. Desaturated taupe-grey and subdued dry ochre only; no bright orange, yellow sand, white sand, checkerboard, repeated dots or woven grid. Every cell represents roughly one human-sized patch of ground; quiet irregular continuous opaque material with uniform edge values. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No focal object, path, border, gradient, text or watermark.",
+        "transition_description": "a dusty broken dirt edge with a restrained scatter of ash-dark grains; two alternate irregular edge profiles using the H2 guide only for native contour scale, no cliff, glow, outline stripe or large motif.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 12,
+        "color_image": null
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-ashsteppe-h2-reference-v2.png",
+          "parameter": "color_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:lacquer-flats:wang-v2",
+      "assets": [
+        "review:game-terrain:lacquer-flats:wang-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-wang-retry/lacquer-flats",
+      "prompt": "Native 32x32 corrected Lacquer Flats-to-dirt Wang tileset for the adventure-map showcase. Muted oxblood, dusty plum-brown and dull stone-grey only; no orange clay, bright copper, floorboards, parallel rows, checkerboard or woven grid. Keep H2 reference influence to edge geometry and native detail scale; the upper two guide rows own the game-family palette.",
+      "endpoint": "create-tileset",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 18474,
+      "parameters": {
+        "lower_description": "quiet ordinary warm brown dirt with compact irregular grains, uniform illumination and no road, border, object, repeated row, gradient or tile extrusion. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark.",
+        "upper_description": "smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine. Muted oxblood, dusty plum-brown and dull stone-grey only; no orange clay, bright copper, floorboards, parallel rows, checkerboard or woven grid. Every cell represents roughly one human-sized patch of ground; quiet irregular continuous opaque material with uniform edge values. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No focal object, path, border, gradient, text or watermark.",
+        "transition_description": "an irregular chipped lacquer-stone edge exposing ordinary brown dirt; two alternate irregular edge profiles using the H2 guide only for native contour scale, no cliff, glow, outline stripe or large motif.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 12,
+        "color_image": null
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-lacquer-flats-h2-reference-v2.png",
+          "parameter": "color_image"
+        }
+      ],
+      "review_only": true
+    }
+  ]
+}

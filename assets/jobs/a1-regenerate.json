@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "candidate_dir": ".pixel-work/pixelgen/a1-regenerate",
+  "contact_sheet": "assets/jobs/a1-regenerate-candidates.html",
+  "requests": [
+    {
+      "id": "a1-meadow-deepwood-wang",
+      "assets": [
+        "terrain:deepwood:default:0",
+        "terrain:deepwood:default:1",
+        "terrain:deepwood:default:2"
+      ],
+      "output": ".pixel-work/pixelgen/a1-regenerate/a1-meadow-deepwood-wang",
+      "prompt": "Meadow and Deepwood native Wang tileset probe. The literal terrain prompts and camera constraints are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [32, 32],
+      "candidates": 2,
+      "seed": 5100,
+      "resource_ids": [
+        "a53f5dd8-3107-4298-b68b-71842c6d8c35",
+        "64d3a744-8941-4183-8514-b03dbd127123"
+      ],
+      "parameters": {
+        "lower_description": "Quiet warm-green medieval meadow ground, tiny straw-green blades and sparse earth flecks, uniform illumination across the whole tile, no flowers, rocks, paths, objects, gradients, rows, large tonal patches, borders, or cell extrusion. Crisp restrained 1990s storybook strategy-game pixel art; high-oblique 65-degree material read inside a flat square ground cell; upper-left light.",
+        "upper_description": "Dense ordinary Deepwood canopy, overlapping rounded dark-green tree crowns with occasional umber trunk glimpses, coherent forest mass rather than isolated broccoli clumps, uniform illumination across the whole tile, no path, clearing, glow, gradients, rows, large tonal patches, borders, or cell extrusion. Crisp restrained 1990s storybook strategy-game pixel art; high-oblique 65-degree crown surfaces; upper-left light.",
+        "transition_description": "A restrained irregular meadow-to-forest edge of overlapping low branches and grass, no cliff or gameplay-signaling border.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9,
+        "color_image": null
+      },
+      "references": [
+        {"file": "assets/references/a1-style-lock.png", "parameter": "color_image"}
+      ]
+    },
+    {
+      "id": "a1-meadow-mountain-wang",
+      "assets": [
+        "terrain:mountain:granite:0",
+        "terrain:mountain:granite:1",
+        "terrain:mountain:granite:2"
+      ],
+      "output": ".pixel-work/pixelgen/a1-regenerate/a1-meadow-mountain-wang",
+      "prompt": "Meadow and granite Mountain native Wang tileset probe. The literal terrain prompts and camera constraints are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [32, 32],
+      "candidates": 2,
+      "seed": 5120,
+      "resource_ids": [
+        "27e653a3-d26e-4e02-ba98-aaf4b6489e0c",
+        "9fcfbb63-37fc-459f-98a7-c2c9eb15c272"
+      ],
+      "parameters": {
+        "lower_description": "Quiet warm-green medieval meadow ground, tiny straw-green blades and sparse earth flecks, uniform illumination across the whole tile, no flowers, rocks, paths, objects, gradients, rows, large tonal patches, borders, or cell extrusion. Crisp restrained 1990s storybook strategy-game pixel art; upper-left light.",
+        "upper_description": "Hard impassable grey granite mountain ground composed as a tight range of overlapping crags, broad upper-left-lit ridges and darker lower-right faces, readable at 32 pixels, no snow, orange stone, isolated icon peak, grass base, gradients, repeated rows, border, horizon, or extruded tile slab. Warm storybook 1990s strategy-game pixel art.",
+        "transition_description": "Sparse ordinary scree between meadow and granite, no cliff wall or glowing boundary.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      },
+      "references": [
+        {"file": "assets/references/a1-style-lock.png", "parameter": "color_image"}
+      ]
+    },
+    {
+      "id": "a1-meadow-water-wang",
+      "assets": [
+        "terrain:meadow:default:0",
+        "terrain:meadow:default:1",
+        "terrain:meadow:default:2",
+        "terrain:water:default:0",
+        "terrain:water:default:1",
+        "terrain:water:default:2"
+      ],
+      "output": ".pixel-work/pixelgen/a1-regenerate/a1-meadow-water-wang",
+      "prompt": "Meadow and Water native Wang tileset probe. The literal terrain prompts and camera constraints are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [32, 32],
+      "candidates": 2,
+      "seed": 5140,
+      "resource_ids": [
+        "e4b82bb3-b214-4d49-8d1c-81a9238ef534",
+        "eee8d07b-5750-4547-b9a6-80988a782275"
+      ],
+      "parameters": {
+        "lower_description": "Calm blue-green open water, tiny foreshortened diagonal ripple pixels and restrained slate shadows, uniform illumination across the whole tile, no rocks, foam, shore, objects, gradients, horizontal bands, repeated rows, large patches, border, horizon, or tile extrusion. Crisp warm 1990s storybook strategy-game pixel art; upper-left light.",
+        "upper_description": "Quiet warm-green medieval meadow ground, tiny straw-green blades and sparse earth flecks, uniform illumination across the whole tile, no flowers, rocks, paths, objects, gradients, rows, large tonal patches, borders, or cell extrusion. Crisp restrained 1990s storybook strategy-game pixel art; upper-left light.",
+        "transition_description": "A minimal natural grassy bank with a thin dark wet edge, no beach scene, foam, cliff, or object.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      },
+      "references": [
+        {"file": "assets/references/a1-style-lock.png", "parameter": "color_image"}
+      ]
+    }
+  ]
+}

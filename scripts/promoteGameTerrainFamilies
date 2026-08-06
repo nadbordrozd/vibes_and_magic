@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+script_dir=${0:A:h}
+uv run --quiet --with pillow python "$script_dir/promoteGameTerrainFamilies.py" "$@"
+exec "$script_dir/buildGameTerrainGuides"

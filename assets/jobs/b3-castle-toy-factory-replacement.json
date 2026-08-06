@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b3-castle-toy-factory-replacement-candidates.html",
+  "requests": [
+    {
+      "id": "castle:toy-factory:replacement",
+      "assets": ["castle:unfinished:castle"],
+      "output": ".pixel-work/pixelgen/b3-castle-toy-factory-replacement/mechanical-workshop-refine",
+      "prompt": "Rework this building as a medieval toy-making factory. Keep the cute two-tower gatehouse silhouette, cream stone, arched wooden door, and large central brass gear. Replace both flagpoles with a giant winding key and a short copper exhaust pipe. Add interlocking cogwheels and copper pipes across the lower front wall. Remove every flower, shrub, rock, and patch of ground so the bottom meets transparency in a clean horizontal edge. Cute 1990s storybook pixel art, front-facing with a slight overhead view. Bright warm light on the right, shadow on the left.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 128],
+      "candidates": 2,
+      "seed": 95930,
+      "parameters": {
+        "negative_description": "flag, banner, flower, shrub, tree, grass, ground plate, royal palace, ruin, scaffolding, missing roof, text",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 240
+      },
+      "references": [
+        {
+          "file": "assets/guides/b3-toy-factory-init.png",
+          "parameter": "init_image"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b6-landmarks-1-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:boat:default",
+      "assets": [
+        "map-object:boat:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-boat-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of boat, interpreted as one practical folkloric map landmark or pickup. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 232730,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:bridge:complete",
+      "assets": [
+        "map-object:bridge:complete"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-bridge-complete",
+      "prompt": "Native 32x32 transparent adventure-map sprite of complete bridge, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 749487,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:bridge:incomplete",
+      "assets": [
+        "map-object:bridge:incomplete"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-bridge-incomplete",
+      "prompt": "Native 32x32 transparent adventure-map sprite of incomplete bridge, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 505796,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:cache:default",
+      "assets": [
+        "map-object:cache:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-cache-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of cache, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 547352,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:castaway:default",
+      "assets": [
+        "map-object:castaway:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-castaway-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of castaway, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 45529,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:chrysalis:default",
+      "assets": [
+        "map-object:chrysalis:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-chrysalis-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of chrysalis, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 264388,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:coldCampfire:default",
+      "assets": [
+        "map-object:coldCampfire:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-coldCampfire-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of an extinguished cold campfire: a low ring of grey stones around black charred logs and a little pale ash, absolutely no flame, ember, smoke, light or glow, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 759011,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:coldSpring:default",
+      "assets": [
+        "map-object:coldSpring:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-coldSpring-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a low circular frost-rimmed stone spring basin holding still blue-grey water, ordinary outdoor wellspring with no building, roof, flowers, person, fountain jet or glow, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 597671,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:crone:default",
+      "assets": [
+        "map-object:crone:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-crone-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of crone, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 507113,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:drownedBell:default",
+      "assets": [
+        "map-object:drownedBell:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-drownedBell-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of drowned Bell, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 102980,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

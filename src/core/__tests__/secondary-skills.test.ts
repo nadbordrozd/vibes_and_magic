@@ -52,11 +52,11 @@ describe('secondary skill ranks', () => {
     object.position = { x: hero.position.x + 3, y: hero.position.y };
     object.army = [{ unitId: 'bannerman', count: 18 }];
     expect(guardianIntel(game, object, hero)).toMatchObject({
-      exact: false, label: 'Dozens', count: null,
+      exact: false, label: 'Pack Bannerman', count: null,
     });
     hero.skills.scouting = 1;
     expect(guardianIntel(game, object, hero)).toMatchObject({
-      exact: true, label: '18', count: 18, abilities: ['banner'],
+      exact: true, label: '18 Bannerman', count: 18, abilities: ['banner'],
     });
     hero.position = { x: 10, y: 10 };
     const before = game.players.p1.explored.length;
@@ -66,10 +66,12 @@ describe('secondary skill ranks', () => {
     expect(game.players.p1.explored.length).toBeGreaterThan(before);
   });
 
-  it('uses all four guardian size bands at their exact boundaries', () => {
-    expect([1, 9, 10, 24, 25, 74, 75, 400].map(guardianSizeBand)).toEqual([
-      'Few', 'Few', 'Dozens', 'Dozens',
-      'Scores', 'Scores', 'Hundreds', 'Hundreds',
+  it('uses the full readable guardian size vocabulary at exact boundaries', () => {
+    expect([1, 4, 5, 9, 10, 19, 20, 49, 50, 99, 100, 249, 250, 499,
+      500, 999, 1000].map(guardianSizeBand)).toEqual([
+      'Few', 'Few', 'Several', 'Several', 'Pack', 'Pack', 'Lots', 'Lots',
+      'Horde', 'Horde', 'Throng', 'Throng', 'Swarm', 'Swarm', 'Zounds', 'Zounds',
+      'Legion',
     ]);
   });
 

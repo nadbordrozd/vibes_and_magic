@@ -58,6 +58,20 @@ export const BATTLE_TILE_ABILITY_STAGES: Record<
   test_turn_burn: 'on-turn-start',
 };
 
+const BATTLE_TILE_RULES: Record<BattleTileAbilityTag, string> = {
+  blocks_movement: 'Blocks ordinary movement.',
+  heated_wall: 'When upgraded, an adjacent enemy gains Burn 1 at turn start.',
+  resin_chill: 'An enemy company starting its turn here gains Chill 1.',
+  undergrowth_slow: 'Entering this hex costs 2 additional movement.',
+  undergrowth_chill: 'When upgraded, an enemy ending its turn here gains Chill 1.',
+  test_enter_meter: 'A company entering gains the test tile’s listed morale.',
+  test_turn_burn: 'A company starting its turn here gains the test tile’s listed Burn.',
+};
+
+export function battleTileRuleSummary(tile: BattleTileType): string[] {
+  return tile.abilities.map((tag) => BATTLE_TILE_RULES[tag]);
+}
+
 export function validateBattleTiles(): void {
   if (Object.values(BATTLE_TILE_TYPES).some((entry) => !entry.name || !entry.flavor.trim())) {
     throw new Error('Battle tile catalog contains an incomplete definition');

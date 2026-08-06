@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/game-terrain-native-wang-2-candidates.html",
+  "requests": [
+    {
+      "id": "review:game-terrain:barrowfield:wang",
+      "assets": [
+        "review:game-terrain:barrowfield:wang"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-wang/barrowfield",
+      "prompt": "Native 32x32 Barrowfield-to-dirt Wang tileset for the adventure-map showcase. The literal material, transition, scale, camera and style requirements are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 477298,
+      "parameters": {
+        "lower_description": "quiet ordinary warm brown dirt with compact irregular grains, uniform illumination and no road, border, object, repeated row, gradient or tile extrusion. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark.",
+        "upper_description": "quiet pale country grass with chalky straw and subtle well-tended hummock texture. Every cell represents roughly one human-sized patch of ground. Incidental insects, fungi, bone chips or paint flecks must stay 1–5 pixels; a branch, ridge or crack may span 8–14 pixels but must remain flat. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Quiet continuous opaque field, uniform edge values, no focal object, border, path, gradient, checkerboard, text or watermark.",
+        "transition_description": "a narrow pale-grass-to-dirt edge with sparse chalky root pixels; two or more alternate irregular edge profiles, restrained pixel-scale feathering, no cliff, wall, glow, outline band or oversized motif.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 10,
+        "color_image": null
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-barrowfield-h2-reference.png",
+          "parameter": "color_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:lacquer-flats:wang",
+      "assets": [
+        "review:game-terrain:lacquer-flats:wang"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-wang/lacquer-flats",
+      "prompt": "Native 32x32 Lacquer Flats-to-dirt Wang tileset for the adventure-map showcase. The literal material, transition, scale, camera and style requirements are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 316503,
+      "parameters": {
+        "lower_description": "quiet ordinary warm brown dirt with compact irregular grains, uniform illumination and no road, border, object, repeated row, gradient or tile extrusion. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark.",
+        "upper_description": "smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine. Every cell represents roughly one human-sized patch of ground. Incidental insects, fungi, bone chips or paint flecks must stay 1–5 pixels; a branch, ridge or crack may span 8–14 pixels but must remain flat. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Quiet continuous opaque field, uniform edge values, no focal object, border, path, gradient, checkerboard, text or watermark.",
+        "transition_description": "an irregular chipped lacquer-stone edge exposing ordinary brown dirt; two or more alternate irregular edge profiles, restrained pixel-scale feathering, no cliff, wall, glow, outline band or oversized motif.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 10,
+        "color_image": null
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-lacquer-flats-h2-reference.png",
+          "parameter": "color_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mire:wang",
+      "assets": [
+        "review:game-terrain:mire:wang"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-wang/mire",
+      "prompt": "Native 32x32 Mire-to-dirt Wang tileset for the adventure-map showcase. The literal material, transition, scale, camera and style requirements are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 421858,
+      "parameters": {
+        "lower_description": "quiet ordinary warm brown dirt with compact irregular grains, uniform illumination and no road, border, object, repeated row, gradient or tile extrusion. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark.",
+        "upper_description": "dark negotiable peat and blue-green shallow wet ground with tiny broken reflections. Every cell represents roughly one human-sized patch of ground. Incidental insects, fungi, bone chips or paint flecks must stay 1–5 pixels; a branch, ridge or crack may span 8–14 pixels but must remain flat. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Quiet continuous opaque field, uniform edge values, no focal object, border, path, gradient, checkerboard, text or watermark.",
+        "transition_description": "a soft muddy dirt margin with two or three damp blue-green pixels; two or more alternate irregular edge profiles, restrained pixel-scale feathering, no cliff, wall, glow, outline band or oversized motif.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 10,
+        "color_image": null
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mire-h2-reference.png",
+          "parameter": "color_image"
+        }
+      ],
+      "review_only": true
+    }
+  ]
+}

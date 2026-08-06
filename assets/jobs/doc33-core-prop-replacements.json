@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/doc33-core-prop-replacements-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:pile:gold",
+      "assets": [
+        "map-object:pile:gold"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-pile-gold",
+      "prompt": "a compact heap of stacked gold ingots, warm yellow gold with dark ochre seams, five irregular bars and one loose coin, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 3,
+      "seed": 96510,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:pile:iron",
+      "assets": [
+        "map-object:pile:iron"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-pile-iron",
+      "prompt": "a compact heap of forged iron ingots, cool blue-grey metal with charcoal seams, five irregular bars crossed at different angles, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 3,
+      "seed": 96520,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:mine:gold",
+      "assets": [
+        "map-object:mine:gold"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-mine-gold",
+      "prompt": "a timber-framed gold mine mouth cut into grey rock, dark oak braces with warm ochre ore, an open tunnel on the lower left and a blocked ore shed on the right, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 2 tiles wide and about 2.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        64,
+        80
+      ],
+      "candidates": 3,
+      "seed": 96530,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:mine:iron",
+      "assets": [
+        "map-object:mine:iron"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-mine-iron",
+      "prompt": "a timber-framed iron mine mouth cut into charcoal rock, dark oak braces with blue-grey ore, an open tunnel on the lower left and a blocked ore shed on the right, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 2 tiles wide and about 2.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        64,
+        80
+      ],
+      "candidates": 3,
+      "seed": 96540,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:richVein:default",
+      "assets": [
+        "map-object:richVein:default"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-richVein-default",
+      "prompt": "a low jagged mineral outcrop, charcoal stone with restrained violet and gold ore seams, one cracked central slab over two smaller rocks, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96550,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:shrine:craft",
+      "assets": [
+        "map-object:shrine:craft"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-shrine-craft",
+      "prompt": "a small roadside workshop shrine, cream plaster with red tile and dull brass fittings, an open votive niche beneath a bare roof ridge, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96560,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:shrine:wild",
+      "assets": [
+        "map-object:shrine:wild"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-shrine-wild",
+      "prompt": "a small woodland roadside shrine, dark oak with faded red shingles and pale antler trim, an open votive niche beneath a bare roof ridge, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96570,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

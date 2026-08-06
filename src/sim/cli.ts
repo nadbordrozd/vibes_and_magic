@@ -1,5 +1,6 @@
 import { writeFileSync } from 'node:fs';
 import { simulateGame, simulateLockAssaults } from './run';
+import type { MapId } from '../core/types';
 
 function argument(name: string, fallback: number): number {
   const index = process.argv.indexOf(`--${name}`);
@@ -21,10 +22,21 @@ if (ai !== 'ai' && ai !== 'standard' && ai !== 'dormant') {
   throw new Error('Invalid --ai value; use standard or dormant');
 }
 const opponent = ai === 'dormant' ? 'dormant' : 'ai';
-const results = Array.from(
-  { length: games },
-  (_, index) => simulateGame(seed + index, maxDays, noMagic, opponent),
-);
+const mapIndex = process.argv.indexOf('--map');
+const mapArgument = mapIndex === -1 ? 'border-marches' : process.argv[mapIndex + 1];
+const knownMaps: MapId[] = [
+  'border-marches', 'crosstitch', 'crosstitch-kit', 'torn-sound', 'manywhere', 'grand-muster',
+];
+if (mapArgument !== 'all' && !knownMaps.includes(mapArgument as MapId)) {
+  throw new Error(`Invalid --map value; use all or ${knownMaps.join(', ')}`);
+}
+const maps = mapArgument === 'all' ? knownMaps.filter((map) => map !== 'crosstitch-kit')
+  : [mapArgument as MapId];
+const cases = maps.flatMap((mapId) => Array.from({ length: games }, (_, index) => ({
+  mapId, seed: seed + index,
+})));
+const results = cases.map((entry) =>
+  simulateGame(entry.seed, maxDays, noMagic, opponent, entry.mapId));
 const crashes = results.filter((result) => result.crashed);
 for (const crash of crashes) {
   const filename = `replay-crash-${crash.seed}.json`;
@@ -52,13 +64,14 @@ const casualtyTotal = results.reduce(
 );
 const withinEightWeeks = results.filter((result) => result.winner && result.days <= 56).length;
 
-console.log(`Games: ${games} | seed range: ${seed}–${seed + games - 1}`);
+console.log(`Games: ${games} per map (${results.length} total) | seed range: ${seed}–${seed + games - 1}`);
+console.log(`Maps: ${maps.join(', ')}`);
 console.log(`Magic: ${noMagic ? 'off' : 'on'}`);
 console.log(`Opponent AI: ${opponent === 'dormant' ? 'dormant' : 'standard'}`);
 console.log(`Crashes: ${crashes.length}`);
-console.log(`Wins: Hearthguard ${wins.p1} (${(wins.p1 / games * 100).toFixed(1)}%) | Wound-Wrights ${wins.p2} (${(wins.p2 / games * 100).toFixed(1)}%) | unresolved ${wins.unresolved}`);
+console.log(`Wins: Hearthguard ${wins.p1} (${(wins.p1 / results.length * 100).toFixed(1)}%) | Wound-Wrights ${wins.p2} (${(wins.p2 / results.length * 100).toFixed(1)}%) | unresolved ${wins.unresolved}`);
 console.log(`Length days: min ${lengths[0]} | median ${percentile(0.5)} | p90 ${percentile(0.9)} | max ${lengths.at(-1)}`);
-console.log(`Finished within 8 weeks: ${withinEightWeeks}/${games} (${(withinEightWeeks / games * 100).toFixed(1)}%)`);
+console.log(`Finished within 8 weeks: ${withinEightWeeks}/${results.length} (${(withinEightWeeks / results.length * 100).toFixed(1)}%)`);
 console.log(`Casualties: Hearthguard ${casualtyTotal.p1} | Wound-Wrights ${casualtyTotal.p2} | neutral ${casualtyTotal.neutral}`);
 const rounds = results.flatMap((result) => result.battleRounds).sort((a, b) => a - b);
 console.log(`Battle rounds: median ${rounds.length ? rounds[Math.floor(rounds.length / 2)] : 0} | spell casts ${results.reduce((sum, result) => sum + result.spellCasts, 0)}`);
@@ -69,10 +82,8 @@ for (const result of results.filter((item) => !item.winner).slice(0, 5)) {
 if (crashes.length > 0) process.exitCode = 1;
 
 if (compareMagic) {
-  const opposite = Array.from(
-    { length: games },
-    (_, index) => simulateGame(seed + index, maxDays, !noMagic, opponent),
-  );
+  const opposite = cases.map((entry) =>
+    simulateGame(entry.seed, maxDays, !noMagic, opponent, entry.mapId));
   const pairedFlips = results.filter((result, index) =>
     result.winner !== opposite[index].winner).length;
   const casualty = (result: typeof results[number]) =>
@@ -80,8 +91,8 @@ if (compareMagic) {
   const casualtyDelta = results.reduce(
     (sum, result, index) => sum + casualty(result) - casualty(opposite[index]),
     0,
-  ) / games;
-  console.log(`Matched comparison: winner flips ${pairedFlips}/${games} (${(pairedFlips / games * 100).toFixed(1)}%) | average casualty delta ${casualtyDelta.toFixed(1)}`);
+  ) / results.length;
+  console.log(`Matched comparison: winner flips ${pairedFlips}/${results.length} (${(pairedFlips / results.length * 100).toFixed(1)}%) | average casualty delta ${casualtyDelta.toFixed(1)}`);
 }
 
 if (assaultLocks) {

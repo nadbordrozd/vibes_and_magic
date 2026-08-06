@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/game-terrain-native-details-retry-2-candidates.html",
+  "requests": [
+    {
+      "id": "review:game-terrain:barrowfield:micro-v2",
+      "assets": [
+        "review:game-terrain:barrowfield:micro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/barrowfield-micro",
+      "prompt": "Native 32x32 seamless opaque Barrowfield terrain cell derived from the supplied same-size composition guide. quiet pale country grass with chalky straw and subtle well-tended hummock texture; one tiny unlit candle stub occupying only 2–3 pixels, no flame or glow. Preserve the guide motif at exactly 2–5 pixels total; it may not exceed 4 pixels in either dimension. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 290695,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-barrowfield-micro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:barrowfield:macro-v2",
+      "assets": [
+        "review:game-terrain:barrowfield:macro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/barrowfield-macro",
+      "prompt": "Native 32x32 seamless opaque Barrowfield terrain cell derived from the supplied same-size composition guide. quiet pale country grass with chalky straw and subtle well-tended hummock texture; one shallow grass-covered hummock spanning 8–14 pixels, low and passable. Preserve the guide mark at 8–14 pixels long and at most 2 pixels thick; it may not grow, become upright, or fill the cell. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 619167,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-barrowfield-macro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:lacquer-flats:micro-v2",
+      "assets": [
+        "review:game-terrain:lacquer-flats:micro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/lacquer-flats-micro",
+      "prompt": "Native 32x32 seamless opaque Lacquer Flats terrain cell derived from the supplied same-size composition guide. smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine; one tiny weathered paint fleck occupying only 1–3 pixels. Preserve the guide motif at exactly 2–5 pixels total; it may not exceed 4 pixels in either dimension. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 71270,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-lacquer-flats-micro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:lacquer-flats:macro-v2",
+      "assets": [
+        "review:game-terrain:lacquer-flats:macro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/lacquer-flats-macro",
+      "prompt": "Native 32x32 seamless opaque Lacquer Flats terrain cell derived from the supplied same-size composition guide. smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine; one hairline branching crack spanning 8–14 pixels without becoming a trench. Preserve the guide mark at 8–14 pixels long and at most 2 pixels thick; it may not grow, become upright, or fill the cell. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 363518,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-lacquer-flats-macro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mire:micro-v2",
+      "assets": [
+        "review:game-terrain:mire:micro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/mire-micro",
+      "prompt": "Native 32x32 seamless opaque Mire terrain cell derived from the supplied same-size composition guide. dark negotiable peat and blue-green shallow wet ground with tiny broken reflections; one tiny frog-like green speck occupying only 2–3 pixels and readable as incidental life. Preserve the guide motif at exactly 2–5 pixels total; it may not exceed 4 pixels in either dimension. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 256217,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mire-micro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mire:macro-v2",
+      "assets": [
+        "review:game-terrain:mire:macro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/mire-macro",
+      "prompt": "Native 32x32 seamless opaque Mire terrain cell derived from the supplied same-size composition guide. dark negotiable peat and blue-green shallow wet ground with tiny broken reflections; one low reed-shadow and ripple mark spanning 8–14 pixels, flat and passable. Preserve the guide mark at 8–14 pixels long and at most 2 pixels thick; it may not grow, become upright, or fill the cell. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 650625,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mire-macro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    }
+  ]
+}

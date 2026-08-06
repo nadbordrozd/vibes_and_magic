@@ -1,0 +1,317 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a3-terrain-2-candidates.html",
+  "requests": [
+    {
+      "id": "terrain:hush:north:1",
+      "assets": [
+        "terrain:hush:north:1"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-hush-north-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: pale quiet wind-set snow with restrained blue-grey shadow grains, no drift object or tracks. Variant cue: sparse darker broken flecks. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 85030,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 340
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-hush-north.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:hush:north:2",
+      "assets": [
+        "terrain:hush:north:2"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-hush-north-2",
+      "prompt": "Native 32x32 seamless opaque terrain tile: pale quiet wind-set snow with restrained blue-grey shadow grains, no drift object or tracks. Variant cue: quiet broad microtexture planes. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 397681,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-hush-north.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:lacquerFlats:default:0",
+      "assets": [
+        "terrain:lacquerFlats:default:0"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-lacquerFlats-default-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine, no boards or objects. Variant cue: fine irregular material grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 901278,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-lacquerFlats-default.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:lacquerFlats:default:1",
+      "assets": [
+        "terrain:lacquerFlats:default:1"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-lacquerFlats-default-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine, no boards or objects. Variant cue: sparse darker broken flecks. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 85040,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 340
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-lacquerFlats-default.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:lacquerFlats:default:2",
+      "assets": [
+        "terrain:lacquerFlats:default:2"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-lacquerFlats-default-2",
+      "prompt": "Native 32x32 seamless opaque terrain tile: smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine, no boards or objects. Variant cue: quiet broad microtexture planes. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 84720,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 280
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-lacquerFlats-default.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:meadow:coastal:0",
+      "assets": [
+        "terrain:meadow:coastal:0"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-meadow-coastal-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: salt-lush coastal meadow with short warm green grass and sparse straw blades, no flowers, rocks or shore. Variant cue: fine irregular material grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 163594,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-meadow-coastal.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:meadow:coastal:1",
+      "assets": [
+        "terrain:meadow:coastal:1"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-meadow-coastal-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: salt-lush coastal meadow with short warm green grass and sparse straw blades, no flowers, rocks or shore. Variant cue: sparse darker broken flecks. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 741213,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-meadow-coastal.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:meadow:coastal:2",
+      "assets": [
+        "terrain:meadow:coastal:2"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-meadow-coastal-2",
+      "prompt": "Native 32x32 seamless opaque terrain tile: salt-lush coastal meadow with short warm green grass and sparse straw blades, no flowers, rocks or shore. Variant cue: quiet broad microtexture planes. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 808356,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-meadow-coastal.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:mire:coastal:0",
+      "assets": [
+        "terrain:mire:coastal:0"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-mire-coastal-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: dark negotiable peat and blue-green shallow wet ground with tiny broken reed reflections, no reeds or pools as objects. Variant cue: fine irregular material grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 552668,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-mire-coastal.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:mire:coastal:1",
+      "assets": [
+        "terrain:mire:coastal:1"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-mire-coastal-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: dark negotiable peat and blue-green shallow wet ground with tiny broken reed reflections, no reeds or pools as objects. Variant cue: sparse darker broken flecks. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 84810,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 280
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-mire-coastal.png",
+          "parameter": "init_image"
+        }
+      ]
+    }
+  ]
+}

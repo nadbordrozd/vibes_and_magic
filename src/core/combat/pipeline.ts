@@ -493,7 +493,7 @@ export function runAttackPipeline(
       }
       if (destination) defender.position = { ...destination };
     }
-    if (!abilitySecondary && stackHasAbility(attacker, 'skim')) {
+    if (!abilitySecondary && attacker.count > 0 && stackHasAbility(attacker, 'skim')) {
       const second = battle.stacks.find((stack) => stack.count > 0
         && stack.side === defender.side && stack.id !== defender.id
         && stacksAdjacent(stack, defender));

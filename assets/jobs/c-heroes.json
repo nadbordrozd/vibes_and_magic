@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/c-heroes-candidates.html",
+  "requests": [
+    {
+      "id": "hero:hagwood:8-directions",
+      "assets": [
+        "hero:hagwood:n",
+        "hero:hagwood:ne",
+        "hero:hagwood:e",
+        "hero:hagwood:se",
+        "hero:hagwood:s",
+        "hero:hagwood:sw",
+        "hero:hagwood:w",
+        "hero:hagwood:nw"
+      ],
+      "output": ".pixel-work/pixelgen/c-heroes/hagwood",
+      "prompt": "Native 32x48 transparent eight-direction adventure hero: Hagwood Crone riding a crooked birch-and-wicker besom. Materials: white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. All rotations must preserve the same rider, mount, equipment, palette, scale and baseline. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique adventure-map view around 65 degrees; full silhouette; no ground patch, scenery, spell effect, UI, text, logo, watermark or baked player-colour flag.",
+      "endpoint": "create-character-with-8-directions",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "generation_size": [
+        21,
+        34
+      ],
+      "seed": 38417,
+      "parameters": {
+        "mode": "standard",
+        "view": "high top-down",
+        "isometric": false,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9,
+        "template_id": "mannequin"
+      },
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "hero:hearthguard:8-directions",
+      "assets": [
+        "hero:hearthguard:n",
+        "hero:hearthguard:ne",
+        "hero:hearthguard:e",
+        "hero:hearthguard:se",
+        "hero:hearthguard:s",
+        "hero:hearthguard:sw",
+        "hero:hearthguard:w",
+        "hero:hearthguard:nw"
+      ],
+      "output": ".pixel-work/pixelgen/c-heroes/hearthguard",
+      "prompt": "Native 32x48 transparent eight-direction adventure hero: Hearthguard Banneret on a sturdy ordinary horse carrying a small plain pennant. Materials: warm red and cream wool, wrought iron, modest gold heraldry, upright shields and pennants. All rotations must preserve the same rider, mount, equipment, palette, scale and baseline. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique adventure-map view around 65 degrees; full silhouette; no ground patch, scenery, spell effect, UI, text, logo, watermark or baked player-colour flag.",
+      "endpoint": "create-character-with-8-directions",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "generation_size": [
+        21,
+        34
+      ],
+      "seed": 680233,
+      "parameters": {
+        "mode": "standard",
+        "view": "high top-down",
+        "isometric": false,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9,
+        "template_id": "horse"
+      },
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "hero:unfinished:8-directions",
+      "assets": [
+        "hero:unfinished:n",
+        "hero:unfinished:ne",
+        "hero:unfinished:e",
+        "hero:unfinished:se",
+        "hero:unfinished:s",
+        "hero:unfinished:sw",
+        "hero:unfinished:w",
+        "hero:unfinished:nw"
+      ],
+      "output": ".pixel-work/pixelgen/c-heroes/unfinished",
+      "prompt": "Native 32x48 transparent eight-direction adventure hero: Unfinished Chandler drifting just above the ground with a hooded ordinary lantern. Materials: ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. All rotations must preserve the same rider, mount, equipment, palette, scale and baseline. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique adventure-map view around 65 degrees; full silhouette; no ground patch, scenery, spell effect, UI, text, logo, watermark or baked player-colour flag.",
+      "endpoint": "create-character-with-8-directions",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "generation_size": [
+        21,
+        34
+      ],
+      "seed": 474469,
+      "parameters": {
+        "mode": "standard",
+        "view": "high top-down",
+        "isometric": false,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9,
+        "template_id": "mannequin"
+      },
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "hero:vespiary:8-directions",
+      "assets": [
+        "hero:vespiary:n",
+        "hero:vespiary:ne",
+        "hero:vespiary:e",
+        "hero:vespiary:se",
+        "hero:vespiary:s",
+        "hero:vespiary:sw",
+        "hero:vespiary:w",
+        "hero:vespiary:nw"
+      ],
+      "output": ".pixel-work/pixelgen/c-heroes/vespiary",
+      "prompt": "Native 32x48 transparent eight-direction adventure hero: Vespiary Broodspeaker riding a compact segmented chitin mount. Materials: honey amber, black chitin, resin and paper nest, segmented asymmetric forms and papery wings. All rotations must preserve the same rider, mount, equipment, palette, scale and baseline. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique adventure-map view around 65 degrees; full silhouette; no ground patch, scenery, spell effect, UI, text, logo, watermark or baked player-colour flag.",
+      "endpoint": "create-character-with-8-directions",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "generation_size": [
+        21,
+        34
+      ],
+      "seed": 456713,
+      "parameters": {
+        "mode": "standard",
+        "view": "high top-down",
+        "isometric": false,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9,
+        "template_id": "horse"
+      },
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "hero:wildergrass:8-directions",
+      "assets": [
+        "hero:wildergrass:n",
+        "hero:wildergrass:ne",
+        "hero:wildergrass:e",
+        "hero:wildergrass:se",
+        "hero:wildergrass:s",
+        "hero:wildergrass:sw",
+        "hero:wildergrass:w",
+        "hero:wildergrass:nw"
+      ],
+      "output": ".pixel-work/pixelgen/c-heroes/wildergrass",
+      "prompt": "Native 32x48 transparent eight-direction adventure hero: Wildergrass Ashrider on a lean low steppe horse. Materials: ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. All rotations must preserve the same rider, mount, equipment, palette, scale and baseline. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique adventure-map view around 65 degrees; full silhouette; no ground patch, scenery, spell effect, UI, text, logo, watermark or baked player-colour flag.",
+      "endpoint": "create-character-with-8-directions",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "generation_size": [
+        21,
+        34
+      ],
+      "seed": 368231,
+      "parameters": {
+        "mode": "standard",
+        "view": "high top-down",
+        "isometric": false,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9,
+        "template_id": "horse"
+      },
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "hero:woundWrights:8-directions",
+      "assets": [
+        "hero:woundWrights:n",
+        "hero:woundWrights:ne",
+        "hero:woundWrights:e",
+        "hero:woundWrights:se",
+        "hero:woundWrights:s",
+        "hero:woundWrights:sw",
+        "hero:woundWrights:w",
+        "hero:woundWrights:nw"
+      ],
+      "output": ".pixel-work/pixelgen/c-heroes/woundWrights",
+      "prompt": "Native 32x48 transparent eight-direction adventure hero: Wound-Wrights Guildmaster riding a lacquer-and-tin hobby-horse construct. Materials: oxblood lacquered wood, tin, porcelain and stitched cloth, round jointed nursery silhouettes. All rotations must preserve the same rider, mount, equipment, palette, scale and baseline. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique adventure-map view around 65 degrees; full silhouette; no ground patch, scenery, spell effect, UI, text, logo, watermark or baked player-colour flag.",
+      "endpoint": "create-character-with-8-directions",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "generation_size": [
+        21,
+        34
+      ],
+      "seed": 520799,
+      "parameters": {
+        "mode": "standard",
+        "view": "high top-down",
+        "isometric": false,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9,
+        "template_id": "mannequin"
+      },
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "color_image"
+        }
+      ]
+    }
+  ]
+}

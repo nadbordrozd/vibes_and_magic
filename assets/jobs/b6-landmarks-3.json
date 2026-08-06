@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b6-landmarks-3-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:lighthouse:default",
+      "assets": [
+        "map-object:lighthouse:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lighthouse-default",
+      "prompt": "Native 32x64 transparent adventure-map sprite of lighthouse, interpreted as one practical folkloric map landmark or pickup. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        64
+      ],
+      "candidates": 2,
+      "seed": 371204,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:listeningStones:default",
+      "assets": [
+        "map-object:listeningStones:default"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-listeningStones-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a low open circle of three weathered grey standing stones leaning inward, broad high-oblique top planes and one clear gap; no building, roof, door, grass, runes or glow, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 484169,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:lock:manywhere-lock-needle",
+      "assets": [
+        "map-object:lock:manywhere-lock-needle"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lock-manywhere-lock-needle",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a giant old sewing needle thrust diagonally through two crossed cream cloth scraps, an unmistakable sewing-tool barrier; no building, roof, door, sign or grass, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 394592,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:lock:manywhere-lock-pattern",
+      "assets": [
+        "map-object:lock:manywhere-lock-pattern"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lock-manywhere-lock-pattern",
+      "prompt": "Native 32x32 transparent adventure-map sprite of one folded blank cream tailor pattern page held by two dark pattern weights, dotted seam marks but no writing; no building, roof, door, sign or grass, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 65527,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:lock:manywhere-lock-thimble",
+      "assets": [
+        "map-object:lock:manywhere-lock-thimble"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lock-manywhere-lock-thimble",
+      "prompt": "Native 32x32 transparent adventure-map sprite of one giant worn brass tailor thimble standing like a tiny cup, open top and dotted sides clearly visible; no building, roof, door, sign, hand or grass, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 87270,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:lock:manywhere-lock-thread",
+      "assets": [
+        "map-object:lock:manywhere-lock-thread"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lock-manywhere-lock-thread",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a dense four-ended knot of giant golden thread stretched between two short black bobbins, an unmistakable sewing barrier; no building, roof, door, sign or grass, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 251127,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:lock:ne-kit-lock",
+      "assets": [
+        "map-object:lock:ne-kit-lock"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lock-ne-kit-lock",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a low old-stone corner marker tied shut with a knot of golden thread; no building, roof, door or grass, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 135198,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:lock:nw-kit-lock",
+      "assets": [
+        "map-object:lock:nw-kit-lock"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lock-nw-kit-lock",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a low old-stone corner marker pierced by one giant sewing needle; no building, roof, door or grass, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 689576,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:lock:se-kit-lock",
+      "assets": [
+        "map-object:lock:se-kit-lock"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lock-se-kit-lock",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a low old-stone corner marker holding one folded blank tailor pattern page; no building, roof, door or grass, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 462073,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:lock:seam-echo-lock",
+      "assets": [
+        "map-object:lock:seam-echo-lock"
+      ],
+      "output": ".pixel-work/pixelgen/b6-landmarks/map-object-lock-seam-echo-lock",
+      "prompt": "Native 32x32 transparent adventure-map sprite of two narrow pale standing stone chimes facing a thin violet seam crack, mundane stone barrier first; no building, roof, door, person, grass, aura or glow, interpreted as one practical folkloric map landmark or pickup. Prefer one unmistakable ordinary silhouette; ration any anomalous cue to one small material contradiction. Pickups remain compact; buildings expose a foreground visit point. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 881546,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

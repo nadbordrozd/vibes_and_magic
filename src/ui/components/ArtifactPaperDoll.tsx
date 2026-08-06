@@ -7,6 +7,7 @@ import { debtCountdown } from '../../core/debts';
 import type {
   Action, EquipmentSlotId, GameState, Hero, SpellSchool,
 } from '../../core/types';
+import { ResourceRichText } from './ResourceToken';
 
 const SLOT_NAMES: Record<EquipmentSlotId, string> = {
   head: 'Head', cloak: 'Cloak', amulet: 'Amulet', weapon: 'Weapon',
@@ -100,9 +101,9 @@ export function ArtifactPaperDoll({
       </div>
       {kit.pieces >= 2 && (
         <p className="kit-bonus">
-          {kit.pieces >= 4 ? 'All stats +2 · all spells + · all resonances · Unstitch'
+          <ResourceRichText>{kit.pieces >= 4 ? 'All stats +2 · all spells + · all resonances · Unstitch'
             : kit.pieces === 3 ? 'All stats +2 · all spells resolve as +'
-              : 'All stats +2 · essence and seams revealed'}
+              : 'All stats +2 · essence and seams revealed'}</ResourceRichText>
         </p>
       )}
       {kit.canUnstitch && (

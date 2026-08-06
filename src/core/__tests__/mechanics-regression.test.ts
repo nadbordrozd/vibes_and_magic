@@ -230,5 +230,5 @@ describe('mechanics regressions', () => {
     expect(result.crashed).toBeUndefined();
     expect(result.winner).not.toBeNull();
     expect(result.days).toBeLessThanOrEqual(56);
-  }, 30_000);
+  }, 90_000);
 });

@@ -1,5 +1,5 @@
 import type {
-  Action, BattleStatistics, GameState, PlayerId, PrimaryStat,
+  Action, BattleStatistics, GameState, Player, PrimaryStat,
 } from '../../core/types';
 import { CHEST_GOLD, CHEST_XP } from '../../content/constants';
 import { SPELLS } from '../../content/spells';
@@ -7,6 +7,9 @@ import { SKILLS } from '../../content/skills';
 import { itemName } from '../../content/items';
 import { BARGAINS } from '../../content/bargains';
 import { ARTIFACTS } from '../../content/artifacts';
+import { UNITS } from '../../content/units';
+import { ResourceAmount, ResourceIcon, ResourceRichText } from './ResourceToken';
+import { FACTIONS } from '../../content/factions';
 import { campaignOutcome } from '../campaignOutcome';
 
 interface ChoiceProps {
@@ -47,7 +50,8 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
           <p>The old coffer holds coin and a cache of forgotten campaign journals.</p>
           <div className="choice-cards">
             <button onClick={() => dispatch({ type: 'CHOOSE_CHEST', choice: 'gold' })}>
-              <i>G</i><b>{CHEST_GOLD.toLocaleString()} Gold</b><small>Fund buildings and fresh recruits.</small>
+              <ResourceIcon resource="gold" /><b>{CHEST_GOLD.toLocaleString()} Gold</b>
+              <small>Fund buildings and fresh recruits.</small>
             </button>
             <button onClick={() => dispatch({ type: 'CHOOSE_CHEST', choice: 'xp' })}>
               <i>✦</i><b>{CHEST_XP.toLocaleString()} Experience</b><small>Advance your hero’s build.</small>
@@ -57,6 +61,8 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
               data-inspect-id={pending.artifact?.id ?? pending.item.id}
               disabled={!player.heroes.find((hero) => hero.id === pending.heroId)
                 ?.inventory.includes(null)}
+              title={!player.heroes.find((hero) => hero.id === pending.heroId)?.inventory.includes(null)
+                ? 'This hero has no open consumable inventory slot.' : 'Take this reward.'}
               onClick={() => dispatch({ type: 'CHOOSE_CHEST', choice: 'item' })}
             >
               <i>◇</i><b>{pending.artifact
@@ -78,32 +84,38 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
           <h2>The guardians will bargain</h2>
           <div className="choice-cards three">
             <button onClick={() => dispatch({ type: 'CHOOSE_DIPLOMACY', choice: 'fight' })}>
-              <i>⚔</i><b>Fight</b><small>Keep your gold and settle it in battle.</small>
+              <i>⚔</i><b>Fight</b><small><ResourceRichText>Keep your gold and settle it in battle.</ResourceRichText></small>
             </button>
             <button
               disabled={player.resources.gold < pending.disbandCost}
+              title={player.resources.gold < pending.disbandCost
+                ? `You need ${pending.disbandCost.toLocaleString()} gold.` : 'Pay the company to disperse.'}
               onClick={() => dispatch({ type: 'CHOOSE_DIPLOMACY', choice: 'disband' })}
             >
-              <i>G</i><b>Pay {pending.disbandCost.toLocaleString()}g</b>
+              <ResourceIcon resource="gold" /><b>Pay {pending.disbandCost.toLocaleString()}</b>
               <small>The guardians disband.</small>
             </button>
             {pending.recruitCost !== null && (
               <button
                 disabled={player.resources.gold < pending.recruitCost}
+                title={player.resources.gold < pending.recruitCost
+                  ? `You need ${pending.recruitCost.toLocaleString()} gold.` : 'Pay the company to join your army.'}
                 onClick={() => dispatch({ type: 'CHOOSE_DIPLOMACY', choice: 'recruit' })}
               >
-                <i>+</i><b>Recruit · {pending.recruitCost.toLocaleString()}g</b>
+                <ResourceIcon resource="gold" /><b>Recruit · {pending.recruitCost.toLocaleString()}</b>
                 <small>The guardians join this army.</small>
               </button>
             )}
             {pending.canStandAside && (
               <button
                 disabled={player.resources.gold < pending.disbandCost}
+                title={player.resources.gold < pending.disbandCost
+                  ? `You need ${pending.disbandCost.toLocaleString()} gold.` : 'Pay for passage; the guardians remain.'}
                 onClick={() => dispatch({
                   type: 'CHOOSE_DIPLOMACY', choice: 'standAside',
                 })}
               >
-                <i>↔</i><b>Stand aside · {pending.disbandCost.toLocaleString()}g</b>
+                <ResourceIcon resource="gold" /><b>Stand aside · {pending.disbandCost.toLocaleString()}</b>
                 <small>They remain, but this hero may pass.</small>
               </button>
             )}
@@ -186,12 +198,17 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
                   key={bargainId}
                   disabled={(bargainId === 'cuckoosDeal' || bargainId === 'whatWasPromised')
                     && !castle}
+                  title={!castle && bargainId === 'cuckoosDeal'
+                    ? 'No enemy castle exists for this bargain to watch.'
+                    : !castle && bargainId === 'whatWasPromised'
+                      ? 'This bargain must be accepted at an owned castle.' : `Accept ${bargain.name}.`}
                   onClick={() => dispatch({
                     type: 'CHOOSE_BARGAIN', bargainId, castleId: castle?.id,
                   })}
                 >
                   <i>☾</i><b>{bargain.name}</b>
-                  <small>{bargain.benefit}</small><em>Debt: {bargain.debt}{zimaTerm ? ` ${zimaTerm}` : ''}</em>
+                  <small><ResourceRichText>{bargain.benefit}</ResourceRichText></small>
+                  <em>Debt: <ResourceRichText>{`${bargain.debt}${zimaTerm ? ` ${zimaTerm}` : ''}`}</ResourceRichText></em>
                 </button>
               );
             })}
@@ -206,8 +223,11 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
         <span className="dialog-kicker">Toll Gate</span><h2>Coin or combat</h2>
         <div className="choice-cards">
           <button disabled={player.resources.gold < pending.cost}
+            title={player.resources.gold < pending.cost
+              ? `You need ${pending.cost.toLocaleString()} gold.` : 'Pay for one passage.'}
             onClick={() => dispatch({ type: 'CHOOSE_TOLL', choice: 'pay' })}>
-            <i>G</i><b>Pay {pending.cost} gold</b><small>Pass once without bloodshed.</small>
+            <ResourceIcon resource="gold" /><b>Pay {pending.cost.toLocaleString()}</b>
+            <small>Pass once without bloodshed.</small>
           </button>
           <button onClick={() => dispatch({ type: 'CHOOSE_TOLL', choice: 'fight' })}>
             <i>⚔</i><b>Fight the Keeper</b><small>Break this Toll Gate permanently.</small>
@@ -312,14 +332,14 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
 }
 
 export function PassDevice({
-  playerId, onReady,
-}: { playerId: PlayerId; onReady: () => void }) {
+  player, onReady,
+}: { player: Player; onReady: () => void }) {
   return (
     <div className="pass-device">
-      <div className={`pass-sigil ${playerId}`}><span>{playerId.slice(1)}</span></div>
+      <div className={`pass-sigil ${player.id} ${player.faction}`}><span>{player.name.slice(0, 1)}</span></div>
       <span className="dialog-kicker">Hot seat</span>
       <h1>Pass the device</h1>
-      <p>Player {playerId.slice(1)}, your turn is ready.</p>
+      <p><b>{player.name}</b>, commanding {FACTIONS[player.faction].name}, is next.<br />The map stays hidden until they are ready.</p>
       <button className="primary" onClick={onReady}>Reveal the map</button>
     </div>
   );
@@ -366,14 +386,14 @@ export function BattleResult({
         {result.statistics && (
           <div className="battle-statistics">
             <h3>Battle statistics</h3>
-            <table><thead><tr><th>Company</th><th>Side</th><th>Dealt</th><th>Taken</th><th>Extra acts</th></tr></thead>
+            <table><thead><tr><th>Company</th><th>Side</th><th>Damage dealt</th><th>Damage taken</th><th>Extra actions</th></tr></thead>
               <tbody>{result.statistics.stacks.filter((stack) =>
                 stack.damageDealt || stack.damageTaken || stack.extraActions).map((stack) => (
-                <tr key={stack.id}><td>{stack.unitId}</td><td>{stack.side}</td>
+                <tr key={stack.id}><td>{UNITS[stack.unitId].name}</td><td>{stack.side[0].toUpperCase() + stack.side.slice(1)}</td>
                   <td>{stack.damageDealt}</td><td>{stack.damageTaken}</td><td>{stack.extraActions}</td></tr>
               ))}</tbody></table>
-            <p>Spells: {result.statistics.spellsCast.attacker} / {result.statistics.spellsCast.defender}
-              {' · '}Casualty value: {result.statistics.casualtyValue.attacker.toLocaleString()}g / {result.statistics.casualtyValue.defender.toLocaleString()}g</p>
+            <p><b>Attacker / defender:</b> {result.statistics.spellsCast.attacker} / {result.statistics.spellsCast.defender} spells cast
+              {' · '}<ResourceAmount resource="gold" amount={result.statistics.casualtyValue.attacker} compact /> / <ResourceAmount resource="gold" amount={result.statistics.casualtyValue.defender} compact /> casualty value</p>
           </div>
         )}
         <div className="draft-tools">
@@ -414,7 +434,7 @@ export function VictoryDialog({
             const totals = state.metrics.playerTotals[player.id];
             return <tr key={player.id}><td>{player.name}</td><td>{totals.damageDealt}</td>
               <td>{totals.damageTaken}</td><td>{totals.spellsCast}</td>
-              <td>{totals.extraActions}</td><td>{totals.casualtyValue.toLocaleString()}g</td></tr>;
+              <td>{totals.extraActions}</td><td><ResourceAmount resource="gold" amount={totals.casualtyValue} compact /></td></tr>;
           })}</tbody></table>
         <p className="outcome-next">This concluded state and its statistics remain authoritative
           for the loaded save or replay. Open Help to revisit the objective and reference, or

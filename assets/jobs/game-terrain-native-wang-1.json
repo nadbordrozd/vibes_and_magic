@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/game-terrain-native-wang-1-candidates.html",
+  "requests": [
+    {
+      "id": "review:game-terrain:deepwood:wang",
+      "assets": [
+        "review:game-terrain:deepwood:wang"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-wang/deepwood",
+      "prompt": "Native 32x32 Deepwood-to-dirt Wang tileset for the adventure-map showcase. The literal material, transition, scale, camera and style requirements are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 372766,
+      "parameters": {
+        "lower_description": "quiet ordinary warm brown dirt with compact irregular grains, uniform illumination and no road, border, object, repeated row, gradient or tile extrusion. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark.",
+        "upper_description": "dark wet old-forest floor, fine loam and moss dust beneath separate canopy props. Every cell represents roughly one human-sized patch of ground. Incidental insects, fungi, bone chips or paint flecks must stay 1–5 pixels; a branch, ridge or crack may span 8–14 pixels but must remain flat. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Quiet continuous opaque field, uniform edge values, no focal object, border, path, gradient, checkerboard, text or watermark.",
+        "transition_description": "an irregular low dirt shoulder feathered with moss and a few grass pixels; two or more alternate irregular edge profiles, restrained pixel-scale feathering, no cliff, wall, glow, outline band or oversized motif.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 10,
+        "color_image": null
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-deepwood-h2-reference.png",
+          "parameter": "color_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mosswold:wang",
+      "assets": [
+        "review:game-terrain:mosswold:wang"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-wang/mosswold",
+      "prompt": "Native 32x32 Mosswold-to-dirt Wang tileset for the adventure-map showcase. The literal material, transition, scale, camera and style requirements are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 799713,
+      "parameters": {
+        "lower_description": "quiet ordinary warm brown dirt with compact irregular grains, uniform illumination and no road, border, object, repeated row, gradient or tile extrusion. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark.",
+        "upper_description": "ordinary green moss field with a subtle too-regular woven microtexture. Every cell represents roughly one human-sized patch of ground. Incidental insects, fungi, bone chips or paint flecks must stay 1–5 pixels; a branch, ridge or crack may span 8–14 pixels but must remain flat. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Quiet continuous opaque field, uniform edge values, no focal object, border, path, gradient, checkerboard, text or watermark.",
+        "transition_description": "a soft broken dirt edge where moss threads thin into ordinary soil; two or more alternate irregular edge profiles, restrained pixel-scale feathering, no cliff, wall, glow, outline band or oversized motif.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 10,
+        "color_image": null
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mosswold-h2-reference.png",
+          "parameter": "color_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:ashsteppe:wang",
+      "assets": [
+        "review:game-terrain:ashsteppe:wang"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-wang/ashsteppe",
+      "prompt": "Native 32x32 Ashsteppe-to-dirt Wang tileset for the adventure-map showcase. The literal material, transition, scale, camera and style requirements are in parameters.",
+      "endpoint": "create-tileset",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 301686,
+      "parameters": {
+        "lower_description": "quiet ordinary warm brown dirt with compact irregular grains, uniform illumination and no road, border, object, repeated row, gradient or tile extrusion. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark.",
+        "upper_description": "dry ochre-grey steppe grass with fine black ash beneath and low wind-combed blades. Every cell represents roughly one human-sized patch of ground. Incidental insects, fungi, bone chips or paint flecks must stay 1–5 pixels; a branch, ridge or crack may span 8–14 pixels but must remain flat. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Quiet continuous opaque field, uniform edge values, no focal object, border, path, gradient, checkerboard, text or watermark.",
+        "transition_description": "a dusty broken dirt edge with a restrained scatter of ash-dark grains; two or more alternate irregular edge profiles, restrained pixel-scale feathering, no cliff, wall, glow, outline band or oversized motif.",
+        "transition_size": 0.25,
+        "mode": "standard",
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 10,
+        "color_image": null
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-ashsteppe-h2-reference.png",
+          "parameter": "color_image"
+        }
+      ],
+      "review_only": true
+    }
+  ]
+}

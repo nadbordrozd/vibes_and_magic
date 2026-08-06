@@ -6,7 +6,7 @@ import type {
 
 export type Action =
   | { type: 'CAMPAIGN_SETUP'; options: NewGameOptions }
-  | { type: 'MOVE_HERO'; destination: Coord; heroId?: string }
+  | { type: 'MOVE_HERO'; destination: Coord; heroId?: string; avoidAggro?: boolean }
   | { type: 'PICKUP_OBJECT'; objectId: string }
   | { type: 'SELECT_HERO'; heroId: string }
   | { type: 'NEXT_HERO' }

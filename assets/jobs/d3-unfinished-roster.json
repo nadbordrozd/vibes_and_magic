@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Run and log the Hearthguard/Wound-Wrights flagship reference experiments; replace the broad phase reference with the winning protocol before production",
+  "contact_sheet": "assets/jobs/d3-unfinished-roster-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:candleWisps",
+      "assets": [
+        "battle-unit:candleWisps"
+      ],
+      "output": ".pixel-work/pixelgen/d3-unfinished-roster/battle-unit-candleWisps",
+      "prompt": "Native 128x128 transparent static battle sprite of Candle-Wisps. Small lights that go out reaching for something. Briefly, everything nearby feels what they wanted. Materials: ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 209026,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:couriers",
+      "assets": [
+        "battle-unit:couriers"
+      ],
+      "output": ".pixel-work/pixelgen/d3-unfinished-roster/battle-unit-couriers",
+      "prompt": "Native 128x128 transparent static battle sprite of Couriers. Still carrying the letter. When one falls, another remembers the address. Materials: ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 67703,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:sentries",
+      "assets": [
+        "battle-unit:sentries"
+      ],
+      "output": ".pixel-work/pixelgen/d3-unfinished-roster/battle-unit-sentries",
+      "prompt": "Native 128x128 transparent static battle sprite of Sentries. The watch was never relieved, so the watch continues. Materials: ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 100056,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:boneChoir",
+      "assets": [
+        "battle-unit:boneChoir"
+      ],
+      "output": ".pixel-work/pixelgen/d3-unfinished-roster/battle-unit-boneChoir",
+      "prompt": "Native 128x128 transparent static battle sprite of Bone Choir. They sing the endings of songs. The more endings a battle has, the better they sing. Materials: ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 372904,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:brides",
+      "assets": [
+        "battle-unit:brides"
+      ],
+      "output": ".pixel-work/pixelgen/d3-unfinished-roster/battle-unit-brides",
+      "prompt": "Native 128x128 transparent static battle sprite of The Brides. She came back for the wedding once already. She will come back once more. Materials: ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 188750,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:ferry",
+      "assets": [
+        "battle-unit:ferry"
+      ],
+      "output": ".pixel-work/pixelgen/d3-unfinished-roster/battle-unit-ferry",
+      "prompt": "Native 192x128 transparent static battle sprite of The Ferry. A funeral barge that mislaid its river. It crosses anyway, and will carry the living, gently, as practice. Materials: ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        192,
+        128
+      ],
+      "candidates": 2,
+      "seed": 520121,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    }
+  ]
+}

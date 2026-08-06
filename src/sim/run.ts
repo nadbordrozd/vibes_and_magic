@@ -3,7 +3,9 @@ import { autoResolveBattle } from '../ai/combat';
 import { createGame } from '../core/game';
 import { makeArmy } from '../core/army';
 import { createBattle, splitGuardianArmy } from '../core/combat/battle';
-import type { Action, GameState, PlayerId } from '../core/types';
+import type {
+  Action, GameState, MapId, PlayerId,
+} from '../core/types';
 
 export interface SimResult {
   seed: number;
@@ -67,8 +69,13 @@ export function simulateLockAssaults(seed: number): LockAssaultResult[] {
 
 export function simulateGame(
   seed: number, maxDays = 70, noMagic = false, opponent: 'ai' | 'dormant' = 'ai',
+  mapId: MapId = 'border-marches',
 ): SimResult {
-  let state = createGame({ seed, p1: 'ai', p2: opponent });
+  const playerCount = mapId === 'crosstitch' || mapId === 'crosstitch-kit' ? 4
+    : mapId === 'manywhere' ? 3 : 2;
+  let state = createGame({
+    seed, p1: 'ai', p2: opponent, p3: opponent, p4: opponent, mapId, playerCount,
+  });
   state.magicDisabled = noMagic;
   try {
     while (!state.winner && state.day <= maxDays) {

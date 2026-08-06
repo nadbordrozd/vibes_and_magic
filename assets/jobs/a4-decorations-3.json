@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a4-decorations-3-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:meadow:flowers-white",
+      "assets": [
+        "decoration:meadow:flowers-white"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-meadow-flowers-white",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable flowers white terrain decoration for meadow. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 242647,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:meadow:flowers-yellow",
+      "assets": [
+        "decoration:meadow:flowers-yellow"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-meadow-flowers-yellow",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable flowers yellow terrain decoration for meadow. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 42058,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mire:reeds",
+      "assets": [
+        "decoration:mire:reeds"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mire-reeds",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable reeds terrain decoration for mire. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 110388,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mosswold:patterned-moss",
+      "assets": [
+        "decoration:mosswold:patterned-moss"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mosswold-patterned-moss",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable patterned moss terrain decoration for mosswold. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 442058,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mosswold:stitched-ridge",
+      "assets": [
+        "decoration:mosswold:stitched-ridge"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mosswold-stitched-ridge",
+      "prompt": "Native 32x32 transparent adventure-map sprite of one low narrow raised moss ridge with an unnaturally regular stitched shadow. Keep it low and ground-bound with transparent space around it. It is a terrain mark or fallen material, not an upright object, building, sign, tool, plant, fence, plinth, icon or pickup. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 86130,
+      "parameters": {
+        "negative_description": "empty image, upright object, building, sign, tool, fence, pedestal, plinth, square ground tile, scenery, text, UI, logo, watermark, glow",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 300
+      },
+      "references": [
+        {
+          "file": "assets/guides/a4-mosswold-stitched-ridge.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:granite-knoll-1",
+      "assets": [
+        "decoration:mountain:granite-knoll-1"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-knoll-1",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable granite knoll 1 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 310982,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:granite-knoll-2",
+      "assets": [
+        "decoration:mountain:granite-knoll-2"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-knoll-2",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable granite knoll 2 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 633363,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

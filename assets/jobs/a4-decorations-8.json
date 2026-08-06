@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a4-decorations-8-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:snowcap-scatter-4",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-4"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-scatter-4",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable snowcap scatter 4 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 170098,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:snowcap-scatter-5",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-5"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-scatter-5",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable snowcap scatter 5 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 747717,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:snowcap-scatter-6",
+      "assets": [
+        "decoration:mountain:snowcap-scatter-6"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-scatter-6",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable snowcap scatter 6 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 814860,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

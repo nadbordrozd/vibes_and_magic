@@ -311,6 +311,8 @@ export function createBattle(
       Array.from({ length: BATTLE_COLS - 4 }, (_, x) => ({ x: x + 2, y })))
       .flat().filter((position) => !battle.obstacles.some((coord) =>
         coord.x === position.x && coord.y === position.y)
+        && !battle.tiles.some((tile) => tile.position.x === position.x
+          && tile.position.y === position.y)
         && !battle.stacks.some((stack) => stackHexes(stack).some((hex) =>
           hex.x === position.x && hex.y === position.y)));
     for (const position of candidates.slice(0, 2)) {

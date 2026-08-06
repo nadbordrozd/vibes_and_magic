@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/doc33-mountain-granite-scatter-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:granite-scatter-1",
+      "assets": ["decoration:mountain:granite-scatter-1"],
+      "output": ".pixel-work/pixelgen/doc33-mountain-granite-scatter/scatter-1",
+      "prompt": "a low granite outcrop, cool charcoal-grey stone with warm grey highlights, one split slab leaning over two smaller rocks and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [32, 48],
+      "candidates": 2,
+      "seed": 96010,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, snow, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {"file": "assets/guides/doc33-granite-scatter-style-32x48.png", "parameter": "style_image"},
+        {"file": "assets/guides/doc33-granite-scatter-color-32x48.png", "parameter": "color_image"}
+      ]
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-2",
+      "assets": ["decoration:mountain:granite-scatter-2"],
+      "output": ".pixel-work/pixelgen/doc33-mountain-granite-scatter/scatter-2",
+      "prompt": "a squat granite spur, cool charcoal-grey stone with warm grey highlights, two unequal blunt points with loose chips spreading wider than the peaks and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [32, 48],
+      "candidates": 2,
+      "seed": 96020,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, snow, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {"file": "assets/guides/doc33-granite-scatter-style-32x48.png", "parameter": "style_image"},
+        {"file": "assets/guides/doc33-granite-scatter-color-32x48.png", "parameter": "color_image"}
+      ]
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-3",
+      "assets": ["decoration:mountain:granite-scatter-3"],
+      "output": ".pixel-work/pixelgen/doc33-mountain-granite-scatter/scatter-3",
+      "prompt": "three weathered granite boulders, cool charcoal-grey stone with warm grey highlights, largest rock on one side with two low companions and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [32, 48],
+      "candidates": 2,
+      "seed": 96030,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, snow, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {"file": "assets/guides/doc33-granite-scatter-style-32x48.png", "parameter": "style_image"},
+        {"file": "assets/guides/doc33-granite-scatter-color-32x48.png", "parameter": "color_image"}
+      ]
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-4",
+      "assets": ["decoration:mountain:granite-scatter-4"],
+      "output": ".pixel-work/pixelgen/doc33-mountain-granite-scatter/scatter-4",
+      "prompt": "a broken granite shelf, cool charcoal-grey stone with warm grey highlights, one long low ledge with a short raised shoulder and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [32, 48],
+      "candidates": 2,
+      "seed": 96040,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, snow, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {"file": "assets/guides/doc33-granite-scatter-style-32x48.png", "parameter": "style_image"},
+        {"file": "assets/guides/doc33-granite-scatter-color-32x48.png", "parameter": "color_image"}
+      ]
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-5",
+      "assets": ["decoration:mountain:granite-scatter-5"],
+      "output": ".pixel-work/pixelgen/doc33-mountain-granite-scatter/scatter-5",
+      "prompt": "two angular granite boulders, cool charcoal-grey stone with warm grey highlights, offset rocks divided by a narrow dark crack with small scree and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [32, 48],
+      "candidates": 2,
+      "seed": 96050,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, snow, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {"file": "assets/guides/doc33-granite-scatter-style-32x48.png", "parameter": "style_image"},
+        {"file": "assets/guides/doc33-granite-scatter-color-32x48.png", "parameter": "color_image"}
+      ]
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-6",
+      "assets": ["decoration:mountain:granite-scatter-6"],
+      "output": ".pixel-work/pixelgen/doc33-mountain-granite-scatter/scatter-6",
+      "prompt": "a jagged granite ledge, cool charcoal-grey stone with warm grey highlights, three low uneven teeth over a broad skirt of broken chips and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1 tile tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [32, 48],
+      "candidates": 2,
+      "seed": 96060,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, snow, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 82
+      },
+      "references": [
+        {"file": "assets/guides/doc33-granite-scatter-style-32x48.png", "parameter": "style_image"},
+        {"file": "assets/guides/doc33-granite-scatter-color-32x48.png", "parameter": "color_image"}
+      ]
+    }
+  ]
+}

@@ -154,7 +154,7 @@ describe('milestone 24 occupancy', () => {
 
   it('assigns the required wide footprints and deploys them without overlap', () => {
     const sizeTwo = [
-      'oriflammeWyvern', 'reliquaryArk', 'woodenColossus', 'stuffedSentinel',
+      'lanceKnight', 'oriflammeWyvern', 'reliquaryArk', 'woodenColossus', 'stuffedSentinel',
       'ferry', 'halfWokenQueen', 'walkingHut', 'aurochsHerd', 'thunderbird', 'siegeRam',
     ] as const;
     sizeTwo.forEach((id) => expect(UNITS[id].hexSize).toBe(2));

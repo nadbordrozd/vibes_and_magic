@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/landscape-camera-lock-candidates.html",
+  "requests": [
+    {
+      "id": "terrain-field:meadow-camera-lock",
+      "assets": ["terrain-field:meadow"],
+      "output": ".pixel-work/pixelgen/landscape-camera-lock/meadow-field",
+      "prompt": "Native 256x256 seamless meadow landscape material for a warm painterly 1990s fantasy strategy adventure map. One broad continuous rich green grass field spanning eight hidden 32-pixel gameplay cells in each direction, never visible as tiles or repeated lawn islands. Deep blue-green grass shadows, clear emerald midtones, restrained yellow-green sun catches, and rare warm brown earth flecks. Dense fine irregular organic clusters, short grass blades and mottled pixel clusters without any large circular patches or uniform confetti. Upper-left illumination is subtle and material-level only; brightness is uniform across the whole field. Opposite edges continue seamlessly. Fill every pixel opaquely. Strict top-down ground texture, isometric false. No square cells, grid, border, seam, checkerboard, repeated rows, circles, bushes, discrete lawn patch, flowers, rocks, trees, buildings, horizon, directional gradient, vignette, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [256, 256],
+      "candidates": 3,
+      "seed": 92640,
+      "parameters": {
+        "negative_description": "olive flat noise, regular dots, confetti, square cells, grid lines, tile border, seams, checkerboard, repeated rows, isolated icon, transparent pixels, scenery, object, path, flowers, rocks, trees, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "highly detailed",
+        "view": "high top-down",
+        "isometric": false,
+        "no_background": false,
+        "init_image_strength": 520
+      },
+      "references": [
+        {
+          "file": "assets/guides/landscape-meadow-field.png",
+          "parameter": "init_image"
+        },
+        {
+          "file": "assets/guides/landscape-meadow-field.png",
+          "parameter": "color_image"
+        }
+      ]
+    },
+    {
+      "id": "hero:hearthguard:camera-lock",
+      "assets": [
+        "hero:hearthguard:n",
+        "hero:hearthguard:ne",
+        "hero:hearthguard:e",
+        "hero:hearthguard:se",
+        "hero:hearthguard:s",
+        "hero:hearthguard:sw",
+        "hero:hearthguard:w",
+        "hero:hearthguard:nw"
+      ],
+      "output": ".pixel-work/pixelgen/landscape-camera-lock/hearthguard-hero",
+      "prompt": "Native 32x48 transparent eight-direction adventure hero: a sturdy ordinary horse carrying a Hearthguard outrider in warm cream and muted red wool, wrought iron cap, round shield and modest gold trim. No standard, pole, banner or pennant. SCALE: the combined horse-and-rider silhouette fills about 28 of 32 pixels wide and 42 of 48 pixels tall; hooves meet one horizontal baseline around y=44 with almost no empty outer padding. CAMERA: classic 1990s oblique fantasy strategy-map view, front-on subject with a slight low top-down tilt around 30 degrees; isometric false; no diamond plane and no corner-on miniature view. Each direction changes the horse's travel direction but keeps the same camera pitch, scale, rider, mount, equipment and baseline. Crisp selective dark outlines, compact painterly pixel clusters, upper-left light. The red, cream and gold remain readable against the shipped emerald meadow palette (#27612f shadow, #3d7d33 midtone, #67a045 highlight). No ground, grass, base plate, cast terrain patch, scenery, spell effect, UI, text, logo, watermark or baked player-color flag.",
+      "endpoint": "create-character-with-8-directions",
+      "size": [32, 48],
+      "generation_size": [28, 40],
+      "candidates": 2,
+      "repack_transparent_padding": true,
+      "seed": 92730,
+      "parameters": {
+        "mode": "standard",
+        "view": "low top-down",
+        "isometric": false,
+        "force_colors": false,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "high detail",
+        "text_guidance_scale": 12,
+        "template_id": "horse"
+      }
+    },
+    {
+      "id": "map-object:mine:timber-camera-lock",
+      "assets": ["map-object:mine:timber"],
+      "output": ".pixel-work/pixelgen/landscape-camera-lock/timber-camp",
+      "prompt": "Native 64x80 transparent adventure-map timber camp sprite. SCALE: fills its exact 2-tile-wide footprint and rises about 2.5 tiles tall; broad working building, visibly smaller than a 3-tile-wide 4-tile-tall castle. CAMERA: classic 1990s oblique fantasy strategy-map projection, front façade faces south toward the camera with only a slight low top-down tilt around 30 degrees. The wall bottoms meet one clean HORIZONTAL ground-contact band across pixels x=4..63 near y=76. Isometric false; oblique projection true; never a corner-on view and never a diamond ground plane. Ordinary warm umber timber shed with a shallow charcoal-brown shingle roof, open braced work arch wholly inside the lower-left entrance tile x=0..31, and a neat stack of cut logs on the right. Crisp selective dark outlines, compact painterly pixel clusters, upper-left light. Match the shipped meadow's rich natural contrast without recoloring the wood: meadow anchors #27612f, #3d7d33, #67a045; wood anchors #503722, #8d5c30, #bd8246. Transparent right up to the walls and below them. No grass, flowers, pebbles, dirt, terrain skirt, base plate, pedestal, cast scenery, horizon, flag, banner, owner color, diagonal footprint, UI, text, logo or watermark.",
+      "endpoint": "create-image-bitforge",
+      "size": [64, 80],
+      "candidates": 3,
+      "seed": 92840,
+      "parameters": {
+        "negative_description": "isometric, diamond, rhombus, corner-on building, lawn island, grass skirt, flowers, pebbles, dirt patch, base plate, pedestal, terrain, scenery, horizon, flag, banner, text, UI, logo, watermark, photorealism, smooth vector art",
+        "text_guidance_scale": 14,
+        "style_strength": 48,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 88,
+        "init_image_strength": 380
+      },
+      "references": [
+        {
+          "file": "assets/guides/landscape-timber-front.png",
+          "parameter": "init_image"
+        },
+        {
+          "file": "assets/guides/landscape-h2-timber-style-64x80.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:range-segment-camera-lock",
+      "assets": [
+        "decoration:mountain:range-clump",
+        "decoration:mountain:range-clump-b"
+      ],
+      "output": ".pixel-work/pixelgen/landscape-camera-lock/mountain-segment",
+      "prompt": "Native 128x160 transparent adventure-map mountain RANGE SEGMENT A. VISUAL SCALE: broad massif fills 4 visual tiles wide and about 5 tiles tall, visibly taller than the 4-tile castle; gameplay footprint remains only the central 2 tiles. CAMERA: classic 1990s oblique fantasy strategy-map projection, broad south-facing rock slopes with a slight low top-down tilt around 30 degrees. Isometric false; oblique projection true; no diamond ground plane, narrow spire, sail shape or isolated pyramid. A warm brown-grey broken ridge ENTERS the left canvas edge and LEAVES the right; several unequal blunt crags overlap into a wide continuous mass. The lower rock wall continues across the width to one clean horizontal contact band near y=154. Designed to overlap with segment B; neither side tapers to an island endpoint. Crisp selective dark outlines, painterly ochre, umber and slate clusters, upper-left planes and restrained shadows. Match meadow contrast anchors #27612f, #3d7d33, #67a045, but no grass. Transparent outside ridge. No lawn, dirt plate, snow, cave, building, road, horizon, sky, flag, text, UI, logo or watermark.",
+      "endpoint": "create-image-bitforge",
+      "size": [128, 160],
+      "candidates": 2,
+      "seed": 92940,
+      "parameters": {
+        "negative_description": "isolated mountain island, single pyramid, triangle icon, isometric, diamond, rhombus, lawn island, grass skirt, dirt plate, snow, white cap, cave, building, road, horizon, sky, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 14,
+        "style_strength": 50,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 92,
+        "init_image_strength": 390
+      },
+      "references": [
+        {
+          "file": "assets/guides/landscape-mountain-segment-front.png",
+          "parameter": "init_image"
+        },
+        {
+          "file": "assets/guides/landscape-h2-mountain-style-128x160.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:range-segment-b-camera-lock",
+      "assets": ["review:landscape:rejected-flowered-mountain-b"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/landscape-camera-lock/mountain-segment-b",
+      "prompt": "Native 128x160 transparent adventure-map mountain RANGE SEGMENT B. VISUAL SCALE: broad asymmetric massif fills 4 visual tiles wide and about 5 tiles tall, visibly taller than the 4-tile castle; gameplay footprint stays central 2 tiles. CAMERA: classic 1990s oblique fantasy strategy-map projection, broad south-facing rock slopes with slight low top-down tilt around 30 degrees. Isometric false; oblique projection true; no diamond, narrow spire, sail shape or isolated pyramid. Ridge ENTERS both side edges, tallest blunt crag left of center with a broken shoulder right; lower wall continues across the width to horizontal contact near y=154. Alternate and overlap with segment A; neither side tapers to an island endpoint. Crisp selective dark outlines, painterly ochre, umber and slate clusters, upper-left light. Match meadow anchors #27612f, #3d7d33, #67a045, but no grass. Transparent outside ridge. No lawn, dirt plate, snow, cave, building, road, horizon, sky, flag, text, UI, logo or watermark.",
+      "endpoint": "create-image-bitforge",
+      "size": [128, 160],
+      "candidates": 2,
+      "seed": 92980,
+      "parameters": {
+        "negative_description": "isolated mountain island, single pyramid, triangle icon, isometric, diamond, rhombus, lawn island, grass skirt, dirt plate, snow, white cap, cave, building, road, horizon, sky, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 14,
+        "style_strength": 50,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 94,
+        "init_image_strength": 390
+      },
+      "references": [
+        {
+          "file": "assets/guides/landscape-mountain-segment-b-front.png",
+          "parameter": "init_image"
+        },
+        {
+          "file": "assets/guides/landscape-h2-mountain-style-128x160.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "castle:hearthguard:camera-lock",
+      "assets": ["castle:hearthguard:castle"],
+      "output": ".pixel-work/pixelgen/landscape-camera-lock/hearthguard-castle",
+      "prompt": "Native 96x128 transparent Hearthguard adventure-map castle. SCALE: fills its exact 3-tile-wide by 2-tile-deep gameplay footprint and rises about 4 tiles tall; approximately twice the timber camp's height, while the mountain range remains the broader natural mass. CAMERA: classic 1990s oblique fantasy strategy-map projection; the main gate and façade face south directly toward the camera with only a slight low top-down tilt around 30 degrees. Isometric false; oblique projection true; symmetrical frontal elevation, never a corner-on miniature and never a diamond ground plane. Warm cream-grey masonry, modest muted red roofs, wrought iron and restrained gold trim. Three main towers rise over a broad curtain wall. The ONLY gate is dead-centre on the bottom edge inside x=32..63, y=96..127. All walls meet one clean HORIZONTAL contact band around y=123. Crisp selective dark outlines, dense painterly pixel clusters, upper-left light, H2-era readable massing. Match the shipped meadow's rich natural contrast with anchors #27612f, #3d7d33, #67a045. Transparent right up to and below the walls. Absolutely NO flags, pennants, banners, poles or owner colors; the runtime overlay owns the flag. No grass, flowers, shrubs, path, pebbles, dirt, terrain skirt, base plate, moat, pedestal, cast scenery, horizon, diagonal footprint, UI, text, logo or watermark.",
+      "endpoint": "create-image-bitforge",
+      "size": [96, 128],
+      "candidates": 3,
+      "seed": 93040,
+      "parameters": {
+        "negative_description": "flag, pennant, banner, flagpole, owner color, isometric, diamond, rhombus, corner-on castle, lawn island, grass skirt, flowers, shrubs, path, pebbles, dirt base, moat, pedestal, terrain, scenery, horizon, text, UI, logo, watermark",
+        "text_guidance_scale": 15,
+        "style_strength": 60,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 94,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/landscape-castle-front.png",
+          "parameter": "init_image"
+        },
+        {
+          "file": "assets/guides/landscape-h2-castle-style-96x128.png",
+          "parameter": "style_image"
+        }
+      ]
+    }
+  ]
+}

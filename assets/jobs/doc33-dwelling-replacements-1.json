@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/doc33-dwelling-replacements-1-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:dwelling:ashmaneWolves",
+      "assets": [
+        "map-object:dwelling:ashmaneWolves"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/ashmaneWolves",
+      "prompt": "a low horn-framed kennel lodge, ochre hide over ash-grey timber with restrained red lashings, twin arched stalls beneath a bare roof ridge, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96600,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:bannerman",
+      "assets": [
+        "map-object:dwelling:bannerman"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/bannerman",
+      "prompt": "a small fortified guildhall, cream plaster with warm red tile and modest brass fittings, a shield rack beside one central doorway and a bare roof ridge, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96610,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:besomRiders",
+      "assets": [
+        "map-object:dwelling:besomRiders"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/besomRiders",
+      "prompt": "a crooked birch stable, white bark beams with black wicker and one berry-red binding, a broom rack under the eaves beside one open doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96620,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:candleWisps",
+      "assets": [
+        "map-object:dwelling:candleWisps"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/candleWisps",
+      "prompt": "an open lantern house, ash-white stone with ivory ribs and candle-gold fittings, three empty wick cups beneath a draped cream roof, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96630,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:couriers",
+      "assets": [
+        "map-object:dwelling:couriers"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/couriers",
+      "prompt": "a compact letter house, ash-white stone with ivory ribs and candle-gold hinges, sealed cream envelopes resting in wall slots beside one doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96640,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:crowChorus",
+      "assets": [
+        "map-object:dwelling:crowChorus"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/crowChorus",
+      "prompt": "a round birch rookery, white bark with black wicker and one berry-red binding, three empty nesting arches beneath a small bronze bell, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96650,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:drumCallers",
+      "assets": [
+        "map-object:dwelling:drumCallers"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/drumCallers",
+      "prompt": "a low hide-roofed drum hall, ochre hide over ash-grey timber with restrained red lashings, paired drum frames flanking one open doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96660,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

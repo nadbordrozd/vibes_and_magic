@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a4-obstacles-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:obstacle:old oak",
+      "assets": [
+        "map-object:obstacle:old oak"
+      ],
+      "output": ".pixel-work/pixelgen/a4-obstacles/map-object-obstacle-old-oak",
+      "prompt": "Native 32x64 transparent adventure-map sprite of one ancient broadleaf oak with a thick ordinary trunk and dense crown. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. The complete blocking silhouette must meet the bottom footprint. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        64
+      ],
+      "candidates": 2,
+      "seed": 652066,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:obstacle:the Block",
+      "assets": [
+        "map-object:obstacle:the Block"
+      ],
+      "output": ".pixel-work/pixelgen/a4-obstacles/map-object-obstacle-the-Block",
+      "prompt": "Native 64x32 transparent adventure-map sprite of the Block, one giant worn rectangular toy-maker block anomaly. The complete blocking silhouette must meet the bottom footprint. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 86210,
+      "parameters": {
+        "negative_description": "building, house, castle, tower, windows, door, grass, ground tile, plinth, scenery, text, UI, logo, watermark, glow",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 300
+      },
+      "references": [
+        {
+          "file": "assets/guides/a4-obstacle-block.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "map-object:obstacle:the Spool",
+      "assets": [
+        "map-object:obstacle:the Spool"
+      ],
+      "output": ".pixel-work/pixelgen/a4-obstacles/map-object-obstacle-the-Spool",
+      "prompt": "Native 64x32 transparent adventure-map sprite of the Spool, a giant weathered wooden thread spool anomaly. The complete blocking silhouette must meet the bottom footprint. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 135350,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/landscape-proof-candidates.html",
+  "requests": [
+    {
+      "id": "terrain-field:meadow",
+      "assets": ["review:landscape:rejected-128-meadow"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/landscape-proof/meadow-field",
+      "prompt": "Native 128x128 seamless warm medieval meadow field texture for a classic 1990s storybook strategy adventure map. This is one continuous landscape patch spanning many hidden gameplay cells, not a tile icon. Quiet straw-green short grass, restrained olive and warm earth microtexture, a few tiny irregular blades and soil flecks distributed without clusters. Uniform illumination with gentle upper-left material highlights. The left edge must continue into the right edge and the top edge into the bottom edge. Fill every pixel opaquely. No square cells, grid, border, seams, repeated rows, checkerboard, roads, flowers, rocks, trees, buildings, objects, horizon, gradient, vignette, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [128, 128],
+      "candidates": 2,
+      "seed": 91420,
+      "parameters": {
+        "negative_description": "square cells, grid lines, tile border, seams, checkerboard, repeated rows, isolated icon, transparent pixels, scenery, object, path, flowers, rocks, trees, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 450
+      },
+      "references": [
+        {
+          "file": "assets/guides/landscape-meadow-field.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "review:landscape:mountain-range",
+      "assets": ["review:landscape:mountain-range"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/landscape-proof/mountain-range",
+      "prompt": "Native 64x96 transparent adventure-map landscape sprite: one LOW BROAD granite escarpment spanning almost the full 64-pixel width. Its broken sawtooth ridge has four blunt unequal rock teeth between pixels y=30 and y=52; there is no tall central peak and nothing reaches the top 25 pixels. Below the ridge, overlapping warm-grey, muted pewter and charcoal rock planes widen into one continuous irregular base. Crisp painterly 1990s storybook strategy-game pixel clusters with upper-left light and restrained dark lower-right faces. The bottom 20 pixels dissolve naturally into a warm green meadow through small scree, olive grass and two tiny low shrubs; no rectangular ground patch and no straight base edge. High-oblique adventure camera around 65 degrees. Transparent outside the broad ridge silhouette. No snow, white highlights, mountain icon, pyramid, triangle silhouette, isolated alpine peak, repeated separate peaks, black void, building, cave, path, horizon, sky, text, UI, logo or watermark.",
+      "endpoint": "map-objects",
+      "size": [64, 96],
+      "candidates": 2,
+      "seed": 91520,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 12
+      }
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a1-tiles-2-candidates.html",
+  "requests": [
+    {
+      "id": "terrain:mountain:granite:0",
+      "assets": [
+        "terrain:mountain:granite:0"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-mountain-granite-0",
+      "prompt": "Native 32x32 seamless square terrain tile: hard impassable grey granite ground with close broken rock planes and small scree, ready to sit beneath separate tall range props. Variant cue: angular upper-left-lit chips. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 356583,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-mountain-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:mountain:granite:1",
+      "assets": [
+        "terrain:mountain:granite:1"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-mountain-granite-1",
+      "prompt": "Native 32x32 seamless square terrain tile: hard impassable grey granite ground with close broken rock planes and small scree, ready to sit beneath separate tall range props. Variant cue: tight charcoal fissures. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 678964,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-mountain-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:mountain:granite:2",
+      "assets": [
+        "terrain:mountain:granite:2"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-mountain-granite-2",
+      "prompt": "Native 32x32 seamless square terrain tile: hard impassable grey granite ground with close broken rock planes and small scree, ready to sit beneath separate tall range props. Variant cue: broad restrained granite planes. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 611821,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-mountain-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:water:default:0",
+      "assets": [
+        "terrain:water:default:0"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-water-default-0",
+      "prompt": "Native 32x32 seamless square terrain tile: calm slate-blue-green open water with tiny foreshortened diagonal ripples. Variant cue: sparse pale ripple stitches. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 376564,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-water-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:water:default:1",
+      "assets": [
+        "terrain:water:default:1"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-water-default-1",
+      "prompt": "Native 32x32 seamless square terrain tile: calm slate-blue-green open water with tiny foreshortened diagonal ripples. Variant cue: quiet deep-slate wavelets. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 54183,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-water-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:water:default:2",
+      "assets": [
+        "terrain:water:default:2"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-water-default-2",
+      "prompt": "Native 32x32 seamless square terrain tile: calm slate-blue-green open water with tiny foreshortened diagonal ripples. Variant cue: small broken blue-green reflections. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 631802,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-water-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    }
+  ]
+}

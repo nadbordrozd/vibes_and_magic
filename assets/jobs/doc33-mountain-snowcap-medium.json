@@ -1,0 +1,418 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Approve one snowcap scatter canonical, then build exact-size style/color references from it.",
+  "contact_sheet": "assets/jobs/doc33-mountain-snowcap-medium-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:snowcap-knoll-1",
+      "assets": [
+        "decoration:mountain:snowcap-knoll-1"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/knoll-1",
+      "prompt": "a broad twin-peaked snowcap knoll, blue-grey granite with pale wind-packed snow, one blunt peak offset behind a lower shoulder and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 2 tiles wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        64,
+        64
+      ],
+      "candidates": 2,
+      "seed": 96410,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 86
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-64x64.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-64x64.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-knoll-2",
+      "assets": [
+        "decoration:mountain:snowcap-knoll-2"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/knoll-2",
+      "prompt": "a weathered snowcap knoll, blue-grey granite with pale wind-packed snow, a shallow saddle between unequal rounded peaks with loose scree tapering at both ends, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 2 tiles wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        64,
+        64
+      ],
+      "candidates": 2,
+      "seed": 96420,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 86
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-64x64.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-64x64.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-knoll-3",
+      "assets": [
+        "decoration:mountain:snowcap-knoll-3"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/knoll-3",
+      "prompt": "a stepped snowcap knoll, blue-grey granite with pale wind-packed snow, three low broken ledges rising toward one side and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 2 tiles wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        64,
+        64
+      ],
+      "candidates": 2,
+      "seed": 96430,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 86
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-64x64.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-64x64.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-knoll-4",
+      "assets": [
+        "decoration:mountain:snowcap-knoll-4"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/knoll-4",
+      "prompt": "an asymmetric snowcap knoll, blue-grey granite with pale wind-packed snow, one cracked face beside a lower fan of slabs and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 2 tiles wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        64,
+        64
+      ],
+      "candidates": 2,
+      "seed": 96440,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 86
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-64x64.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-64x64.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-ridge-1",
+      "assets": [
+        "decoration:mountain:snowcap-ridge-1"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/ridge-1",
+      "prompt": "a long snowcap ridge, blue-grey granite with pale wind-packed snow, three uneven connected crowns over a broad scree apron and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 3 tiles wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 2,
+      "seed": 96450,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 86
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-96x96.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-96x96.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-ridge-2",
+      "assets": [
+        "decoration:mountain:snowcap-ridge-2"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/ridge-2",
+      "prompt": "a low saddle-backed snowcap ridge, blue-grey granite with pale wind-packed snow, two separated high points joined by broken shelves and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 3 tiles wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 2,
+      "seed": 96460,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 86
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-96x96.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-96x96.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-ridge-3",
+      "assets": [
+        "decoration:mountain:snowcap-ridge-3"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/ridge-3",
+      "prompt": "an asymmetric snowcap escarpment, blue-grey granite with pale wind-packed snow, a tall shoulder at one side stepping down through two low spurs to pebble-height ends, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 3 tiles wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 2,
+      "seed": 96470,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 86
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-96x96.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-96x96.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-ridge-4",
+      "assets": [
+        "decoration:mountain:snowcap-ridge-4"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/ridge-4",
+      "prompt": "a weather-split snowcap ridge, blue-grey granite with pale wind-packed snow, four irregular rock teeth above overlapping slabs and both ends descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 3 tiles wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 2,
+      "seed": 96480,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 86
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-96x96.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-96x96.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-massif-1",
+      "assets": [
+        "decoration:mountain:snowcap-massif-1"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/massif-1",
+      "prompt": "a broad snowcap massif, blue-grey granite with pale wind-packed snow, four unequal overlapping peaks with the tallest off-centre and wide scree fans descending to pebble height at both ends, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 5 tiles wide and about 4 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        160,
+        128
+      ],
+      "candidates": 2,
+      "seed": 96490,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 90
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-160x128.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-160x128.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    },
+    {
+      "id": "decoration:mountain:snowcap-massif-2",
+      "assets": [
+        "decoration:mountain:snowcap-massif-2"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-mountain-snowcap-medium/massif-2",
+      "prompt": "a sprawling snowcap massif, blue-grey granite with pale wind-packed snow, five irregular peaks around a low central saddle with both outer slopes descending to pebble height, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 5 tiles wide and about 4 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        160,
+        128
+      ],
+      "candidates": 2,
+      "seed": 96500,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, grass, flowers, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 12,
+        "style_strength": 44,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "oblique_projection": true,
+        "no_background": true,
+        "coverage_percentage": 90
+      },
+      "references": [
+        {
+          "file": "assets/guides/doc33-snowcap-family-style-160x128.png",
+          "parameter": "style_image",
+          "deferred": true
+        },
+        {
+          "file": "assets/guides/doc33-snowcap-family-color-160x128.png",
+          "parameter": "color_image",
+          "deferred": true
+        }
+      ]
+    }
+  ]
+}

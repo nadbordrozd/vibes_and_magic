@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Run and log the Hearthguard/Wound-Wrights flagship reference experiments; replace the broad phase reference with the winning protocol before production",
+  "contact_sheet": "assets/jobs/d8-seamborn-roster-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:sleeper",
+      "assets": [
+        "battle-unit:sleeper"
+      ],
+      "output": ".pixel-work/pixelgen/d8-seamborn-roster/battle-unit-sleeper",
+      "prompt": "Native 256x128 transparent static battle sprite of The Sleeper. A hill that breathes. Whatever is done to it by evening is undone by morning. Materials: weathered ordinary masonry, iron, cloth and wrong-but-restrained surveying geometry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        256,
+        128
+      ],
+      "candidates": 2,
+      "seed": 161860,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:siegeWall",
+      "assets": [
+        "battle-unit:siegeWall"
+      ],
+      "output": ".pixel-work/pixelgen/d8-seamborn-roster/battle-unit-siegeWall",
+      "prompt": "Native 128x128 transparent static battle sprite of Wall Section. Freshly made and firmly meant. Materials: weathered ordinary masonry, iron, cloth and wrong-but-restrained surveying geometry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 424695,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:siegeRam",
+      "assets": [
+        "battle-unit:siegeRam"
+      ],
+      "output": ".pixel-work/pixelgen/d8-seamborn-roster/battle-unit-siegeRam",
+      "prompt": "Native 192x128 transparent static battle sprite of Ram. Oak, iron, and a single blunt opinion. Materials: weathered ordinary masonry, iron, cloth and wrong-but-restrained surveying geometry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        192,
+        128
+      ],
+      "candidates": 2,
+      "seed": 695873,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:watchtower",
+      "assets": [
+        "battle-unit:watchtower"
+      ],
+      "output": ".pixel-work/pixelgen/d8-seamborn-roster/battle-unit-watchtower",
+      "prompt": "Native 128x128 transparent static battle sprite of Watchtower. Someone is always looking outward. Materials: weathered ordinary masonry, iron, cloth and wrong-but-restrained surveying geometry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 694124,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:makerWall",
+      "assets": [
+        "battle-unit:makerWall"
+      ],
+      "output": ".pixel-work/pixelgen/d8-seamborn-roster/battle-unit-makerWall",
+      "prompt": "Native 128x128 transparent static battle sprite of Maker's Wall. Argument, in stone, delivered instantly. Materials: weathered ordinary masonry, iron, cloth and wrong-but-restrained surveying geometry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 861256,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    }
+  ]
+}

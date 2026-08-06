@@ -187,7 +187,7 @@ function advanceTurn(battle: BattleState, actorId: string, waited = false): void
     battle.extraActions[actor.side] += 1;
     actor.extraActionsTaken = (actor.extraActionsTaken ?? 0) + 1;
     battle.currentStackId = actor.id;
-    battle.log.push(`${UNITS[actor.unitId].name} gains a morale action.`);
+    battle.log.push(`${UNITS[actor.unitId].name} has high morale and acts again.`);
     return;
   }
   if (actor) actor.movedHexes = 0;
@@ -388,7 +388,7 @@ export function applyBattleAction(battle: BattleState, action: Action): BattleSt
     if (action.artifactId === 'bellsClapper') {
       next.stacks.forEach((stack) => { stack.morale = 0; });
       next.clapperUsed[active.side] = true;
-      next.log.push("The Bell's Clapper stills every meter on the field.");
+      next.log.push("The Bell's Clapper stills every company’s morale.");
     } else {
       active.doubleNextAttack = true;
       next.hornUsed[active.side] = true;

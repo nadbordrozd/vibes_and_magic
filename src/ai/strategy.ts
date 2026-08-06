@@ -256,8 +256,12 @@ export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
       finished.add(current.id);
       continue;
     }
-    const path = adventurePath(state, objective.position, {
+    const safePath = adventurePath(state, objective.position, {
       avoidAggro: true, fightGuardianId: objective.guardianId,
+    });
+    const path = safePath ?? adventurePath(state, objective.position, {
+      avoidAggro: false,
+      fightGuardianId: objective.guardianId,
     });
     if (!path || path.length < 2
         || adventureMovementCost(state, current, path[0], path[1]) > current.movement) {
@@ -267,6 +271,7 @@ export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
     claims.add(objective.id);
     const move: Action = {
       type: 'MOVE_HERO', heroId: current.id, destination: objective.position,
+      avoidAggro: Boolean(safePath),
     };
     state = apply(state, move);
     finished.add(current.id);

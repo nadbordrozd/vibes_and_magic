@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a2-overlays-1-candidates.html",
+  "requests": [
+    {
+      "id": "overlay:road:e",
+      "assets": [
+        "overlay:road:e"
+      ],
+      "output": ".pixel-work/pixelgen/a2-overlays/overlay-road-e",
+      "prompt": "Native 32x32 transparent packed-earth road overlay connecting only the east edge centers. The road is exactly six pixels wide at every requested edge, aligned to the middle six pixels, with a solid filled restrained warm ochre-brown surface and sparse cream pebbles. Every unrequested edge remains fully transparent; dead ends have compact rounded caps. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Follow the supplied topology guide exactly. No grass, ground square, branch to any other edge, cast shadow or border.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 258551,
+      "parameters": {
+        "negative_description": "hollow road, outline-only road, one-pixel line, empty image, background, floor tile, scenery, extra road branch, wrong edge connection, text, UI, logo, watermark, glow, smooth vector art",
+        "text_guidance_scale": 12,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 420
+      },
+      "references": [
+        {
+          "file": "assets/guides/a2-road-e.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "overlay:road:es",
+      "assets": [
+        "overlay:road:es"
+      ],
+      "output": ".pixel-work/pixelgen/a2-overlays/overlay-road-es",
+      "prompt": "Native 32x32 transparent packed-earth road overlay connecting only the east, south edge centers. The road is exactly six pixels wide at every requested edge, aligned to the middle six pixels, with a solid filled restrained warm ochre-brown surface and sparse cream pebbles. Every unrequested edge remains fully transparent; dead ends have compact rounded caps. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Follow the supplied topology guide exactly. No grass, ground square, branch to any other edge, cast shadow or border.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 110188,
+      "parameters": {
+        "negative_description": "hollow road, outline-only road, one-pixel line, empty image, background, floor tile, scenery, extra road branch, wrong edge connection, text, UI, logo, watermark, glow, smooth vector art",
+        "text_guidance_scale": 12,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 420
+      },
+      "references": [
+        {
+          "file": "assets/guides/a2-road-es.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "overlay:road:esw",
+      "assets": [
+        "overlay:road:esw"
+      ],
+      "output": ".pixel-work/pixelgen/a2-overlays/overlay-road-esw",
+      "prompt": "Native 32x32 transparent packed-earth road overlay connecting only the east, south, west edge centers. The road is exactly six pixels wide at every requested edge, aligned to the middle six pixels, with a solid filled restrained warm ochre-brown surface and sparse cream pebbles. Every unrequested edge remains fully transparent; dead ends have compact rounded caps. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Follow the supplied topology guide exactly. No grass, ground square, branch to any other edge, cast shadow or border.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 472513,
+      "parameters": {
+        "negative_description": "hollow road, outline-only road, one-pixel line, empty image, background, floor tile, scenery, extra road branch, wrong edge connection, text, UI, logo, watermark, glow, smooth vector art",
+        "text_guidance_scale": 12,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 420
+      },
+      "references": [
+        {
+          "file": "assets/guides/a2-road-esw.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "overlay:road:ew",
+      "assets": [
+        "overlay:road:ew"
+      ],
+      "output": ".pixel-work/pixelgen/a2-overlays/overlay-road-ew",
+      "prompt": "Native 32x32 transparent packed-earth road overlay connecting only the east, west edge centers. The road is exactly six pixels wide at every requested edge, aligned to the middle six pixels, with a solid filled restrained warm ochre-brown surface and sparse cream pebbles. Every unrequested edge remains fully transparent; dead ends have compact rounded caps. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Follow the supplied topology guide exactly. No grass, ground square, branch to any other edge, cast shadow or border.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 88320,
+      "parameters": {
+        "negative_description": "hollow road, outline-only road, one-pixel line, empty image, background, floor tile, scenery, extra road branch, wrong edge connection, text, UI, logo, watermark, glow, smooth vector art",
+        "text_guidance_scale": 12,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 350
+      },
+      "references": [
+        {
+          "file": "assets/guides/a2-road-ew.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "overlay:road:n",
+      "assets": [
+        "overlay:road:n"
+      ],
+      "output": ".pixel-work/pixelgen/a2-overlays/overlay-road-n",
+      "prompt": "Native 32x32 transparent packed-earth road overlay connecting only the north edge centers. The road is exactly six pixels wide at every requested edge, aligned to the middle six pixels, with a solid filled restrained warm ochre-brown surface and sparse cream pebbles. Every unrequested edge remains fully transparent; dead ends have compact rounded caps. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Follow the supplied topology guide exactly. No grass, ground square, branch to any other edge, cast shadow or border.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 715218,
+      "parameters": {
+        "negative_description": "hollow road, outline-only road, one-pixel line, empty image, background, floor tile, scenery, extra road branch, wrong edge connection, text, UI, logo, watermark, glow, smooth vector art",
+        "text_guidance_scale": 12,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 420
+      },
+      "references": [
+        {
+          "file": "assets/guides/a2-road-n.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "overlay:road:ne",
+      "assets": [
+        "overlay:road:ne"
+      ],
+      "output": ".pixel-work/pixelgen/a2-overlays/overlay-road-ne",
+      "prompt": "Native 32x32 transparent packed-earth road overlay connecting only the north, east edge centers. The road is exactly six pixels wide at every requested edge, aligned to the middle six pixels, with a solid filled restrained warm ochre-brown surface and sparse cream pebbles. Every unrequested edge remains fully transparent; dead ends have compact rounded caps. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Follow the supplied topology guide exactly. No grass, ground square, branch to any other edge, cast shadow or border.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 280213,
+      "parameters": {
+        "negative_description": "hollow road, outline-only road, one-pixel line, empty image, background, floor tile, scenery, extra road branch, wrong edge connection, text, UI, logo, watermark, glow, smooth vector art",
+        "text_guidance_scale": 12,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 420
+      },
+      "references": [
+        {
+          "file": "assets/guides/a2-road-ne.png",
+          "parameter": "init_image"
+        }
+      ]
+    }
+  ]
+}

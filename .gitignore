@@ -12,3 +12,34 @@ menu.png
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# Local generation output and review captures. Durable job records, prompts, selections,
+# provenance metadata, referenced guides/sources, and promoted production art are tracked.
+/.pixel-work/
+/assets/jobs/*-candidates.html
+/prototypes/
+
+# Historical/local-only image-processing helpers. Their promoted outputs and current
+# deterministic regeneration tools are tracked separately.
+/scripts/buildGameTerrainGuides
+/scripts/buildGameTerrainGuides.py
+/scripts/buildH2TerrainPlaceholder
+/scripts/buildH2TerrainPlaceholder.py
+/scripts/buildObstacleReview
+/scripts/buildObstacleReview.py
+/scripts/buildTerrainReview
+/scripts/buildTerrainReview.py
+/scripts/repackTransparentPng
+/scripts/repackTransparentPng.py
+
+# Superseded local output; the production castle is under castles-v2/.
+/public/assets/castles/hearthguard-castle.png
+
+# Local third-party visual references and direct derivatives never ship.
+/docs/h2 adventure map.png
+/docs/h2_terrain.png
+/docs/homm2-mountains.jpg
+/docs/homm2_battle.jpg
+/assets/guides/*h2*.png
+/public/assets/terrain/h2-placeholder-*.png
+/public/assets/terrain/h2-transition-*.png

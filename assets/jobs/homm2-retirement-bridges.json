@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/homm2-retirement-bridges-candidates.html",
+  "requests": [
+    {
+      "id": "homm2-retirement-dirt-0",
+      "assets": ["review:terrain-material:dirt:0"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/dirt-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: ordinary compacted warm umber earth with sparse flat pebbles and tiny darker soil grains. Variant cue: fine irregular grit. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No road, trail, grass border, rocks larger than 3 pixels, object, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919400,
+      "parameters": {"negative_description": "blue, purple, colored dot, road, trail, grass border, large rock, object, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 200},
+      "references": [{"file": "public/assets/terrain/ashsteppe-south-0.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-dirt-1",
+      "assets": ["review:terrain-material:dirt:1"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/dirt-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: ordinary compacted warm umber earth with sparse flat pebbles and tiny darker soil grains. Variant cue: subtle compressed-earth planes. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No road, trail, grass border, rocks larger than 3 pixels, object, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919410,
+      "parameters": {"negative_description": "blue, purple, colored dot, road, trail, grass border, large rock, object, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 200},
+      "references": [{"file": "public/assets/terrain/ashsteppe-south-1.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-beach-0",
+      "assets": ["review:terrain-material:beach:0"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/beach-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet pale honey-tan sand with tiny warm grains and restrained flat shell-colour flecks. Variant cue: fine wind-softened grain clusters. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No waterline, foam, grass, shells as objects, dunes, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 939500,
+      "parameters": {"negative_description": "green, grass, plant, waterline, foam, shell object, dune, object, transparency, empty background, gradient, vignette, border, wave, ripple, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 420},
+      "references": [{"file": "public/assets/terrain/barrowfield-default-1.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-beach-1",
+      "assets": ["review:terrain-material:beach:1"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/beach-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet pale honey-tan sand with tiny warm grains and restrained flat shell-colour flecks. Variant cue: sparse ochre pinpricks. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No waterline, foam, grass, shells as objects, dunes, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919510,
+      "parameters": {"negative_description": "green, grass, plant, waterline, foam, shell object, dune, object, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 100},
+      "references": [{"file": "public/assets/terrain/barrowfield-default-1.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-plains-0",
+      "assets": ["review:terrain-material:plains:0"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/plains-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: muted tawny-green open plains with low wind-combed grass and tiny dry-stem pixels. Variant cue: short diagonal straw strokes. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No flowers, objects, paths, tall tufts, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919600,
+      "parameters": {"negative_description": "flower, blossom, colored dot, bright pixel, object, path, tall tuft, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 360},
+      "references": [{"file": "public/assets/terrain/meadow-default-0.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-plains-1",
+      "assets": ["review:terrain-material:plains:1"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/plains-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: muted tawny-green open plains with low wind-combed grass and tiny dry-stem pixels. Variant cue: fine irregular grass grains. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No flowers, objects, paths, tall tufts, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919610,
+      "parameters": {"negative_description": "flower, blossom, colored dot, bright pixel, object, path, tall tuft, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 360},
+      "references": [{"file": "public/assets/terrain/meadow-default-1.png", "parameter": "init_image"}]
+    }
+  ]
+}

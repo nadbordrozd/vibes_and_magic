@@ -150,7 +150,7 @@ export const UNITS = Object.fromEntries(Object.entries(RAW_UNITS).map(([id, unit
   id, {
     ...unit, flavor: unitFlavor(unit.name),
     hexSize: ([
-      'oriflammeWyvern', 'reliquaryArk', 'woodenColossus', 'stuffedSentinel',
+      'lanceKnight', 'oriflammeWyvern', 'reliquaryArk', 'woodenColossus', 'stuffedSentinel',
       'ferry', 'halfWokenQueen', 'walkingHut', 'aurochsHerd', 'thunderbird', 'siegeRam',
       'hullTurtle',
     ].includes(id) ? 2 : id === 'sleeper' ? 3 : 1) as 1 | 2 | 3,

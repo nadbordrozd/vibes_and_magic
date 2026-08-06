@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+script_dir=${0:A:h}
+exec uv run --quiet --with pixellab --with pillow python "$script_dir/pixelgen.py" "$@"

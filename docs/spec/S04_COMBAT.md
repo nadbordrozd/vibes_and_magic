@@ -15,7 +15,7 @@ deaths.
 ## Round and turn sequence
 
 At round start, reset round-scoped defenses and retaliations, advance tile/enchantment durations,
-apply meter gains, and order living stacks by effective speed. Stable ties favor attacker, then
+apply morale gains, and order living stacks by effective speed. Stable ties favor attacker, then
 army slot. Wait moves the stack after normal actors; Defend ends its action with the defense bonus.
 A stack may move within speed, attack, use an activated ability, wait, or defend as its legal action
 set permits. Movement plus a reachable melee strike is one explicit combined action.
@@ -28,6 +28,18 @@ removes it.
 A hero may take one hero act per round at the start of any allied stack turn. A spell or item uses
 that act unless a skill explicitly waives it. It never consumes the stack’s action. No pre-battle
 deployment or item-use phase is inserted.
+
+## Combat pointing and feedback
+
+The whole footprint of an enemy stack is one target: every occupied hex accepts hover, attack, and
+right-click inspection. A legal enemy attack is one left click; combat never requires a double
+click. Right-click selects the unit and shows its statistics without taking an action.
+
+An attackable enemy hex replaces the pointer with a sword. For melee, pointer position around the
+target chooses the nearest legal approach direction and rotates the sword toward the target; the
+chosen adjacent origin is part of the dispatched move-and-attack action. Ranged attacks do not
+choose an approach. They show a basic projectile travelling from the attacking footprint to the
+target footprint, followed by the ordinary target-damage animation.
 
 ## Deterministic damage
 
@@ -59,19 +71,20 @@ Within `damage-computation`, resolve **base luck → attacker positioning overri
 positioning overrides last**. A defender effect that pins incoming damage to range minimum defeats
 an attacker effect that pins its attack to maximum. This ordering is absolute and tested.
 
-## Meter (deterministic morale)
+## Morale (deterministic)
 
-Every stack has a visible meter. Default threshold is 100. When it reaches threshold, subtract the
+Every stack has visible morale. Default threshold is 100. When it reaches threshold, subtract the
 threshold and give that stack one extra action immediately after its normal action; repeat if enough
-meter remains. There are no random morale events.
+morale remains. There are no random morale events. The interface announces the extra action with a
+brief rally animation over that company.
 
 Defaults are +25 when that stack destroys an enemy, +10 to each ally when any allied stack destroys
 an enemy, hero/skill/artifact/omen gains at round start, and −30 when an ally is destroyed. A mixed-
 faction army loses 5 per stack at round start unless an explicit rule removes it. Faction passives,
 skills, spells, and artifacts may alter gains, drains, or threshold through registered hooks.
 
-Meter is clamped at zero on drains but otherwise retained until spent. The standard meter, all flat
-death-triggered meter changes, and other flat death-trigger magnitudes use the proportionality guard
+Morale is clamped at zero on drains but otherwise retained until spent. Standard morale, all flat
+death-triggered morale changes, and other flat death-trigger magnitudes use the proportionality guard
 below.
 
 ## Destruction proportionality guard
@@ -86,7 +99,7 @@ scale = min(1, destroyedStackMaxHP / (0.10 * armyTotalMaxHP))
 `armyTotalMaxHP` sums the original, non-summoned stacks on the destroyed stack’s side. A stack worth
 at least 10% of its army triggers the full flat effect; a sacrificial splinter scales proportionally.
 
-Apply this scale to every meter effect and flat-magnitude effect triggered by stack destruction,
+Apply this scale to every morale effect and flat-magnitude effect triggered by stack destruction,
 including the standard drain/gains, `blood_price`, `last_light`, Last Candle, and related round hooks.
 Percent-of-self effects such as `unfinished_business` already scale with the stack and are exempt.
 Stack splitting does not change the denominator.

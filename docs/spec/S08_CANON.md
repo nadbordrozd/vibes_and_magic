@@ -21,7 +21,7 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
 ### The Hearthguard
 
 - **Place:** native host-world kingdom and its parishes.
-- **Verb:** morale-meter manipulation—banners, extra actions, steadiness.
+- **Verb:** morale manipulation—banners, extra actions, steadiness.
 - **Magic:** Rite + Craft.
 - **Look:** wool, wrought iron, heraldry; warm red, cream, gold; upright shields and pennants.
 - **Anomaly:** the old banner’s cloth is not from this world, and heraldic beasts step from it as
@@ -69,7 +69,7 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
 ### The Wildergrass Clans
 
 - **Place:** steppe riders from a burned world, carrying herds, ash, and drum memory.
-- **Verb:** blood price—the meter inverse of Hearthguard, gaining momentum from allied loss.
+- **Verb:** blood price—the morale inverse of Hearthguard, gaining momentum from allied loss.
 - **Magic:** Rite + Wild.
 - **Look:** hide, horn, ash; ochre, ash-grey, blood; low, fast, horned, plural/herd silhouettes.
 - **Voice:** terse and rhythmic. Grief is neither gothic nor abstract; it is spent forward.

@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/mountain-grassy-native-family-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:granite-knoll-1",
+      "assets": ["decoration:mountain:granite-knoll-1"],
+      "output": ".pixel-work/pixelgen/mountain-grassy-native-family/knoll-1",
+      "prompt": "Rework this broad twin-crowned mountain knoll as a dense green landform. Preserve the high oblique top-down silhouette and low tapered ends. Cover the slopes with rich meadow-green and olive turf, deep green folds, and very sparse warm tan rock ribs. Green first, stone second; one clearly impassable mountain mass in warm HoMM2-era storybook pixel art, transparent background, lower-right light.",
+      "endpoint": "create-image-pixflux",
+      "size": [64, 64],
+      "candidates": 2,
+      "seed": 96831,
+      "parameters": {"negative_description": "isometric, diamond, bare grey alpine mountain, snow, tiny rocks, flowers, trees, ground plate, landscape, cave, building, text, UI, watermark", "text_guidance_scale": 13, "outline": "selective outline", "shading": "detailed shading", "detail": "medium detail", "view": "low top-down", "direction": "south", "isometric": false, "no_background": true, "init_image_strength": 210},
+      "references": [{"file": "assets/guides/grassy-mountain-native-init/mountain-granite-knoll-1.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "decoration:mountain:granite-knoll-2",
+      "assets": ["decoration:mountain:granite-knoll-2"],
+      "output": ".pixel-work/pixelgen/mountain-grassy-native-family/knoll-2",
+      "prompt": "Rework this low saddle-backed mountain knoll as a dense green landform. Preserve the high oblique top-down silhouette, asymmetric shoulders, and low tapered ends. Cover the slopes with bright meadow-green and olive turf, deep forest-green folds, and a few muted beige stone seams. Green first, stone second; one clearly impassable mountain mass in warm HoMM2-era storybook pixel art, transparent background, lower-right light.",
+      "endpoint": "create-image-pixflux",
+      "size": [64, 64],
+      "candidates": 2,
+      "seed": 96841,
+      "parameters": {"negative_description": "isometric, diamond, bare grey alpine mountain, snow, tiny rocks, flowers, trees, ground plate, landscape, cave, building, text, UI, watermark", "text_guidance_scale": 13, "outline": "selective outline", "shading": "detailed shading", "detail": "medium detail", "view": "low top-down", "direction": "south", "isometric": false, "no_background": true, "init_image_strength": 210},
+      "references": [{"file": "assets/guides/grassy-mountain-native-init/mountain-granite-knoll-2.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "decoration:mountain:granite-knoll-3",
+      "assets": ["decoration:mountain:granite-knoll-3"],
+      "output": ".pixel-work/pixelgen/mountain-grassy-native-family/knoll-3",
+      "prompt": "Rework this stepped mountain knoll as a dense green landform. Preserve its high oblique top-down camera, long descending ledges, and self-terminating ends. Use rich green turf over most planes, darker folded gullies, and sparse tan rock shelves. Green first, stone second; one clearly impassable mountain mass in warm HoMM2-era storybook pixel art, transparent background, lower-right light.",
+      "endpoint": "create-image-pixflux",
+      "size": [64, 64],
+      "candidates": 2,
+      "seed": 96851,
+      "parameters": {"negative_description": "isometric, diamond, bare grey alpine mountain, snow, tiny rocks, flowers, trees, ground plate, landscape, cave, building, text, UI, watermark", "text_guidance_scale": 13, "outline": "selective outline", "shading": "detailed shading", "detail": "medium detail", "view": "low top-down", "direction": "south", "isometric": false, "no_background": true, "init_image_strength": 210},
+      "references": [{"file": "assets/guides/grassy-mountain-native-init/mountain-granite-knoll-3.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "decoration:mountain:granite-knoll-4",
+      "assets": ["decoration:mountain:granite-knoll-4"],
+      "output": ".pixel-work/pixelgen/mountain-grassy-native-family/knoll-4",
+      "prompt": "Rework this asymmetric shoulder mountain knoll as a dense green landform. Preserve its broad high oblique top-down footprint and low ends. Cover most visible planes in meadow-green and olive turf, with dark green clefts and just a few warm stone ribs. Green first, stone second; one clearly impassable mountain mass in warm HoMM2-era storybook pixel art, transparent background, lower-right light.",
+      "endpoint": "create-image-pixflux",
+      "size": [64, 64],
+      "candidates": 2,
+      "seed": 96861,
+      "parameters": {"negative_description": "isometric, diamond, bare grey alpine mountain, snow, tiny rocks, flowers, trees, ground plate, landscape, cave, building, text, UI, watermark", "text_guidance_scale": 13, "outline": "selective outline", "shading": "detailed shading", "detail": "medium detail", "view": "low top-down", "direction": "south", "isometric": false, "no_background": true, "init_image_strength": 210},
+      "references": [{"file": "assets/guides/grassy-mountain-native-init/mountain-granite-knoll-4.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "decoration:mountain:granite-ridge-3",
+      "assets": ["decoration:mountain:granite-ridge-3"],
+      "output": ".pixel-work/pixelgen/mountain-grassy-native-family/ridge-3",
+      "prompt": "Rework this long diagonal hogback mountain ridge as a dense green landform. Preserve the high oblique top-down footprint, offset shelves, broad foreground slope, and low tapered ends. Use rich meadow-green turf, olive upper planes, deep green folds, and sparse warm tan rock seams. Green first, stone second; one impassable range segment in warm HoMM2-era storybook pixel art, transparent background, lower-right light.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 96],
+      "candidates": 2,
+      "seed": 96871,
+      "parameters": {"negative_description": "isometric, diamond, bare grey alpine mountain, snow, isolated rocks, flowers, trees, ground plate, landscape, cave, building, text, UI, watermark", "text_guidance_scale": 13, "outline": "selective outline", "shading": "detailed shading", "detail": "medium detail", "view": "low top-down", "direction": "south", "isometric": false, "no_background": true, "init_image_strength": 210},
+      "references": [{"file": "assets/guides/grassy-mountain-native-init/mountain-granite-ridge-3.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "decoration:mountain:granite-ridge-4",
+      "assets": ["decoration:mountain:granite-ridge-4"],
+      "output": ".pixel-work/pixelgen/mountain-grassy-native-family/ridge-4",
+      "prompt": "Rework this irregular three-lobed upland ridge as a dense green landform. Preserve the high oblique top-down footprint, rear saddle, broad lower apron, and self-terminating ends. Use bright meadow-green and olive turf over most slopes, dark folded gullies, and a few muted beige rock ribs. Green first, stone second; one impassable range segment in warm HoMM2-era storybook pixel art, transparent background, lower-right light.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 96],
+      "candidates": 2,
+      "seed": 96881,
+      "parameters": {"negative_description": "isometric, diamond, bare grey alpine mountain, snow, isolated rocks, flowers, trees, ground plate, landscape, cave, building, text, UI, watermark", "text_guidance_scale": 13, "outline": "selective outline", "shading": "detailed shading", "detail": "medium detail", "view": "low top-down", "direction": "south", "isometric": false, "no_background": true, "init_image_strength": 210},
+      "references": [{"file": "assets/guides/grassy-mountain-native-init/mountain-granite-ridge-4.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "decoration:mountain:granite-massif-1",
+      "assets": ["decoration:mountain:granite-massif-1"],
+      "output": ".pixel-work/pixelgen/mountain-grassy-native-family/massif-1",
+      "prompt": "Rework this broad many-crowned mountain massif as a dense green landform. Preserve its wide high oblique top-down footprint, uneven rear crowns, overlapping foreground slopes, and low ends. Cover most planes with rich meadow-green and olive turf, cut by deep green valleys and sparse warm tan exposed rock. Green first, stone second; one major impassable mountain centrepiece in warm HoMM2-era storybook pixel art, transparent background, lower-right light.",
+      "endpoint": "create-image-pixflux",
+      "size": [160, 112],
+      "candidates": 2,
+      "seed": 96891,
+      "parameters": {"negative_description": "isometric, diamond, bare grey alpine mountain, snow, isolated rocks, flowers, trees, ground plate, landscape, cave, building, text, UI, watermark", "text_guidance_scale": 13, "outline": "selective outline", "shading": "detailed shading", "detail": "medium detail", "view": "low top-down", "direction": "south", "isometric": false, "no_background": true, "init_image_strength": 210},
+      "references": [{"file": "assets/guides/grassy-mountain-native-init/mountain-granite-massif-1.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "decoration:mountain:granite-massif-2",
+      "assets": ["decoration:mountain:granite-massif-2"],
+      "output": ".pixel-work/pixelgen/mountain-grassy-native-family/massif-2",
+      "prompt": "Rework this long branching mountain massif as a dense green landform. Preserve its asymmetric high oblique top-down silhouette, offset crowns, long foreground spur, and low self-terminating ends. Cover most slopes with emerald and olive turf, add dark green folded valleys, and expose only sparse warm stone ribs. Green first, stone second; one major impassable mountain centrepiece in warm HoMM2-era storybook pixel art, transparent background, lower-right light.",
+      "endpoint": "create-image-pixflux",
+      "size": [160, 112],
+      "candidates": 2,
+      "seed": 96901,
+      "parameters": {"negative_description": "isometric, diamond, bare grey alpine mountain, snow, isolated rocks, flowers, trees, ground plate, landscape, cave, building, text, UI, watermark", "text_guidance_scale": 13, "outline": "selective outline", "shading": "detailed shading", "detail": "medium detail", "view": "low top-down", "direction": "south", "isometric": false, "no_background": true, "init_image_strength": 210},
+      "references": [{"file": "assets/guides/grassy-mountain-native-init/mountain-granite-massif-2.png", "parameter": "init_image"}]
+    }
+  ]
+}

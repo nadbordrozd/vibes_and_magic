@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Select and copy a fresh Bannerman winner to assets/references/d-hearthguard-flagship.png",
+  "contact_sheet": "assets/jobs/d1-hearthguard-experiment-reference-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:longbowman:flagship-reference",
+      "assets": [
+        "battle-unit:longbowman"
+      ],
+      "output": ".pixel-work/pixelgen/d1-hearthguard-experiment-reference/battle-unit-longbowman-flagship-reference",
+      "prompt": "Native 128x128 transparent static battle sprite of Longbowman. Six days a farmer, one day the reason the levy holds. Materials: warm red and cream wool, wrought iron, modest gold heraldry, upright shields and pennants. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 476389,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-hearthguard-flagship.png",
+          "parameter": "style_image",
+          "deferred": true
+        }
+      ]
+    }
+  ]
+}

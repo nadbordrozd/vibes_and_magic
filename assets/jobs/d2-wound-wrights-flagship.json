@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/d2-wound-wrights-flagship-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:marionette",
+      "assets": [
+        "battle-unit:marionette"
+      ],
+      "output": ".pixel-work/pixelgen/d2-wound-wrights-flagship/battle-unit-marionette",
+      "prompt": "Native 128x128 transparent static battle sprite of Marionette. It moves like a duelist remembering strings. The Guild insists there are no strings. Materials: oxblood lacquered wood, tin, porcelain and stitched cloth, round jointed nursery silhouettes. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 523358,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 0,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      }
+    }
+  ]
+}

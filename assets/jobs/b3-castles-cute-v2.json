@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b3-castles-cute-v2-candidates.html",
+  "requests": [
+    {
+      "id": "castle:woundWrights:cute-v2",
+      "assets": ["castle:woundWrights:castle"],
+      "output": ".pixel-work/pixelgen/b3-castles-cute-v2/wound-wrights",
+      "prompt": "One freestanding cute Wound-Wrights fortified manor with three joined round towers and one central arched gate. Lacquered red and blue wood, cream porcelain wall panels, dull tin roofs, stitched cloth seams, and small brass hinges. Warm hand-painted 1990s storybook pixel art. Front-facing oblique view with a little roof visible. Bright warm light hits right walls; left walls are dark. Only architecture on transparency. No people, toys, poles, flags, banners, plants, ground, or platform.",
+      "endpoint": "generate-image-v2",
+      "size": [96, 128],
+      "candidates": 2,
+      "seed": 95120,
+      "parameters": {"no_background": true}
+    },
+    {
+      "id": "castle:unfinished:cute-v2",
+      "assets": ["castle:unfinished:castle"],
+      "output": ".pixel-work/pixelgen/b3-castles-cute-v2/unfinished",
+      "prompt": "One freestanding gentle Unfinished memorial castle with three joined hollow towers and one central dark arched gate. Ash-white stone, ivory bone ribs, draped cream funeral-linen roofs, and restrained candle-gold fittings; pale and wistful, never evil. Warm hand-painted 1990s storybook pixel art. Front-facing oblique view with a little roof visible. Bright warm light hits right walls; left walls are dark. Only architecture on transparency. No skulls, cemetery, flames, purple, green-black, poles, flags, plants, ground, or platform.",
+      "endpoint": "generate-image-v2",
+      "size": [96, 128],
+      "candidates": 2,
+      "seed": 95220,
+      "parameters": {"no_background": true}
+    },
+    {
+      "id": "castle:vespiary:cute-v2",
+      "assets": ["castle:vespiary:castle"],
+      "output": ".pixel-work/pixelgen/b3-castles-cute-v2/vespiary",
+      "prompt": "One freestanding formal Vespiary hive fortress with three joined asymmetric paper-nest towers and one central dark gate. Layered cream paper walls, black segmented chitin braces, honey-gold amber windows, and warm resin seams. Warm hand-painted 1990s storybook pixel art. Front-facing oblique view with a little roof visible. Bright warm light hits right faces; left faces are dark. Only architecture on transparency. No insects, honeycomb ground, organic mound, poles, flags, plants, ground, or platform.",
+      "endpoint": "generate-image-v2",
+      "size": [96, 128],
+      "candidates": 2,
+      "seed": 95320,
+      "parameters": {"no_background": true}
+    },
+    {
+      "id": "castle:hagwood:cute-v2",
+      "assets": ["castle:hagwood:castle"],
+      "output": ".pixel-work/pixelgen/b3-castles-cute-v2/hagwood",
+      "prompt": "One freestanding crooked Hagwood stronghold with three joined leaning towers grown from white birch and one central open gate. Black wicker walls, pale bone-fence braces, crow-feather roofs, and one tiny berry-red thread accent; asymmetrical but readable. Warm hand-painted 1990s storybook pixel art. Front-facing oblique view with a little roof visible. Bright warm light hits right faces; left faces are dark. Only architecture on transparency. No witch, crows, forest, full trees, poles, flags, plants, ground, or platform.",
+      "endpoint": "generate-image-v2",
+      "size": [96, 128],
+      "candidates": 2,
+      "seed": 95420,
+      "parameters": {"no_background": true}
+    },
+    {
+      "id": "castle:wildergrass:cute-v2",
+      "assets": ["castle:wildergrass:castle"],
+      "output": ".pixel-work/pixelgen/b3-castles-cute-v2/wildergrass",
+      "prompt": "One freestanding low broad Wildergrass clan stronghold with three joined horn-framed lodges and one central open gate. Ash-grey timber walls, ochre hide roofs, pale curved horn braces, and restrained blood-red lashings; sturdy, windswept, and fast-looking. Warm hand-painted 1990s storybook pixel art. Front-facing oblique view with a little roof visible. Bright warm light hits right faces; left faces are dark. Only architecture on transparency. No riders, animals, tents, camp, poles, flags, grass, ground, or platform.",
+      "endpoint": "generate-image-v2",
+      "size": [96, 128],
+      "candidates": 2,
+      "seed": 95520,
+      "parameters": {"no_background": true}
+    }
+  ]
+}

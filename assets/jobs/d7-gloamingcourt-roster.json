@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Run and log the Hearthguard/Wound-Wrights flagship reference experiments; replace the broad phase reference with the winning protocol before production",
+  "contact_sheet": "assets/jobs/d7-gloamingcourt-roster-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:mirrorBound",
+      "assets": [
+        "battle-unit:mirrorBound"
+      ],
+      "output": ".pixel-work/pixelgen/d7-gloamingcourt-roster/battle-unit-mirrorBound",
+      "prompt": "Native 128x128 transparent static battle sprite of The Mirror-Bound. Masked figures around a standing glass. Blades return to their wielders. The mirror does not care for arrows. Materials: plum masque cloth, hearth amber, wax and polished old silver, theatrical but practical. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 759634,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:maskedDuelist",
+      "assets": [
+        "battle-unit:maskedDuelist"
+      ],
+      "output": ".pixel-work/pixelgen/d7-gloamingcourt-roster/battle-unit-maskedDuelist",
+      "prompt": "Native 128x128 transparent static battle sprite of Masked Duelist. Impeccable form, borrowed face. Applaud and it bows. Materials: plum masque cloth, hearth amber, wax and polished old silver, theatrical but practical. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 315254,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:hearthHound",
+      "assets": [
+        "battle-unit:hearthHound"
+      ],
+      "output": ".pixel-work/pixelgen/d7-gloamingcourt-roster/battle-unit-hearthHound",
+      "prompt": "Native 128x128 transparent static battle sprite of Hearth-Hound. The mastiff from every tavern sign, sign-sized. Materials: plum masque cloth, hearth amber, wax and polished old silver, theatrical but practical. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 100577,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:waxServitor",
+      "assets": [
+        "battle-unit:waxServitor"
+      ],
+      "output": ".pixel-work/pixelgen/d7-gloamingcourt-roster/battle-unit-waxServitor",
+      "prompt": "Native 128x128 transparent static battle sprite of Wax Servitor. Candle-tenders made of candle. They melt a little in service and consider it tithe. Materials: plum masque cloth, hearth amber, wax and polished old silver, theatrical but practical. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 539447,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:standingMirror",
+      "assets": [
+        "battle-unit:standingMirror"
+      ],
+      "output": ".pixel-work/pixelgen/d7-gloamingcourt-roster/battle-unit-standingMirror",
+      "prompt": "Native 128x128 transparent static battle sprite of Standing Mirror. The glass is listening, and repeats what it hears. Materials: plum masque cloth, hearth amber, wax and polished old silver, theatrical but practical. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 28882,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    }
+  ]
+}

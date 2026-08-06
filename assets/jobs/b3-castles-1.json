@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b3-castles-1-candidates.html",
+  "requests": [
+    {
+      "id": "castle:hagwood:castle",
+      "assets": [
+        "castle:hagwood:castle"
+      ],
+      "output": ".pixel-work/pixelgen/b3-castles/castle-hagwood-castle",
+      "prompt": "Native 96x128 transparent adventure-map sprite of the hagwood faction castle, built from white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. The bottom 64px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 64px is the exact 3x2 ground contact. Draw the only convincing gate dead-centre on the bottom edge, inside pixels x=32..63 and y=96..127. Towers and roofs rise through the upper 64px. Keep a clear pennant planting edge near pixel x=86,y=80. No other door may imply a legal entrance. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        96,
+        128
+      ],
+      "candidates": 2,
+      "seed": 392215,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "castle:hearthguard:castle",
+      "assets": [
+        "castle:hearthguard:castle"
+      ],
+      "output": ".pixel-work/pixelgen/b3-castles/castle-hearthguard-castle",
+      "prompt": "Native 96x128 transparent adventure-map sprite of the hearthguard faction castle, built from warm red and cream wool, wrought iron, modest gold heraldry, upright shields and pennants. The bottom 64px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 64px is the exact 3x2 ground contact. Draw the only convincing gate dead-centre on the bottom edge, inside pixels x=32..63 and y=96..127. Towers and roofs rise through the upper 64px. Keep a clear pennant planting edge near pixel x=86,y=80. No other door may imply a legal entrance. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        96,
+        128
+      ],
+      "candidates": 2,
+      "seed": 537027,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "castle:hearthguard:freeTown",
+      "assets": [
+        "castle:hearthguard:freeTown"
+      ],
+      "output": ".pixel-work/pixelgen/b3-castles/castle-hearthguard-freeTown",
+      "prompt": "Native 96x128 transparent adventure-map sprite of the hearthguard free Town, built from warm red and cream wool, wrought iron, modest gold heraldry, upright shields and pennants. The bottom 64px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 64px is the exact 3x2 ground contact. Draw the only convincing gate dead-centre on the bottom edge, inside pixels x=32..63 and y=96..127. Towers and roofs rise through the upper 64px. Keep a clear pennant planting edge near pixel x=86,y=80. No other door may imply a legal entrance. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        96,
+        128
+      ],
+      "candidates": 2,
+      "seed": 54989,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "castle:unfinished:castle",
+      "assets": [
+        "castle:unfinished:castle"
+      ],
+      "output": ".pixel-work/pixelgen/b3-castles/castle-unfinished-castle",
+      "prompt": "Native 96x128 transparent adventure-map sprite of the unfinished faction castle, built from ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. The bottom 64px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 64px is the exact 3x2 ground contact. Draw the only convincing gate dead-centre on the bottom edge, inside pixels x=32..63 and y=96..127. Towers and roofs rise through the upper 64px. Keep a clear pennant planting edge near pixel x=86,y=80. No other door may imply a legal entrance. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        96,
+        128
+      ],
+      "candidates": 2,
+      "seed": 436447,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "castle:unfinished:hollowTown",
+      "assets": [
+        "castle:unfinished:hollowTown"
+      ],
+      "output": ".pixel-work/pixelgen/b3-castles/castle-unfinished-hollowTown",
+      "prompt": "Native 96x128 transparent adventure-map sprite of the unfinished hollow Town, built from ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. The bottom 64px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 64px is the exact 3x2 ground contact. Draw the only convincing gate dead-centre on the bottom edge, inside pixels x=32..63 and y=96..127. Towers and roofs rise through the upper 64px. Keep a clear pennant planting edge near pixel x=86,y=80. No other door may imply a legal entrance. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        96,
+        128
+      ],
+      "candidates": 2,
+      "seed": 828580,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

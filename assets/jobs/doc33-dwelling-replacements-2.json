@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/doc33-dwelling-replacements-2-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:dwelling:fencePostFamiliars",
+      "assets": [
+        "map-object:dwelling:fencePostFamiliars"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/fencePostFamiliars",
+      "prompt": "a crooked woodland gatehouse, white birch with black wicker and pale bone braces, three carved fence posts beside one open doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96700,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:hobbyKnight",
+      "assets": [
+        "map-object:dwelling:hobbyKnight"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/hobbyKnight",
+      "prompt": "a lacquered toy stable, oxblood wood with dull tin and cream porcelain panels, a chunky wind-up wheel beside one arched doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96710,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:larvalTide",
+      "assets": [
+        "map-object:dwelling:larvalTide"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/larvalTide",
+      "prompt": "a low resin hatchery, layered cream paper with black chitin and honey-amber seams, three segmented amber pods around one dark doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96720,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:longbowman",
+      "assets": [
+        "map-object:dwelling:longbowman"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/longbowman",
+      "prompt": "a compact archery lodge, cream plaster with warm red tile and dark oak beams, a long bow rack beneath the eaves beside one doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96730,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:marionette",
+      "assets": [
+        "map-object:dwelling:marionette"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/marionette",
+      "prompt": "a lacquered puppet workshop, oxblood wood with dull tin and cream porcelain panels, a pulley wheel above one shuttered stage doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96740,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:maskedDuelist",
+      "assets": [
+        "map-object:dwelling:maskedDuelist"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/maskedDuelist",
+      "prompt": "a compact fencing salon, plum cloth with old silver trim and warm amber windows, two crossed practice rapiers above one arched doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96750,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:outriders",
+      "assets": [
+        "map-object:dwelling:outriders"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/outriders",
+      "prompt": "a low horse relay lodge, ochre hide over ash-grey timber with restrained red lashings, an open stable door beside a curved horn rail, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96760,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

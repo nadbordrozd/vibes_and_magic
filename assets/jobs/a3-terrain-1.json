@@ -1,0 +1,317 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a3-terrain-1-candidates.html",
+  "requests": [
+    {
+      "id": "terrain:ashsteppe:south:0",
+      "assets": [
+        "terrain:ashsteppe:south:0"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-ashsteppe-south-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: dry ochre-grey steppe grass with fine black ash beneath, low wind-combed blades and no bones or banners. Variant cue: fine irregular material grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 271776,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-ashsteppe-south.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:ashsteppe:south:1",
+      "assets": [
+        "terrain:ashsteppe:south:1"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-ashsteppe-south-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: dry ochre-grey steppe grass with fine black ash beneath, low wind-combed blades and no bones or banners. Variant cue: sparse darker broken flecks. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 85010,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 340
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-ashsteppe-south.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:ashsteppe:south:2",
+      "assets": [
+        "terrain:ashsteppe:south:2"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-ashsteppe-south-2",
+      "prompt": "Native 32x32 seamless opaque terrain tile: dry ochre-grey steppe grass with fine black ash beneath, low wind-combed blades and no bones or banners. Variant cue: quiet broad microtexture planes. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 527014,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-ashsteppe-south.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:barrowfield:default:0",
+      "assets": [
+        "terrain:barrowfield:default:0"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-barrowfield-default-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet pale country grass with chalky straw and subtle well-tended hummock texture, no graves or stones. Variant cue: fine irregular material grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 84500,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 280
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-barrowfield-default.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:barrowfield:default:1",
+      "assets": [
+        "terrain:barrowfield:default:1"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-barrowfield-default-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet pale country grass with chalky straw and subtle well-tended hummock texture, no graves or stones. Variant cue: sparse darker broken flecks. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 223731,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-barrowfield-default.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:barrowfield:default:2",
+      "assets": [
+        "terrain:barrowfield:default:2"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-barrowfield-default-2",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet pale country grass with chalky straw and subtle well-tended hummock texture, no graves or stones. Variant cue: quiet broad microtexture planes. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 84520,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 280
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-barrowfield-default.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:deepwood:mossy:0",
+      "assets": [
+        "terrain:deepwood:mossy:0"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-deepwood-mossy-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet dense wet old-forest floor with dark loam and moss dust beneath separate tall canopy props, no roots, branches, leaves or clearing. Variant cue: fine irregular material grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 85020,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 340
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-deepwood-mossy.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:deepwood:mossy:1",
+      "assets": [
+        "terrain:deepwood:mossy:1"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-deepwood-mossy-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet dense wet old-forest floor with dark loam and moss dust beneath separate tall canopy props, no roots, branches, leaves or clearing. Variant cue: sparse darker broken flecks. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 84610,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 280
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-deepwood-mossy.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:deepwood:mossy:2",
+      "assets": [
+        "terrain:deepwood:mossy:2"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-deepwood-mossy-2",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet dense wet old-forest floor with dark loam and moss dust beneath separate tall canopy props, no roots, branches, leaves or clearing. Variant cue: quiet broad microtexture planes. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 196664,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-deepwood-mossy.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:hush:north:0",
+      "assets": [
+        "terrain:hush:north:0"
+      ],
+      "output": ".pixel-work/pixelgen/a3-terrain/terrain-hush-north-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: pale quiet wind-set snow with restrained blue-grey shadow grains, no drift object or tracks. Variant cue: fine irregular material grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; quiet continuous low-contrast field in 5–7 close colours. Fill every pixel opaquely and keep illumination and edge values uniform. No distinct motif larger than 3 pixels, transparency, gradient, vignette, border, row, column, checkerboard, focal object, path, flowers, large plant, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 142443,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, tile border, gradient, horizontal band, vertical band, repeated row, checkerboard, scenery, flowers, berries, bright dots, large motif, object, path, text, UI, logo, watermark",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a3-hush-north.png",
+          "parameter": "init_image"
+        }
+      ]
+    }
+  ]
+}

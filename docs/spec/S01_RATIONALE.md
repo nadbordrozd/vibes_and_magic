@@ -112,7 +112,7 @@ not exposition.
 ## Writing register
 
 1. Flavor is at most two sentences, usually one. Hero stories are one paragraph, 50–90 words.
-2. Flavor is always in-world and contains no numbers or game terms such as stack, meter, tier, or
+2. Flavor is always in-world and contains no numbers or game terms such as stack, morale, tier, or
    buff. Mechanics appear separately and are generated from data.
 3. Apply the Assimilation Laws: mundane first read, contradictory myth, wonder by double-take.
 4. The tone is warm, wondrous, and wistful. Dry humor is welcome. Never grimdark and never wink at

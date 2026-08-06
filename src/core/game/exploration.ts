@@ -570,6 +570,7 @@ function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
 export function moveHero(
   state: GameState,
   destination: { x: number; y: number },
+  avoidAggro = true,
 ): void {
   const hero = selectedActiveHero(state);
   if (sameCoord(hero.position, destination)) {
@@ -581,7 +582,7 @@ export function moveHero(
     return;
   }
   const origin = { ...hero.position };
-  const path = adventurePath(state, destination);
+  const path = adventurePath(state, destination, { avoidAggro });
   if (!path || path.length < 2) throw new Error('No path to destination');
   const passage = state.mapEffects.some((effect) => effect.kind === 'passage'
     && effect.owner === hero.owner && effect.expiresDay >= state.day

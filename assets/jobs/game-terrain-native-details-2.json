@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/game-terrain-native-details-2-candidates.html",
+  "requests": [
+    {
+      "id": "review:game-terrain:barrowfield:micro",
+      "assets": [
+        "review:game-terrain:barrowfield:micro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/barrowfield-micro",
+      "prompt": "Native 32x32 seamless opaque Barrowfield terrain cell: quiet pale country grass with chalky straw and subtle well-tended hummock texture; one tiny unlit candle stub occupying only 2–3 pixels, no flame or glow. One tile is roughly human-sized. The decoration must occupy at most one eighth of the tile width and under 2% of its area. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 797930,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-barrowfield-micro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:barrowfield:macro",
+      "assets": [
+        "review:game-terrain:barrowfield:macro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/barrowfield-macro",
+      "prompt": "Native 32x32 seamless opaque Barrowfield terrain cell: quiet pale country grass with chalky straw and subtle well-tended hummock texture; one shallow grass-covered hummock spanning 8–14 pixels, low and passable. One tile is roughly human-sized. The mark may span one quarter to under one half of the tile width, but must remain narrow, flat and secondary. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 593890,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-barrowfield-macro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:lacquer-flats:micro",
+      "assets": [
+        "review:game-terrain:lacquer-flats:micro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/lacquer-flats-micro",
+      "prompt": "Native 32x32 seamless opaque Lacquer Flats terrain cell: smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine; one tiny weathered paint fleck occupying only 1–3 pixels. One tile is roughly human-sized. The decoration must occupy at most one eighth of the tile width and under 2% of its area. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 824851,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-lacquer-flats-micro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:lacquer-flats:macro",
+      "assets": [
+        "review:game-terrain:lacquer-flats:macro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/lacquer-flats-macro",
+      "prompt": "Native 32x32 seamless opaque Lacquer Flats terrain cell: smooth muted oxblood-brown stone with strange fine lacquer grain and restrained dull shine; one hairline branching crack spanning 8–14 pixels without becoming a trench. One tile is roughly human-sized. The mark may span one quarter to under one half of the tile width, but must remain narrow, flat and secondary. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 496379,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-lacquer-flats-macro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mire:micro",
+      "assets": [
+        "review:game-terrain:mire:micro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/mire-micro",
+      "prompt": "Native 32x32 seamless opaque Mire terrain cell: dark negotiable peat and blue-green shallow wet ground with tiny broken reflections; one tiny frog-like green speck occupying only 2–3 pixels and readable as incidental life. One tile is roughly human-sized. The decoration must occupy at most one eighth of the tile width and under 2% of its area. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 783306,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mire-micro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mire:macro",
+      "assets": [
+        "review:game-terrain:mire:macro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/mire-macro",
+      "prompt": "Native 32x32 seamless opaque Mire terrain cell: dark negotiable peat and blue-green shallow wet ground with tiny broken reflections; one low reed-shadow and ripple mark spanning 8–14 pixels, flat and passable. One tile is roughly human-sized. The mark may span one quarter to under one half of the tile width, but must remain narrow, flat and secondary. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 588674,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mire-macro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    }
+  ]
+}

@@ -41,3 +41,15 @@ from its initial seed and recorded action list; failed simulations write that
 replay to `replay-crash-<seed>.json`.
 
 The binding design and PoC specifications are in [`docs/`](docs/).
+
+## Track work
+
+This solo project uses [Beads](https://github.com/gastownhall/beads) for live task tracking and
+cross-session agent memory. The docs remain authoritative for game rules, design decisions, and
+implementation provenance; issue status and next work live in Beads.
+
+```sh
+bd prime
+bd ready
+bd list --status=open,in_progress
+```

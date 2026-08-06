@@ -16,15 +16,15 @@ Catalog values and strings live in the data files linked by S09.
 | [S01](spec/S01_RATIONALE.md) | Decision generators, creative laws, and balance posture |
 | [S02](spec/S02_ENGINE.md) | Headless deterministic engine, replay, pipeline, footprints, validation |
 | [S03](spec/S03_ADVENTURE.md) | Time, movement, terrain, occupancy, objects, towns, water, victory |
-| [S04](spec/S04_COMBAT.md) | Battle sequence, damage, meter, sieges, retreat/surrender |
+| [S04](spec/S04_COMBAT.md) | Battle sequence, damage, morale, sieges, retreat/surrender |
 | [S05](spec/S05_MAGIC.md) | Schools, casting, effects, upgrades, resonance, Bargains and Debts |
 | [S06](spec/S06_HEROES.md) | Progression, skills, hiring, armies, items, equipment |
 | [S07](spec/S07_ECONOMY.md) | Resources, income, recruitment, castles, buildings, difficulty |
 | [S08](spec/S08_CANON.md) | Setting, factions, cultures, visual and naming canon |
 | [S09](spec/S09_CONTENT_INDEX.md) | Data-file manifest and catalog invariants |
 | [Coverage](spec/COVERAGE.md) | Normative mapping for archived docs 01–29 |
-| [Reconciliation bugs](spec/RECONCILIATION_BUGS.md) | Triaged unlogged implementation drift |
-| [Backlog](spec/backlog/UNIMPLEMENTED_CONTENT.md) | Preserved unimplemented content |
+| [Reconciliation bugs](spec/RECONCILIATION_BUGS.md) | Intended rules and evidence for drift; live status in Beads |
+| [Backlog](spec/backlog/UNIMPLEMENTED_CONTENT.md) | Preserved future-content provenance; live status in Beads |
 
 ## Numbered design history
 
@@ -35,7 +35,7 @@ live in `docs/` until superseded by their implementation.
 |---|---|---|---|
 | 01 | MOTIVATION | What the game is, design thesis (attrition/tempo leverage, StS drafting), hard constraints | |
 | 02 | DESIGN_PRINCIPLES | Stack, headless core, seeded RNG, sim harness, resolution pipeline, data-driven content, code hygiene | |
-| 03 | MECHANICS | Baseline deviations from HoMM3: combat frame, deterministic luck, morale meter, 4 resources, primary skills, level-up draft | |
+| 03 | MECHANICS | Baseline deviations from HoMM3: combat frame, deterministic luck, deterministic morale, 4 resources, primary skills, level-up draft | |
 | 04 | POC_SPEC | Original PoC: placeholder factions, Border Marches, engine milestones | placeholder factions superseded by 06 |
 | 05 | SETTING | Canon v2: premise, tone, Assimilation Laws, visual identity laws, six factions + rosters, hidden Seamborn, neutral cultures, naming | supersedes its own v1 |
 | 06 | FACTIONS_HEARTHGUARD_WOUNDWRIGHTS | Implementation spec: first two factions, tiers 1–5, heroes, buildings | tier 6 added by 14; skills section of 11 superseded by 16 |
@@ -63,5 +63,11 @@ live in `docs/` until superseded by their implementation.
 | 28 | TERRAIN | Three-layer terrain system, catalog, native ground, combat derivation, obstacle props, decorations | extends 23 flavor; lint additions to 24's tool |
 | 29 | DISCOVERY | Neutral towns, +28 map objects, Cache-Marks, +32 artifacts (incl. Burdens), +12 heroes, "Manywhere" wander map, Dormant AI, victory:none | extends 18/19/22/23; lint additions |
 | 30 | SPEC_REFACTOR | Work order: reorganize 01–29 into docs/spec/ by system, with reconciliation, coverage report, and spec/data boundary | archives 01–29; docs/spec/ becomes current |
+| 31 | PIXEL_ART | PixelLab asset generation + wiring: manifest/fallback, batch discipline with reflection, terrain layers, map objects, 8-direction heroes, battle units | rendering-only; art laws per S08; defers icons/portraits/battle terrain |
+| 32 | FOOTPRINT_SHRINK | Footprint = ground contact: castles 3×2, mines 2×1, maps re-authored, S03 updated | rules-adjacent; sequenced before 31 Phase B |
+| 33 | MAP_PROPS | Prop generation playbook: prompt hygiene, overlap-composed obstacle families, inspection protocol, iteration caps, work order | operational companion to 31; 31 wins on conflict; its terrain-transition deferral is continued by 36 |
+| 34 | UX_COMPLETENESS | UX-only audit contract, shared interaction grammar, screen coverage matrix, automated gates, and new-player acceptance walkthrough | presentation work order; mechanics remain governed by S00–S09 |
+| 35 | MOUNTAIN_HANDOFF | Accepted grassy family, connectivity-first rocky backbone pipeline, arbitrary-shape compositor rules, showcase reproduction, pitfalls, and continuation guide | continuation note for 31/33; no mechanics changes |
+| 36 | TERRAIN_TRANSITIONS | Native terrain-transition compositor, H2 reference boundary, generated game-family assets, regeneration/review steps, and direct-Wang integration handoff | consolidates terrain entries in ASSETS_LOG/IMPLEMENTATION_LOG and extends 31; no mechanics changes |
 
-Next free number: **31**.
+Next free number: **37**.

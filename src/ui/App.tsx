@@ -20,6 +20,7 @@ import {
 import { MainMenu } from './components/MainMenu';
 import { InspectionLayer } from './components/InspectionLayer';
 import { ContextHelp, type HelpContext } from './components/ContextHelp';
+import { ResourceRichText } from './components/ResourceToken';
 import {
   autoSaveGame, createBattleReplayLink, createGameLink, exportSaveFile, importSaveFile,
   loadBattleReplayLink, loadGame, loadGameLink, saveGame, savedGameSummary,
@@ -58,6 +59,29 @@ export function App() {
     actions: Action[]; index: number; playing: boolean;
   } | null>(null);
   const projectionRef = useRef<BattleResultData['projection']>(null);
+  const lastMessageRef = useRef('');
+  const noticeTimerRef = useRef<number | null>(null);
+
+  const announce = useCallback((message: string, duration = 2400) => {
+    if (noticeTimerRef.current !== null) window.clearTimeout(noticeTimerRef.current);
+    setNotice(message);
+    noticeTimerRef.current = window.setTimeout(() => {
+      setNotice(''); noticeTimerRef.current = null;
+    }, duration);
+  }, []);
+
+  useEffect(() => () => {
+    if (noticeTimerRef.current !== null) window.clearTimeout(noticeTimerRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (!game) { lastMessageRef.current = ''; return; }
+    if (!lastMessageRef.current) { lastMessageRef.current = game.lastMessage; return; }
+    if (game.lastMessage !== lastMessageRef.current) {
+      lastMessageRef.current = game.lastMessage;
+      if (game.phase !== 'combat') announce(game.lastMessage);
+    }
+  }, [announce, game]);
 
   useEffect(() => {
     if (!location.hash.match(/^#(?:game|battle)=/)) return;
@@ -95,8 +119,7 @@ export function App() {
       if (slot === undefined) setSavedSummary(summary);
       else setManualSummaries((current) => current.map((value, index) =>
         index === slot - 1 ? summary : value));
-      setNotice(slot === undefined ? 'Game saved locally.' : `Game saved in slot ${slot}.`);
-      setTimeout(() => setNotice(''), 1800);
+      announce(slot === undefined ? 'Game saved locally.' : `Game saved in slot ${slot}.`, 1800);
     } else {
       setError('Local saves are unavailable in this browser.');
     }
@@ -142,7 +165,7 @@ export function App() {
       const result = battle ? await createBattleReplayLink(game) : await createGameLink(game);
       const link = `${location.origin}${location.pathname}${result.fragment}`;
       await navigator.clipboard.writeText(link);
-      setNotice(result.warning ?? `${battle ? 'Battle replay' : 'Game'} link copied.`);
+      announce(result.warning ?? `${battle ? 'Battle replay' : 'Game'} link copied.`);
     } catch (caught) { setError(caught instanceof Error ? caught.message : String(caught)); }
   };
 
@@ -300,48 +323,7 @@ export function App() {
         setBattleResult(null);
         return;
       }
-      if (event.key === 'Enter' && game.pendingChoice) {
-        const choice = game.pendingChoice;
-        if (choice.kind === 'chest') dispatch({ type: 'CHOOSE_CHEST', choice: 'gold' });
-        else if (choice.kind === 'siteStat') {
-          dispatch({ type: 'CHOOSE_SITE_STAT', choice: choice.options[0] });
-        }
-        else if (choice.kind === 'level') {
-          dispatch({ type: 'CHOOSE_LEVEL', stat: choice.options[0] });
-        } else {
-          if (choice.kind === 'diplomacy') {
-            dispatch({ type: 'CHOOSE_DIPLOMACY', choice: 'fight' });
-          } else if (choice.kind === 'spellthief') {
-            dispatch({ type: 'CHOOSE_STOLEN_SPELL', spellId: choice.options[0] });
-          } else if (choice.kind === 'palimpsest') {
-            dispatch({ type: 'CHOOSE_PALIMPSEST', spellId: choice.options[0] });
-          } else if (choice.kind === 'bargain') {
-            const bargainId = choice.options[0];
-            const hero = game.players[choice.playerId].heroes.find(
-              (candidate) => candidate.id === choice.heroId,
-            );
-            const castle = game.castles.find((candidate) =>
-              bargainId === 'cuckoosDeal'
-                ? candidate.owner !== hero?.owner
-                : candidate.owner === hero?.owner);
-            dispatch({ type: 'CHOOSE_BARGAIN', bargainId, castleId: castle?.id });
-          } else if (choice.kind === 'toll') {
-            const canPay = game.players[choice.playerId].resources.gold >= choice.cost;
-            dispatch({ type: 'CHOOSE_TOLL', choice: canPay ? 'pay' : 'fight' });
-          } else if (choice.kind === 'siren') {
-            dispatch({ type: 'CHOOSE_SIREN', choice: 'rowPast' });
-          } else {
-            dispatch({ type: 'CHOOSE_SPELL_UPGRADE', spellId: choice.options[0] });
-          }
-        }
-        return;
-      }
       if (battleReplay || passPlayer || battleResult || game.pendingChoice) return;
-      if (event.code === 'Space' && game.phase === 'adventure'
-          && game.players[game.activePlayer].controller === 'human') {
-        event.preventDefault();
-        dispatch({ type: 'END_TURN' });
-      }
       if (event.key === 'Enter' && openCastleId) setOpenCastleId(null);
     };
     window.addEventListener('keydown', keyboard);
@@ -358,7 +340,7 @@ export function App() {
       {error && <button className="error-toast" role="alert"
         onClick={() => setError('')}>{error} · Dismiss ×</button>}</>;
   }
-  if (passPlayer) return <><PassDevice playerId={passPlayer}
+  if (passPlayer) return <><PassDevice player={game.players[passPlayer]}
     onReady={() => setPassPlayer(null)} /><ContextHelp state={game} context="adventure" /></>;
 
   const castle = game.castles.find((item) => item.id === openCastleId) ?? null;
@@ -371,9 +353,9 @@ export function App() {
   );
   const helpContext: HelpContext = game.phase === 'gameOver' ? 'campaign'
     : battleResult ? 'result'
-      : game.pendingChoice ? 'choice'
-        : openCastleId ? 'castle'
-          : game.phase === 'combat' ? 'combat' : 'adventure';
+    : game.pendingChoice ? 'choice'
+      : openCastleId ? 'castle'
+        : game.phase === 'combat' ? 'combat' : 'adventure';
 
   return (
     <>
@@ -423,9 +405,9 @@ export function App() {
           onShare={() => { void shareLink(true); }} />
       )}
       {!battleResult && <VictoryDialog state={game} onMenu={returnToMenu} />}
-      {error && <button className="error-toast" onClick={() => setError('')}>{error} ×</button>}
-      {notice && <div className="notice-toast">{notice}</div>}
-      {!game.winner && <InspectionLayer state={game} />}
+      {error && <button className="error-toast" role="alert" onClick={() => setError('')}>{error} ×</button>}
+      {notice && <div className="notice-toast" role="status" aria-live="polite"><ResourceRichText>{notice}</ResourceRichText></div>}
+      {!battleResult && !game.winner && <InspectionLayer state={game} />}
       <ContextHelp state={game} context={helpContext} />
     </>
   );

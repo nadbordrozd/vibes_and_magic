@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/mountain-rocky-connected-backbones-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:rocky-backbone-1",
+      "assets": ["decoration:mountain:rocky-backbone-1"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-connected-backbones/backbone-1",
+      "prompt": "Rework this transparent init silhouette into ONE CONTINUOUS rocky mountain range for a classic 1990s fantasy adventure map. Keep the exact native 256 by 160 transparent canvas and the broad eight-tile-wide joined footprint. CAMERA: south of the range looking north from about 45 degrees above the terrain, neither front elevation nor overhead. Show the south-facing rock wall plus partial east and west side planes; hide the northern slopes behind the crest. STRUCTURE: fuse every peak into uninterrupted saddles, ridgelines, foothills, and a broad continuous foreground stone mass. Remove the repeated-source look. There must be no transparent channel, grass corridor, or valley cutting through the interior. Keep irregular unequal peaks and low broad overlap-friendly shoulders at both ends. LIGHT: sun from southeast at map lower-right; east and southeast planes warm light grey, western and left-facing slopes deep cool charcoal shadow, shadows falling northwest/upper-left. Slate-grey and warm-grey rock, dark fissures, extremely sparse muted olive lichen only in cracks. Deliberate hand-pixelled Heroes II-era storybook sprite, no scenery plate, transparent outside the rock silhouette.",
+      "endpoint": "create-image-pixflux",
+      "size": [256, 160],
+      "candidates": 2,
+      "seed": 98201,
+      "parameters": {
+        "negative_description": "separate mountains, detached rock piles, repeated identical peaks, isolated 2x1 formations, transparent gaps through the range, grass corridors, front elevation, side view, completely top-down, bird's-eye, isometric diamond, visible northern slopes, snow, volcano, trees, flowers, buildings, cave entrance, rectangular ground plate, landscape background, sky, horizon, text, UI, logo, watermark",
+        "text_guidance_scale": 15,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 180
+      },
+      "references": [{
+        "file": "assets/guides/rocky-mountain-backbone-init.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-backbone-2",
+      "assets": ["decoration:mountain:rocky-backbone-2"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-connected-backbones/backbone-2",
+      "prompt": "Rework this transparent init silhouette into ONE CONTINUOUS asymmetric rocky mountain range for a classic 1990s fantasy adventure map. Keep the exact native 256 by 160 transparent canvas and broad eight-tile joined footprint, but vary the source into a long rising western shoulder, an off-centre high crown, several joined saddles, and a lower broken eastern shoulder. CAMERA: south of the range looking north from about 45 degrees above terrain, neither front-on nor bird's-eye. The broad southern rock faces are visible; only partial east and west side planes appear; northern slopes are hidden behind the crest. Fuse all forms through uninterrupted stone ridges and foothills, with no transparent or grassy cut through the interior. LIGHT: sun from southeast at lower-right; southeast/right planes warm light grey, west/left-facing slopes deep cool charcoal shadow, shadows northwest/upper-left. Rugged slate and muted warm-grey rock, dark fissures, extremely sparse olive lichen. Deliberate hand-pixelled Heroes II-era storybook obstacle; low overlap-friendly ends; transparent outside the mountain silhouette; no ground or scenery plate.",
+      "endpoint": "create-image-pixflux",
+      "size": [256, 160],
+      "candidates": 2,
+      "seed": 98309,
+      "parameters": {
+        "negative_description": "separate mountains, detached rock piles, repeated identical peaks, isolated 2x1 formations, transparent gaps through the range, grass corridors, front elevation, side view, completely top-down, bird's-eye, isometric diamond, visible northern slopes, snow, volcano, trees, flowers, buildings, cave entrance, rectangular ground plate, landscape background, sky, horizon, text, UI, logo, watermark",
+        "text_guidance_scale": 15,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 160
+      },
+      "references": [{
+        "file": "assets/guides/rocky-mountain-backbone-init.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-backbone-compact",
+      "assets": [
+        "decoration:mountain:rocky-backbone-1",
+        "decoration:mountain:rocky-backbone-2",
+        "decoration:mountain:rocky-boundary-1",
+        "decoration:mountain:rocky-boundary-2"
+      ],
+      "output": ".pixel-work/pixelgen/mountain-rocky-connected-backbones/backbone-compact",
+      "prompt": "Rework this transparent init silhouette into ONE CONTINUOUS six-tile-wide rocky mountain range sprite. Keep the exact native 192 by 128 transparent canvas. CAMERA: the viewer is south of the range and looks north from about 45 degrees above the ground. This is an oblique adventure-map view, neither front elevation nor overhead. Show connected southern cliff faces and partial side planes; northern slopes remain hidden behind the crest. Fuse all peaks into a single irregular geological mass using uninterrupted saddles, diagonal ridgelines, overlapping foothills, and one broad foreground wall. Remove the repeated-boulder appearance. No transparent cut, grass lane, or deep valley may split the range. Keep unequal peak heights and low broad ends suitable for overlapping another range sprite. LIGHT: sunlight comes from the southeast/lower-right, brightly striking southeast and right-facing planes; west and left-facing slopes stay in deep cool shadow; cast shadows fall northwest/upper-left. Hand-pixelled Heroes II-era storybook rock in charcoal, slate-grey and muted warm-grey, with sparse olive lichen only in cracks. Transparent outside the rock silhouette, no background or ground shelf.",
+      "endpoint": "create-image-pixflux",
+      "size": [192, 128],
+      "candidates": 3,
+      "seed": 98411,
+      "parameters": {
+        "negative_description": "separate mountains, detached rock piles, repeated boulders, isolated 2x1 formations, transparent gaps through the range, grass corridors, front elevation, side view, completely top-down, bird's-eye, isometric diamond, visible northern slopes, snow, volcano, trees, flowers, buildings, cave entrance, rectangular ground plate, landscape background, sky, horizon, text, UI, logo, watermark",
+        "text_guidance_scale": 15,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "highly detailed",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 175
+      },
+      "references": [{
+        "file": "assets/guides/rocky-mountain-backbone-compact-init.png",
+        "parameter": "init_image"
+      }]
+    }
+  ]
+}

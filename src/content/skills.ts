@@ -60,9 +60,9 @@ export const SKILLS: Record<SecondarySkillId, SkillDefinition> = {
     rank1Regen: 2, rank2Regen: 4, rank3Regen: 6, rank2ShrineChoices: 2,
   }, { guildmaster: 6 }),
   command: skill('command', 'Command', [
-    '+3 allied meter each round.',
-    '+6 allied meter each round.',
-    '+10 allied meter each round; stacks start at 20.',
+    '+3 allied morale each round.',
+    '+6 allied morale each round.',
+    '+10 allied morale each round; companies start at 20.',
   ], { rank1Meter: 3, rank2Meter: 6, rank3Meter: 10, startingMeter: 20 }, {
     banneret: 6,
   }),
@@ -98,7 +98,7 @@ export const SKILLS: Record<SecondarySkillId, SkillDefinition> = {
   ], {}, { guildmaster: 6 }),
   curseEater: skill('curseEater', 'Curse-Eater', [
     'Counters on your stacks decay by two.',
-    'Removed counters grant +5 meter each.',
+    'Removed counters grant +5 morale each.',
     'Redirect the first Hex or Burn applied to your army.',
   ], { decay: 2, meterPerCounter: 5 }),
   ritualist: skill('ritualist', 'Ritualist', [

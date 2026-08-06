@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/game-terrain-native-details-retry-1-candidates.html",
+  "requests": [
+    {
+      "id": "review:game-terrain:deepwood:micro-v2",
+      "assets": [
+        "review:game-terrain:deepwood:micro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/deepwood-micro",
+      "prompt": "Native 32x32 seamless opaque Deepwood terrain cell derived from the supplied same-size composition guide. dark wet old-forest floor, fine loam and moss dust beneath separate canopy props; one tiny cluster of two or three mushrooms occupying only 2–4 pixels total. Preserve the guide motif at exactly 2–5 pixels total; it may not exceed 4 pixels in either dimension. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 25169,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-deepwood-micro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:deepwood:macro-v2",
+      "assets": [
+        "review:game-terrain:deepwood:macro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/deepwood-macro",
+      "prompt": "Native 32x32 seamless opaque Deepwood terrain cell derived from the supplied same-size composition guide. dark wet old-forest floor, fine loam and moss dust beneath separate canopy props; one fallen branch lying flat across 8–14 pixels, narrow and ground-bound. Preserve the guide mark at 8–14 pixels long and at most 2 pixels thick; it may not grow, become upright, or fill the cell. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 566313,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-deepwood-macro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mosswold:micro-v2",
+      "assets": [
+        "review:game-terrain:mosswold:micro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/mosswold-micro",
+      "prompt": "Native 32x32 seamless opaque Mosswold terrain cell derived from the supplied same-size composition guide. ordinary green moss field with a subtle too-regular woven microtexture; one tiny pale mushroom cap cluster occupying only 2–4 pixels total. Preserve the guide motif at exactly 2–5 pixels total; it may not exceed 4 pixels in either dimension. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 225930,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mosswold-micro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mosswold:macro-v2",
+      "assets": [
+        "review:game-terrain:mosswold:macro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/mosswold-macro",
+      "prompt": "Native 32x32 seamless opaque Mosswold terrain cell derived from the supplied same-size composition guide. ordinary green moss field with a subtle too-regular woven microtexture; one shallow woven moss ridge spanning 8–14 pixels without becoming an object or wall. Preserve the guide mark at 8–14 pixels long and at most 2 pixels thick; it may not grow, become upright, or fill the cell. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 31298,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mosswold-macro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:ashsteppe:micro-v2",
+      "assets": [
+        "review:game-terrain:ashsteppe:micro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/ashsteppe-micro",
+      "prompt": "Native 32x32 seamless opaque Ashsteppe terrain cell derived from the supplied same-size composition guide. dry ochre-grey steppe grass with fine black ash beneath and low wind-combed blades; two tiny weathered animal-bone fragments occupying only 3–5 pixels total. Preserve the guide motif at exactly 2–5 pixels total; it may not exceed 4 pixels in either dimension. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 361659,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-ashsteppe-micro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:ashsteppe:macro-v2",
+      "assets": [
+        "review:game-terrain:ashsteppe:macro-v2"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details-retry/ashsteppe-macro",
+      "prompt": "Native 32x32 seamless opaque Ashsteppe terrain cell derived from the supplied same-size composition guide. dry ochre-grey steppe grass with fine black ash beneath and low wind-combed blades; one thin irregular ground crack spanning 8–14 pixels without glow or depth. Preserve the guide mark at 8–14 pixels long and at most 2 pixels thick; it may not grow, become upright, or fill the cell. One cell is roughly human-sized. Change only the marked pixels into the requested incidental detail; preserve the guide's field palette, motif footprint, placement, uniform edges and 32x32 scale. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No enlarged specimen, icon, focal object, border, path, gradient, text or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 690131,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, enlarged branch, thick crack, focal object, centered icon, palette replacement, tile border, gradient, vignette, banding, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 330
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-ashsteppe-macro-guide-v2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    }
+  ]
+}

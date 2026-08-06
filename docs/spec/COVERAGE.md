@@ -22,7 +22,7 @@ to the later rule or current data; they are not treated as silently dropped.
 | 03 HoMM3 confirmations | [`S00`](S00_OVERVIEW.md#the-game), [`S03`](S03_ADVENTURE.md#time-turns-and-loss), [`S04`](S04_COMBAT.md) |
 | 03 Combat frame | [`S04`](S04_COMBAT.md#battlefield-and-armies), [`S01`](S01_RATIONALE.md#target-scaling-law) |
 | 03 Luck | [`S04`](S04_COMBAT.md#deterministic-damage) |
-| 03 Morale meter | [`S04`](S04_COMBAT.md#meter-deterministic-morale) |
+| 03 Morale | [`S04`](S04_COMBAT.md#morale-deterministic) |
 | 03 Four resources | [`S07`](S07_ECONOMY.md#resources) |
 | 03 Primary skills | [`S04`](S04_COMBAT.md#deterministic-damage), [`S05`](S05_MAGIC.md#mana-and-casting), [`S06`](S06_HEROES.md#hero-model) |
 | 03 Draft | [`S06`](S06_HEROES.md#leveling-and-drafts) |

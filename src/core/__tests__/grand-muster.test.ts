@@ -6,7 +6,7 @@ import {
 } from '../../content/maps/grandMuster';
 import { FACTION_UNITS } from '../../content/units';
 import { lintMap } from '../../tools/mapLint';
-import { createGame } from '../game';
+import { apply, createGame } from '../game';
 import { moveHero } from '../game/exploration';
 import { castleEntrance, guardianAggroTiles } from '../map/occupancy';
 
@@ -73,6 +73,19 @@ describe('Grand Muster showcase', () => {
     expect(game.players.p2.heroes.map((hero) => hero.position)).toEqual(before);
     expect(game.players.p2.heroes.every((hero) => hero.movement === 0)).toBe(true);
     expect(game.activePlayer).toBe('p1');
+  });
+
+  it('switches heroes without cloning immutable map content', () => {
+    const game = createGame({ seed: 79, mapId: 'grand-muster', p1: 'human', p2: 'ai' });
+    const originalHeroId = game.players.p1.activeHeroId;
+    const targetHeroId = game.players.p1.heroes.find((hero) => hero.id !== originalHeroId)!.id;
+    const next = apply(game, { type: 'SELECT_HERO', heroId: targetHeroId });
+    expect(next).not.toBe(game);
+    expect(next.map).toBe(game.map);
+    expect(next.castles).toBe(game.castles);
+    expect(next.players.p1).not.toBe(game.players.p1);
+    expect(next.players.p1.activeHeroId).toBe(targetHeroId);
+    expect(game.players.p1.activeHeroId).toBe(originalHeroId);
   });
 
 });

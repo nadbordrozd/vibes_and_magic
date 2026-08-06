@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/mountain-rocky-native-family-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:rocky-knoll-1",
+      "assets": ["decoration:mountain:rocky-knoll-1"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/knoll-1",
+      "prompt": "Rework this broad twin-crowned obstacle as one connected rocky mountain knoll for a Heroes II-style adventure map. Preserve the high-oblique top-down silhouette, uneven crowns, broad horizontal contact band, and low self-terminating ends. Use weathered charcoal, slate-grey, and muted warm-grey rock planes with deep cool crevices, sparse olive lichen only in cracks, and lower-right light. It must read as a substantial impassable range segment rather than a freestanding peak. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [64, 64],
+      "candidates": 2,
+      "seed": 97831,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single conical peak, volcano, snow, grass-covered hill, trees, flowers, isolated pebbles, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-knoll-1.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-knoll-2",
+      "assets": ["decoration:mountain:rocky-knoll-2"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/knoll-2",
+      "prompt": "Rework this low saddle-backed obstacle as one connected rocky mountain knoll for a Heroes II-style adventure map. Preserve the high-oblique top-down camera, asymmetric shoulders, shallow central saddle, broad horizontal contact band, and tapered ends. Use layered charcoal and slate-grey stone, muted warm-grey highlights, deep cool cracks, sparse olive lichen only in crevices, and lower-right light. It must join neighboring mountain pieces naturally and not read as an isolated peak. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [64, 64],
+      "candidates": 2,
+      "seed": 97841,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single conical peak, volcano, snow, grass-covered hill, trees, flowers, isolated pebbles, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-knoll-2.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-knoll-3",
+      "assets": ["decoration:mountain:rocky-knoll-3"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/knoll-3",
+      "prompt": "Rework this long stepped obstacle as one connected rocky mountain knoll for a Heroes II-style adventure map. Preserve its high-oblique top-down view, descending shelves, broad horizontal ground contact, and very low tapered ends. Use weathered charcoal, slate-grey, and muted warm-grey ledges with deep cool gullies, a trace of olive lichen in cracks, and lower-right light. It must overlap into a continuous range rather than look like one pasted summit. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [64, 64],
+      "candidates": 2,
+      "seed": 97851,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single conical peak, volcano, snow, grass-covered hill, trees, flowers, isolated pebbles, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-knoll-3.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-knoll-4",
+      "assets": ["decoration:mountain:rocky-knoll-4"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/knoll-4",
+      "prompt": "Rework this broad asymmetric shoulder as one connected rocky mountain knoll for a Heroes II-style adventure map. Preserve the high-oblique top-down footprint, offset crown, wide contact band, and low irregular ends. Use fractured charcoal and slate-grey rock, muted warm-grey upper planes, dark cool fissures, sparse olive lichen only in sheltered cracks, and lower-right light. It must serve as a joinable range segment, not a centered landmark peak. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [64, 64],
+      "candidates": 2,
+      "seed": 97861,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single conical peak, volcano, snow, grass-covered hill, trees, flowers, isolated pebbles, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-knoll-4.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-ridge-1",
+      "assets": ["decoration:mountain:rocky-ridge-1"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/ridge-1",
+      "prompt": "Rework this broad folded obstacle as one connected rocky mountain ridge for a Heroes II-style adventure map. Preserve its high-oblique top-down camera, irregular three-cell-wide footprint, overlapping crowns, deep foreground slopes, horizontal contact band, and low self-terminating ends. Use weathered charcoal and slate-grey rock faces, muted warm-grey lit planes, deep cool ravines, sparse olive lichen in crevices, and lower-right light. It must read as a joinable range section, not a standalone alpine peak. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 96],
+      "candidates": 2,
+      "seed": 97871,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single centered peak, volcano, snow, green hill, trees, flowers, detached rocks, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-ridge-1.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-ridge-2",
+      "assets": ["decoration:mountain:rocky-ridge-2"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/ridge-2",
+      "prompt": "Rework this horseshoe obstacle as one connected rocky mountain ridge for a Heroes II-style adventure map. Preserve its high-oblique top-down view, rear saddle, offset crowns, broad foreground apron, three-cell contact band, and low self-terminating sides. Use fractured charcoal and slate-grey stone, warm-grey lower-right highlights, cool dark folds, very sparse olive lichen, and no snow. It must fill an area and overlap with neighboring ridges naturally rather than read as a single pasted mountain. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 96],
+      "candidates": 2,
+      "seed": 97881,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single centered peak, volcano, snow, green hill, trees, flowers, detached rocks, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-ridge-2.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-ridge-3",
+      "assets": ["decoration:mountain:rocky-ridge-3"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/ridge-3",
+      "prompt": "Rework this long diagonal hogback obstacle as one connected rocky mountain ridge for a Heroes II-style adventure map. Preserve its high-oblique top-down view, offset shelves, long descending spine, broad foreground slope, three-cell contact band, and tapered ends. Use rugged charcoal and slate-grey rock, muted warm-grey shelves, deep cool gullies, sparse olive lichen, and lower-right light. It must create directional variety inside a continuous range without becoming a rectangular strip. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 96],
+      "candidates": 2,
+      "seed": 97891,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single centered peak, volcano, snow, green hill, trees, flowers, detached rocks, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-ridge-3.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-ridge-4",
+      "assets": ["decoration:mountain:rocky-ridge-4"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/ridge-4",
+      "prompt": "Rework this irregular three-lobed obstacle as one connected rocky mountain ridge for a Heroes II-style adventure map. Preserve its high-oblique top-down footprint, uneven rear crowns, broad lower apron, three-cell contact band, and self-terminating ends. Use weathered charcoal, slate-grey, and muted warm-grey rock planes with deep cool clefts, sparse olive lichen, and lower-right light. It must overlap into a larger mountain mass without a pasted base or obvious repeated peak. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 96],
+      "candidates": 2,
+      "seed": 97901,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single centered peak, volcano, snow, green hill, trees, flowers, detached rocks, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-ridge-4.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-massif-1",
+      "assets": ["decoration:mountain:rocky-massif-1"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/massif-1",
+      "prompt": "Rework this broad many-crowned obstacle as one connected rocky mountain massif for a Heroes II-style adventure map. Preserve its high-oblique top-down silhouette, uneven back crowns, overlapping foreground slopes, wide branching contact, and low irregular ends. Use craggy charcoal and slate-grey faces, muted warm-grey lit ridges, cool deep valleys, sparse olive lichen, and lower-right light. This is a rare centre of mass within a composed range, never a single centered landmark or scenery plate. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [160, 112],
+      "candidates": 2,
+      "seed": 97911,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single centered peak, volcano, snow, green hill, trees, flowers, detached rocks, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-massif-1.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:rocky-massif-2",
+      "assets": ["decoration:mountain:rocky-massif-2"],
+      "output": ".pixel-work/pixelgen/mountain-rocky-native-family/massif-2",
+      "prompt": "Rework this long branching obstacle as one connected rocky mountain massif for a Heroes II-style adventure map. Preserve its asymmetric high-oblique top-down silhouette, offset crowns, long foreground spur, wide contact, and low self-terminating ends. Use fractured charcoal and slate-grey stone, muted warm-grey upper planes, deep cool ravines, sparse olive lichen, and lower-right light. This rare piece must disappear into overlapping neighboring ridges instead of reading as one repeated sticker. Transparent background; exact native pixel-art canvas.",
+      "endpoint": "create-image-pixflux",
+      "size": [160, 112],
+      "candidates": 2,
+      "seed": 97921,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, single centered peak, volcano, snow, green hill, trees, flowers, detached rocks, rectangular ground plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 195
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-massif-2.png",
+        "parameter": "init_image"
+      }]
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a1-tiles-1-candidates.html",
+  "requests": [
+    {
+      "id": "terrain:meadow:default:0",
+      "assets": [
+        "terrain:meadow:default:0"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-meadow-default-0",
+      "prompt": "Native 32x32 seamless square terrain tile: quiet warm-green medieval meadow ground with short straw-green grass and tiny earth flecks. Variant cue: fine diagonal blade clusters. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 803158,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-meadow-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:meadow:default:1",
+      "assets": [
+        "terrain:meadow:default:1"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-meadow-default-1",
+      "prompt": "Native 32x32 seamless square terrain tile: quiet warm-green medieval meadow ground with short straw-green grass and tiny earth flecks. Variant cue: sparse umber soil pinpricks. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 480777,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-meadow-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:meadow:default:2",
+      "assets": [
+        "terrain:meadow:default:2"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-meadow-default-2",
+      "prompt": "Native 32x32 seamless square terrain tile: quiet warm-green medieval meadow ground with short straw-green grass and tiny earth flecks. Variant cue: subtle wind-flattened grass weave. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 547920,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-meadow-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:deepwood:default:0",
+      "assets": [
+        "terrain:deepwood:default:0"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-deepwood-default-0",
+      "prompt": "Native 32x32 seamless square terrain tile: quiet continuous dark Deepwood forest floor, ordinary damp umber-green loam and low moss dust beneath separate tall canopy decorations; no visible roots, plants, leaves, flowers or branches. Variant cue: fine moss-dark grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 202412,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-deepwood-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:deepwood:default:1",
+      "assets": [
+        "terrain:deepwood:default:1"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-deepwood-default-1",
+      "prompt": "Native 32x32 seamless square terrain tile: quiet continuous dark Deepwood forest floor, ordinary damp umber-green loam and low moss dust beneath separate tall canopy decorations; no visible roots, plants, leaves, flowers or branches. Variant cue: nearly featureless damp loam with tiny charcoal grains. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 77211,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-deepwood-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "terrain:deepwood:default:2",
+      "assets": [
+        "terrain:deepwood:default:2"
+      ],
+      "output": ".pixel-work/pixelgen/a1-tiles/terrain-deepwood-default-2",
+      "prompt": "Native 32x32 seamless square terrain tile: quiet continuous dark Deepwood forest floor, ordinary damp umber-green loam and low moss dust beneath separate tall canopy decorations; no visible roots, plants, leaves, flowers or branches. Variant cue: subdued moss-dark leaf dust reduced to irregular one-pixel fragments. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. High-oblique 65-degree material read inside a flat square cell; uniform whole-tile illumination and edge values. Quiet continuous low-contrast field, mostly one material and 5–7 closely related colours; no distinct cluster larger than 3 pixels. Fill every pixel opaquely. No flowers, berries, bright dots, separate plants, transparency, gradient, vignette, pink, magenta or red accents, border, row, column, checkerboard, large focal motif, object, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 77231,
+      "parameters": {
+        "negative_description": "transparent pixels, empty background, isolated icon, tile border, top-to-bottom lighting gradient, horizontal band, vertical band, repeated row, scenery, flowers, berries, red dots, pink pixels, magenta pixels, yellow dots, bouquets, large tufts, circular plant clumps",
+        "text_guidance_scale": 10,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 220
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-deepwood-base.png",
+          "parameter": "init_image"
+        }
+      ]
+    }
+  ]
+}

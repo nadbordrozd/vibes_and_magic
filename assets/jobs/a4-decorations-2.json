@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a4-decorations-2-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:hush:frozen-pond",
+      "assets": [
+        "decoration:hush:frozen-pond"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-hush-frozen-pond",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable frozen pond terrain decoration for hush. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 168508,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:lacquerFlats:grain-lines",
+      "assets": [
+        "decoration:lacquerFlats:grain-lines"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-lacquerFlats-grain-lines",
+      "prompt": "Native 32x32 transparent adventure-map sprite of three short thin parallel scratches lying flat on lacquered stone. Keep it low and ground-bound with transparent space around it. It is a terrain mark or fallen material, not an upright object, building, sign, tool, plant, fence, plinth, icon or pickup. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 86120,
+      "parameters": {
+        "negative_description": "empty image, upright object, building, sign, tool, fence, pedestal, plinth, square ground tile, scenery, text, UI, logo, watermark, glow",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": true,
+        "init_image_strength": 300
+      },
+      "references": [
+        {
+          "file": "assets/guides/a4-lacquer-grain-lines.png",
+          "parameter": "init_image"
+        }
+      ]
+    },
+    {
+      "id": "decoration:lacquerFlats:paint-flecks",
+      "assets": [
+        "decoration:lacquerFlats:paint-flecks"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-lacquerFlats-paint-flecks",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable paint flecks terrain decoration for lacquer Flats. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 264016,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:meadow:beehive",
+      "assets": [
+        "decoration:meadow:beehive"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-meadow-beehive",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable beehive terrain decoration for meadow. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 356917,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:meadow:butterfly",
+      "assets": [
+        "decoration:meadow:butterfly"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-meadow-butterfly",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable butterfly terrain decoration for meadow. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 734976,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:meadow:cart-ruts",
+      "assets": [
+        "decoration:meadow:cart-ruts"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-meadow-cart-ruts",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable cart ruts terrain decoration for meadow. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 783286,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:meadow:flowers-blue",
+      "assets": [
+        "decoration:meadow:flowers-blue"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-meadow-flowers-blue",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable flowers blue terrain decoration for meadow. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 751738,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

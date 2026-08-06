@@ -53,7 +53,7 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
   }, [], { logistics: 1 }),
   osric: hero('osric', 'Osric', 'hearthguard', 'banneret', {
     id: 'highBanner',
-    description: 'Bannerman auras grant +15 meter.',
+    description: 'Bannerman auras grant +15 morale.',
     values: { meter: 15 },
   }),
   petra: hero('petra', 'Petra', 'woundWrights', 'guildmaster', {
@@ -113,7 +113,7 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
     id: 'farSweep', description: 'Besom Riders push targets 2 hexes.', values: { distance: 2 },
   }),
   temir: hero('temir', 'Temir', 'wildergrass', 'ashrider', {
-    id: 'dearerBloodPrice', description: 'Blood Price grants 25 meter instead of 20.', values: { meter: 25 },
+    id: 'dearerBloodPrice', description: 'Blood Price grants 25 morale instead of 20.', values: { meter: 25 },
   }),
   saiga: hero('saiga', 'Saiga', 'wildergrass', 'ashrider', {
     id: 'hungryPack', description: "Ashmane Wolves' Pack Hunger deals 25% more damage.", values: { multiplier: 1.25 },
@@ -125,7 +125,7 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
     id: 'unhinderedSkirmish', description: 'Outrider skirmish movement ignores speed and adjacency slows.', values: {},
   }),
   edwin: hero('edwin', 'Edwin', 'hearthguard', 'banneret', {
-    id: 'kennelMuster', description: 'Garrisons Edwin installs gain +5 meter each round.', values: { meter: 5 },
+    id: 'kennelMuster', description: 'Garrisons Edwin installs gain +5 morale each round.', values: { meter: 5 },
   }),
   maud: hero('maud', 'Maud', 'hearthguard', 'banneret', {
     id: 'brightTrial', description: 'Trial always resolves as its + face.', values: {},

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/mountain-grassy-native-ridges-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:granite-ridge-1",
+      "assets": ["decoration:mountain:granite-ridge-1"],
+      "output": ".pixel-work/pixelgen/grassy-mountain-native-probe-v2/folded-ridge",
+      "prompt": "Rework this broad mountain ridge as a dense green landform. Keep the same wide irregular footprint, overlapping crowns, high oblique top-down camera, and low self-terminating left and right ends. Cover most upper planes and slopes with rich meadow-green and olive turf, cut by deep forest-green folds and sparse warm tan rock ribs. It must read as one tall impassable mountain ridge, green first and stone second, in warm HoMM2-era storybook pixel art. Light comes from the lower right and internal shadows fall upper left. Keep the transparent background and clean horizontal ground contact.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 96],
+      "candidates": 2,
+      "seed": 96810,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, bare grey alpine mountain, snow, isolated rocks, flowers, trees, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 210
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-ridge-1.png",
+        "parameter": "init_image"
+      }]
+    },
+    {
+      "id": "decoration:mountain:granite-ridge-2",
+      "assets": ["decoration:mountain:granite-ridge-2"],
+      "output": ".pixel-work/pixelgen/grassy-mountain-native-probe-v2/horseshoe-ridge",
+      "prompt": "Rework this mountain ridge as a low horseshoe-shaped green landform. Keep its broad area-filling footprint, high oblique top-down camera, rear saddle, foreground slopes, and low self-terminating ends. Cover most planes with bright meadow-green and olive turf, use dark forest-green folds to show depth, and expose only a few muted beige stone seams. It must read as one tall impassable mountain ridge, green first and stone second, in warm HoMM2-era storybook pixel art. Light comes from the lower right and internal shadows fall upper left. Keep the transparent background and clean horizontal ground contact.",
+      "endpoint": "create-image-pixflux",
+      "size": [96, 96],
+      "candidates": 2,
+      "seed": 96820,
+      "parameters": {
+        "negative_description": "isometric, diamond ground, bare grey alpine mountain, snow, isolated rocks, flowers, trees, dirt plate, landscape, horizon, cave, building, flag, text, UI, logo, watermark",
+        "text_guidance_scale": 13,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true,
+        "init_image_strength": 210
+      },
+      "references": [{
+        "file": "assets/guides/grassy-mountain-native-init/mountain-granite-ridge-2.png",
+        "parameter": "init_image"
+      }]
+    }
+  ]
+}

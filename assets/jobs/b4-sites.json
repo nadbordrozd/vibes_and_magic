@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b4-sites-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:barrowField:default",
+      "assets": [
+        "map-object:barrowField:default"
+      ],
+      "output": ".pixel-work/pixelgen/b4-sites/map-object-barrowField-default",
+      "prompt": "Native 32x64 transparent adventure-map sprite of one compact pale barrow mound with a single dark foreground mouth. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. The foreground visit point must be visually obvious without an emblem ring or ground plinth. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        64
+      ],
+      "candidates": 2,
+      "seed": 207662,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:manaSpring:default",
+      "assets": [
+        "map-object:manaSpring:default"
+      ],
+      "output": ".pixel-work/pixelgen/b4-sites/map-object-manaSpring-default",
+      "prompt": "Native 32x48 transparent adventure-map sprite of an ordinary stone mana-spring basin with restrained strange water. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. The foreground visit point must be visually obvious without an emblem ring or ground plinth. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 100305,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:shrine:craft",
+      "assets": [
+        "map-object:shrine:craft"
+      ],
+      "output": ".pixel-work/pixelgen/b4-sites/map-object-shrine-craft",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small raised craft school roadside shrine. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. The foreground visit point must be visually obvious without an emblem ring or ground plinth. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 592835,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:shrine:grave",
+      "assets": [
+        "map-object:shrine:grave"
+      ],
+      "output": ".pixel-work/pixelgen/b4-sites/map-object-shrine-grave",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small raised grave school roadside shrine. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. The foreground visit point must be visually obvious without an emblem ring or ground plinth. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 212084,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:shrine:rite",
+      "assets": [
+        "map-object:shrine:rite"
+      ],
+      "output": ".pixel-work/pixelgen/b4-sites/map-object-shrine-rite",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small raised rite school roadside shrine. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. The foreground visit point must be visually obvious without an emblem ring or ground plinth. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 184789,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:shrine:wild",
+      "assets": [
+        "map-object:shrine:wild"
+      ],
+      "output": ".pixel-work/pixelgen/b4-sites/map-object-shrine-wild",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small raised wild school roadside shrine. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. The foreground visit point must be visually obvious without an emblem ring or ground plinth. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 699587,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:waystation:default",
+      "assets": [
+        "map-object:waystation:default"
+      ],
+      "output": ".pixel-work/pixelgen/b4-sites/map-object-waystation-default",
+      "prompt": "Native 32x64 transparent adventure-map sprite of a narrow roofed traveller waystation with a foreground doorway. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. The foreground visit point must be visually obvious without an emblem ring or ground plinth. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        64
+      ],
+      "candidates": 2,
+      "seed": 164278,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

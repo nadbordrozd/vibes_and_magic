@@ -224,4 +224,15 @@ describe('Phase B six-faction content', () => {
     expect(relocated.stacks.find((stack) => stack.id === hut.id)?.position).not.toEqual(before);
     expect(spellManaCost(state, 'attacker', state.attackerHero, 'wither')).toBe(2);
   });
+
+  it('gives opposing Leshies separate home-ground thickets', () => {
+    const state = battle(
+      [{ unitId: 'leshy', count: 1 }],
+      [{ unitId: 'leshy', count: 1 }],
+    );
+    const thickets = state.tiles.filter((tile) => tile.type === 'thicket');
+    expect(thickets).toHaveLength(4);
+    expect(new Set(thickets.map((tile) => `${tile.position.x},${tile.position.y}`)).size)
+      .toBe(4);
+  });
 });

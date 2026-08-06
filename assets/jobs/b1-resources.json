@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b1-resources-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:pile:gold",
+      "assets": [
+        "map-object:pile:gold"
+      ],
+      "output": ".pixel-work/pixelgen/b1-resources/map-object-pile-gold",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a compact pickup pile of gold. Use a strong simple material silhouette with generous transparent padding and no ground patch. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 189314,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:pile:timber",
+      "assets": [
+        "map-object:pile:timber"
+      ],
+      "output": ".pixel-work/pixelgen/b1-resources/map-object-pile-timber",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a compact pickup pile of timber. Use a strong simple material silhouette with generous transparent padding and no ground patch. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 551663,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:pile:iron",
+      "assets": [
+        "map-object:pile:iron"
+      ],
+      "output": ".pixel-work/pixelgen/b1-resources/map-object-pile-iron",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a compact pickup pile of iron. Use a strong simple material silhouette with generous transparent padding and no ground patch. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 125858,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:pile:essence",
+      "assets": [
+        "map-object:pile:essence"
+      ],
+      "output": ".pixel-work/pixelgen/b1-resources/map-object-pile-essence",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a compact pickup pile of essence. Use a strong simple material silhouette with generous transparent padding and no ground patch. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 741438,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:chest:default",
+      "assets": [
+        "map-object:chest:default"
+      ],
+      "output": ".pixel-work/pixelgen/b1-resources/map-object-chest-default",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a closed practical timber treasure chest with iron bands. Use a strong simple material silhouette with generous transparent padding and no ground patch. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 697768,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

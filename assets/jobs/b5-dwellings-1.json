@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b5-dwellings-1-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:dwelling:ashmaneWolves",
+      "assets": [
+        "map-object:dwelling:ashmaneWolves"
+      ],
+      "output": ".pixel-work/pixelgen/b5-dwellings/map-object-dwelling-ashmaneWolves",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small recruitable Ashmane Wolves dwelling built from ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. It must read as a building rather than a unit icon, bowl, emblem or miniature creature. Draw one foreground doorway on the bottom contact tile. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 110251,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:dwelling:bannerman",
+      "assets": [
+        "map-object:dwelling:bannerman"
+      ],
+      "output": ".pixel-work/pixelgen/b5-dwellings/map-object-dwelling-bannerman",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small recruitable Bannerman dwelling built from warm red and cream wool, wrought iron, modest gold heraldry, upright shields and pennants. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. It must read as a building rather than a unit icon, bowl, emblem or miniature creature. Draw one foreground doorway on the bottom contact tile. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 136314,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:dwelling:besomRiders",
+      "assets": [
+        "map-object:dwelling:besomRiders"
+      ],
+      "output": ".pixel-work/pixelgen/b5-dwellings/map-object-dwelling-besomRiders",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small recruitable Besom Riders dwelling built from white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. It must read as a building rather than a unit icon, bowl, emblem or miniature creature. Draw one foreground doorway on the bottom contact tile. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 213943,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:dwelling:candleWisps",
+      "assets": [
+        "map-object:dwelling:candleWisps"
+      ],
+      "output": ".pixel-work/pixelgen/b5-dwellings/map-object-dwelling-candleWisps",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small recruitable Candle-Wisps dwelling built from ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. It must read as a building rather than a unit icon, bowl, emblem or miniature creature. Draw one foreground doorway on the bottom contact tile. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 533687,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:dwelling:couriers",
+      "assets": [
+        "map-object:dwelling:couriers"
+      ],
+      "output": ".pixel-work/pixelgen/b5-dwellings/map-object-dwelling-couriers",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small recruitable Couriers dwelling built from ash-white funeral linen, bone, ordinary candle-gold and grave goods, gentle hollow drapery. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. It must read as a building rather than a unit icon, bowl, emblem or miniature creature. Draw one foreground doorway on the bottom contact tile. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 660200,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:dwelling:crowChorus",
+      "assets": [
+        "map-object:dwelling:crowChorus"
+      ],
+      "output": ".pixel-work/pixelgen/b5-dwellings/map-object-dwelling-crowChorus",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small recruitable Crow Chorus dwelling built from white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. It must read as a building rather than a unit icon, bowl, emblem or miniature creature. Draw one foreground doorway on the bottom contact tile. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 742485,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:dwelling:drumCallers",
+      "assets": [
+        "map-object:dwelling:drumCallers"
+      ],
+      "output": ".pixel-work/pixelgen/b5-dwellings/map-object-dwelling-drumCallers",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a small recruitable Drum-Callers dwelling built from ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. It must read as a building rather than a unit icon, bowl, emblem or miniature creature. Draw one foreground doorway on the bottom contact tile. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 252772,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

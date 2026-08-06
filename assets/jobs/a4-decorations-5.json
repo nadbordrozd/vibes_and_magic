@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a4-decorations-5-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:granite-ridge-4",
+      "assets": [
+        "decoration:mountain:granite-ridge-4"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-ridge-4",
+      "prompt": "Native 96x32 transparent adventure-map sprite of a small passable granite ridge 4 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        96,
+        32
+      ],
+      "candidates": 2,
+      "seed": 844652,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-1",
+      "assets": [
+        "decoration:mountain:granite-scatter-1"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-scatter-1",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable granite scatter 1 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 22070,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-2",
+      "assets": [
+        "decoration:mountain:granite-scatter-2"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-scatter-2",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable granite scatter 2 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 344451,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-3",
+      "assets": [
+        "decoration:mountain:granite-scatter-3"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-scatter-3",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable granite scatter 3 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 666832,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-4",
+      "assets": [
+        "decoration:mountain:granite-scatter-4"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-scatter-4",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable granite scatter 4 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 210165,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-5",
+      "assets": [
+        "decoration:mountain:granite-scatter-5"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-scatter-5",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable granite scatter 5 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 532546,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:granite-scatter-6",
+      "assets": [
+        "decoration:mountain:granite-scatter-6"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-granite-scatter-6",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable granite scatter 6 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 854927,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

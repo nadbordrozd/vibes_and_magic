@@ -39,7 +39,7 @@ catalog percentages and adds one seeded scroll to weekly stock. Kit pieces canno
 Dwellings accumulate weekly growth and do not discard unbought recruits. Castle recruitment pays
 the unit’s resource cost and adds to a visiting hero first, otherwise to the garrison. Compatible
 stacks merge, and seven-slot capacity is enforced. Neutral/faction map dwellings replenish at their
-authored rate and allow cross-faction recruitment; mixed armies retain their combat meter penalty.
+authored rate and allow cross-faction recruitment; mixed armies retain their combat morale penalty.
 
 Difficulty and Week of Plenty modify growth at the weekly boundary, rounded down. Faction buildings
 and artifacts hook the same generic calculation. Dormant buildings produce no growth; a Dormant AI

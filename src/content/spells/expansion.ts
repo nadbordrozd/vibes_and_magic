@@ -23,9 +23,9 @@ export const EXPANSION_SPELLS: SpellDefinition[] = [
   spell('feastDay', 'Feast Day', 'rite', 6, 'adventure',
     'All towns gain 25% growth this week.', 'Also gain 500 gold per town.', 'self'),
   spell('clarion', 'Clarion', 'rite', 4, 'staple',
-    'Set an ally meter to 80.', 'Set it to 100.', 'strongestAlly'),
+    'Set an ally’s morale to 80.', 'Set it to 100.', 'strongestAlly'),
   spell('vigilOfTheHost', 'Vigil of the Host', 'rite', 5, 'enchantment',
-    'Lowest-meter ally gains 15 each round.', 'Two lowest allies gain 15.', 'enchantmentSlot', 'round1'),
+    'Lowest-morale ally gains 15 each round.', 'Two lowest allies gain 15.', 'enchantmentSlot', 'round1'),
   spell('oathbind', 'Oathbind', 'rite', 5, 'build-around',
     'Enemy receives no effects for 2 rounds.', '3 rounds and loses abilities.', 'strongestEnemy', 'always', undefined, 'rare'),
   spell('waysideShrine', 'Wayside Shrine', 'rite', 5, 'adventure',
@@ -93,7 +93,7 @@ export const EXPANSION_SPELLS: SpellDefinition[] = [
   spell('shedSkin', 'Shed Skin', 'wild', 4, 'staple',
     'Remove one active effect; gain equal Bloom.', 'May target an enemy and spread Bloom nearby.', 'weakestAlly'),
   spell('hedgerowMarch', 'Hedgerow March', 'wild', 5, 'enchantment',
-    'Forced movement grants allies 10 meter.', 'It also grants Bloom 1.', 'enchantmentSlot', 'round1'),
+    'Forced movement grants allies 10 morale.', 'It also grants Bloom 1.', 'enchantmentSlot', 'round1'),
 
   spell('hourglassCrack', 'Hourglass Crack', 'craft', 6, 'build-around',
     'Target acts twice this round and skips next.', 'Choose which future round it skips.', 'strongestAlly', 'always', undefined, 'rare'),
@@ -102,5 +102,5 @@ export const EXPANSION_SPELLS: SpellDefinition[] = [
   spell('echo', 'Echo', 'rite', 4, 'build-around',
     'Recast the last spell at your Spell Power.', 'Resolve its + face.', 'self', 'always', undefined, 'rare'),
   spell('loyalUntoDeath', 'Loyal Unto Death', 'grave', 4, 'build-around',
-    'Ally attacks its killer when destroyed.', 'No meter drain and restore 3 mana.', 'strongestAlly', 'always', undefined, 'rare'),
+    'Ally attacks its killer when destroyed.', 'No morale drain and restore 3 mana.', 'strongestAlly', 'always', undefined, 'rare'),
 ];

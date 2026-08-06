@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Run and log the Hearthguard/Wound-Wrights flagship reference experiments; replace the broad phase reference with the winning protocol before production",
+  "contact_sheet": "assets/jobs/d5-hagwood-roster-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:crowChorus",
+      "assets": [
+        "battle-unit:crowChorus"
+      ],
+      "output": ".pixel-work/pixelgen/d5-hagwood-roster/battle-unit-crowChorus",
+      "prompt": "Native 128x128 transparent static battle sprite of Crow Chorus. They know your name and use it against you in the old grammar. Materials: white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 192846,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:fencePostFamiliars",
+      "assets": [
+        "battle-unit:fencePostFamiliars"
+      ],
+      "output": ".pixel-work/pixelgen/d5-hagwood-roster/battle-unit-fencePostFamiliars",
+      "prompt": "Native 128x128 transparent static battle sprite of Fence-Post Familiars. The fence marks where the wood begins. The wood begins wherever the fence is standing. Materials: white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 150966,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:besomRiders",
+      "assets": [
+        "battle-unit:besomRiders"
+      ],
+      "output": ".pixel-work/pixelgen/d5-hagwood-roster/battle-unit-besomRiders",
+      "prompt": "Native 128x128 transparent static battle sprite of Besom Riders. Sweeping is women's work, the villages said. So the wood sends its women sweeping. Materials: white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 730302,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:rusalka",
+      "assets": [
+        "battle-unit:rusalka"
+      ],
+      "output": ".pixel-work/pixelgen/d5-hagwood-roster/battle-unit-rusalka",
+      "prompt": "Native 128x128 transparent static battle sprite of Rusalka. Her song is an invitation. The invitation is not declinable. Materials: white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 637986,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:leshy",
+      "assets": [
+        "battle-unit:leshy"
+      ],
+      "output": ".pixel-work/pixelgen/d5-hagwood-roster/battle-unit-leshy",
+      "prompt": "Native 128x128 transparent static battle sprite of Leshy. Count your steps in his wood. He counts them too, differently. Materials: white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 35902,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:walkingHut",
+      "assets": [
+        "battle-unit:walkingHut"
+      ],
+      "output": ".pixel-work/pixelgen/d5-hagwood-roster/battle-unit-walkingHut",
+      "prompt": "Native 192x128 transparent static battle sprite of The Walking Hut. The house does the Crone's visiting for her. It has excellent legs and no manners. Materials: white birch, black wicker, bone fence and crow feather with restrained berry red, crooked asymmetry. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        192,
+        128
+      ],
+      "candidates": 2,
+      "seed": 197783,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    }
+  ]
+}

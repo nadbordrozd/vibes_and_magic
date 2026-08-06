@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/landscape-cute-style-probe-candidates.html",
+  "requests": [
+    {
+      "id": "review:landscape:cute-castle",
+      "assets": ["review:landscape:cute-castle"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/landscape-cute-generate-v2/castle",
+      "prompt": "One freestanding cute fortified manor built from cream stone, with three round towers, bare red conical tile roofs, and a central arched gate. Warm hand-painted 1990s storybook pixel art. Front-facing oblique view with a little roof visible. Bright warm light hits right walls; left walls are dark. Only masonry and roofs on transparency. No poles, finials, flags, banners, plants, ground, or platform.",
+      "endpoint": "generate-image-v2",
+      "size": [96, 128],
+      "candidates": 2,
+      "seed": 94120,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "decoration:mountain:granite-massif-1",
+      "assets": ["decoration:mountain:granite-massif-1"],
+      "output": ".pixel-work/pixelgen/landscape-cute-pixflux-2/mountain",
+      "prompt": "An isolated sprite of one broad connected grey mountain ridge with four unequal overlapping peaks, in warm hand-painted 1990s storybook pixel art. Oblique view with rocky front slopes visible. Bright light hits right-facing rock planes; left faces are dark; shadow falls up-left. Rock pixels meet transparency directly. No snow, vegetation, ground patch, platform, cave, or diamond.",
+      "endpoint": "create-image-pixflux",
+      "size": [160, 112],
+      "candidates": 3,
+      "seed": 94220,
+      "parameters": {
+        "negative_description": "single pyramid, isometric diamond, grass base, snow, trees, text",
+        "text_guidance_scale": 7,
+        "outline": "selective outline",
+        "shading": "detailed shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true
+      }
+    },
+    {
+      "id": "review:landscape:cute-hero",
+      "assets": ["review:landscape:cute-hero"],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/landscape-cute-pixflux/hero",
+      "prompt": "A cute mounted knight hero for a 1990s storybook fantasy adventure map: one complete small brown horse and one rider in red and cream with a steel cap and round shield. The horse faces south toward the viewer in an oblique map view. Sunlight comes from the lower right. Transparent background, with no flag, ground plate, or scenery.",
+      "endpoint": "create-image-pixflux",
+      "size": [32, 48],
+      "candidates": 3,
+      "seed": 94320,
+      "parameters": {
+        "negative_description": "flag, base plate, scenery, text",
+        "text_guidance_scale": 7,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "low top-down",
+        "direction": "south",
+        "isometric": false,
+        "no_background": true
+      }
+    }
+  ]
+}

@@ -28,7 +28,7 @@ The experience has three connected loops:
    heroes through offer-shaped drafts, and assemble a spellbook and equipment loadout from what the
    seed exposes.
 3. **Combat:** command up to seven stacks on a deterministic 13×9 hex field, using movement,
-   attacks, one hero act per round, counters, enchantments, terrain, and a meter that converts
+   attacks, one hero act per round, counters, enchantments, terrain, and deterministic morale that converts
    battlefield events into occasional extra actions.
 
 ## Non-negotiable identity
@@ -68,7 +68,7 @@ in [`../INDEX.md`](../INDEX.md).
   performance invariants.
 - [`S03_ADVENTURE.md`](S03_ADVENTURE.md): time, movement, terrain, occupancy, objects, towns,
   victory, boats, and water.
-- [`S04_COMBAT.md`](S04_COMBAT.md): battle sequence, damage, luck, meter, wide stacks, sieges,
+- [`S04_COMBAT.md`](S04_COMBAT.md): battle sequence, damage, luck, morale, wide stacks, sieges,
   retreat, surrender, and proportionality.
 - [`S05_MAGIC.md`](S05_MAGIC.md): schools, casting, counters, enchantments, twisters, resonance,
   adventure magic, bargains, and Debts.

@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Run and log the Hearthguard/Wound-Wrights flagship reference experiments; replace the broad phase reference with the winning protocol before production",
+  "contact_sheet": "assets/jobs/d6-wildergrass-roster-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:outriders",
+      "assets": [
+        "battle-unit:outriders"
+      ],
+      "output": ".pixel-work/pixelgen/d6-wildergrass-roster/battle-unit-outriders",
+      "prompt": "Native 128x128 transparent static battle sprite of Outriders. Strike, laugh, gone. The steppe teaches exits. Materials: ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 265881,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:drumCallers",
+      "assets": [
+        "battle-unit:drumCallers"
+      ],
+      "output": ".pixel-work/pixelgen/d6-wildergrass-roster/battle-unit-drumCallers",
+      "prompt": "Native 128x128 transparent static battle sprite of Drum-Callers. The drums don't signal the charge. The drums are the charge. Materials: ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 596840,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:ashmaneWolves",
+      "assets": [
+        "battle-unit:ashmaneWolves"
+      ],
+      "output": ".pixel-work/pixelgen/d6-wildergrass-roster/battle-unit-ashmaneWolves",
+      "prompt": "Native 128x128 transparent static battle sprite of Ashmane Wolves. They smell which herds have already bled. The steppe wastes nothing; neither do they. Materials: ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 17391,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:aurochsHerd",
+      "assets": [
+        "battle-unit:aurochsHerd"
+      ],
+      "output": ".pixel-work/pixelgen/d6-wildergrass-roster/battle-unit-aurochsHerd",
+      "prompt": "Native 192x128 transparent static battle sprite of Aurochs Herd. You do not fight a stampede. You are underneath it or you are elsewhere. Materials: ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        192,
+        128
+      ],
+      "candidates": 2,
+      "seed": 504546,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:grassSerpent",
+      "assets": [
+        "battle-unit:grassSerpent"
+      ],
+      "output": ".pixel-work/pixelgen/d6-wildergrass-roster/battle-unit-grassSerpent",
+      "prompt": "Native 128x128 transparent static battle sprite of Grass-Serpent. The grass moves against the wind. That is all most ever learn of it. Materials: ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 886169,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    },
+    {
+      "id": "battle-unit:thunderbird",
+      "assets": [
+        "battle-unit:thunderbird"
+      ],
+      "output": ".pixel-work/pixelgen/d6-wildergrass-roster/battle-unit-thunderbird",
+      "prompt": "Native 192x128 transparent static battle sprite of Thunderbird. The old sky burned. It carries some of that sky with it, and shares. Materials: ochre hide, horn, ash-grey cloth and blood-red accents, low fast plural silhouettes. Strict side view facing right; feet or physical contact on a baseline eight pixels above the bottom; complete solid-black silhouette distinguishable from every roster-mate. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No floor tile, cast shadow, environment, health bar, badge, number, circle token, UI, text, logo, watermark, animation frame, gore, glow or baked player colour.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        192,
+        128
+      ],
+      "candidates": 2,
+      "seed": 101537,
+      "parameters": {
+        "negative_description": "background, floor tile, scenery, text, UI, logo, watermark, glow, photorealism, smooth vector art, baked ownership colors",
+        "text_guidance_scale": 9,
+        "style_strength": 35,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "side",
+        "direction": "east",
+        "no_background": true
+      },
+      "references": [
+        {
+          "file": "assets/references/d-battle-units-style-lock.png",
+          "parameter": "style_image"
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,23 @@
 # Implementation Decisions
 
+## 2026-08-04 — Temporary H2 transition grammar is presentation-only
+
+- Implementation state, generated assets, and continuation instructions are consolidated in
+  `docs/36_TERRAIN_TRANSITIONS.md`.
+- The supplied H2 terrain composition is a temporary visual reference/placeholder, not a new
+  canonical gameplay catalog. Existing terrain IDs and all mechanics remain authoritative.
+- Transition composition uses shared bridge materials instead of generating every terrain pair:
+  Beach between water and non-beach land, Dirt between otherwise incompatible land families, and
+  direct joins when Beach or Dirt is already authored. This rule is deterministic and replaceable
+  independently from the source textures.
+- The global adventure-map scale is ×1. Native 32×32 terrain is displayed at 32×32; review tooling
+  may enlarge a screenshot with nearest-neighbour scaling, but production does not.
+- Terrain transition ownership is emitted as nine crisp SVG paths over PNG patterns. Runtime canvas
+  composition is rejected under doc 31's renderer law, including for the standalone showcase.
+- Approved grassy mountains are not regenerated or recomposed for this change. Their existing
+  native bitmaps and `deriveMountainRanges` output render at the new global scale like every other
+  adventure-map sprite.
+
 - The PoC uses a compact hand-authored object layout over a deterministic mirrored terrain generator; both are data-only and produce the specified 28×20 map.
 - AI vision is unrestricted, as explicitly accepted by the PoC specification.
 - A hero entering a guarded objective remains on the adjacent tile until combat resolves, then occupies and claims the destination on victory.
@@ -302,3 +320,241 @@
 - Unlogged implementation gaps discovered during reconciliation remain bugs instead of being
   normalized into the spec: three missing artifact behaviors, Bogdan's empty specialty behavior,
   and Manywhere's omission from save validation are triaged in `docs/spec/RECONCILIATION_BUGS.md`.
+
+## 2026-08-01 — Pixel art manifest and first terrain batch (doc 31)
+
+- Native PNGs live below `public/assets/`, while `assets/manifest.ts` is the only renderer-facing
+  registry. A manifest anchor is the pixel inside the bitmap aligned to the world coordinate passed
+  by the renderer; terrain and footprint-sized objects therefore use `{x: 0, y: 0}`.
+- The data-derived worklist groups genuinely shared presentations (resource/school/kind), but keeps
+  dwelling units, authored locks, obstacle props, town variants, hero facings, and battle units
+  distinct. Runtime bridge completion is included even though authored maps begin incomplete.
+- `PIXEL_SCALE` starts at 1. Adventure and combat SVG canvases now render at explicit world-pixel
+  dimensions rather than stretching to their panels, so native pixels are never fractionally scaled.
+  Larger presentation scales must change the one integer constant rather than CSS-fit the sprites.
+- PixelLab Tiles Pro returned four candidates per requested terrain family rather than exactly the
+  numbered twelve. Candidate indices and shipped selections are recorded in `assets/prompts.md`;
+  rejected or visibly repeating candidates are not retained as project assets.
+- Road work uses PixelLab's edge-mask path vocabulary because freeform generation did not preserve
+  authored N/E/S/W topology. The generated seed-3250 road pixels remain authoritative; the local
+  extraction tool only makes the deliberately requested magenta guide hue transparent after the
+  service's own edit endpoint failed to preserve geometry.
+- Seam selection is judged over the full authored Crosstitch, not as an isolated tile. The shipped
+  seed-3310 derivative retains only generated pixels inside a one-pixel diagonal band, preventing
+  candidate noise from repeating into an effect while preserving the mundane surveying-mark read.
+- The pixel-art camera is the high-oblique adventure-map view associated with HoMM and Warcraft
+  I–II. The underlying 32px square grid, footprints, pathing, and rules do not become a diamond
+  isometric grid. Terrain expresses perspective inside crowns, crags, tufts, ripples, and surface
+  shading; the tile itself has zero extrusion so it cannot create a repeated horizon band.
+- PixelLab's 65° square template left three fully transparent horizontal rows. The checked-in repair
+  tool makes only that technical edge correction from generated edge colors; the prompt ledger
+  records the source jobs and exact selection so the shipped PNGs remain reproducible.
+- All authored terrain/skin pairs use three coordinate-selected variants under that same camera
+  law. Variant art can change palette and microtexture, but never traversal, tile geometry, skin
+  semantics, or decoration placement; those remain owned by terrain data and map rules.
+- Asset validation decodes terrain alpha rather than trusting the PNG color-type flag. A terrain
+  entry is invalid if even one pixel is non-opaque; transparent content is reserved for overlays,
+  decorations, and object sprites.
+- Tiny terrain decorations are constrained with native-resolution transparent layout guides when
+  prose-only generation changes their occupied footprint or invents a plaque/ground tile. PixelLab
+  remains the authored-pixel source; guides constrain composition and are recorded verbatim beside
+  the prompt and job ID.
+- Raised props must expose upper surfaces and lower-right near faces in the same high-oblique camera
+  as terrain. Flat marks such as tracks and stone grain instead use foreshortened diagonal geometry
+  inside that ground plane; they are not exempted into a straight-overhead icon camera.
+- Multi-cell object acceptance is based on the authored footprint, not the PNG canvas. The Spool and
+  Block therefore use 64x32 silhouettes that visibly span two cells, while all traversal, anchors,
+  and square-grid rules remain unchanged.
+- A generated site is rejected if it bakes a terrain plinth or if its visible mass collapses below
+  the authored footprint, even when the architecture is otherwise stronger. Mines use transparent
+  native 64px guides to reserve the bottom-left entrance and block the lower-right footprint cell.
+- Castle style references copy outline, detail, and shading but not color. Each S08 faction palette
+  remains authoritative, and neutral-town variants reuse construction language rather than player
+  ownership colors. Castle acceptance also checks the authored bottom-middle interaction entrance
+  in screen space; PixelLab's default lower-side gate is corrected without changing the 3x3 rules.
+
+## 2026-08-01 — Ground-contact footprints (doc 32)
+
+- Existing mine and castle entrance coordinates remain fixed in world space. Shrinking removes the
+  old top row, so authored mine anchors and generated castle anchors move down one row while heroes,
+  services, captures, and garrison interactions continue to use the same entrance tiles.
+- Castles now occupy 3×2 with bottom-center entrance `(1,1)`; mines occupy 2×1 with bottom-left
+  entrance `(0,0)`. Lint constructs those same footprints around authored castle entrances, keeping
+  overlap, reachability, guardian-cage, and start-aggro checks aligned with runtime occupancy.
+
+## 2026-08-02 — Fresh A1 terrain-height decisions (doc 31)
+
+- The active manifest accepts only assets selected from the post-restart PixelLab runs in
+  `assets/selections.json`. Earlier generated PNGs remain dormant evidence and cannot become visible
+  merely by sharing a target filename.
+- Core 32×32 terrain is generated as quiet opaque ground from fresh deterministic composition
+  guides. Wang tiles were rejected as colour masks, while unguided Pixflux/Pixen outputs made
+  per-cell motifs. Guides are generation inputs, never renderer assets.
+- Deepwood uses the seeded scattered-canopy experiment. Border-only trees failed the same-state
+  composition check; canonical canopy clumps are y-sorted and fade to 40% when a hero or interactive
+  object is in the same or immediately preceding row within one column. This is visual-only.
+- Mountain height uses deterministic rendering-only 64×96 props on non-overlapping horizontal 2×1
+  mountain pairs. The prop's 64×32 ground contact and `{x:0,y:64}` anchor do not add occupancy,
+  change traversal, or alter saved state. Two rows of headroom prevent SVG-edge clipping.
+- PixelLab's current map-object worker rejected reference-image payloads in both raw and data-URL
+  forms. Until that service behavior changes, production map-object requests are prompt-only;
+  guided Pixflux remains the constrained fallback for assets that repeatedly violate silhouette or
+  palette requirements.
+
+## 2026-08-02 — Adventure landscape composition reset (doc 31)
+
+- The adventure map renders at integer ×2. The selected hero is the camera focus; a symmetric
+  horizontal gutter lets edge starts center without altering world coordinates or map bounds.
+- Reachable-tile outlines and multi-cell footprint rectangles are no longer persistent map art.
+  Legal movement remains visible through destination/path feedback, hover interactions, and the
+  unchanged rules state.
+- Meadow uses a native 128×128 support texture sampled in world coordinates beneath the 32px
+  gameplay cells. Terrain remains a square rules grid, but its base material is not required to
+  restart at every cell. Other terrain families are deliberately not converted until this small
+  proof establishes the extension protocol.
+- Native-ground integration means irregular contact pixels that visually dissolve into the local
+  material. It does not authorize rectangular baked terrain plinths, change an object's footprint,
+  or make a sprite terrain-specific without a future explicit decision.
+- Broad production pauses after the five-type proof (meadow, hero, one building, mountain, castle).
+  Battle-unit roster generation remains staged until the composed adventure-map language is
+  accepted and can be extended without returning to icon-on-grid presentation.
+
+## 2026-08-02 — Oblique camera lock supersedes the first landscape proof
+
+- PixelLab adventure structures use Bitforge with `view: low top-down`, `direction: south`,
+  `isometric: false`, and `oblique_projection: true`. The map-object endpoint's default
+  `high top-down` camera is no longer accepted for this visual language.
+- Meadow support is a native 256×256 world-space material. Its size is deliberately larger than a
+  gameplay cell and is read from the manifest rather than hard-coded by the renderer.
+- Mountain visual canvas is 128×160 over unchanged two-tile-derived placement. A 32px horizontal
+  overhang on each side and 128px vertical overhang are visual only; mountain occupancy and saves
+  remain map-derived. Two alternating files build ranges; the second is a lossless mirror.
+- PixelLab character endpoint padding may be stripped and repacked without resizing visible pixels.
+  Generated art may not be shrunk merely to compensate for transport/animation padding.
+- The earlier `landscape-proof` selections are review-only rejected evidence. Only the
+  `landscape-camera-lock` batch may promote the current meadow, hero, timber, range, and castle.
+
+## 2026-08-02 — Cute-style probe and southeast light
+
+- Adventure sprites use screen lower-right / map southeast illumination and cast toward screen
+  upper-left / map northwest. Prompting names both the compass direction and the visible bright/dark
+  faces so endpoint camera conventions cannot silently invert the result.
+- HoMM2 screenshot crops are useful for human judgment but are not automatic style inputs. Bitforge
+  copied their composition and background fragments even at exact native size, so screenshot-led
+  probes are prompt-only unless a later endpoint demonstrates true style-only transfer.
+- Larger flagship structures evaluate `generate-image-v2` before the dedicated map-object endpoint.
+  In the three-sprite probe it was the only tested endpoint to return a clean plateless, flagless
+  castle without an init mask or post-generation pixel deletion.
+- The selected castle, mountain, and one-facing hero are review assets, not manifest replacements.
+  Production promotion waits for an eight-direction hero family and a deliberate renderer decision
+  about the mountain's wider 160×112 visual canvas; gameplay footprints remain unchanged.
+
+## 2026-08-02 — Visual-description prompts supersede proper names
+
+- Content IDs and faction names are metadata, not visual instructions. Production prompts describe
+  the intended silhouette, materials, construction, color, and mood directly; a proper name is
+  omitted whenever its ordinary-language meaning can pull generation toward the wrong subject.
+- The castle stored under the Unfinished content ID is visually a complete medieval toy-making
+  workshop with restrained clockwork details. It must not look ruined, abandoned, scaffolded, or
+  partially constructed merely because of that internal ID.
+- The visual description is now the manifested production sprite, not only a lineup experiment;
+  the internal faction/content ID remains unchanged because it is game data rather than art
+  direction.
+
+## 2026-08-02 — Doc 33 obstacle-family contracts
+
+- Wider visual canvases may centre a narrower ground-contact footprint. The manifest anchor's x
+  coordinate identifies that contact inside the bitmap; validation requires the footprint to fit
+  and keeps its y coordinate bottom-anchored. Forcing x to zero is rejected because it prevents the
+  symmetric canvas overhang needed for overlap composition.
+- The authored granite spines are two cells wide. Doc 31's unchanged-footprint rule therefore wins
+  over doc 33's 5×2 massif guide: a 160px massif canvas may be centred on rendering-only 2×1 granite
+  contact, but may not widen mountain traversal or rewrite authored terrain.
+- The old mirrored mountain pair is superseded. Horizontal mirroring is not a source of variants
+  under southeast light. Until a complete generated family exists, only the accepted broad granite
+  massif is renderer-visible, once per compatible connected region; this is an interim improvement,
+  not family approval.
+- Large authored-map reviews may crop a review-only initial-state envelope into bounded sections
+  when Chromium cannot mount the full native-×2 SVG. Every source tile and object stays verbatim,
+  coordinates are translated uniformly, and every section must pass the same runtime glyph check.
+  This is review transport only; production map dimensions and renderer behavior stay unchanged.
+- Job validation treats every `doc33-*` positive prompt as source code: the four fixed
+  camera/light/contact/style strings and a visual tile-scale clause are mandatory, while doc 33's
+  process, asset-management and quality-booster vocabulary is rejected. IDs and negative API
+  parameters remain metadata and are intentionally outside that prose check.
+
+## 2026-08-03 — Manywhere showcase and approved mountain concept promotion
+
+- Manywhere remains a selectable sandbox and is labelled as the showcase in the map menu. Its
+  48×40 rules grid is unchanged, but its rectangular biome quadrants are replaced by deterministic
+  organic regions and authored granite ranges at the north road, interior passes, and coast.
+  Border Marches remains the lightweight default because mounting the full showcase exceeds the
+  headless first-interaction budget. Blocking remains map-authored.
+- The renderer derives only the visible southern edge of authored granite cells and composes four
+  scatter pieces, two knolls, a ridge, and a rare massif there. The large piece may overlap but is
+  never the staple; small pieces outnumber massifs by more than two to one.
+- PixelLab production generation remained unavailable after the recorded quota/credential failures.
+  At the user's direction, the already user-approved built-in image-generation concept sheet from
+  the standalone prototype is promoted as an explicit interim exception to doc 31's provider rule.
+  Promotion is reproducible: the checked-in script removes the chroma key, reduces with nearest
+  neighbour, normalizes to an audited fixed palette, tapers only the outer contact columns, and
+  writes bottom-anchored native game canvases. No runtime canvas is introduced.
+- Manywhere's cosmetic micro-decoration density is 1.5%; other maps retain 16%. This is rendering-only
+  and keeps its large structure catalogue legible instead of turning biomes into repeated icon fields.
+
+## 2026-08-03 — Hearthguard uses the cute gatehouse
+
+- The thin grey three-spire Hearthguard castle is rejected after its live r1c1 review. The approved
+  seed-94120 cream-stone, red-roofed cute gatehouse from the v2 lineup replaces it in the manifest.
+- This is an art-only substitution: the 96×128 canvas, 3×2 gameplay footprint, bottom-centre
+  entrance, painter order, and runtime owner pennant remain unchanged.
+
+## 2026-08-03 — Role-specific mountain family replaces landmark scaling
+
+- The interim eight-piece family is superseded by 32 final sprites: six scatter, four knolls, four
+  ridges, and two rare massifs for each of granite and snowcap. Each role was generated on its own
+  source sheet; a massif is never the source for a smaller role or scaled into a map cell at runtime.
+- Final canvases are fixed at 32×48, 64×64, 96×96, and 160×112 by role. The renderer displays the
+  manifest dimensions at the global integer pixel scale and overlaps whole sprites. Authored
+  mountain terrain remains the sole gameplay footprint.
+- PixelLab was still unavailable after the recorded quota and credential failures, so this batch
+  uses the built-in image generator as the existing explicit provider exception. Its enlarged
+  chroma-keyed concept sheets are reduced once during the deterministic production bake, then
+  alpha-hardened and quantized to the audited granite or snowcap palette. This offline reduction is
+  a documented exception to doc 31's no-downscale rule; runtime resampling remains prohibited.
+- The range composer derives visible southern edges independently per skin. It uses overlapping
+  scatter, knoll, and ridge variants as the staple, avoids immediate repeated medium variants, and
+  admits massifs only on long compatible edges. This is deterministic presentation-only state.
+
+## 2026-08-03 — Mountains are obstacles on biome ground
+
+- HoMM2's mountain regions do not expose a special grey mountain substrate. The rules grid still
+  stores impassable mountain terrain, but mountain cells now render the continuous meadow field
+  beneath their transparent sprites. The mountain review fails if a mountain terrain image or glyph
+  is mounted, making “no grey mountain ground” an automated browser assertion.
+- Every authored mountain row contributes sprites and is painter-sorted back-to-front. Interior
+  rows use densely overlapping broad ridges; the southern row retains knolls and scatter as a soft
+  transition. Long diagonal hogbacks remain available at exposed fronts but are excluded from dense
+  repeated rows, where they read as rails.
+- Manywhere mountain bands are solid two- or three-row obstacle masses rather than dotted masks.
+  This accepts the user's 2×2 minimum, removes grid-shaped lanes, and preserves their existing role
+  as barriers. The Rich Vein moved one cell east so the expanded northern pass remains map-valid.
+- Workhorse granite and snowcap ridges use new higher-angle source sheets with broad visible upper
+  planes and roughly 3×2 visual footprints. Their final contracts remain 96×96 with unchanged
+  gameplay contact; this is an art and showcase-authoring change, not a general occupancy rule.
+
+## 2026-08-05 — Game terrain stays canonical in the transition renderer
+
+- Implementation state, selected PixelLab assets, and the direct-Wang integration boundary are
+  consolidated in `docs/36_TERRAIN_TRANSITIONS.md`.
+- Deepwood, Mosswold, Ashsteppe, Barrowfield, Lacquer Flats, and Mire are now distinct rendering
+  families rather than aliases for generic H2 materials. This remains presentation-only: gameplay
+  terrain IDs, movement, resonance, saves, authoring, collision, and mountain composition do not
+  change.
+- Incompatible canonical land families still meet through Dirt, so each new PixelLab Wang family
+  needs one terrain-to-Dirt edge vocabulary instead of a quadratic catalog of every terrain pair.
+  Water still reaches land through Beach. The showcase includes crowded junctions to audit both.
+- Alternate source cells are not automatically safe interior variants. A candidate containing an
+  edge fragment, tile-sized rock, gradient, or broad value shift is rejected after full-field
+  composition even if it looks attractive alone. Tiny details are sparse by construction; larger
+  marks must remain flat ground features and below half a cell in span.

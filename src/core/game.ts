@@ -111,6 +111,21 @@ export function legalActions(state: GameState): Action[] {
 
 export function apply(state: GameState, action: Action): GameState {
   if (action.type === 'CAMPAIGN_SETUP') throw new Error('Campaign setup is replay-header only');
+  if (action.type === 'SELECT_HERO' || action.type === 'NEXT_HERO') {
+    if (state.pendingChoice) throw new Error('A choice is pending');
+    const player = state.players[state.activePlayer];
+    const next = {
+      ...state,
+      players: {
+        ...state.players,
+        [state.activePlayer]: { ...player, heroes: [...player.heroes] },
+      },
+      replay: [...state.replay, action],
+    };
+    if (action.type === 'SELECT_HERO') selectHero(next, action.heroId);
+    else nextHero(next);
+    return next;
+  }
   const next = cloneState(state);
   for (const player of Object.values(next.players)) syncLegacyHeroIntoRoster(player);
   next.replay.push(action);
@@ -127,11 +142,9 @@ export function apply(state: GameState, action: Action): GameState {
   }
   if (action.type === 'MOVE_HERO') {
     if (action.heroId) selectHero(next, action.heroId);
-    moveHero(next, action.destination);
+    moveHero(next, action.destination, action.avoidAggro);
   }
   else if (action.type === 'PICKUP_OBJECT') pickupObject(next, action.objectId);
-  else if (action.type === 'SELECT_HERO') selectHero(next, action.heroId);
-  else if (action.type === 'NEXT_HERO') nextHero(next);
   else if (action.type === 'END_TURN') endTurn(next);
   else if (action.type === 'BUILD') build(next, action.castleId, action.buildingId);
   else if (action.type === 'BUILD_BOAT') buildBoat(next, action.castleId);

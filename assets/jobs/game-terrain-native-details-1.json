@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/game-terrain-native-details-1-candidates.html",
+  "requests": [
+    {
+      "id": "review:game-terrain:deepwood:micro",
+      "assets": [
+        "review:game-terrain:deepwood:micro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/deepwood-micro",
+      "prompt": "Native 32x32 seamless opaque Deepwood terrain cell: dark wet old-forest floor, fine loam and moss dust beneath separate canopy props; one tiny cluster of two or three mushrooms occupying only 2–4 pixels total. One tile is roughly human-sized. The decoration must occupy at most one eighth of the tile width and under 2% of its area. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 464358,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-deepwood-micro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:deepwood:macro",
+      "assets": [
+        "review:game-terrain:deepwood:macro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/deepwood-macro",
+      "prompt": "Native 32x32 seamless opaque Deepwood terrain cell: dark wet old-forest floor, fine loam and moss dust beneath separate canopy props; one fallen branch lying flat across 8–14 pixels, narrow and ground-bound. One tile is roughly human-sized. The mark may span one quarter to under one half of the tile width, but must remain narrow, flat and secondary. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 589310,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-deepwood-macro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mosswold:micro",
+      "assets": [
+        "review:game-terrain:mosswold:micro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/mosswold-micro",
+      "prompt": "Native 32x32 seamless opaque Mosswold terrain cell: ordinary green moss field with a subtle too-regular woven microtexture; one tiny pale mushroom cap cluster occupying only 2–4 pixels total. One tile is roughly human-sized. The decoration must occupy at most one eighth of the tile width and under 2% of its area. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 447101,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mosswold-micro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:mosswold:macro",
+      "assets": [
+        "review:game-terrain:mosswold:macro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/mosswold-macro",
+      "prompt": "Native 32x32 seamless opaque Mosswold terrain cell: ordinary green moss field with a subtle too-regular woven microtexture; one shallow woven moss ridge spanning 8–14 pixels without becoming an object or wall. One tile is roughly human-sized. The mark may span one quarter to under one half of the tile width, but must remain narrow, flat and secondary. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 707957,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-mosswold-macro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:ashsteppe:micro",
+      "assets": [
+        "review:game-terrain:ashsteppe:micro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/ashsteppe-micro",
+      "prompt": "Native 32x32 seamless opaque Ashsteppe terrain cell: dry ochre-grey steppe grass with fine black ash beneath and low wind-combed blades; two tiny weathered animal-bone fragments occupying only 3–5 pixels total. One tile is roughly human-sized. The decoration must occupy at most one eighth of the tile width and under 2% of its area. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 883270,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-ashsteppe-micro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    },
+    {
+      "id": "review:game-terrain:ashsteppe:macro",
+      "assets": [
+        "review:game-terrain:ashsteppe:macro"
+      ],
+      "output": ".pixel-work/pixelgen/game-terrain-native-details/ashsteppe-macro",
+      "prompt": "Native 32x32 seamless opaque Ashsteppe terrain cell: dry ochre-grey steppe grass with fine black ash beneath and low wind-combed blades; one thin irregular ground crack spanning 8–14 pixels without glow or depth. One tile is roughly human-sized. The mark may span one quarter to under one half of the tile width, but must remain narrow, flat and secondary. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. Preserve a quiet continuous field across all four edges with uniform illumination. No enlarged icon, specimen, foreground object, border, vignette, gradient, path, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 181758,
+      "parameters": {
+        "negative_description": "oversized decoration, giant insect, giant mushroom, giant bone, focal object, centered icon, tile border, gradient, vignette, horizontal band, repeated row, checkerboard, transparency, scenery, text, UI, logo, watermark",
+        "text_guidance_scale": 11,
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "view": "high top-down",
+        "no_background": false,
+        "init_image_strength": 190
+      },
+      "references": [
+        {
+          "file": "assets/guides/game-terrain-ashsteppe-macro-h2.png",
+          "parameter": "init_image"
+        }
+      ],
+      "review_only": true
+    }
+  ]
+}

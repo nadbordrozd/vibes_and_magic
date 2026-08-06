@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/doc33-dwelling-replacements-3-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:dwelling:paperWaspLancers",
+      "assets": [
+        "map-object:dwelling:paperWaspLancers"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/paperWaspLancers",
+      "prompt": "a tall paper-nest hall, layered cream paper with black chitin and honey-amber seams, two narrow chitin finials around one dark doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96800,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:sentries",
+      "assets": [
+        "map-object:dwelling:sentries"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/sentries",
+      "prompt": "a compact pale watch house, ash-white stone with ivory ribs and candle-gold hinges, two narrow empty watch openings above one doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96810,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:silkSpinners",
+      "assets": [
+        "map-object:dwelling:silkSpinners"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/silkSpinners",
+      "prompt": "a woven paper loom house, layered cream paper with black chitin and honey-amber seams, a taut silk frame beside one dark doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96820,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:tinSoldier",
+      "assets": [
+        "map-object:dwelling:tinSoldier"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/tinSoldier",
+      "prompt": "a riveted barracks house, oxblood lacquered wood with dull tin and cream porcelain panels, a square metal door beneath a bare roof ridge, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96830,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "map-object:dwelling:yeoman",
+      "assets": [
+        "map-object:dwelling:yeoman"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-dwelling-replacements/yeoman",
+      "prompt": "a modest farm hall, cream plaster with warm red tile and dark oak beams, a longbow rack beside one broad central doorway, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 1.5 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 3,
+      "seed": 96840,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

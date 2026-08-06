@@ -49,6 +49,23 @@ describe('wide-footprint ability audit', () => {
     expect(totalStackHp(second)).toBeLessThan(before);
   });
 
+  it('does not continue a skim after retaliation kills the cavalry', () => {
+    const state = battle(
+      [{ unitId: 'dragonflyCavalry', count: 1 }],
+      [{ unitId: 'woodenColossus', count: 10 }, { unitId: 'longbowman', count: 20 }],
+    );
+    const actor = state.stacks[0];
+    const first = state.stacks[1];
+    const second = state.stacks[2];
+    actor.position = { x: 2, y: 4 };
+    first.position = { x: 3, y: 4 };
+    second.position = { x: 5, y: 4 };
+    const before = totalStackHp(second);
+    expect(() => runAttackPipeline(state, actor.id, first.id)).not.toThrow();
+    expect(actor.count).toBe(0);
+    expect(totalStackHp(second)).toBe(before);
+  });
+
   it('trample damages every enemy in its swept footprint and cannot land through blockers', () => {
     const state = battle(
       [{ unitId: 'aurochsHerd', count: 4 }],

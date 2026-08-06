@@ -33,11 +33,30 @@ function guardedPower(state: GameState, object: MapObject): number {
 function distance(state: GameState, hero: Hero, position: Coord): number {
   const selected = state.activePlayer === hero.owner
     && state.players[hero.owner].activeHeroId === hero.id;
-  const path = selected ? adventurePath(state, position) : findPath(
+  const path = selected ? adventurePath(state, position, { avoidAggro: false }) : findPath(
     state.map, hero.position, position, new Set(), hero, state.omen);
   return path
     ? selected ? path.length * 100 : pathCost(state.map, path, hero, state.omen)
     : Number.POSITIVE_INFINITY;
+}
+
+function safeObjectiveDistance(
+  state: GameState, hero: Hero, objective: StrategyObjective,
+): number {
+  const selected = state.activePlayer === hero.owner
+    && state.players[hero.owner].activeHeroId === hero.id;
+  if (!selected) return distance(state, hero, objective.position);
+  const path = adventurePath(state, objective.position, {
+    avoidAggro: true, fightGuardianId: objective.guardianId,
+  });
+  return path ? pathCost(state.map, path, hero, state.omen) : Number.POSITIVE_INFINITY;
+}
+
+function objectiveDistance(
+  state: GameState, hero: Hero, objective: StrategyObjective,
+): number {
+  const safe = safeObjectiveDistance(state, hero, objective);
+  return Number.isFinite(safe) ? safe : distance(state, hero, objective.position);
 }
 
 function playerPower(state: GameState, playerId: PlayerId): number {
@@ -260,18 +279,21 @@ export function chooseStrategyObjective(
     const intercept = homeIntercept(state, hero);
     if (intercept) return intercept;
   }
-  const objectives = collectObjectives(state, hero, role, claims);
+  const allObjectives = collectObjectives(state, hero, role, claims);
+  const safeObjectives = allObjectives.filter((objective) =>
+    Number.isFinite(safeObjectiveDistance(state, hero, objective)));
+  const objectives = safeObjectives.length ? safeObjectives : allObjectives;
   const ownPower = armyPower(hero.army);
   const immediate = objectives.filter((objective) =>
     objective.priority === 3 && objective.power * 1.2 <= ownPower
-      && distance(state, hero, objective.position) <= hero.movement)
-    .sort((a, b) => distance(state, hero, a.position)
-      - distance(state, hero, b.position))[0];
+      && objectiveDistance(state, hero, objective) <= hero.movement)
+    .sort((a, b) => objectiveDistance(state, hero, a)
+      - objectiveDistance(state, hero, b))[0];
   if (immediate) return immediate;
   return objectives.sort((a, b) => role === 'gatherer'
-    ? b.value - a.value || distance(state, hero, a.position)
-      - distance(state, hero, b.position) || a.id.localeCompare(b.id)
-    : a.priority - b.priority || distance(state, hero, a.position)
-      - distance(state, hero, b.position) || b.value - a.value
+    ? b.value - a.value || objectiveDistance(state, hero, a)
+      - objectiveDistance(state, hero, b) || a.id.localeCompare(b.id)
+    : a.priority - b.priority || objectiveDistance(state, hero, a)
+      - objectiveDistance(state, hero, b) || b.value - a.value
       || a.id.localeCompare(b.id))[0] ?? null;
 }

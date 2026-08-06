@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/homm2-retirement-showcase-candidates.html",
+  "requests": [
+    {
+      "id": "homm2-retirement-swamp-0",
+      "assets": ["review:terrain-material:swamp:0"], "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/swamp-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: ordinary olive-brown wet marsh ground with shallow dark water flecks and low peat texture. Variant cue: tiny irregular wet glints. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No reeds, mushrooms, pools, creatures, objects, paths, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919700,
+      "parameters": {"negative_description": "reed, plant, sprout, mushroom, flower, bright dot, pool, creature, object, path, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 360},
+      "references": [{"file": "public/assets/terrain/mire-coastal-0.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-swamp-1",
+      "assets": ["review:terrain-material:swamp:1"], "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/swamp-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: ordinary olive-brown wet marsh ground with shallow dark water flecks and low peat texture. Variant cue: sparse broken mud grains. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No reeds, mushrooms, pools, creatures, objects, paths, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919710,
+      "parameters": {"negative_description": "reed, plant, sprout, mushroom, flower, bright dot, pool, creature, object, path, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 360},
+      "references": [{"file": "public/assets/terrain/mire-coastal-1.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-volcanic-0",
+      "assets": ["review:terrain-material:volcanic:0"], "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/volcanic-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: cool charcoal volcanic ground with tight cracked basalt planes and very restrained dull-russet mineral seams. Variant cue: fine angular chips. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No lava river, glowing cracks, fire, rocks as objects, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919800,
+      "parameters": {"negative_description": "orange, bright seam, lava river, glowing crack, fire, large rock, object, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 280},
+      "references": [{"file": "public/assets/terrain/mountain-granite-0.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-volcanic-1",
+      "assets": ["review:terrain-material:volcanic:1"], "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/volcanic-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: cool charcoal volcanic ground with tight cracked basalt planes and very restrained dull-russet mineral seams. Variant cue: sparse short fissures. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No lava river, glowing cracks, fire, rocks as objects, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 919810,
+      "parameters": {"negative_description": "orange, bright seam, lava river, glowing crack, fire, large rock, object, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 12, "outline": "selective outline", "shading": "medium shading", "detail": "low detail", "view": "high top-down", "no_background": false, "init_image_strength": 280},
+      "references": [{"file": "public/assets/terrain/mountain-granite-1.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-desert-0",
+      "assets": ["review:terrain-material:desert:0"], "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/desert-0",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet warm ochre desert sand with tiny dry mineral grains and shallow wind-combed marks. Variant cue: fine curved grain dashes below 3 pixels. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No dunes, cacti, bones, rocks, objects, paths, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 909900,
+      "parameters": {"negative_description": "dune, cactus, bone, rock, object, path, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 10, "outline": "selective outline", "shading": "medium shading", "detail": "medium detail", "view": "high top-down", "no_background": false, "init_image_strength": 240},
+      "references": [{"file": "public/assets/terrain/barrowfield-default-0.png", "parameter": "init_image"}]
+    },
+    {
+      "id": "homm2-retirement-desert-1",
+      "assets": ["review:terrain-material:desert:1"], "review_only": true,
+      "output": ".pixel-work/pixelgen/homm2-retirement/desert-1",
+      "prompt": "Native 32x32 seamless opaque terrain tile: quiet warm ochre desert sand with tiny dry mineral grains and shallow wind-combed marks. Variant cue: sparse darker sand pinpricks. Original hand-placed 1990s storybook strategy-game pixel art, crisp compact painterly clusters, high-oblique material read inside a flat square cell, light from the lower right with shadows toward the upper left. Uniform whole-tile illumination and edge values, 5-7 close colours, every pixel opaque. No dunes, cacti, bones, rocks, objects, paths, transparency, gradient, vignette, border, bands, repeated rows, checkerboard, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux", "size": [32, 32], "candidates": 2, "seed": 909910,
+      "parameters": {"negative_description": "dune, cactus, bone, rock, object, path, transparency, empty background, gradient, vignette, border, horizontal band, vertical band, repeated row, checkerboard, text, UI, logo, watermark", "text_guidance_scale": 10, "outline": "selective outline", "shading": "medium shading", "detail": "medium detail", "view": "high top-down", "no_background": false, "init_image_strength": 240},
+      "references": [{"file": "public/assets/terrain/barrowfield-default-1.png", "parameter": "init_image"}]
+    }
+  ]
+}

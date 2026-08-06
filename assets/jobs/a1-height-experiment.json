@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a1-height-experiment-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:deepwood:canopy-clump",
+      "assets": [
+        "decoration:deepwood:canopy-clump"
+      ],
+      "output": ".pixel-work/pixelgen/a1-height-experiment/deepwood-scattered-canopy",
+      "prompt": "Native 32x64 transparent passable Deepwood canopy-clump decoration. One irregular cluster of two or three overlapping ordinary broadleaf crowns occupies the upper 42 pixels; one narrow dark trunk and sparse low branches meet the bottom-center ground anchor. It must overhang a hero standing one tile behind it without reading as a blocking object. Warm storybook 1990s strategy-game pixel art, high-oblique 65-degree view, upper-left-lit crown tops and dark lower-right near faces. No terrain square, grass, roots spreading across the bottom row, path, flowers, fruit, glow, scenery, horizon, text, UI, logo or watermark.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        64
+      ],
+      "candidates": 3,
+      "seed": 78100,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 10
+      }
+    },
+    {
+      "id": "review:deepwood:border-tree",
+      "assets": [
+        "review:deepwood:border-tree"
+      ],
+      "review_only": true,
+      "output": ".pixel-work/pixelgen/a1-height-experiment/deepwood-border-tree",
+      "prompt": "Native 32x64 transparent Deepwood border-tree decoration. One tall narrow ordinary broadleaf tree with a readable dark trunk in the lower half and an asymmetric dense crown in the upper half; copies on neighboring forest-edge tiles must overlap into a continuous perimeter while leaving the forest interior visually quiet. Warm storybook 1990s strategy-game pixel art, high-oblique 65-degree view, upper-left-lit crown and dark lower-right near face. No terrain square, grass, roots across the bottom row, path, flowers, fruit, glow, scenery, horizon, text, UI, logo or watermark.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        64
+      ],
+      "candidates": 3,
+      "seed": 78120,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 10
+      }
+    },
+    {
+      "id": "decoration:mountain:range-clump",
+      "assets": [
+        "decoration:mountain:range-clump"
+      ],
+      "output": ".pixel-work/pixelgen/a1-height-experiment/mountain-range-clump",
+      "prompt": "Native 64x96 transparent squat granite ridge decoration spanning two bottom tiles. Follow the supplied silhouette and value guide closely: three close blunt broken crags, not a single triangular peak, with a broad complete 64x16 ground contact along the bottom. Use only dark charcoal, cool grey, and muted pewter rock planes; every light plane is bare grey stone. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, upper-left light, high-oblique view. Transparent outside the rock silhouette. No snow, ice, white, cream, blue-white, conifers, trees, grass, orange rock, isolated alpine peak, horizon, sky, cave, glow, text, UI, logo or watermark.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        64,
+        96
+      ],
+      "candidates": 3,
+      "seed": 78240,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 12,
+        "no_background": true,
+        "init_image_strength": 260
+      },
+      "references": [
+        {
+          "file": "assets/guides/a1-mountain-range.png",
+          "parameter": "init_image"
+        }
+      ]
+    }
+  ]
+}

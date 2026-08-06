@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a4-decorations-1-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:ashsteppe:lone-banner",
+      "assets": [
+        "decoration:ashsteppe:lone-banner"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-ashsteppe-lone-banner",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable lone banner terrain decoration for ashsteppe. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 438262,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:ashsteppe:skulls",
+      "assets": [
+        "decoration:ashsteppe:skulls"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-ashsteppe-skulls",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable skulls terrain decoration for ashsteppe. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 405791,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:barrowfield:candles",
+      "assets": [
+        "decoration:barrowfield:candles"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-barrowfield-candles",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable candles terrain decoration for barrowfield. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 258153,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:barrowfield:letter-stone",
+      "assets": [
+        "decoration:barrowfield:letter-stone"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-barrowfield-letter-stone",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable letter stone terrain decoration for barrowfield. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 729021,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:deepwood:deadfall",
+      "assets": [
+        "decoration:deepwood:deadfall"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-deepwood-deadfall",
+      "prompt": "Native 32x32 transparent adventure-map sprite of one low fallen weathered log lying diagonally with two short broken branch stubs. Keep it low and ground-bound with transparent space around it. It is a terrain mark or fallen material, not an upright object, building, sign, tool, plant, fence, plinth, icon or pickup. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 86110,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:deepwood:mushroom-ring",
+      "assets": [
+        "decoration:deepwood:mushroom-ring"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-deepwood-mushroom-ring",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable mushroom ring terrain decoration for deepwood. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 349286,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:hush:fox-tracks",
+      "assets": [
+        "decoration:hush:fox-tracks"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-hush-fox-tracks",
+      "prompt": "Native 32x32 transparent adventure-map sprite of a small passable fox tracks terrain decoration for hush. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 2,
+      "seed": 783134,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

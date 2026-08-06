@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/a4-decorations-6-candidates.html",
+  "requests": [
+    {
+      "id": "decoration:mountain:range-clump-b",
+      "assets": [
+        "decoration:mountain:range-clump-b"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-range-clump-b",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable range clump b terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 559573,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:snowcap-knoll-1",
+      "assets": [
+        "decoration:mountain:snowcap-knoll-1"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-knoll-1",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable snowcap knoll 1 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 588945,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:snowcap-knoll-2",
+      "assets": [
+        "decoration:mountain:snowcap-knoll-2"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-knoll-2",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable snowcap knoll 2 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 656088,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:snowcap-knoll-3",
+      "assets": [
+        "decoration:mountain:snowcap-knoll-3"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-knoll-3",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable snowcap knoll 3 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 333707,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:snowcap-knoll-4",
+      "assets": [
+        "decoration:mountain:snowcap-knoll-4"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-knoll-4",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable snowcap knoll 4 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 521802,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:snowcap-massif-1",
+      "assets": [
+        "decoration:mountain:snowcap-massif-1"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-massif-1",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable snowcap massif 1 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 555106,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "decoration:mountain:snowcap-massif-2",
+      "assets": [
+        "decoration:mountain:snowcap-massif-2"
+      ],
+      "output": ".pixel-work/pixelgen/a4-decorations/decoration-mountain-snowcap-massif-2",
+      "prompt": "Native 64x32 transparent adventure-map sprite of a small passable snowcap massif 2 terrain decoration for mountain. Keep the motif sparse, low, non-interactive and subordinate to heroes and objects. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        32
+      ],
+      "candidates": 2,
+      "seed": 877487,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}

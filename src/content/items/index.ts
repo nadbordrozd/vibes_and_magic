@@ -54,7 +54,7 @@ const RAW_ITEMS = {
   potionOfVigor: {
     id: 'potionOfVigor', name: 'Potion of Vigor', use: 'combat',
     behavior: 'vigor', amount: 40,
-    description: 'One allied company gains 40 meter.',
+    description: 'One allied company gains 40 morale.',
   },
   draughtOfIron: {
     id: 'draughtOfIron', name: 'Draught of Iron', use: 'combat',
@@ -101,7 +101,7 @@ const RAW_ITEMS = {
   },
   bannerWhistle: {
     id: 'bannerWhistle', name: 'Banner Whistle', use: 'combat', behavior: 'banner',
-    amount: 10, target: 'global', description: 'Every allied company gains 10 meter.',
+    amount: 10, target: 'global', description: 'Every allied company gains 10 morale.',
   },
   secondCandle: {
     id: 'secondCandle', name: 'Second Candle', use: 'combat', behavior: 'revive',

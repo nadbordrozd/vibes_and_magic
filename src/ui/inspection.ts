@@ -1,22 +1,37 @@
-import { ARTIFACTS } from '../content/artifacts';
+import { ARTIFACTS, type ArtifactClass } from '../content/artifacts';
 import { buildingPresentation } from '../content/buildings';
-import { BATTLE_TILE_TYPES } from '../content/battleTiles';
+import { BATTLE_TILE_TYPES, battleTileRuleSummary } from '../content/battleTiles';
 import { MAP_OBJECT_FLAVOR, TERRAIN_PRESENTATION } from '../content/flavor';
 import { HEROES } from '../content/heroes';
 import { ITEMS } from '../content/items';
-import { OMENS } from '../content/omens';
+import { OMENS, omenEffectSummary } from '../content/omens';
 import { SKILLS } from '../content/skills';
 import { SPELLS } from '../content/spells';
+import { spellCategory } from '../content/spellPresentation';
 import { UNITS } from '../content/units';
+import { ABILITY_PRESENTATION } from '../content/abilityPresentation';
+import { FACTIONS } from '../content/factions';
+import { CASTLE_NAMES, FACTION_PASSIVES } from '../content/factionPresentation';
 import type {
-  ArtifactId, BuildingId, CounterId, FactionId, GameState, Hero, ItemId, MapObject,
+  AbilityId, ArtifactId, ArtifactSlot, BuildingId, CounterId, FactionId, GameState, Hero, ItemId, MapObject,
   OmenId, SecondarySkillId, SpellId, TerrainId, UnitId,
 } from '../core/types';
 import { deriveTerrainDecorations, TERRAIN } from '../content/terrain';
+import { guardianIntel } from '../core/selectors';
 
-export type InspectionKind = 'terrain' | 'object' | 'unit' | 'building' | 'spell'
-  | 'artifact' | 'item' | 'skill' | 'hero' | 'counter' | 'enchantment' | 'omen'
-  | 'battleTile' | 'decoration';
+export const INSPECTION_KINDS = [
+  'terrain', 'object', 'unit', 'building', 'spell', 'artifact', 'item', 'skill',
+  'hero', 'counter', 'enchantment', 'omen', 'battleTile', 'decoration', 'ability',
+  'castle',
+] as const;
+export type InspectionKind = typeof INSPECTION_KINDS[number];
+export const INSPECTION_KIND_NAMES: Record<InspectionKind, string> = {
+  terrain: 'Terrain', object: 'Adventure object', unit: 'Creature', building: 'Building',
+  spell: 'Spell', artifact: 'Artifact', item: 'Consumable', skill: 'Secondary skill',
+  hero: 'Hero', counter: 'Counter', enchantment: 'Enchantment', omen: 'Weekly omen',
+  battleTile: 'Battlefield tile', decoration: 'Landscape', ability: 'Creature ability',
+  castle: 'Castle',
+};
 export interface InspectionTarget { kind: InspectionKind; id: string }
 export interface InspectionCard {
   name: string; flavor: string; mechanics: string[]; learned?: boolean; terrain?: boolean;
@@ -25,11 +40,24 @@ export interface InspectionCard {
 const costs = (cost: Record<string, number | undefined>): string =>
   Object.entries(cost).filter(([, amount]) => amount).map(([id, amount]) => `${amount} ${id}`).join(', ') || 'Free';
 
+const ARTIFACT_CLASS_NAMES: Record<ArtifactClass, string> = {
+  vanilla: 'Standard artifact', charm: 'Charm', relic: 'Relic', burden: 'Burden',
+  kit: "Tailor's Kit piece", trinket: 'Battle trinket',
+};
+
+const ARTIFACT_SLOT_NAMES: Record<ArtifactSlot, string> = {
+  head: 'Head', cloak: 'Cloak', amulet: 'Amulet', weapon: 'Weapon', shield: 'Shield',
+  armor: 'Armor', ring: 'Ring', boots: 'Boots', misc: 'Miscellaneous',
+};
+
+const titleCase = (value: string): string => value.replaceAll('-', ' ')
+  .replace(/([a-z])([A-Z])/g, '$1 $2').replace(/\b\w/g, (letter) => letter.toUpperCase());
+
 const COUNTERS: Record<CounterId, InspectionCard> = {
-  burn: { name: 'Burn', flavor: 'The fire has found somewhere to stay.', mechanics: ['Deals damage at turn start, then decays.'] },
-  chill: { name: 'Chill', flavor: 'The cold has settled into every joint.', mechanics: ['Reduces speed, then decays.'] },
-  hex: { name: 'Hex', flavor: 'Bad luck has learned the company’s name.', mechanics: ['Increases incoming damage by 5% per counter, then decays.'] },
-  bloom: { name: 'Bloom', flavor: 'Green life insists on returning.', mechanics: ['Restores health at turn start, then decays.'] },
+  burn: { name: 'Burn', flavor: 'The fire has found somewhere to stay.', mechanics: ['At turn start, each counter deals 1% of the company’s current total HP (at least 1 damage per counter). Decays by 1 at turn end.'] },
+  chill: { name: 'Chill', flavor: 'The cold has settled into every joint.', mechanics: ['Each counter reduces Speed by 1, to a minimum of 1. Decays by 1 at turn end.'] },
+  hex: { name: 'Hex', flavor: 'Bad luck has learned the company’s name.', mechanics: ['Incoming attack damage increases by 5% per counter. Decays by 1 at turn end.'] },
+  bloom: { name: 'Bloom', flavor: 'Green life insists on returning.', mechanics: ['At turn start, restores 1 HP per counter without reviving creatures. Decays by 1 at turn end.'] },
 };
 
 function objectName(object: MapObject): string {
@@ -109,7 +137,7 @@ function objectMechanics(object: MapObject): string[] {
     tradingCamp: ['Grants marketplace access from anywhere while owned.'], sparringStone: ['Once per hero: choose +1 attack or defense.'],
     listeningStones: ['Once per hero: +1 spell power.'], longDraught: ['Once per hero: +1 knowledge.'],
     grinningIdol: ['Once per hero: +1 luck.'], hutOnTheHill: ['Once per hero: learn its seeded skill at rank 1.'],
-    treeSecondThoughts: ['Pay 1500 gold per level to gain one level.'], warmTable: ['Weekly: +10 meter next battle.'],
+    treeSecondThoughts: ['Pay 1500 gold per level to gain one level.'], warmTable: ['Weekly: +10 morale next battle.'],
     coldSpring: ['Weekly: +400 movement today.'], idolOfSomebody: ['Weekly: +1 luck next battle.'],
     wishingWell: ['Throw one gold for a tiny seeded boon.'], mercenaryCamp: ['Hire a seeded weekly neutral company.'],
     wagonCamp: ['Buy one seeded consumable weekly.'], titheBarn: ['Pay 1000 gold for +10% town growth this week.'],
@@ -122,29 +150,89 @@ export function inspectTarget(state: GameState, target: InspectionTarget): Inspe
   if (target.kind === 'decoration') {
     const decoration = deriveTerrainDecorations(state.map).find((item) => item.id === target.id);
     return decoration ? {
-      name: decoration.kind.replaceAll('-', ' '), flavor: decoration.label,
+      name: titleCase(decoration.kind), flavor: decoration.label,
       mechanics: [], terrain: true,
     } : null;
   }
   if (target.kind === 'terrain') {
     const terrain = TERRAIN[target.id as TerrainId];
     return terrain ? {
-      name: terrain.label, flavor: terrain.flavor, mechanics: [], terrain: true,
+      name: terrain.label, flavor: terrain.flavor, mechanics: [
+        Number.isFinite(terrain.moveCost) ? `Base movement cost: ${terrain.moveCost}.`
+          : terrain.id === 'water' ? 'Impassable on foot; travel by boat.' : 'Impassable.',
+        `Native faction: ${terrain.nativeFaction ? FACTIONS[terrain.nativeFaction].name : 'none'}.`,
+        `Magic resonance: ${terrain.resonance
+          ? terrain.resonance[0].toUpperCase() + terrain.resonance.slice(1) : 'none'}.`,
+        `Battlefield: ${titleCase(terrain.battlefieldTemplate)}.`,
+      ], terrain: true,
     } : null;
   }
   if (target.kind === 'battleTile') {
     const tile = BATTLE_TILE_TYPES[target.id as keyof typeof BATTLE_TILE_TYPES];
-    return tile ? { name: tile.name, flavor: tile.flavor, mechanics: [], terrain: true } : null;
+    return tile ? {
+      name: tile.name, flavor: tile.flavor, mechanics: battleTileRuleSummary(tile), terrain: true,
+    } : null;
   }
   if (target.kind === 'object') {
     const object = state.map.objects.find((candidate) => candidate.id === target.id);
     if (!object) return null;
+    if (object.kind === 'guardian') {
+      const intel = guardianIntel(state, object);
+      const protectedObject = state.map.objects.find((candidate) => candidate.id === object.protects);
+      const protectedCastle = state.castles.find((candidate) => candidate.id === object.protects);
+      const protectedName = protectedObject ? objectName(protectedObject)
+        : protectedCastle ? CASTLE_NAMES[protectedCastle.faction]
+          : 'the surrounding road';
+      return {
+        name: intel?.label ?? 'Guardian Company',
+        flavor: objectFlavor(object), learned: true,
+        mechanics: [
+          `Guards ${protectedName} and engages on adjacent tiles.`,
+          ...(intel?.units.map((unit) => `${unit.label} ${unit.name}`) ?? []),
+          ...(intel?.abilities.map((id) => {
+            const ability = ABILITY_PRESENTATION[id];
+            return `${ability.name}: ${ability.description}`;
+          }) ?? []),
+        ],
+      };
+    }
     const learned = state.players[state.activePlayer].discoveredObjectKinds.includes(object.kind);
     return { name: objectName(object), flavor: objectFlavor(object), mechanics: learned ? objectMechanics(object) : [], learned };
   }
+  if (target.kind === 'castle') {
+    const castle = state.castles.find((candidate) => candidate.id === target.id);
+    if (!castle) return null;
+    const faction = FACTIONS[castle.faction];
+    const passive = FACTION_PASSIVES[castle.faction];
+    const owner = castle.owner === 'neutral' ? 'Neutral'
+      : state.players[castle.owner]?.name ?? castle.owner;
+    const buildings = castle.buildings.map((id) => buildingPresentation(id, castle.faction).name);
+    const garrison = castle.garrison.flatMap((stack) => stack
+      ? [`${stack.count} ${UNITS[stack.unitId].name}`] : []);
+    return {
+      name: `${CASTLE_NAMES[castle.faction]} · ${castle.variant === 'freeTown' ? 'Free Town' : faction.name}`,
+      flavor: castle.flavor?.trim() || faction.flavor,
+      mechanics: [
+        `Owner: ${owner}`,
+        `${passive.name}: ${passive.description}`,
+        `Magic schools: ${faction.schools.map((school) => school[0].toUpperCase() + school.slice(1)).join(' and ')}`,
+        `Buildings: ${buildings.join(', ') || 'none'}`,
+        `Garrison: ${garrison.join(', ') || 'empty'}`,
+      ],
+    };
+  }
   if (target.kind === 'unit') {
     const unit = UNITS[target.id as UnitId]; if (!unit) return null;
-    return { name: unit.name, flavor: unit.flavor, mechanics: [`Tier ${unit.tier} · HP ${unit.hp} · Damage ${unit.damage.join('–')}`, `Attack ${unit.attack} · Defense ${unit.defense} · Speed ${unit.speed}`, `Growth ${unit.growth} · Cost ${costs(unit.cost)}`, `Abilities: ${unit.abilities.join(', ') || 'none'}`] };
+    return { name: unit.name, flavor: unit.flavor, mechanics: [
+      `Tier ${unit.tier} · HP ${unit.hp} · Damage ${unit.damage.join('–')}`,
+      `Attack ${unit.attack} · Defense ${unit.defense} · Speed ${unit.speed}`,
+      `Growth ${unit.growth} · Cost ${costs(unit.cost)}`,
+      ...unit.abilities.map((id) => {
+        const ability = ABILITY_PRESENTATION[id];
+        return `${ability.name}: ${ability.description}`;
+      }),
+      ...(unit.abilities.length ? [] : ['Abilities: none']),
+    ] };
   }
   if (target.kind === 'building') {
     const [id, faction] = target.id.split('@') as [BuildingId, FactionId?];
@@ -155,21 +243,21 @@ export function inspectTarget(state: GameState, target: InspectionTarget): Inspe
   }
   if (target.kind === 'spell' || target.kind === 'enchantment') {
     const spell = SPELLS[target.id as SpellId]; if (!spell) return null;
-    return { name: spell.name, flavor: spell.flavor, mechanics: [`${spell.mana} mana · ${spell.school} · ${spell.kind}`, `Base: ${spell.base}`, `Plus: ${spell.plus}`] };
+    return { name: spell.name, flavor: spell.flavor, mechanics: [`${spell.mana} mana · ${spellCategory(spell.id)}`, `Base: ${spell.base}`, `Plus: ${spell.plus}`] };
   }
   if (target.kind === 'artifact') {
     const artifact = ARTIFACTS[target.id as ArtifactId]; if (!artifact) return null;
     return {
       name: artifact.name, flavor: artifact.flavor,
       mechanics: [
-        `${artifact.class} · ${artifact.slot}`, artifact.description,
+        `${ARTIFACT_CLASS_NAMES[artifact.class]} · Equips in ${ARTIFACT_SLOT_NAMES[artifact.slot]}`, artifact.description,
         ...(artifact.burdenRemoval ? [`Cannot be unequipped. Remove: ${artifact.burdenRemoval}`] : []),
       ],
     };
   }
   if (target.kind === 'item') {
     const item = ITEMS[target.id as ItemId]; if (!item) return null;
-    return { name: item.name, flavor: item.flavor, mechanics: [`${item.use} use`, item.description] };
+    return { name: item.name, flavor: item.flavor, mechanics: [`Use timing: ${titleCase(item.use)}`, item.description] };
   }
   if (target.kind === 'skill') {
     const skill = SKILLS[target.id as SecondarySkillId]; if (!skill) return null;
@@ -183,9 +271,13 @@ export function inspectTarget(state: GameState, target: InspectionTarget): Inspe
     return { name: hero.name, flavor: definition.story, mechanics: [`Attack ${hero.attack} · Defense ${hero.defense} · Spell Power ${hero.spellPower} · Knowledge ${hero.knowledge}`, `Skills: ${Object.entries(hero.skills).map(([id, rank]) => `${SKILLS[id as SecondarySkillId].name} ${rank}`).join(', ') || 'none'}`, `Specialty: ${definition.specialty.description}`] };
   }
   if (target.kind === 'counter') return COUNTERS[target.id as CounterId] ?? null;
+  if (target.kind === 'ability') {
+    const ability = ABILITY_PRESENTATION[target.id as AbilityId];
+    return ability ? { name: ability.name, flavor: 'A practiced battlefield distinction.', mechanics: [ability.description] } : null;
+  }
   if (target.kind === 'omen') {
     const omen = OMENS[target.id as OmenId]; if (!omen) return null;
-    return { name: omen.title, flavor: omen.flavor, mechanics: Object.entries(omen).filter(([key]) => !['id', 'title', 'flavor'].includes(key)).map(([key, value]) => `${key}: ${String(value)}`) };
+    return { name: omen.title, flavor: omen.flavor, mechanics: omenEffectSummary(omen) };
   }
   return null;
 }

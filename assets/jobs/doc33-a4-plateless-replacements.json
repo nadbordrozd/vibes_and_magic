@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/doc33-a4-plateless-replacements-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:obstacle:old oak",
+      "assets": [
+        "map-object:obstacle:old oak"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-a4-plateless-replacements/map-object-obstacle-old-oak",
+      "prompt": "a broad old oak tree, warm brown bark with deep green and blue-green leaves, a low split crown above thick exposed roots, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        64
+      ],
+      "candidates": 3,
+      "seed": 96900,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "decoration:deepwood:canopy-clump",
+      "assets": [
+        "decoration:deepwood:canopy-clump"
+      ],
+      "output": ".pixel-work/pixelgen/doc33-a4-plateless-replacements/decoration-deepwood-canopy-clump",
+      "prompt": "a dense deepwood canopy tree, warm brown bark with overlapping deep green and blue-green leaf clusters, an asymmetric crown above two visible roots, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 1 tile wide and about 2 tiles tall, HoMM2-era storybook pixel art",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        64
+      ],
+      "candidates": 3,
+      "seed": 96910,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

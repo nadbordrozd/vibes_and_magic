@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/b2-mines-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:mine:gold",
+      "assets": [
+        "map-object:mine:gold"
+      ],
+      "output": ".pixel-work/pixelgen/b2-mines/map-object-mine-gold",
+      "prompt": "Native 64x80 transparent adventure-map sprite of a practical gold mine with timber braces and quarried material. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 32px row is the 2x1 ground contact. The open visitable mouth must occupy the bottom-left 32x32 entrance tile; the bottom-right tile must read physically blocked. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        80
+      ],
+      "candidates": 2,
+      "seed": 176215,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:mine:timber",
+      "assets": [
+        "map-object:mine:timber"
+      ],
+      "output": ".pixel-work/pixelgen/b2-mines/map-object-mine-timber",
+      "prompt": "Native 64x80 transparent adventure-map sprite of a compact timber camp with stacked logs, braces and a small shelter. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 32px row is the 2x1 ground contact. The open visitable mouth must occupy the bottom-left 32x32 entrance tile; the bottom-right tile must read physically blocked. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        80
+      ],
+      "candidates": 2,
+      "seed": 722070,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:mine:iron",
+      "assets": [
+        "map-object:mine:iron"
+      ],
+      "output": ".pixel-work/pixelgen/b2-mines/map-object-mine-iron",
+      "prompt": "Native 64x80 transparent adventure-map sprite of a practical iron mine with timber braces and quarried material. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 32px row is the 2x1 ground contact. The open visitable mouth must occupy the bottom-left 32x32 entrance tile; the bottom-right tile must read physically blocked. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        80
+      ],
+      "candidates": 2,
+      "seed": 879759,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:mine:essence",
+      "assets": [
+        "map-object:mine:essence"
+      ],
+      "output": ".pixel-work/pixelgen/b2-mines/map-object-mine-essence",
+      "prompt": "Native 64x80 transparent adventure-map sprite of an ordinary stone-lined essence spring with restrained blue-violet water. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. The bottom 32px row is the 2x1 ground contact. The open visitable mouth must occupy the bottom-left 32x32 entrance tile; the bottom-right tile must read physically blocked. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        64,
+        80
+      ],
+      "candidates": 2,
+      "seed": 550777,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    },
+    {
+      "id": "map-object:richVein:default",
+      "assets": [
+        "map-object:richVein:default"
+      ],
+      "output": ".pixel-work/pixelgen/b2-mines/map-object-richVein-default",
+      "prompt": "Native 32x48 transparent adventure-map sprite of a compact rich mineral vein outcrop with readable faceted ore. The bottom 32px is the ground-contact footprint and every pixel above it is visual overhang. No owner colour and no flag; preserve a small clear upper-right silhouette edge for the runtime pennant. Keep the bottom 32px as physical contact and the upper pixels as a low overhang. High-oblique three-quarter adventure camera around 65 degrees, readable roof or upper surfaces, bottom-anchored. Authentic hand-placed 1990s warm storybook strategy-game pixel art, crisp selective outlines, compact painterly clusters, consistent upper-left light, readable at native resolution, mundane first read, never grimdark. No terrain patch, grass square, environment, horizon, pedestal, cast scenery, UI, text, logo, watermark, glow or baked shadow.",
+      "endpoint": "map-objects",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 215457,
+      "parameters": {
+        "view": "high top-down",
+        "outline": "selective outline",
+        "shading": "medium shading",
+        "detail": "medium detail",
+        "text_guidance_scale": 9
+      }
+    }
+  ]
+}
