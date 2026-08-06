@@ -1,4 +1,4 @@
-import { ACQUIRABLE_SCHOOL_SPELLS } from '../../content/spells';
+import { ACQUIRABLE_SCHOOL_SPELLS, SPELLS } from '../../content/spells';
 import { SKILLS } from '../../content/skills';
 import { findOwnedHero, selectedHero } from '../heroes';
 import { sameCoord } from '../map/pathfinding';
@@ -53,7 +53,7 @@ export function palimpsestForget(
     kind: 'palimpsest', playerId: hero.owner, heroId: hero.id,
     options: shuffled.slice(0, count),
   };
-  state.lastMessage = `${spellId} forgotten; choose what was written beneath it.`;
+  state.lastMessage = `${SPELLS[spellId].name} forgotten; choose what was written beneath it.`;
 }
 
 export function choosePalimpsest(state: GameState, spellId: SpellId): void {
@@ -65,5 +65,5 @@ export function choosePalimpsest(state: GameState, spellId: SpellId): void {
   if (!hero) throw new Error('Palimpsest hero missing');
   hero.knownSpells.push(spellId);
   state.pendingChoice = null;
-  state.lastMessage = `${spellId} retained from the Palimpsest offer.`;
+  state.lastMessage = `${SPELLS[spellId].name} retained from the Palimpsest offer.`;
 }

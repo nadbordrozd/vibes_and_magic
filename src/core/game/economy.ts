@@ -16,6 +16,7 @@ import { skillRank } from '../heroBehaviors';
 import { learnGuildSpells } from './magic';
 import { buildingIsActive } from './buildingStatus';
 import { terrainId } from '../../content/terrain';
+import { CASTLE_NAMES } from '../../content/factionPresentation';
 
 export function build(
   state: GameState,
@@ -91,7 +92,7 @@ export function buildBoat(state: GameState, castleId: string): void {
     id: `boat-${state.day}-${state.activePlayer}-${state.map.objects.length}`,
     kind: 'boat', position: water, owner: state.activePlayer, occupiedBy: null,
   });
-  state.lastMessage = `A boat is launched beside ${castle.id}.`;
+  state.lastMessage = `A boat is launched beside ${CASTLE_NAMES[castle.faction]}.`;
 }
 
 export function recruit(

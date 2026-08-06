@@ -260,6 +260,7 @@ export function buyMercenary(state: GameState, objectId: string, rosterIndex: nu
   const army = addUnits(hero.army, stack.unitId, stack.count);
   if (!army || player.resources.gold < price) throw new Error('Cannot hire this company');
   player.resources.gold -= price; hero.army = army; camp.roster.splice(rosterIndex, 1);
+  state.lastMessage = `${stack.count} ${UNITS[stack.unitId].name} hired for ${price} gold.`;
 }
 
 export function buyWagonItem(state: GameState, objectId: string): void {
@@ -268,7 +269,9 @@ export function buyWagonItem(state: GameState, objectId: string): void {
   if (!camp.stock || state.players[hero.owner].resources.gold < price || !addItem(hero, camp.stock)) {
     throw new Error('Cannot buy this wagon item');
   }
-  state.players[hero.owner].resources.gold -= price; camp.stock = null;
+  state.players[hero.owner].resources.gold -= price;
+  state.lastMessage = `${ITEMS[camp.stock.id].name} bought for ${price} gold.`;
+  camp.stock = null;
 }
 
 export function payTithe(state: GameState, objectId: string): void {
@@ -283,6 +286,7 @@ export function payTithe(state: GameState, objectId: string): void {
     castle.growthEffects.push({
       id: `tithe-${hero.owner}-${state.week}`, multiplier: 1.1, expiresWeek: state.week,
     }));
+  state.lastMessage = `The ${price}-gold tithe grants every owned castle +10% growth this week.`;
 }
 
 export function visitCreativeObject(state: GameState, object: MapObject, hero: Hero): void {

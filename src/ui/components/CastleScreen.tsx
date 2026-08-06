@@ -31,6 +31,10 @@ import { HeroPortrait, UnitPortrait } from '../assets';
 import { CASTLE_NAMES, FACTION_PASSIVES } from '../../content/factionPresentation';
 import { FACTIONS } from '../../content/factions';
 import { SPELL_SCHOOL_NAMES } from '../../content/spellPresentation';
+import { previewAction } from '../actionPreview';
+import {
+  ActionConfirmationDialog, type ActionDraft,
+} from './ActionConfirmationDialog';
 
 interface Props {
   state: GameState;
@@ -67,6 +71,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
     1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0,
   });
   const [selectedBuilding, setSelectedBuilding] = useState<BuildingId | null>(null);
+  const [actionDraft, setActionDraft] = useState<ActionDraft | null>(null);
   const hero = state.players[state.activePlayer].hero;
   const heroIsVisiting = visitingCastle(state)?.id === castle.id;
   const buildable = castleBuildingSlots(castle);
@@ -101,6 +106,10 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
     ? buildingPresentation(selectedBuilding, castle.faction) : null;
   const selectedStatus = selectedBuilding
     ? buildingStatus(state, castle, selectedBuilding) : null;
+  const stageAction = (action: Action, title: string, target: string, effect: string) => {
+    setActionDraft({ action, title, actor: hero?.name ?? state.players[state.activePlayer].name,
+      target, effect });
+  };
 
   return (
     <div className="modal-backdrop">
@@ -140,9 +149,16 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
               })}
             </div>
             {buildingIsActive(castle, 'shipyard') && (
-              <button className="secondary wide" onClick={() => dispatch({
-                type: 'BUILD_BOAT', castleId: castle.id,
-              })}>Launch boat · <ResourceCost cost={{ gold: 1000, timber: 3 }} compact /></button>
+              (() => {
+                const action = { type: 'BUILD_BOAT', castleId: castle.id } as const;
+                const projected = previewAction(state, action);
+                return <button className="secondary wide" disabled={!projected.legal}
+                  title={!projected.legal ? projected.reason ?? 'The Shipyard cannot launch a boat.'
+                    : 'Review the boat launch.'}
+                  onClick={() => stageAction(action, 'Launch boat', CASTLE_NAMES[castle.faction],
+                    'Create one owned boat on the first free adjacent water tile.')}
+                >Launch boat · <ResourceCost cost={{ gold: 1000, timber: 3 }} compact /></button>;
+              })()
             )}
           </div>
           <div>
@@ -230,16 +246,16 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     <small>{SPELL_SCHOOL_NAMES[SPELLS[spellId].school]} school · {SPELLS[spellId].mana} mana</small>
                     <span>{upgraded ? SPELLS[spellId].plus : SPELLS[spellId].base}</span>
                     <button
-                      disabled={!heroIsVisiting || !known || upgraded
-                        || state.players[state.activePlayer].resources.essence < 4}
-                      title={!heroIsVisiting ? 'A hero must visit this castle to inscribe a spell.'
-                        : !known ? 'The visiting hero must know this spell first.'
-                          : upgraded ? 'This spell is already upgraded.'
-                            : state.players[state.activePlayer].resources.essence < 4
-                              ? 'You need 4 essence.' : `Upgrade ${SPELLS[spellId].name}.`}
-                      onClick={() => dispatch({
+                      disabled={!previewAction(state, {
                         type: 'GUILD_INSCRIBE', castleId: castle.id, spellId,
-                      })}
+                      }).legal}
+                      title={previewAction(state, {
+                        type: 'GUILD_INSCRIBE', castleId: castle.id, spellId,
+                      }).reason ?? `Upgrade ${SPELLS[spellId].name}.`}
+                      onClick={() => stageAction({
+                        type: 'GUILD_INSCRIBE', castleId: castle.id, spellId,
+                      }, `Inscribe ${SPELLS[spellId].name}+`, hero?.name ?? 'Visiting hero',
+                      `Permanently replace the known base face with: ${SPELLS[spellId].plus}`)}
                     >Inscribe · <ResourceAmount resource="essence" amount={4} compact /></button>
                   </article>
                 );
@@ -265,15 +281,16 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                       }</small>
                     </div>
                     <button
-                      disabled={state.players[state.activePlayer].heroes.length >= 3
-                        || state.players[state.activePlayer].resources.gold < cost}
-                      title={state.players[state.activePlayer].heroes.length >= 3
-                        ? 'You already command the maximum of three heroes.'
-                        : state.players[state.activePlayer].resources.gold < cost
-                          ? `You need ${cost.toLocaleString()} gold.` : `Hire ${candidate.name}.`}
-                      onClick={() => dispatch({
+                      disabled={!previewAction(state, {
                         type: 'HIRE_HERO', castleId: castle.id, heroId: candidate.id,
-                      })}
+                      }).legal}
+                      title={previewAction(state, {
+                        type: 'HIRE_HERO', castleId: castle.id, heroId: candidate.id,
+                      }).reason ?? `Hire ${candidate.name}.`}
+                      onClick={() => stageAction({
+                        type: 'HIRE_HERO', castleId: castle.id, heroId: candidate.id,
+                      }, `Hire ${candidate.name}`, CASTLE_NAMES[castle.faction],
+                      `${candidate.name} arrives here with ${candidate.defeated ? 'their retained veteran state' : 'a full starter army and mana'}.`)}
                     >
                       Hire · <ResourceAmount resource="gold" amount={cost} compact />
                     </button>
@@ -291,74 +308,81 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             <p>A hero must visit this castle to trade.</p>
           ) : (
             <div className="tavern-offers">
-              {(['timber', 'iron', 'essence'] as const).map((resource) => (
-                <article key={resource}>
+              {(['timber', 'iron', 'essence'] as const).map((resource) => {
+                const sellAction = { type: 'MARKET_TRADE', castleId: castle.id,
+                  direction: 'sell', resource, amount: 1 } as const;
+                const buyAction = { type: 'MARKET_TRADE', castleId: castle.id,
+                  direction: 'buy', resource, amount: 1 } as const;
+                const sellPreview = previewAction(state, sellAction);
+                const buyPreview = previewAction(state, buyAction);
+                return <article key={resource}>
                   <div>
                     <b><ResourceIcon resource={resource} /> {RESOURCE_NAMES[resource]}</b>
                     <small><ResourceAmount resource={resource}
                       amount={state.players[state.activePlayer].resources[resource]} compact /> held</small>
                   </div>
                   <button
-                    disabled={state.players[state.activePlayer].resources[resource] < 1}
-                    title={state.players[state.activePlayer].resources[resource] < 1
-                      ? `You have no ${RESOURCE_NAMES[resource].toLowerCase()} to sell.` : `Sell 1 ${RESOURCE_NAMES[resource].toLowerCase()}.`}
-                    onClick={() => dispatch({
-                      type: 'MARKET_TRADE', castleId: castle.id,
-                      direction: 'sell', resource, amount: 1,
-                    })}
+                    disabled={!sellPreview.legal}
+                    title={sellPreview.reason ?? `Sell 1 ${RESOURCE_NAMES[resource].toLowerCase()}.`}
+                    onClick={() => stageAction(sellAction,
+                      `Sell 1 ${RESOURCE_NAMES[resource]}`, 'Marketplace treasury',
+                      `Exchange it for the exact displayed gold amount.`)}
                   >Sell <ResourceAmount resource={resource} amount={1} compact /> → <ResourceAmount
-                    resource="gold" amount={MARKET_SELL_GOLD} compact /></button>
+                    resource="gold" amount={sellPreview.gain.gold ?? MARKET_SELL_GOLD} compact /></button>
                   <button
-                    disabled={state.players[state.activePlayer].resources.gold
-                      < MARKET_BUY_GOLD[resource]}
-                    title={state.players[state.activePlayer].resources.gold < MARKET_BUY_GOLD[resource]
-                      ? `You need ${MARKET_BUY_GOLD[resource]} gold.` : `Buy 1 ${RESOURCE_NAMES[resource].toLowerCase()}.`}
-                    onClick={() => dispatch({
-                      type: 'MARKET_TRADE', castleId: castle.id,
-                      direction: 'buy', resource, amount: 1,
-                    })}
-                  ><ResourceAmount resource="gold" amount={MARKET_BUY_GOLD[resource]} compact /> → <ResourceAmount
+                    disabled={!buyPreview.legal}
+                    title={buyPreview.reason ?? `Buy 1 ${RESOURCE_NAMES[resource].toLowerCase()}.`}
+                    onClick={() => stageAction(buyAction,
+                      `Buy 1 ${RESOURCE_NAMES[resource]}`, 'Player resources',
+                      `Exchange the exact displayed gold cost for one ${RESOURCE_NAMES[resource].toLowerCase()}.`)}
+                  ><ResourceAmount resource="gold" amount={buyPreview.cost.gold
+                      ?? MARKET_BUY_GOLD[resource]} compact /> → <ResourceAmount
                     resource={resource} amount={1} compact /></button>
-                </article>
-              ))}
+                </article>;
+              })}
               {(hero?.skills.peddler ?? 0) >= 2 && (
-                <article>
+                (() => {
+                  const action = { type: 'BUY_MARKET_SCROLL', castleId: castle.id } as const;
+                  const projected = previewAction(state, action);
+                  return <article>
                   <div><b>Weekly scroll</b><small>{castle.marketScroll
                     ? itemName(castle.marketScroll) : 'Sold out'}</small></div>
                   <button
-                    disabled={!castle.marketScroll
-                      || state.players[state.activePlayer].resources.gold < MARKET_SCROLL_PRICE
-                      || !hero?.inventory.includes(null)}
-                    title={!castle.marketScroll ? 'The weekly scroll is sold out.'
-                      : state.players[state.activePlayer].resources.gold < MARKET_SCROLL_PRICE
-                        ? `You need ${MARKET_SCROLL_PRICE} gold.`
-                        : !hero?.inventory.includes(null) ? 'The visiting hero has no open inventory slot.'
-                          : 'Buy the weekly scroll.'}
-                    onClick={() => dispatch({
-                      type: 'BUY_MARKET_SCROLL', castleId: castle.id,
-                    })}
-                  >Buy · <ResourceAmount resource="gold" amount={MARKET_SCROLL_PRICE} compact /></button>
-                </article>
+                    disabled={!projected.legal}
+                    title={projected.reason ?? 'Buy the weekly scroll.'}
+                    onClick={() => stageAction(action, `Buy ${itemName(castle.marketScroll)}`,
+                      hero?.name ?? 'Visiting hero', 'Place the one-use scroll in an empty consumable slot.')}
+                  >Buy · <ResourceAmount resource="gold"
+                      amount={projected.cost.gold ?? MARKET_SCROLL_PRICE} compact /></button>
+                </article>;
+                })()
               )}
               {(hero?.skills.peddler ?? 0) >= 2 && hero?.inventory.map((item, index) =>
                 item && typeof item !== 'string' ? (
                   <article key={`sell-item-${index}`} data-inspect-kind="item" data-inspect-id={item.id}>
                     <div><b>{itemName(item)}</b><small>Inventory slot {index + 1}</small></div>
-                    <button onClick={() => dispatch({
+                    <button onClick={() => stageAction({
                       type: 'SELL_MARKET_ITEM', castleId: castle.id, inventorySlot: index,
-                    })}>Sell · <ResourceAmount resource="gold"
-                      amount={Math.floor(itemMarketValue(item) * 0.6)} compact /></button>
+                    }, `Sell ${itemName(item)}`, 'Marketplace treasury',
+                    'Permanently remove this consumable and receive the exact displayed gold.')}
+                    >Sell · <ResourceAmount resource="gold"
+                      amount={previewAction(state, { type: 'SELL_MARKET_ITEM', castleId: castle.id,
+                        inventorySlot: index }).gain.gold ?? Math.floor(itemMarketValue(item) * 0.6)} compact /></button>
                   </article>
                 ) : null)}
               {(hero?.skills.peddler ?? 0) >= 2 && hero?.artifacts.backpack.map(
                 (artifact, index) => artifactMarketValue(artifact) > 0 ? (
                   <article key={`sell-artifact-${index}`} data-inspect-kind="artifact" data-inspect-id={artifact.id}>
                     <div><b>{ARTIFACTS[artifact.id].name}</b><small>Artifact backpack</small></div>
-                    <button onClick={() => dispatch({
+                    <button onClick={() => stageAction({
                       type: 'SELL_MARKET_ARTIFACT', castleId: castle.id,
                       backpackIndex: index,
-                    })}>Sell · <ResourceAmount resource="gold"
-                      amount={Math.floor(artifactMarketValue(artifact) * 0.6)} compact /></button>
+                    }, `Sell ${ARTIFACTS[artifact.id].name}`, 'Marketplace treasury',
+                    'Permanently remove this backpack artifact and receive the exact displayed gold.')}
+                    >Sell · <ResourceAmount resource="gold"
+                      amount={previewAction(state, { type: 'SELL_MARKET_ARTIFACT',
+                        castleId: castle.id, backpackIndex: index }).gain.gold
+                        ?? Math.floor(artifactMarketValue(artifact) * 0.6)} compact /></button>
                   </article>
                 ) : null,
               )}
@@ -369,13 +393,17 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
           <section className="tavern-panel">
             <h3>Deep Tunnels</h3>
             {tunnelDestinations.map((destination) => (
-              <button
-                key={destination.id} disabled={(hero?.movement ?? 0) < 500}
-                title={(hero?.movement ?? 0) < 500 ? 'The visiting hero needs 500 movement.'
-                  : `Travel to ${CASTLE_NAMES[destination.faction]}.`}
-                onClick={() => dispatch({
+              <button key={destination.id}
+                disabled={!previewAction(state, {
                   type: 'TUNNEL_TRAVEL', destinationCastleId: destination.id,
-                })}
+                }).legal}
+                title={previewAction(state, {
+                  type: 'TUNNEL_TRAVEL', destinationCastleId: destination.id,
+                }).reason ?? `Travel to ${CASTLE_NAMES[destination.faction]}.`}
+                onClick={() => stageAction({
+                  type: 'TUNNEL_TRAVEL', destinationCastleId: destination.id,
+                }, 'Travel through Deep Tunnels', CASTLE_NAMES[destination.faction],
+                `Move ${hero?.name ?? 'the visiting hero'} to that castle entrance and spend 500 movement.`)}
               >Travel to {CASTLE_NAMES[destination.faction]} · 500 move</button>
             ))}
             {!tunnelDestinations.length && <p>No other Tunnel-castle is connected.</p>}
@@ -388,9 +416,12 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
               {relocationTargets.slice(0, 8).map((destination) => (
                 <button key={`${destination.x},${destination.y}`}
                   title={`Relocate to map coordinate ${destination.x}, ${destination.y}.`}
-                  onClick={() => dispatch({
+                  onClick={() => stageAction({
                     type: 'RELOCATE_CASTLE', castleId: castle.id, destination,
-                  })}>Move {Math.max(Math.abs(destination.x - castle.position.x),
+                  }, `Move ${CASTLE_NAMES[castle.faction]}`,
+                  `${TERRAIN[terrainIdAt(state.map, destination)].label} tile ${destination.x}, ${destination.y}`,
+                  'Relocate the complete castle footprint once this week; visiting heroes move with its entrance.')}
+                >Move {Math.max(Math.abs(destination.x - castle.position.x),
                     Math.abs(destination.y - castle.position.y))} tiles {
                     Math.abs(destination.x - castle.position.x) > Math.abs(destination.y - castle.position.y)
                       ? destination.x > castle.position.x ? 'east' : 'west'
@@ -453,6 +484,9 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
         )}
         <footer>One building may be constructed in each castle per day.</footer>
       </section>
+      {actionDraft && <ActionConfirmationDialog state={state} draft={actionDraft}
+        onCancel={() => setActionDraft(null)}
+        onConfirm={() => { dispatch(actionDraft.action); setActionDraft(null); }} />}
     </div>
   );
 }

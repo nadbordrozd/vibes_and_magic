@@ -71,6 +71,33 @@ function canCenterMap(
   });
 }
 
+export function ferrymansCoinTargetReason(
+  state: GameState,
+  hero: Hero,
+  target: { x: number; y: number },
+  maximumCrossed = ITEMS.ferrymansCoin.amount ?? 3,
+): string | null {
+  if (!inBounds(state.map, target)) return 'Choose a landing tile inside the map';
+  const dx = target.x - hero.position.x;
+  const dy = target.y - hero.position.y;
+  const steps = Math.max(Math.abs(dx), Math.abs(dy));
+  if (steps < 2 || steps > maximumCrossed + 1
+      || (dx !== 0 && dy !== 0 && Math.abs(dx) !== Math.abs(dy))) {
+    return 'The crossing must be a straight line over one to three tiles';
+  }
+  const stepX = Math.sign(dx); const stepY = Math.sign(dy);
+  const crossed = Array.from({ length: steps - 1 }, (_, index) => ({
+    x: hero.position.x + stepX * (index + 1),
+    y: hero.position.y + stepY * (index + 1),
+  }));
+  const passable = (position: { x: number; y: number }) => !['mountain', 'water']
+    .includes(terrainIdAt(state.map, position));
+  if (crossed.some(passable) || !passable(target)) {
+    return 'Ferryman’s Coin must cross only impassable tiles and land on passable terrain';
+  }
+  return null;
+}
+
 export function useAdventureItem(
   state: GameState,
   inventorySlot: number,
@@ -129,24 +156,9 @@ export function useAdventureItem(
     if (!castle) throw new Error('No friendly castle answers the Hearthstone');
     hero.position = castleEntrance(castle);
   } else if (definition.behavior === 'impassableStep') {
-    if (!target || !inBounds(state.map, target)) throw new Error('Choose a landing tile');
-    const dx = target.x - hero.position.x;
-    const dy = target.y - hero.position.y;
-    const steps = Math.max(Math.abs(dx), Math.abs(dy));
-    if (steps < 2 || steps > (definition.amount ?? 3) + 1
-        || (dx !== 0 && dy !== 0 && Math.abs(dx) !== Math.abs(dy))) {
-      throw new Error('The crossing must be a straight line over one to three tiles');
-    }
-    const stepX = Math.sign(dx); const stepY = Math.sign(dy);
-    const crossed = Array.from({ length: steps - 1 }, (_, index) => ({
-      x: hero.position.x + stepX * (index + 1),
-      y: hero.position.y + stepY * (index + 1),
-    }));
-    const passable = (position: { x: number; y: number }) => !['mountain', 'water']
-      .includes(terrainIdAt(state.map, position));
-    if (crossed.some(passable) || !passable(target)) {
-      throw new Error('Ferryman’s Coin must cross only impassable tiles');
-    }
+    if (!target) throw new Error('Choose a landing tile');
+    const invalid = ferrymansCoinTargetReason(state, hero, target, definition.amount ?? 3);
+    if (invalid) throw new Error(invalid);
     hero.position = { ...target };
   } else if (definition.behavior === 'militiaWrit') {
     const castle = state.castles.find((candidate) =>

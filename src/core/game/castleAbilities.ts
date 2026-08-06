@@ -4,6 +4,7 @@ import { castleEntrance, castleFootprintTiles, mapOccupiedTiles } from '../map/o
 import type { Coord, GameState } from '../types';
 import { buildingIsActive } from './buildingStatus';
 import { terrainIdAt } from '../../content/terrain';
+import { CASTLE_NAMES } from '../../content/factionPresentation';
 
 export function tunnelTravel(state: GameState, destinationCastleId: string): void {
   const hero = activeHero(state);
@@ -44,5 +45,5 @@ export function relocateCastle(state: GameState, castleId: string, destination: 
     candidate.alive && sameCoord(candidate.position, origin))) {
     hero.position = castleEntrance(castle);
   }
-  state.lastMessage = `${castle.id} walks to ${destination.x},${destination.y}.`;
+  state.lastMessage = `${CASTLE_NAMES[castle.faction]} walks to ${destination.x},${destination.y}.`;
 }
