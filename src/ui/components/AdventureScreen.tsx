@@ -66,6 +66,7 @@ export function AdventureScreen({
   } | null>(null);
   const [unstitching, setUnstitching] = useState(false);
   const [worldView, setWorldView] = useState(false);
+  const [confirmTitleExit, setConfirmTitleExit] = useState(false);
   const [objectiveOpen, setObjectiveOpen] = useState(state.day === 1 && state.replay.length === 0);
   const player = state.players[state.activePlayer];
   const hero = player.hero;
@@ -236,7 +237,8 @@ export function AdventureScreen({
   return (
     <main className="game-shell">
       <header className="topbar">
-        <button className="wordmark" onClick={onMenu}>BM</button>
+        <button className="wordmark" title="Return to title"
+          onClick={() => setConfirmTitleExit(true)}>BM</button>
         <div className="turn-badge">
           <span>Week {state.week}</span>
           <b>Day {((state.day - 1) % 7) + 1}</b>
@@ -746,6 +748,19 @@ export function AdventureScreen({
           onCast={chooseAdventureSpell}
         />
       )}
+      {confirmTitleExit && <div className="modal-backdrop title-exit-backdrop">
+        <section className="choice-dialog title-exit-dialog" role="alertdialog"
+          aria-modal="true" aria-labelledby="title-exit-heading">
+          <span className="dialog-kicker">Leave active campaign?</span>
+          <h2 id="title-exit-heading">Return to title</h2>
+          <p>Only saved progress can be recovered. Progress since your latest quick, manual,
+            or turn-end autosave — or the entire campaign if no save exists — will be discarded.</p>
+          <div className="dialog-actions">
+            <button onClick={() => setConfirmTitleExit(false)}>Cancel — keep playing</button>
+            <button className="primary" onClick={onMenu}>Leave and return to title</button>
+          </div>
+        </section>
+      </div>}
     </main>
   );
 }

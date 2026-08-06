@@ -137,6 +137,21 @@ button:focus-visible, select:focus-visible, input:focus-visible, [tabindex]:focu
 }
 .menu-card h1 span { color: #d45b4c; margin-left: 48px; }
 .menu-copy { color: var(--muted); max-width: 390px; line-height: 1.55; font-size: 14px; }
+.selected-map-identity {
+  display: grid; gap: 5px; padding: 10px 12px; border-left: 3px solid var(--gold);
+  background: #0d120f; color: #aeb5a9; font-size: 10px;
+}
+.selected-map-identity span { color: var(--gold); text-transform: uppercase; letter-spacing: .1em; }
+.map-options { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin: 0; padding: 0; border: 0; }
+.map-options legend { grid-column: 1 / -1; padding: 0 0 7px; color: #aeb5a9; text-transform: uppercase; letter-spacing: .12em; font-size: 10px; font-weight: 700; }
+.map-options button {
+  display: grid; gap: 4px; min-width: 0; padding: 10px; text-align: left;
+  color: var(--cream); background: #0d120f; border: 1px solid #414b40;
+}
+.map-options button.selected { border-color: var(--gold); box-shadow: inset 3px 0 var(--gold); }
+.map-options button b { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+.map-options button small { color: var(--gold); font-size: 8px; }
+.map-options button span { color: #8d9789; font-size: 9px; line-height: 1.35; }
 .menu-fields { display: grid; gap: 13px; margin: 26px 0; }
 .menu-fields label {
   display: grid; gap: 7px; color: #aeb5a9; text-transform: uppercase; letter-spacing: .12em; font-size: 10px; font-weight: 700;
@@ -160,6 +175,8 @@ button:focus-visible, select:focus-visible, input:focus-visible, [tabindex]:focu
 .slot-row button, .seed-row button {
   color: var(--cream); background: #252c25; border: 1px solid #515c50; padding: 7px 12px;
 }
+.controller-legend { display: grid; gap: 4px; padding: 9px 11px; background: #ffffff08; color: #8d9789; font-size: 9px; line-height: 1.4; }
+.controller-legend b { color: var(--cream); text-transform: uppercase; letter-spacing: .06em; }
 .seed-row { display: grid; grid-template-columns: 1fr 43px; gap: 8px; }
 .primary {
   color: #11150f; border: 0; background: var(--gold);
@@ -176,6 +193,13 @@ button:focus-visible, select:focus-visible, input:focus-visible, [tabindex]:focu
 .load-button b { font-size: 11px; text-transform: uppercase; letter-spacing: .09em; }
 .load-button small { color: #8d9789; font-size: 9px; }
 .load-button i { color: var(--gold); font-style: normal; }
+.save-row > span { min-width: 0; padding-right: 8px; }
+.save-row .save-warning { color: #e7a66d; font-size: 9px; line-height: 1.35; font-weight: 600; }
+.save-row.content-mismatch { border-color: #9b7046; }
+.save-row.schema-mismatch, .save-row.corrupt { border-color: #8d4b45; opacity: 1; }
+.save-row:disabled { cursor: not-allowed; }
+.dialog-actions { display: flex; justify-content: center; gap: 10px; }
+.dialog-actions > button:not(.primary) { color: var(--cream); border: 1px solid #596457; background: #151b16; padding: 13px 18px; }
 .menu-card footer { text-align: center; margin-top: 20px; color: #687166; font-size: 10px; letter-spacing: .08em; }
 
 .modal-backdrop {
@@ -259,4 +283,6 @@ button:focus-visible, select:focus-visible, input:focus-visible, [tabindex]:focu
   .menu-card h1 { font-size: 51px; }
   .choice-cards, .choice-cards.three { grid-template-columns: 1fr; }
   .choice-dialog { max-height: 90vh; overflow: auto; }
+  .map-options { grid-template-columns: 1fr; }
+  .dialog-actions { flex-direction: column-reverse; }
 }

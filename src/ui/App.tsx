@@ -104,7 +104,7 @@ export function App() {
   const loadSavedState = (slot?: SaveSlot) => {
     const saved = loadGame(undefined, slot ?? 'primary');
     if (!saved) {
-      setError('The saved game could not be loaded.');
+      setError('The saved game could not be loaded. It remains untouched; dismiss this message and choose another slot.');
       return;
     }
     setGame(saved);
@@ -127,7 +127,10 @@ export function App() {
       try {
         const file = input.files?.[0]; if (!file) return;
         setGame(importSaveFile(await file.text())); setBattleReplay(null); setError('');
-      } catch (caught) { setError(caught instanceof Error ? caught.message : String(caught)); }
+      } catch (caught) {
+        const message = caught instanceof Error ? caught.message : String(caught);
+        setError(`${message}. No campaign was changed; dismiss this message and choose another file.`);
+      }
     };
     input.click();
   };
@@ -348,9 +351,11 @@ export function App() {
   ]);
 
   if (!game) {
-    return <MainMenu onStart={start} savedGame={savedSummary}
+    return <><MainMenu onStart={start} savedGame={savedSummary}
       manualSaves={manualSummaries} autoSaves={autoSummaries} onLoad={load}
-      onImport={importFile} />;
+      onImport={importFile} />
+      {error && <button className="error-toast" role="alert"
+        onClick={() => setError('')}>{error} · Dismiss ×</button>}</>;
   }
   if (passPlayer) return <PassDevice playerId={passPlayer} onReady={() => setPassPlayer(null)} />;
 

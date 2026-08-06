@@ -5,6 +5,7 @@ import { FACTIONS } from '../../content/factions';
 import { FACTION_PASSIVES } from '../../content/factionPresentation';
 import { DIFFICULTY_MODIFIERS } from '../../content/constants';
 import type { SaveSlot, SaveSummary } from '../persistence';
+import { CAMPAIGN_PRESENTATION, CAMPAIGN_PRESENTATIONS } from '../campaignPresentation';
 
 interface Props {
   onStart: (options: NewGameOptions) => void;
@@ -35,6 +36,42 @@ const controllerHelp = {
   dormant: 'This player keeps its starting position but takes no economic actions.',
 } as const;
 
+const controllerNames = { human: 'Human', ai: 'Standard', dormant: 'Dormant' } as const;
+
+function formatSaveTime(savedAt: number | null): string {
+  if (savedAt === null) return 'time unavailable';
+  return `${new Date(savedAt).toISOString().slice(0, 16).replace('T', ' ')} UTC`;
+}
+
+function SaveRow({
+  summary, title, onLoad,
+}: { summary: SaveSummary; title: string; onLoad: () => void }) {
+  const unavailable = summary.compatibility === 'corrupt'
+    || summary.compatibility === 'schema-mismatch';
+  const players = summary.players.map((player) =>
+    `${player.name}: ${player.faction} · ${controllerNames[player.controller]}`).join(' | ');
+  return (
+    <button className={`load-button save-row ${summary.compatibility}`}
+      onClick={onLoad} disabled={unavailable}
+      title={unavailable ? summary.warning : `Load ${summary.mapName}`}>
+      <span>
+        <b>{title} · {summary.mapName}</b>
+        <small>{summary.objective}</small>
+        <small>{summary.difficulty ? `${summary.difficulty[0].toUpperCase()}${summary.difficulty.slice(1)}` : 'Unknown difficulty'}
+          {' · '}seed {summary.seed ?? 'unknown'} · Week {summary.week} / Day {summary.day}
+          {' · '}active: {summary.activePlayer}</small>
+        <small>{players || 'Controller and faction data unavailable'}</small>
+        <small>Saved {formatSaveTime(summary.savedAt)} · schema v{summary.schemaVersion ?? 'unknown'}
+          {' · '}{summary.compatibility === 'compatible' ? 'content matches this build'
+            : summary.compatibility === 'content-mismatch' ? 'content mismatch'
+              : summary.compatibility === 'schema-mismatch' ? 'schema mismatch' : 'corrupt data'}</small>
+        {summary.warning && <strong className="save-warning">{summary.warning}</strong>}
+      </span>
+      <i>{unavailable ? '!' : '↗'}</i>
+    </button>
+  );
+}
+
 function resolveFaction(choice: FactionChoice, seed: number, slot: number): FactionId {
   if (choice !== 'random') return choice;
   const index = (Math.imul(seed ^ (slot * 0x9e3779b9), 2654435761) >>> 0)
@@ -57,6 +94,7 @@ export function MainMenu({
   const [mapId, setMapId] = useState<MapId>('border-marches');
   const [playerCount, setPlayerCount] = useState<1 | 2 | 3 | 4>(4);
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
+  const selectedMap = CAMPAIGN_PRESENTATION[mapId];
 
   return (
     <main className="menu-shell">
@@ -67,34 +105,24 @@ export function MainMenu({
             : mapId === 'manywhere' ? <>Many<br /><span>where</span></>
               : mapId === 'grand-muster' ? <>Grand<br /><span>Muster</span></>
             : <>Cross<br /><span>stitch</span></>}</h1>
-        <p className="menu-copy">
-          {mapId === 'border-marches'
-            ? 'Raise an army, seize the mountain passes, and take your rival’s castle.'
-            : mapId === 'torn-sound'
-              ? 'Two island keeps, one broken sea, and more routes than roads.'
-              : mapId === 'manywhere'
-                ? 'One long road, four empty thrones, and nearly everything else.'
-                : mapId === 'grand-muster'
-                  ? 'Six allied castles, six complete armies, and a continent-sized creature showcase.'
-              : 'Four corners, two crossing seams, and one old pattern waiting to be found.'}
-        </p>
+        <p className="menu-copy">{selectedMap.flavor}</p>
+        <section className="selected-map-identity" aria-live="polite">
+          <span>{selectedMap.style}</span>
+          <b>Exact objective: {selectedMap.objective}</b>
+        </section>
         <div className="menu-fields">
-          <label>
-            Map
-            <select value={mapId} onChange={(event) => {
-              const next = event.target.value as MapId; setMapId(next);
+          <fieldset className="map-options">
+            <legend>Map, style, and objective</legend>
+            {CAMPAIGN_PRESENTATIONS.map((map) => (
+              <button key={map.id} className={mapId === map.id ? 'selected' : ''}
+                aria-pressed={mapId === map.id} onClick={() => {
+              const next = map.id; setMapId(next);
               if (next === 'manywhere') setPlayerCount(1);
               else if (next === 'grand-muster') setPlayerCount(2);
               else if (playerCount === 1) setPlayerCount(2);
-            }}>
-              <option value="border-marches">Border Marches · 2 players</option>
-              <option value="crosstitch">Crosstitch · 2–4 players</option>
-              <option value="crosstitch-kit">Crosstitch: The Kit · 2–4 players</option>
-              <option value="torn-sound">The Torn Sound · 2 players</option>
-              <option value="manywhere">Manywhere · showcase · 1–3 players</option>
-              <option value="grand-muster">The Grand Muster · oversized demo</option>
-            </select>
-          </label>
+                }}><b>{map.name}</b><small>{map.style}</small><span>{map.objective}</span></button>
+            ))}
+          </fieldset>
           {(mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere') && (
             <label>Players
               <select value={playerCount} onChange={(event) =>
@@ -177,6 +205,11 @@ export function MainMenu({
               </button>
             </div>
           )}
+          <div className="controller-legend" aria-label="Controller meanings">
+            <span><b>Human</b> — {controllerHelp.human}</span>
+            <span><b>Standard</b> — {controllerHelp.ai}</span>
+            <span><b>Dormant</b> — {controllerHelp.dormant}</span>
+          </div>
           <label>
             World seed
             <div className="seed-row">
@@ -208,31 +241,15 @@ export function MainMenu({
         })}>
           Begin campaign <span>→</span>
         </button>
-        {savedGame && (
-          <button className="load-button" onClick={() => onLoad()}>
-            <span>
-              <b>Continue saved game</b>
-              <small>
-                Week {savedGame.week} · Day {savedGame.day} · {savedGame.activePlayer}
-              </small>
-            </span>
-            <i>↗</i>
-          </button>
-        )}
+        {savedGame && <SaveRow summary={savedGame} title="Continue quick save"
+          onLoad={() => onLoad()} />}
         {manualSaves.map((summary, index) => summary && (
-          <button className="load-button" key={index} onClick={() => onLoad(index + 1)}>
-            <span><b>Load manual slot {index + 1}</b>
-              <small>Week {summary.week} · Day {summary.day} · {summary.activePlayer}</small>
-            </span><i>↗</i>
-          </button>
+          <SaveRow key={index} summary={summary} title={`Manual slot ${index + 1}`}
+            onLoad={() => onLoad(index + 1)} />
         ))}
         {autoSaves.map((summary, index) => summary && (
-          <button className="load-button" key={`auto-${index}`}
-            onClick={() => onLoad(`auto-${index}`)}>
-            <span><b>Recover autosave {index + 1}</b>
-              <small>Week {summary.week} · Day {summary.day} · {summary.activePlayer}</small>
-            </span><i>↗</i>
-          </button>
+          <SaveRow key={`auto-${index}`} summary={summary} title={`Autosave ${index + 1}`}
+            onLoad={() => onLoad(`auto-${index}`)} />
         ))}
         <button className="load-button" onClick={onImport}><span><b>Import save file</b>
           <small>Replay a deterministic campaign export.</small></span><i>⇧</i></button>

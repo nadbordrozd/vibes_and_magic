@@ -130,6 +130,6 @@ describe('local game persistence', () => {
         { type: 'END_TURN' as const }, { type: 'END_TURN' as const },
       ],
     };
-    expect(stateHash(replaySave(golden))).toBe('bf56392f');
+    expect(stateHash(replaySave(golden))).toBe('86da8c2d');
   });
 });

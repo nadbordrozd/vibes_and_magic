@@ -73,12 +73,27 @@ export interface BattleReplay {
 }
 
 export interface SaveSummary {
-  savedAt: number;
+  savedAt: number | null;
   day: number;
   week: number;
   activePlayer: string;
+  mapId: MapId | null;
+  mapName: string;
+  objective: string;
+  difficulty: Difficulty | null;
+  seed: number | null;
+  players: Array<{
+    name: string;
+    faction: string;
+    controller: 'human' | 'ai' | 'dormant';
+  }>;
+  schemaVersion: number | null;
+  contentHash: string | null;
+  compatibility: 'compatible' | 'content-mismatch' | 'schema-mismatch' | 'corrupt';
   warning?: string;
 }
+
+export const LOCAL_SAVE_SCHEMA = 4;
 
 export interface StorageLike {
   getItem(key: string): string | null;
@@ -219,6 +234,10 @@ export function loadGame(
     if (gameplayActions.length === 0 && initial) {
       const state = JSON.parse(initial) as Partial<GameState>;
       if (state.version === 4 && state.seed === parsed.seed && state.map?.id === parsed.mapId) {
+        if (parsed.contentHash !== CONTENT_HASH && Array.isArray(state.eventLog)) {
+          state.eventLog = [...state.eventLog,
+            'Warning: this local save was made with different content data.'];
+        }
         return state as GameState;
       }
     }
@@ -232,16 +251,67 @@ export function savedGameSummary(
   storage = browserStorage(), slot: SaveSlot = 'primary',
 ): SaveSummary | null {
   if (!storage) return null;
+  const key = keyFor(slot);
+  const raw = storage.getItem(key);
+  if (raw === null) return null;
   try {
-    const value = JSON.parse(storage.getItem(`${keyFor(slot)}${META_SUFFIX}`) ?? 'null');
-    return value && typeof value.savedAt === 'number' ? value as SaveSummary : null;
-  } catch { return null; }
+    const parsed: unknown = JSON.parse(raw);
+    if (!validSave(parsed)) {
+      return corruptSummary('Invalid replay fields; overwrite this slot from a running campaign.');
+    }
+    const metaRaw = storage.getItem(`${key}${META_SUFFIX}`);
+    let meta: Partial<SaveSummary> | null = null;
+    try { meta = metaRaw ? JSON.parse(metaRaw) as Partial<SaveSummary> : null; } catch { /* rebuild */ }
+    const explicitSchema = Number.isInteger(meta?.schemaVersion) ? meta!.schemaVersion! : null;
+    let summary: SaveSummary;
+    try {
+      summary = summaryFor(replaySave(parsed), typeof meta?.savedAt === 'number'
+        ? meta.savedAt : null);
+    } catch {
+      return corruptSummary('The replay could not be reconstructed; keep the file for recovery or overwrite the slot.');
+    }
+    if (explicitSchema !== null && explicitSchema !== LOCAL_SAVE_SCHEMA) {
+      return {
+        ...summary, schemaVersion: explicitSchema, compatibility: 'schema-mismatch',
+        warning: `Schema v${explicitSchema} is not supported by this build (v${LOCAL_SAVE_SCHEMA}); export or replace this slot.`,
+      };
+    }
+    if (parsed.contentHash !== CONTENT_HASH) {
+      return {
+        ...summary, contentHash: parsed.contentHash, compatibility: 'content-mismatch',
+        warning: 'Content differs from this build; loading is allowed but replay results may differ.',
+      };
+    }
+    return summary;
+  } catch {
+    return corruptSummary('Unreadable save data; choose another slot or overwrite this one in-game.');
+  }
 }
 
-function summaryFor(state: GameState, savedAt: number): SaveSummary {
+function corruptSummary(warning: string): SaveSummary {
+  return {
+    savedAt: null, day: 0, week: 0, activePlayer: 'Unknown player',
+    mapId: null, mapName: 'Unreadable save', objective: 'Objective unavailable',
+    difficulty: null, seed: null, players: [], schemaVersion: null, contentHash: null,
+    compatibility: 'corrupt', warning,
+  };
+}
+
+function summaryFor(state: GameState, savedAt: number | null): SaveSummary {
+  const players = Object.values(state.players).filter((player) => player.active
+    || player.heroes.length > 0).map((player) => ({
+    name: player.name,
+    faction: state.map.id === 'grand-muster' && player.id === 'p1'
+      ? 'All six allied factions' : FACTIONS[player.faction].name,
+    controller: player.controller,
+  }));
   return {
     savedAt, day: state.day, week: state.week,
     activePlayer: state.players[state.activePlayer].name,
+    mapId: state.map.id, mapName: state.map.name, objective: state.map.victory.mechanics,
+    difficulty: state.difficulty, seed: state.seed, players,
+    schemaVersion: LOCAL_SAVE_SCHEMA, contentHash: CONTENT_HASH,
+    compatibility: 'compatible',
   };
 }
 
