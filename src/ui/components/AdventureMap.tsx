@@ -274,10 +274,13 @@ interface Props {
   onSelectHero: (heroId: string) => void;
   onPreview: (coord: Coord | null) => void;
   onPickup: (objectId: string) => void;
+  targetTiles?: Set<string>;
+  selectedTargetTiles?: Coord[];
 }
 
 export function AdventureMap({
   state, hero, reachable, path, movement, mapStep, onTile, onSelectHero, onPreview, onPickup,
+  targetTiles, selectedTargetTiles = [],
 }: Props) {
   const frameRef = useRef<HTMLElement>(null);
   const mapRef = useRef<SVGSVGElement>(null);
@@ -475,7 +478,9 @@ export function AdventureMap({
               ? 'terrain-reachable' : ''} ${seen && hero
                 && (guardianAtPath(state, { x, y })
                   || guardiansCovering(state.map, { x, y }, hero.id).length > 0)
-                ? 'fight-destination' : ''}`} onClick={() => onTile({ x, y })}
+                ? 'fight-destination' : ''} ${targetTiles?.has(key) ? 'spell-legal-target' : ''} ${
+                  selectedTargetTiles.some((target) => target.x === x && target.y === y)
+                    ? 'spell-selected-target' : ''}`} onClick={() => onTile({ x, y })}
               onMouseEnter={() => onPreview({ x, y })}
               data-inspect-kind={seen ? 'terrain' : undefined}
               data-inspect-id={seen ? terrain : undefined}

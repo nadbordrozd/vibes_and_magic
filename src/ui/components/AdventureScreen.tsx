@@ -25,9 +25,14 @@ import { ARTIFACTS } from '../../content/artifacts';
 import { HEROES } from '../../content/heroes';
 import { SKILLS } from '../../content/skills';
 import { CASTLE_NAMES, FACTION_PASSIVES } from '../../content/factionPresentation';
-import { fickleWeatherOffers } from '../../core/game/adventureSpells';
+import { adventureSpellMoveCost } from '../../core/game/adventureSpells';
 import type { SpellId } from '../../core/types';
 import { AdventureSpellbook } from './AdventureSpellbook';
+import { AdventureSpellTargetDialog } from './AdventureSpellTargetDialog';
+import {
+  type AdventureCastAction, isMapTargetSpell, legalMapTargets, mapDraftAction,
+  mapTargetReason, requiredMapTargets,
+} from '../adventureSpellTargeting';
 import { objectEntranceTile } from '../../core/map/occupancy';
 import {
   ResourceAmount, ResourceCost, ResourceIcon, ResourceRichText,
@@ -64,6 +69,8 @@ export function AdventureScreen({
   const [castingSpell, setCastingSpell] = useState<{
     spellId: SpellId; positions: Coord[];
   } | null>(null);
+  const [spellDraft, setSpellDraft] = useState<AdventureCastAction | null>(null);
+  const [castingError, setCastingError] = useState<string | null>(null);
   const [unstitching, setUnstitching] = useState(false);
   const [worldView, setWorldView] = useState(false);
   const [confirmTitleExit, setConfirmTitleExit] = useState(false);
@@ -79,6 +86,9 @@ export function AdventureScreen({
   const ownedCastles = state.castles.filter((castle) => castle.owner === state.activePlayer);
   const income = incomeForPlayer(state, state.activePlayer);
   const timing = ANIMATION_TIMINGS[animationSpeed];
+  const legalSpellTargets = useMemo(() => hero && castingSpell
+    ? legalMapTargets(state, hero, castingSpell.spellId, castingSpell.positions)
+    : undefined, [state, hero, castingSpell]);
   const maxMovement = hero
     ? Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero))) : HERO_MOVE_POINTS;
   const serviceObject = hero ? state.map.objects.find((object) =>
@@ -150,32 +160,15 @@ export function AdventureScreen({
     }
     if (castingSpell) {
       const { spellId } = castingSpell;
-      if (spellId === 'gate') {
-        const positions = [...castingSpell.positions, destination];
-        if (positions.length < 2) setCastingSpell({ spellId, positions });
-        else {
-          dispatch({
-            type: 'CAST_ADVENTURE_SPELL', spellId,
-            target: positions[0], secondaryTarget: positions[1],
-          });
-          setCastingSpell(null);
-        }
-      } else if (spellId === 'rootAndRuin') {
-        const positions = [...castingSpell.positions, destination];
-        const needed = hero.upgradedSpells.includes(spellId) ? 5 : 3;
-        if (positions.length < needed) setCastingSpell({ spellId, positions });
-        else {
-          dispatch({ type: 'CAST_ADVENTURE_SPELL', spellId, positions });
-          setCastingSpell(null);
-        }
-      } else {
-        dispatch({
-          type: 'CAST_ADVENTURE_SPELL', spellId,
-          target: destination, positions: spellId === 'murmuration'
-            ? [hero.position, destination] : undefined,
-        });
+      const invalid = mapTargetReason(state, hero, spellId, destination, castingSpell.positions);
+      if (invalid) { setCastingError(invalid); return; }
+      setCastingError(null);
+      const positions = [...castingSpell.positions, destination];
+      const needed = requiredMapTargets(hero, spellId);
+      if (needed !== null && positions.length >= needed) {
+        setSpellDraft(mapDraftAction(spellId, hero, positions));
         setCastingSpell(null);
-      }
+      } else setCastingSpell({ spellId, positions });
       return;
     }
     if (usingItemSlot !== null) {
@@ -199,40 +192,30 @@ export function AdventureScreen({
   const chooseAdventureSpell = (spellId: SpellId) => {
     if (!hero) return;
     setSpellbookOpen(false);
-    if (['gate', 'coldRoad', 'greenway', 'murmuration', 'rootAndRuin'].includes(spellId)) {
+    setCastingError(null);
+    if (isMapTargetSpell(spellId)) {
       setCastingSpell({ spellId, positions: [] });
       return;
     }
     const action: Extract<Action, { type: 'CAST_ADVENTURE_SPELL' }> = {
       type: 'CAST_ADVENTURE_SPELL', spellId,
     };
-    if (spellId === 'wildGrowth') action.castleId = ownedCastles[0]?.id;
-    if (spellId === 'saltTheVein') {
-      action.targetId = state.map.objects.find((object) => object.kind === 'mine'
-        && object.owner && object.owner !== hero.owner
-        && player.explored.includes(`${object.position.x},${object.position.y}`))?.id;
-    }
-    if (spellId === 'beastTongue') {
-      action.targetId = state.map.objects.find((object) => object.kind === 'guardian'
-        && object.army.every((stack) =>
-          UNITS[stack.unitId].abilities.includes('beast')))?.id;
-      action.recruit = hero.upgradedSpells.includes(spellId);
-    }
-    if (spellId === 'clockworkCourier') {
-      const target = player.heroes.find((candidate) => candidate.alive && candidate.id !== hero.id);
-      action.targetHeroId = target?.id;
-      action.sourceSlot = hero.inventory.findIndex(Boolean);
-      action.destinationSlot = target?.inventory.findIndex((item) => item === null);
-      if ((action.sourceSlot ?? -1) < 0) {
-        action.sourceSlot = hero.army.findIndex(Boolean);
-        action.destinationSlot = target?.army.findIndex((stack) => stack === null);
-      }
-    }
-    if (spellId === 'fickleWeather') action.omen = fickleWeatherOffers(
-      state, hero.upgradedSpells.includes(spellId),
-    )[0];
-    dispatch(action);
+    if (spellId === 'beastTongue' && !hero.upgradedSpells.includes(spellId)) action.recruit = false;
+    setSpellDraft(action);
   };
+
+  useEffect(() => {
+    if (!castingSpell && !spellDraft) return;
+    const cancelCasting = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      setCastingSpell(null);
+      setSpellDraft(null);
+      setCastingError(null);
+    };
+    window.addEventListener('keydown', cancelCasting);
+    return () => window.removeEventListener('keydown', cancelCasting);
+  }, [castingSpell, spellDraft]);
 
   return (
     <main className="game-shell">
@@ -290,6 +273,8 @@ export function AdventureScreen({
         <AdventureMap
           state={state} hero={hero} reachable={reachable} path={path}
           movement={movement} mapStep={timing.mapStep} onTile={clickTile}
+          targetTiles={legalSpellTargets}
+          selectedTargetTiles={castingSpell?.positions}
           onSelectHero={(heroId) => {
             if (!movement && player.controller === 'human') {
               dispatch({ type: 'SELECT_HERO', heroId });
@@ -354,9 +339,29 @@ export function AdventureScreen({
               >Adventure spellbook</button>
               {castingSpell && (
                 <div className="map-cast-prompt">
-                  <b>Casting {SPELLS[castingSpell.spellId].name}</b>
-                  <span>Select map tile {castingSpell.positions.length + 1}.</span>
-                  <button onClick={() => setCastingSpell(null)}>Cancel</button>
+                  <b>{SPELLS[castingSpell.spellId].name} · choose targets</b>
+                  <span>{SPELLS[castingSpell.spellId][hero.upgradedSpells.includes(castingSpell.spellId) ? 'plus' : 'base']}</span>
+                  <span>{SPELLS[castingSpell.spellId].mana} mana · {adventureSpellMoveCost(hero)} movement · nothing is spent until confirmation.</span>
+                  <span>Stage 1 of 2 · chosen {castingSpell.positions.length}{requiredMapTargets(hero, castingSpell.spellId) !== null
+                    ? ` of ${requiredMapTargets(hero, castingSpell.spellId)}` : ''} · highlighted tiles are legal.</span>
+                  {legalSpellTargets?.size === 0 && <small className="spell-target-reason">
+                    No legal target is currently available. Check the terrain, exploration, range, and occupied tiles.
+                  </small>}
+                  {castingError && <small className="spell-target-reason">Not a legal target · {castingError}</small>}
+                  <div>
+                    <button disabled={!castingSpell.positions.length}
+                      title={!castingSpell.positions.length ? 'No selected tile to remove.' : 'Remove the latest selected tile.'}
+                      onClick={() => setCastingSpell({ ...castingSpell, positions: castingSpell.positions.slice(0, -1) })}>Undo last</button>
+                    {castingSpell.spellId === 'murmuration' && <button className="primary"
+                      disabled={!castingSpell.positions.length}
+                      title={!castingSpell.positions.length ? 'Choose at least one scouting step.' : 'Review the drawn path before casting.'}
+                      onClick={() => {
+                        setSpellDraft(mapDraftAction(castingSpell.spellId, hero, castingSpell.positions));
+                        setCastingSpell(null);
+                      }}>Review path</button>}
+                    <button onClick={() => { setCastingSpell(null); setSpellbookOpen(true); }}>Back to spellbook</button>
+                    <button onClick={() => setCastingSpell(null)}>Cancel · spend nothing</button>
+                  </div>
                 </div>
               )}
               <div className="item-inventory">
@@ -747,6 +752,16 @@ export function AdventureScreen({
           state={state} onClose={() => setSpellbookOpen(false)}
           onCast={chooseAdventureSpell}
         />
+      )}
+      {hero && spellDraft && (
+        <AdventureSpellTargetDialog state={state} action={spellDraft}
+          onChange={setSpellDraft}
+          onConfirm={() => {
+            dispatch(spellDraft);
+            setSpellDraft(null);
+          }}
+          onBack={() => { setSpellDraft(null); setSpellbookOpen(true); }}
+          onCancel={() => setSpellDraft(null)} />
       )}
       {confirmTitleExit && <div className="modal-backdrop title-exit-backdrop">
         <section className="choice-dialog title-exit-dialog" role="alertdialog"

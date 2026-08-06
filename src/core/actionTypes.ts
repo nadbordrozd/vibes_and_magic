@@ -61,7 +61,8 @@ export type Action =
     targetHeroId?: string; secondaryHeroId?: string; castleId?: string;
     secondaryCastleId?: string; school?: SpellSchool; omen?: OmenId;
     positions?: Coord[]; sourceSlot?: number; destinationSlot?: number;
-    recruit?: boolean; displayedBand?: string; learnSpellId?: SpellId;
+    courierKind?: 'item' | 'army'; recruit?: boolean;
+    displayedBand?: string; learnSpellId?: SpellId; skipLearnSpell?: boolean;
   }
   | { type: 'DECLARE_RESONANCE'; heroId: string; school: SpellSchool }
   | { type: 'CHOOSE_NEXT_OMEN'; heroId: string; omen: OmenId }

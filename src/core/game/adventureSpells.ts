@@ -185,14 +185,16 @@ function transferCourier(
   const sourceSlot = action.sourceSlot ?? -1;
   const destinationSlot = action.destinationSlot ?? -1;
   if (target) {
-    if (sourceSlot >= 0 && sourceSlot < hero.inventory.length
+    if (action.courierKind !== 'army'
+        && sourceSlot >= 0 && sourceSlot < hero.inventory.length
         && destinationSlot >= 0 && destinationSlot < target.inventory.length) {
       const item = hero.inventory[sourceSlot];
       hero.inventory[sourceSlot] = target.inventory[destinationSlot];
       target.inventory[destinationSlot] = item;
       return;
     }
-    if (sourceSlot >= 0 && sourceSlot < hero.army.length
+    if (action.courierKind !== 'item'
+        && sourceSlot >= 0 && sourceSlot < hero.army.length
         && destinationSlot >= 0 && destinationSlot < target.army.length) {
       const stack = hero.army[sourceSlot];
       hero.army[sourceSlot] = target.army[destinationSlot];
@@ -203,7 +205,7 @@ function transferCourier(
   const castle = plus && action.castleId
     ? state.castles.find((candidate) => candidate.id === action.castleId
       && candidate.owner === hero.owner) : null;
-  if (!castle || sourceSlot < 0 || destinationSlot < 0
+  if (!castle || action.courierKind === 'item' || sourceSlot < 0 || destinationSlot < 0
       || sourceSlot >= hero.army.length || destinationSlot >= castle.garrison.length) {
     throw new Error('Clockwork Courier needs valid transfer slots');
   }
@@ -284,7 +286,7 @@ function resolveGrave(state: GameState, hero: Hero, action: AdventureCast, plus:
       sameCoord(entry.position, hero.position));
     if (!record) throw new Error('No battle was fought on this tile');
     state.lastMessage = record.summary;
-    if (plus && record.spells.length) {
+    if (plus && record.spells.length && !action.skipLearnSpell) {
       const spell = action.learnSpellId && record.spells.includes(action.learnSpellId)
         ? action.learnSpellId : record.spells.find((id) => !hero.knownSpells.includes(id));
       if (spell && !hero.knownSpells.includes(spell)) hero.knownSpells.push(spell);
