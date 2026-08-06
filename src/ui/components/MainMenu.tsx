@@ -2,6 +2,8 @@ import { useState } from 'react';
 import type { Difficulty, MapId, NewGameOptions } from '../../core/types';
 import type { FactionId } from '../../core/types';
 import { FACTIONS } from '../../content/factions';
+import { FACTION_PASSIVES } from '../../content/factionPresentation';
+import { DIFFICULTY_MODIFIERS } from '../../content/constants';
 import type { SaveSlot, SaveSummary } from '../persistence';
 
 interface Props {
@@ -19,6 +21,19 @@ function freshSeed(): number {
 
 type FactionChoice = FactionId | 'random';
 const factionChoices = Object.values(FACTIONS);
+
+function factionSummary(choice: FactionChoice): string {
+  if (choice === 'random') return 'A faction will be chosen reproducibly from the world seed.';
+  const faction = FACTIONS[choice];
+  const passive = FACTION_PASSIVES[choice];
+  return `${faction.flavor} ${passive.name}: ${passive.description}`;
+}
+
+const controllerHelp = {
+  human: 'You make every decision for this player.',
+  ai: 'The computer explores, builds, recruits, and fights for this player.',
+  dormant: 'This player keeps its starting position but takes no economic actions.',
+} as const;
 
 function resolveFaction(choice: FactionChoice, seed: number, slot: number): FactionId {
   if (choice !== 'random') return choice;
@@ -50,6 +65,7 @@ export function MainMenu({
         <h1>{mapId === 'border-marches' ? <>Border<br /><span>Marches</span></>
           : mapId === 'torn-sound' ? <>Torn<br /><span>Sound</span></>
             : mapId === 'manywhere' ? <>Many<br /><span>where</span></>
+              : mapId === 'grand-muster' ? <>Grand<br /><span>Muster</span></>
             : <>Cross<br /><span>stitch</span></>}</h1>
         <p className="menu-copy">
           {mapId === 'border-marches'
@@ -58,6 +74,8 @@ export function MainMenu({
               ? 'Two island keeps, one broken sea, and more routes than roads.'
               : mapId === 'manywhere'
                 ? 'One long road, four empty thrones, and nearly everything else.'
+                : mapId === 'grand-muster'
+                  ? 'Six allied castles, six complete armies, and a continent-sized creature showcase.'
               : 'Four corners, two crossing seams, and one old pattern waiting to be found.'}
         </p>
         <div className="menu-fields">
@@ -66,13 +84,15 @@ export function MainMenu({
             <select value={mapId} onChange={(event) => {
               const next = event.target.value as MapId; setMapId(next);
               if (next === 'manywhere') setPlayerCount(1);
+              else if (next === 'grand-muster') setPlayerCount(2);
               else if (playerCount === 1) setPlayerCount(2);
             }}>
               <option value="border-marches">Border Marches · 2 players</option>
               <option value="crosstitch">Crosstitch · 2–4 players</option>
               <option value="crosstitch-kit">Crosstitch: The Kit · 2–4 players</option>
               <option value="torn-sound">The Torn Sound · 2 players</option>
-              <option value="manywhere">Manywhere · 1–3 players</option>
+              <option value="manywhere">Manywhere · showcase · 1–3 players</option>
+              <option value="grand-muster">The Grand Muster · oversized demo</option>
             </select>
           </label>
           {(mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere') && (
@@ -91,8 +111,13 @@ export function MainMenu({
               <option value="easy">Easy</option><option value="normal">Normal</option>
               <option value="hard">Hard</option><option value="brutal">Brutal</option>
             </select>
+            <small className="menu-field-help">Starting resources ×{DIFFICULTY_MODIFIERS[difficulty].humanStartingResources}; guardian strength ×{DIFFICULTY_MODIFIERS[difficulty].guardianStrength}; computer income and growth ×{DIFFICULTY_MODIFIERS[difficulty].aiIncome}.</small>
           </label>
-          <div className="slot-row crimson">
+          {mapId === 'grand-muster' && <div className="slot-row crimson">
+            <b>Showcase setup</b>
+            <span>Human: all six factions · Opponent: distant and dormant</span>
+          </div>}
+          {mapId !== 'grand-muster' && <div className="slot-row crimson">
             <label>
               <b>01</b>
               <select value={p1Faction} onChange={(event) =>
@@ -102,12 +127,13 @@ export function MainMenu({
                   <option key={faction.id} value={faction.id}>{faction.name}</option>
                 ))}
               </select>
+              <small className="menu-field-help">{factionSummary(p1Faction)}</small>
             </label>
-            <button onClick={() => setP1(p1 === 'human' ? 'ai' : p1 === 'ai' ? 'dormant' : 'human')}>
+            <button title={controllerHelp[p1]} onClick={() => setP1(p1 === 'human' ? 'ai' : p1 === 'ai' ? 'dormant' : 'human')}>
               {p1 === 'human' ? 'Human' : p1 === 'ai' ? 'Standard' : 'Dormant'}
             </button>
-          </div>
-          {playerCount >= 2 && <div className="slot-row azure">
+          </div>}
+          {mapId !== 'grand-muster' && playerCount >= 2 && <div className="slot-row azure">
             <label>
               <b>02</b>
               <select value={p2Faction} onChange={(event) =>
@@ -117,8 +143,9 @@ export function MainMenu({
                   <option key={faction.id} value={faction.id}>{faction.name}</option>
                 ))}
               </select>
+              <small className="menu-field-help">{factionSummary(p2Faction)}</small>
             </label>
-            <button onClick={() => setP2(p2 === 'human' ? 'ai' : p2 === 'ai' ? 'dormant' : 'human')}>
+            <button title={controllerHelp[p2]} onClick={() => setP2(p2 === 'human' ? 'ai' : p2 === 'ai' ? 'dormant' : 'human')}>
               {p2 === 'human' ? 'Human' : p2 === 'ai' ? 'Standard' : 'Dormant'}
             </button>
           </div>}
@@ -130,8 +157,8 @@ export function MainMenu({
                 {Object.values(FACTIONS).map((faction) => (
                   <option key={faction.id} value={faction.id}>{faction.name}</option>
                 ))}
-              </select></label>
-              <button onClick={() => setP3(p3 === 'human' ? 'ai' : p3 === 'ai' ? 'dormant' : 'human')}>
+              </select><small className="menu-field-help">{factionSummary(p3Faction)}</small></label>
+              <button title={controllerHelp[p3]} onClick={() => setP3(p3 === 'human' ? 'ai' : p3 === 'ai' ? 'dormant' : 'human')}>
                 {p3 === 'human' ? 'Human' : p3 === 'ai' ? 'Standard' : 'Dormant'}
               </button>
             </div>
@@ -144,8 +171,8 @@ export function MainMenu({
                 {Object.values(FACTIONS).map((faction) => (
                   <option key={faction.id} value={faction.id}>{faction.name}</option>
                 ))}
-              </select></label>
-              <button onClick={() => setP4(p4 === 'human' ? 'ai' : p4 === 'ai' ? 'dormant' : 'human')}>
+              </select><small className="menu-field-help">{factionSummary(p4Faction)}</small></label>
+              <button title={controllerHelp[p4]} onClick={() => setP4(p4 === 'human' ? 'ai' : p4 === 'ai' ? 'dormant' : 'human')}>
                 {p4 === 'human' ? 'Human' : p4 === 'ai' ? 'Standard' : 'Dormant'}
               </button>
             </div>
@@ -162,12 +189,16 @@ export function MainMenu({
                 ↻
               </button>
             </div>
+            <small className="menu-field-help">Use the same seed and setup to reproduce random offers and outcomes.</small>
           </label>
         </div>
         <button className="primary start-button" onClick={() => onStart({
-          seed, p1, p2,
-          p1Faction: resolveFaction(p1Faction, seed, 1),
-          p2Faction: resolveFaction(p2Faction, seed, 2), mapId,
+          seed, p1: mapId === 'grand-muster' ? 'human' : p1,
+          p2: mapId === 'grand-muster' ? 'dormant' : p2,
+          p1Faction: mapId === 'grand-muster' ? 'hearthguard'
+            : resolveFaction(p1Faction, seed, 1),
+          p2Faction: mapId === 'grand-muster' ? 'woundWrights'
+            : resolveFaction(p2Faction, seed, 2), mapId,
           playerCount: mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere'
             ? playerCount : 2,
           difficulty,
@@ -205,6 +236,11 @@ export function MainMenu({
         ))}
         <button className="load-button" onClick={onImport}><span><b>Import save file</b>
           <small>Replay a deterministic campaign export.</small></span><i>⇧</i></button>
+        <a className="load-button terrain-showcase-link" href="?terrain-showcase=1">
+          <span><b>Open terrain showcase</b>
+            <small>Inspect nine native 32×32 terrain families and their transition grammar.</small>
+          </span><i>↗</i>
+        </a>
         <footer>Seed {seed} · deterministic replay enabled</footer>
       </section>
     </main>

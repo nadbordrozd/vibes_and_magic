@@ -24,15 +24,49 @@ export const MANYWHERE_NEUTRAL_TOWNS: Array<{
 function terrain(): TerrainTile[][] {
   return Array.from({ length: MANYWHERE_HEIGHT }, (_, y) =>
     Array.from({ length: MANYWHERE_WIDTH }, (_, x): TerrainTile => {
-      if (x === 0 || x === MANYWHERE_WIDTH - 1) return tile('mountain', y < 10 ? 'snowcap' : 'granite');
+      const northRanges = [
+        { start: 1, end: 10, base: 5 },
+        { start: 12, end: 19, base: 4 },
+        { start: 22, end: 31, base: 5 },
+        { start: 34, end: 39, base: 4 },
+        { start: 43, end: 46, base: 5 },
+      ];
+      const northMountain = northRanges.some(({ start, end, base }) =>
+        x >= start && x <= end && y >= base - 2 && y <= base);
+      const interiorRanges = [
+        { start: 1, end: 4, base: 17 },
+        { start: 20, end: 23, base: 20 },
+        { start: 25, end: 28, base: 20 },
+        { start: 42, end: 46, base: 18 },
+        { start: 9, end: 14, base: 33 },
+        { start: 16, end: 20, base: 33 },
+        { start: 25, end: 28, base: 33 },
+        { start: 40, end: 43, base: 33 },
+      ];
+      const interiorMountain = interiorRanges.some(({ start, end, base }) =>
+        x >= start && x <= end && y >= base - 1 && y <= base);
       if (y >= 34 && !((x >= 3 && x <= 8) || (x >= 22 && x <= 27))) return tile('water', 'coastal');
-      if (y < 6) return tile('hush', 'north');
-      if (x >= 37 && y >= 12) return tile('mire', 'coastal');
-      if (x >= 29 && y >= 22) return tile('lacquerFlats');
-      if (x < 16 && y >= 25) return tile('ashsteppe', 'south');
-      if (x >= 17 && x <= 29 && y >= 9 && y <= 27) return tile('mosswold', 'mossy');
-      if (x < 16 && y >= 10 && y < 25) return tile('barrowfield');
-      if ((x * 7 + y * 11) % 23 < 4) return tile('deepwood', 'mossy');
+      if (northMountain) return tile('mountain', x >= 43 ? 'snowcap' : 'granite');
+      if (interiorMountain) return tile('mountain', 'granite');
+      if (y < 5 + Math.round(Math.sin(x * 0.55))) return tile('hush', 'north');
+
+      const ellipse = (centerX: number, centerY: number, radiusX: number, radiusY: number) =>
+        ((x - centerX) / radiusX) ** 2 + ((y - centerY) / radiusY) ** 2;
+      const wobble = Math.sin(x * 0.71 + y * 0.23) * 0.11
+        + Math.cos(x * 0.19 - y * 0.83) * 0.08;
+      if (ellipse(42, 22, 8.5, 12) + wobble < 1) return tile('mire', 'coastal');
+      if (ellipse(36, 29, 11, 8) - wobble < 1) return tile('lacquerFlats');
+      if (ellipse(8, 29, 10, 7.5) + wobble < 1) return tile('ashsteppe', 'south');
+      if (ellipse(24, 19, 10, 9) - wobble < 1) return tile('mosswold', 'mossy');
+      if (ellipse(8, 18, 9.5, 9) + wobble < 1) return tile('barrowfield');
+
+      const deepwood = Math.min(
+        ellipse(10, 10, 6.5, 3.8),
+        ellipse(34, 10, 6.5, 3.5),
+        ellipse(17, 29, 5.5, 4),
+        ellipse(29, 27, 5.5, 4.5),
+      );
+      if (deepwood + wobble < 1) return tile('deepwood', 'mossy');
       return tile('meadow');
     }));
 }
@@ -65,12 +99,12 @@ function authoredObjects(seed: number): MapObject[] {
     cleared: false,
   }));
   return [
-    { id: 'manywhere-mine', kind: 'mine', position: { x: 3, y: 12 }, footprint: { w: 2, h: 2 }, entrance: { dx: 0, dy: 1 }, resource: 'gold', income: 1000, owner: null, cleared: false, chartered: false },
+    { id: 'manywhere-mine', kind: 'mine', position: { x: 3, y: 13 }, footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 }, resource: 'gold', income: 1000, owner: null, cleared: false, chartered: false },
     { id: 'manywhere-pile', kind: 'pile', position: { x: 7, y: 12 }, resource: 'timber', amount: 5, collected: false },
     { id: 'manywhere-chest', kind: 'chest', position: { x: 10, y: 12 }, cleared: false, collected: false },
     { id: 'manywhere-shrine', kind: 'shrine', position: { x: 13, y: 12 }, school: 'rite', teaches: 'trial', cleared: false, visitedBy: [] },
     { id: 'manywhere-item', kind: 'item', position: { x: 16, y: 12 }, item: { id: 'waybread' }, collected: false },
-    { id: 'manywhere-rich-vein', kind: 'richVein', position: { x: 4, y: 16 }, owner: null, flaggedOnDay: null, depleted: false, income: 2, days: 7 },
+    { id: 'manywhere-rich-vein', kind: 'richVein', position: { x: 5, y: 16 }, owner: null, flaggedOnDay: null, depleted: false, income: 2, days: 7 },
     { id: 'manywhere-waystation', kind: 'waystation', position: { x: 7, y: 16 }, visitedOnDay: {} },
     ...locks, ...dwellings,
     { id: 'manywhere-tinker', kind: 'tinkersCart', position: { x: 10, y: 27 }, route: [{ x: 10, y: 27 }, { x: 11, y: 27 }, { x: 11, y: 28 }, { x: 10, y: 28 }], routeIndex: 0, stock: { id: 'smellingSalts' }, stockWeek: 1 },

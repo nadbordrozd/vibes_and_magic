@@ -110,6 +110,9 @@ contains the only copy of a rule.
   and complete water rules exercise.
 - [`../../src/content/maps/manywhere.ts`](../../src/content/maps/manywhere.ts): 48×40, 1–3 player
   wander sandbox with registry coverage.
+- [`../../src/content/maps/grandMuster.ts`](../../src/content/maps/grandMuster.ts): 56×44 fixed
+  showcase sandbox with six allied faction castles/full-roster heroes, six neutral sparring fights,
+  scattered resources and structures, and a distant Dormant opponent.
 - [`../../src/content/maps/occupancyAuthoring.ts`](../../src/content/maps/occupancyAuthoring.ts):
   guardian/target materialization and authoring helpers.
 - [`../MAPS.md`](../MAPS.md): current map-authoring guidance.

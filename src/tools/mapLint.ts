@@ -7,6 +7,9 @@ import { createTornSound, TORN_SOUND_CASTLE_POSITIONS } from '../content/maps/to
 import {
   createManywhere, MANYWHERE_CASTLE_POSITIONS, MANYWHERE_NEUTRAL_TOWNS,
 } from '../content/maps/manywhere';
+import {
+  createGrandMuster, GRAND_MUSTER_CASTLES, GRAND_MUSTER_ENEMY_CASTLE,
+} from '../content/maps/grandMuster';
 import { MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
 import { TERRAIN } from '../content/terrain';
 import type { Coord, GameMap } from '../core/types';
@@ -66,8 +69,8 @@ export function lintMap(map: GameMap, starts: Coord[]): MapLintIssue[] {
 
   const castleOwners = new Map<string, string>();
   starts.forEach((entrance, index) => {
-    const anchor = { x: entrance.x - 1, y: entrance.y - 2 };
-    for (const tile of footprintTiles(anchor, { w: 3, h: 3 })) {
+    const anchor = { x: entrance.x - 1, y: entrance.y - 1 };
+    for (const tile of footprintTiles(anchor, { w: 3, h: 2 })) {
       if (!inBounds(map, tile)) report('castle-bounds', `castle ${index + 1} leaves the map`);
       const object = owners.get(coordKey(tile));
       if (object) report('castle-overlap', `castle ${index + 1} overlaps ${object} at ${coordKey(tile)}`);
@@ -99,7 +102,7 @@ export function lintMap(map: GameMap, starts: Coord[]): MapLintIssue[] {
     });
   }
   starts.forEach((entrance) => footprintTiles(
-    { x: entrance.x - 1, y: entrance.y - 2 }, { w: 3, h: 3 },
+    { x: entrance.x - 1, y: entrance.y - 1 }, { w: 3, h: 2 },
   ).forEach((tile) => { if (!sameCoord(tile, entrance)) unavailable.add(coordKey(tile)); }));
 
   for (const protectedObject of map.objects.filter((object) => object.guardedBy?.length)) {
@@ -138,7 +141,7 @@ export function lintMap(map: GameMap, starts: Coord[]): MapLintIssue[] {
     });
   }
   starts.forEach((entrance) => footprintTiles(
-    { x: entrance.x - 1, y: entrance.y - 2 }, { w: 3, h: 3 },
+    { x: entrance.x - 1, y: entrance.y - 1 }, { w: 3, h: 2 },
   ).forEach((tile) => { if (!sameCoord(tile, entrance)) blocked.add(coordKey(tile)); }));
   const navigableMap: GameMap = {
     ...map, terrain: map.terrain.map((row, y) => row.map((_terrain, x) =>
@@ -189,6 +192,10 @@ export function lintAuthoredMaps(): MapLintIssue[] {
     ...lintMap(createManywhere(1), [
       ...MANYWHERE_CASTLE_POSITIONS,
       ...MANYWHERE_NEUTRAL_TOWNS.map((town) => town.entrance),
+    ]),
+    ...lintMap(createGrandMuster(1), [
+      ...GRAND_MUSTER_CASTLES.map((castle) => castle.entrance),
+      GRAND_MUSTER_ENEMY_CASTLE.entrance,
     ]),
   ];
 }

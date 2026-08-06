@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import {
+  useEffect, useMemo, useState,
+} from 'react';
 import { incomeForPlayer } from '../../core/game';
 import { HERO_MOVE_POINTS } from '../../content/constants';
 import {
@@ -16,26 +18,21 @@ import { AdventureMap } from './AdventureMap';
 import { logisticsRate } from '../../core/heroBehaviors';
 import { ITEMS, itemName } from '../../content/items';
 import { ArtifactPaperDoll } from './ArtifactPaperDoll';
-import { OMENS } from '../../content/omens';
+import { OMENS, omenEffectSummary } from '../../content/omens';
 import { SPELLS } from '../../content/spells';
 import { UNITS } from '../../content/units';
 import { ARTIFACTS } from '../../content/artifacts';
+import { HEROES } from '../../content/heroes';
+import { SKILLS } from '../../content/skills';
+import { CASTLE_NAMES, FACTION_PASSIVES } from '../../content/factionPresentation';
 import { fickleWeatherOffers } from '../../core/game/adventureSpells';
 import type { SpellId } from '../../core/types';
 import { AdventureSpellbook } from './AdventureSpellbook';
 import { objectEntranceTile } from '../../core/map/occupancy';
-const CASTLE_NAME: Record<Hero['faction'], string> = {
-  hearthguard: 'Westwatch', woundWrights: 'Eastwatch', unfinished: 'Last Lantern',
-  vespiary: 'Amber Court', hagwood: 'Crooked Fence', wildergrass: 'Ash Kraal',
-};
-const RESOURCE_MARK: Record<ResourceId, string> = {
-  gold: 'G', timber: 'T', iron: 'I', essence: 'E',
-};
-const FACTION_MARK: Record<Hero['faction'], string> = {
-  hearthguard: 'H', woundWrights: 'W', unfinished: 'U', vespiary: 'V',
-  hagwood: 'H', wildergrass: 'W',
-};
-
+import {
+  ResourceAmount, ResourceCost, ResourceIcon, ResourceRichText,
+} from './ResourceToken';
+import { HeroPortrait } from '../assets';
 interface Props {
   state: GameState;
   dispatch: (action: Action) => void;
@@ -97,6 +94,11 @@ export function AdventureScreen({
   const mapBonusFragment = hero && Object.values(hero.artifacts.equipment)
     .some((artifact) => artifact?.id === 'mothEatenMap') ? 1 : 0;
   const cacheFragments = Math.min(patientStones.length, stoneFragments + mapBonusFragment);
+  const heroDefinition = hero ? HEROES[hero.definitionId] : null;
+  const endTurn = () => {
+    if (movement || player.controller !== 'human') return;
+    dispatch({ type: 'END_TURN' });
+  };
 
   useEffect(() => {
     if (!movement) return;
@@ -124,6 +126,19 @@ export function AdventureScreen({
     window.addEventListener('keydown', toggle);
     return () => window.removeEventListener('keydown', toggle);
   }, []);
+
+  useEffect(() => {
+    const endTurnKey = (event: KeyboardEvent) => {
+      if (event.code !== 'Space' || state.pendingChoice || objectiveOpen || spellbookOpen
+          || document.querySelector('.help-dialog, .inspection-card, .modal-backdrop')) return;
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('button, input, select, textarea, [contenteditable="true"]')) return;
+      event.preventDefault();
+      endTurn();
+    };
+    window.addEventListener('keydown', endTurnKey);
+    return () => window.removeEventListener('keydown', endTurnKey);
+  }, [objectiveOpen, spellbookOpen, state.pendingChoice, movement, player.controller]);
 
   const clickTile = (destination: Coord) => {
     if (!hero || player.controller !== 'human' || movement) return;
@@ -170,18 +185,14 @@ export function AdventureScreen({
       setUsingItemSlot(null);
       return;
     }
-    if (preview && preview.x === destination.x && preview.y === destination.y) {
-      const movingPath = animatedAdventurePath(state, destination);
-      if (timing.mapStep === 0 || movingPath.length < 2) {
-        dispatch({ type: 'MOVE_HERO', destination });
-      } else {
-        onMovementStateChange(true);
-        setMovement({ path: movingPath, index: 0, destination });
-      }
-      setPreview(null);
+    const movingPath = animatedAdventurePath(state, destination);
+    if (timing.mapStep === 0 || movingPath.length < 2) {
+      dispatch({ type: 'MOVE_HERO', destination });
     } else {
-      setPreview(destination);
+      onMovementStateChange(true);
+      setMovement({ path: movingPath, index: 0, destination });
     }
+    setPreview(null);
   };
 
   const chooseAdventureSpell = (spellId: SpellId) => {
@@ -233,7 +244,7 @@ export function AdventureScreen({
         <div className="resource-bar">
           {(Object.keys(player.resources) as ResourceId[]).map((resource) => (
             <div key={resource} title={`Daily income: +${income[resource]}`}>
-              <span>{RESOURCE_MARK[resource]}</span>
+              <ResourceIcon resource={resource} />
               <b>{player.resources[resource].toLocaleString()}</b>
               <small>+{income[resource]}</small>
             </div>
@@ -254,16 +265,19 @@ export function AdventureScreen({
             <option value="slow">Slow</option>
           </select>
         </label>
-        <button className="topbar-action" disabled={Boolean(movement)} onClick={() => onSave()}>Save</button>
+        <button className="topbar-action" disabled={Boolean(movement)}
+          title={movement ? 'Wait for the hero to finish moving.' : 'Save to the quick-save slot.'}
+          onClick={() => onSave()}>Save</button>
         {[1, 2, 3].map((slot) => <button key={slot} className="topbar-action save-slot"
-          disabled={Boolean(movement)} onClick={() => onSave(slot)}>S{slot}</button>)}
+          disabled={Boolean(movement)} title={movement ? 'Wait for the hero to finish moving.' : `Save to manual slot ${slot}.`}
+          onClick={() => onSave(slot)}>S{slot}</button>)}
         <button className="topbar-action" onClick={onExport}>Export</button>
         <button className="topbar-action" onClick={onImport}>Import</button>
         <button className="topbar-action" onClick={onShare}>Share</button>
       </header>
       <div className={`omen-banner ${state.omen}`} data-inspect-kind="omen" data-inspect-id={state.omen}>
         <b>{state.omenAnnouncement.title}</b>
-        <span>{state.omenAnnouncement.flavor}</span>
+        <span>{state.omenAnnouncement.flavor} · {omenEffectSummary(OMENS[state.omen]).join(' ')}</span>
       </div>
       <div className="objective-banner">
         <b>{state.map.victory.flavor}</b><span>{state.map.victory.mechanics}</span>
@@ -274,6 +288,12 @@ export function AdventureScreen({
         <AdventureMap
           state={state} hero={hero} reachable={reachable} path={path}
           movement={movement} mapStep={timing.mapStep} onTile={clickTile}
+          onSelectHero={(heroId) => {
+            if (!movement && player.controller === 'human') {
+              dispatch({ type: 'SELECT_HERO', heroId });
+            }
+          }}
+          onPreview={setPreview}
           onPickup={(objectId) => dispatch({ type: 'PICKUP_OBJECT', objectId })}
         />
 
@@ -289,9 +309,10 @@ export function AdventureScreen({
                 data-inspect-kind="hero" data-inspect-id={candidate.id}
                 className={candidate.id === hero?.id ? 'selected' : ''}
                 disabled={Boolean(movement)}
+                title={movement ? 'Wait for the current hero to finish moving.' : `Select ${candidate.name}.`}
                 onClick={() => dispatch({ type: 'SELECT_HERO', heroId: candidate.id })}
               >
-                <i className={candidate.faction}>{candidate.name[0]}</i>
+                <HeroPortrait faction={candidate.faction} className="hero-list-portrait" />
                 <span><b>{candidate.name}</b><small>Move {candidate.movement}</small></span>
               </button>
             ))}
@@ -299,9 +320,16 @@ export function AdventureScreen({
           {hero && (
             <>
               <div className="hero-portrait" data-inspect-kind="hero" data-inspect-id={hero.id}>
-                <div className={hero.faction}>{FACTION_MARK[hero.faction]}</div>
+                <div className={hero.faction}><HeroPortrait faction={hero.faction}
+                  className="hero-sheet-portrait" /></div>
                 <span><b>{hero.name} · Level {hero.level}</b><small>{hero.xp} XP</small></span>
               </div>
+              {heroDefinition && <section className="hero-identity-summary">
+                <span>{heroDefinition.heroClass.replace(/([A-Z])/g, ' $1')} · specialty</span>
+                <b>{heroDefinition.specialty.description}</b>
+                <small><strong>{FACTION_PASSIVES[hero.faction].name}:</strong> {FACTION_PASSIVES[hero.faction].description}</small>
+                <small>Right-click the portrait for this hero’s story and complete rules.</small>
+              </section>}
               <div className="stat-grid">
                 <span>Attack <b>{hero.attack}</b></span>
                 <span>Defense <b>{hero.defense}</b></span>
@@ -318,6 +346,8 @@ export function AdventureScreen({
                 className="secondary wide adventure-spell-button"
                 disabled={!hero.knownSpells.some((id) => ['adventure', 'topology']
                   .includes(SPELLS[id].kind))}
+                title={!hero.knownSpells.some((id) => ['adventure', 'topology'].includes(SPELLS[id].kind))
+                  ? 'This hero knows no adventure spells.' : 'Open this hero’s map spells.'}
                 onClick={() => setSpellbookOpen(true)}
               >Adventure spellbook</button>
               {castingSpell && (
@@ -339,7 +369,8 @@ export function AdventureScreen({
                         key={`item-${index}`}
                         className={`army-slot ${usingItemSlot === index ? 'selected' : ''}`}
                         disabled={!canUse}
-                        title={definition?.description ?? itemName(item)}
+                        title={!definition ? 'Empty item slot.' : canUse ? definition.description
+                          : `${definition.description} This item is used during combat.`}
                         data-inspect-kind={definition ? 'item' : undefined}
                         data-inspect-id={definition?.id}
                         onClick={() => {
@@ -365,12 +396,14 @@ export function AdventureScreen({
                       <div>
                         <button
                           disabled={serviceObject.available < 1}
+                          title={serviceObject.available < 1 ? 'No creatures are waiting here.' : 'Recruit one creature.'}
                           onClick={() => dispatch({
                             type: 'RECRUIT_DWELLING', objectId: serviceObject.id, count: 1,
                           })}
                         >Recruit 1</button>
                         <button
                           disabled={serviceObject.available < 1}
+                          title={serviceObject.available < 1 ? 'No creatures are waiting here.' : `Recruit all ${serviceObject.available}.`}
                           onClick={() => dispatch({
                             type: 'RECRUIT_DWELLING', objectId: serviceObject.id,
                             count: serviceObject.available,
@@ -387,6 +420,7 @@ export function AdventureScreen({
                         : 'Sold out until next week'}</small>
                       <button
                         disabled={!serviceObject.stock}
+                        title={!serviceObject.stock ? 'Sold out until next week.' : 'Buy the displayed item.'}
                         data-inspect-kind={serviceObject.stock ? 'item' : undefined}
                         data-inspect-id={serviceObject.stock?.id}
                         onClick={() => dispatch({
@@ -398,7 +432,7 @@ export function AdventureScreen({
                   {serviceObject.kind === 'monastery' && (
                     <>
                       <b>The Unstruck Bell</b>
-                      <small>3 essence · +1 speed in round one for three days</small>
+                      <small><ResourceAmount resource="essence" amount={3} compact /> · +1 speed in round one for three days</small>
                       <button onClick={() => dispatch({
                         type: 'BUY_TIMING_BLESSING', objectId: serviceObject.id,
                       })}>Take Timing Blessing</button>
@@ -450,9 +484,11 @@ export function AdventureScreen({
                     <>
                       <b>The Half-Built Bridge</b>
                       <small>{serviceObject.completed
-                        ? 'The crossing is complete.' : 'Finish it for 10 timber and 5 iron.'}</small>
+                        ? 'The crossing is complete.' : <>Finish it for <ResourceCost
+                          cost={{ timber: 10, iron: 5 }} compact />.</>}</small>
                       <button
                         disabled={serviceObject.completed}
+                        title={serviceObject.completed ? 'The bridge is already complete.' : 'Requires 10 timber and 5 iron.'}
                         onClick={() => dispatch({
                           type: 'COMPLETE_BRIDGE', objectId: serviceObject.id,
                         })}
@@ -462,9 +498,11 @@ export function AdventureScreen({
                   {serviceObject.kind === 'hedgeSchool' && (
                     <>
                       <b>Hedge School</b>
-                      <small>1500 gold · draft three stats or skills · once per hero</small>
+                      <small><ResourceAmount resource="gold" amount={1500} compact /> · draft three stats or skills · once per hero</small>
                       <button
                         disabled={serviceObject.visitedBy.includes(hero.id)}
+                        title={serviceObject.visitedBy.includes(hero.id)
+                          ? 'This hero has already attended.' : 'Costs 1500 gold and offers a draft.'}
                         onClick={() => dispatch({
                           type: 'ATTEND_HEDGE_SCHOOL', objectId: serviceObject.id,
                         })}
@@ -509,9 +547,12 @@ export function AdventureScreen({
                     <>
                       <b>Wagon Camp</b>
                       <small>{serviceObject.stock
-                        ? `${itemName(serviceObject.stock)} · 1000 gold`
+                        ? <>{itemName(serviceObject.stock)} · <ResourceAmount
+                          resource="gold" amount={1000} compact /></>
                         : 'Sold out until next week'}</small>
-                      <button disabled={!serviceObject.stock} onClick={() => dispatch({
+                      <button disabled={!serviceObject.stock}
+                        title={!serviceObject.stock ? 'Sold out until next week.' : 'Costs 1000 gold.'}
+                        onClick={() => dispatch({
                         type: 'BUY_WAGON_ITEM', objectId: serviceObject.id,
                       })}>Buy wagon item</button>
                     </>
@@ -519,8 +560,10 @@ export function AdventureScreen({
                   {serviceObject.kind === 'titheBarn' && (
                     <>
                       <b>The Tithe Barn</b>
-                      <small>1000 gold · all your towns gain +10% growth this week.</small>
+                      <small><ResourceAmount resource="gold" amount={1000} compact /> · all your towns gain +10% growth this week.</small>
                       <button disabled={serviceObject.usedWeek[hero.owner] === state.week}
+                        title={serviceObject.usedWeek[hero.owner] === state.week
+                          ? 'This player already paid the tithe this week.' : 'Costs 1000 gold.'}
                         onClick={() => dispatch({ type: 'PAY_TITHE', objectId: serviceObject.id })}>
                         Pay the tithe
                       </button>
@@ -564,6 +607,10 @@ export function AdventureScreen({
                       key={school}
                       disabled={hero.attunementResonanceUsedDay === state.day
                         || hero.declaredResonance?.day === state.day}
+                      title={hero.attunementResonanceUsedDay === state.day
+                        || hero.declaredResonance?.day === state.day
+                        ? 'A resonance has already been declared or used today.'
+                        : `Make the next battle resonate with ${school} magic.`}
                       onClick={() => dispatch({
                         type: 'DECLARE_RESONANCE', heroId: hero.id, school,
                       })}
@@ -591,9 +638,14 @@ export function AdventureScreen({
               )}
               {Object.entries(hero.skills).length > 0 && (
                 <div className="skill-summary">
-                  {Object.entries(hero.skills).map(([skill, rank]) => (
-                    <span key={skill} data-inspect-kind="skill" data-inspect-id={skill}>{skill} R{rank}</span>
-                  ))}
+                  <h4>Secondary skills <small>· right-click for all ranks</small></h4>
+                  {Object.entries(hero.skills).map(([skill, rank]) => {
+                    const definition = SKILLS[skill as keyof typeof SKILLS];
+                    return <article key={skill} data-inspect-kind="skill" data-inspect-id={skill}>
+                      <b>{definition.name} · Rank {rank}</b>
+                      <span>{definition.ranks[rank as 1 | 2 | 3]}</span>
+                    </article>;
+                  })}
                 </div>
               )}
             </>
@@ -605,10 +657,12 @@ export function AdventureScreen({
                 className={`secondary wide ${castleHere?.id === castle.id ? 'hero-present' : ''}`}
                 key={castle.id}
                 disabled={Boolean(movement)}
+                title={movement ? 'Wait for the hero to finish moving.'
+                  : `${castleHere?.id === castle.id ? 'Enter' : 'View'} ${CASTLE_NAMES[castle.faction]}.`}
                 onClick={() => onOpenCastle(castle.id)}
               >
                 {castleHere?.id === castle.id ? 'Enter' : 'View'} {
-                  CASTLE_NAME[castle.faction]
+                  CASTLE_NAMES[castle.faction]
                 }
               </button>
             ))}
@@ -629,6 +683,8 @@ export function AdventureScreen({
           <button
             className="secondary wide"
             disabled={!hero || Boolean(movement)}
+            title={!hero ? 'There is no living hero to select.'
+              : movement ? 'Wait for the current hero to finish moving.' : 'Select the next living hero.'}
             onClick={() => dispatch({ type: 'NEXT_HERO' })}
           >
             Next hero · {player.heroes.indexOf(hero as Hero) + 1}/{player.heroes.length}
@@ -643,7 +699,9 @@ export function AdventureScreen({
           <button
             className="primary wide end-turn"
             disabled={player.controller !== 'human' || Boolean(movement)}
-            onClick={() => dispatch({ type: 'END_TURN' })}
+            title={player.controller !== 'human' ? 'Only a human player can end the turn manually.'
+              : movement ? 'Wait for the hero to finish moving.' : 'End this player’s day.'}
+            onClick={endTurn}
           >
             End turn <kbd>Space</kbd>
           </button>
@@ -652,7 +710,13 @@ export function AdventureScreen({
               Retire · end expedition
             </button>
           )}
-          <div className="message-strip">{state.lastMessage}</div>
+          <div className="message-strip" aria-live="polite"><ResourceRichText>{state.lastMessage}</ResourceRichText></div>
+          <details className="activity-log">
+            <summary>Activity log · {state.eventLog.length} entries</summary>
+            <div>{state.eventLog.slice(-12).reverse().map((entry, index) => (
+              <p key={`${entry}-${index}`}><ResourceRichText>{entry}</ResourceRichText></p>
+            ))}</div>
+          </details>
         </aside>
       </div>
       {objectiveOpen && (
@@ -660,6 +724,11 @@ export function AdventureScreen({
           <span className="dialog-kicker">{state.map.name}</span>
           <h2>Your objective</h2><p>{state.map.victory.flavor}</p>
           <b>{state.map.victory.mechanics}</b>
+          <div className="objective-primer">
+            <span>Click a hero, hover a destination to preview the route, then click once to travel.</span>
+            <span>Crossed swords mean a fight. Right-click anything for its complete rules.</span>
+            <span>Use <b>? Help</b> at any time for the current screen and glossary.</span>
+          </div>
           <button className="primary" onClick={() => setObjectiveOpen(false)}>Take the field</button>
         </section></div>
       )}

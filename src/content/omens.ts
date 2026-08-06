@@ -60,6 +60,21 @@ export const OMENS: Record<OmenId, OmenDefinition> = {
 
 export const OMEN_IDS = Object.keys(OMENS) as OmenId[];
 
+export function omenEffectSummary(omen: OmenDefinition): string[] {
+  const effects = omen.effects;
+  const lines: string[] = [];
+  if (effects.growthMultiplier !== undefined) {
+    lines.push(`All weekly creature growth ×${effects.growthMultiplier}.`);
+  }
+  if (effects.burnBonus !== undefined) lines.push(`Burn applications add ${effects.burnBonus} extra counter.`);
+  if (effects.resonance) lines.push(`${effects.resonance[0].toUpperCase()}${effects.resonance.slice(1)} spells are resonant in every battle.`);
+  if (effects.suppressTileResonance) lines.push('Battlefield tile resonance is suppressed.');
+  if (effects.terrainCost !== undefined) lines.push(`All passable adventure terrain costs ${effects.terrainCost} movement.`);
+  if (effects.rangedShots !== undefined) lines.push(`Ranged companies gain ${effects.rangedShots} shots.`);
+  if (effects.roundMeter !== undefined) lines.push(`All companies gain ${effects.roundMeter} morale each round.`);
+  return lines.length ? lines : ['No global rules are changed this week.'];
+}
+
 export function validateOmens(): void {
   if (OMEN_IDS.length !== 7
       || OMEN_IDS.reduce((sum, id) => sum + OMENS[id].weight, 0) !== 100

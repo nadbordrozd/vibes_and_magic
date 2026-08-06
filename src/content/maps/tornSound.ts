@@ -26,10 +26,10 @@ function terrain(): TerrainTile[][] {
 function objects(seed: number): MapObject[] {
   const item = seed % 2 ? 'waybread' as const : 'smellingSalts' as const;
   return [
-    { id: 'sound-centre-gold', kind: 'mine', position: { x: 15, y: 11 }, resource: 'gold', income: 1000, owner: null, cleared: false, chartered: false },
-    { id: 'sound-centre-timber', kind: 'mine', position: { x: 18, y: 13 }, resource: 'timber', income: 2, owner: null, cleared: false, chartered: false },
-    { id: 'sound-west-iron', kind: 'mine', position: { x: 7, y: 9 }, resource: 'iron', income: 1, owner: null, cleared: true, chartered: false },
-    { id: 'sound-east-essence', kind: 'mine', position: { x: 24, y: 14 }, resource: 'essence', income: 1, owner: null, cleared: true, chartered: false },
+    { id: 'sound-centre-gold', kind: 'mine', position: { x: 15, y: 12 }, footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 }, resource: 'gold', income: 1000, owner: null, cleared: false, chartered: false },
+    { id: 'sound-centre-timber', kind: 'mine', position: { x: 18, y: 14 }, footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 }, resource: 'timber', income: 2, owner: null, cleared: false, chartered: false },
+    { id: 'sound-west-iron', kind: 'mine', position: { x: 7, y: 10 }, footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 }, resource: 'iron', income: 1, owner: null, cleared: true, chartered: false },
+    { id: 'sound-east-essence', kind: 'mine', position: { x: 24, y: 15 }, footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 }, resource: 'essence', income: 1, owner: null, cleared: true, chartered: false },
     { id: 'north-drowned-bell', kind: 'drownedBell', position: { x: 16, y: 1 }, visitedBy: [] },
     { id: 'west-siren-rocks', kind: 'sirenRocks', position: { x: 10, y: 10 }, cleared: false, reward: { gold: 1500, artifacts: [{ id: 'quietHorseshoe' }] } },
     { id: 'east-siren-rocks', kind: 'sirenRocks', position: { x: 21, y: 14 }, cleared: false, reward: { gold: 1500, artifacts: [{ id: 'beeCharmersVeil' }] } },

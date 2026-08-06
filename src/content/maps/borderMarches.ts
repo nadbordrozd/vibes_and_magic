@@ -49,8 +49,8 @@ function mine(
   guarded = false,
 ): Extract<MapObject, { kind: 'mine' }> {
   return {
-    id, kind: 'mine', position, resource, income, owner: null,
-    footprint: { w: 2, h: 2 }, entrance: { dx: 0, dy: 1 },
+    id, kind: 'mine', position: { x: position.x, y: position.y + 1 }, resource, income, owner: null,
+    footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 },
     cleared: !guarded, chartered: false,
   };
 }

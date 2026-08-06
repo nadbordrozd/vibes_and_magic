@@ -72,8 +72,8 @@ function standardObjects(): MapObject[] {
   const mines: MapObject[] = minePositions.flatMap((corner, cornerIndex) =>
     corner.map(([x, y], resourceIndex) => ({
       id: `crosstitch-${cornerIndex}-${resources[resourceIndex][0]}-mine`,
-      kind: 'mine' as const, position: { x, y },
-      footprint: { w: 2, h: 2 }, entrance: { dx: 0, dy: 1 },
+      kind: 'mine' as const, position: { x, y: y + 1 },
+      footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 },
       resource: resources[resourceIndex][0], income: resources[resourceIndex][1],
       owner: null, cleared: resourceIndex > 0, chartered: false,
     })));

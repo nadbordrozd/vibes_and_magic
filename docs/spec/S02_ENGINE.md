@@ -105,8 +105,8 @@ behavior overlaps. Tile state is serializable. Presentation metadata is data, no
 
 Every map object has an anchor at its top-left, a footprint defaulting to 1×1, and an entrance
 offset defaulting to `(0,0)`. All footprint cells except an entrance are impassable. Interaction,
-fog distance, guardian coverage, pathfinding, and lint work on the full footprint. Castles are 3×3
-with bottom-center entrance; mines are 2×2 with bottom-left entrance. Authored exceptions may state
+fog distance, guardian coverage, pathfinding, and lint work on the full footprint. Castles are 3×2
+with bottom-center entrance; mines are 2×1 with bottom-left entrance. Authored exceptions may state
 their footprint.
 
 Objects never overlap. Guardians and rewards are separate objects linked by `protects`/`guardedBy`;
@@ -142,7 +142,10 @@ Core evaluation and simulation run headlessly without rendering. Normal UI actio
 on exhaustive AI or simulation. World view uses low level-of-detail: terrain and major objects only,
 with decorations and tooltips disabled. Decorations are reproducible pure derivations and do not
 inflate state or saves. Keep the DOM/SVG representation compact enough for the largest authored
-48×40 map; animation queues are cancelable by the shared motion setting.
+56×44 map; animation queues are cancelable by the shared motion setting. Adventure reachability is
+a single bounded traversal per selected hero, never one point-to-point search per destination tile.
+The minimap batches terrain into color paths, and map tiles do not add wrapper elements solely for
+event handling.
 
 ## Verification posture
 

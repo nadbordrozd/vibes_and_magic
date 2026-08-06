@@ -76,7 +76,9 @@ export interface TerrainDecoration {
   anomaly: boolean;
 }
 
-const DECORATIONS: Partial<Record<TerrainId, readonly [string, string, number, boolean?][]>> = {
+export const TERRAIN_DECORATIONS: Partial<
+Record<TerrainId, readonly [string, string, number, boolean?][]>
+> = {
   meadow: [
     ['flowers-white', 'A scatter of white flowers.', 3],
     ['flowers-yellow', 'A scatter of yellow flowers.', 3],
@@ -85,7 +87,11 @@ const DECORATIONS: Partial<Record<TerrainId, readonly [string, string, number, b
     ['beehive', 'A beehive, busy with local government.', 1],
     ['cart-ruts', 'Old cart ruts going somewhere practical.', 2],
   ],
-  deepwood: [['mushroom-ring', 'A ring of mushrooms, keeping its own counsel.', 2], ['deadfall', 'A tree finally chose a direction.', 2]],
+  deepwood: [
+    ['mushroom-ring', 'A ring of mushrooms, keeping its own counsel.', 2],
+    ['deadfall', 'A tree finally chose a direction.', 2],
+    ['canopy-clump', 'Old crowns overlap above the path.', 2],
+  ],
   mosswold: [['patterned-moss', 'The pattern repeats one stitch too neatly.', 5], ['stitched-ridge', 'A ridge with an unreasonably regular shadow.', 1, true]],
   ashsteppe: [['skulls', 'Old bones, sanded clean by the wind.', 2], ['lone-banner', 'A lone banner has forgotten its side.', 1]],
   barrowfield: [['candles', 'Unlit candles wait without impatience.', 2], ['letter-stone', 'A stone shaped like a letter nobody sent.', 2]],
@@ -106,7 +112,7 @@ export function deriveTerrainDecorations(map: GameMap, density = 0.16): TerrainD
   const anomalyRegions = new Set<string>();
   for (let y = 0; y < map.height; y += 1) for (let x = 0; x < map.width; x += 1) {
     const id = terrainIdAt(map, { x, y });
-    const catalog = DECORATIONS[id];
+    const catalog = TERRAIN_DECORATIONS[id];
     const roll = hash(map.seed ?? 0, x, y);
     if (!catalog?.length || (roll % 10_000) >= Math.round(density * 10_000)) continue;
     const weighted = catalog.flatMap((entry) => Array(entry[2]).fill(entry));

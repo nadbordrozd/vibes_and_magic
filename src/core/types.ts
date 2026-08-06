@@ -9,7 +9,8 @@ export type {
 export type { Action } from './actionTypes';
 
 export type PlayerId = 'p1' | 'p2' | 'p3' | 'p4';
-export type MapId = 'border-marches' | 'crosstitch' | 'crosstitch-kit' | 'torn-sound' | 'manywhere';
+export type MapId = 'border-marches' | 'crosstitch' | 'crosstitch-kit' | 'torn-sound'
+  | 'manywhere' | 'grand-muster';
 export type Difficulty = 'easy' | 'normal' | 'hard' | 'brutal';
 export type FactionId =
   | 'hearthguard' | 'woundWrights' | 'unfinished'

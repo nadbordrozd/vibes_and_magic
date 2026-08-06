@@ -20,6 +20,7 @@ import { createBorderMarches } from '../content/maps/borderMarches';
 import { createCrosstitch, createCrosstitchKit } from '../content/maps/crosstitch';
 import { createTornSound } from '../content/maps/tornSound';
 import { createManywhere } from '../content/maps/manywhere';
+import { createGrandMuster } from '../content/maps/grandMuster';
 import { TERRAIN } from '../content/terrain';
 import { MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
 
@@ -54,6 +55,7 @@ export const CONTENT_HASH = hashText(stableStringify({
     crosstitchKit: createCrosstitchKit(1),
     tornSound: createTornSound(1),
     manywhere: createManywhere(1),
+    grandMuster: createGrandMuster(1),
   },
 }));
 
@@ -106,7 +108,8 @@ function validSave(value: unknown): value is ActionSave {
   if (!value || typeof value !== 'object') return false;
   const save = value as Partial<ActionSave>;
   return typeof save.contentHash === 'string'
-    && ['border-marches', 'crosstitch', 'crosstitch-kit', 'torn-sound'].includes(save.mapId ?? '')
+    && ['border-marches', 'crosstitch', 'crosstitch-kit', 'torn-sound', 'manywhere',
+      'grand-muster'].includes(save.mapId ?? '')
     && ['easy', 'normal', 'hard', 'brutal'].includes(save.difficulty ?? '')
     && Number.isInteger(save.seed) && Array.isArray(save.actionLog);
 }

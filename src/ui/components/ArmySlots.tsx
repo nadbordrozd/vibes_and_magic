@@ -1,5 +1,6 @@
 import { UNITS } from '../../content/units';
 import type { Army } from '../../core/types';
+import { UnitPortrait } from '../assets';
 
 interface Props {
   army: Army;
@@ -24,13 +25,13 @@ export function ArmySlots({ army, title, selected, onSelect, onSplit }: Props) {
             className={`army-slot ${selected === index ? 'selected' : ''}`}
             onClick={() => onSelect?.(index)}
             disabled={!onSelect}
-            title={stack ? `${stack.count} ${UNITS[stack.unitId].name} · ${UNITS[stack.unitId].hexSize}-hex footprint` : 'Empty slot'}
+            title={`${stack ? `${stack.count} ${UNITS[stack.unitId].name} · ${UNITS[stack.unitId].hexSize}-hex footprint` : 'Empty slot'}${!onSelect ? ' · view only here' : ''}`}
             data-inspect-kind={stack ? 'unit' : undefined}
             data-inspect-id={stack?.unitId}
           >
             {stack ? (
               <>
-                <span className="unit-mark">{UNITS[stack.unitId].name.slice(0, 2)}</span>
+                <UnitPortrait unitId={stack.unitId} />
                 <b>{stack.count}</b>
                 {UNITS[stack.unitId].hexSize > 1 && <small>{UNITS[stack.unitId].hexSize}H</small>}
               </>

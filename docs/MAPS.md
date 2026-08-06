@@ -36,3 +36,12 @@ bounds, collisions, reachability, guard coverage, Manywhere registry coverage, a
 A map may author one hidden Cache at a passable secret tile and three to six Patient Stones linked
 by `cacheId`. The Cache tile never blocks movement or triggers an ordinary visit. Digging is a
 separate full-movement action, including a wrong guess.
+
+## Fixed showcase starts
+
+Ordinary maps derive one starting castle and hero per active player. A showcase may instead declare
+a fixed setup in `createGame` when the setup itself is the subject under review. The Grand Muster is
+the current example: six mixed-faction castles and six full-roster heroes belong to one human while
+the remote opponent uses the existing Dormant controller. The authored map still owns terrain,
+roads, guardian targets, resources, and structures, and must pass the same footprint/reachability
+lint as every ordinary scenario.

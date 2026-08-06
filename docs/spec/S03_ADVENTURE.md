@@ -70,7 +70,8 @@ top-left anchors. Footprint and entrance semantics are defined in [`S02_ENGINE.m
 
 Moving onto an entrance captures or visits mines, dwellings, shrines, sites, and castles. A defended
 castle begins a garrison battle. Fog reveal distance is measured from footprint edges. Non-entrance
-cells of a footprint are impassable.
+cells of a footprint are impassable. A castle occupies 3×2 with its entrance at bottom-center; a
+mine occupies 2×1 with its entrance at bottom-left unless a map explicitly authors another entrance.
 
 ## Guardian aggro
 
@@ -91,7 +92,18 @@ playtest option and must remain a one-line switch; it is not the current rule.
   check accepts the fight.
 
 Hover/inspection shades a guardian’s zone. A path segment crossing it is marked as a fight at the
-trigger tile before confirmation.
+trigger tile before confirmation. Ordinary destination selection always chooses the shortest legal
+route that avoids every guardian and aggro tile. Selecting a guardian or one of its aggro tiles is
+the explicit exception: the chosen guardian may be entered, while all other guardian zones remain
+blocked. The guardian and every tile in its aggro zone use the crossed-swords fight cursor.
+
+Every guardian is represented by an adventure-map creature sprite derived as a separate map-scale
+composition, never by shrinking its battle sprite. Hover and inspection always give the creature name
+and approximate quantity band without placing a permanent caption beneath the sprite: Few (1–4),
+Several (5–9), Pack (10–19), Lots (20–49), Horde
+(50–99), Throng (100–249), Swarm (250–499), Zounds (500–999), or Legion (1000+). Scouting may
+replace the band with the exact count and reveal abilities; creature identity never requires
+Scouting.
 
 ## Ranged pickup
 
@@ -145,7 +157,7 @@ the exact Cache tile yields its authored reward.
 
 An omen is seeded per week, pre-rolled, announced to all players on day 1, and visible in the log and
 status UI. Quiet Week is the common result; named weeks hook Burn magnitude, universal Grave
-resonance, growth, shots/resonance suppression, terrain costs, or round meter. Current weights and
+resonance, growth, shots/resonance suppression, terrain costs, or round morale. Current weights and
 effects live in [`../../src/content/omens.ts`](../../src/content/omens.ts). Omen forecasting and
 Fickle Weather operate on the dedicated omen stream, not campaign RNG.
 
@@ -158,7 +170,7 @@ garrison before capture. AI values it as a conquest target using the same power 
 guarded objectives.
 
 Free Town, Old Seat, and Hollow Town are authoring presets, not separate rule engines. The Hollow
-Town may be empty and mechanically free. Mixed-faction army meter rules still apply after recruiting
+Town may be empty and mechanically free. Mixed-faction army morale rules still apply after recruiting
 from a captured town of another faction.
 
 ## Victory and defeat
@@ -171,6 +183,11 @@ plans conquest and only contests other objectives opportunistically.
 `none` is a sandbox: play continues until the human invokes Retire, which ends at the normal
 statistics screen. The Tailor’s Kit is not inherently a victory condition; only an `assemble` map
 makes it one.
+
+The Grand Muster is the fixed showcase sandbox. Player 1 begins with six owned castles—one of every
+playable faction—and six faction-matched heroes, each carrying one stack of all six castle units.
+Its distant second player is Dormant by definition. Six static neutral sparring guardians sit beyond
+the safe castle entrances so every starting army has an immediate optional combat demonstration.
 
 ## Boats and water
 

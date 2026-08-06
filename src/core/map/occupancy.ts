@@ -3,10 +3,11 @@ import type { Castle, Coord, GameMap, MapObject } from '../types';
 import { coordKey, inBounds, sameCoord } from './pathfinding';
 
 export const DEFAULT_FOOTPRINT = { w: 1, h: 1 } as const;
+export const MINE_FOOTPRINT = { w: 2, h: 1 } as const;
 export const DEFAULT_ENTRANCE = { dx: 0, dy: 0 } as const;
 
 export function objectFootprint(object: MapObject): { w: number; h: number } {
-  return object.footprint ?? (object.kind === 'mine' ? { w: 2, h: 2 } : DEFAULT_FOOTPRINT);
+  return object.footprint ?? (object.kind === 'mine' ? MINE_FOOTPRINT : DEFAULT_FOOTPRINT);
 }
 
 export function objectEntrance(object: MapObject): { dx: number; dy: number } {

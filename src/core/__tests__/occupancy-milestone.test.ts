@@ -31,13 +31,13 @@ describe('milestone 24 occupancy', () => {
         object, 'guard',
       ))).toBe(true);
       expect(map.objects.filter((object) => object.kind === 'mine').every((mine) =>
-        mine.footprint?.w === 2 && mine.footprint.h === 2
-        && mine.entrance?.dx === 0 && mine.entrance.dy === 1)).toBe(true);
+        mine.footprint?.w === 2 && mine.footprint.h === 1
+        && mine.entrance?.dx === 0 && mine.entrance.dy === 0)).toBe(true);
     }
     const state = createGame(options);
     expect(state.castles.every((castle) => castle.footprint.w === 3
-      && castle.footprint.h === 3 && castle.entrance.dx === 1
-      && castle.entrance.dy === 2)).toBe(true);
+      && castle.footprint.h === 2 && castle.entrance.dx === 1
+      && castle.entrance.dy === 1)).toBe(true);
     expect(state.players.p1.hero?.position).toEqual(castleEntrance(state.castles[0]));
   });
 

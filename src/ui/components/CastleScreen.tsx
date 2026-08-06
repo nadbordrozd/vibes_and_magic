@@ -17,27 +17,25 @@ import {
   MARKET_BUY_GOLD, MARKET_SELL_GOLD,
 } from '../../content/marketplace';
 import { itemName } from '../../content/items';
-import { terrainIdAt } from '../../content/terrain';
+import { TERRAIN, terrainIdAt } from '../../content/terrain';
 import {
   MARKET_SCROLL_PRICE, artifactMarketValue, itemMarketValue,
 } from '../../core/game/marketplace';
 import { ARTIFACTS } from '../../content/artifacts';
 import { buildingIsActive } from '../../core/game/buildingStatus';
+import {
+  RESOURCE_NAMES, ResourceAmount, ResourceCost, ResourceIcon, ResourceRichText,
+} from './ResourceToken';
+import { HeroPortrait, UnitPortrait } from '../assets';
+import { CASTLE_NAMES, FACTION_PASSIVES } from '../../content/factionPresentation';
+import { FACTIONS } from '../../content/factions';
+import { SPELL_SCHOOL_NAMES } from '../../content/spellPresentation';
 
 interface Props {
   state: GameState;
   castle: Castle;
   dispatch: (action: Action) => void;
   onClose: () => void;
-}
-
-const CASTLE_NAMES: Record<Castle['faction'], string> = {
-  hearthguard: 'Westwatch', woundWrights: 'Eastwatch', unfinished: 'Last Lantern',
-  vespiary: 'Amber Court', hagwood: 'Crooked Fence', wildergrass: 'Ash Kraal',
-};
-
-function costLabel(cost: typeof BUILDINGS[BuildingId]['cost']): string {
-  return Object.entries(cost).map(([resource, amount]) => `${amount} ${resource}`).join(' · ');
 }
 
 function BuildingPicture({ category, large = false }: {
@@ -116,11 +114,16 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
         <BuildingSymbols />
         <header>
           <div>
-            <span>{castle.faction} stronghold</span>
+            <span>{FACTIONS[castle.faction].name.replace(/^The /, '')} stronghold</span>
             <h2>{CASTLE_NAMES[castle.faction]}</h2>
           </div>
           <button className="close-button" onClick={onClose}>×</button>
         </header>
+        <div className="castle-passive" data-inspect-kind="castle" data-inspect-id={castle.id}>
+          <b>{FACTION_PASSIVES[castle.faction].name}</b>
+          <span>{FACTION_PASSIVES[castle.faction].description}</span>
+          <small>Right-click for ownership, magic schools, buildings, and garrison.</small>
+        </div>
         <div className="castle-columns">
           <div>
             <h3>Town works</h3>
@@ -145,7 +148,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             {buildingIsActive(castle, 'shipyard') && (
               <button className="secondary wide" onClick={() => dispatch({
                 type: 'BUILD_BOAT', castleId: castle.id,
-              })}>Launch boat · 1,000 gold · 3 timber</button>
+              })}>Launch boat · <ResourceCost cost={{ gold: 1000, timber: 3 }} compact /></button>
             )}
           </div>
           <div>
@@ -160,16 +163,25 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                   <div className={`recruit-row ${max === 0 ? 'locked' : ''}`} key={tier}
                     data-inspect-kind="unit" data-inspect-id={unit.id}>
                     <span className="tier">T{tier}</span>
-                    <div><b>{dwelling.name}</b><small>Recruits: {unit.name} · Growth: {unit.growth}/week<br />{castle.available[tier - 1]} available · {costLabel(unit.cost)} each</small></div>
+                    <UnitPortrait unitId={unit.id} className="recruit-unit-portrait" />
+                    <div><b>{dwelling.name}</b><small>Recruits: {unit.name} · Growth: {unit.growth}/week<br />{castle.available[tier - 1]} available · <ResourceCost cost={unit.cost} compact /> each</small></div>
                     <div className="stepper">
-                      <button onClick={() => setCounts({ ...counts, [tier]: Math.max(0, count - 1) })}>−</button>
+                      <button disabled={count === 0} title={count === 0 ? 'The selected amount is already zero.' : 'Select one fewer.'}
+                        onClick={() => setCounts({ ...counts, [tier]: Math.max(0, count - 1) })}>−</button>
                       <b>{count}</b>
-                      <button onClick={() => setCounts({ ...counts, [tier]: Math.min(max, count + 1) })}>+</button>
-                      <button onClick={() => setCounts({ ...counts, [tier]: max })}>Max</button>
+                      <button disabled={count >= max} title={count >= max
+                        ? 'No more can be recruited with current stock, resources, and army space.' : 'Select one more.'}
+                        onClick={() => setCounts({ ...counts, [tier]: Math.min(max, count + 1) })}>+</button>
+                      <button disabled={count >= max} title={count >= max
+                        ? 'The maximum recruitable amount is already selected.' : `Select all ${max} currently recruitable.`}
+                        onClick={() => setCounts({ ...counts, [tier]: max })}>Max</button>
                     </div>
                     <button
                       className="hire"
                       disabled={count === 0}
+                      title={count === 0
+                        ? 'Choose at least one creature; the dwelling, weekly stock, army space, and resources must allow it.'
+                        : `Hire ${count} ${unit.name}.`}
                       onClick={() => {
                         dispatch({ type: 'RECRUIT', castleId: castle.id, tier, count });
                         setCounts({ ...counts, [tier]: 0 });
@@ -218,15 +230,20 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                   <article key={spellId} className={known ? 'known' : ''}
                     data-inspect-kind="spell" data-inspect-id={spellId}>
                     <b>{SPELLS[spellId].name}{upgraded ? '+' : ''}</b>
-                    <small>{SPELLS[spellId].school} · {SPELLS[spellId].mana} mana</small>
+                    <small>{SPELL_SCHOOL_NAMES[SPELLS[spellId].school]} school · {SPELLS[spellId].mana} mana</small>
                     <span>{upgraded ? SPELLS[spellId].plus : SPELLS[spellId].base}</span>
                     <button
                       disabled={!heroIsVisiting || !known || upgraded
                         || state.players[state.activePlayer].resources.essence < 4}
+                      title={!heroIsVisiting ? 'A hero must visit this castle to inscribe a spell.'
+                        : !known ? 'The visiting hero must know this spell first.'
+                          : upgraded ? 'This spell is already upgraded.'
+                            : state.players[state.activePlayer].resources.essence < 4
+                              ? 'You need 4 essence.' : `Upgrade ${SPELLS[spellId].name}.`}
                       onClick={() => dispatch({
                         type: 'GUILD_INSCRIBE', castleId: castle.id, spellId,
                       })}
-                    >Inscribe · 4 essence</button>
+                    >Inscribe · <ResourceAmount resource="essence" amount={4} compact /></button>
                   </article>
                 );
               })}
@@ -243,7 +260,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                 const cost = heroHireCost(candidate);
                 return (
                   <article key={candidate.id} data-inspect-kind="hero" data-inspect-id={candidate.id}>
-                    <i className={candidate.faction}>{candidate.name[0]}</i>
+                    <HeroPortrait faction={candidate.faction} className="tavern-hero-portrait" />
                     <div>
                       <b>{candidate.name}</b>
                       <small>Level {candidate.level} · {
@@ -253,11 +270,15 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     <button
                       disabled={state.players[state.activePlayer].heroes.length >= 3
                         || state.players[state.activePlayer].resources.gold < cost}
+                      title={state.players[state.activePlayer].heroes.length >= 3
+                        ? 'You already command the maximum of three heroes.'
+                        : state.players[state.activePlayer].resources.gold < cost
+                          ? `You need ${cost.toLocaleString()} gold.` : `Hire ${candidate.name}.`}
                       onClick={() => dispatch({
                         type: 'HIRE_HERO', castleId: castle.id, heroId: candidate.id,
                       })}
                     >
-                      Hire · {cost.toLocaleString()}g
+                      Hire · <ResourceAmount resource="gold" amount={cost} compact />
                     </button>
                   </article>
                 );
@@ -276,24 +297,31 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
               {(['timber', 'iron', 'essence'] as const).map((resource) => (
                 <article key={resource}>
                   <div>
-                    <b>{resource}</b>
-                    <small>{state.players[state.activePlayer].resources[resource]} held</small>
+                    <b><ResourceIcon resource={resource} /> {RESOURCE_NAMES[resource]}</b>
+                    <small><ResourceAmount resource={resource}
+                      amount={state.players[state.activePlayer].resources[resource]} compact /> held</small>
                   </div>
                   <button
                     disabled={state.players[state.activePlayer].resources[resource] < 1}
+                    title={state.players[state.activePlayer].resources[resource] < 1
+                      ? `You have no ${RESOURCE_NAMES[resource].toLowerCase()} to sell.` : `Sell 1 ${RESOURCE_NAMES[resource].toLowerCase()}.`}
                     onClick={() => dispatch({
                       type: 'MARKET_TRADE', castleId: castle.id,
                       direction: 'sell', resource, amount: 1,
                     })}
-                  >Sell 1 · {MARKET_SELL_GOLD}g</button>
+                  >Sell <ResourceAmount resource={resource} amount={1} compact /> → <ResourceAmount
+                    resource="gold" amount={MARKET_SELL_GOLD} compact /></button>
                   <button
                     disabled={state.players[state.activePlayer].resources.gold
                       < MARKET_BUY_GOLD[resource]}
+                    title={state.players[state.activePlayer].resources.gold < MARKET_BUY_GOLD[resource]
+                      ? `You need ${MARKET_BUY_GOLD[resource]} gold.` : `Buy 1 ${RESOURCE_NAMES[resource].toLowerCase()}.`}
                     onClick={() => dispatch({
                       type: 'MARKET_TRADE', castleId: castle.id,
                       direction: 'buy', resource, amount: 1,
                     })}
-                  >Buy 1 · {MARKET_BUY_GOLD[resource]}g</button>
+                  ><ResourceAmount resource="gold" amount={MARKET_BUY_GOLD[resource]} compact /> → <ResourceAmount
+                    resource={resource} amount={1} compact /></button>
                 </article>
               ))}
               {(hero?.skills.peddler ?? 0) >= 2 && (
@@ -304,10 +332,15 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     disabled={!castle.marketScroll
                       || state.players[state.activePlayer].resources.gold < MARKET_SCROLL_PRICE
                       || !hero?.inventory.includes(null)}
+                    title={!castle.marketScroll ? 'The weekly scroll is sold out.'
+                      : state.players[state.activePlayer].resources.gold < MARKET_SCROLL_PRICE
+                        ? `You need ${MARKET_SCROLL_PRICE} gold.`
+                        : !hero?.inventory.includes(null) ? 'The visiting hero has no open inventory slot.'
+                          : 'Buy the weekly scroll.'}
                     onClick={() => dispatch({
                       type: 'BUY_MARKET_SCROLL', castleId: castle.id,
                     })}
-                  >Buy · {MARKET_SCROLL_PRICE}g</button>
+                  >Buy · <ResourceAmount resource="gold" amount={MARKET_SCROLL_PRICE} compact /></button>
                 </article>
               )}
               {(hero?.skills.peddler ?? 0) >= 2 && hero?.inventory.map((item, index) =>
@@ -316,7 +349,8 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     <div><b>{itemName(item)}</b><small>Inventory slot {index + 1}</small></div>
                     <button onClick={() => dispatch({
                       type: 'SELL_MARKET_ITEM', castleId: castle.id, inventorySlot: index,
-                    })}>Sell · {Math.floor(itemMarketValue(item) * 0.6)}g</button>
+                    })}>Sell · <ResourceAmount resource="gold"
+                      amount={Math.floor(itemMarketValue(item) * 0.6)} compact /></button>
                   </article>
                 ) : null)}
               {(hero?.skills.peddler ?? 0) >= 2 && hero?.artifacts.backpack.map(
@@ -326,7 +360,8 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     <button onClick={() => dispatch({
                       type: 'SELL_MARKET_ARTIFACT', castleId: castle.id,
                       backpackIndex: index,
-                    })}>Sell · {Math.floor(artifactMarketValue(artifact) * 0.6)}g</button>
+                    })}>Sell · <ResourceAmount resource="gold"
+                      amount={Math.floor(artifactMarketValue(artifact) * 0.6)} compact /></button>
                   </article>
                 ) : null,
               )}
@@ -339,10 +374,12 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             {tunnelDestinations.map((destination) => (
               <button
                 key={destination.id} disabled={(hero?.movement ?? 0) < 500}
+                title={(hero?.movement ?? 0) < 500 ? 'The visiting hero needs 500 movement.'
+                  : `Travel to ${CASTLE_NAMES[destination.faction]}.`}
                 onClick={() => dispatch({
                   type: 'TUNNEL_TRAVEL', destinationCastleId: destination.id,
                 })}
-              >Travel to {destination.id} · 500 move</button>
+              >Travel to {CASTLE_NAMES[destination.faction]} · 500 move</button>
             ))}
             {!tunnelDestinations.length && <p>No other Tunnel-castle is connected.</p>}
           </section>
@@ -352,9 +389,16 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             <h3>The castle may walk</h3>
             <div className="tavern-offers">
               {relocationTargets.slice(0, 8).map((destination) => (
-                <button key={`${destination.x},${destination.y}`} onClick={() => dispatch({
-                  type: 'RELOCATE_CASTLE', castleId: castle.id, destination,
-                })}>Move to {destination.x},{destination.y}</button>
+                <button key={`${destination.x},${destination.y}`}
+                  title={`Relocate to map coordinate ${destination.x}, ${destination.y}.`}
+                  onClick={() => dispatch({
+                    type: 'RELOCATE_CASTLE', castleId: castle.id, destination,
+                  })}>Move {Math.max(Math.abs(destination.x - castle.position.x),
+                    Math.abs(destination.y - castle.position.y))} tiles {
+                    Math.abs(destination.x - castle.position.x) > Math.abs(destination.y - castle.position.y)
+                      ? destination.x > castle.position.x ? 'east' : 'west'
+                      : destination.y > castle.position.y ? 'south' : 'north'
+                  } · {TERRAIN[terrainIdAt(state.map, destination)].label}</button>
               ))}
             </div>
           </section>
@@ -363,7 +407,8 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
           <div className="building-detail-backdrop" onClick={() => setSelectedBuilding(null)}>
             <article className="building-detail" role="dialog"
               aria-label={selectedDefinition.name} onClick={(event) => event.stopPropagation()}>
-              <button className="inspection-close" onClick={() => setSelectedBuilding(null)}>×</button>
+              <button className="inspection-close" aria-label="Close building details"
+                title="Close building details" onClick={() => setSelectedBuilding(null)}>×</button>
               <BuildingPicture category={selectedDefinition.category} large />
               <h2>{selectedDefinition.name}</h2>
               <p className="building-detail-flavor">{selectedDefinition.flavor}</p>
@@ -384,7 +429,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                   : Object.entries(selectedDefinition.cost).map(([resource, amount]) => {
                     const held = state.players[castleOwner].resources[resource as ResourceId];
                     return <span key={resource} className={held < (amount ?? 0) ? 'missing' : ''}>
-                      <i>{resource[0].toUpperCase()}</i>{amount} {resource}
+                      <ResourceAmount resource={resource as ResourceId} amount={amount ?? 0} />
                     </span>;
                   })}
               </div></section>
@@ -397,7 +442,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                 ) : <p>None</p>}
               </section>
               <p className={`building-state-line ${selectedStatus.state}`}>
-                {selectedStatus.reason}
+                <ResourceRichText>{selectedStatus.reason}</ResourceRichText>
               </p>
               {selectedStatus.state === 'available' && (
                 <button className="primary" onClick={() => {

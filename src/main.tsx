@@ -5,6 +5,9 @@ import './ui/styles/base.css';
 import './ui/styles/game.css';
 import './ui/styles/castle.css';
 import './ui/styles/combat.css';
+import { preloadAssetManifest } from './ui/assets';
+
+preloadAssetManifest();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -23,6 +23,9 @@ import {
 import {
   createManywhere, MANYWHERE_CASTLE_POSITIONS, MANYWHERE_NEUTRAL_TOWNS,
 } from '../../content/maps/manywhere';
+import {
+  createGrandMuster, GRAND_MUSTER_CASTLES, GRAND_MUSTER_ENEMY_CASTLE,
+} from '../../content/maps/grandMuster';
 import { validateMapObjectRegistry } from '../../content/mapObjectRegistry';
 import { createTornSound, TORN_SOUND_CASTLE_POSITIONS } from '../../content/maps/tornSound';
 import { FACTION_UNITS, UNITS, validateUnits } from '../../content/units';
@@ -163,8 +166,8 @@ function makeCastle(
   return {
     id, owner,
     faction: factionId,
-    position: { x: entrancePosition.x - 1, y: entrancePosition.y - 2 },
-    footprint: { w: 3, h: 3 }, entrance: { dx: 1, dy: 2 },
+    position: { x: entrancePosition.x - 1, y: entrancePosition.y - 1 },
+    footprint: { w: 3, h: 2 }, entrance: { dx: 1, dy: 1 },
     buildings: ['villageHall', 'dwelling1', 'tavern'], bannedBuildings: [],
     available: [UNITS[FACTION_UNITS[factionId][0]].growth,
       0, 0, 0, 0, 0], garrison: emptyArmy(), builtOnDay: null,
@@ -190,6 +193,12 @@ function inactivePlayer(id: PlayerId, faction: FactionId): Player {
   };
 }
 
+function grandMusterArmy(faction: FactionId) {
+  return makeArmy(FACTION_UNITS[faction].map((unitId) => ({
+    unitId, count: Math.max(1, UNITS[unitId].growth * 2),
+  })));
+}
+
 export function createGame(options: NewGameOptions): GameState {
   validateUnits();
   validateBuildings();
@@ -209,10 +218,13 @@ export function createGame(options: NewGameOptions): GameState {
     : mapId === 'crosstitch-kit' ? createCrosstitchKit(options.seed)
       : mapId === 'torn-sound' ? createTornSound(options.seed)
         : mapId === 'manywhere' ? createManywhere(options.seed)
+          : mapId === 'grand-muster' ? createGrandMuster(options.seed)
         : createBorderMarches(options.seed);
   validateMap(map);
-  const p1Faction = options.p1Faction ?? 'hearthguard';
-  const p2Faction = options.p2Faction ?? 'woundWrights';
+  const p1Faction = mapId === 'grand-muster' ? 'hearthguard'
+    : options.p1Faction ?? 'hearthguard';
+  const p2Faction = mapId === 'grand-muster' ? GRAND_MUSTER_ENEMY_CASTLE.faction
+    : options.p2Faction ?? 'woundWrights';
   const playerCount = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
     ? options.playerCount ?? 4 : mapId === 'manywhere' ? options.playerCount ?? 1 : 2;
   const ids: PlayerId[] = ['p1', 'p2', 'p3', 'p4'];
@@ -222,10 +234,26 @@ export function createGame(options: NewGameOptions): GameState {
   };
   const positions = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
     ? CROSSTITCH_CASTLE_POSITIONS : mapId === 'torn-sound'
-      ? TORN_SOUND_CASTLE_POSITIONS : [{ x: 3, y: 10 }, { x: 24, y: 10 }];
+      ? TORN_SOUND_CASTLE_POSITIONS : mapId === 'grand-muster'
+        ? [GRAND_MUSTER_CASTLES[0].entrance, GRAND_MUSTER_ENEMY_CASTLE.entrance]
+        : [{ x: 3, y: 10 }, { x: 24, y: 10 }];
   const startPositions = mapId === 'manywhere' ? MANYWHERE_CASTLE_POSITIONS : positions;
-  const castles = ids.slice(0, playerCount).map((id, index) =>
-    makeCastle(id, factions[id], options.seed, startPositions[index]));
+  const castles = mapId === 'grand-muster'
+    ? [
+      ...GRAND_MUSTER_CASTLES.map(({ faction, entrance }) => {
+        const castle = makeCastle('p1', faction, options.seed, entrance, `muster-${faction}-castle`);
+        castle.buildings = [
+          'villageHall', 'tavern', 'dwelling1', 'dwelling2', 'dwelling3',
+          'dwelling4', 'dwelling5', 'dwelling6',
+        ];
+        castle.available = FACTION_UNITS[faction].map((unitId) => UNITS[unitId].growth);
+        return castle;
+      }),
+      makeCastle('p2', GRAND_MUSTER_ENEMY_CASTLE.faction, options.seed,
+        GRAND_MUSTER_ENEMY_CASTLE.entrance, 'muster-distant-castle'),
+    ]
+    : ids.slice(0, playerCount).map((id, index) =>
+      makeCastle(id, factions[id], options.seed, startPositions[index]));
   if (mapId === 'manywhere') for (const town of MANYWHERE_NEUTRAL_TOWNS) {
     const castle = makeCastle('neutral', town.faction, options.seed, town.entrance, town.id);
     castle.variant = town.variant;
@@ -246,16 +274,37 @@ export function createGame(options: NewGameOptions): GameState {
   }
   let rng = options.seed >>> 0;
   const controllers: Record<PlayerId, Player['controller']> = {
-    p1: options.p1, p2: options.p2, p3: options.p3 ?? 'ai', p4: options.p4 ?? 'ai',
+    p1: mapId === 'grand-muster' ? 'human' : options.p1,
+    p2: mapId === 'grand-muster' ? 'dormant' : options.p2,
+    p3: options.p3 ?? 'ai', p4: options.p4 ?? 'ai',
   };
   const players = {} as Record<PlayerId, Player>;
   for (const [index, id] of ids.entries()) {
     if (index >= playerCount) { players[id] = inactivePlayer(id, factions[id]); continue; }
+    const playerCastle = mapId === 'grand-muster' && id === 'p2'
+      ? castles[castles.length - 1] : castles[index];
     [players[id], rng] = makePlayer(
-      id, controllers[id], factions[id], rng, castleEntrance(castles[index]),
+      id, controllers[id], factions[id], rng, castleEntrance(playerCastle),
     );
   }
   const { p1, p2, p3, p4 } = players;
+  if (mapId === 'grand-muster') {
+    p1.name = 'The Muster';
+    p1.resources = { gold: 50_000, timber: 50, iron: 50, essence: 50 };
+    p1.heroes[0].army = grandMusterArmy('hearthguard');
+    p1.heroes[0].position.y += 1;
+    for (const castle of castles.slice(1, GRAND_MUSTER_CASTLES.length)) {
+      const definitionId = FACTION_HEROES[castle.faction][0];
+      const entrance = castleEntrance(castle);
+      const hero = makeHero('p1', castle.faction, definitionId, { x: entrance.x, y: entrance.y + 1 });
+      hero.army = grandMusterArmy(castle.faction);
+      p1.heroes.push(hero);
+    }
+    p1.activeHeroId = p1.heroes[0].id;
+    p1.hero = p1.heroes[0];
+    p2.name = 'The Distant Observer';
+    p2.heroes.forEach((hero) => { hero.movement = 0; });
+  }
   const difficultyRules = DIFFICULTY_MODIFIERS[difficulty];
   for (const guardian of map.objects.filter((object) => object.kind === 'guardian')) {
     guardian.army = guardian.army.map((stack) => ({
