@@ -26,6 +26,9 @@ import {
 import {
   createGrandMuster, GRAND_MUSTER_CASTLES, GRAND_MUSTER_ENEMY_CASTLE,
 } from '../../content/maps/grandMuster';
+import {
+  createCrookedCrown, CROOKED_CROWN_STARTS,
+} from '../../content/maps/crookedCrown';
 import { validateMapObjectRegistry } from '../../content/mapObjectRegistry';
 import { createTornSound, TORN_SOUND_CASTLE_POSITIONS } from '../../content/maps/tornSound';
 import { FACTION_UNITS, UNITS, validateUnits } from '../../content/units';
@@ -219,6 +222,7 @@ export function createGame(options: NewGameOptions): GameState {
       : mapId === 'torn-sound' ? createTornSound(options.seed)
         : mapId === 'manywhere' ? createManywhere(options.seed)
           : mapId === 'grand-muster' ? createGrandMuster(options.seed)
+            : mapId === 'crooked-crown' ? createCrookedCrown(options.seed)
         : createBorderMarches(options.seed);
   validateMap(map);
   const p1Faction = mapId === 'grand-muster' ? 'hearthguard'
@@ -226,6 +230,7 @@ export function createGame(options: NewGameOptions): GameState {
   const p2Faction = mapId === 'grand-muster' ? GRAND_MUSTER_ENEMY_CASTLE.faction
     : options.p2Faction ?? 'woundWrights';
   const playerCount = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
+    || mapId === 'crooked-crown'
     ? options.playerCount ?? 4 : mapId === 'manywhere' ? options.playerCount ?? 1 : 2;
   const ids: PlayerId[] = ['p1', 'p2', 'p3', 'p4'];
   const factions: Record<PlayerId, FactionId> = {
@@ -236,6 +241,7 @@ export function createGame(options: NewGameOptions): GameState {
     ? CROSSTITCH_CASTLE_POSITIONS : mapId === 'torn-sound'
       ? TORN_SOUND_CASTLE_POSITIONS : mapId === 'grand-muster'
         ? [GRAND_MUSTER_CASTLES[0].entrance, GRAND_MUSTER_ENEMY_CASTLE.entrance]
+        : mapId === 'crooked-crown' ? [...CROOKED_CROWN_STARTS]
         : [{ x: 3, y: 10 }, { x: 24, y: 10 }];
   const startPositions = mapId === 'manywhere' ? MANYWHERE_CASTLE_POSITIONS : positions;
   const castles = mapId === 'grand-muster'

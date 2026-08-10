@@ -4,6 +4,8 @@ import {
   INSPECTION_KIND_NAMES, inspectTarget, type InspectionKind, type InspectionTarget,
 } from '../inspection';
 import { ResourceRichText } from './ResourceToken';
+import { ContentIcon } from './ContentIcon';
+import type { SecondarySkillId, SpellId } from '../../core/types';
 
 function targetFrom(element: EventTarget | null): InspectionTarget | null {
   if (!(element instanceof Element)) return null;
@@ -108,7 +110,13 @@ export function InspectionLayer({ state }: { state: GameState }) {
           <article className="inspection-card" role="dialog" aria-label={`Inspect ${card.name}`} onClick={(event) => event.stopPropagation()}>
             <button className="inspection-close" aria-label="Close inspection" title="Close inspection" onClick={() => setTarget(null)}>×</button>
             <small className="inspection-kind">{target ? INSPECTION_KIND_NAMES[target.kind] : ''}</small>
-            <h2>{card.name}</h2>
+            <h2 className="content-icon-label">
+              {(target?.kind === 'spell' || target?.kind === 'enchantment')
+                && <ContentIcon kind="spell" id={target.id as SpellId} />}
+              {target?.kind === 'skill'
+                && <ContentIcon kind="skill" id={target.id as SecondarySkillId} />}
+              {card.name}
+            </h2>
             <p className="inspection-flavor">{card.flavor}</p>
             {target?.kind === 'object' && <small className={`journal-state ${card.learned ? 'learned' : ''}`}>{card.learned ? 'Learned' : 'Undiscovered'}</small>}
             {card.mechanics.length > 0 && <section className="inspection-mechanics"><h3>Mechanics</h3>{card.mechanics.map((line) => <p key={line}><ResourceRichText>{line}</ResourceRichText></p>)}</section>}

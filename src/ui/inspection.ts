@@ -60,7 +60,7 @@ const COUNTERS: Record<CounterId, InspectionCard> = {
   bloom: { name: 'Bloom', flavor: 'Green life insists on returning.', mechanics: ['At turn start, restores 1 HP per counter without reviving creatures. Decays by 1 at turn end.'] },
 };
 
-function objectName(object: MapObject): string {
+export function mapObjectName(object: MapObject): string {
   if (object.kind === 'mine') return object.resource === 'gold' ? 'Gold Mine'
     : object.resource === 'timber' ? 'Timber Camp'
       : object.resource === 'iron' ? 'Iron Mine' : 'Essence Spring';
@@ -180,7 +180,7 @@ export function inspectTarget(state: GameState, target: InspectionTarget): Inspe
       const intel = guardianIntel(state, object);
       const protectedObject = state.map.objects.find((candidate) => candidate.id === object.protects);
       const protectedCastle = state.castles.find((candidate) => candidate.id === object.protects);
-      const protectedName = protectedObject ? objectName(protectedObject)
+      const protectedName = protectedObject ? mapObjectName(protectedObject)
         : protectedCastle ? CASTLE_NAMES[protectedCastle.faction]
           : 'the surrounding road';
       return {
@@ -197,7 +197,7 @@ export function inspectTarget(state: GameState, target: InspectionTarget): Inspe
       };
     }
     const learned = state.players[state.activePlayer].discoveredObjectKinds.includes(object.kind);
-    return { name: objectName(object), flavor: objectFlavor(object), mechanics: learned ? objectMechanics(object) : [], learned };
+    return { name: mapObjectName(object), flavor: objectFlavor(object), mechanics: learned ? objectMechanics(object) : [], learned };
   }
   if (target.kind === 'castle') {
     const castle = state.castles.find((candidate) => candidate.id === target.id);

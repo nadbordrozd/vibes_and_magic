@@ -51,24 +51,29 @@ function SaveRow({
   const players = summary.players.map((player) =>
     `${player.name}: ${player.faction} · ${controllerNames[player.controller]}`).join(' | ');
   return (
-    <button className={`load-button save-row ${summary.compatibility}`}
-      onClick={onLoad} disabled={unavailable}
-      title={unavailable ? summary.warning : `Load ${summary.mapName}`}>
-      <span>
-        <b>{title} · {summary.mapName}</b>
+    <article className={`save-row ${summary.compatibility}`}>
+      <div className="save-row-primary">
+        <span><b>{title} · {summary.mapName}</b>
+          <small>Week {summary.week} / Day {summary.day} · {summary.activePlayer}</small></span>
+        <button className="load-button" onClick={onLoad} disabled={unavailable}
+          data-disabled-reason={unavailable ? summary.warning : undefined}
+          title={unavailable ? summary.warning : `Load ${summary.mapName}`}>
+          {unavailable ? 'Unavailable' : 'Load'} <i>{unavailable ? '!' : '↗'}</i>
+        </button>
+      </div>
+      <details>
+        <summary>Save details</summary>
         <small>{summary.objective}</small>
         <small>{summary.difficulty ? `${summary.difficulty[0].toUpperCase()}${summary.difficulty.slice(1)}` : 'Unknown difficulty'}
-          {' · '}seed {summary.seed ?? 'unknown'} · Week {summary.week} / Day {summary.day}
-          {' · '}active: {summary.activePlayer}</small>
+          {' · '}seed {summary.seed ?? 'unknown'}</small>
         <small>{players || 'Controller and faction data unavailable'}</small>
         <small>Saved {formatSaveTime(summary.savedAt)} · schema v{summary.schemaVersion ?? 'unknown'}
           {' · '}{summary.compatibility === 'compatible' ? 'content matches this build'
             : summary.compatibility === 'content-mismatch' ? 'content mismatch'
               : summary.compatibility === 'schema-mismatch' ? 'schema mismatch' : 'corrupt data'}</small>
         {summary.warning && <strong className="save-warning">{summary.warning}</strong>}
-      </span>
-      <i>{unavailable ? '!' : '↗'}</i>
-    </button>
+      </details>
+    </article>
   );
 }
 
@@ -94,36 +99,47 @@ export function MainMenu({
   const [mapId, setMapId] = useState<MapId>('border-marches');
   const [playerCount, setPlayerCount] = useState<1 | 2 | 3 | 4>(4);
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
+  const hasSaves = Boolean(savedGame || manualSaves.some(Boolean) || autoSaves.some(Boolean));
+  const [mode, setMode] = useState<'new' | 'continue'>(hasSaves ? 'continue' : 'new');
   const selectedMap = CAMPAIGN_PRESENTATION[mapId];
 
   return (
     <main className="menu-shell">
       <section className="menu-card">
-        <div className="kicker">A deterministic strategy experiment</div>
-        <h1>{mapId === 'border-marches' ? <>Border<br /><span>Marches</span></>
-          : mapId === 'torn-sound' ? <>Torn<br /><span>Sound</span></>
-            : mapId === 'manywhere' ? <>Many<br /><span>where</span></>
-              : mapId === 'grand-muster' ? <>Grand<br /><span>Muster</span></>
-            : <>Cross<br /><span>stitch</span></>}</h1>
-        <p className="menu-copy">{selectedMap.flavor}</p>
+        <header className="menu-title">
+          <div><div className="kicker">A deterministic strategy experiment</div>
+            <h1>Vibes <span>&amp; Magic</span></h1></div>
+          <nav className="menu-modes" aria-label="Title screen task">
+            <button className={mode === 'new' ? 'selected' : ''}
+              aria-pressed={mode === 'new'} onClick={() => setMode('new')}>New campaign</button>
+            <button className={mode === 'continue' ? 'selected' : ''}
+              aria-pressed={mode === 'continue'} onClick={() => setMode('continue')}>
+              Continue{hasSaves ? '' : ' / import'}
+            </button>
+          </nav>
+        </header>
+        {mode === 'new' ? <>
         <section className="selected-map-identity" aria-live="polite">
-          <span>{selectedMap.style}</span>
-          <b>Exact objective: {selectedMap.objective}</b>
+          <span>{selectedMap.name} · {selectedMap.style}</span>
+          <b>{selectedMap.objective}</b>
+          <small>{selectedMap.flavor}</small>
         </section>
         <div className="menu-fields">
-          <fieldset className="map-options">
-            <legend>Map, style, and objective</legend>
-            {CAMPAIGN_PRESENTATIONS.map((map) => (
-              <button key={map.id} className={mapId === map.id ? 'selected' : ''}
-                aria-pressed={mapId === map.id} onClick={() => {
-              const next = map.id; setMapId(next);
+          <label>Campaign map
+            <select value={mapId} onChange={(event) => {
+              const next = event.target.value as MapId; setMapId(next);
               if (next === 'manywhere') setPlayerCount(1);
               else if (next === 'grand-muster') setPlayerCount(2);
+              else if (next === 'crooked-crown') setPlayerCount(4);
               else if (playerCount === 1) setPlayerCount(2);
-                }}><b>{map.name}</b><small>{map.style}</small><span>{map.objective}</span></button>
-            ))}
-          </fieldset>
-          {(mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere') && (
+            }}>
+              {CAMPAIGN_PRESENTATIONS.map((map) => (
+                <option key={map.id} value={map.id}>{map.name} · {map.style} · {map.objective}</option>
+              ))}
+            </select>
+          </label>
+          {(mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere'
+            || mapId === 'crooked-crown') && (
             <label>Players
               <select value={playerCount} onChange={(event) =>
                 setPlayerCount(Number(event.target.value) as 1 | 2 | 3 | 4)}>
@@ -139,7 +155,7 @@ export function MainMenu({
               <option value="easy">Easy</option><option value="normal">Normal</option>
               <option value="hard">Hard</option><option value="brutal">Brutal</option>
             </select>
-            <small className="menu-field-help">Starting resources ×{DIFFICULTY_MODIFIERS[difficulty].humanStartingResources}; guardian strength ×{DIFFICULTY_MODIFIERS[difficulty].guardianStrength}; computer income and growth ×{DIFFICULTY_MODIFIERS[difficulty].aiIncome}.</small>
+            <small className="menu-field-help">Resources ×{DIFFICULTY_MODIFIERS[difficulty].humanStartingResources} · guardians ×{DIFFICULTY_MODIFIERS[difficulty].guardianStrength} · computer economy ×{DIFFICULTY_MODIFIERS[difficulty].aiIncome}</small>
           </label>
           {mapId === 'grand-muster' && <div className="slot-row crimson">
             <b>Showcase setup</b>
@@ -155,7 +171,7 @@ export function MainMenu({
                   <option key={faction.id} value={faction.id}>{faction.name}</option>
                 ))}
               </select>
-              <small className="menu-field-help">{factionSummary(p1Faction)}</small>
+              <details className="menu-inline-help"><summary>Faction identity</summary><small>{factionSummary(p1Faction)}</small></details>
             </label>
             <button title={controllerHelp[p1]} onClick={() => setP1(p1 === 'human' ? 'ai' : p1 === 'ai' ? 'dormant' : 'human')}>
               {p1 === 'human' ? 'Human' : p1 === 'ai' ? 'Standard' : 'Dormant'}
@@ -171,13 +187,14 @@ export function MainMenu({
                   <option key={faction.id} value={faction.id}>{faction.name}</option>
                 ))}
               </select>
-              <small className="menu-field-help">{factionSummary(p2Faction)}</small>
+              <details className="menu-inline-help"><summary>Faction identity</summary><small>{factionSummary(p2Faction)}</small></details>
             </label>
             <button title={controllerHelp[p2]} onClick={() => setP2(p2 === 'human' ? 'ai' : p2 === 'ai' ? 'dormant' : 'human')}>
               {p2 === 'human' ? 'Human' : p2 === 'ai' ? 'Standard' : 'Dormant'}
             </button>
           </div>}
-          {(mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere') && playerCount >= 3 && (
+          {(mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere'
+            || mapId === 'crooked-crown') && playerCount >= 3 && (
             <div className="slot-row verdant">
               <label><b>03</b><select value={p3Faction} onChange={(event) =>
                 setP3Faction(event.target.value as FactionChoice)}>
@@ -185,13 +202,14 @@ export function MainMenu({
                 {Object.values(FACTIONS).map((faction) => (
                   <option key={faction.id} value={faction.id}>{faction.name}</option>
                 ))}
-              </select><small className="menu-field-help">{factionSummary(p3Faction)}</small></label>
+              </select><details className="menu-inline-help"><summary>Faction identity</summary><small>{factionSummary(p3Faction)}</small></details></label>
               <button title={controllerHelp[p3]} onClick={() => setP3(p3 === 'human' ? 'ai' : p3 === 'ai' ? 'dormant' : 'human')}>
                 {p3 === 'human' ? 'Human' : p3 === 'ai' ? 'Standard' : 'Dormant'}
               </button>
             </div>
           )}
-          {(mapId === 'crosstitch' || mapId === 'crosstitch-kit') && playerCount >= 4 && (
+          {(mapId === 'crosstitch' || mapId === 'crosstitch-kit'
+            || mapId === 'crooked-crown') && playerCount >= 4 && (
             <div className="slot-row amber">
               <label><b>04</b><select value={p4Faction} onChange={(event) =>
                 setP4Faction(event.target.value as FactionChoice)}>
@@ -199,17 +217,18 @@ export function MainMenu({
                 {Object.values(FACTIONS).map((faction) => (
                   <option key={faction.id} value={faction.id}>{faction.name}</option>
                 ))}
-              </select><small className="menu-field-help">{factionSummary(p4Faction)}</small></label>
+              </select><details className="menu-inline-help"><summary>Faction identity</summary><small>{factionSummary(p4Faction)}</small></details></label>
               <button title={controllerHelp[p4]} onClick={() => setP4(p4 === 'human' ? 'ai' : p4 === 'ai' ? 'dormant' : 'human')}>
                 {p4 === 'human' ? 'Human' : p4 === 'ai' ? 'Standard' : 'Dormant'}
               </button>
             </div>
           )}
-          <div className="controller-legend" aria-label="Controller meanings">
+          <details className="controller-legend" aria-label="Controller meanings">
+            <summary>Controller meanings</summary>
             <span><b>Human</b> — {controllerHelp.human}</span>
             <span><b>Standard</b> — {controllerHelp.ai}</span>
             <span><b>Dormant</b> — {controllerHelp.dormant}</span>
-          </div>
+          </details>
           <label>
             World seed
             <div className="seed-row">
@@ -222,7 +241,7 @@ export function MainMenu({
                 ↻
               </button>
             </div>
-            <small className="menu-field-help">Use the same seed and setup to reproduce random offers and outcomes.</small>
+            <small className="menu-field-help">Same seed + setup reproduces offers and outcomes.</small>
           </label>
         </div>
         <button className="primary start-button" onClick={() => onStart({
@@ -232,7 +251,8 @@ export function MainMenu({
             : resolveFaction(p1Faction, seed, 1),
           p2Faction: mapId === 'grand-muster' ? 'woundWrights'
             : resolveFaction(p2Faction, seed, 2), mapId,
-          playerCount: mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere'
+          playerCount: mapId === 'crosstitch' || mapId === 'crosstitch-kit'
+            || mapId === 'manywhere' || mapId === 'crooked-crown'
             ? playerCount : 2,
           difficulty,
           p3, p4,
@@ -241,6 +261,11 @@ export function MainMenu({
         })}>
           Begin campaign <span>→</span>
         </button>
+        </> : <section className="continue-panel">
+        <div className="selected-map-identity">
+          <span>{hasSaves ? 'Campaign saves' : 'No local campaigns'}</span>
+          <b>{hasSaves ? 'Choose one campaign to resume.' : 'Import a campaign file or begin a new game.'}</b>
+        </div>
         {savedGame && <SaveRow summary={savedGame} title="Continue quick save"
           onLoad={() => onLoad()} />}
         {manualSaves.map((summary, index) => summary && (
@@ -252,12 +277,19 @@ export function MainMenu({
             onLoad={() => onLoad(`auto-${index}`)} />
         ))}
         <button className="load-button" onClick={onImport}><span><b>Import save file</b>
-          <small>Replay a deterministic campaign export.</small></span><i>⇧</i></button>
-        <a className="load-button terrain-showcase-link" href="?terrain-showcase=1">
-          <span><b>Open terrain showcase</b>
-            <small>Inspect nine native 32×32 terrain families and their transition grammar.</small>
-          </span><i>↗</i>
-        </a>
+          <small>Choose a deterministic campaign export.</small></span><i>⇧</i></button>
+        {!hasSaves && <button className="primary new-from-empty" onClick={() => setMode('new')}>
+          Set up a new campaign
+        </button>}
+        </section>}
+        <details className="title-extras"><summary>Presentation showcases</summary>
+          <a className="load-button terrain-showcase-link" href="?terrain-showcase=1">
+            <span><b>Terrain showcase</b><small>Review native terrain families.</small></span><i>↗</i>
+          </a>
+          <a className="load-button terrain-showcase-link" href="?adventure-showcase=1">
+            <span><b>Adventure visual showcase</b><small>Review map sprites and topology.</small></span><i>↗</i>
+          </a>
+        </details>
         <footer>Seed {seed} · deterministic replay enabled</footer>
       </section>
     </main>

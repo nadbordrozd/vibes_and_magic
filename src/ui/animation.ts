@@ -1,4 +1,4 @@
-import type { Coord } from '../core/types';
+import type { Action, Coord } from '../core/types';
 
 export type AnimationSpeed = 'instant' | 'fast' | 'normal' | 'slow';
 
@@ -20,6 +20,8 @@ export const ANIMATION_TIMINGS: Record<AnimationSpeed, AnimationTiming> = {
 
 export interface CombatAnimation {
   phase: 'move' | 'attack' | 'projectile' | 'damage' | 'death' | 'morale';
+  actionType: Action['type'];
+  attackEffect?: 'melee' | 'ranged';
   actorId: string;
   targetId?: string;
   displayPosition: Coord;

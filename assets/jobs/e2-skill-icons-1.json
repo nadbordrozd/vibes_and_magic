@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/e2-skill-icons-1-candidates.html",
+  "requests": [
+    {
+      "id": "skill-icon:logistics",
+      "assets": [
+        "skill-icon:logistics"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/logistics",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Logistics”: +10% daily movement. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759000,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:scouting",
+      "assets": [
+        "skill-icon:scouting"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/scouting",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Scouting”: Inspect nearby guardians exactly. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759019,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:wayfaring",
+      "assets": [
+        "skill-icon:wayfaring"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/wayfaring",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Wayfaring”: Forest terrain costs 100. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759038,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:diplomacy",
+      "assets": [
+        "skill-icon:diplomacy"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/diplomacy",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Diplomacy”: Pay guardians up to 50% power to disperse. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759057,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:attunement",
+      "assets": [
+        "skill-icon:attunement"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/attunement",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Attunement”: +2 field mana per day. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759076,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:command",
+      "assets": [
+        "skill-icon:command"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/command",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Command”: +3 allied morale each round. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759095,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:forager",
+      "assets": [
+        "skill-icon:forager"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/forager",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Forager”: Resource piles yield +50%. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759114,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:spellthief",
+      "assets": [
+        "skill-icon:spellthief"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/spellthief",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Spellthief”: Steal a spell from defeated heroes. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759133,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:alchemist",
+      "assets": [
+        "skill-icon:alchemist"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/alchemist",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Alchemist”: First item each battle does not consume the hero-act. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759152,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:chronicler",
+      "assets": [
+        "skill-icon:chronicler"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/chronicler",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Chronicler”: Level-up drafts deal four cards. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759171,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

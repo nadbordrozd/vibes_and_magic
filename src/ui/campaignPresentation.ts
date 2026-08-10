@@ -3,6 +3,7 @@ import { createCrosstitch, createCrosstitchKit } from '../content/maps/crosstitc
 import { createGrandMuster } from '../content/maps/grandMuster';
 import { createManywhere } from '../content/maps/manywhere';
 import { createTornSound } from '../content/maps/tornSound';
+import { createCrookedCrown } from '../content/maps/crookedCrown';
 import type { GameMap, MapId } from '../core/types';
 
 const MAP_FACTORIES = {
@@ -12,6 +13,7 @@ const MAP_FACTORIES = {
   'torn-sound': createTornSound,
   manywhere: createManywhere,
   'grand-muster': createGrandMuster,
+  'crooked-crown': createCrookedCrown,
 } satisfies Record<MapId, (seed?: number) => GameMap>;
 
 const MAP_STYLES: Record<MapId, string> = {
@@ -21,6 +23,7 @@ const MAP_STYLES: Record<MapId, string> = {
   'torn-sound': 'Two-player naval conquest campaign',
   manywhere: 'One-to-three-player exploration sandbox',
   'grand-muster': 'Oversized creature and structure showcase sandbox',
+  'crooked-crown': 'Four-player dense labyrinth conquest campaign',
 };
 
 export interface CampaignPresentation {

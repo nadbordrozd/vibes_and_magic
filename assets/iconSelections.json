@@ -1,0 +1,540 @@
+{
+  "version": 1,
+  "contract": "One selected native 32x32 RGBA variation from one recorded PixelLab generate-image-v2 receipt per canonical spell/skill; never resampled.",
+  "entries": [
+    {
+      "id": "spell-icon:rally",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:blessing",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:standardOfDawn",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:amplify",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:sanctuary",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:oathOfIron",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:consecrate",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:hymnOfTheHost",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:trial",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:forgeSpark",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:ward",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:reflect",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:forgefire",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:clockworkEscort",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:wallOfTheMaker",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:quicksilver",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:unmake",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:ironclad",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:wither",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:graveChill",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:mournersVeil",
+      "variation": 24,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:dirge",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:lastCandle",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:sour",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:remembrance",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:reckoning",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:quiet",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:beacon",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:census",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:feastDay",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:clarion",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:vigilOfTheHost",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:oathbind",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:waysideShrine",
+      "variation": 13,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:gate",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:saltTheVein",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:falseColors",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:clockworkCourier",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:brittle",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:standingMirror",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:summonSkiff",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:coldRoad",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:borrowedTime",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:paleProcession",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:silenceThePassing",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:theToll",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:deathsLedger",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:graveSpeech",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:gale",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:bloom",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:overgrow",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:thicket",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:rains",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:beastTongue",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:stampedeCall",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:storm",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:greenway",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:wildGrowth",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:murmuration",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:greenTide",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:rootAndRuin",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:fickleWeather",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:shedSkin",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:hedgerowMarch",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:hourglassCrack",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:borrowShape",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:echo",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "spell-icon:loyalUntoDeath",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:logistics",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:scouting",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:wayfaring",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:diplomacy",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:attunement",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:command",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:forager",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:spellthief",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:alchemist",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:chronicler",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:palimpsest",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:twicetold",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:curseEater",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:ritualist",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:peddler",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:warden",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:ransomer",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:beastmaster",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:vanguard",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:provisioner",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    },
+    {
+      "id": "skill-icon:siegewright",
+      "variation": 1,
+      "accepted": true,
+      "review": "Accepted after complete native and integer-scale icon-sheet review on 2026-08-09."
+    }
+  ]
+}

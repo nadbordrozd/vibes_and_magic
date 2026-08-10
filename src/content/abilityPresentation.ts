@@ -3,10 +3,14 @@ import type { AbilityId } from '../core/types';
 export interface AbilityPresentation {
   name: string;
   description: string;
+  destinationSubject?: 'actor' | 'target';
 }
 
-const ability = (name: string, description: string): AbilityPresentation => ({
-  name, description,
+const ability = (
+  name: string, description: string,
+  destinationSubject?: AbilityPresentation['destinationSubject'],
+): AbilityPresentation => ({
+  name, description, ...(destinationSubject ? { destinationSubject } : {}),
 });
 
 /** Presentation-only explanations for every rules-facing ability tag. */
@@ -31,7 +35,7 @@ export const ABILITY_PRESENTATION: Record<AbilityId, AbilityPresentation> = {
   still_on_watch: ability('Still on Watch', 'May retaliate any number of times each round.'),
   swelling_dirge: ability('Swelling Dirge', 'Deals 5% more damage for every company destroyed during this battle.'),
   unfinished_vow: ability('Unfinished Vow', 'The first time it is destroyed each battle, it returns with half its pre-battle company.'),
-  crossing: ability('Crossing', 'Spend the action to carry an adjacent allied company to a free battlefield hex.'),
+  crossing: ability('Crossing', 'Spend the action to carry an adjacent allied company to a free battlefield hex.', 'target'),
   sting_and_circle: ability('Sting and Circle', 'Returns to the hex it attacked from after striking.'),
   web: ability('Web', 'Ranged attacks also apply Chill 2.'),
   resin_trail: ability('Resin Trail', 'Hexes crossed become resin; enemies starting a turn there gain Chill.'),
@@ -48,7 +52,7 @@ export const ABILITY_PRESENTATION: Record<AbilityId, AbilityPresentation> = {
   skirmish: ability('Skirmish', 'May use remaining speed to move after attacking.'),
   war_drums: ability('War Drums', 'Allies that lost units since their last turn gain morale at round start.'),
   pack_hunger: ability('Pack Hunger', 'Deals 15% more damage to companies that have already lost units this battle.'),
-  trample: ability('Trample', 'May move through enemies, damaging them as it passes.'),
+  trample: ability('Trample', 'May move through enemies, damaging them as it passes.', 'actor'),
   undergrass: ability('Undergrass', 'Ignores movement blockers and cannot be retaliated against.'),
   storm_wake: ability('Storm Wake', 'After attacking, applies Burn to enemies adjacent to the target.'),
   siege_wall: ability('Wall Section', 'An immobile siege obstacle that blocks movement and protects the defending side.'),

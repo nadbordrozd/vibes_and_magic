@@ -10,7 +10,7 @@ export type { Action } from './actionTypes';
 
 export type PlayerId = 'p1' | 'p2' | 'p3' | 'p4';
 export type MapId = 'border-marches' | 'crosstitch' | 'crosstitch-kit' | 'torn-sound'
-  | 'manywhere' | 'grand-muster';
+  | 'manywhere' | 'grand-muster' | 'crooked-crown';
 export type Difficulty = 'easy' | 'normal' | 'hard' | 'brutal';
 export type FactionId =
   | 'hearthguard' | 'woundWrights' | 'unfinished'
@@ -614,7 +614,7 @@ export type PendingChoice =
   }
   | {
     kind: 'level'; playerId: PlayerId; heroId: string; options: LevelChoice[];
-    canSkip: boolean; canReroll: boolean;
+    canSkip: boolean; canReroll: boolean; source?: 'levelUp' | 'hedgeSchool';
   }
   | {
     kind: 'shrine'; objectId: string; playerId: PlayerId; heroId: string;

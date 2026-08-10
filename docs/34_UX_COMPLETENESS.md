@@ -81,7 +81,7 @@ enchantment spaces identify what they accept even though they have no content ca
 |---|---|
 | Title/setup/load | Map objective/style, player-controller meanings, faction identity, difficulty effect, seed purpose, save metadata, clear primary start/load action |
 | Adventure header/map | Day/week/omen/objective, resources and income, selected hero, safe route/fight cue, terrain/object identity, fog, movement feedback, turn completion |
-| Hero sidebar | Primary stats, movement/mana, specialty, army, consumables, equipment/backpack, secondary skill names/ranks/rules, spell access, nearby services |
+| Hero sidebar | Primary stats, movement/mana, specialty, army, consumables, equipment/backpack, secondary skill names/ranks/rules, spell access; nearby structures open contextual dialogs over the map |
 | Castle | Ownership/visiting context, building state and prerequisites, daily build limit, recruitment availability/cost/capacity, garrison transfer, guild, tavern, market and faction services |
 | Combat | Active stack/side, reachable/attackable states, full-footprint targets, damage prediction, attack direction, spell/item targeting, counters/effects, wait/defend/retreat/surrender, log and result |
 | Offers/choices | Choice source, mutually exclusive outcomes, exact cost/consequence, inspectable offered content, disabled reason, cancel only where rules permit |

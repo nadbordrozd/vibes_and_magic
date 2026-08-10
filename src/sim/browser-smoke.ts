@@ -63,7 +63,13 @@ try {
   await page.waitForSelector('.choice-dialog', { hidden: true });
   await page.waitForSelector('.terrain-composite');
   await page.screenshot({ path: 'smoke-adventure.png' });
-  await page.locator('.topbar-action').click();
+  await page.$eval('.rail-commands', (commands) => {
+    const menu = [...commands.querySelectorAll<HTMLButtonElement>('button')]
+      .find((button) => button.textContent?.includes('Menu & saves'));
+    if (!menu) throw new Error('Adventure Menu & saves command is missing');
+    menu.click();
+  });
+  await page.locator('.command-menu-grid .primary').click();
   await page.waitForSelector('.notice-toast');
   await page.reload({ waitUntil: 'networkidle0' });
   await page.waitForSelector('.load-button');
@@ -73,7 +79,7 @@ try {
   await page.waitForSelector('.choice-dialog', { hidden: true });
   await page.waitForSelector('.terrain-composite');
   const resourceIconCount = await page.$$eval('.resource-bar .resource-icon', (icons) =>
-    icons.filter((icon) => icon.getBoundingClientRect().width >= 30).length);
+    icons.filter((icon) => icon.getBoundingClientRect().width >= 20).length);
   if (resourceIconCount !== 4) throw new Error('Top bar does not show four readable resource sprites');
   const emptyTerrain = await page.$$eval(
     '.terrain-cell.terrain-seen.terrain-reachable.terrain-hitbox',
@@ -119,12 +125,22 @@ try {
   await page.locator('.inspection-close').click();
   await page.waitForSelector('.inspection-card', { hidden: true });
 
-  await page.locator('.castle-shortcuts .secondary').click();
+  await page.locator('.town-list button').click();
   await page.waitForSelector('.castle-screen');
   await page.screenshot({ path: 'smoke-castle.png' });
+  await page.locator('[data-castle-view="army"]').click();
+  await page.locator('.direct-transfer-side:first-child .army-slot:not(:disabled)').click();
+  await page.waitForSelector('.direct-exchange .army-slot.valid-destination');
+  await page.locator('.direct-transfer-side:last-child .army-slot:last-child').click();
+  await page.waitForFunction(() => (document.querySelector('.message-strip')?.textContent ?? '')
+    .includes('transferred'));
+  if (await page.$('.direct-exchange .army-slot.selected')) {
+    throw new Error('Castle direct transfer did not clear its source selection');
+  }
   const forbiddenDwellingLabel = await page.$eval('.castle-screen', (node) =>
     /Tier [1-6] Dwelling/.test(node.textContent ?? ''));
   if (forbiddenDwellingLabel) throw new Error('Castle still shows a generic dwelling name');
+  await page.locator('[data-castle-view="town"]').click();
   await page.waitForSelector('.building-card.gold[data-inspect-id="tavern@hearthguard"]');
   await page.locator('.building-card.red[data-inspect-id="dwelling3@hearthguard"]').click();
   await page.waitForSelector('.building-detail .building-state-line.locked');
@@ -145,9 +161,10 @@ try {
   // passable tile below its footprint rather than clicking a non-entrance footprint cell.
   await clickMapTile(page, 4, 11);
   await page.waitForFunction(
-    () => document.querySelector('.meter-label b')?.textContent !== '2000 / 2000',
+    () => document.querySelector('.meter-label b')?.textContent !== '2000/2000',
   );
-  await page.locator('.castle-shortcuts .secondary').click();
+  await page.locator('.town-list button').click();
+  await page.locator('[data-castle-view="army"]').click();
   await page.waitForSelector('.remote-castle-note');
   await page.locator('.castle-screen .close-button').click();
   await page.waitForSelector('.castle-screen', { hidden: true });
@@ -198,11 +215,70 @@ try {
       if (!box) throw new Error('Attackable enemy hex has no hit box');
       await page.mouse.move(box.x + box.width / 2, box.y + box.height - 3);
       await page.waitForSelector('.combat-sword-cursor');
+      const aimed = await page.$eval('.combat-sword-cursor', (node) => {
+        const actor = document.querySelector('.battle-stack.active');
+        const targetId = node.closest('body')?.querySelector('.battle-hex.attackable:hover')
+          ?.getAttribute('data-occupant-id');
+        return {
+          actionType: node.getAttribute('data-attack-type'),
+          actorId: actor?.getAttribute('data-stack-id'),
+          targetId,
+          attacksMade: Number(actor?.getAttribute('data-attacks-made') ?? 0),
+        };
+      });
+      if (!aimed.actionType || !aimed.actorId || !aimed.targetId) {
+        throw new Error(`Aimed attack omitted action identity: ${JSON.stringify(aimed)}`);
+      }
+      await page.evaluate(() => {
+        document.body.dataset.smokeCombatEffects = '';
+        const observer = new MutationObserver(() => {
+          const effects = new Set(
+            (document.body.dataset.smokeCombatEffects ?? '').split(',').filter(Boolean),
+          );
+          if (document.querySelector('.attack-bump')) effects.add('melee');
+          if (document.querySelector('.ranged-projectile')) effects.add('ranged');
+          if (document.querySelector('.damage-effect')) effects.add('damage');
+          document.body.dataset.smokeCombatEffects = [...effects].join(',');
+        });
+        observer.observe(document.body, {
+          attributes: true, attributeFilter: ['class'], childList: true, subtree: true,
+        });
+        (window as typeof window & { smokeCombatObserver?: MutationObserver })
+          .smokeCombatObserver?.disconnect();
+        (window as typeof window & { smokeCombatObserver?: MutationObserver })
+          .smokeCombatObserver = observer;
+      });
       await page.mouse.click(box.x + box.width / 2, box.y + box.height - 3);
-      await page.waitForSelector('.attack-bump, .ranged-projectile');
-      await page.waitForSelector('.damage-effect');
+      const status = await page.waitForSelector(
+        `.combat-action-status[data-action-type="${aimed.actionType}"]`
+        + `[data-actor-id="${aimed.actorId}"][data-target-id="${aimed.targetId}"]`,
+      );
+      const attackEffect = await status?.evaluate((node) => node.getAttribute('data-attack-effect'));
+      if (attackEffect !== 'melee' && attackEffect !== 'ranged') {
+        throw new Error(`Attack status omitted its animation effect: ${String(attackEffect)}`);
+      }
+      await page.waitForFunction((effect) => {
+        const observed = (document.body.dataset.smokeCombatEffects ?? '').split(',');
+        return observed.includes(effect) && observed.includes('damage');
+      }, {}, attackEffect);
       await page.screenshot({ path: 'smoke-damage.png' });
-      await page.waitForSelector('.damage-effect', { hidden: true });
+      await page.waitForFunction(({ actorId, targetId, attacksMade }) => {
+        const actor = document.querySelector(`.battle-stack[data-stack-id="${actorId}"]`);
+        const committedAttack = Number(actor?.getAttribute('data-attacks-made') ?? -1)
+          > attacksMade;
+        const log = [...document.querySelectorAll('.battle-log p')]
+          .map((entry) => entry.textContent ?? '');
+        return committedAttack && log.some((entry) =>
+          (entry.includes(' attack ') || entry.includes(' shoot '))
+          && entry.includes(' damage') && entry.includes(' fall'))
+          && !document.querySelector(
+            `.combat-action-status[data-actor-id="${actorId}"][data-target-id="${targetId}"]`,
+          );
+      }, {}, aimed);
+      await page.evaluate(() => {
+        (window as typeof window & { smokeCombatObserver?: MutationObserver })
+          .smokeCombatObserver?.disconnect();
+      });
       animatedAttack = true;
       break;
     }

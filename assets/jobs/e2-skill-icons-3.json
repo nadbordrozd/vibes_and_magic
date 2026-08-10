@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/e2-skill-icons-3-candidates.html",
+  "requests": [
+    {
+      "id": "skill-icon:siegewright",
+      "assets": [
+        "skill-icon:siegewright"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/siegewright",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Siegewright”: Enemy Walls bonuses are halved. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759380,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

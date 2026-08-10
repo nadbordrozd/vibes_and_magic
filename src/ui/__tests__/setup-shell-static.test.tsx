@@ -53,8 +53,10 @@ describe('setup and save menu presentation', () => {
     ]) expect(html).toContain(text);
     expect(html).toContain('You make every decision for this player.');
     expect(html).toContain('The computer explores, builds, recruits, and fights for this player.');
-    expect(html).toContain('Starting resources ×1');
-    expect(html).toContain('Use the same seed and setup to reproduce random offers and outcomes.');
+    expect(html).toContain('Resources ×1 · guardians ×1 · computer economy ×1');
+    expect(html).toContain('Same seed + setup reproduces offers and outcomes.');
+    expect(html).toContain('New campaign');
+    expect(html).toContain('Continue / import');
     expect(html).not.toContain('save-row');
   });
 
@@ -69,6 +71,6 @@ describe('setup and save menu presentation', () => {
       'Content differs from this build', 'Unreadable save', 'corrupt data',
       'choose another slot or overwrite this one in-game',
     ]) expect(html).toContain(text);
-    expect(html).toMatch(/class="load-button save-row corrupt"[^>]*disabled/);
+    expect(html).toMatch(/class="save-row corrupt"[\s\S]*?class="load-button" disabled/);
   });
 });

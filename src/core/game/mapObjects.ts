@@ -185,7 +185,7 @@ export function attendHedgeSchool(state: GameState, objectId: string): void {
   }
   state.pendingChoice = {
     kind: 'level', playerId: hero.owner, heroId: hero.id, options,
-    canSkip: false, canReroll: false,
+    canSkip: false, canReroll: false, source: 'hedgeSchool',
   };
   school.visitedBy.push(hero.id);
 }

@@ -7,6 +7,7 @@ import {
 import type {
   BattleSide, BattleState, CounterId, SpellId,
 } from '../../core/types';
+import { ContentIcon } from './ContentIcon';
 
 interface Props {
   battle: BattleState;
@@ -69,12 +70,14 @@ export function SpellbookPanel({
           <b>{hero.mana} mana</b>
           <button aria-label="Close spellbook" title="Close spellbook" onClick={onClose}>×</button>
         </header>
-        <p className="spell-scaling">
-          SP {hero.spellPower}: duration +{durationBonus}, counters +{counterBonus},
-          percentages +{percentBonus}.
-        </p>
-        <div className="spellbook-debts">
-          <b>Debts · {hero.debts.length}/2</b>
+        <div className="spellbook-summary">
+          <span>Spell power <b>{hero.spellPower}</b></span>
+          <span>Duration <b>+{durationBonus}</b></span>
+          <span>Counters <b>+{counterBonus}</b></span>
+          <span>Percentages <b>+{percentBonus}</b></span>
+        </div>
+        <details className="spellbook-debts">
+          <summary>Debts · {hero.debts.length}/2</summary>
           {hero.debts.map((debt) => (
             <article key={debt.id}>
               <span>{debt.name}</span>
@@ -88,7 +91,7 @@ export function SpellbookPanel({
             </article>
           ))}
           {hero.debts.length === 0 && <small>No active Debts.</small>}
-        </div>
+        </details>
         <div className="spell-card-grid">
           {hero.knownSpells.map((spellId) => {
             const spell = SPELLS[spellId];
@@ -111,13 +114,12 @@ export function SpellbookPanel({
             return (
               <article className={`spell-card ${spell.school} ${plus ? 'plus' : ''}`} key={spellId}
                 data-inspect-kind="spell" data-inspect-id={spellId}>
-                <div>
-                  <b>{spell.name}{plus ? '+' : ''}</b>
-                  <em>{spell.mana} mana · {spellCategory(spellId)}</em>
+                <div className="spell-card-heading">
+                  <ContentIcon kind="spell" id={spellId} />
+                  <span><b>{spell.name}{plus ? '+' : ''}</b>
+                    <em>{spell.mana} mana · {spellCategory(spellId)}</em></span>
                 </div>
-                <p className="spell-flavor">{spell.flavor}</p>
-                <p className="spell-face"><strong>Base — </strong>{spell.base}</p>
-                <p className="spell-face"><strong>Upgrade — </strong>{spell.plus}</p>
+                <p className="spell-face current"><strong>{plus ? 'Current + face — ' : 'Current face — '}</strong>{plus ? spell.plus : spell.base}</p>
                 {TWISTERS.has(spellId) ? (
                   <div className="effect-targets">
                     {effects.map((effect) => (
@@ -139,6 +141,12 @@ export function SpellbookPanel({
                   </button>
                 )}
                 {!castable && <small className="spell-unavailable">Unavailable · {unavailable}</small>}
+                <details className="spell-card-reference">
+                  <summary>Compare faces</summary>
+                  <p className="spell-flavor">{spell.flavor}</p>
+                  <p className="spell-face"><strong>Base — </strong>{spell.base}</p>
+                  <p className="spell-face"><strong>Upgrade — </strong>{spell.plus}</p>
+                </details>
               </article>
             );
           })}

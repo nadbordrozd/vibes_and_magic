@@ -7,7 +7,7 @@ import {
   animatedAdventurePath, previewPath, reachableAdventureTiles, visitingCastle,
 } from '../../core/selectors';
 import type {
-  Action, Coord, GameState, Hero, ResourceId,
+  Action, Coord, GameState, Hero, MapObject, ResourceId,
 } from '../../core/types';
 import { ArmySlots } from './ArmySlots';
 import {
@@ -17,14 +17,9 @@ import { ExchangeScreen } from './ExchangeScreen';
 import { AdventureMap } from './AdventureMap';
 import { logisticsRate } from '../../core/heroBehaviors';
 import { ITEMS, itemName } from '../../content/items';
-import { ArtifactPaperDoll } from './ArtifactPaperDoll';
 import { OMENS, omenEffectSummary } from '../../content/omens';
 import { SPELLS } from '../../content/spells';
-import { UNITS } from '../../content/units';
-import { ARTIFACTS } from '../../content/artifacts';
-import { HEROES } from '../../content/heroes';
-import { SKILLS } from '../../content/skills';
-import { CASTLE_NAMES, FACTION_PASSIVES } from '../../content/factionPresentation';
+import { CASTLE_NAMES } from '../../content/factionPresentation';
 import { adventureSpellMoveCost } from '../../core/game/adventureSpells';
 import type { SpellId } from '../../core/types';
 import { AdventureSpellbook } from './AdventureSpellbook';
@@ -34,9 +29,7 @@ import {
   mapTargetReason, requiredMapTargets,
 } from '../adventureSpellTargeting';
 import { objectEntranceTile } from '../../core/map/occupancy';
-import {
-  ResourceAmount, ResourceCost, ResourceIcon, ResourceRichText,
-} from './ResourceToken';
+import { ResourceIcon, ResourceRichText } from './ResourceToken';
 import { HeroPortrait } from '../assets';
 import { AdventureItemDialog } from './AdventureItemDialog';
 import {
@@ -45,9 +38,18 @@ import {
 import {
   ActionConfirmationDialog, type ActionDraft,
 } from './ActionConfirmationDialog';
-import { previewAction } from '../actionPreview';
 import { guildSpellCount } from '../../core/game/magic';
-import { PalimpsestService } from './PalimpsestService';
+import {
+  AdventurePalimpsestDialog, AdventureStructureDialog,
+} from './AdventureStructureDialog';
+import { isContextualStructure } from '../adventureStructureInteractions';
+import type { ContextualStructure } from '../adventureStructureInteractions';
+import {
+  friendlyHeroMeetingCompletion, friendlyHeroMeetingPlan,
+} from '../../core/game/navigation';
+import { ContentIcon } from './ContentIcon';
+import { sameCoord } from '../../core/map/pathfinding';
+import { AdventureHeroDetails } from './AdventureHeroDetails';
 interface Props {
   state: GameState;
   dispatch: (action: Action) => void;
@@ -73,6 +75,15 @@ export function AdventureScreen({
     index: number;
     destination: Coord;
   } | null>(null);
+  const [previewMeetingHeroId, setPreviewMeetingHeroId] = useState<string | null>(null);
+  const [meetingIntent, setMeetingIntent] = useState<{
+    sourceHeroId: string;
+    targetHeroId: string;
+    destination: Coord;
+    expectedReplayLength: number;
+    status: 'moving' | 'resolving';
+  } | null>(null);
+  const [meetingNotice, setMeetingNotice] = useState<string | null>(null);
   const [exchangeHeroId, setExchangeHeroId] = useState<string | null>(null);
   const [usingItemSlot, setUsingItemSlot] = useState<number | null>(null);
   const [choosingItemSlot, setChoosingItemSlot] = useState<number | null>(null);
@@ -85,14 +96,22 @@ export function AdventureScreen({
   const [castingError, setCastingError] = useState<string | null>(null);
   const [unstitching, setUnstitching] = useState(false);
   const [worldView, setWorldView] = useState(false);
+  const [heroDetailsOpen, setHeroDetailsOpen] = useState(false);
+  const [commandMenuOpen, setCommandMenuOpen] = useState(false);
+  const [minimapHost, setMinimapHost] = useState<HTMLDivElement | null>(null);
   const [confirmTitleExit, setConfirmTitleExit] = useState(false);
+  const [dismissedStructureVisit, setDismissedStructureVisit] = useState<string | null>(null);
   const [objectiveOpen, setObjectiveOpen] = useState(state.day === 1 && state.replay.length === 0);
   const player = state.players[state.activePlayer];
   const hero = player.hero;
   const reachable = useMemo(() => reachableAdventureTiles(state), [state]);
+  const meetingPreview = useMemo(() => previewMeetingHeroId
+    ? friendlyHeroMeetingPlan(state, previewMeetingHeroId) : null,
+  [state, previewMeetingHeroId]);
   const path = useMemo(
-    () => preview ? previewPath(state, preview) : hero?.pathMemory ?? [],
-    [state, preview, hero],
+    () => meetingPreview ? meetingPreview.ok ? meetingPreview.plan.path : []
+      : preview ? previewPath(state, preview) : hero?.pathMemory ?? [],
+    [state, preview, hero, meetingPreview],
   );
   const castleHere = visitingCastle(state);
   const ownedCastles = state.castles.filter((castle) => castle.owner === state.activePlayer);
@@ -106,36 +125,39 @@ export function AdventureScreen({
   [state, hero, usingItemSlot]);
   const maxMovement = hero
     ? Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero))) : HERO_MOVE_POINTS;
-  const serviceObject = hero ? state.map.objects.find((object) =>
+  const serviceObject = hero ? state.map.objects.find((object): object is ContextualStructure =>
     objectEntranceTile(object).x === hero.position.x
     && objectEntranceTile(object).y === hero.position.y
-    && ['dwelling', 'tinkersCart', 'monastery', 'gloamingRing', 'chrysalis',
-      'bridge', 'hedgeSchool', 'reliquaryCairn', 'mercenaryCamp', 'wagonCamp',
-      'titheBarn'].includes(object.kind)) : undefined;
+    && isContextualStructure(object)) : undefined;
   const palimpsestSite = hero && (hero.skills.palimpsest ?? 0) > 0
     ? castleHere && guildSpellCount(castleHere) > 0 ? castleHere
       : (hero.skills.palimpsest ?? 0) >= 3
-        ? state.map.objects.find((object) => object.kind === 'shrine' && object.cleared
+        ? state.map.objects.find((object): object is Extract<MapObject, { kind: 'shrine' }> => object.kind === 'shrine' && object.cleared
           && objectEntranceTile(object).x === hero.position.x
           && objectEntranceTile(object).y === hero.position.y)
         : undefined
     : undefined;
-  const cache = state.map.objects.find((object) => object.kind === 'cache');
-  const patientStones = state.map.objects.filter((object) => object.kind === 'patientStone'
-    && object.cacheId === cache?.id);
-  const stoneFragments = hero ? patientStones.filter((stone) =>
-    stone.kind === 'patientStone' && stone.revealedBy.includes(hero.id)).length : 0;
-  const mapBonusFragment = hero && Object.values(hero.artifacts.equipment)
-    .some((artifact) => artifact?.id === 'mothEatenMap') ? 1 : 0;
-  const cacheFragments = Math.min(patientStones.length, stoneFragments + mapBonusFragment);
-  const heroDefinition = hero ? HEROES[hero.definitionId] : null;
+  const structureVisitKey = hero && serviceObject ? `${hero.id}:structure:${serviceObject.id}`
+    : hero && palimpsestSite ? `${hero.id}:palimpsest:${palimpsestSite.id}` : null;
+  const structureDialogOpen = Boolean(structureVisitKey
+    && dismissedStructureVisit !== structureVisitKey
+    && !objectiveOpen && !state.pendingChoice && !actionDraft
+    && !heroDetailsOpen && !commandMenuOpen);
   const endTurn = () => {
     if (movement || player.controller !== 'human') return;
     dispatch({ type: 'END_TURN' });
   };
-  const stageAction = (action: Action, title: string, target: string, effect: string) => {
-    setActionDraft({ action, title, actor: hero?.name ?? player.name, target, effect });
-  };
+  const closeStructureDialog = () => setDismissedStructureVisit(structureVisitKey);
+  const restoreContextFocus = () => requestAnimationFrame(() => {
+    const nextDialogControl = document.querySelector<HTMLButtonElement>(
+      '.modal-backdrop button:not(:disabled)',
+    );
+    (nextDialogControl ?? document.querySelector<HTMLElement>('.map-frame'))?.focus();
+  });
+
+  useEffect(() => {
+    if (!structureVisitKey) setDismissedStructureVisit(null);
+  }, [structureVisitKey]);
 
   useEffect(() => {
     if (!movement) return;
@@ -151,18 +173,70 @@ export function AdventureScreen({
       const destination = movement.destination;
       setMovement(null);
       onMovementStateChange(false);
+      setMeetingIntent((current) => current ? { ...current, status: 'resolving' } : current);
       dispatch({ type: 'MOVE_HERO', destination });
     }, timing.mapStep);
     return () => clearTimeout(timer);
   }, [movement, timing.mapStep, dispatch, onMovementStateChange]);
 
   useEffect(() => {
+    if (!meetingIntent || meetingIntent.status !== 'resolving'
+        || state.replay.length < meetingIntent.expectedReplayLength) return;
+    const target = Object.values(state.players).flatMap((owner) => owner.heroes)
+      .find((candidate) => candidate.id === meetingIntent.targetHeroId);
+    const completion = friendlyHeroMeetingCompletion(
+      state, meetingIntent.sourceHeroId, meetingIntent.targetHeroId, meetingIntent.destination,
+    );
+    if (!completion.ok) {
+      setMeetingNotice(`Meeting did not complete · ${completion.reason}`);
+      setMeetingIntent(null);
+      return;
+    }
+    const sourceName = Object.values(state.players).flatMap((owner) => owner.heroes)
+      .find((candidate) => candidate.id === meetingIntent.sourceHeroId)?.name ?? 'The hero';
+    setMeetingNotice(`${sourceName} reached ${target?.name ?? 'the other hero'}; exchange is ready.`);
+    setMeetingIntent(null);
+    setExchangeHeroId(meetingIntent.targetHeroId);
+  }, [meetingIntent, state]);
+
+  const exchangeHero = exchangeHeroId
+    ? player.heroes.find((candidate) => candidate.id === exchangeHeroId && candidate.alive) : null;
+  useEffect(() => {
+    if (!exchangeHeroId) return;
+    const valid = Boolean(hero && exchangeHero && hero.owner === exchangeHero.owner
+      && !sameCoord(hero.position, exchangeHero.position)
+      && Math.max(Math.abs(hero.position.x - exchangeHero.position.x),
+        Math.abs(hero.position.y - exchangeHero.position.y)) <= 1);
+    if (!valid) {
+      setExchangeHeroId(null);
+      setMeetingNotice('Exchange closed · the heroes are no longer friendly and adjacent.');
+    }
+  }, [exchangeHeroId, exchangeHero, hero]);
+
+  useEffect(() => {
     const toggle = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === 'm') setWorldView((value) => !value);
+      if (event.key.toLowerCase() === 'm'
+          && !document.querySelector('.modal-backdrop, .inspection-backdrop, .help-backdrop')) {
+        setWorldView((value) => !value);
+      }
     };
     window.addEventListener('keydown', toggle);
     return () => window.removeEventListener('keydown', toggle);
   }, []);
+
+  useEffect(() => {
+    if (!commandMenuOpen) return;
+    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    document.querySelector<HTMLButtonElement>('.command-menu-dialog .structure-dialog-close')?.focus();
+    const close = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      setCommandMenuOpen(false);
+      requestAnimationFrame(() => previous?.focus());
+    };
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, [commandMenuOpen]);
 
   useEffect(() => {
     const endTurnKey = (event: KeyboardEvent) => {
@@ -178,7 +252,8 @@ export function AdventureScreen({
   }, [objectiveOpen, spellbookOpen, state.pendingChoice, movement, player.controller]);
 
   const clickTile = (destination: Coord) => {
-    if (!hero || player.controller !== 'human' || movement) return;
+    if (!hero || player.controller !== 'human' || movement || structureDialogOpen
+        || heroDetailsOpen || commandMenuOpen) return;
     if (unstitching) {
       dispatch({ type: 'UNSTITCH', heroId: hero.id, destination });
       setUnstitching(false);
@@ -202,6 +277,7 @@ export function AdventureScreen({
       setUsingItemSlot(null);
       return;
     }
+    setPreviewMeetingHeroId(null);
     const movingPath = animatedAdventurePath(state, destination);
     if (timing.mapStep === 0 || movingPath.length < 2) {
       dispatch({ type: 'MOVE_HERO', destination });
@@ -210,6 +286,45 @@ export function AdventureScreen({
       setMovement({ path: movingPath, index: 0, destination });
     }
     setPreview(null);
+  };
+
+  const meetHero = (targetHeroId: string) => {
+    if (!hero || player.controller !== 'human' || movement || structureDialogOpen
+        || objectiveOpen || state.pendingChoice || actionDraft || exchangeHeroId
+        || heroDetailsOpen || commandMenuOpen) return;
+    const result = friendlyHeroMeetingPlan(state, targetHeroId);
+    if (!result.ok) {
+      setMeetingNotice(`Meeting unavailable · ${result.reason}`);
+      return;
+    }
+    const { plan } = result;
+    setPreviewMeetingHeroId(null);
+    setPreview(null);
+    if (plan.adjacent) {
+      setMeetingNotice(`${hero.name} and ${player.heroes.find((candidate) =>
+        candidate.id === targetHeroId)?.name ?? 'the other hero'} are already adjacent.`);
+      setExchangeHeroId(targetHeroId);
+      return;
+    }
+    const movingPath = animatedAdventurePath(state, plan.destination);
+    if (movingPath.length < 2) {
+      setMeetingNotice('Meeting unavailable · not enough movement to take the first safe step.');
+      return;
+    }
+    const intent = {
+      sourceHeroId: hero.id, targetHeroId, destination: plan.destination,
+      expectedReplayLength: state.replay.length + 1,
+      status: timing.mapStep === 0 ? 'resolving' as const : 'moving' as const,
+    };
+    setMeetingIntent(intent);
+    setMeetingNotice(plan.cost <= hero.movement
+      ? `Meeting ${player.heroes.find((candidate) => candidate.id === targetHeroId)?.name}…`
+      : `Route set, but ${hero.name} cannot reach the meeting tile today.`);
+    if (timing.mapStep === 0) dispatch({ type: 'MOVE_HERO', destination: plan.destination });
+    else {
+      onMovementStateChange(true);
+      setMovement({ path: movingPath, index: 0, destination: plan.destination });
+    }
   };
 
   const chooseAdventureSpell = (spellId: SpellId) => {
@@ -242,9 +357,7 @@ export function AdventureScreen({
 
   return (
     <main className="game-shell">
-      <header className="topbar">
-        <button className="wordmark" title="Return to title"
-          onClick={() => setConfirmTitleExit(true)}>BM</button>
+      <header className="adventure-status-strip">
         <div className="turn-badge">
           <span>Week {state.week}</span>
           <b>Day {((state.day - 1) % 7) + 1}</b>
@@ -261,36 +374,12 @@ export function AdventureScreen({
         <div className={`player-chip ${player.faction}`}>
           <i /> {player.name}
         </div>
-        <label className="animation-speed">
-          Motion
-          <select
-            value={animationSpeed}
-            onChange={(event) => onAnimationSpeedChange(event.target.value as AnimationSpeed)}
-          >
-            <option value="instant">Off</option>
-            <option value="fast">Fast</option>
-            <option value="normal">Normal</option>
-            <option value="slow">Slow</option>
-          </select>
-        </label>
-        <button className="topbar-action" disabled={Boolean(movement)}
-          title={movement ? 'Wait for the hero to finish moving.' : 'Save to the quick-save slot.'}
-          onClick={() => onSave()}>Save</button>
-        {[1, 2, 3].map((slot) => <button key={slot} className="topbar-action save-slot"
-          disabled={Boolean(movement)} title={movement ? 'Wait for the hero to finish moving.' : `Save to manual slot ${slot}.`}
-          onClick={() => onSave(slot)}>S{slot}</button>)}
-        <button className="topbar-action" onClick={onExport}>Export</button>
-        <button className="topbar-action" onClick={onImport}>Import</button>
-        <button className="topbar-action" onClick={onShare}>Share</button>
+        <button className={`omen-chip ${state.omen}`} data-inspect-kind="omen"
+          data-inspect-id={state.omen} title={`${state.omenAnnouncement.flavor} ${
+            omenEffectSummary(OMENS[state.omen]).join(' ')}`}>
+          <span>Omen</span><b>{state.omenAnnouncement.title}</b>
+        </button>
       </header>
-      <div className={`omen-banner ${state.omen}`} data-inspect-kind="omen" data-inspect-id={state.omen}>
-        <b>{state.omenAnnouncement.title}</b>
-        <span>{state.omenAnnouncement.flavor} · {omenEffectSummary(OMENS[state.omen]).join(' ')}</span>
-      </div>
-      <div className="objective-banner">
-        <b>{state.map.victory.flavor}</b><span>{state.map.victory.mechanics}</span>
-        <button onClick={() => setWorldView((value) => !value)}>M · World view</button>
-      </div>
 
       <div className={`adventure-layout ${worldView ? 'world-view' : ''}`}>
         <AdventureMap
@@ -298,21 +387,86 @@ export function AdventureScreen({
           movement={movement} mapStep={timing.mapStep} onTile={clickTile}
           targetTiles={legalSpellTargets ?? legalItemTargets}
           selectedTargetTiles={castingSpell?.positions}
+          minimapHost={minimapHost}
           onSelectHero={(heroId) => {
-            if (!movement && player.controller === 'human') {
+            if (!movement && !structureDialogOpen && player.controller === 'human') {
               dispatch({ type: 'SELECT_HERO', heroId });
             }
           }}
-          onPreview={setPreview}
-          onPickup={(objectId) => dispatch({ type: 'PICKUP_OBJECT', objectId })}
+          onMeetHero={meetHero}
+          onPreviewHero={setPreviewMeetingHeroId}
+          onPreview={(destination) => {
+            setPreviewMeetingHeroId(null); setPreview(destination);
+          }}
+          onPickup={(objectId) => {
+            if (!structureDialogOpen) dispatch({ type: 'PICKUP_OBJECT', objectId });
+          }}
         />
 
+        {hero && (castingSpell || usingItemSlot !== null || unstitching) && <div
+          className="map-context-card" role="status" aria-live="polite">
+          {castingSpell && <div className="map-cast-prompt">
+            <b className="content-icon-label"><ContentIcon kind="spell"
+              id={castingSpell.spellId} />{SPELLS[castingSpell.spellId].name} · choose targets</b>
+            <span>{SPELLS[castingSpell.spellId][hero.upgradedSpells.includes(castingSpell.spellId)
+              ? 'plus' : 'base']}</span>
+            <span>{SPELLS[castingSpell.spellId].mana} mana · {adventureSpellMoveCost(hero)} movement
+              · nothing is spent until confirmation.</span>
+            <span>Chosen {castingSpell.positions.length}{requiredMapTargets(hero, castingSpell.spellId)
+              !== null ? ` of ${requiredMapTargets(hero, castingSpell.spellId)}` : ''}</span>
+            {legalSpellTargets?.size === 0 && <small className="spell-target-reason">
+              No legal target is currently available.</small>}
+            {castingError && <small className="spell-target-reason">Not a legal target · {
+              castingError}</small>}
+            <div>
+              <button disabled={!castingSpell.positions.length}
+                title={!castingSpell.positions.length ? 'No selected tile to remove.'
+                  : 'Remove the latest selected tile.'}
+                onClick={() => setCastingSpell({ ...castingSpell,
+                  positions: castingSpell.positions.slice(0, -1) })}>Undo last</button>
+              {castingSpell.spellId === 'murmuration' && <button className="primary"
+                disabled={!castingSpell.positions.length}
+                title={!castingSpell.positions.length ? 'Choose at least one scouting step.'
+                  : 'Review the drawn path before casting.'} onClick={() => {
+                  setSpellDraft(mapDraftAction(castingSpell.spellId, hero, castingSpell.positions));
+                  setCastingSpell(null);
+                }}>Review path</button>}
+              <button onClick={() => { setCastingSpell(null); setSpellbookOpen(true); }}>
+                Spellbook</button>
+              <button onClick={() => setCastingSpell(null)}>Cancel</button>
+            </div>
+          </div>}
+          {usingItemSlot !== null && (() => {
+            const selected = hero.inventory[usingItemSlot];
+            const selectedDefinition = selected && typeof selected !== 'string'
+              ? ITEMS[selected.id] : null;
+            return <div className="map-item-target-prompt">
+              <b>{selected ? itemName(selected) : 'Adventure item'} · choose a target</b>
+              <span>{selectedDefinition?.behavior === 'impassableStep'
+                ? 'Highlighted landings cross one to three impassable tiles.'
+                : 'Highlighted map centers are within three tiles of explored land.'}</span>
+              <span>Nothing is consumed until review and confirmation.</span>
+              {legalItemTargets?.size === 0 && <small>Unavailable · no legal target is visible.</small>}
+              <button onClick={() => setUsingItemSlot(null)}>Cancel · keep item</button>
+            </div>;
+          })()}
+          {unstitching && <div className="map-cast-prompt">
+            <b>Unstitching the road</b><span>Select any explored, passable tile.</span>
+            <button onClick={() => setUnstitching(false)}>Cancel</button>
+          </div>}
+        </div>}
+
         <aside className="hero-panel">
-          <div className="panel-heading">
-            <span>Field command</span>
-            <b>{hero ? hero.name : 'No living hero'}</b>
+          <div className="rail-minimap" ref={setMinimapHost}>
+            <span>World map</span>
           </div>
-          <div className="hero-list">
+          <section className="rail-navigation" aria-label="Hero and town navigation">
+            <div className="panel-heading"><span>Heroes</span>
+              <button disabled={!hero || Boolean(movement)}
+                title={movement ? 'Wait for movement to finish.' : 'Select the next living hero.'}
+                onClick={() => dispatch({ type: 'NEXT_HERO' })}>Next</button>
+            </div>
+            <div className="hero-list">
             {player.heroes.filter((candidate) => candidate.alive).map((candidate) => (
               <button
                 key={candidate.id}
@@ -323,501 +477,56 @@ export function AdventureScreen({
                 onClick={() => dispatch({ type: 'SELECT_HERO', heroId: candidate.id })}
               >
                 <HeroPortrait faction={candidate.faction} className="hero-list-portrait" />
-                <span><b>{candidate.name}</b><small>Move {candidate.movement}</small></span>
+                <span><b>{candidate.name}</b><small>{candidate.movement} move</small></span>
               </button>
             ))}
-          </div>
+            </div>
+            <div className="town-list" aria-label="Owned towns">
+              {ownedCastles.map((castle) => <button key={castle.id}
+                className={castleHere?.id === castle.id ? 'hero-present' : ''}
+                disabled={Boolean(movement)} title={`${castleHere?.id === castle.id ? 'Enter' : 'View'} ${
+                  CASTLE_NAMES[castle.faction]}.`} onClick={() => onOpenCastle(castle.id)}>
+                <span>{castleHere?.id === castle.id ? 'Enter' : 'Town'}</span>
+                <b>{CASTLE_NAMES[castle.faction]}</b>
+              </button>)}
+            </div>
+          </section>
           {hero && (
-            <>
+            <section className="rail-hero-summary">
               <div className="hero-portrait" data-inspect-kind="hero" data-inspect-id={hero.id}>
                 <div className={hero.faction}><HeroPortrait faction={hero.faction}
                   className="hero-sheet-portrait" /></div>
-                <span><b>{hero.name} · Level {hero.level}</b><small>{hero.xp} XP</small></span>
+                <span><b>{hero.name}</b><small>Level {hero.level}</small></span>
               </div>
-              {heroDefinition && <section className="hero-identity-summary">
-                <span>{heroDefinition.heroClass.replace(/([A-Z])/g, ' $1')} · specialty</span>
-                <b>{heroDefinition.specialty.description}</b>
-                <small><strong>{FACTION_PASSIVES[hero.faction].name}:</strong> {FACTION_PASSIVES[hero.faction].description}</small>
-                <small>Right-click the portrait for this hero’s story and complete rules.</small>
-              </section>}
-              <div className="stat-grid">
-                <span>Attack <b>{hero.attack}</b></span>
-                <span>Defense <b>{hero.defense}</b></span>
-                <span>Spell power <b>{hero.spellPower}</b></span>
-                <span>Knowledge <b>{hero.knowledge}</b></span>
-              </div>
-              <div className="meter-label"><span>Movement</span><b>{hero.movement} / {maxMovement}</b></div>
-              <div className="meter"><i style={{ width: `${hero.movement / maxMovement * 100}%` }} /></div>
-              <div className="meter-label"><span>Mana</span><b>{hero.mana} / {hero.knowledge * 10}</b></div>
-              <ArmySlots army={hero.army} title="Army" onSplit={(sourceSlot, destinationSlot, count) =>
-                dispatch({ type: 'SPLIT_ARMY', holder: { kind: 'hero', id: hero.id },
-                  sourceSlot, destinationSlot, count })} />
-              <button
-                className="secondary wide adventure-spell-button"
-                disabled={!hero.knownSpells.some((id) => ['adventure', 'topology']
-                  .includes(SPELLS[id].kind))}
-                title={!hero.knownSpells.some((id) => ['adventure', 'topology'].includes(SPELLS[id].kind))
-                  ? 'This hero knows no adventure spells.' : 'Open this hero’s map spells.'}
-                onClick={() => setSpellbookOpen(true)}
-              >Adventure spellbook</button>
-              {castingSpell && (
-                <div className="map-cast-prompt">
-                  <b>{SPELLS[castingSpell.spellId].name} · choose targets</b>
-                  <span>{SPELLS[castingSpell.spellId][hero.upgradedSpells.includes(castingSpell.spellId) ? 'plus' : 'base']}</span>
-                  <span>{SPELLS[castingSpell.spellId].mana} mana · {adventureSpellMoveCost(hero)} movement · nothing is spent until confirmation.</span>
-                  <span>Stage 1 of 2 · chosen {castingSpell.positions.length}{requiredMapTargets(hero, castingSpell.spellId) !== null
-                    ? ` of ${requiredMapTargets(hero, castingSpell.spellId)}` : ''} · highlighted tiles are legal.</span>
-                  {legalSpellTargets?.size === 0 && <small className="spell-target-reason">
-                    No legal target is currently available. Check the terrain, exploration, range, and occupied tiles.
-                  </small>}
-                  {castingError && <small className="spell-target-reason">Not a legal target · {castingError}</small>}
-                  <div>
-                    <button disabled={!castingSpell.positions.length}
-                      title={!castingSpell.positions.length ? 'No selected tile to remove.' : 'Remove the latest selected tile.'}
-                      onClick={() => setCastingSpell({ ...castingSpell, positions: castingSpell.positions.slice(0, -1) })}>Undo last</button>
-                    {castingSpell.spellId === 'murmuration' && <button className="primary"
-                      disabled={!castingSpell.positions.length}
-                      title={!castingSpell.positions.length ? 'Choose at least one scouting step.' : 'Review the drawn path before casting.'}
-                      onClick={() => {
-                        setSpellDraft(mapDraftAction(castingSpell.spellId, hero, castingSpell.positions));
-                        setCastingSpell(null);
-                      }}>Review path</button>}
-                    <button onClick={() => { setCastingSpell(null); setSpellbookOpen(true); }}>Back to spellbook</button>
-                    <button onClick={() => setCastingSpell(null)}>Cancel · spend nothing</button>
-                  </div>
-                </div>
-              )}
-              <div className="item-inventory">
-                <h4>Consumables</h4>
-                <div className="army-slots">
-                  {hero.inventory.map((item, index) => {
-                    const definition = item && typeof item !== 'string'
-                      ? ITEMS[item.id] : null;
-                    const canUse = definition?.use === 'adventure';
-                    return (
-                      <button
-                        key={`item-${index}`}
-                        className={`army-slot ${usingItemSlot === index ? 'selected' : ''}`}
-                        disabled={!canUse}
-                        title={!definition ? 'Empty item slot.' : canUse ? definition.description
-                          : `${definition.description} This item is used during combat.`}
-                        data-inspect-kind={definition ? 'item' : undefined}
-                        data-inspect-id={definition?.id}
-                        onClick={() => {
-                          if (!definition) return;
-                          if (['reveal', 'impassableStep'].includes(definition.behavior)) {
-                            setUsingItemSlot(index);
-                          } else if (['remoteMovement', 'militiaWrit'].includes(definition.behavior)) {
-                            setChoosingItemSlot(index);
-                          } else {
-                            setActionDraft(adventureItemDraft(state, hero, index));
-                          }
-                        }}
-                      >
-                        {item ? itemName(item) : '+'}
-                      </button>
-                    );
-                  })}
-                </div>
-                {usingItemSlot !== null && (() => {
-                  const selected = hero.inventory[usingItemSlot];
-                  const selectedDefinition = selected && typeof selected !== 'string'
-                    ? ITEMS[selected.id] : null;
-                  return <div className="map-item-target-prompt">
-                    <b>{selected ? itemName(selected) : 'Adventure item'} · choose a target</b>
-                    <span>{selectedDefinition?.behavior === 'impassableStep'
-                      ? 'Highlighted landings cross one to three impassable tiles in a straight line.'
-                      : 'Highlighted map centers are within three tiles of explored land.'}</span>
-                    <span>Nothing is consumed until you review and confirm.</span>
-                    {legalItemTargets?.size === 0 && <small>Unavailable · no legal target is currently visible.</small>}
-                    <button onClick={() => setUsingItemSlot(null)}>Cancel · keep item</button>
-                  </div>;
-                })()}
-              </div>
-              {serviceObject && (
-                <section className="map-service-card">
-                  <h4>At this location</h4>
-                  {serviceObject.kind === 'dwelling' && (
-                    <>
-                      <b>{UNITS[serviceObject.unitId].name} dwelling</b>
-                      <small>{serviceObject.available} waiting · recruits join {hero.name}</small>
-                      <div>
-                        {(() => {
-                          const action = { type: 'RECRUIT_DWELLING', objectId: serviceObject.id,
-                            count: 1 } as const;
-                          const projected = previewAction(state, action);
-                          return <button disabled={!projected.legal}
-                            title={!projected.legal ? projected.reason ?? 'Recruitment is unavailable.'
-                              : `Recruit one ${UNITS[serviceObject.unitId].name}.`}
-                            onClick={() => stageAction(action,
-                              `Recruit 1 ${UNITS[serviceObject.unitId].name}`, hero.name,
-                              `Add one company unit; it merges or uses an empty army slot.`)}
-                          >Recruit 1{Object.keys(projected.cost).length > 0
-                              && <> · <ResourceCost cost={projected.cost} compact /></>}</button>;
-                        })()}
-                        {(() => {
-                          const action = { type: 'RECRUIT_DWELLING', objectId: serviceObject.id,
-                            count: serviceObject.available } as const;
-                          const projected = previewAction(state, action);
-                          return <button disabled={!projected.legal}
-                            title={!projected.legal ? projected.reason ?? 'Recruitment is unavailable.'
-                              : `Recruit all ${serviceObject.available}.`}
-                            onClick={() => stageAction(action,
-                              `Recruit ${serviceObject.available} ${UNITS[serviceObject.unitId].name}`,
-                              hero.name, 'Recruit all current stock into a matching or empty army slot.')}
-                          >Recruit all{Object.keys(projected.cost).length > 0
-                              && <> · <ResourceCost cost={projected.cost} compact /></>}</button>;
-                        })()}
-                      </div>
-                    </>
-                  )}
-                  {serviceObject.kind === 'tinkersCart' && (
-                    <>
-                      <b>Wandering Tinker&apos;s Cart</b>
-                      <small>{serviceObject.stock
-                        ? `${itemName(serviceObject.stock)} · 150% market value`
-                        : 'Sold out until next week'}</small>
-                      {(() => {
-                        const action = { type: 'BUY_TINKER_ITEM', objectId: serviceObject.id } as const;
-                        const projected = previewAction(state, action);
-                        return <button
-                        disabled={!projected.legal}
-                        title={!projected.legal ? projected.reason ?? 'Sold out until next week.' : 'Review this purchase.'}
-                        data-inspect-kind={serviceObject.stock ? 'item' : undefined}
-                        data-inspect-id={serviceObject.stock?.id}
-                        onClick={() => stageAction(action, `Buy ${itemName(serviceObject.stock)}`,
-                          hero.name, 'Place the item in an empty consumable slot.')}
-                      >Buy the cart&apos;s item{Object.keys(projected.cost).length > 0
-                          && <> · <ResourceCost cost={projected.cost} compact /></>}</button>;
-                      })()}
-                    </>
-                  )}
-                  {serviceObject.kind === 'monastery' && (
-                    <>
-                      <b>The Unstruck Bell</b>
-                      {(() => {
-                        const action = { type: 'BUY_TIMING_BLESSING', objectId: serviceObject.id } as const;
-                        const projected = previewAction(state, action);
-                        return <><small>{Object.keys(projected.cost).length
-                          ? <ResourceCost cost={projected.cost} compact /> : <ResourceAmount resource="essence" amount={3} compact />}
-                          {' '}· +1 speed in round one for three days</small>
-                          <button disabled={!projected.legal}
-                            title={!projected.legal ? projected.reason ?? 'The blessing is unavailable.' : 'Review this blessing.'}
-                            onClick={() => stageAction(action, 'Take Timing Blessing', hero.name,
-                              '+1 speed in round one of each battle through the next three days.')}
-                          >Take Timing Blessing</button></>;
-                      })()}
-                    </>
-                  )}
-                  {serviceObject.kind === 'gloamingRing' && (
-                    <>
-                      <b>The Gloaming Ring</b>
-                      {serviceObject.deposit ? (
-                        <small>Gift held for {serviceObject.deposit.heroId}; due week {
-                          serviceObject.deposit.dueWeek
-                        }.</small>
-                      ) : (
-                        <>
-                          <small>Leave a consumable; it returns one tier higher next week.</small>
-                          <div className="service-options">
-                            {hero.inventory.map((item, index) => item && typeof item !== 'string' && (() => {
-                              const action = { type: 'DEPOSIT_GLOAMING_ITEM', objectId: serviceObject.id,
-                                inventorySlot: index } as const;
-                              const projected = previewAction(state, action);
-                              return <button key={`gift-${index}`} data-inspect-kind="item"
-                                data-inspect-id={item.id} disabled={!projected.legal}
-                                title={!projected.legal ? projected.reason ?? 'This gift cannot be left.'
-                                  : `Leave ${itemName(item)} until week ${state.week + 1}.`}
-                                onClick={() => stageAction(action, `Leave ${itemName(item)}`,
-                                  'The Gloaming Ring', `Returns in week ${state.week + 1}, one tier higher when possible.`)}
-                              >{itemName(item)}</button>;
-                            })())}
-                            {hero.artifacts.backpack.map((artifact, index) =>
-                              ARTIFACTS[artifact.id].class === 'relic' && (() => {
-                                const action = { type: 'DEPOSIT_GLOAMING_ARTIFACT',
-                                  objectId: serviceObject.id, backpackIndex: index } as const;
-                                const projected = previewAction(state, action);
-                                return <button key={`relic-${index}`} data-inspect-kind="artifact"
-                                  data-inspect-id={artifact.id} disabled={!projected.legal}
-                                  title={!projected.legal ? projected.reason ?? 'This Relic cannot be left.'
-                                    : `Leave ${ARTIFACTS[artifact.id].name} until week ${state.week + 1}.`}
-                                  onClick={() => stageAction(action,
-                                    `Leave ${ARTIFACTS[artifact.id].name}`, 'The Gloaming Ring',
-                                    `The Relic returns unchanged in week ${state.week + 1}.`)}
-                                >{ARTIFACTS[artifact.id].name}</button>;
-                              })())}
-                          </div>
-                        </>
-                      )}
-                    </>
-                  )}
-                  {serviceObject.kind === 'chrysalis' && (
-                    <>
-                      <b>The Chrysalis Pool</b>
-                      <small>Convert a T1–T3 stack to half as many of its next tier.</small>
-                      <div className="service-options">
-                        {hero.army.map((stack, index) => stack && UNITS[stack.unitId].tier <= 3 && (() => {
-                          const action = { type: 'USE_CHRYSALIS', objectId: serviceObject.id,
-                            armySlot: index } as const;
-                          const projected = previewAction(state, action);
-                          return <button key={`molt-${index}`} data-inspect-kind="unit"
-                            data-inspect-id={stack.unitId} disabled={!projected.legal}
-                            title={!projected.legal ? projected.reason ?? 'This stack cannot molt.'
-                              : 'Review the exact transformation and cost.'}
-                            onClick={() => stageAction(action, `Molt ${stack.count} ${UNITS[stack.unitId].name}`,
-                              hero.name, `Replace this stack with ${Math.max(1, Math.floor(stack.count / 2))} units of its next faction tier.`)}
-                          >Molt {stack.count} {UNITS[stack.unitId].name}{Object.keys(projected.cost).length > 0
-                              && <> · <ResourceCost cost={projected.cost} compact /></>}</button>;
-                        })())}
-                      </div>
-                    </>
-                  )}
-                  {serviceObject.kind === 'bridge' && (
-                    <>
-                      <b>The Half-Built Bridge</b>
-                      <small>{serviceObject.completed
-                        ? 'The crossing is complete.' : <>Finish it for <ResourceCost
-                          cost={{ timber: 10, iron: 5 }} compact />.</>}</small>
-                      {(() => {
-                        const action = { type: 'COMPLETE_BRIDGE', objectId: serviceObject.id } as const;
-                        const projected = previewAction(state, action);
-                        return <button disabled={!projected.legal}
-                          title={!projected.legal ? projected.reason ?? 'The bridge cannot be completed.'
-                            : 'Review this permanent map change.'}
-                          onClick={() => stageAction(action, 'Complete crossing', 'The Half-Built Bridge',
-                            'Permanently open the authored crossing to every player.')}
-                        >Complete crossing</button>;
-                      })()}
-                    </>
-                  )}
-                  {serviceObject.kind === 'hedgeSchool' && (
-                    <>
-                      <b>Hedge School</b>
-                      <small><ResourceAmount resource="gold" amount={1500} compact /> · draft three stats or skills · once per hero</small>
-                      {(() => {
-                        const action = { type: 'ATTEND_HEDGE_SCHOOL', objectId: serviceObject.id } as const;
-                        const projected = previewAction(state, action);
-                        return <button disabled={!projected.legal}
-                          title={!projected.legal ? projected.reason ?? 'This lesson is unavailable.'
-                            : 'Pay 1,500 gold, mark this hero as attended, then choose one of three stat or skill lessons.'}
-                          onClick={() => dispatch(action)}
-                        >Attend a lesson · <ResourceAmount resource="gold" amount={1500} compact /></button>;
-                      })()}
-                    </>
-                  )}
-                  {serviceObject.kind === 'reliquaryCairn' && (
-                    <>
-                      <b>The Reliquary Cairn</b>
-                      <small>Trade a carried artifact for another of the same class.</small>
-                      <div className="service-options">
-                        {Object.values(hero.artifacts.equipment).some((artifact) =>
-                          artifact?.id === 'patternlessCoat') && (
-                          <button onClick={() => stageAction({
-                            type: 'USE_RELIQUARY_CAIRN', objectId: serviceObject.id,
-                            backpackIndex: -1,
-                          }, 'Offer the Patternless Coat', 'The Reliquary Cairn',
-                          'Permanently remove the equipped Burden; the Cairn returns nothing.')}
-                          >Trade the Patternless Coat</button>
-                        )}
-                        {hero.artifacts.backpack.map((artifact, index) => {
-                          const action = { type: 'USE_RELIQUARY_CAIRN', objectId: serviceObject.id,
-                            backpackIndex: index } as const;
-                          const projected = previewAction(state, action);
-                          return <button key={`cairn-${index}`} data-inspect-kind="artifact"
-                            data-inspect-id={artifact.id} disabled={!projected.legal}
-                            title={!projected.legal ? projected.reason ?? 'No matching exchange is available.'
-                              : `Exchange ${ARTIFACTS[artifact.id].name}.`}
-                            onClick={() => stageAction(action, `Trade ${ARTIFACTS[artifact.id].name}`,
-                              'The Reliquary Cairn', `Permanently exchange it for a seeded artifact of the same ${ARTIFACTS[artifact.id].class} class.`)}
-                          >{ARTIFACTS[artifact.id].name}</button>;
-                        })}
-                      </div>
-                    </>
-                  )}
-                  {serviceObject.kind === 'mercenaryCamp' && (
-                    <>
-                      <b>Mercenary Camp</b>
-                      <small>Loyalty by the week, invoiced in advance.</small>
-                      <div className="service-options">
-                        {serviceObject.roster.map((stack, index) => {
-                          const action = { type: 'BUY_MERCENARY', objectId: serviceObject.id,
-                            rosterIndex: index } as const;
-                          const projected = previewAction(state, action);
-                          return <button key={`${stack.unitId}-${index}`} disabled={!projected.legal}
-                            title={!projected.legal ? projected.reason ?? 'This company cannot be hired.'
-                              : `Hire this company into ${hero.name}’s army.`}
-                            data-inspect-kind="unit" data-inspect-id={stack.unitId}
-                            onClick={() => stageAction(action,
-                              `Hire ${stack.count} ${UNITS[stack.unitId].name}`, hero.name,
-                              'The company merges with its unit type or occupies one empty army slot.')}
-                          >Hire {stack.count} {UNITS[stack.unitId].name}{Object.keys(projected.cost).length > 0
-                              && <> · <ResourceCost cost={projected.cost} compact /></>}</button>;
-                        })}
-                      </div>
-                    </>
-                  )}
-                  {serviceObject.kind === 'wagonCamp' && (
-                    <>
-                      <b>Wagon Camp</b>
-                      <small>{serviceObject.stock
-                        ? <>{itemName(serviceObject.stock)} · exact price below</>
-                        : 'Sold out until next week'}</small>
-                      {(() => {
-                        const action = { type: 'BUY_WAGON_ITEM', objectId: serviceObject.id } as const;
-                        const projected = previewAction(state, action);
-                        return <button disabled={!projected.legal}
-                          title={!projected.legal ? projected.reason ?? 'Sold out until next week.'
-                            : 'Review this purchase.'}
-                          onClick={() => stageAction(action, `Buy ${itemName(serviceObject.stock)}`,
-                            hero.name, 'Place the wagon item in an empty consumable slot.')}
-                        >Buy wagon item{Object.keys(projected.cost).length > 0
-                            && <> · <ResourceCost cost={projected.cost} compact /></>}</button>;
-                      })()}
-                    </>
-                  )}
-                  {serviceObject.kind === 'titheBarn' && (
-                    <>
-                      <b>The Tithe Barn</b>
-                      <small>All your towns gain +10% growth this week · exact price below.</small>
-                      {(() => {
-                        const action = { type: 'PAY_TITHE', objectId: serviceObject.id } as const;
-                        const projected = previewAction(state, action);
-                        return <button disabled={!projected.legal}
-                          title={!projected.legal ? projected.reason ?? 'The tithe is unavailable.'
-                            : 'Review this weekly growth purchase.'}
-                          onClick={() => stageAction(action, 'Pay the tithe', 'Every owned castle',
-                            'All owned castles gain +10% creature growth for this week; once per player per week.')}
-                        >Pay the tithe{Object.keys(projected.cost).length > 0
-                            && <> · <ResourceCost cost={projected.cost} compact /></>}</button>;
-                      })()}
-                    </>
-                  )}
-                </section>
-              )}
-              {palimpsestSite && ('faction' in palimpsestSite
-                ? <PalimpsestService state={state} hero={hero} site={palimpsestSite}
-                  onDraft={setActionDraft} />
-                : palimpsestSite.kind === 'shrine'
-                  ? <PalimpsestService state={state} hero={hero} site={palimpsestSite}
-                    onDraft={setActionDraft} /> : null)}
-              {cache && !cache.dug && patientStones.length > 0 && (
-                <section className="map-service-card cache-sketch">
-                  <h4>Patient Stone sketch</h4>
-                  <b>{cacheFragments} / {patientStones.length} fragments</b>
-                  <small>{cacheFragments === 0
-                    ? 'The page is blank.'
-                    : cacheFragments >= patientStones.length
-                      ? 'The complete sketch pinpoints the buried tile.'
-                      : `The search region narrows to roughly ${Math.max(3, 15 - cacheFragments * 2)} tiles across.`}</small>
-                  {cacheFragments >= patientStones.length && (
-                    <small>Mark: {cache.position.x}, {cache.position.y}</small>
-                  )}
-                  <button onClick={() => dispatch({
-                    type: 'DIG_CACHE', position: { ...hero.position },
-                  })}>Dig here · spend all movement</button>
-                </section>
-              )}
-              {unstitching && (
-                <div className="map-cast-prompt">
-                  <b>Unstitching the road</b>
-                  <span>Select any explored, passable tile.</span>
-                  <button onClick={() => setUnstitching(false)}>Cancel</button>
-                </div>
-              )}
-              <ArtifactPaperDoll
-                state={state} hero={hero} dispatch={dispatch}
-                onUnstitch={() => setUnstitching(true)}
-              />
-              {hero.skills.attunement === 3 && (
-                <div className="resonance-picker">
-                  <h4>Declare next battle resonance</h4>
-                  {(['rite', 'craft', 'grave', 'wild'] as const).map((school) => (
-                    <button
-                      key={school}
-                      disabled={hero.attunementResonanceUsedDay === state.day
-                        || hero.declaredResonance?.day === state.day}
-                      title={hero.attunementResonanceUsedDay === state.day
-                        || hero.declaredResonance?.day === state.day
-                        ? 'A resonance has already been declared or used today.'
-                        : `Make the next battle resonate with ${school} magic.`}
-                      onClick={() => dispatch({
-                        type: 'DECLARE_RESONANCE', heroId: hero.id, school,
-                      })}
-                    >{school}</button>
-                  ))}
-                </div>
-              )}
-              {(hero.skills.ritualist ?? 0) >= 2 && (
-                <div className="omen-preview">
-                  <h4>Ritualist&apos;s forecast</h4>
-                  <b>{OMENS[state.nextOmen].title}</b>
-                  {hero.skills.ritualist === 3 && !hero.ritualistOmenChosen && (
-                    <div>
-                      {(Object.keys(OMENS) as Array<keyof typeof OMENS>).map((omen) => (
-                        <button
-                          key={omen}
-                          onClick={() => dispatch({
-                            type: 'CHOOSE_NEXT_OMEN', heroId: hero.id, omen,
-                          })}
-                        >{OMENS[omen].title}</button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-              {Object.entries(hero.skills).length > 0 && (
-                <div className="skill-summary">
-                  <h4>Secondary skills <small>· right-click for all ranks</small></h4>
-                  {Object.entries(hero.skills).map(([skill, rank]) => {
-                    const definition = SKILLS[skill as keyof typeof SKILLS];
-                    return <article key={skill} data-inspect-kind="skill" data-inspect-id={skill}>
-                      <b>{definition.name} · Rank {rank}</b>
-                      <span>{definition.ranks[rank as 1 | 2 | 3]}</span>
-                    </article>;
-                  })}
-                </div>
-              )}
-            </>
+              <div className="meter-label"><span>Move</span><b>{hero.movement}/{maxMovement}</b></div>
+              <div className="meter"><i style={{ width: `${Math.min(100,
+                hero.movement / maxMovement * 100)}%` }} /></div>
+              <div className="meter-label"><span>Mana</span><b>{hero.mana}/{hero.knowledge * 10}</b></div>
+              <div className="meter mana"><i style={{ width: `${Math.min(100, hero.mana / Math.max(1,
+                hero.knowledge * 10) * 100)}%` }} /></div>
+              <ArmySlots army={hero.army} title="Army" />
+            </section>
           )}
-          <div className="castle-shortcuts">
-            <h4>Castles</h4>
-            {ownedCastles.map((castle) => (
-              <button
-                className={`secondary wide ${castleHere?.id === castle.id ? 'hero-present' : ''}`}
-                key={castle.id}
-                disabled={Boolean(movement)}
-                title={movement ? 'Wait for the hero to finish moving.'
-                  : `${castleHere?.id === castle.id ? 'Enter' : 'View'} ${CASTLE_NAMES[castle.faction]}.`}
-                onClick={() => onOpenCastle(castle.id)}
-              >
-                {castleHere?.id === castle.id ? 'Enter' : 'View'} {
-                  CASTLE_NAMES[castle.faction]
-                }
-              </button>
-            ))}
+          <div className="rail-commands" aria-label="Primary adventure commands">
+            <button disabled={!hero} title={!hero ? 'There is no living hero to inspect.'
+              : 'Open detailed hero management.'}
+              onClick={() => setHeroDetailsOpen(true)}>Hero details</button>
+            <button className="adventure-spell-button" disabled={!hero
+              || !hero.knownSpells.some((id) => ['adventure', 'topology'].includes(SPELLS[id].kind))}
+              title={!hero ? 'No living hero.'
+                : !hero.knownSpells.some((id) => ['adventure', 'topology'].includes(SPELLS[id].kind))
+                  ? 'This hero knows no adventure spells.' : 'Open this hero’s map spells.'}
+              onClick={() => setSpellbookOpen(true)}>Spellbook</button>
+            <button onClick={() => setWorldView((value) => !value)}>
+              {worldView ? 'Close world view' : 'World view'}</button>
+            <button onClick={() => setObjectiveOpen(true)}>Objective</button>
+            <button onClick={() => setCommandMenuOpen(true)}>Menu &amp; saves</button>
+            {hero && player.heroes.filter((candidate) => candidate.id !== hero.id && candidate.alive
+              && Math.max(Math.abs(candidate.position.x - hero.position.x),
+                Math.abs(candidate.position.y - hero.position.y)) <= 1)
+              .map((candidate) => <button key={`exchange-${candidate.id}`}
+                onClick={() => setExchangeHeroId(candidate.id)}>Exchange · {candidate.name}</button>)}
           </div>
-          {hero && player.heroes.filter((candidate) => candidate.id !== hero.id
-            && candidate.alive
-            && Math.max(Math.abs(candidate.position.x - hero.position.x),
-              Math.abs(candidate.position.y - hero.position.y)) <= 1)
-            .map((candidate) => (
-              <button
-                className="secondary wide"
-                key={`exchange-${candidate.id}`}
-                onClick={() => setExchangeHeroId(candidate.id)}
-              >
-                Exchange with {candidate.name}
-              </button>
-            ))}
-          <button
-            className="secondary wide"
-            disabled={!hero || Boolean(movement)}
-            title={!hero ? 'There is no living hero to select.'
-              : movement ? 'Wait for the current hero to finish moving.' : 'Select the next living hero.'}
-            onClick={() => dispatch({ type: 'NEXT_HERO' })}
-          >
-            Next hero · {player.heroes.indexOf(hero as Hero) + 1}/{player.heroes.length}
-          </button>
           {player.castlelessDays > 0 && (
             <div className="loss-countdown">
               No castle: {7 - player.castlelessDays} day{
@@ -839,13 +548,10 @@ export function AdventureScreen({
               Retire · end expedition
             </button>
           )}
+          {meetingNotice && <div className="meeting-status" role="status" aria-live="polite">
+            {meetingNotice}
+          </div>}
           <div className="message-strip" aria-live="polite"><ResourceRichText>{state.lastMessage}</ResourceRichText></div>
-          <details className="activity-log">
-            <summary>Activity log · {state.eventLog.length} entries</summary>
-            <div>{state.eventLog.slice(-12).reverse().map((entry, index) => (
-              <p key={`${entry}-${index}`}><ResourceRichText>{entry}</ResourceRichText></p>
-            ))}</div>
-          </details>
         </aside>
       </div>
       {objectiveOpen && (
@@ -861,10 +567,65 @@ export function AdventureScreen({
           <button className="primary" onClick={() => setObjectiveOpen(false)}>Take the field</button>
         </section></div>
       )}
-      {hero && exchangeHeroId && (
+      {hero && heroDetailsOpen && <AdventureHeroDetails state={state} hero={hero}
+        dispatch={dispatch} onClose={() => setHeroDetailsOpen(false)}
+        onOpenSpellbook={() => setSpellbookOpen(true)}
+        onUnstitch={() => setUnstitching(true)}
+        onUseItem={(index) => {
+          const item = hero.inventory[index];
+          const definition = item && typeof item !== 'string' ? ITEMS[item.id] : null;
+          if (!definition) return;
+          if (['reveal', 'impassableStep'].includes(definition.behavior)) setUsingItemSlot(index);
+          else if (['remoteMovement', 'militiaWrit'].includes(definition.behavior)) {
+            setChoosingItemSlot(index);
+          } else setActionDraft(adventureItemDraft(state, hero, index));
+        }} />}
+      {commandMenuOpen && <div className="modal-backdrop command-menu-backdrop"
+        onMouseDown={(event) => event.target === event.currentTarget && setCommandMenuOpen(false)}>
+        <section className="command-menu-dialog" role="dialog" aria-modal="true"
+          aria-labelledby="command-menu-heading">
+          <header><div><span className="dialog-kicker">Adventure commands</span>
+            <h2 id="command-menu-heading">Menu &amp; saves</h2></div>
+            <button className="structure-dialog-close" aria-label="Close command menu"
+              onClick={() => setCommandMenuOpen(false)}>×</button></header>
+          <div className="command-menu-grid">
+            <section><h3>Save campaign</h3>
+              <button className="primary" disabled={Boolean(movement)}
+                title={movement ? 'Wait for the hero to finish moving.' : 'Save to the quick-save slot.'}
+                onClick={() => onSave()}>
+                Quick save</button>
+              <div className="manual-save-grid">{[1, 2, 3].map((slot) => <button key={slot}
+                disabled={Boolean(movement)} title={movement ? 'Wait for the hero to finish moving.'
+                  : `Save to manual slot ${slot}.`}
+                onClick={() => onSave(slot)}>Save slot {slot}</button>)}</div>
+            </section>
+            <section><h3>Campaign file</h3>
+              <button onClick={onExport}>Export save</button>
+              <button onClick={onImport}>Import save</button>
+              <button onClick={onShare}>Copy share link</button>
+            </section>
+            <section><h3>Presentation</h3>
+              <label>Movement speed<select value={animationSpeed}
+                onChange={(event) => onAnimationSpeedChange(event.target.value as AnimationSpeed)}>
+                <option value="instant">Off</option><option value="fast">Fast</option>
+                <option value="normal">Normal</option><option value="slow">Slow</option>
+              </select></label>
+              <button onClick={() => { setCommandMenuOpen(false); setConfirmTitleExit(true); }}>
+                Return to title…</button>
+            </section>
+          </div>
+          <details className="activity-log"><summary>Activity log · {state.eventLog.length} entries</summary>
+            <div>{state.eventLog.slice(-12).reverse().map((entry, index) => <p
+              key={`${entry}-${index}`}><ResourceRichText>{entry}</ResourceRichText></p>)}</div>
+          </details>
+          <footer className="dialog-actions"><button onClick={() => setCommandMenuOpen(false)}>
+            Close · return to map</button></footer>
+        </section>
+      </div>}
+      {hero && exchangeHero && (
         <ExchangeScreen
           source={hero}
-          destination={player.heroes.find((candidate) => candidate.id === exchangeHeroId)!}
+          destination={exchangeHero}
           dispatch={dispatch}
           onClose={() => setExchangeHeroId(null)}
         />
@@ -893,8 +654,20 @@ export function AdventureScreen({
       )}
       {actionDraft && (
         <ActionConfirmationDialog state={state} draft={actionDraft}
-          onCancel={() => setActionDraft(null)}
-          onConfirm={() => { dispatch(actionDraft.action); setActionDraft(null); }} />
+          onCancel={() => { setActionDraft(null); restoreContextFocus(); }}
+          onConfirm={() => {
+            dispatch(actionDraft.action); setActionDraft(null); restoreContextFocus();
+          }} />
+      )}
+      {hero && serviceObject && structureDialogOpen && (
+        <AdventureStructureDialog state={state} hero={hero} object={serviceObject}
+          onClose={closeStructureDialog}
+          onDraft={(draft) => { closeStructureDialog(); setActionDraft(draft); }} />
+      )}
+      {hero && !serviceObject && palimpsestSite && structureDialogOpen && (
+        <AdventurePalimpsestDialog state={state} hero={hero} site={palimpsestSite}
+          onClose={closeStructureDialog}
+          onDraft={(draft) => { closeStructureDialog(); setActionDraft(draft); }} />
       )}
       {confirmTitleExit && <div className="modal-backdrop title-exit-backdrop">
         <section className="choice-dialog title-exit-dialog" role="alertdialog"

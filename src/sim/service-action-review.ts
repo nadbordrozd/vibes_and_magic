@@ -50,6 +50,14 @@ function serviceFixture(disabled = false): GameState {
   return state;
 }
 
+function hedgeSchoolFixture(): GameState {
+  const state = fixture();
+  const hero = state.players.p1.hero!;
+  const school = state.map.objects.find((object) => object.kind === 'hedgeSchool')!;
+  hero.position = { ...school.position };
+  return state;
+}
+
 async function load(page: Page, state: GameState): Promise<void> {
   const save = actionSave(state);
   await page.goto(baseUrl, { waitUntil: 'networkidle0' });
@@ -68,9 +76,15 @@ async function load(page: Page, state: GameState): Promise<void> {
 async function clickText(page: Page, selector: string, text: string): Promise<void> {
   await page.$$eval(selector, (nodes, wanted) => {
     const node = nodes.find((candidate) => candidate.textContent?.includes(wanted));
-    if (!node) throw new Error(`No ${selector} contains ${wanted}`);
+    if (!node) throw new Error(`No matching control contains ${wanted}`);
     (node as HTMLButtonElement).click();
   }, text);
+}
+
+async function openItems(page: Page): Promise<void> {
+  await clickText(page, '.rail-commands button', 'Hero details');
+  await page.waitForSelector('.hero-details-dialog');
+  await clickText(page, '.hero-details-tabs button', 'Items');
 }
 
 async function audit(page: Page, name: string): Promise<void> {
@@ -94,6 +108,7 @@ try {
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
   await load(page, fixture());
 
+  await openItems(page);
   await clickText(page, '.item-inventory button', 'Salted Meat');
   await page.waitForSelector('.item-target-dialog');
   const heroChoices = await page.$$('.item-target-options button');
@@ -107,6 +122,7 @@ try {
   await page.screenshot({ path: `${output}/02-item-confirm-desktop.png`, fullPage: true });
   await page.locator('.action-confirm-dialog .dialog-actions button').click();
 
+  await openItems(page);
   await clickText(page, '.item-inventory button', "Ferryman's Coin");
   await page.waitForSelector('.map-item-target-prompt');
   const mapPrompt = await page.$eval('.map-item-target-prompt', (node) => node.textContent ?? '');
@@ -115,6 +131,7 @@ try {
   await page.locator('.map-item-target-prompt button').click();
 
   await page.setViewport({ width: 700, height: 860, deviceScaleFactor: 1 });
+  await openItems(page);
   await clickText(page, '.item-inventory button', 'Militia Writ');
   await page.waitForSelector('.item-target-dialog');
   await audit(page, 'Militia Writ narrow target choice');
@@ -130,17 +147,51 @@ try {
   await page.waitForSelector('.action-confirm-dialog', { hidden: true });
   await page.waitForSelector('.choice-dialog');
   const offer = await page.$eval('.choice-dialog', (node) => node.textContent ?? '');
-  if (!offer.includes('Keep one spell from beneath the old text')) throw new Error('Palimpsest offer did not open');
+  if (!offer.includes('Forgotten spell · Palimpsest')
+      || !offer.includes('every other offer is lost')) {
+    throw new Error('Palimpsest offer did not open with source and commitment copy');
+  }
   await page.screenshot({ path: `${output}/06-palimpsest-offer.png`, fullPage: true });
 
   await load(page, serviceFixture());
-  await clickText(page, '.map-service-card button', 'Timing Blessing');
+  await page.waitForSelector('.structure-dialog');
+  const focus = await page.$eval(':focus', (node) => node.className);
+  if (!String(focus).includes('structure-dialog-close')) {
+    throw new Error(`Structure dialog did not receive focus: ${focus}`);
+  }
+  await page.keyboard.press('m');
+  if (await page.$('.adventure-layout.world-view')) {
+    throw new Error('Structure dialog allowed the map shortcut through its modal state');
+  }
+  await page.keyboard.press('Escape');
+  await page.waitForSelector('.structure-dialog', { hidden: true });
+  const restored = await page.$eval(':focus', (node) => node.className);
+  if (!String(restored).includes('map-frame')) {
+    throw new Error(`Escape did not restore map focus: ${restored}`);
+  }
+
+  await load(page, serviceFixture());
+  await page.waitForSelector('.structure-dialog');
+  await audit(page, 'structure dialog');
+  await page.screenshot({ path: `${output}/07a-structure-dialog-desktop.png`, fullPage: true });
+  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+  await audit(page, 'structure dialog narrow');
+  await page.screenshot({ path: `${output}/07b-structure-dialog-narrow.png` });
+  await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
+  await clickText(page, '.structure-dialog button', 'Timing Blessing');
   await page.waitForSelector('.action-confirm-dialog');
   await audit(page, 'service confirmation');
   await page.screenshot({ path: `${output}/07-service-confirm.png`, fullPage: true });
+  await page.locator('.action-confirm-dialog .dialog-actions button').click();
+  await page.waitForSelector('.action-confirm-dialog', { hidden: true });
+  const confirmationCancelFocus = await page.$eval(':focus', (node) => node.className);
+  if (!String(confirmationCancelFocus).includes('map-frame')) {
+    throw new Error(`Confirmation cancellation did not restore map focus: ${confirmationCancelFocus}`);
+  }
 
   await load(page, serviceFixture(true));
-  const disabled = await page.$eval('.map-service-card button', (button) => ({
+  await page.waitForSelector('.structure-dialog');
+  const disabled = await page.$eval('.structure-action button', (button) => ({
     disabled: (button as HTMLButtonElement).disabled,
     title: (button as HTMLButtonElement).title,
   }));
@@ -148,6 +199,16 @@ try {
     throw new Error(`Disabled service lacks a plain reason: ${JSON.stringify(disabled)}`);
   }
   await page.screenshot({ path: `${output}/08-service-disabled.png`, fullPage: true });
+
+  await load(page, hedgeSchoolFixture());
+  await page.waitForSelector('.structure-dialog');
+  await clickText(page, '.structure-dialog button', 'Attend a lesson');
+  await page.waitForSelector('.action-confirm-dialog');
+  await clickText(page, '.action-confirm-dialog button', 'Confirm');
+  await page.waitForSelector('.choice-cards');
+  const choiceFocused = await page.$eval(':focus', (node) => Boolean(node.closest('.choice-dialog')));
+  if (!choiceFocused) throw new Error('Hedge School confirmation did not focus its lesson choice');
+  await page.screenshot({ path: `${output}/09-hedge-school-choice.png`, fullPage: true });
 
   console.log(`Service action review passed. Screenshots written to ${output}.`);
 } finally {

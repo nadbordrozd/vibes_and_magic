@@ -24,6 +24,8 @@ it does not require rewriting mechanics prose unless behavior changes.
   including initial factions and neutrals.
 - [`../../src/content/unitsExpansion.ts`](../../src/content/unitsExpansion.ts): four-faction, tier-6,
   and sea-unit authored definitions merged by the registry.
+- [`../../src/core/army.ts`](../../src/core/army.ts): centralized, pure unit/army strategic-strength
+  derivation from the unit catalog and stack counts.
 - [`../../src/core/combat/abilities.ts`](../../src/core/combat/abilities.ts): passive ability registry.
 - [`../../src/core/combat/activatedAbilities.ts`](../../src/core/combat/activatedAbilities.ts):
   choice-driven unit ability handlers and legal actions.
@@ -36,6 +38,10 @@ Every unit has unique ID/name, faction/culture, tier, HP, damage range, Attack, 
 `hexSize`, growth, cost, nonempty flavor, and ability IDs. Every ability declares behavior at a named
 pipeline or turn/movement hook. At least one flyer and no more than two human silhouettes per
 playable faction remain visual/content checks, not engine tags.
+
+Every legal unit must produce a finite positive strategic strength. Army strength is additive and
+strictly linear in positive count. Deterministic calibration evidence is committed in
+[`../reports/GUARDIAN_STRENGTH_CALIBRATION.md`](../reports/GUARDIAN_STRENGTH_CALIBRATION.md).
 
 Every hero has nonempty 50–90-word story, faction/class, starting state, and one behaviorally backed
 specialty. Six heroes belong to each playable faction. A specialty with only prose and no rule hook
@@ -79,6 +85,13 @@ rarity/class, and a registered handler for each effect tag. Items with stored fa
 or other per-instance state use instances. Artifact count validation distinguishes 80 ordinary from
 the ten special definitions. Burdens always include an inspectable removal condition.
 
+Every canonical spell and secondary-skill ID also derives exactly one 32×32 transparent PixelLab
+presentation from [`../../assets/iconWorklist.ts`](../../assets/iconWorklist.ts), mapped through
+[`../../assets/iconManifest.ts`](../../assets/iconManifest.ts). The bitmap is presentation only:
+names, schools, mana, ranks, and complete mechanics remain catalog and semantic-UI text. Asset,
+generation-job, accepted-provenance, uniqueness, dimension, alpha, and prompt-drift gates are part
+of the validation contract; see [work order 46](../46_SPELL_SKILL_ICONS.md).
+
 ## Castles, economy, terrain, omens, and flavor
 
 - [`../../src/content/buildings.ts`](../../src/content/buildings.ts): common/faction buildings,
@@ -113,6 +126,10 @@ contains the only copy of a rule.
 - [`../../src/content/maps/grandMuster.ts`](../../src/content/maps/grandMuster.ts): 56×44 fixed
   showcase sandbox with six allied faction castles/full-roster heroes, six neutral sparring fights,
   scattered resources and structures, and a distant Dormant opponent.
+- [`../../src/content/maps/crookedCrown.ts`](../../src/content/maps/crookedCrown.ts): 72×72,
+  four-player dense labyrinth conquest with twelve shaped chambers, looped corridors, four distinct
+  starts, 109 interactive objects, 20 calibrated guardians, 12 landmarks, and map-specific topology
+  and density metrics.
 - [`../../src/content/maps/occupancyAuthoring.ts`](../../src/content/maps/occupancyAuthoring.ts):
   guardian/target materialization and authoring helpers.
 - [`../MAPS.md`](../MAPS.md): current map-authoring guidance.
@@ -122,6 +139,11 @@ guardians, castles/starts, victory/defeat, routes, Cache links, and optional ban
 decorations are not map data. Every map passes map lint. Manywhere additionally contains every
 registered object type, its four neutral-town variants/slots, all faction dwellings, the full water
 kit, puzzle locks, Cache sketch, Kit pieces, and required unique sites.
+
+The Crooked Crown additionally pins its 72×72 dimensions, four starts, two regional routes and two
+opening pickups per start, reward guardian coverage, named gate guardians, object/decor/road density,
+and maximum open-square size. Its guardian counts are derived at authoring time from the centralized
+`unitStrength` rating in `src/core/army.ts`.
 
 ## Acquisition invariants
 

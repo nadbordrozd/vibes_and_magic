@@ -7,6 +7,7 @@ import { tile } from '../../content/terrain';
 import { CASTLE_NAMES } from '../../content/factionPresentation';
 import { AdventureItemDialog } from '../components/AdventureItemDialog';
 import { PalimpsestService } from '../components/PalimpsestService';
+import { AdventureStructureDialog } from '../components/AdventureStructureDialog';
 import {
   adventureItemDraft, legalAdventureItemMapTargets,
 } from '../adventureItemPresentation';
@@ -14,6 +15,13 @@ import { previewAction } from '../actionPreview';
 import {
   HUMAN_ACTION_ROUTES, validateHumanActionRoutes,
 } from '../actionRouteCoverage';
+import { MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
+import {
+  ADVENTURE_OBJECT_INTERACTION_ROUTES, CONTEXTUAL_STRUCTURE_KINDS,
+  isContextualStructure, validateAdventureObjectInteractionRoutes,
+} from '../adventureStructureInteractions';
+import { mapObjectName } from '../inspection';
+import { objectEntranceTile } from '../../core/map/occupancy';
 
 function fixture() {
   return createGame({
@@ -22,6 +30,46 @@ function fixture() {
 }
 
 describe('adventure and castle service presentation', () => {
+  it('catalogues every adventure object route and every explicit contextual structure', () => {
+    validateAdventureObjectInteractionRoutes();
+    expect(Object.keys(ADVENTURE_OBJECT_INTERACTION_ROUTES).sort())
+      .toEqual([...MAP_OBJECT_KINDS].sort());
+    expect(Object.entries(ADVENTURE_OBJECT_INTERACTION_ROUTES)
+      .filter(([, route]) => route === 'contextual-dialog').map(([kind]) => kind).sort())
+      .toEqual([...CONTEXTUAL_STRUCTURE_KINDS].sort());
+  });
+
+  it('renders every explicit structure through one focused, inspectable dialog', () => {
+    const state = createGame({
+      seed: 5303, mapId: 'manywhere', p1: 'human', p2: 'dormant',
+    });
+    const hero = state.players.p1.hero!;
+    state.players.p1.resources = { gold: 100_000, timber: 100, iron: 100, essence: 100 };
+    hero.inventory[0] = { id: 'smellingSalts' };
+    hero.artifacts.backpack.push({ id: 'knucklebonesOfTheSaint' });
+    const structures = state.map.objects.filter(isContextualStructure);
+    expect(new Set(structures.map((object) => object.kind)))
+      .toEqual(new Set(CONTEXTUAL_STRUCTURE_KINDS));
+    for (const object of structures) {
+      hero.position = objectEntranceTile(object);
+      const before = JSON.stringify(state);
+      const html = renderToStaticMarkup(<AdventureStructureDialog state={state} hero={hero}
+        object={object} onDraft={() => undefined} onClose={() => undefined} />);
+      expect(html, object.kind).toContain('role="dialog"');
+      expect(html, object.kind).toContain('aria-modal="true"');
+      expect(html, object.kind).toContain(`data-inspect-id="${object.id}"`);
+      expect(html, object.kind).toContain(mapObjectName(object).replaceAll("'", '&#x27;'));
+      expect(html, object.kind).toContain('Cancel · return to map');
+      expect(JSON.stringify(state), object.kind).toBe(before);
+    }
+  });
+
+  it('removes the persistent adventure service-card switchboard', () => {
+    const source = readFileSync(new URL('../components/AdventureScreen.tsx', import.meta.url), 'utf8');
+    expect(source).not.toContain('map-service-card');
+    expect(source).toContain('AdventureStructureDialog');
+  });
+
   it('keeps an exhaustive action-to-UI inventory with deliberate internal handling', () => {
     validateHumanActionRoutes();
     const source = readFileSync(new URL('../../core/actionTypes.ts', import.meta.url), 'utf8');

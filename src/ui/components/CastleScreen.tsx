@@ -35,6 +35,7 @@ import { previewAction } from '../actionPreview';
 import {
   ActionConfirmationDialog, type ActionDraft,
 } from './ActionConfirmationDialog';
+import { ContentIcon } from './ContentIcon';
 
 interface Props {
   state: GameState;
@@ -72,6 +73,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
   });
   const [selectedBuilding, setSelectedBuilding] = useState<BuildingId | null>(null);
   const [actionDraft, setActionDraft] = useState<ActionDraft | null>(null);
+  const [view, setView] = useState<'town' | 'recruit' | 'army' | 'services'>('town');
   const hero = state.players[state.activePlayer].hero;
   const heroIsVisiting = visitingCastle(state)?.id === castle.id;
   const buildable = castleBuildingSlots(castle);
@@ -124,11 +126,21 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
         </header>
         <div className="castle-passive" data-inspect-kind="castle" data-inspect-id={castle.id}>
           <b>{FACTION_PASSIVES[castle.faction].name}</b>
-          <span>{FACTION_PASSIVES[castle.faction].description}</span>
-          <small>Right-click for ownership, magic schools, buildings, and garrison.</small>
+          <span>{castle.owner === 'neutral' ? 'Neutral stronghold' : `Owned by ${state.players[castle.owner].name}`}</span>
+          <small>{heroIsVisiting ? `${hero?.name ?? 'Visiting hero'} is present`
+            : 'Remote view · Company transfer requires a visiting hero; no remote transfer actions are available.'} · Right-click for complete town rules.</small>
         </div>
-        <div className="castle-columns">
-          <div>
+        <nav className="castle-task-tabs" aria-label="Castle task">
+          <button data-castle-view="town" className={view === 'town' ? 'selected' : ''} aria-pressed={view === 'town'}
+            onClick={() => setView('town')}><span>Town</span><small>Build</small></button>
+          <button data-castle-view="recruit" className={view === 'recruit' ? 'selected' : ''} aria-pressed={view === 'recruit'}
+            onClick={() => setView('recruit')}><span>Recruit</span><small>{castle.available.reduce((sum, count) => sum + count, 0)} ready</small></button>
+          <button data-castle-view="army" className={view === 'army' ? 'selected' : ''} aria-pressed={view === 'army'}
+            onClick={() => setView('army')}><span>Army</span><small>{heroIsVisiting ? 'Transfer' : 'Castle garrison'}</small></button>
+          <button data-castle-view="services" className={view === 'services' ? 'selected' : ''} aria-pressed={view === 'services'}
+            onClick={() => setView('services')}><span>Services</span><small>Guild · trade · tavern</small></button>
+        </nav>
+        {view === 'town' && <section className="castle-view town-view">
             <h3>Town works</h3>
             <div className="building-grid">
               {buildable.map((id) => {
@@ -160,8 +172,8 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                 >Launch boat · <ResourceCost cost={{ gold: 1000, timber: 3 }} compact /></button>;
               })()
             )}
-          </div>
-          <div>
+        </section>}
+        {view === 'recruit' && <section className="castle-view recruit-view">
             <h3>Recruitment</h3>
             <div className="recruit-list">
               {([1, 2, 3, 4, 5, 6] as UnitTier[]).map((tier) => {
@@ -201,18 +213,24 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                 );
               })}
             </div>
-          </div>
-        </div>
-        <section className="castle-exchange" aria-label="Castle company exchange">
+        </section>}
+        {view === 'army' && <section className="castle-view castle-exchange" aria-label="Castle company exchange">
           {hero && heroIsVisiting ? (
             <ArmyExchange
+              state={state}
+              direct
               left={{
-                label: `${hero.name} (visiting hero)`,
+                label: hero.name,
+                kindLabel: 'Visiting hero',
+                identity: <HeroPortrait faction={hero.faction}
+                  className="transfer-hero-portrait" />,
                 holder: { kind: 'hero', id: hero.id },
                 army: hero.army,
               }}
               right={{
-                label: `${CASTLE_NAMES[castle.faction]} garrison`,
+                label: CASTLE_NAMES[castle.faction],
+                kindLabel: 'Castle garrison',
+                identity: <span className="transfer-garrison-crest" aria-hidden="true">◆</span>,
                 holder: { kind: 'garrison', id: castle.id },
                 army: castle.garrison,
               }}
@@ -221,15 +239,15 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             <div className="transfer-area">
               <div className="remote-castle-note">
                 <b>Remote command</b>
-                <span>Build and recruit here. Move your hero into the castle to transfer troops.</span>
+                <span>This is the current castle garrison. Company transfer requires a visiting
+                  hero at this castle entrance; no remote transfer actions are available.</span>
               </div>
               <div className="transfer-arrow">→</div>
-              <ArmySlots army={castle.garrison} title="Castle garrison"
-                onSplit={(sourceSlot, destinationSlot, count) => dispatch({ type: 'SPLIT_ARMY',
-                  holder: { kind: 'garrison', id: castle.id }, sourceSlot, destinationSlot, count })} />
+              <ArmySlots army={castle.garrison} title="Castle garrison" />
             </div>
           )}
-        </section>
+        </section>}
+        {view === 'services' && <div className="castle-view services-view">
         <section className="guild-panel">
           <h3>Mage Guild</h3>
           {guildSpells.length === 0 ? (
@@ -242,7 +260,8 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                 return (
                   <article key={spellId} className={known ? 'known' : ''}
                     data-inspect-kind="spell" data-inspect-id={spellId}>
-                    <b>{SPELLS[spellId].name}{upgraded ? '+' : ''}</b>
+                    <div className="content-icon-label"><ContentIcon kind="spell" id={spellId} />
+                      <b>{SPELLS[spellId].name}{upgraded ? '+' : ''}</b></div>
                     <small>{SPELL_SCHOOL_NAMES[SPELLS[spellId].school]} school · {SPELLS[spellId].mana} mana</small>
                     <span>{upgraded ? SPELLS[spellId].plus : SPELLS[spellId].base}</span>
                     <button
@@ -431,6 +450,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             </div>
           </section>
         )}
+        </div>}
         {selectedBuilding && selectedDefinition && selectedStatus && (
           <div className="building-detail-backdrop" onClick={() => setSelectedBuilding(null)}>
             <article className="building-detail" role="dialog"
@@ -482,7 +502,10 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             </article>
           </div>
         )}
-        <footer>One building may be constructed in each castle per day.</footer>
+        <footer>{view === 'town' ? 'One building may be constructed in each castle per day.'
+          : view === 'recruit' ? 'Choose a creature, set the amount, then hire.'
+            : view === 'army' ? 'Choose a source company, then a highlighted destination.'
+              : 'Services use the visiting hero and current town buildings.'}</footer>
       </section>
       {actionDraft && <ActionConfirmationDialog state={state} draft={actionDraft}
         onCancel={() => setActionDraft(null)}

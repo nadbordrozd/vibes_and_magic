@@ -233,8 +233,15 @@ def validate_job(job: dict[str, Any], root: Path) -> None:
             raise JobError(f"{request['id']} must declare one or more asset ids")
         if request["endpoint"] not in set(SYNC_ENDPOINTS) | ASYNC_ENDPOINTS:
             raise JobError(f"unsupported endpoint {request['endpoint']}")
-        if not (2 <= request["candidates"] <= 3):
-            raise JobError(f"{request['id']} must request 2 or 3 candidates")
+        variation_count = request.get("variations_from_single_request")
+        single_variation_request = request["endpoint"] == "generate-image-v2" \
+            and request["candidates"] == 1 \
+            and isinstance(variation_count, int) and variation_count >= 2
+        if not single_variation_request and not (2 <= request["candidates"] <= 3):
+            raise JobError(
+                f"{request['id']} must request 2 or 3 candidates, or declare one "
+                "generate-image-v2 request with variations_from_single_request"
+            )
         resource_ids = request.get("resource_ids")
         if resource_ids is not None and (not isinstance(resource_ids, list)
                 or len(resource_ids) != request["candidates"]
@@ -345,7 +352,9 @@ def run() -> int:
     if args.dry_run:
         for request in selected_requests:
             status = " staged" if job.get("status") == "staged" else ""
-            print(f"ok {request['id']} dry-run{status} {request['candidates']} candidates {request['size'][0]}x{request['size'][1]}")
+            count = request.get("variations_from_single_request", request["candidates"])
+            kind = "variations" if "variations_from_single_request" in request else "candidates"
+            print(f"ok {request['id']} dry-run{status} {count} {kind} {request['size'][0]}x{request['size'][1]}")
         return 0
 
     if job.get("status") == "staged":
@@ -377,16 +386,26 @@ def run() -> int:
                         resource_id = resource_ids[candidate]
                     elif receipt_path.is_file():
                         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+                        if request["endpoint"] == "generate-image-v2" \
+                                and receipt.get("background_job_id"):
+                            result = poll_job(
+                                str(receipt["background_job_id"]), client, args.timeout,
+                            )
+                            images = collect_images(result)
+                            resource_id = ""
+                        else:
+                            images = []
                         resource_id = next((str(receipt[key]) for key in (
                             "character_id", "tileset_id", "object_id",
                         ) if receipt.get(key)), "")
-                        if not resource_id:
+                        if not resource_id and not images:
                             raise JobError(f"{receipt_path}: no recoverable resource id")
                     else:
                         raise JobError("--recover requires resource_ids or candidate receipts")
-                    images = recovered_resource_result(
-                        request["endpoint"], resource_id, client,
-                    )
+                    if resource_id:
+                        images = recovered_resource_result(
+                            request["endpoint"], resource_id, client,
+                        )
                 else:
                     seed = int(request.get("seed", 0)) + candidate
                     payload = payload_for(request, root, seed)
@@ -409,7 +428,13 @@ def run() -> int:
                     sheet_rows.append((f"{request['id']} · {candidate + 1}{suffix}", output))
             if not saved:
                 raise JobError("PixelLab returned no decodable images")
-            print(f"ok {request['id']} {len(saved)} candidates {expected[0]}x{expected[1]}")
+            expected_variations = request.get("variations_from_single_request")
+            if expected_variations is not None and len(saved) != expected_variations:
+                raise JobError(
+                    f"PixelLab returned {len(saved)} variations, expected {expected_variations}"
+                )
+            result_kind = "variations" if expected_variations is not None else "candidates"
+            print(f"ok {request['id']} {len(saved)} {result_kind} {expected[0]}x{expected[1]}")
         except Exception as error:  # one failed asset must not hide the rest of the batch
             failed = True
             print(f"FAIL {request['id']}: {error}", file=sys.stderr)

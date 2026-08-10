@@ -15,8 +15,9 @@ import { AdventureScreen } from './components/AdventureScreen';
 import { CastleScreen } from './components/CastleScreen';
 import { CombatScreen } from './components/CombatScreen';
 import {
-  BattleResult, type BattleResultData, ChoiceDialog, PassDevice, VictoryDialog,
+  BattleResult, ChoiceDialog, PassDevice, VictoryDialog,
 } from './components/Dialogs';
+import { buildBattleResult, type BattleResultData } from './battleResult';
 import { MainMenu } from './components/MainMenu';
 import { InspectionLayer } from './components/InspectionLayer';
 import { ContextHelp, type HelpContext } from './components/ContextHelp';
@@ -174,38 +175,14 @@ export function App() {
       if (!current) return current;
       try {
         const priorBattle = current.battle;
-        const attackerId = priorBattle?.context.attackerHeroId;
-        const xpBefore = attackerId
-          ? current.players[current.activePlayer].heroes.find(
-            (hero) => hero.id === attackerId,
-          )?.xp ?? 0 : 0;
         const next = apply(current, action);
         if (action.type === 'END_TURN') autoSaveGame(next);
         if (priorBattle && !next.battle && priorBattle.winner === null) {
           const resolved = action.type === 'AUTO_COMBAT'
             ? next.metrics.battles > current.metrics.battles : true;
           if (resolved) {
-            const finalWinner = next.metrics.battleOutcomes.at(-1)?.winner ?? 'defender';
-            const defenderMetric = priorBattle.context.kind === 'guardian'
-              ? 'neutral' : priorBattle.context.defenderPlayerId;
-            queueMicrotask(() => setBattleResult({
-              winner: finalWinner,
-              casualties: {
-                attacker: next.metrics.casualties[current.activePlayer]
-                  - current.metrics.casualties[current.activePlayer],
-                defender: defenderMetric
-                  ? next.metrics.casualties[defenderMetric]
-                    - current.metrics.casualties[defenderMetric]
-                  : casualtyCount(priorBattle.casualties.defender),
-              },
-              xp: Math.max(0, (attackerId
-                ? next.players[current.activePlayer].heroes.find(
-                  (hero) => hero.id === attackerId,
-                )?.xp ?? xpBefore : xpBefore) - xpBefore),
-              recovered: casualtyCount(next.lastBattleRecovered),
-              statistics: next.lastBattleStats,
-              projection: projectionRef.current,
-            }));
+            const result = buildBattleResult(current, next, action, projectionRef.current);
+            if (result) queueMicrotask(() => setBattleResult(result));
             projectionRef.current = null;
           }
         }
@@ -324,7 +301,11 @@ export function App() {
         return;
       }
       if (battleReplay || passPlayer || battleResult || game.pendingChoice) return;
-      if (event.key === 'Enter' && openCastleId) setOpenCastleId(null);
+      const target = event.target instanceof Element ? event.target : null;
+      const interactive = target?.closest('button, input, select, textarea, [role="button"]');
+      if (event.key === 'Enter' && openCastleId && !event.defaultPrevented && !interactive) {
+        setOpenCastleId(null);
+      }
     };
     window.addEventListener('keydown', keyboard);
     return () => window.removeEventListener('keydown', keyboard);
@@ -359,7 +340,7 @@ export function App() {
 
   return (
     <>
-      {game.phase === 'combat' && game.battle
+      {!battleResult && (game.phase === 'combat' && game.battle
         ? (
           <CombatScreen
             state={game} dispatch={dispatch}
@@ -392,7 +373,7 @@ export function App() {
             onAnimationSpeedChange={setAnimationSpeed}
             onMovementStateChange={setMapAnimating}
           />
-        )}
+        ))}
       {openCastleId && castle && (
         <CastleScreen
           state={game} castle={castle} dispatch={dispatch}

@@ -12,6 +12,29 @@ timing effects, hero modifiers, stack footprints, and initial counts. Stack coun
 represent casualties exactly; only effects explicitly allowed to revive can increase count after
 deaths.
 
+## Strategic army-strength rating
+
+Strategic comparisons use one pure catalog-derived rating, not battle simulation and not the old
+`HP × average damage` product. For each unit:
+
+```text
+d = max(1, midpoint(minDamage,maxDamage))
+unitStrength = sqrt(HP × d)
+  × (1 + (Attack + Defense) / 40)
+  × (1 + 0.04 × clamp(Speed - 5, -3, 6))
+  × boundedAbilityMultiplier
+armyStrength = sum(count × unitStrength)
+```
+
+The speed delta is clamped to `[-3,6]`. Stable role adjustments for ranged, flying,
+no-retaliation, incoming-minimum, unlimited-retaliation, full-heal, melee-reflection, and immobile
+are additive and the combined ability multiplier is clamped to `[0.85,1.35]`. Exact adjustments,
+implementation, calibration method, and threshold audit are in
+[`../39_GUARDIAN_STRENGTH.md`](../39_GUARDIAN_STRENGTH.md). The rating uses only canonical unit
+statistics, abilities, and count; it is additive for mixed armies, linear in count, finite for every
+legal unit, and independent of hero or battlefield state. It is a cheap ordering estimate, not a
+substitute for combat resolution.
+
 ## Round and turn sequence
 
 At round start, reset round-scoped defenses and retaliations, advance tile/enchantment durations,

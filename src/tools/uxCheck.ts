@@ -17,6 +17,8 @@ import { validateSpells } from '../content/spells';
 import { validateSpellPresentation } from '../content/spellPresentation';
 import { validateUnits } from '../content/units';
 import { INSPECTION_KINDS } from '../ui/inspection';
+import { validateAdventureObjectInteractionRoutes } from '../ui/adventureStructureInteractions';
+import { validateNonAdventureSurfaceCoverage } from '../ui/nonAdventureSurfaceCoverage';
 
 function filesBelow(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -30,6 +32,8 @@ const validators = [
   validateFactionPresentation, validateFactions, validateHeroes, validateItems,
   validateMapObjectRegistry, validateOmens, validateSkills, validateSpells,
   validateSpellPresentation, validateUnits,
+  validateAdventureObjectInteractionRoutes,
+  validateNonAdventureSurfaceCoverage,
 ];
 
 for (const validate of validators) validate();

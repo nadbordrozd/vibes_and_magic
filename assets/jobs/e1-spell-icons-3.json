@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/e1-spell-icons-3-candidates.html",
+  "requests": [
+    {
+      "id": "spell-icon:mournersVeil",
+      "assets": [
+        "spell-icon:mournersVeil"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/mournersVeil",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Mourner's Veil”: Ally takes −20% damage. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746340,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:dirge",
+      "assets": [
+        "spell-icon:dirge"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/dirge",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Dirge”: 3% current HP per destroyed stack. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746357,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:lastCandle",
+      "assets": [
+        "spell-icon:lastCandle"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/lastCandle",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Last Candle”: Allied death: enemies Hex 2, allies +20 morale. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746374,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:sour",
+      "assets": [
+        "spell-icon:sour"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/sour",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Sour”: Invert a beneficial effect. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746391,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:remembrance",
+      "assets": [
+        "spell-icon:remembrance"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/remembrance",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Remembrance”: Revive 20% of stack losses. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746408,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:reckoning",
+      "assets": [
+        "spell-icon:reckoning"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/reckoning",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Reckoning”: All stacks take 2% current HP per mana. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746425,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:quiet",
+      "assets": [
+        "spell-icon:quiet"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/quiet",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Quiet”: Enemy cannot retaliate. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746442,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:beacon",
+      "assets": [
+        "spell-icon:beacon"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/beacon",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Beacon”: Travel to the nearest friendly town. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746459,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:census",
+      "assets": [
+        "spell-icon:census"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/census",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Census”: Inspect every enemy hero for one day. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746476,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:feastDay",
+      "assets": [
+        "spell-icon:feastDay"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/feastDay",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Feast Day”: All towns gain 25% growth this week. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746493,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

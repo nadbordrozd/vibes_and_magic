@@ -74,7 +74,15 @@ The strongest-army AI hero is Main; others are Gatherers. Humans are not assigne
 adjacent heroes, or a visiting hero and castle garrison, may exchange stacks, consumables, and legal
 artifacts through explicit actions. Transfers conserve counts and instances. Same-unit stacks merge;
 otherwise seven-slot capacity applies. Gatherers may deliver surplus to Main and avoid threats using
-their documented safety ratio.
+their documented safety ratio. Main selection, threat checks, Diplomacy, weak-guardian effects,
+Beastmaster joining, and army-sized bargains all use the centralized strategic rating in
+[`S04_COMBAT.md`](S04_COMBAT.md#strategic-army-strength-rating); consumers do not reproduce a local
+stat formula.
+
+On the adventure map, friendly-hero exchange becomes available only after map-driven meeting routing
+has left the heroes on distinct adjacent tiles. The current exchange surface submits the canonical
+army, split, and consumable transfer actions in either direction; it does not create an artifact action
+or mutate hero data directly. See work order 43.
 
 Stack splitting is adventure-only: hero, exchange, or garrison screens provide an exact count slider
 and split-evenly. It never appears at battle start or in combat. Splitting does not evade the combat

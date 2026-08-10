@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { assetWorklist } from '../../assets/worklist';
+import { contentIconWorklist } from '../../assets/iconWorklist';
 
 interface PixelReference {
   file: string;
@@ -16,6 +17,7 @@ interface PixelRequest {
   endpoint: string;
   size: [number, number];
   candidates: number;
+  variations_from_single_request?: number;
   resource_ids?: string[];
   review_only?: boolean;
   references?: PixelReference[];
@@ -31,7 +33,7 @@ interface PixelJob {
 
 const root = process.cwd();
 const jobsDir = resolve(root, 'assets/jobs');
-const worklist = assetWorklist();
+const worklist = [...assetWorklist(), ...contentIconWorklist()];
 const byId = new Map(worklist.map((item) => [item.id, item]));
 const errors: string[] = [];
 const covered = new Map<string, string[]>();
@@ -93,8 +95,12 @@ for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.jso
         || request.size.some((value) => !Number.isInteger(value) || value <= 0)) {
       errors.push(`${label}: invalid native size`);
     }
-    if (request.candidates < 2 || request.candidates > 3) {
-      errors.push(`${label}: candidate count must be 2 or 3`);
+    const singleVariationRequest = request.endpoint === 'generate-image-v2'
+      && request.candidates === 1
+      && Number.isInteger(request.variations_from_single_request)
+      && (request.variations_from_single_request ?? 0) >= 2;
+    if (!singleVariationRequest && (request.candidates < 2 || request.candidates > 3)) {
+      errors.push(`${label}: candidate count must be 2–3, or one generate-image-v2 request must declare its expected variation set`);
     }
     if (request.resource_ids && (request.resource_ids.length !== request.candidates
         || request.resource_ids.some((value) => !value))) {
@@ -124,7 +130,7 @@ for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.jso
       }
       covered.set(assetId, [...covered.get(assetId) ?? [], label]);
       const [width, height] = request.size;
-      if (item.groundContact) {
+      if ('groundContact' in item && item.groundContact) {
         if (width % 32 || width < item.w || height < item.h) {
           errors.push(`${label}: ${assetId} canvas ${width}x${height} cannot cover ${item.w}x${item.h}`);
         }

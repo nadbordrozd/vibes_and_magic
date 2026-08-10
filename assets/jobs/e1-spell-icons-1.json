@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/e1-spell-icons-1-candidates.html",
+  "requests": [
+    {
+      "id": "spell-icon:rally",
+      "assets": [
+        "spell-icon:rally"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/rally",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Rally”: Ally +50 morale. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746000,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:blessing",
+      "assets": [
+        "spell-icon:blessing"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/blessing",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Blessing”: Next attack rolls maximum. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746017,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:standardOfDawn",
+      "assets": [
+        "spell-icon:standardOfDawn"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/standardOfDawn",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Standard of Dawn”: Kills grant +10 morale. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746034,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:amplify",
+      "assets": [
+        "spell-icon:amplify"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/amplify",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Amplify”: Double an active effect. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746051,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:sanctuary",
+      "assets": [
+        "spell-icon:sanctuary"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/sanctuary",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Sanctuary”: Ally cannot be targeted by enemy spells. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746068,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:oathOfIron",
+      "assets": [
+        "spell-icon:oathOfIron"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/oathOfIron",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Oath of Iron”: Incoming attacks roll minimum. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746085,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:consecrate",
+      "assets": [
+        "spell-icon:consecrate"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/consecrate",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Consecrate”: Cleanse and heal 8%. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746102,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:hymnOfTheHost",
+      "assets": [
+        "spell-icon:hymnOfTheHost"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/hymnOfTheHost",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Hymn of the Host”: Allies gain 8 morale per extra action. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746119,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:trial",
+      "assets": [
+        "spell-icon:trial"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/trial",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Trial”: Larger enemy takes 25% current HP. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746136,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:forgeSpark",
+      "assets": [
+        "spell-icon:forgeSpark"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/forgeSpark",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Forge-Spark”: Burn 3. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746153,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

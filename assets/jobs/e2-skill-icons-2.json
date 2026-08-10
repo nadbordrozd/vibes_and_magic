@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/e2-skill-icons-2-candidates.html",
+  "requests": [
+    {
+      "id": "skill-icon:palimpsest",
+      "assets": [
+        "skill-icon:palimpsest"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/palimpsest",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Palimpsest”: At a friendly guild, forget one spell to draw two and keep one. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759190,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:twicetold",
+      "assets": [
+        "skill-icon:twicetold"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/twicetold",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Twicetold”: First twister each battle costs no mana. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759209,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:curseEater",
+      "assets": [
+        "skill-icon:curseEater"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/curseEater",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Curse-Eater”: Counters on your stacks decay by two. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759228,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:ritualist",
+      "assets": [
+        "skill-icon:ritualist"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/ritualist",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Ritualist”: Shrines are usable twice per hero. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759247,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:peddler",
+      "assets": [
+        "skill-icon:peddler"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/peddler",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Peddler”: Marketplace rates ×0.75. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759266,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:warden",
+      "assets": [
+        "skill-icon:warden"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/warden",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Warden”: Installed garrisons use your primary stats. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759285,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:ransomer",
+      "assets": [
+        "skill-icon:ransomer"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/ransomer",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Ransomer”: Defeated heroes pay their 1500g hire cost. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759304,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:beastmaster",
+      "assets": [
+        "skill-icon:beastmaster"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/beastmaster",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Beastmaster”: Beast dwelling recruitment costs 25% less. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759323,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:vanguard",
+      "assets": [
+        "skill-icon:vanguard"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/vanguard",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Vanguard”: Fastest stack gains +2 speed in round one. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759342,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "skill-icon:provisioner",
+      "assets": [
+        "skill-icon:provisioner"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/skills/provisioner",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the secondary skill “Provisioner”: +1 consumable slot. Prefer one recognizable tool, creature, gesture or heraldic object whose silhouette is unique to this exact skill; use warm brass, parchment cream and one concept-specific accent colour.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 759361,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

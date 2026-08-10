@@ -55,6 +55,7 @@ export function useAnimatedDispatch(
     const target = targetId
       ? battle.stacks.find((stack) => stack.id === targetId) : undefined;
     const rangedAttack = action.type === 'BATTLE_ATTACK' && canUseRanged(actor);
+    const attackEffect = target ? rangedAttack ? 'ranged' : 'melee' : undefined;
     let targetDies = false;
     if (target) {
       targetDies = (projected.stacks.find((stack) => stack.id === target.id)?.count ?? 0) <= 0;
@@ -79,6 +80,8 @@ export function useAnimatedDispatch(
       }
       setAnimation({
         phase: 'morale', actorId: actor.id,
+        actionType: action.type,
+        attackEffect,
         displayPosition: projectedActor?.position ?? displayPosition,
         duration: timing.morale,
       });
@@ -96,6 +99,8 @@ export function useAnimatedDispatch(
       }
       setAnimation({
         phase: 'death', actorId: actor.id, targetId: target.id,
+        actionType: action.type,
+        attackEffect,
         displayPosition, targetPosition: target.position, duration: timing.death,
       });
       later(finish, timing.death);
@@ -107,6 +112,8 @@ export function useAnimatedDispatch(
       }
       setAnimation({
         phase: 'damage', actorId: actor.id, targetId: target.id,
+        actionType: action.type,
+        attackEffect,
         displayPosition, targetPosition: target.position, duration: timing.damage,
       });
       later(showDeath, timing.damage);
@@ -118,6 +125,8 @@ export function useAnimatedDispatch(
       }
       setAnimation({
         phase: rangedAttack ? 'projectile' : 'attack', actorId: actor.id, targetId: target.id,
+        actionType: action.type,
+        attackEffect,
         displayPosition, targetPosition: target.position, duration: timing.attack,
       });
       later(showDamage, timing.attack);
@@ -127,6 +136,8 @@ export function useAnimatedDispatch(
     } else if (moveDuration > 0) {
       setAnimation({
         phase: 'move', actorId: actor.id, targetId,
+        actionType: action.type,
+        attackEffect,
         displayPosition, targetPosition: target?.position, duration: moveDuration,
       });
       later(action.type === 'BATTLE_MOVE' ? finish : showAttack, moveDuration);

@@ -10,6 +10,10 @@ import {
 import {
   createGrandMuster, GRAND_MUSTER_CASTLES, GRAND_MUSTER_ENEMY_CASTLE,
 } from '../content/maps/grandMuster';
+import {
+  createCrookedCrown, CROOKED_CROWN_GATE_IDS, CROOKED_CROWN_REWARD_IDS,
+  CROOKED_CROWN_STARTS, crookedCrownMetrics,
+} from '../content/maps/crookedCrown';
 import { MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
 import { TERRAIN } from '../content/terrain';
 import type { Coord, GameMap } from '../core/types';
@@ -184,6 +188,65 @@ export function lintMapWarnings(map: GameMap, starts: Coord[]): MapLintIssue[] {
   return warnings;
 }
 
+export function lintCrookedCrown(map: GameMap): MapLintIssue[] {
+  const issues: MapLintIssue[] = [];
+  const report = (code: string, message: string) => issues.push({ mapId: map.id, code, message });
+  const metrics = crookedCrownMetrics(map);
+  if (metrics.width !== 72 || metrics.height !== 72) {
+    report('dense-dimensions', `expected 72x72, got ${metrics.width}x${metrics.height}`);
+  }
+  if (metrics.interactiveObjects < 100 || metrics.interactionPerPassableTile < 0.05) {
+    report('object-density', `${metrics.interactiveObjects} interactions / ${metrics.passableTiles} passable tiles (${(metrics.interactionPerPassableTile * 100).toFixed(2)}%)`);
+  }
+  if (metrics.authoredLandmarks < 12 || metrics.decorationBlockerRatio < 0.68) {
+    report('decoration-density', `${metrics.authoredLandmarks} landmarks and ${(metrics.decorationBlockerRatio * 100).toFixed(1)}% shaped/decorative terrain`);
+  }
+  if (metrics.maxOpenSquare > 10) {
+    report('oversized-open-area', `largest unbroken passable square is ${metrics.maxOpenSquare}x${metrics.maxOpenSquare}`);
+  }
+  if (metrics.roads < 450) report('road-density', `only ${metrics.roads} road tiles`);
+
+  const objects = new Map(map.objects.map((object) => [object.id, object]));
+  for (const rewardId of CROOKED_CROWN_REWARD_IDS) {
+    const reward = objects.get(rewardId);
+    if (!reward?.guardedBy?.length) report('guardian-coverage', `${rewardId} lacks a guardian`);
+  }
+  for (const gateId of CROOKED_CROWN_GATE_IDS) {
+    const gate = objects.get(gateId);
+    if (gate?.kind !== 'guardian' || !gate.protects) {
+      report('intended-gate', `${gateId} is not a linked guardian gate`);
+    }
+  }
+
+  const routeTargets = [
+    [objects.get('crooked-crown-dwelling-2'), objects.get('crooked-crown-dwelling-5')],
+    [objects.get('crooked-crown-dwelling-3'), objects.get('crooked-crown-dwelling-8')],
+    [objects.get('crooked-crown-dwelling-10'), objects.get('crooked-crown-dwelling-5')],
+    [objects.get('crooked-crown-dwelling-11'), objects.get('crooked-crown-dwelling-8')],
+  ];
+  CROOKED_CROWN_STARTS.forEach((start, index) => {
+    const routes = routeTargets[index].flatMap((target) => target
+      ? [findPath(map, start, objectEntranceTile(target))] : []);
+    if (routes.length !== 2 || routes.some((path) => !path)) {
+      report('sealed-start', `start ${coordKey(start)} lacks two regional routes`);
+      return;
+    }
+    const firstExits = routes.map((path) => path!.find((step) =>
+      Math.max(Math.abs(step.x - start.x), Math.abs(step.y - start.y)) > 6));
+    if (!firstExits[0] || !firstExits[1] || sameCoord(firstExits[0], firstExits[1])) {
+      report('route-choice', `start ${coordKey(start)} routes do not diverge outside its chamber`);
+    }
+    const opening = map.objects.filter((object) => object.id.startsWith(
+      `crooked-crown-pile-${[1, 4, 9, 12][index]}-`,
+    ));
+    if (opening.length < 2 || opening.some((object) =>
+      !findPath(map, start, objectEntranceTile(object)))) {
+      report('opening-economy', `start ${coordKey(start)} lacks two reachable opening pickups`);
+    }
+  });
+  return issues;
+}
+
 export function lintAuthoredMaps(): MapLintIssue[] {
   return [
     ...lintMap(createBorderMarches(1), [{ x: 3, y: 10 }, { x: 24, y: 10 }]),
@@ -197,6 +260,8 @@ export function lintAuthoredMaps(): MapLintIssue[] {
       ...GRAND_MUSTER_CASTLES.map((castle) => castle.entrance),
       GRAND_MUSTER_ENEMY_CASTLE.entrance,
     ]),
+    ...lintMap(createCrookedCrown(1), [...CROOKED_CROWN_STARTS]),
+    ...lintCrookedCrown(createCrookedCrown(1)),
   ];
 }
 
@@ -205,5 +270,9 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   if (issues.length) {
     issues.forEach((issue) => console.error(`${issue.mapId} ${issue.code}: ${issue.message}`));
     process.exit(1);
-  } else console.log('Map lint passed: no overlaps, unreachable entrances, or ineffective guards.');
+  } else {
+    const dense = crookedCrownMetrics(createCrookedCrown(1));
+    console.log('Map lint passed: no overlaps, unreachable entrances, or ineffective guards.');
+    console.log(`The Crooked Crown: ${dense.interactiveObjects} interactions, ${dense.guardians} guardians, ${dense.authoredLandmarks} landmarks, ${dense.roads} roads, ${(dense.decorationBlockerRatio * 100).toFixed(1)}% shaped/decorative terrain, max open square ${dense.maxOpenSquare}.`);
+  }
 }
