@@ -1,13 +1,13 @@
 import {
-  DAYS_PER_WEEK, DIFFICULTY_MODIFIERS, GUARDIAN_GROWTH_CAP,
-  GUARDIAN_WEEKLY_GROWTH, HERO_MOVE_POINTS,
+  CHEST_XP, DAYS_PER_WEEK, DIFFICULTY_MODIFIERS, GUARDIAN_GROWTH_CAP,
+  GUARDIAN_WEEKLY_GROWTH, HERO_MOVE_POINTS, LEVEL_THRESHOLD,
 } from '../../content/constants';
 import {
   BASE_CASTLE_GOLD_INCOME, FIELD_MANA_REGEN,
   STARTING_RESOURCES,
 } from '../../content/constants';
 import { FACTIONS, validateFactions } from '../../content/factions';
-import { validateBuildings } from '../../content/buildings';
+import { FACTION_BUILDING_SLOTS, validateBuildings } from '../../content/buildings';
 import { FACTION_HEROES, HEROES, validateHeroes } from '../../content/heroes';
 import { validateSkills } from '../../content/skills';
 import { ITEMS, validateItems } from '../../content/items';
@@ -29,13 +29,16 @@ import {
 import {
   createCrookedCrown, CROOKED_CROWN_STARTS,
 } from '../../content/maps/crookedCrown';
+import {
+  createSixfoldTrial, SIXFOLD_PLAYER_SETUP, SIXFOLD_RECRUIT_WEEKS,
+} from '../../content/maps/sixfoldTrial';
 import { validateMapObjectRegistry } from '../../content/mapObjectRegistry';
 import { createTornSound, TORN_SOUND_CASTLE_POSITIONS } from '../../content/maps/tornSound';
 import { FACTION_UNITS, UNITS, validateUnits } from '../../content/units';
 import { validateSpells } from '../../content/spells';
 import { validateBargains } from '../../content/bargains';
 import { validateBattleTiles } from '../../content/battleTiles';
-import { ACQUIRABLE_SCHOOL_SPELLS } from '../../content/spells';
+import { ACQUIRABLE_SCHOOL_SPELLS, SCHOOL_SPELLS } from '../../content/spells';
 import { emptyArmy, makeArmy } from '../army';
 import {
   consumableSlotCount, dailyGoldArtifactBonus, dailyManaArtifactBonus,
@@ -54,6 +57,7 @@ import type {
   BuildingId, Castle, FactionId, GameState, Hero, NewGameOptions, Player, PlayerId,
   Resources, SpellId,
 } from '../types';
+import { PLAYER_IDS } from '../types';
 import { checkVictory, updateCastlelessCountdowns } from './outcomes';
 import { refreshAllTaverns } from './tavern';
 import { addItem } from './items';
@@ -202,6 +206,18 @@ function grandMusterArmy(faction: FactionId) {
   })));
 }
 
+function sixfoldArmy(faction: FactionId) {
+  return makeArmy(FACTION_UNITS[faction].map((unitId) => ({
+    unitId, count: Math.max(1, UNITS[unitId].growth * SIXFOLD_RECRUIT_WEEKS),
+  })));
+}
+
+const SIXFOLD_COMMON_BUILDINGS: BuildingId[] = [
+  'villageHall', 'townHall', 'cityHall', 'tavern', 'marketplace',
+  'walls', 'keep', 'mageGuild1', 'mageGuild2', 'mageGuild3',
+  'dwelling1', 'dwelling2', 'dwelling3', 'dwelling4', 'dwelling5', 'dwelling6',
+];
+
 export function createGame(options: NewGameOptions): GameState {
   validateUnits();
   validateBuildings();
@@ -223,6 +239,7 @@ export function createGame(options: NewGameOptions): GameState {
         : mapId === 'manywhere' ? createManywhere(options.seed)
           : mapId === 'grand-muster' ? createGrandMuster(options.seed)
             : mapId === 'crooked-crown' ? createCrookedCrown(options.seed)
+              : mapId === 'sixfold-trial' ? createSixfoldTrial(options.seed)
         : createBorderMarches(options.seed);
   validateMap(map);
   const p1Faction = mapId === 'grand-muster' ? 'hearthguard'
@@ -231,17 +248,21 @@ export function createGame(options: NewGameOptions): GameState {
     : options.p2Faction ?? 'woundWrights';
   const playerCount = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
     || mapId === 'crooked-crown'
-    ? options.playerCount ?? 4 : mapId === 'manywhere' ? options.playerCount ?? 1 : 2;
-  const ids: PlayerId[] = ['p1', 'p2', 'p3', 'p4'];
+    ? options.playerCount ?? 4 : mapId === 'sixfold-trial' ? 6
+      : mapId === 'manywhere' ? options.playerCount ?? 1 : 2;
+  const ids: PlayerId[] = [...PLAYER_IDS];
+  const stateIds = mapId === 'sixfold-trial' ? ids : ids.slice(0, 4);
   const factions: Record<PlayerId, FactionId> = {
     p1: p1Faction, p2: p2Faction,
     p3: options.p3Faction ?? 'unfinished', p4: options.p4Faction ?? 'vespiary',
+    p5: options.p5Faction ?? 'hagwood', p6: options.p6Faction ?? 'wildergrass',
   };
   const positions = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
     ? CROSSTITCH_CASTLE_POSITIONS : mapId === 'torn-sound'
       ? TORN_SOUND_CASTLE_POSITIONS : mapId === 'grand-muster'
         ? [GRAND_MUSTER_CASTLES[0].entrance, GRAND_MUSTER_ENEMY_CASTLE.entrance]
         : mapId === 'crooked-crown' ? [...CROOKED_CROWN_STARTS]
+          : mapId === 'sixfold-trial' ? SIXFOLD_PLAYER_SETUP.map((slot) => slot.entrance)
         : [{ x: 3, y: 10 }, { x: 24, y: 10 }];
   const startPositions = mapId === 'manywhere' ? MANYWHERE_CASTLE_POSITIONS : positions;
   const castles = mapId === 'grand-muster'
@@ -283,9 +304,10 @@ export function createGame(options: NewGameOptions): GameState {
     p1: mapId === 'grand-muster' ? 'human' : options.p1,
     p2: mapId === 'grand-muster' ? 'dormant' : options.p2,
     p3: options.p3 ?? 'ai', p4: options.p4 ?? 'ai',
+    p5: options.p5 ?? 'ai', p6: options.p6 ?? 'ai',
   };
   const players = {} as Record<PlayerId, Player>;
-  for (const [index, id] of ids.entries()) {
+  for (const [index, id] of stateIds.entries()) {
     if (index >= playerCount) { players[id] = inactivePlayer(id, factions[id]); continue; }
     const playerCastle = mapId === 'grand-muster' && id === 'p2'
       ? castles[castles.length - 1] : castles[index];
@@ -293,7 +315,7 @@ export function createGame(options: NewGameOptions): GameState {
       id, controllers[id], factions[id], rng, castleEntrance(playerCastle),
     );
   }
-  const { p1, p2, p3, p4 } = players;
+  const { p1, p2, p3, p4, p5, p6 } = players;
   if (mapId === 'grand-muster') {
     p1.name = 'The Muster';
     p1.resources = { gold: 50_000, timber: 50, iron: 50, essence: 50 };
@@ -310,6 +332,37 @@ export function createGame(options: NewGameOptions): GameState {
     p1.hero = p1.heroes[0];
     p2.name = 'The Distant Observer';
     p2.heroes.forEach((hero) => { hero.movement = 0; });
+  }
+  if (mapId === 'sixfold-trial') {
+    for (const slot of SIXFOLD_PLAYER_SETUP) {
+      const player = players[slot.id];
+      const castle = castles.find((candidate) => candidate.owner === slot.id)!;
+      const definitionId = SIXFOLD_PLAYER_SETUP.find((candidate) =>
+        candidate.faction === player.faction)?.heroDefinitionId ?? FACTION_HEROES[player.faction][0];
+      const template = SIXFOLD_PLAYER_SETUP.find((candidate) =>
+        candidate.faction === player.faction) ?? slot;
+      const hero = makeHero(slot.id, player.faction, definitionId, castleEntrance(castle));
+      hero.level = template.level;
+      hero.xp = LEVEL_THRESHOLD(template.level + 1) - CHEST_XP;
+      hero.attack += template.statBonus;
+      hero.defense += template.statBonus;
+      hero.spellPower += template.statBonus;
+      hero.knowledge += template.statBonus;
+      hero.skills = { ...template.skills };
+      hero.knownSpells = [...new Set(FACTIONS[player.faction].schools.flatMap(SCHOOL_SPELLS))];
+      hero.upgradedSpells = [...hero.knownSpells];
+      hero.mana = hero.knowledge * 10;
+      hero.movement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero)));
+      hero.army = sixfoldArmy(player.faction);
+      player.heroes = [hero];
+      player.activeHeroId = hero.id;
+      player.hero = hero;
+      player.name = `Trial Banner ${slot.id.slice(1)}`;
+      player.resources = { gold: 75_000, timber: 75, iron: 75, essence: 75 };
+      castle.buildings = [...SIXFOLD_COMMON_BUILDINGS, ...FACTION_BUILDING_SLOTS[player.faction]];
+      castle.available = FACTION_UNITS[player.faction].map(() => 0);
+      castle.guildDeck = [...hero.knownSpells];
+    }
   }
   const difficultyRules = DIFFICULTY_MODIFIERS[difficulty];
   for (const guardian of map.objects.filter((object) => object.kind === 'guardian')) {
@@ -346,12 +399,14 @@ export function createGame(options: NewGameOptions): GameState {
     version: 4, seed: options.seed >>> 0, difficulty,
     setup: { ...options, difficulty, mapId }, rng,
     day: 1, week: 1, activePlayer: 'p1', phase: 'adventure',
-    players: { p1, p2, p3, p4 }, castles, map, battle: null,
+    players, castles, map, battle: null,
     pendingChoice: null, winner: null, replay: [],
     metrics: {
-      battles: 0, casualties: { p1: 0, p2: 0, p3: 0, p4: 0, neutral: 0 },
+      battles: 0, casualties: Object.fromEntries(
+        [...stateIds.map((id) => [id, 0] as const), ['neutral', 0]],
+      ) as GameState['metrics']['casualties'],
       battleRounds: [], spellCasts: 0, battleOutcomes: [],
-      playerTotals: Object.fromEntries(['p1', 'p2', 'p3', 'p4'].map((id) => [id, {
+      playerTotals: Object.fromEntries(stateIds.map((id) => [id, {
         damageDealt: 0, damageTaken: 0, spellsCast: 0, extraActions: 0, casualtyValue: 0,
       }])) as GameState['metrics']['playerTotals'],
     },
@@ -361,8 +416,9 @@ export function createGame(options: NewGameOptions): GameState {
     eventLog: [`${announcement.title}: ${announcement.flavor}`],
     lastBattleRecovered: {},
     mapEffects: [], battleRecords: [],
-    objectiveProgress: { p1: 0, p2: 0, p3: 0, p4: 0 }, objectiveClaims: {},
-    objectiveLastDay: { p1: 0, p2: 0, p3: 0, p4: 0 },
+    objectiveProgress: Object.fromEntries(stateIds.map((id) => [id, 0])) as Record<PlayerId, number>,
+    objectiveClaims: {},
+    objectiveLastDay: Object.fromEntries(stateIds.map((id) => [id, 0])) as Record<PlayerId, number>,
     lastBattleStats: null,
     lastMessage: 'Day 1 — Player 1 begins.',
   };
@@ -562,8 +618,8 @@ export function endTurn(state: GameState): void {
     hero.logisticsCarry = skillRank(hero, 'logistics') === 3
       ? Math.min(SKILLS.logistics.values.carry, hero.movement) : 0;
   }
-  const activeIds = (['p1', 'p2', 'p3', 'p4'] as PlayerId[])
-    .filter((id) => state.players[id].active);
+  const activeIds = ([...PLAYER_IDS] as PlayerId[])
+    .filter((id) => state.players[id]?.active);
   const current = activeIds.indexOf(state.activePlayer);
   const nextPlayer = activeIds[(current + 1) % activeIds.length];
   if (nextPlayer !== activeIds[0]) {

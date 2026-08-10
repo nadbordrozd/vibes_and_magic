@@ -1,9 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { createBorderMarches } from '../../content/maps/borderMarches';
 import { createManywhere } from '../../content/maps/manywhere';
+import { createCrookedCrown, CROOKED_CROWN_STARTS } from '../../content/maps/crookedCrown';
 import { terrainIdAt } from '../../content/terrain';
 import type { GameMap } from '../types';
-import { deriveMountainRanges } from '../../ui/mountainRanges';
+import {
+  deriveMountainRanges, mountainRangeGeometry, mountainRangeHasExploredContact,
+  mountainRangeIntersectsViewport, mountainRectangleIntersects,
+  type MountainRangeDecoration,
+} from '../../ui/mountainRanges';
 import { manifestEntry } from '../../../assets/manifest';
 
 function mapWithMountainShape(rows: string[]): GameMap {
@@ -17,6 +22,106 @@ function mapWithMountainShape(rows: string[]): GameMap {
 }
 
 describe('mountain range decorations', () => {
+  it.each([
+    ['one-tile knoll', 'rocky-knoll-1', 1],
+    ['narrow ridge', 'rocky-ridge-2', 2],
+    ['massif', 'rocky-massif-1', 5],
+    ['short backbone', 'rocky-boundary-3', 4],
+  ] as const)('clips representative %s paint to its footprint sides and south edge', (
+    _name, variant, contactWidth,
+  ) => {
+    const range: MountainRangeDecoration = {
+      key: variant, position: { x: 7, y: 9 }, variant, contactWidth,
+    };
+    const geometry = mountainRangeGeometry(range);
+    expect(geometry.visual.x).toBe(geometry.footprint.x);
+    expect(geometry.visual.width).toBe(geometry.footprint.width);
+    expect(geometry.visual.y).toBeLessThan(geometry.footprint.y);
+    expect(geometry.visual.y + geometry.visual.height)
+      .toBeLessThanOrEqual(geometry.footprint.y + geometry.footprint.height);
+    expect(geometry.sprite.width).toBe(manifestEntry(
+      `decoration:mountain:${variant}`,
+    )!.w);
+    expect(geometry.sprite.x - geometry.visual.x)
+      .toBeCloseTo(-(geometry.sprite.x + geometry.sprite.width
+        - geometry.visual.x - geometry.visual.width));
+  });
+
+  it('culls against the complete clipped visual rectangle at every viewport edge', () => {
+    const range: MountainRangeDecoration = {
+      key: 'edge', position: { x: 10, y: 10 }, variant: 'rocky-ridge-1', contactWidth: 1,
+    };
+    const { footprint, visual } = mountainRangeGeometry(range);
+    expect(mountainRangeIntersectsViewport(range, {
+      x: visual.x, y: visual.y, width: visual.width, height: 1,
+    })).toBe(true); // northern overhang visible while the anchor/footprint is below the viewport
+    expect(mountainRangeIntersectsViewport(range, {
+      x: visual.x - 1, y: visual.y, width: 1, height: visual.height,
+    })).toBe(false);
+    expect(mountainRangeIntersectsViewport(range, {
+      x: visual.x + visual.width - 1, y: visual.y, width: 1, height: visual.height,
+    })).toBe(true);
+    expect(mountainRangeIntersectsViewport(range, {
+      x: visual.x, y: visual.y + visual.height - 1, width: visual.width, height: 1,
+    })).toBe(true);
+    expect(footprint.y).toBeGreaterThan(visual.y + 1);
+
+    const mapEdge = { ...range, position: { x: 0, y: 0 } };
+    expect(mountainRangeIntersectsViewport(mapEdge, {
+      x: 0, y: 0, width: 1, height: 1,
+    })).toBe(true);
+  });
+
+  it('mounts a partly explored mid-south composition while keeping unseen contacts fog-owned', () => {
+    const map = createCrookedCrown(4040);
+    const range = deriveMountainRanges(map).find(({ position, contactWidth }) =>
+      position.x === 38 && position.y === 48 && contactWidth === 6);
+    expect(range).toBeDefined();
+    const explored = new Set(['38,48']);
+    expect(mountainRangeHasExploredContact(range!, explored)).toBe(true);
+    expect(Array.from({ length: range!.contactWidth }, (_, offset) =>
+      explored.has(`${range!.position.x + offset},${range!.position.y}`)).every(Boolean)).toBe(false);
+    expect(['39,48', '40,48', '41,48', '42,48', '43,48'].every(
+      (key) => !explored.has(key),
+    )).toBe(true);
+  });
+
+  it('keeps the exact Crooked Crown north-west to south-west route clear in every same-row contact', () => {
+    const map = createCrookedCrown(4040);
+    const start = CROOKED_CROWN_STARTS[0];
+    const goal = CROOKED_CROWN_STARTS[2];
+    const queue = [start];
+    const previous = new Map<string, string | null>([[`${start.x},${start.y}`, null]]);
+    const steps = [-1, 0, 1].flatMap((dy) => [-1, 0, 1].map((dx) => ({ dx, dy })))
+      .filter(({ dx, dy }) => dx !== 0 || dy !== 0);
+    while (queue.length) {
+      const current = queue.shift()!;
+      if (current.x === goal.x && current.y === goal.y) break;
+      for (const { dx, dy } of steps) {
+        const next = { x: current.x + dx, y: current.y + dy };
+        const key = `${next.x},${next.y}`;
+        if (next.x < 0 || next.y < 0 || next.x >= map.width || next.y >= map.height
+            || previous.has(key) || ['mountain', 'water'].includes(terrainIdAt(map, next))) continue;
+        previous.set(key, `${current.x},${current.y}`);
+        queue.push(next);
+      }
+    }
+    const route = [];
+    for (let key: string | null = `${goal.x},${goal.y}`; key; key = previous.get(key) ?? null) {
+      const [x, y] = key.split(',').map(Number);
+      route.push({ x, y });
+    }
+    expect(route).toHaveLength(54);
+    for (const range of deriveMountainRanges(map)) {
+      const { visual } = mountainRangeGeometry(range);
+      for (const tile of route.filter(({ y }) => y === range.position.y)) {
+        expect(mountainRectangleIntersects(visual, {
+          x: tile.x * 32, y: tile.y * 32, width: 32, height: 32,
+        }), `${range.key} paints route tile ${tile.x},${tile.y}`).toBe(false);
+      }
+    }
+  });
+
   it('is deterministic and confines every contact band to authored mountain terrain', () => {
     const map = createBorderMarches(1);
     const first = deriveMountainRanges(map);

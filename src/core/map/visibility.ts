@@ -48,3 +48,25 @@ export function revealForPlayer(
     revealCircle(explored, map, edge, CASTLE_REVEAL_RADIUS));
   return [...explored].sort();
 }
+
+/**
+ * Project permanent exploration through movement positions that this hero actually entered.
+ *
+ * The reducer uses this one step at a time so interruptions retain the complete trail. The
+ * adventure renderer uses the same pure projection over the currently animated prefix; animation
+ * therefore presents rules-owned vision without becoming rules state itself.
+ */
+export function revealForMovementPath(
+  current: string[],
+  map: GameMap,
+  heroes: Hero[],
+  castles: Castle[],
+  movingHero: Hero,
+  enteredPositions: Coord[],
+): string[] {
+  const explored = new Set(revealForPlayer(current, map, heroes, castles));
+  const radius = HERO_REVEAL_RADIUS + ((movingHero.skills.scouting ?? 0) >= 2
+    ? SKILLS.scouting.values.revealBonus : 0);
+  for (const position of enteredPositions) revealCircle(explored, map, position, radius);
+  return [...explored].sort();
+}

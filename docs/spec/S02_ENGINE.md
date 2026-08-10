@@ -70,6 +70,12 @@ Warn above roughly 50 KB compressed and offer file export. Local saves with a mi
 hash may load with a visible warning; URL replays must refuse a mismatch. Golden replay fixtures in
 CI must reach identical final-state hashes.
 
+The configurable player pipeline supports up to six real player IDs. Maps with at most four slots
+retain their historical four-player serialized shape; a six-player map serializes all six
+controller, faction, turn-order, metric, objective, and exploration records. Extra faction castles
+must not be disguised as one player's allies when ownership, combat, sieges, or hot-seat control is
+the setup under test.
+
 ## Resolution pipeline
 
 Every attack and ability hook belongs to one of these ordered stages:

@@ -8,9 +8,10 @@ export type {
 } from './contentTypes';
 export type { Action } from './actionTypes';
 
-export type PlayerId = 'p1' | 'p2' | 'p3' | 'p4';
+export const PLAYER_IDS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'] as const;
+export type PlayerId = typeof PLAYER_IDS[number];
 export type MapId = 'border-marches' | 'crosstitch' | 'crosstitch-kit' | 'torn-sound'
-  | 'manywhere' | 'grand-muster' | 'crooked-crown';
+  | 'manywhere' | 'grand-muster' | 'crooked-crown' | 'sixfold-trial';
 export type Difficulty = 'easy' | 'normal' | 'hard' | 'brutal';
 export type FactionId =
   | 'hearthguard' | 'woundWrights' | 'unfinished'
@@ -731,10 +732,14 @@ export interface NewGameOptions {
   p1Faction?: FactionId;
   p2Faction?: FactionId;
   mapId?: MapId;
-  playerCount?: 1 | 2 | 3 | 4;
+  playerCount?: 1 | 2 | 3 | 4 | 5 | 6;
   p3?: 'human' | 'ai' | 'dormant';
   p4?: 'human' | 'ai' | 'dormant';
+  p5?: 'human' | 'ai' | 'dormant';
+  p6?: 'human' | 'ai' | 'dormant';
   p3Faction?: FactionId;
   p4Faction?: FactionId;
+  p5Faction?: FactionId;
+  p6Faction?: FactionId;
   difficulty?: Difficulty;
 }

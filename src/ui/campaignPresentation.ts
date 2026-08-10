@@ -4,6 +4,7 @@ import { createGrandMuster } from '../content/maps/grandMuster';
 import { createManywhere } from '../content/maps/manywhere';
 import { createTornSound } from '../content/maps/tornSound';
 import { createCrookedCrown } from '../content/maps/crookedCrown';
+import { createSixfoldTrial } from '../content/maps/sixfoldTrial';
 import type { GameMap, MapId } from '../core/types';
 
 const MAP_FACTORIES = {
@@ -14,6 +15,7 @@ const MAP_FACTORIES = {
   manywhere: createManywhere,
   'grand-muster': createGrandMuster,
   'crooked-crown': createCrookedCrown,
+  'sixfold-trial': createSixfoldTrial,
 } satisfies Record<MapId, (seed?: number) => GameMap>;
 
 const MAP_STYLES: Record<MapId, string> = {
@@ -24,6 +26,7 @@ const MAP_STYLES: Record<MapId, string> = {
   manywhere: 'One-to-three-player exploration sandbox',
   'grand-muster': 'Oversized creature and structure showcase sandbox',
   'crooked-crown': 'Four-player dense labyrinth conquest campaign',
+  'sixfold-trial': 'Six-player advanced combat proving ground',
 };
 
 export interface CampaignPresentation {

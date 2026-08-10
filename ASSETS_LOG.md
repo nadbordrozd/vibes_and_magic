@@ -7,6 +7,17 @@ The current terrain implementation, asset inventory, reproduction commands, and 
 are consolidated in `docs/36_TERRAIN_TRANSITIONS.md`. The entries below remain the chronological
 reflection record.
 
+## 2026-08-10 — Mountain bounds correction uses existing native assets
+
+- No bitmap was generated, edited, resized, repainted, or replaced. The accepted rocky knoll,
+  ridge, massif, backbone, and boundary PNGs and their PixelLab provenance remain byte-for-byte.
+- Narrow authored contacts now expose a centered native-pixel slice through an SVG footprint clip.
+  This removes horizontal occupation of passable Crooked Crown tiles while preserving the approved
+  silhouettes, palette, resolution, deterministic selection, and legal northern height.
+- Full-map, west-route, mid-south, edge-clipped, and partial-fog browser evidence is recorded by the
+  expanded Crooked Crown review; no provider job, prompt, selection, or failed batch exists for this
+  rendering-only correction.
+
 ## 2026-08-09 — Complete spell and secondary-skill icon catalog
 
 - **Contract before generation:** all 68 spells and 21 skills use native 32×32 transparent RGBA,

@@ -11,6 +11,7 @@ import { UNITS } from '../../content/units';
 import { checkVictory } from '../game/outcomes';
 import type { BattleStack, BattleState } from '../types';
 import { terrainIdAt } from '../../content/terrain';
+import { revealForPlayer } from '../map/visibility';
 
 describe('Ship-Shape and Water milestones', () => {
   it('applies global difficulty levers and records the setting', () => {
@@ -193,8 +194,12 @@ describe('Ship-Shape and Water milestones', () => {
     const weakestBefore = sailor.army.flatMap((stack) => stack ? [stack] : [])
       .sort((a, b) => a.count * UNITS[a.unitId].hp - b.count * UNITS[b.unitId].hp)[0].count;
     expect(adventurePath(sailing, exit.position)).toEqual([entrance.position, exit.position]);
+    sailing.players.p1.explored = revealForPlayer([], sailing.map, sailor, []);
+    const beforeWhirlpoolVision = new Set(sailing.players.p1.explored);
     sailing = apply(sailing, { type: 'MOVE_HERO', destination: exit.position });
     expect(sailing.players.p1.hero!.position).toEqual(exit.position);
+    expect(sailing.players.p1.explored).toContain(`${exit.position.x},${exit.position.y}`);
+    expect(sailing.players.p1.explored.some((key) => !beforeWhirlpoolVision.has(key))).toBe(true);
     const totalAfter = sailing.players.p1.hero!.army.reduce((sum, stack) =>
       sum + (stack?.count ?? 0), 0);
     const totalBefore = sailor.army.reduce((sum, stack) => sum + (stack?.count ?? 0), 0);

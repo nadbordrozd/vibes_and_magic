@@ -20,6 +20,15 @@ uses the normal diagonal surcharge unless a rule removes it. Paths, costs, boat 
 visits, and transfers are core actions. Explored fog persists per player; visibility derives from
 heroes, owned castles, skills, artifacts, and explicit reveal effects.
 
+Every tile a hero actually enters contributes that hero's vision to the owning player's permanent
+explored union immediately. A partial route therefore retains vision through its last occupied tile
+when movement is exhausted or interrupted by aggro, combat, a pending choice, an object visit, water
+topology, or defeat; it never reveals an unentered continuation. During non-instant movement the
+renderer projects the same deterministic reveal rule only through the current animated path index.
+It must not display destination or future-route vision early, and this projection never mutates core
+state. Other heroes, owned castles, skill/artifact effects, explicit reveal effects, and per-player
+hot-seat isolation remain additive contributors. See work order 48.
+
 The adventure map uses eight-direction movement and adjacency except guardian aggro, which is the
 explicit orthogonal exception. A hero may occupy only a legal entrance/empty tile. Heroes meet in
 battle; friendly heroes may exchange army stacks and items only while adjacent or co-located by a
@@ -45,6 +54,14 @@ Each authored tile stores `{terrain, skin?}`. Only the gameplay terrain reaches 
 The catalog and current defaults live in
 [`../../src/content/terrain.ts`](../../src/content/terrain.ts) and movement constants in
 [`../../src/content/constants.ts`](../../src/content/constants.ts).
+
+Adventure obstacle illustrations may extend north/upward beyond their authored ground contact, but
+must not paint left or right outside it or south/below it. Mountain compositions enforce this with
+native-resolution centered cropping and an executable footprint clip; their complete clipped visual
+rectangle, including legal northern overhang, is the viewport-culling unit. A partially visible or
+partially explored composition is not omitted. Fog is painted after world sprites so unseen cells
+remain opaque even when an adjacent explored contact mounts the shared composition. These are
+presentation rules only and never widen terrain collision or pathfinding.
 
 Gameplay terrains are Meadow, Deepwood, Mosswold, Ashsteppe, Barrowfield, Lacquer Flats, The Hush,
 Mire, Mountain, and Water. Mountain is impassable. Water requires a boat. Road and Seam are overlays:
@@ -208,6 +225,12 @@ The Grand Muster is the fixed showcase sandbox. Player 1 begins with six owned c
 playable faction—and six faction-matched heroes, each carrying one stack of all six castle units.
 Its distant second player is Dormant by definition. Six static neutral sparring guardians sit beyond
 the safe castle entrances so every starting army has an immediate optional combat demonstration.
+
+The Sixfold Trial is a selectable six-player conquest showcase. It has six independently owned
+developed castles and heroes, distinct default factions, configurable controllers/factions, dense
+cross-field roads, 36 ordinary chests, and 18 linked artifact guardians. Each start has multiple
+open approaches, while the shared field permits neutral fights, hero battles, and castle assaults
+without a long opening economy phase.
 
 ## Boats and water
 

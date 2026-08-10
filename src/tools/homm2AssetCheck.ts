@@ -17,7 +17,11 @@ const errors: string[] = [];
 const imageExtensions = new Set(['.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp', '.tif', '.tiff']);
 
 function git(args: string[]): string {
-  const result = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+  // Keep enough transport headroom for large project inventories. Call sites still choose whether
+  // ignored files belong in their semantic scope rather than relying on this ceiling as filtering.
+  const result = spawnSync('git', args, {
+    cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
+  });
   if (result.status !== 0) throw new Error(result.stderr.trim() || `git ${args.join(' ')} failed`);
   return result.stdout;
 }
@@ -30,7 +34,10 @@ function globExpression(pattern: string): RegExp {
 const allFiles = git(['ls-files', '-co', '--exclude-standard', '-z']).split('\0').filter(Boolean);
 for (const pattern of inventory.local_only_paths) {
   const matcher = globExpression(pattern);
-  const localMatches = git(['ls-files', '-co', '-z']).split('\0').filter((path) => matcher.test(path));
+  // Include ignored files for the declared local-only path itself, without enumerating unrelated
+  // ignored worktrees such as virtual environments.
+  const localMatches = git(['ls-files', '-co', '-z', '--', pattern])
+    .split('\0').filter((path) => matcher.test(path));
   for (const path of localMatches) {
     const ignored = spawnSync('git', ['check-ignore', '-q', '--', path], { cwd: root }).status === 0;
     if (!ignored) errors.push(`${path}: local-only HoMM2 image provenance is not gitignored`);

@@ -22,6 +22,7 @@ import { createTornSound } from '../content/maps/tornSound';
 import { createManywhere } from '../content/maps/manywhere';
 import { createGrandMuster } from '../content/maps/grandMuster';
 import { createCrookedCrown } from '../content/maps/crookedCrown';
+import { createSixfoldTrial } from '../content/maps/sixfoldTrial';
 import { TERRAIN } from '../content/terrain';
 import { MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
 
@@ -58,6 +59,7 @@ export const CONTENT_HASH = hashText(stableStringify({
     manywhere: createManywhere(1),
     grandMuster: createGrandMuster(1),
     crookedCrown: createCrookedCrown(1),
+    sixfoldTrial: createSixfoldTrial(1),
   },
 }));
 
@@ -126,7 +128,7 @@ function validSave(value: unknown): value is ActionSave {
   const save = value as Partial<ActionSave>;
   return typeof save.contentHash === 'string'
     && ['border-marches', 'crosstitch', 'crosstitch-kit', 'torn-sound', 'manywhere',
-      'grand-muster', 'crooked-crown'].includes(save.mapId ?? '')
+      'grand-muster', 'crooked-crown', 'sixfold-trial'].includes(save.mapId ?? '')
     && ['easy', 'normal', 'hard', 'brutal'].includes(save.difficulty ?? '')
     && Number.isInteger(save.seed) && Array.isArray(save.actionLog);
 }
@@ -142,6 +144,7 @@ function initialStateForSave(save: ActionSave, setupOverride?: NewGameOptions): 
     ...(!setup && (save.mapId === 'crosstitch' || save.mapId === 'crosstitch-kit'
       || save.mapId === 'crooked-crown')
       ? { playerCount: 4 as const } : {}),
+    ...(!setup && save.mapId === 'sixfold-trial' ? { playerCount: 6 as const } : {}),
   });
 }
 

@@ -6,6 +6,28 @@ next concrete work moved to Beads on 2026-08-05; use `bd prime`, `bd ready`, and
 New implementation checkpoints may still be recorded here when they preserve useful technical
 provenance, but this file is no longer the task tracker.
 
+## 2026-08-10 — Incremental adventure fog
+
+- Added one pure movement-path reveal projection shared by the deterministic reducer and adventure
+  renderer. Core exploration now unions every entered normal, diagonal, interrupted, interaction,
+  water/topology, and post-guardian-completion tile; hot-seat opponents are untouched.
+- Adventure animation presents only the vision accumulated through its current path index, omits an
+  unentered direct guardian tile, and commits the unchanged single `MOVE_HERO` action afterward.
+  Static reveal contributors and replay/save/link/hash authority remain in the core.
+- Added focused reducer, animation, interruption, whirlpool, guardian-victory, persistence, and late-
+  mountain-fog tests plus a desktop/390px six-step browser frame review under
+  `.pixel-work/review/incremental-fog/`. See work order 48.
+
+## 2026-08-10 — Crooked Crown mountain render bounds
+
+- Added shared mountain footprint/sprite/visual geometry. Production now centered-crops native
+  role PNGs, clips horizontally and at the south edge, preserves northward overhang, and culls by
+  full clipped-rectangle intersection with a resize-aware viewport.
+- Replaced all-contact fog gating with any-contact mounting plus a late fog occlusion layer. This
+  renders partially revealed Mountain contacts without leaking unseen composition pixels.
+- Added exact Crooked Crown west-route and mid-south regressions, representative family geometry and
+  edge-panning tests, and an expanded browser review with executable bounds/passability assertions.
+
 The authoritative continuation guide for the 2026-08-04/05 terrain entries is
 `docs/36_TERRAIN_TRANSITIONS.md`. It distinguishes current production wiring from the approved Wang
 vocabulary that remains to be selected directly at runtime. Live terrain work is tracked under
@@ -518,3 +540,25 @@ Beads epic `vibes_and_magic-6sf`.
   build, spec links, the dedicated content-icon browser review, and browser smoke. The complete
   suite passed 545/546 tests in 58/59 files; only the pre-existing deterministic seed-1/day-56 AI
   winner assertion failed (`src/core/__tests__/mechanics-regression.test.ts:231`).
+
+## 2026-08-10 — The Sixfold Trial advanced-combat map
+
+- Extended player identity, setup options, menu controls, turn/outcome accounting, colors,
+  persistence validation, content hashing, campaign presentation, and simulation routing from four
+  to six real slots while preserving the serialized state shape of older maps.
+- Added deterministic `sixfold-trial`: 54×42, six distinct developed faction starts, 258 road tiles,
+  36 chests, 18 artifact proving seals, and 18 linked static guardians covering four calibrated
+  strength bands. Added exact map-lint metrics and general bounds/footprint/reachability coverage.
+- Added executable hero/castle authority. Armies use six catalog faction units at exactly twice
+  weekly growth in a seven-slot array; heroes have six rank-three skills, full resources, and all 34
+  spells from their configured school pair; castles contain complete hall, defense, guild,
+  dwelling, economy, and faction-special lines.
+- Added focused determinism/setup/combat/siege/persistence/link tests and an eleven-capture desktop/390
+  browser review covering native full map, developed castle, skills/army, spellbooks, neutral
+  combat, ability/spell presentation, siege, and hero duel. Final gate results are recorded in the
+  issue handoff after verification.
+- Verification passed the 49-test focused map/setup/persistence/spell/siege/asset matrix, full
+  pretest catalogs, TypeScript/Vite build, browser smoke, setup/save and UX reviews, the 55-action
+  day-6 walkthrough, and the dedicated 11-capture Sixfold review. The complete suite passed 564/565
+  tests in 61/62 files; only the pre-existing deferred seed-1/day-56 deterministic-AI termination
+  assertion failed at `src/core/__tests__/mechanics-regression.test.ts:231`.

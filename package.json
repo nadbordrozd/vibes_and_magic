@@ -38,11 +38,13 @@
     "review:ux": "tsx src/sim/ux-review.ts",
     "review:castle-transfer": "tsx src/sim/castle-transfer-review.ts",
     "review:hero-meeting": "tsx src/sim/hero-meeting-review.ts",
+    "review:incremental-fog": "tsx src/sim/incremental-fog-review.ts",
     "review:setup-save": "tsx src/sim/setup-save-review.ts",
     "review:service-actions": "tsx src/sim/service-action-review.ts",
     "review:combat-targeting": "tsx src/sim/combat-targeting-review.ts",
     "review:campaign-outcomes": "tsx src/sim/campaign-outcome-review.ts",
     "review:crooked-crown": "tsx src/sim/crooked-crown-review.ts",
+    "review:sixfold-trial": "tsx src/sim/sixfold-trial-review.ts",
     "review:walkthrough": "tsx src/sim/new-player-walkthrough.ts",
     "review:acceptance": "npm run review:setup-save && npm run review:service-actions && npm run review:combat-targeting && npm run review:campaign-outcomes && npm run review:ux && npm run review:walkthrough",
     "smoke": "tsx src/sim/browser-smoke.ts"

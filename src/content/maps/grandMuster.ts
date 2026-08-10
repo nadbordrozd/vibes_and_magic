@@ -1,5 +1,5 @@
 import type {
-  Coord, FactionId, GameMap, MapObject, ResourceId, TerrainTile, UnitId,
+  Coord, FactionId, GameMap, MapObject, PlayerId, ResourceId, TerrainTile, UnitId,
 } from '../../core/types';
 import { objectFootprintTiles } from '../../core/map/occupancy';
 import { FACTION_UNITS, UNITS } from '../units';
@@ -132,7 +132,7 @@ function structures(seed: number): MapObject[] {
 
     { id: 'muster-mercenaries', kind: 'mercenaryCamp', position: { x: 27, y: 41 }, stockWeek: 1, roster: [{ unitId: 'maskedDuelist', count: 8 }, { unitId: 'hearthHound', count: 12 }] },
     { id: 'muster-wagon', kind: 'wagonCamp', position: { x: 31, y: 41 }, stockWeek: 1, stock: { id: 'bottledEcho' } },
-    { id: 'muster-tithe', kind: 'titheBarn', position: { x: 35, y: 41 }, usedWeek: { p1: 0, p2: 0, p3: 0, p4: 0 } },
+    { id: 'muster-tithe', kind: 'titheBarn', position: { x: 35, y: 41 }, usedWeek: { p1: 0, p2: 0, p3: 0, p4: 0 } as Record<PlayerId, number> },
     { id: 'muster-skeleton', kind: 'skeletonGrass', position: { x: 39, y: 41 }, searched: false, reward: { items: [{ id: 'haresHeel' }] } },
     { id: 'muster-fire', kind: 'coldCampfire', position: { x: 43, y: 41 }, searched: false, reward: { gold: 250, items: [{ id: 'saltedMeat' }] } },
     { id: 'muster-lean-to', kind: 'shepherdsLeanTo', position: { x: 47, y: 41 }, searched: false, reward: { essence: 2 } },

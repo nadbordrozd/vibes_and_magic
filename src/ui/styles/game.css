@@ -43,7 +43,7 @@
 .minimap { position: sticky; width: 150px; height: 110px; left: calc(100% - 160px); bottom: 10px; z-index: 4; background: #080a09; border: 2px solid #d8c991; box-shadow: 0 3px 18px #000b; cursor: crosshair; }
 .minimap.large { width: 280px; height: 210px; }
 .minimap circle { stroke: #111; stroke-width: .15; }
-.minimap circle.p1 { fill: #d95e54; }.minimap circle.p2 { fill: #54a0d9; }.minimap circle.p3 { fill: #58a96a; }.minimap circle.p4 { fill: #d7a84e; }
+.minimap circle.p1 { fill: #d95e54; }.minimap circle.p2 { fill: #54a0d9; }.minimap circle.p3 { fill: #58a96a; }.minimap circle.p4 { fill: #d7a84e; }.minimap circle.p5 { fill: #a873cf; }.minimap circle.p6 { fill: #45b6ad; }
 .minimap-viewport { fill: none; stroke: #fff; stroke-width: .3; pointer-events: none; }
 .objective-banner { display: flex; gap: 16px; align-items: center; padding: 8px 18px; background: #171b15; color: #e9e0c4; border-bottom: 1px solid #4c513d; }
 .objective-banner span { opacity: .75; flex: 1; }.objective-banner button { padding: 5px 9px; }
@@ -241,6 +241,8 @@
 .owner-pennant.p2 .pennant-cloth { fill: #3c8fb2; }
 .owner-pennant.p3 .pennant-cloth { fill: #4d9b63; }
 .owner-pennant.p4 .pennant-cloth { fill: #be7d34; }
+.owner-pennant.p5 .pennant-cloth { fill: #8750ad; }
+.owner-pennant.p6 .pennant-cloth { fill: #278d85; }
 .adventure-map rect { stroke: none; }
 .adventure-map g { cursor: pointer; }
 .map-overlay-glyph { pointer-events: none; }
@@ -288,14 +290,14 @@
 .chest { fill: #754a24; stroke: #e2b75b; stroke-width: 1.5; }.glyph-line { stroke: #e2b75b; }
 .mine-ring { fill: #182019; stroke-width: 3; }.mine-ring.neutral { stroke: #a9aa9e; }
 .mine-ring.p1 { stroke: var(--crimson); }.mine-ring.p2 { stroke: var(--azure); }
-.mine-ring.p3 { stroke: #75b879; }.mine-ring.p4 { stroke: #d19a4a; }
+.mine-ring.p3 { stroke: #75b879; }.mine-ring.p4 { stroke: #d19a4a; }.mine-ring.p5 { stroke: #a873cf; }.mine-ring.p6 { stroke: #45b6ad; }
 .shrine-glyph { stroke: #f5ead6; stroke-width: 2; }
 .shrine-glyph.rite { fill: #c7a842; }.shrine-glyph.craft { fill: #9b6d32; }
 .shrine-glyph.grave { fill: #65507b; }
 .castle-glyph { stroke: #e8dcb6; stroke-width: 1.5; }.castle-glyph.p1 { fill: #9b3932; }.castle-glyph.p2 { fill: #34778e; }
-.castle-glyph.p3 { fill: #3f8054; }.castle-glyph.p4 { fill: #a66e2d; }
+.castle-glyph.p3 { fill: #3f8054; }.castle-glyph.p4 { fill: #a66e2d; }.castle-glyph.p5 { fill: #734397; }.castle-glyph.p6 { fill: #247b75; }
 .hero-glyph { stroke: #f7e9bc; stroke-width: 2; }.hero-glyph.p1 { fill: var(--crimson); }.hero-glyph.p2 { fill: var(--azure); }
-.hero-glyph.p3 { fill: #4d9b63; }.hero-glyph.p4 { fill: #be7d34; }
+.hero-glyph.p3 { fill: #4d9b63; }.hero-glyph.p4 { fill: #be7d34; }.hero-glyph.p5 { fill: #8750ad; }.hero-glyph.p6 { fill: #278d85; }
 .hero-flag { fill: none; stroke: #fff5d5; stroke-width: 1.3; }
 .hero-initial { fill: #fff5d5; font-size: 8px; text-anchor: middle; pointer-events: none; }
 .path-preview { fill: none; stroke: #f4d875; stroke-width: 3; stroke-dasharray: 7 4; pointer-events: none; filter: drop-shadow(0 1px 2px #000); }

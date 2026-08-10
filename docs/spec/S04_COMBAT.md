@@ -12,6 +12,12 @@ timing effects, hero modifiers, stack footprints, and initial counts. Stack coun
 represent casualties exactly; only effects explicitly allowed to revive can increase count after
 deaths.
 
+An authored advanced-combat fixture may begin with fully developed Walls/Keep castles, advanced
+heroes, complete faction-school spellbooks, and full faction rosters. Starting recruit counts must
+derive from canonical weekly unit growth, guardian bands must derive through `unitStrength`, and
+the fixture must exercise ordinary guardian, hero-versus-hero, and castle-siege battle setup rather
+than a presentation-only combat state.
+
 ## Strategic army-strength rating
 
 Strategic comparisons use one pure catalog-derived rating, not battle simulation and not the old

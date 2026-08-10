@@ -15,7 +15,7 @@ import {
   castleEntrance, guardianAt, guardiansCovering, objectEntranceTile,
   isObjectActive,
 } from '../map/occupancy';
-import { revealForPlayer } from '../map/visibility';
+import { revealForMovementPath, revealForPlayer } from '../map/visibility';
 import { foragerRate, logisticsRate, skillRank } from '../heroBehaviors';
 import { activeHero as selectedActiveHero, findHero, findOwnedHero } from '../heroes';
 import type {
@@ -346,6 +346,16 @@ function clearGuardian(state: GameState, guardian: GuardianObject, hero: Hero): 
   state.map.objects = state.map.objects.filter((object) => object.id !== guardian.id);
 }
 
+function revealEnteredPositions(
+  state: GameState, hero: Hero, positions: Array<{ x: number; y: number }>,
+): void {
+  const player = state.players[hero.owner];
+  player.explored = revealForMovementPath(
+    player.explored, state.map, player.heroes,
+    state.castles.filter((castle) => castle.owner === hero.owner), hero, positions,
+  );
+}
+
 export function chooseDiplomacy(
   state: GameState,
   choice: 'fight' | 'disband' | 'recruit' | 'standAside',
@@ -385,7 +395,10 @@ export function chooseDiplomacy(
     }
   }
   clearGuardian(state, guardian, hero);
-  if (pending.completeMoveTo) hero.position = { ...pending.completeMoveTo };
+  if (pending.completeMoveTo) {
+    hero.position = { ...pending.completeMoveTo };
+    revealEnteredPositions(state, hero, [hero.position]);
+  }
 }
 
 export function chooseToll(state: GameState, choice: 'pay' | 'fight'): void {
@@ -623,7 +636,10 @@ export function moveHero(
       .sort((a, b) => guardianPathDistance(state, hero, a)
         - guardianPathDistance(state, hero, b) || a.id.localeCompare(b.id));
     const guardian = direct ?? covering[0];
-    if (!direct) hero.position = { ...step };
+    if (!direct) {
+      hero.position = { ...step };
+      revealEnteredPositions(state, hero, [step]);
+    }
     reached = step;
     const sirens = state.map.objects.find((object) => object.kind === 'sirenRocks'
       && !object.cleared && !(object.approachedBy ?? []).includes(hero.id)
@@ -638,12 +654,11 @@ export function moveHero(
     }
     if (guardian) {
       hero.pathMemory = path.slice(index).map((coord) => ({ ...coord }));
-      state.players[hero.owner].explored = revealForPlayer(
-        state.players[hero.owner].explored, state.map,
-        state.players[hero.owner].heroes,
-        state.castles.filter((castle) => castle.owner === hero.owner),
-      );
+      const beforeEncounter = { ...hero.position };
       encounterGuardian(state, guardian, hero, step, Boolean(direct));
+      if (!sameCoord(beforeEncounter, hero.position)) {
+        revealEnteredPositions(state, hero, [hero.position]);
+      }
       return;
     }
   }

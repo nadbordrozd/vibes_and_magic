@@ -14,6 +14,9 @@ import {
   createCrookedCrown, CROOKED_CROWN_GATE_IDS, CROOKED_CROWN_REWARD_IDS,
   CROOKED_CROWN_STARTS, crookedCrownMetrics,
 } from '../content/maps/crookedCrown';
+import {
+  createSixfoldTrial, SIXFOLD_GUARDIAN_BANDS, SIXFOLD_PLAYER_SETUP, sixfoldMetrics,
+} from '../content/maps/sixfoldTrial';
 import { MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
 import { TERRAIN } from '../content/terrain';
 import type { Coord, GameMap } from '../core/types';
@@ -247,6 +250,33 @@ export function lintCrookedCrown(map: GameMap): MapLintIssue[] {
   return issues;
 }
 
+export function lintSixfoldTrial(map: GameMap): MapLintIssue[] {
+  const issues: MapLintIssue[] = [];
+  const report = (code: string, message: string) => issues.push({ mapId: map.id, code, message });
+  const metrics = sixfoldMetrics(map);
+  if (metrics.chests !== 36) report('showcase-chests', `expected 36 chests, got ${metrics.chests}`);
+  if (metrics.artifacts !== 18) report('showcase-artifacts', `expected 18 artifacts, got ${metrics.artifacts}`);
+  if (metrics.guardians !== 18) report('showcase-guardians', `expected 18 guardians, got ${metrics.guardians}`);
+  for (const band of SIXFOLD_GUARDIAN_BANDS) {
+    const count = metrics.guardianStrengths.filter((strength) =>
+      strength >= band.minimum && strength <= band.maximum).length;
+    if (count < 4) report('showcase-strength-band', `${band.id} has only ${count} guardians`);
+  }
+  for (const slot of SIXFOLD_PLAYER_SETUP) {
+    const exits = [
+      { x: slot.entrance.x - 1, y: slot.entrance.y + 1 },
+      { x: slot.entrance.x, y: slot.entrance.y + 1 },
+      { x: slot.entrance.x + 1, y: slot.entrance.y + 1 },
+      { x: slot.entrance.x - 1, y: slot.entrance.y - 2 },
+      { x: slot.entrance.x, y: slot.entrance.y - 2 },
+      { x: slot.entrance.x + 1, y: slot.entrance.y - 2 },
+    ].filter((position) => inBounds(map, position)
+      && !['mountain', 'water'].includes(terrainIdAt(map, position)));
+    if (exits.length < 3) report('showcase-start-exits', `${slot.id} has only ${exits.length} exits`);
+  }
+  return issues;
+}
+
 export function lintAuthoredMaps(): MapLintIssue[] {
   return [
     ...lintMap(createBorderMarches(1), [{ x: 3, y: 10 }, { x: 24, y: 10 }]),
@@ -262,6 +292,8 @@ export function lintAuthoredMaps(): MapLintIssue[] {
     ]),
     ...lintMap(createCrookedCrown(1), [...CROOKED_CROWN_STARTS]),
     ...lintCrookedCrown(createCrookedCrown(1)),
+    ...lintMap(createSixfoldTrial(1), SIXFOLD_PLAYER_SETUP.map((slot) => slot.entrance)),
+    ...lintSixfoldTrial(createSixfoldTrial(1)),
   ];
 }
 
@@ -274,5 +306,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     const dense = crookedCrownMetrics(createCrookedCrown(1));
     console.log('Map lint passed: no overlaps, unreachable entrances, or ineffective guards.');
     console.log(`The Crooked Crown: ${dense.interactiveObjects} interactions, ${dense.guardians} guardians, ${dense.authoredLandmarks} landmarks, ${dense.roads} roads, ${(dense.decorationBlockerRatio * 100).toFixed(1)}% shaped/decorative terrain, max open square ${dense.maxOpenSquare}.`);
+    const showcase = sixfoldMetrics(createSixfoldTrial(1));
+    console.log(`The Sixfold Trial: 6 slots, ${showcase.chests} chests, ${showcase.artifacts} artifacts, ${showcase.guardians} guardians, ${showcase.roads} roads.`);
   }
 }

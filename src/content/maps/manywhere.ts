@@ -1,5 +1,5 @@
 import type {
-  Coord, FactionId, GameMap, MapObject, TerrainTile,
+  Coord, FactionId, GameMap, MapObject, PlayerId, TerrainTile,
 } from '../../core/types';
 import { FACTION_UNITS, UNITS } from '../units';
 import { tile } from '../terrain';
@@ -152,7 +152,7 @@ function authoredObjects(seed: number): MapObject[] {
     { id: 'manywhere-hoard', kind: 'spoolHoard', position: { x: 38, y: 15 }, cleared: false, reward: { artifacts: [{ id: 'longSpoon' }] } },
     { id: 'manywhere-mercenaries', kind: 'mercenaryCamp', position: { x: 4, y: 28 }, stockWeek: 1, roster: [{ unitId: 'maskedDuelist', count: 8 }, { unitId: 'hearthHound', count: 12 }] },
     { id: 'manywhere-wagon', kind: 'wagonCamp', position: { x: 8, y: 28 }, stockWeek: 1, stock: { id: 'bottledEcho' } },
-    { id: 'manywhere-tithe', kind: 'titheBarn', position: { x: 12, y: 28 }, usedWeek: { p1: 0, p2: 0, p3: 0, p4: 0 } },
+    { id: 'manywhere-tithe', kind: 'titheBarn', position: { x: 12, y: 28 }, usedWeek: { p1: 0, p2: 0, p3: 0, p4: 0 } as Record<PlayerId, number> },
     { id: 'manywhere-skeleton', kind: 'skeletonGrass', position: { x: 25, y: 12 }, searched: false, reward: { items: [{ id: 'haresHeel' }] } },
     { id: 'manywhere-fire', kind: 'coldCampfire', position: { x: 28, y: 12 }, searched: false, reward: { gold: 250, items: [{ id: 'saltedMeat' }] } },
     { id: 'manywhere-lean-to', kind: 'shepherdsLeanTo', position: { x: 31, y: 12 }, searched: false, reward: { essence: 2 } },

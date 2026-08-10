@@ -94,10 +94,14 @@ export function MainMenu({
   const [p2Faction, setP2Faction] = useState<FactionChoice>('woundWrights');
   const [p3, setP3] = useState<'human' | 'ai' | 'dormant'>('ai');
   const [p4, setP4] = useState<'human' | 'ai' | 'dormant'>('ai');
+  const [p5, setP5] = useState<'human' | 'ai' | 'dormant'>('ai');
+  const [p6, setP6] = useState<'human' | 'ai' | 'dormant'>('ai');
   const [p3Faction, setP3Faction] = useState<FactionChoice>('unfinished');
   const [p4Faction, setP4Faction] = useState<FactionChoice>('vespiary');
+  const [p5Faction, setP5Faction] = useState<FactionChoice>('hagwood');
+  const [p6Faction, setP6Faction] = useState<FactionChoice>('wildergrass');
   const [mapId, setMapId] = useState<MapId>('border-marches');
-  const [playerCount, setPlayerCount] = useState<1 | 2 | 3 | 4>(4);
+  const [playerCount, setPlayerCount] = useState<1 | 2 | 3 | 4 | 5 | 6>(4);
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
   const hasSaves = Boolean(savedGame || manualSaves.some(Boolean) || autoSaves.some(Boolean));
   const [mode, setMode] = useState<'new' | 'continue'>(hasSaves ? 'continue' : 'new');
@@ -131,6 +135,7 @@ export function MainMenu({
               if (next === 'manywhere') setPlayerCount(1);
               else if (next === 'grand-muster') setPlayerCount(2);
               else if (next === 'crooked-crown') setPlayerCount(4);
+              else if (next === 'sixfold-trial') setPlayerCount(6);
               else if (playerCount === 1) setPlayerCount(2);
             }}>
               {CAMPAIGN_PRESENTATIONS.map((map) => (
@@ -194,7 +199,7 @@ export function MainMenu({
             </button>
           </div>}
           {(mapId === 'crosstitch' || mapId === 'crosstitch-kit' || mapId === 'manywhere'
-            || mapId === 'crooked-crown') && playerCount >= 3 && (
+            || mapId === 'crooked-crown' || mapId === 'sixfold-trial') && playerCount >= 3 && (
             <div className="slot-row verdant">
               <label><b>03</b><select value={p3Faction} onChange={(event) =>
                 setP3Faction(event.target.value as FactionChoice)}>
@@ -209,7 +214,7 @@ export function MainMenu({
             </div>
           )}
           {(mapId === 'crosstitch' || mapId === 'crosstitch-kit'
-            || mapId === 'crooked-crown') && playerCount >= 4 && (
+            || mapId === 'crooked-crown' || mapId === 'sixfold-trial') && playerCount >= 4 && (
             <div className="slot-row amber">
               <label><b>04</b><select value={p4Faction} onChange={(event) =>
                 setP4Faction(event.target.value as FactionChoice)}>
@@ -223,6 +228,30 @@ export function MainMenu({
               </button>
             </div>
           )}
+          {mapId === 'sixfold-trial' && <div className="slot-row violet">
+            <label><b>05</b><select value={p5Faction} onChange={(event) =>
+              setP5Faction(event.target.value as FactionChoice)}>
+              <option value="random">Random faction</option>
+              {Object.values(FACTIONS).map((faction) => (
+                <option key={faction.id} value={faction.id}>{faction.name}</option>
+              ))}
+            </select><details className="menu-inline-help"><summary>Faction identity</summary><small>{factionSummary(p5Faction)}</small></details></label>
+            <button title={controllerHelp[p5]} onClick={() => setP5(p5 === 'human' ? 'ai' : p5 === 'ai' ? 'dormant' : 'human')}>
+              {p5 === 'human' ? 'Human' : p5 === 'ai' ? 'Standard' : 'Dormant'}
+            </button>
+          </div>}
+          {mapId === 'sixfold-trial' && <div className="slot-row teal">
+            <label><b>06</b><select value={p6Faction} onChange={(event) =>
+              setP6Faction(event.target.value as FactionChoice)}>
+              <option value="random">Random faction</option>
+              {Object.values(FACTIONS).map((faction) => (
+                <option key={faction.id} value={faction.id}>{faction.name}</option>
+              ))}
+            </select><details className="menu-inline-help"><summary>Faction identity</summary><small>{factionSummary(p6Faction)}</small></details></label>
+            <button title={controllerHelp[p6]} onClick={() => setP6(p6 === 'human' ? 'ai' : p6 === 'ai' ? 'dormant' : 'human')}>
+              {p6 === 'human' ? 'Human' : p6 === 'ai' ? 'Standard' : 'Dormant'}
+            </button>
+          </div>}
           <details className="controller-legend" aria-label="Controller meanings">
             <summary>Controller meanings</summary>
             <span><b>Human</b> — {controllerHelp.human}</span>
@@ -252,12 +281,14 @@ export function MainMenu({
           p2Faction: mapId === 'grand-muster' ? 'woundWrights'
             : resolveFaction(p2Faction, seed, 2), mapId,
           playerCount: mapId === 'crosstitch' || mapId === 'crosstitch-kit'
-            || mapId === 'manywhere' || mapId === 'crooked-crown'
+            || mapId === 'manywhere' || mapId === 'crooked-crown' || mapId === 'sixfold-trial'
             ? playerCount : 2,
           difficulty,
-          p3, p4,
+          p3, p4, p5, p6,
           p3Faction: resolveFaction(p3Faction, seed, 3),
           p4Faction: resolveFaction(p4Faction, seed, 4),
+          p5Faction: resolveFaction(p5Faction, seed, 5),
+          p6Faction: resolveFaction(p6Faction, seed, 6),
         })}>
           Begin campaign <span>→</span>
         </button>

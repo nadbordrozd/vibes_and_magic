@@ -30,12 +30,16 @@ import {
 import {
   canopyShouldFade, deriveForestReviewCanopies, forestExperimentMode,
 } from '../forestExperiment';
-import { deriveMountainRanges } from '../mountainRanges';
+import {
+  deriveMountainRanges, mountainRangeGeometry, mountainRangeHasExploredContact,
+  mountainRangeIntersectsViewport,
+} from '../mountainRanges';
 import { CASTLE_NAMES } from '../../content/factionPresentation';
 import { SPELL_SCHOOL_NAMES } from '../../content/spellPresentation';
 import { gameMapTerrainGrid } from '../terrainTransitions';
 import { NativeTerrainSurface } from './NativeTerrainSurface';
 import { friendlyHeroMeetingPlan } from '../../core/game/navigation';
+import { revealForMovementPath } from '../../core/map/visibility';
 
 const TILE = 32 * PIXEL_SCALE;
 const HALF_TILE = TILE / 2;
@@ -303,7 +307,15 @@ export function AdventureMap({
   const previewMapCoord = (position: Coord | null) => {
     setMeetingTargetId(null); onPreviewHero(null); onPreview(position);
   };
-  const exploredList = state.players[state.activePlayer].explored;
+  const activePlayer = state.players[state.activePlayer];
+  const enteredAnimatedPrefix = movement && hero
+    ? movement.path.slice(1, movement.index + 1).filter((position) =>
+      !guardianAtPath(state, position)) : [];
+  const exploredList = movement && hero ? revealForMovementPath(
+    activePlayer.explored, state.map, activePlayer.heroes,
+    state.castles.filter((castle) => castle.owner === hero.owner),
+    hero, enteredAnimatedPrefix,
+  ) : activePlayer.explored;
   const explored = useMemo(() => new Set(exploredList), [exploredList]);
   const decorations = useMemo(() => deriveTerrainDecorations(
     state.map, state.map.name.startsWith('Manywhere') || state.map.id === 'crooked-crown'
@@ -376,6 +388,37 @@ export function AdventureMap({
     })));
   const focusedHeroPosition = hero ? movement && movement.path[movement.index]
     ? movement.path[movement.index] : hero.position : null;
+  const updateViewport = () => {
+    const frame = frameRef.current;
+    const map = mapRef.current;
+    if (!frame || !map) return;
+    const frameBounds = frame.getBoundingClientRect();
+    const mapBounds = map.getBoundingClientRect();
+    if (mapBounds.width <= 0 || mapBounds.height <= 0) return;
+    const width = state.map.width * TILE;
+    const height = state.map.height * TILE;
+    const scaleX = width / mapBounds.width;
+    const scaleY = height / mapBounds.height;
+    const next = {
+      x: Math.max(0, frameBounds.left - mapBounds.left) * scaleX / width,
+      y: Math.max(0, frameBounds.top - mapBounds.top) * scaleY / height,
+      w: Math.min(1, frame.clientWidth * scaleX / width),
+      h: Math.min(1, frame.clientHeight * scaleY / height),
+    };
+    setViewport((current) => Object.keys(next).every((key) =>
+      Math.abs(current[key as keyof typeof current] - next[key as keyof typeof next]) < 0.00001)
+      ? current : next);
+  };
+  useLayoutEffect(() => {
+    updateViewport();
+    const frame = frameRef.current;
+    const map = mapRef.current;
+    if (!frame || !map || typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(updateViewport);
+    observer.observe(frame);
+    observer.observe(map);
+    return () => observer.disconnect();
+  }, [state.map.width, state.map.height]);
   useLayoutEffect(() => {
     const frame = frameRef.current;
     const map = mapRef.current;
@@ -395,6 +438,12 @@ export function AdventureMap({
   const renderedDecorations = forestMode
     ? decorations.filter((decoration) => decoration.kind !== 'canopy-clump') : decorations;
   const mountainRanges = useMemo(() => deriveMountainRanges(state.map), [state.map]);
+  const viewportWorld = {
+    x: viewport.x * state.map.width * TILE,
+    y: viewport.y * state.map.height * TILE,
+    width: viewport.w * state.map.width * TILE,
+    height: viewport.h * state.map.height * TILE,
+  };
   const roadKeys = useMemo(() => new Set(
     (state.map.roads ?? []).map((position) => `${position.x},${position.y}`),
   ), [state.map.roads]);
@@ -406,9 +455,8 @@ export function AdventureMap({
     ...visibleObjects.map((object) => objectEntranceTile(object)),
   ];
   const painterItems = painterOrder([
-    ...mountainRanges.filter(({ position, contactWidth }) =>
-      Array.from({ length: contactWidth }, (_, offset) =>
-        explored.has(`${position.x + offset},${position.y}`)).every(Boolean)).map((range) => ({
+    ...mountainRanges.filter((range) => mountainRangeHasExploredContact(range, explored)
+      && mountainRangeIntersectsViewport(range, viewportWorld, TILE)).map((range) => ({
       ...range, row: range.position.y, col: range.position.x, kind: 'mountain-range' as const,
     })),
     ...forestCanopies.filter((canopy) =>
@@ -466,15 +514,7 @@ export function AdventureMap({
   </svg>;
   return (
     <section className="map-frame" ref={frameRef} tabIndex={-1}
-      aria-label="Adventure map viewport" onScroll={(event) => {
-      const element = event.currentTarget;
-      setViewport({
-        x: element.scrollLeft / (state.map.width * TILE),
-        y: element.scrollTop / (state.map.height * TILE),
-        w: Math.min(1, element.clientWidth / (state.map.width * TILE)),
-        h: Math.min(1, element.clientHeight / (state.map.height * TILE)),
-      });
-    }}>
+      aria-label="Adventure map viewport" onScroll={updateViewport}>
       <div className="map-caption">
         <span>{state.map.name}</span>
         <small className={`destination-intent ${previewIntent.kind}`}
@@ -486,6 +526,9 @@ export function AdventureMap({
         ref={mapRef}
         className="adventure-map"
         data-moving={movement ? 'true' : 'false'}
+        data-movement-index={movement?.index ?? undefined}
+        data-movement-path-length={movement?.path.length ?? undefined}
+        data-presented-explored-count={explored.size}
         width={state.map.width * TILE}
         height={state.map.height * TILE}
         viewBox={`0 0 ${state.map.width * TILE} ${state.map.height * TILE}`}
@@ -529,6 +572,7 @@ export function AdventureMap({
               data-inspect-kind={seen ? 'terrain' : undefined}
               data-inspect-id={seen ? terrain : undefined}
               aria-label={seen ? `${TERRAIN[terrain].label} terrain` : 'Unexplored terrain'}
+              data-explored={seen ? 'true' : 'false'}
               data-map-x={x} data-map-y={y} x={x * TILE} y={y * TILE}
               width={TILE} height={TILE} fill={seen ? 'transparent' : '#0a0d0b'} />
             </Fragment>
@@ -577,12 +621,24 @@ export function AdventureMap({
         })}
         {painterItems.map((item) => {
           if (item.kind === 'mountain-range') {
+            const geometry = mountainRangeGeometry(item, TILE);
             return <g key={item.key} className="mountain-range-decoration"
-              data-inspect-kind="decoration" data-inspect-id={item.key}>
+              data-inspect-kind="decoration" data-inspect-id={item.key}
+              data-footprint-x={geometry.footprint.x} data-footprint-y={geometry.footprint.y}
+              data-footprint-width={geometry.footprint.width}
+              data-footprint-height={geometry.footprint.height}
+              data-visual-x={geometry.visual.x} data-visual-y={geometry.visual.y}
+              data-visual-width={geometry.visual.width} data-visual-height={geometry.visual.height}>
               <title>Impassable mountain range.</title>
-              <PixelSprite id={assetId.decoration('mountain', item.variant)}
-                x={item.position.x * TILE} y={item.position.y * TILE}
-                className="decoration-pixel" fallback={null} />
+              <svg className="mountain-footprint-clip"
+                x={geometry.visual.x} y={geometry.visual.y}
+                width={geometry.visual.width} height={geometry.visual.height}
+                viewBox={`${geometry.visual.x} ${geometry.visual.y} ${geometry.visual.width} ${geometry.visual.height}`}
+                preserveAspectRatio="none" overflow="hidden">
+                <PixelSprite id={assetId.decoration('mountain', item.variant)}
+                  x={geometry.spriteAnchor.x} y={geometry.spriteAnchor.y}
+                  className="decoration-pixel" fallback={null} />
+              </svg>
             </g>;
           }
           if (item.kind === 'canopy') {
@@ -727,6 +783,14 @@ export function AdventureMap({
             <circle className="sprite-hitbox hero-hitbox" cx="0" cy="0" r={HALF_TILE} />
           </g>;
         })}
+        <g className="fog-occlusion" aria-hidden="true" pointerEvents="none">
+          {state.map.terrain.flatMap((row, y) => row.map((_tile, x) => {
+            const key = `${x},${y}`;
+            return explored.has(key) ? null : <rect key={`fog-${key}`}
+              data-fog-key={key}
+              x={x * TILE} y={y * TILE} width={TILE} height={TILE} fill="#0a0d0b" />;
+          }))}
+        </g>
         {pickupFlight && (
           <g key={pickupFlight.key}
             transform={`translate(${pickupFlight.position.x * TILE + HALF_TILE} ${pickupFlight.position.y * TILE + HALF_TILE})`}>

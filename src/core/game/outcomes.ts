@@ -13,6 +13,7 @@ import {
 import {
   addArtifact, artifactEffectTotal, cloneArtifacts, dropAllArtifacts, hasEquippedArtifact,
 } from '../artifacts';
+import { revealForMovementPath } from '../map/visibility';
 import { randomInt } from '../rng';
 import { resolveDebtEvent } from '../debts';
 import { buildingIsActive } from './buildingStatus';
@@ -20,6 +21,7 @@ import { SKILLS } from '../../content/skills';
 import type {
   BattleSide, BattleState, GameState, Hero, PlayerId, SpellId,
 } from '../types';
+import { PLAYER_IDS } from '../types';
 import { visitShrine } from './magic';
 import { addItem, sellTradeGoods } from './items';
 import { offerChestChoice } from './chests';
@@ -87,8 +89,9 @@ export function checkVictory(state: GameState): void {
       return;
     }
   }
-  for (const playerId of ['p1', 'p2', 'p3', 'p4'] as PlayerId[]) {
+  for (const playerId of PLAYER_IDS as readonly PlayerId[]) {
     const player = state.players[playerId];
+    if (!player) continue;
     if (!player.active) continue;
     const hasCastle = state.castles.some((castle) => castle.owner === playerId);
     const hasHero = player.heroes.some((hero) => hero.alive);
@@ -278,6 +281,14 @@ export function finalizeBattle(state: GameState): void {
   if (battle.winner === 'attacker') {
     attackerHero.army = compactArmy(armyAfterBattle(battle, 'attacker'));
     attackerHero.position = { ...(context.completeMoveTo ?? context.destination) };
+    if (context.completeMoveTo) {
+      const player = state.players[attackerHero.owner];
+      player.explored = revealForMovementPath(
+        player.explored, state.map, player.heroes,
+        state.castles.filter((castle) => castle.owner === attackerHero.owner),
+        attackerHero, [attackerHero.position],
+      );
+    }
     const xp = Object.entries(battle.casualties.defender).reduce(
       (sum, [unitId, count]) =>
         sum + UNITS[unitId as keyof typeof UNITS].hp * (count ?? 0),

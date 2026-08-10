@@ -128,13 +128,17 @@ export function animatedAdventurePath(state: GameState, destination: Coord): Coo
   const reachable = path ? passage ? path : reachablePathPrefix(
     state.map, path, hero!.movement, hero!, state.omen, freeForest,
   ) : [];
-  return hero ? truncateAtAggro(state, reachable, hero) : reachable;
+  return hero ? truncateAtMovementInterruption(state, reachable, hero) : reachable;
 }
 
-function truncateAtAggro(state: GameState, path: Coord[], hero: Hero): Coord[] {
+function truncateAtMovementInterruption(state: GameState, path: Coord[], hero: Hero): Coord[] {
   const index = path.findIndex((coord, step) => step > 0
     && (Boolean(guardianAt(state.map, coord))
-      || guardiansCovering(state.map, coord, hero.id).length > 0));
+      || guardiansCovering(state.map, coord, hero.id).length > 0
+      || state.map.objects.some((object) => object.kind === 'sirenRocks'
+        && !object.cleared && !(object.approachedBy ?? []).includes(hero.id)
+        && Math.max(Math.abs(object.position.x - coord.x),
+          Math.abs(object.position.y - coord.y)) === 2)));
   return index < 0 ? path : path.slice(0, index + 1);
 }
 

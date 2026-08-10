@@ -46,6 +46,12 @@ the remote opponent uses the existing Dormant controller. The authored map still
 roads, guardian targets, resources, and structures, and must pass the same footprint/reachability
 lint as every ordinary scenario.
 
+The Sixfold Trial is the advanced-combat counterpart and uses six actual configurable player slots,
+not one player's allied castles. `SIXFOLD_PLAYER_SETUP` owns the six distinct default factions,
+starts, representative advanced heroes, and skill packages. Castle buildings, two-week armies, and
+complete two-school spellbooks derive from canonical catalogs during setup. Its lint profile pins
+start exits, reward/guardian totals, and calibrated strength-band coverage.
+
 ## Dense labyrinth scenarios
 
 Large maps must earn their dimensions through route structure rather than open travel time. Use

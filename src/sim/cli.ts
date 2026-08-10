@@ -27,6 +27,7 @@ const mapArgument = mapIndex === -1 ? 'border-marches' : process.argv[mapIndex +
 const knownMaps: MapId[] = [
   'border-marches', 'crosstitch', 'crosstitch-kit', 'torn-sound', 'manywhere', 'grand-muster',
   'crooked-crown',
+  'sixfold-trial',
 ];
 if (mapArgument !== 'all' && !knownMaps.includes(mapArgument as MapId)) {
   throw new Error(`Invalid --map value; use all or ${knownMaps.join(', ')}`);

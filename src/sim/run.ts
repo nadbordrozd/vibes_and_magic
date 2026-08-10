@@ -73,9 +73,11 @@ export function simulateGame(
 ): SimResult {
   const playerCount = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
     || mapId === 'crooked-crown' ? 4
+    : mapId === 'sixfold-trial' ? 6
     : mapId === 'manywhere' ? 3 : 2;
   let state = createGame({
-    seed, p1: 'ai', p2: opponent, p3: opponent, p4: opponent, mapId, playerCount,
+    seed, p1: 'ai', p2: opponent, p3: opponent, p4: opponent, p5: opponent, p6: opponent,
+    mapId, playerCount,
   });
   state.magicDisabled = noMagic;
   try {

@@ -306,7 +306,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, [tabindex]:focu
 .pass-sigil { width: 100px; height: 100px; display: grid; place-items: center; border: 1px solid; transform: rotate(45deg); margin-bottom: 44px; }
 .pass-sigil span { transform: rotate(-45deg); font: 800 44px Georgia, serif; }
 .pass-sigil.p1 { color: var(--crimson); }.pass-sigil.p2 { color: var(--azure); }
-.pass-sigil.p3 { color: #75b879; }.pass-sigil.p4 { color: #d19a4a; }
+.pass-sigil.p3 { color: #75b879; }.pass-sigil.p4 { color: #d19a4a; }.pass-sigil.p5 { color: #a873cf; }.pass-sigil.p6 { color: #45b6ad; }
 .pass-device h1 { margin: 8px; font: 800 48px Georgia, serif; text-transform: uppercase; }
 .pass-device p { color: var(--muted); margin-bottom: 28px; }
 .pass-device p b { color: var(--cream); }

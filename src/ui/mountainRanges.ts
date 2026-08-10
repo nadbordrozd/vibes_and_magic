@@ -1,5 +1,6 @@
 import { terrainIdAt } from '../content/terrain';
 import type { Coord, GameMap } from '../core/types';
+import { PIXEL_SCALE, assetId, manifestEntry } from '../../assets/manifest';
 
 export type MountainFamilySkin = 'rocky' | 'granite' | 'snowcap';
 
@@ -16,6 +17,94 @@ export interface MountainRangeDecoration {
   position: Coord;
   variant: MountainFamilyVariant;
   contactWidth: 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+export interface MountainRectangle {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface MountainRangeGeometry {
+  /** Authored blocking contact. Mountain paint may not leave this rectangle except northward. */
+  footprint: MountainRectangle;
+  /** Complete native bitmap rectangle before the footprint clip is applied. */
+  sprite: MountainRectangle;
+  /** The only rectangle which may contribute visible mountain pixels. */
+  visual: MountainRectangle;
+  /** World point passed to PixelSprite for its manifest anchor. */
+  spriteAnchor: Coord;
+}
+
+/**
+ * Converts one compositor result into executable render geometry. Narrow contacts take a centered
+ * native-resolution slice of the role sprite: no bitmap is stretched or resampled. The clip keeps
+ * all paint inside the authored width and southern edge while retaining the complete northern
+ * overhang. This is shared by production painting, viewport culling, and regression tests.
+ */
+export function mountainRangeGeometry(
+  range: MountainRangeDecoration,
+  tileSize = 32 * PIXEL_SCALE,
+): MountainRangeGeometry {
+  const entry = manifestEntry(assetId.decoration('mountain', range.variant));
+  if (!entry) throw new Error(`Missing mountain asset geometry for ${range.variant}`);
+  const scale = tileSize / 32;
+  const footprint: MountainRectangle = {
+    x: range.position.x * tileSize,
+    y: range.position.y * tileSize,
+    width: range.contactWidth * tileSize,
+    height: tileSize,
+  };
+  const spriteWidth = entry.w * scale;
+  const spriteHeight = entry.h * scale;
+  const spriteX = footprint.x + (footprint.width - spriteWidth) / 2;
+  const spriteY = footprint.y - entry.anchor.y * scale;
+  const sprite: MountainRectangle = {
+    x: spriteX, y: spriteY, width: spriteWidth, height: spriteHeight,
+  };
+  const visualTop = Math.min(sprite.y, footprint.y);
+  const visualBottom = Math.min(sprite.y + sprite.height, footprint.y + footprint.height);
+  const visual: MountainRectangle = {
+    x: footprint.x,
+    y: visualTop,
+    width: footprint.width,
+    height: Math.max(0, visualBottom - visualTop),
+  };
+  return {
+    footprint,
+    sprite,
+    visual,
+    spriteAnchor: {
+      x: sprite.x + entry.anchor.x * scale,
+      y: footprint.y,
+    },
+  };
+}
+
+export function mountainRectangleIntersects(
+  first: MountainRectangle, second: MountainRectangle,
+): boolean {
+  return first.x < second.x + second.width && first.x + first.width > second.x
+    && first.y < second.y + second.height && first.y + first.height > second.y;
+}
+
+/** Culling follows the clipped visual rectangle, never just the anchor or complete footprint. */
+export function mountainRangeIntersectsViewport(
+  range: MountainRangeDecoration,
+  viewport: MountainRectangle,
+  tileSize = 32 * PIXEL_SCALE,
+): boolean {
+  return mountainRectangleIntersects(mountainRangeGeometry(range, tileSize).visual, viewport);
+}
+
+/** A revealed contact is enough to paint its clipped range; late fog occludes all unseen cells. */
+export function mountainRangeHasExploredContact(
+  range: MountainRangeDecoration,
+  explored: ReadonlySet<string>,
+): boolean {
+  return Array.from({ length: range.contactWidth }, (_, offset) =>
+    explored.has(`${range.position.x + offset},${range.position.y}`)).some(Boolean);
 }
 
 function coordinateHash(seed: number, x: number, y: number, salt = 0): number {

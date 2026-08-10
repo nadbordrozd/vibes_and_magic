@@ -1,5 +1,30 @@
 # Implementation Decisions
 
+## 2026-08-10 — Entered movement tiles own incremental fog (doc 48)
+
+- Each coordinate a hero actually occupies during `MOVE_HERO` is a deterministic exploration event.
+  The player's serialized `explored` array retains the union of every such vision circle, including
+  the last tile before movement exhaustion, siren/diplomacy choice, guardian aggro, object entry,
+  boat/whirlpool transition, battle, or hero defeat. An unentered guarded destination is added only
+  if its later flee, bargain, or battle result legally completes occupancy.
+- Non-instant movement remains one canonical action committed after animation. Presentation applies
+  the same pure reveal projection to the current animated path prefix and never writes rules state;
+  Off mode commits the action immediately. Player ownership, replay/save/compressed-link hashes,
+  other heroes, castles, skills, artifacts, and explicit reveal effects remain authoritative.
+- Doc 47 painter order is retained: partially mounted mountain compositions are still covered by
+  the final opaque fog layer, now using the current prefix projection rather than final-route vision.
+
+## 2026-08-10 — Adventure sprites overhang north only (doc 47)
+
+- An adventure obstacle sprite may overhang only north of its authored ground contact. Mountain
+  role PNGs remain at native resolution; a narrower composition takes a centered pixel slice and an
+  SVG clip forbids paint left, right, or south of the declared contact.
+- The clipped visual rectangle, not the anchor or complete footprint, owns viewport intersection.
+  A single explored contact mounts a composition, and late fog occludes every unseen cell after
+  world sprites so this correction cannot disclose hidden terrain.
+- The Crooked Crown's authored Mountain cells, legal NW–SW route, collision, pathfinding, save/replay
+  authority, deterministic topology selection, manifest, and PixelLab source assets are unchanged.
+
 ## 2026-08-07 — Adventure showcase and subordinate decoration density
 
 - The exhaustive adventure visual review is a standalone, deterministic browser fixture generated
@@ -706,3 +731,21 @@
   enchantments, guild/Palimpsest services, Hero Details, and inspection. Names and full school,
   mana, face, rank, rules, keyboard, focus, and disabled-reason text remain independently available.
   The linked Heroes II material informed icon-led scanning only; no supplied art was copied.
+
+## 2026-08-10 — Advanced combat uses six real slots and derived setup authority (doc 49)
+
+- The Sixfold Trial extends the canonical configurable pipeline to `p1`–`p6`. Each slot owns its
+  castle and hero and participates independently in controllers, factions, turns, fog, outcomes,
+  saves, replays, links, hashes, and battle ownership. Grand Muster's allied-castle shortcut remains
+  specific to that older visual sandbox.
+- Older maps retain their historic four-player serialized state shape so golden saves and hashes do
+  not drift merely because two IDs became available. Six-slot records are present only when the map
+  actually declares six players.
+- Showcase armies derive every tier count as two weeks of canonical unit growth. Spellbooks derive
+  every member of both configured faction schools through the spell catalog, including provenance
+  entries. Developed castles derive their two faction-special buildings from the building catalog;
+  the showcase does not keep parallel hand-authored recruit or spell-number tables.
+- Heroes begin advanced but one chest below their next level, making the 36 canonical chests useful
+  for progression without inventing a special chest reward rule. Guardian counts use doc 39's
+  strategic strength function and populate four executable bands; premium artifacts remain behind
+  ordinary linked guardian interactions.

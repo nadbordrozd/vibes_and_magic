@@ -130,6 +130,9 @@ contains the only copy of a rule.
   four-player dense labyrinth conquest with twelve shaped chambers, looped corridors, four distinct
   starts, 109 interactive objects, 20 calibrated guardians, 12 landmarks, and map-specific topology
   and density metrics.
+- [`../../src/content/maps/sixfoldTrial.ts`](../../src/content/maps/sixfoldTrial.ts): 54×42,
+  six-player advanced-combat proving ground with executable setup authority, six distinct default
+  factions, 36 chests, 18 ordinary artifact rewards, 18 calibrated guardians, and 258 road tiles.
 - [`../../src/content/maps/occupancyAuthoring.ts`](../../src/content/maps/occupancyAuthoring.ts):
   guardian/target materialization and authoring helpers.
 - [`../MAPS.md`](../MAPS.md): current map-authoring guidance.
@@ -144,6 +147,11 @@ The Crooked Crown additionally pins its 72×72 dimensions, four starts, two regi
 opening pickups per start, reward guardian coverage, named gate guardians, object/decor/road density,
 and maximum open-square size. Its guardian counts are derived at authoring time from the centralized
 `unitStrength` rating in `src/core/army.ts`.
+
+The Sixfold Trial additionally pins six configurable player slots, distinct default factions,
+complete developed castles, level/stat/skill packages, two-week faction armies derived from unit
+growth, complete configured-school spellbooks derived from `SCHOOL_SPELLS`, start exits, chest and
+ordinary-artifact totals, and at least four guardians in each of four named strength bands.
 
 ## Acquisition invariants
 

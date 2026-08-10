@@ -5,6 +5,7 @@ import { createCrosstitch } from '../src/content/maps/crosstitch';
 import { createManywhere } from '../src/content/maps/manywhere';
 import { createGrandMuster } from '../src/content/maps/grandMuster';
 import { createCrookedCrown } from '../src/content/maps/crookedCrown';
+import { createSixfoldTrial } from '../src/content/maps/sixfoldTrial';
 import { createTornSound } from '../src/content/maps/tornSound';
 import {
   TERRAIN, TERRAIN_DECORATIONS, deriveTerrainDecorations, terrainId,
@@ -91,6 +92,7 @@ export const AUTHORED_MAPS = [
   createBorderMarches(1), createCrosstitch(1), createTornSound(1), createManywhere(1),
   createGrandMuster(1),
   createCrookedCrown(1),
+  createSixfoldTrial(1),
 ] as const;
 
 function tileSkin(tile: GameMap['terrain'][number][number]): TerrainSkinId {

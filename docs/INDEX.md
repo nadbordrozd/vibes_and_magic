@@ -79,5 +79,8 @@ live in `docs/` until superseded by their implementation.
 | 44 | FOCUSED_NON_ADVENTURE_SCREENS | Executable surface/job inventory and focused setup, hero, castle, combat, spellbook, choice, result, and save/import layouts | presentation companion to 34/38/41/42/43; preserves S00–S09 actions and rules |
 | 45 | ADVENTURE_MAP_FIRST_UI | Dominant adventure map, narrow routine-command rail, and dedicated hero/save/contextual secondary surfaces | presentation companion to 34/41/42/43/44; preserves S00–S09 actions and rules |
 | 46 | SPELL_SKILL_ICONS | Complete final-resolution PixelLab spell/skill icon contract, provenance, manifest gates, shared UI integration, and review evidence | presentation/assets companion to 31/34/44/45; preserves S05/S06 rules |
+| 47 | MOUNTAIN_RENDER_BOUNDS | Executable north-only adventure-sprite overhang, clipped mountain footprints, full-visual-rectangle culling, and Crooked Crown evidence | presentation correction to 35/37/40; preserves authored terrain, collision, pathfinding, and native mountain assets |
+| 48 | INCREMENTAL_ADVENTURE_FOG | Rules-owned exploration union for every entered movement tile plus animation-prefix presentation and responsive frame evidence | extends S03 movement/exploration; preserves replay/save/link authority and doc 47 late fog |
+| 49 | SIXFOLD_TRIAL | Six real configurable player slots and a deterministic advanced-combat proving ground with developed castles, derived two-week armies, complete faction-school spellbooks, calibrated guardians, rewards, and browser evidence | extends S02/S03/S04/S09 and the authored-map/setup catalogs |
 
-Next free number: **47**.
+Next free number: **50**.

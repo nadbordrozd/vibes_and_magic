@@ -13,6 +13,7 @@ import { finalizeBattle } from '../game/outcomes';
 import {
   castleEntrance, guardianAggroTiles, objectEntranceTile,
 } from '../map/occupancy';
+import { revealForPlayer } from '../map/visibility';
 import { lintMap } from '../../tools/mapLint';
 import type { MapObject } from '../types';
 
@@ -95,6 +96,9 @@ describe('milestone 24 occupancy', () => {
     if (guardian.kind !== 'guardian') throw new Error('guardian missing');
     hero.position = guardianAggroTiles(guardian, state.map)[0];
     hero.movement = 1_000;
+    state.castles = [];
+    state.players.p1.explored = revealForPlayer([], state.map, hero, []);
+    const beforeVision = new Set(state.players.p1.explored);
     const before = { ...hero.position };
     moveHero(state, guardian.position);
     expect(hero.position).toEqual(before);
@@ -104,6 +108,7 @@ describe('milestone 24 occupancy', () => {
     state.battle!.winner = 'attacker';
     finalizeBattle(state);
     expect(hero.position).toEqual(guardian.position);
+    expect(state.players.p1.explored.some((key) => !beforeVision.has(key))).toBe(true);
   });
 
   it('picks up adjacent objects for 100 movement without moving', () => {

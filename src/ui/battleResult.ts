@@ -7,6 +7,7 @@ import { surrenderCost } from '../core/combat/battle';
 import type {
   Action, BattleSide, BattleStatistics, GameState, Hero, PlayerId, ResourceId,
 } from '../core/types';
+import { PLAYER_IDS } from '../core/types';
 import { inspectTarget } from './inspection';
 
 export interface BattleResultData {
@@ -251,9 +252,10 @@ export function buildBattleResult(
     });
   }
 
-  for (const playerId of ['p1', 'p2', 'p3', 'p4'] as PlayerId[]) {
+  for (const playerId of PLAYER_IDS as readonly PlayerId[]) {
     const beforePlayer = prior.players[playerId];
     const afterPlayer = next.players[playerId];
+    if (!beforePlayer || !afterPlayer) continue;
     const changes = RESOURCE_IDS.flatMap((resource) => {
       const delta = afterPlayer.resources[resource] - beforePlayer.resources[resource];
       return delta ? [`${delta > 0 ? '+' : '−'}${Math.abs(delta).toLocaleString()} ${resource}`] : [];
