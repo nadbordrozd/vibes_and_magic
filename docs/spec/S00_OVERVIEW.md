@@ -10,8 +10,8 @@ data files own names, prose, costs, stats, weights, and other authored values.
 ## The game
 
 Vibes and Magic is a deterministic, turn-based fantasy strategy game in the Heroes tradition. A
-player explores an authored map with heroes and armies, captures mines and towns, recruits weekly
-creature growth, develops castles, discovers a fraction of a large content pool, and resolves
+player explores an authored map with heroes and armies, captures mines and cities, recruits weekly
+creature growth, develops cities, discovers a fraction of a large content pool, and resolves
 battles on a small hex field. HoMM3 is the baseline wherever this specification does not explicitly
 depart from it.
 
@@ -24,7 +24,7 @@ The experience has three connected loops:
 
 1. **Adventure:** spend finite daily movement to explore, route around threats, collect or visit
    objects, acquire boats, capture income, and choose which fights to accept.
-2. **Development:** recruit weekly growth, build one castle improvement per day, hire and develop
+2. **Development:** recruit weekly growth, build one city improvement per day, hire and develop
    heroes through offer-shaped drafts, and assemble a spellbook and equipment loadout from what the
    seed exposes.
 3. **Combat:** command up to seven stacks on a deterministic 13×9 hex field, using movement,

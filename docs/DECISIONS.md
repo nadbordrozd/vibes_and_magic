@@ -773,3 +773,38 @@
   Random-tier guardian stacks are authoring discriminants, never fake `UnitId`s: conversion hashes
   campaign seed, guardian ID, stack index, and tier into a concrete non-battlefield creature. Saves
   and replays therefore retain ordinary resolved stacks without ambient randomness.
+
+## 2026-08-10 — Cities, spellbook hierarchy, and exhaustive collectible art (doc 51)
+
+- City is the canonical player-facing settlement term. Internal `Castle`, `castles`, and related
+  serialized identifiers may remain compatibility names. Every city changes to exact 5×2 ground
+  contact with its only entrance at centered offset `(2,1)`; maps and neutral variants cannot
+  override either value. Existing 3×2 sprites and authored placements require a later explicit
+  migration and may not be stretched or silently treated as conforming.
+- A neutral city with omitted `garrison` deterministically receives the faction's tier-1, tier-2,
+  and tier-3 city units, in tier order, each at exactly three times canonical base weekly growth.
+  Difficulty, omens, buildings, elapsed weeks, and recruit state do not modify this initialization.
+  Presence is the override boundary: `[]` is intentionally empty, a legal nonempty army wholly
+  replaces the default, and null/partial/additive/random-tier forms are invalid.
+- Each faction city owns an explicit architectural subject derived from S08 materials and silhouette
+  laws. Content IDs and faction names remain metadata, never adequate image prompts. The Unfinished
+  city is complete and tended rather than ruined; Hagwood and Wildergrass settlements do not acquire
+  generic stone keeps merely to read as cities.
+- The supplied Heroes III spellbook image informs only open-book hierarchy, icon scanning, school
+  navigation, compact mana display, and selection-to-detail flow. No supplied art, layout
+  measurements, ornament, typography, cell design, or tabs are copied. This game's spellbook groups
+  learned spells under accessible Rite/Craft/Grave/Wild tabs, keeps icon/name/mana visible, and uses
+  a separate selected-spell detail and Cast action.
+- Player spell-version copy is Standard, Upgraded, and Upgraded here; “face” is not a spell-upgrade
+  term. Learned and temporarily active upgrades remain visibly distinct. Internal `base`, `plus`,
+  `upgradedSpells`, and item `plus` fields stay compatible and map to clean copy at presentation.
+- The catalog baseline is 90 artifacts and 37 items. All 127 require distinct 32×32 transparent
+  native sprites and literal physical subjects. Current installed coverage is 0/90 artifacts and
+  4/37 items; subject inventory is not bitmap coverage. Six replacement 5×2 city designs are also
+  all pending. Four pickups and four resource sites are already native, but the Essence site is
+  pinned as a rural stone-and-copper stitchwell over a hairline world-seam, never a generic glowing
+  crystal mine or wizard fountain.
+- Cities, resources, artifacts, and items share bright cartoony storybook pixels, true alpha, a
+  high-oblique non-isometric camera, south-east/screen-lower-right key light, and north-west shadow.
+  Physical subject descriptions live in `assets/adventureSpriteInventory.ts`; opaque names, terrain
+  plates, scenery, text, frames, baked rarity, owner colors, and baked flags are rejected.

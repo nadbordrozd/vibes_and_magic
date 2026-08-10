@@ -1,0 +1,234 @@
+# 51 — Cities, spellbook, and complete collectible sprites
+
+Status: design and inventory contract; runtime, UI, map migration, and bitmap production are not
+implemented by this work order. This document extends S02, S03, S05, S07, S08, and S09 and
+supersedes the 3×2 castle ground-contact clauses in docs 31, 32, 37, and 50. It also supersedes the
+spell-upgrade presentation wording in docs 34, 44, and 46 and the player-facing settlement word
+“Castle” wherever it remains in an earlier live work order. Existing internal `Castle` and `plus`
+identifiers may remain compatibility names; they are not player-facing terminology.
+
+## 1. City contract
+
+**City** is the canonical player-facing word for a faction settlement, whether owned or neutral.
+Use City, neutral city, city screen, city garrison, city entrance, and city capture in interface
+copy. “Castle” remains permitted only in archived quotations, implementation identifiers, migration
+notes, and a specific building or siege feature whose proper name requires it.
+
+Every city has exactly a **5×2 ground-contact footprint**. Its anchor is the top-left cell and its
+only entrance is the centered bottom cell at offset **`(2,1)`**. The other nine cells are
+impassable. No map, preset, faction, neutral variant, or editor record may override that footprint
+or entrance. The sprite may rise north above the contact but may not imply a second gate. The drawn
+gate, hero arrival point, capture interaction, services, garrison battle, fog distance, flag, lint,
+and pathfinding all use the same centered entrance.
+
+The 5×2 rule is prospective until the implementation migration lands. That migration must re-anchor
+all built-in cities around their existing world-space entrance where possible, re-author terrain,
+objects, heroes, roads, guards, and start clearances where the wider contact would overlap, update
+portable-map defaults and compatibility diagnostics, and regenerate/review city sprites at a native
+canvas at least 160 pixels wide. A renderer must not stretch the existing 96-pixel city art to fill
+the new contact.
+
+### Neutral capture and deterministic default garrison
+
+A neutral city always has a faction and is captured only through its centered entrance. If its
+portable/authored record **omits** `garrison`, runtime conversion creates exactly three stacks: the
+city faction’s tier-1, tier-2, and tier-3 city units, in ascending tier order, each with count
+`3 × that unit's canonical weekly growth`. This is three weeks of each tier’s base catalog growth,
+not the current game week and not three weeks of accumulated recruit availability.
+
+The derivation reads the faction roster and unit-growth catalog once during deterministic setup. It
+does not apply difficulty, omens, buildings, artifacts, owner bonuses, elapsed time, or rounding,
+and the resulting three positive integer stacks become ordinary save/replay state. With the current
+catalog the defaults are:
+
+| Faction | Tier 1 | Tier 2 | Tier 3 |
+|---|---:|---:|---:|
+| Hearthguard | 51 Yeoman | 27 Longbowman | 18 Bannerman |
+| Wound-Wrights | 36 Tin Soldier | 27 Hobby Knight | 18 Marionette |
+| The Unfinished | 54 Candle-Wisps | 27 Couriers | 18 Sentries |
+| The Vespiary | 60 Larval Tide | 30 Paper-Wasp Lancers | 21 Silk-Spinners |
+| The Hagwood | 48 Crow Chorus | 27 Fence-Post Familiars | 18 Besom Riders |
+| Wildergrass Clans | 45 Outriders | 27 Drum-Callers | 21 Ashmane Wolves |
+
+The override boundary is presence-based and deliberately explicit:
+
+- omitted `garrison` means derive the three-stack default above;
+- present `garrison: []` means an intentionally empty, free-to-capture neutral city;
+- present nonempty `garrison` means use exactly the authored legal one-to-seven stacks and counts;
+- `null`, zero/negative counts, random-tier placeholders, and a partially specified “add to default”
+  shape are invalid for a city garrison.
+
+An authored override replaces the entire default; it never merges with it. Before capture a neutral
+city does not grow, build, recruit, or alter the initialized garrison. An empty override captures
+without combat; otherwise entering begins the ordinary garrison battle. Victory changes ownership
+through the normal outcome handler and clears the defeated garrison. Diplomacy never bypasses it.
+
+## 2. Six city identities
+
+Faction IDs and names are metadata, not adequate image prompts. The executable visual subjects are
+[`../assets/adventureSpriteInventory.ts`](../assets/adventureSpriteInventory.ts); every production
+job must include the relevant physical description plus the shared style clause rather than sending
+an opaque ID or faction name to a generator.
+
+- **Hearthguard:** broad cream-limestone civic gatehouse, warm red tile, sturdy square towers,
+  wrought iron, gold heraldic trim, and one generous central arch. It reads welcoming and defended,
+  not cathedral-like or imperial.
+- **Wound-Wrights:** cheerful painted-timber workshop city with rounded toy-like towers, lacquered
+  nursery-primary panels, brass hinges, porcelain insets, repair seams, and a central workshop door.
+  It is complete and maintained, not a toy shop sign or abandoned factory.
+- **The Unfinished:** carefully tended bone-white memorial city with funeral-linen awnings,
+  candlelit niches, grave-gold fittings, and hollow processional arches. It is gentle, complete, and
+  inhabited—never ruined, scaffolded, green-black, or villainous.
+- **The Vespiary:** low amber-resin hive city with black chitin buttresses, layered paper-nest roofs,
+  honeycomb openings, papery asymmetry, and one broad resin arch. It is civic architecture at
+  insect scale, not a single wasp or a naturalistic beehive icon.
+- **The Hagwood:** grown settlement of crooked white-birch halls, wicker galleries, bone-fence
+  finials, crow-feather vanes, berry-red cloth knots, and a central red door under a bent living
+  bough. It has no conventional masonry keep or regular towers.
+- **Wildergrass Clans:** long low steppe city of ochre hide halls, ashwood palisades, horn roof
+  ridges, ash-grey felt, blood-red weaving, herd totems, and a central drum-framed gate. It reads as
+  a durable moving culture, not generic tents behind a stone castle.
+
+Neutral cities retain their authored faction’s material language and silhouette without an owner
+color. Ownership is always the separate runtime pennant overlay. No sprite bakes a player flag.
+
+## 3. Original school-grouped spellbook
+
+The supplied Heroes III spellbook reference contributes only high-level information hierarchy: an
+open book, a scan-friendly icon grid, school navigation, compact costs, and details after selection.
+No artwork, ornament, typography, measurements, cell composition, or exact tab design is copied.
+This game uses its own bright stitched-storybook parchment, school palettes, icons, and control
+grammar.
+
+On wide screens the combat and adventure spellbooks use an original open two-page parchment
+composition; on narrow screens the same reading order collapses without shrinking icons or text.
+Both share one responsive structure:
+
+1. a shallow header shows the hero, current/max mana, spell power, context, and Close;
+2. four real button-tabs in canonical order Rite, Craft, Grave, Wild show school color, name, learned
+   count, selected state, keyboard focus, and accessible tab relationships;
+3. the selected school shows learned spells in a large-icon grid, ordered by catalog level/rank if
+   present and then catalog/name order; sections remain visibly grouped rather than flattening all
+   schools into one undifferentiated list;
+4. every cell keeps the distinct 32×32 spell icon, full spell name, and mana cost (or clearly named
+   X cost) visible without hover; disabled state preserves all three and gives its exact reason;
+5. clicking or keyboard-activating a cell selects it and opens an adjacent detail page on wide
+   screens or a bounded detail sheet on narrow screens; selection alone never casts;
+6. details show school, kind, mana and adventure-movement cost, flavor, target summary, scaled
+   current values, standard rules, upgraded rules, why the upgraded rules currently apply, legal
+   targets/disabled reason, and the explicit Cast action; Debts remain a separate visible section;
+7. bottom controls provide context-appropriate Cast, Back/list, and Close actions. They are ordinary
+   semantic buttons, remain visible with keyboard and at 390 px, and never depend on icon color.
+
+School color and tabs accelerate navigation but never carry the only school label. Icon, name, mana,
+selected state, upgrade state, disabled reason, focus, and Cast are independently accessible. A
+screen reader can traverse tabs, spell cells, and details without encountering a grid of unnamed
+images. The detail surface preserves inspection and never hides the target consequences behind a
+tooltip.
+
+### Spell-upgrade language and indication
+
+Player-facing copy uses **standard** and **upgraded**, never “base face,” “+ face,” “current face,”
+or “compare faces.” A permanently learned upgrade shows a small gold upward stitch/chevron plus the
+visible text **Upgraded**. Temporary resonance or another effect that makes the upgraded rules active
+shows **Upgraded here** and the reason (for example, “Rite resonance”), without falsely marking the
+upgrade as learned. The detail comparison headings are **Standard** and **Upgraded**; the active
+heading has a clear text-and-shape marker in addition to color. A compact `+` may remain beside a
+spell name only as a secondary shorthand when the word Upgraded is present in the same card or its
+accessible name.
+
+Internal catalog fields such as `base`, `plus`, `upgradedSpells`, and item-instance `plus` may remain
+serialized compatibility names. They must map to the standard/upgraded copy at the presentation
+boundary. Physical masks, mirrored surfaces, and the artifact named Spare Face may still use the
+ordinary noun “face”; the prohibition is specifically spell-version terminology.
+
+## 4. Complete collectible-sprite inventory
+
+Every one of the **90 artifact definitions** and **37 item definitions** owns one distinct native
+32×32 transparent sprite subject. Specific scroll definitions are distinct items: each keeps a
+recognizable parchment silhouette but uses a different cord, palette, and physical clasp derived
+from its spell metaphor. The generic `spellScroll` remains its own neutral blank-seal sprite.
+The artifact inventory is 36 Vanilla, 22 Charm, 18 Relic, 4 Burden, 4 Kit, and 6 migrated Trinket;
+the item inventory is 25 combat, 11 adventure, and 1 automatic definition.
+
+The target is therefore **127 catalog-keyed collectible sprites**, with unique paths and no duplicate
+bitmap content. The same canonical sprite is reused in pickups/rewards, map editor palettes,
+inventory, equipment/backpack, choices, markets, inspection, and result surfaces; layout may enlarge
+it only by an exact integer with pixelated rendering. Names, class/use, mechanics, quantities,
+stored-spell state, upgrade state, restrictions, and accessible controls remain semantic text rather
+than baked pixels.
+
+[`../assets/adventureSpriteInventory.ts`](../assets/adventureSpriteInventory.ts) is exhaustive over
+`ArtifactId` and `ItemId` and gives each ID a literal physical subject. It also owns six city
+subjects and both pickup and mine subjects for all four resources. The inventory is a generation
+input only: a record does not count as sprite coverage until a native PNG, manifest entry, accepted
+selection/provenance, and required surface integration all pass their gates.
+`npm run assets-check` validates the inventory keys against the live faction, item, and artifact
+catalogs and reports installed artifact/item counts separately from this planned inventory.
+
+Current audited coverage at contract time is:
+
+| Family | Catalog target | Installed native sprite | Gap |
+|---|---:|---:|---:|
+| Artifacts | 90 | 0 | 90 |
+| Items/consumables | 37 | 4 | 33 |
+| Faction city designs conforming to 5×2 | 6 | 0 | 6 |
+| Resource pickups | 4 | 4 | 0 |
+| Resource mines/sites | 4 | 4 | 0 |
+
+The four installed item sprites are generic Spell Scroll, Overseer’s Charter, Waybread, and Trade
+Goods. They count as current native coverage, but promotion into the complete shared family still
+requires style review against this work order. Existing 3×2 city sprites are useful visual
+provenance but do not conform to the new 5×2 geometry and therefore do not count toward the six.
+
+## 5. Resource sites and shared art law
+
+All adventure-map cities, mines, resource pickups, items, and artifacts share one bright cartoony
+storybook pixel-art family on true transparency. The camera is high-oblique and non-isometric;
+objects expose upper surfaces and screen-left/north-west shadowed planes consistently. The key light
+comes from **screen lower-right / map south-east**, and cast/contact shadow travels toward **screen
+upper-left / map north-west**. No generated subject may bake terrain, a rectangular plate, scenery,
+text, labels, rarity frames, school tabs, ownership color, or a player flag.
+
+Resources must be recognizable by physical material, not color alone:
+
+- Gold is a small practical pile of dull coins; its mine is a timber-braced adit in pale quarried
+  rock with a hand winch and restrained gold-bearing chips.
+- Timber is a stack of round-ended cut logs; its production site is an open logging yard, shingled
+  saw shelter, sawbench, and blocking log pile.
+- Iron is crossed charcoal billets with cool edge glints; its mine is a dark headframe, pulley,
+  short rails, and rough iron-bearing stone.
+- Essence is a dark stitched knot holding three translucent blue-violet mineral shards. Its mine is
+  explicitly the **stitchwell**: an old stone extraction basin over a hairline world-seam, crooked
+  copper pump, glass collection flask, and restrained threadlike mineral in the water. It reads as a
+  rural utility first and impossible geology second—never a generic glowing crystal cave, wizard
+  fountain, aura, or particle effect.
+
+Mines retain their canonical 2×1 contact and bottom-left entrance. Their left cell visibly admits a
+hero; machinery, basin, rock, shelter, or stock physically occupies the right cell. City widening
+does not change mine mechanics.
+
+## 6. Acceptance boundary for later implementation
+
+This contract is complete when later implementation can prove all of the following from catalogs,
+manifests, validation, and browser evidence:
+
+- every city uses exact 5×2 occupancy and `(2,1)` entrance in setup, saves, pathfinding, fog, capture,
+  editor, lint, renderer hit targets, and every built-in map;
+- omitted, empty, and explicit neutral-city garrisons exercise the three distinct deterministic
+  boundaries above for all six factions;
+- the two spellbooks group by school, show icon/name/mana before selection, expose full click/keyboard
+  details, distinguish learned from temporarily active upgrades, and contain no spell-version
+  “face” wording;
+- the asset inventory matches all 90 artifact IDs, 37 item IDs, six faction IDs, and four resource
+  IDs with no missing/extra/blank physical descriptions;
+- all 127 collectible sprites and six replacement city designs have unique native PNGs, manifest
+  paths, accepted provenance, correct dimensions/alpha, semantic fallbacks while incomplete, and
+  representative wide/narrow composition evidence;
+- the four mines and pickups remain materially distinct, and the stitchwell is recognizable without
+  a label or color-only cue;
+- no supplied reference artwork or generated imitation of it ships in the repository.
+
+Until those gates land, current renderer fallbacks and old city geometry reveal implementation gaps;
+they do not weaken this specification or authorize silent stretching, shared placeholder art, or
+default-garrison inference in UI code.

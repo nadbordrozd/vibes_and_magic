@@ -12,10 +12,10 @@ timing effects, hero modifiers, stack footprints, and initial counts. Stack coun
 represent casualties exactly; only effects explicitly allowed to revive can increase count after
 deaths.
 
-An authored advanced-combat fixture may begin with fully developed Walls/Keep castles, advanced
+An authored advanced-combat fixture may begin with fully developed Walls/Keep cities, advanced
 heroes, complete faction-school spellbooks, and full faction rosters. Starting recruit counts must
 derive from canonical weekly unit growth, guardian bands must derive through `unitStrength`, and
-the fixture must exercise ordinary guardian, hero-versus-hero, and castle-siege battle setup rather
+the fixture must exercise ordinary guardian, hero-versus-hero, and city-siege battle setup rather
 than a presentation-only combat state.
 
 ## Strategic army-strength rating
@@ -91,7 +91,7 @@ damage is at least 1
 ```
 
 Ranged damage is ×0.5 when an enemy is adjacent or the target is more than seven hexes away. Shooting
-through defending castle walls is ×0.7. The relevant defaults are centralized in
+through defending city walls is ×0.7. The relevant defaults are centralized in
 [`../../src/content/constants.ts`](../../src/content/constants.ts).
 
 ### Pinned positioning precedence
@@ -167,7 +167,7 @@ shore battles use the standard land template without modifiers.
 
 ## Sieges
 
-Assaulting a castle with Walls creates six 30-HP, attackable, impassable wall hexes across the
+Assaulting a city with Walls creates six 30-HP, attackable, impassable wall hexes across the
 defender’s edge two columns with two authored gaps. Flying crosses; ranged attacks through walls use
 the ×0.7 penalty. Walls grant defenders +2 defense. A Keep adds another +2 defense and an immobile
 Watchtower using the defender’s tier-2 ranged profile (or Longbowman equivalent) at `10 + 2×week`
@@ -200,5 +200,5 @@ and the remaining army exceeds 3000g, it prefers surrender. Neutrals never use e
 
 The result records winner, casualties and value on both sides, per-stack damage dealt/taken, spells
 cast, and extra actions. Apply post-battle recovery, rewards, artifact transfer, hero defeat/ransom,
-guardian removal, castle ownership, and pending adventure movement through deterministic outcome
+guardian removal, city ownership, and pending adventure movement through deterministic outcome
 handlers. Game-end statistics aggregate player totals.

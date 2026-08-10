@@ -85,7 +85,7 @@ CI must reach identical final-state hashes.
 
 The configurable player pipeline supports up to six real player IDs. Maps with at most four slots
 retain their historical four-player serialized shape; a six-player map serializes all six
-controller, faction, turn-order, metric, objective, and exploration records. Extra faction castles
+controller, faction, turn-order, metric, objective, and exploration records. Extra faction cities
 must not be disguised as one player's allies when ownership, combat, sieges, or hot-seat control is
 the setup under test.
 
@@ -124,9 +124,10 @@ behavior overlaps. Tile state is serializable. Presentation metadata is data, no
 
 Every map object has an anchor at its top-left, a footprint defaulting to 1×1, and an entrance
 offset defaulting to `(0,0)`. All footprint cells except an entrance are impassable. Interaction,
-fog distance, guardian coverage, pathfinding, and lint work on the full footprint. Castles are 3×2
-with bottom-center entrance; mines are 2×1 with bottom-left entrance. Authored exceptions may state
-their footprint.
+fog distance, guardian coverage, pathfinding, and lint work on the full footprint. Cities are
+exactly 5×2 with their only entrance at centered offset `(2,1)`; neither field is author-overridable.
+Mines are 2×1 with bottom-left entrance. Other authored object kinds may state a permitted footprint
+exception. Internal `Castle` names are compatibility identifiers; City is the player-facing term.
 
 Objects never overlap. Guardians and rewards are separate objects linked by `protects`/`guardedBy`;
 embedded guardian reward data is invalid.
@@ -147,7 +148,7 @@ valid anchor positions rather than a one-hex path with a late collision check.
 
 `npm run map-lint` is a required CI gate. It verifies footprint bounds and non-overlap, entrances
 reachable from starts across valid movement domains, linked guard efficacy including ranged-pickup
-positions, no aggro over starts/castle entrances, authored-only blocking obstacles, start-zone native
+positions, no aggro over starts/city entrances, authored-only blocking obstacles, start-zone native
 terrain warnings, anomaly ration warnings, Cache/Patient-Stone consistency, and Manywhere registry
 coverage. A dense-map profile additionally pins exact dimensions, start exits and opening economy,
 intended guardian gates, guarded reward coverage, interactive/decorative density, road coverage,
@@ -157,7 +158,8 @@ Portable editor documents use the same pure schema validation, normalization, ru
 and lint functions in the editor, import, test play, promotion, tests, and this CI gate. Drafts may
 retain playable-lint errors, but runtime conversion may not proceed with one. Validation additionally
 covers document version and identity, rectangular tiles, unique entity IDs, player slots, independent
-owner/faction references, legal nonempty starting-hero armies, castle defaults/overrides, positive
+owner/faction references, legal nonempty starting-hero armies, city defaults/overrides including the
+presence-based neutral-garrison boundary, positive
 guardian stack counts, rewards, and reciprocal guard links. Diagnostics have stable codes, severity,
 and entity/cell targets; editor UI does not own or reinterpret their legality.
 

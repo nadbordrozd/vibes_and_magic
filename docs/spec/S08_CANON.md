@@ -5,7 +5,7 @@
 **Author truth, never stated in game:** long ago, many dying worlds were stitched into one to save
 what could be saved. The stitching held; the memory of who did it and why did not.
 
-**Player surface:** a warm storybook medieval-fantasy land of meadows, castles, marshes, market
+**Player surface:** a warm storybook medieval-fantasy land of meadows, cities, marshes, market
 towns, old roads, and stranger local customs. Centuries have weathered the seams. Every faction
 carries a fragment of a lost world without understanding it, and the cultures tell contradictory
 stories of the Judgment, Skyfall, Great Mending, Night the Bells Stopped, and other local endings.
@@ -77,6 +77,27 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
 The canonical no-shared-school rivalries are Hearthguard↔Hagwood, Unfinished↔Vespiary, and
 Wildergrass↔Wound-Wrights. They guide authored maps and flavor, not automatic combat modifiers.
 
+## City and adventure-object visual identity
+
+City is the canonical player-facing settlement term. Every faction city must express its culture as
+architecture, not rely on a label, palette swap, flag, or opaque faction ID: Hearthguard builds a
+cream-stone red-tile civic gatehouse; Wound-Wrights a lacquered toy-workshop city; the Unfinished a
+complete pale memorial city of linen, candles, and grave-gold; the Vespiary an amber-resin,
+paper-nest, black-chitin hive city; Hagwood a grown crooked-birch and wicker settlement; and the
+Wildergrass Clans a long low hide, horn, felt, and ashwood steppe city. The literal physical subjects
+for production live in
+[`../../assets/adventureSpriteInventory.ts`](../../assets/adventureSpriteInventory.ts).
+
+Cities, mines, resource pickups, items, and artifacts share bright cartoony storybook pixel art on
+true transparency, with a high-oblique non-isometric camera. Light comes from screen lower-right/map
+south-east and shadow travels toward upper-left/north-west. Each subject needs a readable physical
+silhouette at native size; a catalog name or faction ID is never a sufficient generation prompt.
+Terrain plates, scenery, text, frames, rarity badges, owner colors, and baked flags are forbidden.
+Resources remain recognizable by matter and shape rather than color alone. In particular, Essence
+uses restrained blue-violet mineral caught in a stitched geological knot, and its production site is
+an old rural extraction basin and copper pump over a hairline world-seam—the stitchwell—not a
+generic glowing crystal mine or magic fountain. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
+
 Exact faction passives, starting armies, stats, palettes, and magic pairs live in
 [`../../src/content/factions.ts`](../../src/content/factions.ts). Unit and hero rosters are linked in
 [`S09_CONTENT_INDEX.md`](S09_CONTENT_INDEX.md).
@@ -84,14 +105,14 @@ Exact faction passives, starting armies, stats, palettes, and magic pairs live i
 ## The hidden seventh: Seamborn
 
 Seamborn are creatures of the stitching itself, native to no contributing world. They have no
-castle or town and are not a playable faction. They appear around essence springs, seams,
+city or town and are not a playable faction. They appear around essence springs, seams,
 anomalies, provenance encounters, and puzzle locks. Encountering them is the quiet delivery channel
 for the world’s true shape. The faction ID remains reserved. Any future recruitable catalog belongs
 in the backlog until a numbered document makes it current.
 
 ## Neutral cultures
 
-The world has more cultures than castle factions.
+The world has more cultures than city factions.
 
 - **Gloaming Court:** masked courtiers transformed by glamour into what locals call elves. They
   supply masked duelists, hounds, stolen faces, ring dwellings, and Borrow Shape provenance.
@@ -102,7 +123,7 @@ The world has more cultures than castle factions.
   playable faction.
 
 Neutral cultures may be promoted only by a future numbered rule document; present sites and units
-must not imply a functioning hidden castle tree.
+must not imply a functioning hidden city tree.
 
 ## Geography and seams
 

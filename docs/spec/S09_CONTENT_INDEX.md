@@ -60,8 +60,9 @@ is invalid.
 - [`../../src/core/game/adventureSpells.ts`](../../src/core/game/adventureSpells.ts): adventure and
   topology spell actions.
 
-Every spell has ID, name, flavor, school, mana or X, behavioral kind, rarity, base face, + face, AI
-target/timing hints, and any effect-operation tag. The + face changes behavior. Provenance rares and
+Every spell has ID, name, flavor, school, mana or X, behavioral kind, rarity, standard rules,
+upgraded rules, AI target/timing hints, and any effect-operation tag. The upgrade changes behavior.
+Internal `base`/`plus` field names remain a compatibility detail and are not player-facing copy. Provenance rares and
 Summon Skiff are excluded from ordinary guild/scroll pools as specified. The catalog count is 16 per
 school plus four provenance rares: 68 total.
 
@@ -78,10 +79,13 @@ where applicable. Debt effects obey the law in [`S01_RATIONALE.md`](S01_RATIONAL
   four Kit pieces, six trinkets, effect tags, values, and Burden removal text.
 - [`../../src/core/artifacts.ts`](../../src/core/artifacts.ts): generic equipment, slot, Kit, pricing,
   and effect-query rules.
+- [`../../assets/adventureSpriteInventory.ts`](../../assets/adventureSpriteInventory.ts): exhaustive
+  literal physical subjects for all artifact/item sprites, six faction cities, and four resource
+  pickups/mines; inventory presence does not claim a generated or installed bitmap.
 
 Every skill has three nonempty ranks and positive draft weight; every rank changes behavior or an
 economy/tempo decision. Every item/artifact has nonempty flavor and mechanics description, legal
-rarity/class, and a registered handler for each effect tag. Items with stored face, position, spend,
+rarity/class, and a registered handler for each effect tag. Items with stored spell version, position, spend,
 or other per-instance state use instances. Artifact count validation distinguishes 80 ordinary from
 the ten special definitions. Burdens always include an inspectable removal condition.
 
@@ -92,7 +96,16 @@ names, schools, mana, ranks, and complete mechanics remain catalog and semantic-
 generation-job, accepted-provenance, uniqueness, dimension, alpha, and prompt-drift gates are part
 of the validation contract; see [work order 46](../46_SPELL_SKILL_ICONS.md).
 
-## Castles, economy, terrain, omens, and flavor
+There are exactly 90 artifact definitions and 37 item definitions. Each owns one distinct 32×32
+transparent sprite subject and ultimately one unique native PNG/manifest path; specific scroll IDs
+remain visually distinct even though they share a parchment family. Catalog-keyed names, class/use,
+rules, quantities, stored spell/version state, and accessibility remain semantic text. Asset coverage
+is zero artifacts and four items at the work-order-51 baseline; literal subject inventory is not
+misreported as installed coverage. City/resource/item/artifact prompts include the physical subject
+from the inventory plus its shared bright cartoony transparent south-east-light style clause, never
+only an opaque ID or name. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
+
+## Cities, economy, terrain, omens, and flavor
 
 - [`../../src/content/buildings.ts`](../../src/content/buildings.ts): common/faction buildings,
   costs, prerequisites, upgrade chains, generated functions, 36 dwelling names/flavors.
@@ -124,7 +137,7 @@ contains the only copy of a rule.
 - [`../../src/content/maps/manywhere.ts`](../../src/content/maps/manywhere.ts): 48×40, 1–3 player
   wander sandbox with registry coverage.
 - [`../../src/content/maps/grandMuster.ts`](../../src/content/maps/grandMuster.ts): 56×44 fixed
-  showcase sandbox with six allied faction castles/full-roster heroes, six neutral sparring fights,
+  showcase sandbox with six allied faction cities/full-roster heroes, six neutral sparring fights,
   scattered resources and structures, and a distant Dormant opponent.
 - [`../../src/content/maps/crookedCrown.ts`](../../src/content/maps/crookedCrown.ts): 72×72,
   four-player dense labyrinth conquest with twelve shaped chambers, looped corridors, four distinct
@@ -143,7 +156,7 @@ contains the only copy of a rule.
   authoring path and the registered JSON bytes feed setup, presentation, hashing, and map lint.
 
 Maps are committed authored data: dimensions, normalized terrain tiles/skins, overlays, objects,
-guardians, castles/starts, victory/defeat, routes, Cache links, and optional bans. Generated
+guardians, cities/starts, victory/defeat, routes, Cache links, and optional bans. Generated
 decorations are not map data. Every map passes map lint. Manywhere additionally contains every
 registered object type, its four neutral-town variants/slots, all faction dwellings, the full water
 kit, puzzle locks, Cache sketch, Kit pieces, and required unique sites.
@@ -154,20 +167,23 @@ and maximum open-square size. Its guardian counts are derived at authoring time 
 `unitStrength` rating in `src/core/army.ts`.
 
 The Sixfold Trial additionally pins six configurable player slots, distinct default factions,
-complete developed castles, level/stat/skill packages, two-week faction armies derived from unit
+complete developed cities, level/stat/skill packages, two-week faction armies derived from unit
 growth, complete configured-school spellbooks derived from `SCHOOL_SPELLS`, start exits, chest and
 ordinary-artifact totals, and at least four guardians in each of four named strength bands.
 
 Local maps, built-in clones, and newly promoted built-ins share the work-order-50 portable JSON
 contract. The document owns metadata, rectangular terrain/skin tiles, overlays, one-to-six player
-slots, independently owned/factioned castles and starting heroes, objects, guardian stacks and
+slots, independently owned/factioned cities and starting heroes, objects, guardian stacks and
 counts (including authoring-only random tier 1–6 creature placeholders), separate rewards, and
 victory/defeat. It references these catalogs by stable IDs and cannot
 define executable behavior or custom stats. One pure codec/validator supplies import, export,
-editor diagnostics, deterministic runtime conversion, promotion, and map lint.
+editor diagnostics, deterministic runtime conversion, promotion, and map lint. Every city normalizes
+to exact 5×2 contact and entrance `(2,1)`. Neutral-city garrison presence is preserved: omission
+derives three times base growth for faction tiers 1–3, an explicit empty array remains empty, and a
+nonempty legal army wholly replaces the default.
 
 The editor palette keeps the canonical nine-section order but uses compact accessible icon stamps.
-Six castle faction sprites are direct choices; structures use their map sprites, guardians use all
+Six city faction sprites are direct choices; structures use their map sprites, guardians use all
 50 battle portraits, and artifact/item/resource/spell/overlay choices use native art or declared
 compact emblems. New guardian counts use tier bases 48/30/20/12/6/5 with stable ±20% variation;
 catalog-average `unitStrength × count` increases across tiers.

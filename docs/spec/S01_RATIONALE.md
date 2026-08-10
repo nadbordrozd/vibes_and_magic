@@ -42,7 +42,7 @@ Volume comes from behaviorally distinct entries, never numeric filler. Reject �
 If two entries would never both matter in the same game, combine or remove one. Every faction needs
 a verb the player can observe within two battles; every skill rank must add behavior or a decision,
 except where a tempo or economy number is itself the behavior. Unit abilities state the resolution
-stage they hook. Upgrade faces change behavior, targeting, topology, or interaction—not merely
+stage they hook. Spell upgrades change behavior, targeting, topology, or interaction—not merely
 numbers unless the number creates a different decision.
 
 During a single playthrough, roughly **30–40% of the total content pool should surface**. Tune

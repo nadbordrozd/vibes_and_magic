@@ -1,4 +1,4 @@
-# Economy, Recruitment, Castles, and Difficulty
+# Economy, Recruitment, Cities, and Difficulty
 
 ## Resources
 
@@ -36,17 +36,20 @@ catalog percentages and adds one seeded scroll to weekly stock. Kit pieces canno
 
 ## Recruitment and growth
 
-Dwellings accumulate weekly growth and do not discard unbought recruits. Castle recruitment pays
+Dwellings accumulate weekly growth and do not discard unbought recruits. City recruitment pays
 the unit’s resource cost and adds to a visiting hero first, otherwise to the garrison. Compatible
 stacks merge, and seven-slot capacity is enforced. Neutral/faction map dwellings replenish at their
 authored rate and allow cross-faction recruitment; mixed armies retain their combat morale penalty.
 
 Difficulty and Week of Plenty modify growth at the weekly boundary, rounded down. Faction buildings
 and artifacts hook the same generic calculation. Dormant buildings produce no growth; a Dormant AI
-does not recruit the growth that accumulates. Neutral town garrisons never grow before capture.
+does not recruit the growth that accumulates. Neutral city garrisons never grow before capture. An
+omitted neutral-city garrison is initialized once from three weeks of base tier-1 through tier-3
+faction growth as specified in [`S03_ADVENTURE.md`](S03_ADVENTURE.md#city-ownership-and-neutral-cities);
+it is not recruit-pool growth and receives none of these modifiers.
 Neutral map guardians follow their separate growth rule in [`S03_ADVENTURE.md`](S03_ADVENTURE.md).
 
-## Common castle tree
+## Common city tree
 
 Every faction has the common categories below. Exact IDs, costs, prerequisites, functions, upgrade
 links, categories, and flavor are authoritative in
@@ -60,7 +63,7 @@ links, categories, and flavor are authoritative in
 - Two faction-special buildings.
 - Coastal-only Shipyard where the map geometry qualifies.
 
-Each castle begins with Village Hall, Tavern, and tier-1 dwelling. Each castle may build exactly one
+Each city begins with Village Hall, Tavern, and tier-1 dwelling. Each city may build exactly one
 stage/building per day. Effects of lower stages persist after upgrade; no refunds and no skipped
 stages. A Debt-dormant building remains built but supplies none of its rules until payment wakes it.
 
@@ -70,12 +73,12 @@ Every faction has two special buildings that reinforce its verb: Hearthguard mor
 Wound-Wright recovery/consumables; Unfinished recovered losses/death triggers; Vespiary rendering/
 tunnel travel; Hagwood bargain access/town relocation; Wildergrass beast growth/loss recovery.
 Generic hooks and the building catalog are authoritative. Hen-Legged relocation is a deterministic
-week-start choice to a legal explored destination; Deep Tunnels connect owned qualifying castles at
+week-start choice to a legal explored destination; Deep Tunnels connect owned qualifying cities at
 their movement cost.
 
 ## Building-card UI contract
 
-The castle build panel is a stable grouped grid: hall line, economy, military line, Mage Guild line,
+The city build panel is a stable grouped grid: hall line, economy, military line, Mage Guild line,
 dwellings 1–6, then faction specials. Upgrade chains occupy one slot that shows the next unbuilt
 stage, or the final built stage. Dwellings remain separate slots.
 
@@ -86,7 +89,7 @@ Card faces show only a category glyph and in-world name. Exactly four computed s
 | Gold | built |
 | Green | buildable now |
 | Red | unavailable now because prerequisites/resources/day build are blocking |
-| Grey | unavailable in this castle, including bans or inland Shipyard |
+| Grey | unavailable in this city, including bans or inland Shipyard |
 
 Map data may list `bannedBuildings`; another faction’s special buildings do not appear at all.
 Clicking any state opens one shared detail dialog with picture, flavor, generated function, costs,

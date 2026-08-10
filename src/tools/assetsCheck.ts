@@ -5,6 +5,10 @@ import {
   ASSET_MANIFEST, NON_SPRITE_REPRESENTATIONS, type AssetManifestEntry,
 } from '../../assets/manifest';
 import { assetWorklist, type AssetWorkItem } from '../../assets/worklist';
+import { validateAdventureSpriteInventory } from '../../assets/adventureSpriteInventory';
+import { ARTIFACTS } from '../content/artifacts';
+import { FACTIONS } from '../content/factions';
+import { ITEMS } from '../content/items';
 
 function pngMetadata(path: string): { w: number; h: number; hasAlpha: boolean } {
   const bytes = readFileSync(path);
@@ -253,6 +257,17 @@ const byId = new Map(worklist.map((item) => [item.id, item]));
 const errors: string[] = [];
 const seenFiles = new Map<string, string>();
 
+try {
+  validateAdventureSpriteInventory({
+    factions: Object.keys(FACTIONS),
+    resources: ['gold', 'timber', 'iron', 'essence'],
+    items: Object.keys(ITEMS),
+    artifacts: Object.keys(ARTIFACTS),
+  });
+} catch (error) {
+  errors.push(error instanceof Error ? error.message : String(error));
+}
+
 for (const [id, entry] of Object.entries(ASSET_MANIFEST)) {
   const item = byId.get(id);
   if (!item) {
@@ -286,6 +301,11 @@ for (const category of categories) {
   console.log(`  ${category.padEnd(14)} ${String(sprited).padStart(3)}/${String(items.length).padEnd(3)} sprited · ${nonSprite} deliberate non-sprite`);
 }
 console.log(`  ${'total'.padEnd(14)} ${String(Object.keys(ASSET_MANIFEST).length).padStart(3)}/${worklist.length} manifest entries`);
+const artifactSprites = Object.keys(ARTIFACTS).filter((id) =>
+  Boolean(ASSET_MANIFEST[`map-object:artifact:${id}`])).length;
+const itemSprites = Object.keys(ITEMS).filter((id) =>
+  Boolean(ASSET_MANIFEST[`map-object:item:${id}`])).length;
+console.log(`Planned collectible inventory · artifacts ${artifactSprites}/${Object.keys(ARTIFACTS).length} installed · items ${itemSprites}/${Object.keys(ITEMS).length} installed`);
 
 if (errors.length) {
   console.error('\nAsset validation failed:');

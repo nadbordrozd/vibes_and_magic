@@ -64,7 +64,8 @@ display size, pixelated rendering, and an accessible name. The executable surfac
 - level-up skill choices and Hero Details skill inspection;
 - full spell and skill rules inspection.
 
-Text names never disappear. Mana, school/category, current and upgrade faces, ranks, full rules,
+Text names never disappear. Mana, school/category, standard and upgraded rules, the currently active
+version and its reason, ranks, full rules,
 keyboard actions, disabled reasons, targeting consequences, and inspection remain ordinary semantic
 HTML. The icon accelerates scanning; it is never the only statement of identity or state.
 

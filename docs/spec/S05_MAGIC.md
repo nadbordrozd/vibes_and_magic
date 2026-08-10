@@ -64,22 +64,25 @@ Persistent physical pseudo-stacks/tiles such as Standing Mirror and Wall+ do not
 
 Each school owns one effect-targeting-effect verb:
 
-- **Amplify / Rite:** double a counter pile (cap 9), enchantment numbers, or timed magnitude; + face
-  also extends applicable duration/decay.
-- **Reflect / Craft:** copy a valid active effect to another legal target; + face copies to two.
+- **Amplify / Rite:** double a counter pile (cap 9), enchantment numbers, or timed magnitude; its
+  upgrade also extends applicable duration/decay.
+- **Reflect / Craft:** copy a valid active effect to another legal target; its upgrade copies to two.
 - **Sour / Grave:** Bloom becomes equal Hex; a beneficial timed effect is removed and leaves Hex 2;
-  an enemy enchantment is destroyed. The + face adds its catalog rider.
+  an enemy enchantment is destroyed. The upgrade adds its catalog rider.
 - **Overgrow / Wild:** spread an effect at its current magnitude to every adjacent stack, friend or
-  foe; + face may exclude one adjacent stack.
+  foe; its upgrade may exclude one adjacent stack.
 
 Twisters operate through target-selection and effect-operation registries rather than spell-specific
 UI assumptions.
 
-## Base and + faces
+## Standard and upgraded spells
 
-Every spell has one base face and one + face. A + face changes behavior through targets, riders,
-triggers, topology, or interaction; permanent per-hero upgrades record which face is known.
-Temporary resonance causes eligible spells to resolve as + without changing learned state.
+Every spell has one standard version and one upgraded version. An upgrade changes behavior through
+targets, riders, triggers, topology, or interaction; permanent per-hero upgrades record which spell
+upgrade is known. Temporary resonance causes eligible spells to use their upgraded rules without
+changing learned state. Internal `base`, `plus`, and `upgradedSpells` identifiers may remain stable
+serialization names, but player-facing copy always says Standard, Upgraded, or Upgraded here and
+never describes spell versions as faces. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
 
 Upgrade channels are:
 
@@ -87,15 +90,16 @@ Upgrade channels are:
 2. guild inscription at a friendly guild costs 4 essence;
 3. the rare Inscribe level card appears from level 4;
 4. terrain/site resonance upgrades that school for both sides during that battle;
-5. explicit specialties, skills, artifacts, scroll faces, or the complete Tailor’s Kit.
+5. explicit specialties, skills, artifacts, stored scroll versions, or the complete Tailor’s Kit.
 
-A stored base-face scroll stays base even on resonant terrain; an authored + scroll stays +. Bottled
-Echo repeats the recorded face and X spend while recalculating scaling from its user’s SP.
+A stored standard scroll stays standard even on resonant terrain; an authored upgraded scroll stays
+upgraded. Bottled Echo repeats the recorded version and X spend while recalculating scaling from its
+user’s SP.
 
 ## Resonance
 
 A battle can be resonant in zero or more schools. Deepwood supplies Wild, Barrowfield Grave,
-Lacquer Flats Craft, and castles/consecration Rite. A Seam supplies all four. Point barrows and mines
+Lacquer Flats Craft, and cities/consecration Rite. A Seam supplies all four. Point barrows and mines
 may retain authored Grave/Craft resonance on another terrain. Still Air suppresses tile resonance;
 the Veil supplies Grave globally.
 
@@ -106,7 +110,7 @@ Resolver ownership rules remain explicit when effects collide.
 ## Spell acquisition
 
 Mage Guilds have three sequential levels. Their deals are seeded at map setup: about 80% from the
-castle faction’s pair, about 20% from adjacent schools, and effectively none from the school(s)
+city faction’s pair, about 20% from adjacent schools, and effectively none from the school(s)
 excluded by the pair/opposition rules. A visiting friendly hero learns all dealt spells. Costs,
 deal sizes, spell IDs, rarity, source exclusions, and AI hints live in
 [`../../src/content/spells/index.ts`](../../src/content/spells/index.ts) and
@@ -145,6 +149,6 @@ specialty terms must be printed on the offered card.
 
 ## Catalog boundary
 
-The catalog supplies spell names, school, mana, kind, rarity, base/+ text, AI hints, effect operation,
+The catalog supplies spell names, school, mana, kind, rarity, standard/upgraded text, AI hints, effect operation,
 and provenance eligibility. Rules code supplies generic operation handlers. See
 [`S09_CONTENT_INDEX.md`](S09_CONTENT_INDEX.md) for validation invariants and data ownership.

@@ -30,11 +30,11 @@ spellbook, choice, result, and save/import.
 | Hero details | Understand one hero | identity, specialty, stats, skills, army, loadout | Close; inspection |
 | Hero equipment | Equip one artifact | artifact, legal slots, resulting loadout | Confirm; inspection |
 | Hero exchange | Transfer a company or consumable | both holders, source, projected destination | Review/confirm; inspection |
-| Castle | Complete one development task | owner, visitor, resources, selected task | Build/recruit/transfer/service; inspection |
+| City | Complete one development task | owner, visitor, resources, selected task | Build/recruit/transfer/service; inspection |
 | Combat | Resolve the active company action | round, sides, active stack, targets, latest event | act/cast/item/withdraw/auto; Help |
 | Combat targeting | Choose legal targets | source, stage, cost, prediction, choices | Confirm/cancel; inline detail |
-| Combat spellbook | Choose a legal combat spell | mana, active face, cost, availability | Cast/close; inspection |
-| Adventure spellbook | Choose a legal map spell | mana, movement, active face, availability | Cast/close; inspection |
+| Combat spellbook | Choose a legal combat spell | school group, icon/name/mana, active version, cost, availability | Select/details/cast/close; inspection |
+| Adventure spellbook | Choose a legal map spell | school group, icon/name/mana, movement, active version, availability | Select/details/cast/close; inspection |
 | Pending choice | Commit one canonical outcome | source, outcomes, costs, disabled reasons | Choose; inspection |
 | Battle result | Understand consequences | winner, losses, rewards, persistent changes | Continue; statistics disclosure |
 | Campaign result | Understand the authored outcome | objective, actor, day, battles | Return to title; record disclosure |
@@ -48,13 +48,15 @@ spellbook, choice, result, and save/import.
 - Setup and save/import are explicit sibling tasks. Setup uses one selected map/objective summary;
   faction identity, controller definitions, save metadata, and presentation showcases are disclosed
   on demand. A save row always provides a named Load action or its exact incompatibility reason.
-- Castle work is split into Town, Recruit, Army, and Services tabs. Only the selected task is
+- City work is split into Town, Recruit, Army, and Services tabs. Only the selected task is
   rendered. Ownership and visiting state remain above the tabs. Army reuses the reducer-projected
   direct transfer from doc 42; remote views truthfully expose only the garrison. Hero meetings and
   adjacent exchange from doc 43 remain unchanged.
-- Both spellbooks lead with resources, the current face, Cast, and a visible disabled reason.
-  Debts, flavor, and base/upgrade comparison use local disclosures. Existing imagery remains in
-  place and every card has a clean inspection/icon position without inventing the deferred catalog.
+- Both spellbooks group learned spells under accessible Rite, Craft, Grave, and Wild tabs. Each grid
+  cell keeps icon, full name, and mana visible; selection opens full Standard/Upgraded details and a
+  separate Cast action with its disabled reason. A learned upgrade says **Upgraded**, while a
+  temporary rule says **Upgraded here** and names its source. Debts and flavor remain available
+  without competing with spell selection. Work order 51 supersedes the earlier card-copy wording.
 - Combat keeps the current board and actions ahead of supporting detail on narrow layouts. The
   latest log event remains visible; older history and controls prose are disclosed. Targeting,
   confirmation, action availability, and reducer behavior are unchanged.

@@ -52,6 +52,13 @@ obstacles have no usable entrance. Guardians are independent objects linked with
 `guardedBy`, never embedded reward data. Run `npm run map-lint` after every map edit to check
 bounds, collisions, reachability, guard coverage, Manywhere registry coverage, and Cache links.
 
+Cities always occupy exact 5×2 ground contact with centered bottom entrance `(2,1)`; maps cannot
+override either value. A neutral city must declare a faction. Omit its `garrison` to derive exactly
+three weeks of that faction's base tier-1, tier-2, and tier-3 growth; write `garrison: []` for an
+intentional free capture; or write a complete nonempty legal army to replace the default. Never use
+`null`, random-tier placeholders, or an additive/partial override. See
+[`51_CITY_SPELLBOOK_SPRITES.md`](51_CITY_SPELLBOOK_SPRITES.md).
+
 ## Cache marks
 
 A map may author one hidden Cache at a passable secret tile and three to six Patient Stones linked
@@ -60,16 +67,16 @@ separate full-movement action, including a wrong guess.
 
 ## Fixed showcase starts
 
-Ordinary maps derive one starting castle and hero per active player. A showcase may instead declare
+Ordinary maps derive one starting city and hero per active player. A showcase may instead declare
 a fixed setup in `createGame` when the setup itself is the subject under review. The Grand Muster is
-the current example: six mixed-faction castles and six full-roster heroes belong to one human while
+the current example: six mixed-faction cities and six full-roster heroes belong to one human while
 the remote opponent uses the existing Dormant controller. The authored map still owns terrain,
 roads, guardian targets, resources, and structures, and must pass the same footprint/reachability
 lint as every ordinary scenario.
 
 The Sixfold Trial is the advanced-combat counterpart and uses six actual configurable player slots,
-not one player's allied castles. `SIXFOLD_PLAYER_SETUP` owns the six distinct default factions,
-starts, representative advanced heroes, and skill packages. Castle buildings, two-week armies, and
+not one player's allied cities. `SIXFOLD_PLAYER_SETUP` owns the six distinct default factions,
+starts, representative advanced heroes, and skill packages. City buildings, two-week armies, and
 complete two-school spellbooks derive from canonical catalogs during setup. Its lint profile pins
 start exits, reward/guardian totals, and calibrated strength-band coverage.
 

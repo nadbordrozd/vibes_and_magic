@@ -8,7 +8,7 @@ resolve moving/creative objects, omen transition and announcement, week-start De
 guardian growth, Tavern refresh, market stock, Provisioner items, then Founder's Vault production.
 Resolve ordinary day-start Debts afterward. This order is deterministic and portable.
 
-Conquest eliminates a player who has no hero and no castle, or who remains castleless for seven
+Conquest eliminates a player who has no hero and no city, or who remains cityless for seven
 days. A map may replace or supplement the objective as described below. A dormant player is never
 an economic actor: it does not move, build, recruit, hire, or collect income; its garrisoned heroes
 still defend with the normal combat AI.
@@ -18,7 +18,7 @@ still defend with the normal combat AI.
 Heroes have daily movement points. Entering a tile pays its terrain/overlay cost; diagonal movement
 uses the normal diagonal surcharge unless a rule removes it. Paths, costs, boat state, pickups,
 visits, and transfers are core actions. Explored fog persists per player; visibility derives from
-heroes, owned castles, skills, artifacts, and explicit reveal effects.
+heroes, owned cities, skills, artifacts, and explicit reveal effects.
 
 Every tile a hero actually enters contributes that hero's vision to the owning player's permanent
 explored union immediately. A partial route therefore retains vision through its last occupied tile
@@ -26,7 +26,7 @@ when movement is exhausted or interrupted by aggro, combat, a pending choice, an
 topology, or defeat; it never reveals an unentered continuation. During non-instant movement the
 renderer projects the same deterministic reveal rule only through the current animated path index.
 It must not display destination or future-route vision early, and this projection never mutates core
-state. Other heroes, owned castles, skill/artifact effects, explicit reveal effects, and per-player
+state. Other heroes, owned cities, skill/artifact effects, explicit reveal effects, and per-player
 hot-seat isolation remain additive contributors. See work order 48.
 
 The adventure map uses eight-direction movement and adjacency except guardian aggro, which is the
@@ -95,9 +95,9 @@ facts only. Editor selection, tools, undo history, camera state, and runtime vis
 fields are not map rules or game state. A pure codec applies canonical defaults and produces a fresh
 runtime map/setup from the document, explicit campaign seed, and setup.
 
-Player slots use `p1` through `p6`; the player ID selects the canonical flag color. Starting castles
+Player slots use `p1` through `p6`; the player ID selects the canonical flag color. Starting cities
 and heroes each store `owner` and `faction` independently, so a flag color never implies faction and
-nearby placement never implies ownership. An owned castle defaults through the canonical basic-castle
+nearby placement never implies ownership. An owned city defaults through the canonical basic-city
 construction path. A newly placed starting hero receives a small nonempty army derived from the
 selected hero faction's catalog `hireArmy`; the normalized authored army is then explicit, positive,
 and limited to seven slots. Runtime setup creates exactly the declared slots and entities rather
@@ -110,14 +110,15 @@ Their starts must each retain a viable local economy and at least two routes int
 loops and alternate routes must keep intended guardian gates from accidentally sealing required
 content. Dense-map lint owns the numeric topology and density thresholds for each such scenario.
 
-Nothing overlaps. Every hero, guardian, pickup, building, mine, castle, dwelling, shrine, and site
+Nothing overlaps. Every hero, guardian, pickup, building, mine, city, dwelling, shrine, and site
 occupies its own footprint. Guardians stand next to the thing they protect. Object coordinates are
 top-left anchors. Footprint and entrance semantics are defined in [`S02_ENGINE.md`](S02_ENGINE.md).
 
-Moving onto an entrance captures or visits mines, dwellings, shrines, sites, and castles. A defended
-castle begins a garrison battle. Fog reveal distance is measured from footprint edges. Non-entrance
-cells of a footprint are impassable. A castle occupies 3×2 with its entrance at bottom-center; a
-mine occupies 2×1 with its entrance at bottom-left unless a map explicitly authors another entrance.
+Moving onto an entrance captures or visits mines, dwellings, shrines, sites, and cities. A defended
+city begins a garrison battle. Fog reveal distance is measured from footprint edges. Non-entrance
+cells of a footprint are impassable. A city occupies exactly 5×2 and has its only entrance at the
+centered bottom offset `(2,1)`; maps cannot override either value. A mine occupies 2×1 with its
+entrance at bottom-left unless a map explicitly authors another entrance.
 
 ## Guardian aggro
 
@@ -225,17 +226,25 @@ resonance, growth, shots/resonance suppression, terrain costs, or round morale. 
 effects live in [`../../src/content/omens.ts`](../../src/content/omens.ts). Omen forecasting and
 Fickle Weather operate on the dedicated omen stream, not campaign RNG.
 
-## Town ownership and neutral towns
+## City ownership and neutral cities
 
-A neutral town has an authored faction, garrison, optional prebuilt buildings, and optional vault.
-Defeat its garrison through the entrance to capture it, then build and recruit normally. Diplomacy
-stand-aside never applies to a garrison. A neutral town does not build, recruit, collect, or grow its
-garrison before capture. AI values it as a conquest target using the same power check as other
-guarded objectives.
+A neutral city has an authored faction, optional garrison, optional prebuilt buildings, and optional
+vault. Defeat its garrison through the centered entrance to capture it, then build and recruit
+normally. Diplomacy stand-aside never applies to a garrison. A neutral city does not build, recruit,
+collect, or grow its garrison before capture. AI values it as a conquest target using the same power
+check as other guarded objectives.
 
-Free Town, Old Seat, and Hollow Town are authoring presets, not separate rule engines. The Hollow
-Town may be empty and mechanically free. Mixed-faction army morale rules still apply after recruiting
-from a captured town of another faction.
+When `garrison` is omitted, deterministic setup creates exactly the faction's tier-1, tier-2, and
+tier-3 city units in ascending tier order, each at three times its canonical weekly growth. This is
+base catalog growth: difficulty, omens, buildings, artifacts, elapsed weeks, and recruit-pool state
+do not modify it. A present empty array explicitly authors a free-to-capture city; a present nonempty
+legal army replaces the whole default. `null`, nonpositive counts, random-tier placeholders, partial
+defaults, and additive overrides are invalid. The derived or authored army becomes ordinary initial
+save/replay state. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
+
+Free Town, Old Seat, and Hollow Town are authoring presets, not separate rule engines. Hollow Town's
+explicit empty-garrison override makes it mechanically free. Mixed-faction army morale rules still
+apply after recruiting from a captured city of another faction.
 
 ## Victory and defeat
 
@@ -248,15 +257,15 @@ plans conquest and only contests other objectives opportunistically.
 statistics screen. The Tailor’s Kit is not inherently a victory condition; only an `assemble` map
 makes it one.
 
-The Grand Muster is the fixed showcase sandbox. Player 1 begins with six owned castles—one of every
-playable faction—and six faction-matched heroes, each carrying one stack of all six castle units.
+The Grand Muster is the fixed showcase sandbox. Player 1 begins with six owned cities—one of every
+playable faction—and six faction-matched heroes, each carrying one stack of all six city units.
 Its distant second player is Dormant by definition. Six static neutral sparring guardians sit beyond
-the safe castle entrances so every starting army has an immediate optional combat demonstration.
+the safe city entrances so every starting army has an immediate optional combat demonstration.
 
 The Sixfold Trial is a selectable six-player conquest showcase. It has six independently owned
-developed castles and heroes, distinct default factions, configurable controllers/factions, dense
+developed cities and heroes, distinct default factions, configurable controllers/factions, dense
 cross-field roads, 36 ordinary chests, and 18 linked artifact guardians. Each start has multiple
-open approaches, while the shared field permits neutral fights, hero battles, and castle assaults
+open approaches, while the shared field permits neutral fights, hero battles, and city assaults
 without a long opening economy phase.
 
 ## Boats and water
@@ -266,12 +275,12 @@ moving from boat to adjacent land disembarks for 300. The boat moves with the he
 on the last water tile after disembarkation. Sea tiles cost 65. Ranged pickup and aggro are unchanged
 at sea.
 
-A Shipyard is available only in a coastal castle, defined by water within three tiles of its
+A Shipyard is available only in a coastal city, defined by water within three tiles of its
 footprint. It builds a boat on a legal adjacent water tile for its catalog cost. Summon Skiff creates
-a boat at the nearest shore; its + face teleports the nearest existing boat instead.
+a boat at the nearest shore; its upgrade teleports the nearest existing boat instead.
 
 Whirlpools are authored pairs. Entering one exits at the other and removes 25% of the weakest stack,
 minimum one unit, deterministically. Siren Rocks prompt listen/fight or row past/pay movement. Mixed-
 domain pathfinding models embark state and transfer costs, remembers reusable boats, and may price
-the known Whirlpool loss. A castle assault from water requires disembarkation; cross-shore hero
+the known Whirlpool loss. A city assault from water requires disembarkation; cross-shore hero
 battles otherwise use the standard land battlefield.

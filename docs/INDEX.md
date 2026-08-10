@@ -19,7 +19,7 @@ Catalog values and strings live in the data files linked by S09.
 | [S04](spec/S04_COMBAT.md) | Battle sequence, damage, morale, sieges, retreat/surrender |
 | [S05](spec/S05_MAGIC.md) | Schools, casting, effects, upgrades, resonance, Bargains and Debts |
 | [S06](spec/S06_HEROES.md) | Progression, skills, hiring, armies, items, equipment |
-| [S07](spec/S07_ECONOMY.md) | Resources, income, recruitment, castles, buildings, difficulty |
+| [S07](spec/S07_ECONOMY.md) | Resources, income, recruitment, cities, buildings, difficulty |
 | [S08](spec/S08_CANON.md) | Setting, factions, cultures, visual and naming canon |
 | [S09](spec/S09_CONTENT_INDEX.md) | Data-file manifest and catalog invariants |
 | [Coverage](spec/COVERAGE.md) | Normative mapping for archived docs 01–29 |
@@ -83,5 +83,6 @@ live in `docs/` until superseded by their implementation.
 | 48 | INCREMENTAL_ADVENTURE_FOG | Rules-owned exploration union for every entered movement tile plus animation-prefix presentation and responsive frame evidence | extends S03 movement/exploration; preserves replay/save/link authority and doc 47 late fog |
 | 49 | SIXFOLD_TRIAL | Six real configurable player slots and a deterministic advanced-combat proving ground with developed castles, derived two-week armies, complete faction-school spellbooks, calibrated guardians, rewards, and browser evidence | extends S02/S03/S04/S09 and the authored-map/setup catalogs |
 | 50 | MAP_EDITOR | Versioned portable authored-map contract, in-game paint/shape editor, local revision storage, deterministic runtime conversion, import/export, lint, and promotion into the built-in catalog | extends S02/S03/S09; editor state remains outside rules and campaign saves |
+| 51 | CITY_SPELLBOOK_SPRITES | Exact 5×2 cities, deterministic neutral-city garrisons, six architectural identities, school-grouped original spellbook, clean spell-upgrade language, and exhaustive artifact/item/resource visual inventory | extends S02/S03/S05/S07/S08/S09; supersedes prior live player-facing Castle terminology, 31/32/37/50 settlement footprint clauses, and 34/44/46 spell-upgrade presentation wording; contract/inventory only |
 
-Next free number: **51**.
+Next free number: **52**.

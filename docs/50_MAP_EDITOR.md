@@ -3,7 +3,9 @@
 Status: implemented and browser-accepted 2026-08-10. This work
 order defines one JSON authoring format shared by the in-game editor, local maps, built-in-map
 clones, test play, and promoted built-in maps. It does not make editor UI state part of game state
-or permit maps to define new rules.
+or permit maps to define new rules. Work order 51 supersedes its player-facing Castle terminology,
+3×2 settlement default, and neutral-garrison omission semantics; the serialized `castles` field may
+remain a version-1 compatibility name.
 
 ## Authority boundary
 
@@ -14,7 +16,7 @@ object behavior, footprints, entrances, faction defaults, army limits, and all o
 owned by the canonical catalogs and headless core described by S00–S09.
 
 The portable document owns initial authored facts: metadata, dimensions, tiles, overlays, player
-slots, starting castles and heroes, objects, guardians, rewards, and objectives. The deterministic
+slots, starting cities and heroes, objects, guardians, rewards, and objectives. The deterministic
 map codec applies catalog defaults and converts those facts into a fresh runtime map/setup. Runtime
 fields such as `collected`, `visitedBy`, current movement, growth history, and battle state are not
 authoring fields. A test play or campaign receives a converted snapshot and thereafter changes only
@@ -74,7 +76,7 @@ derive the importer, exporter, defaults, and tests from it.
   are errors. The map's own bytes are hashed separately after canonical normalization.
 - `tiles` is exactly `height` rows of exactly `width` `{terrain, skin?}` cells. Generated
   decorations are absent. Roads and seams are unique in-bounds coordinate sets.
-- All entity IDs are unique across castles, heroes, objects, guardians, and rewards. Coordinates
+- All entity IDs are unique across cities (`castles` in schema version 1), heroes, objects, guardians, and rewards. Coordinates
   are integer top-left anchors. Optional footprints and entrances use the ordinary canonical
   semantics and may be authored only where the referenced kind permits an override.
 - `source` is either null or provenance such as `{ "kind": "builtIn", "mapId":
@@ -95,10 +97,10 @@ complete rectangular tile matrix and no entities. Drafts may be incomplete or cu
 the editor preserves them and reports diagnostics instead of discarding work.
 
 Built-in maps are read-only. **Clone** runs the same built-in-to-portable adapter used by validation,
-materializes all authored terrain, overlays, start slots, castles, heroes, structures, guardians,
+materializes all authored terrain, overlays, start slots, cities, heroes, structures, guardians,
 rewards, and objectives, assigns a new local ID at revision 1, and records `source`. Special setup
 data must become ordinary portable records or declared catalog-derived defaults during cloning; no
-castle, hero, army, guardian, or reward may require manual reconstruction afterward.
+city, hero, army, guardian, or reward may require manual reconstruction afterward.
 
 Editing a local map opens its newest draft. Test play and starting a campaign first freeze a
 normalized playable revision. Later edits fork the next revision, leaving frozen revisions
@@ -111,19 +113,27 @@ explicit warning; existing campaign saves are never silently rebound to a newer 
 its default controller (`human`, `ai`, or `dormant`), default faction, and optional display name.
 The player ID selects the canonical flag color; arbitrary RGB colors are not map rules.
 
-Castles and heroes store ownership and faction independently:
+Cities and heroes store ownership and faction independently:
 
-- a castle has `owner: PlayerId | "neutral"` and a separate `faction: FactionId`;
+- a city record has `owner: PlayerId | "neutral"` and a separate `faction: FactionId`;
 - a starting hero has `owner: PlayerId` and a separate `faction: FactionId`;
 - a hero definition, when selected, must be a legal definition for the hero's faction, but the
-  owner slot's default faction need not match either the hero or castle faction;
+  owner slot's default faction need not match either the hero or city faction;
 - changing an owner changes the flag only, and changing a faction changes the roster/identity only;
   neither control silently rewrites the other field.
 
-A newly placed owned castle uses the canonical basic-castle defaults: its ordinary 3×2 footprint
-and entrance, starting buildings, empty garrison, recruit availability, guild derivation, and other
+A newly placed owned city uses the canonical basic-city defaults: its exact 5×2 footprint and
+centered entrance `(2,1)`, starting buildings, empty garrison, recruit availability, guild derivation, and other
 initial state come from the core/catalog rather than duplicated editor numbers. Advanced inspectors
 may author legal building, ban, garrison, and variant fields supported by the portable schema.
+
+A newly placed neutral city also selects a faction. If its `garrison` field is omitted, conversion
+derives exactly the faction's tier-1, tier-2, and tier-3 units at three times their canonical weekly
+growth. A present empty array explicitly authors a free capture; a present nonempty legal army
+wholly replaces the default. The editor must preserve this presence distinction and reject `null`,
+nonpositive counts, random-tier placeholders, partial defaults, and additive overrides. It may offer
+**Use three-week default**, **Empty**, and **Custom army** as mutually exclusive authoring controls;
+it must not materialize the omitted default merely by opening an inspector.
 
 A newly placed hero selects owner color and faction separately, chooses a faction-valid hero
 definition, and receives one small nonempty default company derived from that faction's canonical
@@ -132,9 +142,9 @@ slots; every stack references a canonical creature and has a positive integer co
 may change a legal army, but no placed hero may be saved as a playable start with an empty army.
 
 Setup conversion creates exactly the declared slots and authored starting entities. It does not
-infer ownership from nearby castles, sprite color, array position, or faction. A playable map needs
+infer ownership from nearby cities, sprite color, array position, or faction. A playable map needs
 at least one active slot and every non-dormant active slot needs at least one owned starting hero or
-castle; objective-specific lint may impose stronger requirements.
+city; objective-specific lint may impose stronger requirements.
 
 ## Objects, guardians, and rewards
 
@@ -185,7 +195,7 @@ The palette is ordered and labeled as follows:
 1. terrain and skins;
 2. mountains, obstacles, and decorative/shape props;
 3. structures and other registered map objects;
-4. castles;
+4. cities;
 5. heroes;
 6. guardians, exposing every canonical creature;
 7. artifacts;
@@ -194,7 +204,7 @@ The palette is ordered and labeled as follows:
 
 Search and filters may exist inside a section but must not flatten this order. Entity placement uses
 a stamp/cursor and then an inspector; painting gestures never dispatch game actions. Placement
-choices use compact icon buttons with accessible names and hover titles. The castle section exposes
+choices use compact icon buttons with accessible names and hover titles. The city section exposes
 six direct faction stamps, structure and reward sections reuse native map sprites, guardians reuse
 all canonical battle portraits, and text detail moves to the selected inspector rather than filling
 the palette.
@@ -231,7 +241,7 @@ promotion, tests, and `npm run map-lint`:
 2. dimensions, rectangular tiles, finite integers, unique IDs, and in-bounds coordinates;
 3. installed catalog references and kind-specific authoring fields;
 4. player-slot order, owner/faction independence, hero definitions and nonempty legal armies,
-   castle defaults/overrides, positive guardian counts, reward contents, and guard links;
+   city defaults/overrides including neutral-garrison presence, positive guardian counts, reward contents, and guard links;
 5. canonical footprint, overlap, entrance, terrain-domain, paired-object, Cache, start-aggro,
    guarded pickup, reachability, and objective checks from S02/S03;
 6. optional authored-map profiles such as dense topology or showcase counts.
@@ -257,7 +267,7 @@ those bytes unchanged into the checked-in authored-map directory, and adds or ve
 built-in manifest entry consumed by campaign setup, content hashing, presentation, simulation,
 assets, tests, and map lint.
 
-Promotion must not require re-painting terrain, reconstructing player setup, rewriting castles or
+Promotion must not require re-painting terrain, reconstructing player setup, rewriting cities or
 heroes, copying guardian counts, recreating reward links, or translating JSON arrays into source
 code. A built-in clone of the promoted entry must normalize back to the same portable authoring
 content. Repository acceptance then adds any scenario-specific profile/tests and runs map lint,
@@ -293,7 +303,7 @@ npm run review:map-editor
 The deterministic real-browser journey starts at the title screen, creates a blank portable map,
 authors the two required objective texts, and exercises terrain smear and filled shapes, mountain
 smear and filled shapes, an obstacle prop, registered structure, independently owned/factioned
-castles and heroes, a linked guardian with an edited troop count, artifact/item/resource rewards,
+cities and heroes, a linked guardian with an edited troop count, artifact/item/resource rewards,
 and a road overlay. It also checks keyboard shortcut ownership, undo/redo, cancelled pointer
 gestures, local save and reopen, canonical download, non-destructive import collision handling,
 test play and return-to-editor context, and the campaign menu's exact frozen-revision map download.

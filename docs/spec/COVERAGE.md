@@ -51,7 +51,7 @@ to the later rule or current data; they are not treated as silently dropped.
 | 07 budget/twisters/topology/target scaling | [`S05`](S05_MAGIC.md), [`S01`](S01_RATIONALE.md#target-scaling-law) |
 | 08 casting/SP scaling | [`S05`](S05_MAGIC.md#mana-and-casting) |
 | 08 counters/enchantments/twisters | [`S05`](S05_MAGIC.md#four-counters-exactly), [`S05`](S05_MAGIC.md#battle-enchantments), [`S05`](S05_MAGIC.md#twisters) |
-| 08 upgrades/channels/resonance | [`S05`](S05_MAGIC.md#base-and--faces), [`S05`](S05_MAGIC.md#resonance) |
+| 08 upgrades/channels/resonance | [`S05`](S05_MAGIC.md#standard-and-upgraded-spells), [`S05`](S05_MAGIC.md#resonance) |
 | 08 special classes/Bargains | [`S05`](S05_MAGIC.md#mana-and-casting), [`S05`](S05_MAGIC.md#bargains-and-debts) |
 | 08 pinned precedence | [`S04`](S04_COMBAT.md#pinned-positioning-precedence), [`S02`](S02_ENGINE.md#resolution-pipeline) |
 | 08 guild costs/deals | Rules in [`S05`](S05_MAGIC.md#spell-acquisition), values in [`building/spell data`](S09_CONTENT_INDEX.md#magic). |

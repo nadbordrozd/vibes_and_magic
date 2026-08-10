@@ -57,9 +57,9 @@ The rules that are easy to lose during a port are:
 
 ## Tavern, hiring, defeat, and ransom
 
-Every castle starts with a Tavern, Village Hall, and tier-1 dwelling prebuilt. A Tavern deals two
-heroes from that castle faction’s roster using the game seed and refreshes weekly. An ordinary hire
-costs 1500 gold, arrives at the castle with the faction’s starter army and full mana, and is limited
+Every city starts with a Tavern, Village Hall, and tier-1 dwelling prebuilt. A Tavern deals two
+heroes from that city faction’s roster using the game seed and refreshes weekly. An ordinary hire
+costs 1500 gold, arrives at the city with the faction’s starter army and full mana, and is limited
 by the three-hero-per-player cap.
 
 A defeated or retreated/surrendered hero returns to the Tavern pool immediately and can be re-hired
@@ -71,7 +71,7 @@ matrix is in [`S04_COMBAT.md`](S04_COMBAT.md).
 ## Multiple heroes and transfers
 
 The strongest-army AI hero is Main; others are Gatherers. Humans are not assigned roles. Friendly
-adjacent heroes, or a visiting hero and castle garrison, may exchange stacks, consumables, and legal
+adjacent heroes, or a visiting hero and city garrison, may exchange stacks, consumables, and legal
 artifacts through explicit actions. Transfers conserve counts and instances. Same-unit stacks merge;
 otherwise seven-slot capacity applies. Gatherers may deliver surplus to Main and avoid threats using
 their documented safety ratio. Main selection, threat checks, Diplomacy, weak-guardian effects,
@@ -95,12 +95,12 @@ Heroes have six base consumable slots, modified by Provisioner. The item catalog
 legal action generation, use the shared hero act, and are consumed unless a rule prevents it.
 Adventure items are explicit map actions and ordinarily cost no movement unless the item says so.
 
-Any common or uncommon combat spell may exist as a one-use scroll. A normal scroll stores the base
-face; a barrow/lock + scroll stores the + face. Scrolls cost no mana or Knowledge and preserve their
-stored face despite resonance. Rare spells are never scrolls. Peddler R2’s stocked scroll is the
+Any common or uncommon combat spell may exist as a one-use scroll. A normal scroll stores the
+standard version; a barrow/lock upgraded scroll stores the upgraded version. Scrolls cost no mana or
+Knowledge and preserve their stored version despite resonance. Rare spells are never scrolls. Peddler R2’s stocked scroll is the
 explicit exception to “found, not bought.”
 
-Items use instance records rather than bare IDs so stored spell face, X spend, coordinate-based
+Items use instance records rather than bare IDs so stored spell version, X spend, coordinate-based
 Trade Goods value, and other state survive transfer/replay. The six former passive trinkets are Misc
 artifacts and no longer consume item slots.
 
@@ -121,7 +121,7 @@ The Tailor’s Kit is four visible, uniquely authored pieces. Bonuses count equi
 
 - each piece provides its own modest primary-stat bonus;
 - 2 pieces: +2 all stats and reveal essence deposits/seams map-wide;
-- 3 pieces: all spells resolve as + faces;
+- 3 pieces: all spells use their upgraded rules;
 - 4 pieces: all-school resonance and once-per-week Unstitch to any explored legal tile.
 
 The Kit has no inherent victory trigger. Burdens are informed consent: their upside, downside, and
@@ -130,7 +130,7 @@ condition/payment is satisfied.
 
 ## Hero and catalog counts
 
-The playable roster is six factions × six heroes. Each faction’s six-unit castle roster and neutral
+The playable roster is six factions × six heroes. Each faction’s six-unit city roster and neutral
 creatures are separate from heroes. Counts are validated from data; do not duplicate roster tables
 here. Hero story and specialty validation rejects empty or behaviorless entries—the latter includes
 the known reconciliation issue tracked in
