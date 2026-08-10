@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "generator": "built-in-imagegen",
+  "generated_on": "2026-08-10",
+  "job": "assets/jobs/city-sprites-built-in.json",
+  "workflow": {
+    "source_dimensions": [1254, 1254],
+    "final_dimensions": [160, 160],
+    "chroma_helper": "/home/nadbor/.codex/skills/.system/imagegen/scripts/remove_chroma_key.py",
+    "chroma_arguments": ["--auto-key", "border", "--soft-matte", "--transparent-threshold", "12", "--opaque-threshold", "220", "--despill", "--force"],
+    "bake": "uv run --no-project --with pillow python scripts/buildCitySprites.py",
+    "resampling": "nearest-neighbour reduction followed by a hard alpha threshold at 96",
+    "contact": {"w": 5, "h": 2, "entrance": {"x": 2, "y": 1}},
+    "anchor": {"x": 0, "y": 96},
+    "contact_sheet": ".pixel-work/review/cities/city-sprites-contact-sheet.png"
+  },
+  "selections": [
+    {
+      "id": "castle:hearthguard:castle",
+      "request_id": "city:hearthguard:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fedc9-8e81-7592-8b8c-d5681a93bae6/exec-b24f38a8-22fd-4fa4-bbe5-bdf32e90a084.png",
+      "source": "assets/sources/cities/hearthguard-city-source.png",
+      "final": "public/assets/cities/hearthguard-city.png",
+      "prompt_sha256": "4b36768c1cc10834a793378104f85fef9c82ea12800a0441c38c90dc19057432",
+      "source_sha256": "e498a65adbea4eb97b5980470823bce0054766ca98d4c1213a6a2b1a6cb38bc1",
+      "final_sha256": "496aa79fa4ddfe5768cf4ca9282565a6a3a22eddd96a8f351018c630549db0d7",
+      "sampled_key": "#05f908",
+      "alpha": {"transparent": 10770, "partial": 0, "bbox": [2, 22, 158, 160], "transparent_corners": 4, "green_fringe_pixels": 0},
+      "visual_review": "Broad cream gatehouse, paired square towers, red tile, iron and gold read clearly; the only entrance is the centered open arch."
+    },
+    {
+      "id": "castle:woundWrights:castle",
+      "request_id": "city:wound-wrights:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fedc9-8e81-7592-8b8c-d5681a93bae6/exec-ee7eb65d-6e2c-47cd-b9be-c018d4bfbfcc.png",
+      "source": "assets/sources/cities/wound-wrights-city-source.png",
+      "final": "public/assets/cities/wound-wrights-city.png",
+      "prompt_sha256": "ec2fb7c89d7125bb4f796ca2fbaa153c6119175fa8717ce155cd78a72a01a3d4",
+      "source_sha256": "fe15109b58cd3bde442326137dbdd9d0366f257d4e15bea911b2ca772540b6db",
+      "final_sha256": "1bb6e5a08b0396b349b844d98a7f845fdc99026c62f8850be7c6c87ec39c1f1c",
+      "sampled_key": "#04f907",
+      "alpha": {"transparent": 8566, "partial": 0, "bbox": [2, 22, 158, 160], "transparent_corners": 4, "green_fringe_pixels": 0},
+      "visual_review": "Maintained red-blue-yellow workshop architecture, brass joints, porcelain panels and winding key read immediately; one centered double door."
+    },
+    {
+      "id": "castle:unfinished:castle",
+      "request_id": "city:unfinished:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fedc9-8e81-7592-8b8c-d5681a93bae6/exec-c8448390-c3a4-43d6-b83c-cb7489711938.png",
+      "source": "assets/sources/cities/unfinished-city-source.png",
+      "final": "public/assets/cities/unfinished-city.png",
+      "prompt_sha256": "fda7a981ba0193f3c5cbd6130310f03293ec3adf388cef16f4b4c37f732c77d6",
+      "source_sha256": "a37c29cf0be1ec28ce0fe9a9f1b8d7adce5a8d67c05a7d5df8200625aae193d2",
+      "final_sha256": "a946a5912c084166a8826bbfc857493fe9f9382c912ad09526910ad18d5b95fd",
+      "sampled_key": "#04fa05",
+      "alpha": {"transparent": 10766, "partial": 0, "bbox": [2, 8, 158, 160], "transparent_corners": 4, "green_fringe_pixels": 0},
+      "visual_review": "Complete bone-white memorial city stays gentle and tended; linen, candle niches and grave-gold fittings frame one centered processional gate."
+    },
+    {
+      "id": "castle:vespiary:castle",
+      "request_id": "city:vespiary:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fedc9-8e81-7592-8b8c-d5681a93bae6/exec-be4a47b2-ea51-4e56-b3be-9bb894184bf9.png",
+      "source": "assets/sources/cities/vespiary-city-source.png",
+      "final": "public/assets/cities/vespiary-city.png",
+      "prompt_sha256": "e784fc73e3ff34b64611a632075e52d23b39ca478cbf4eaa95fb5c71366b1369",
+      "source_sha256": "f8e3a36da904c79ec8a19def66d189560e55450cb604e14f6e7b9bd688d1f0d8",
+      "final_sha256": "0a1b47a38d0183b6b51e0258b669e54918348b83038c562d288b0f4267472e49",
+      "sampled_key": "#03f80f",
+      "alpha": {"transparent": 10764, "partial": 0, "bbox": [2, 25, 158, 160], "transparent_corners": 4, "green_fringe_pixels": 0},
+      "visual_review": "Amber resin chambers, black chitin, paper roofs and papery asymmetric wings read as civic hive architecture around one centered resin arch."
+    },
+    {
+      "id": "castle:hagwood:castle",
+      "request_id": "city:hagwood:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fedc9-8e81-7592-8b8c-d5681a93bae6/exec-ffb289c2-be9d-4a11-b1bd-f540f58e373a.png",
+      "source": "assets/sources/cities/hagwood-city-source.png",
+      "final": "public/assets/cities/hagwood-city.png",
+      "prompt_sha256": "bc0092d2e8d05f87e437bb0127b97278ece4d90899ca2a069fb8d61d9cd03f10",
+      "source_sha256": "f06fac4317fc36d67ac70683fc2cc94f0bfe4851debf12e1ac3876533667ec16",
+      "final_sha256": "3a7d74cc1bb77d3f372dac3ced576ddfefa4a48e7e88f52766ca7a51f92c57a2",
+      "sampled_key": "#08f607",
+      "alpha": {"transparent": 12156, "partial": 0, "bbox": [5, 4, 155, 160], "transparent_corners": 4, "green_fringe_pixels": 0},
+      "visual_review": "Dense but readable grown birch-and-wicker town has crooked halls, fence finials, red knots and one centered red door under its bent living bough."
+    },
+    {
+      "id": "castle:wildergrass:castle",
+      "request_id": "city:wildergrass:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fedc9-8e81-7592-8b8c-d5681a93bae6/exec-dfcfdcd1-1ff5-4e7a-bff3-19f9d5ded64c.png",
+      "source": "assets/sources/cities/wildergrass-city-source.png",
+      "final": "public/assets/cities/wildergrass-city.png",
+      "prompt_sha256": "5f9cd681dcc3a5c26455e87f8dcc038c12c97228633ac60332ffb11bb115358e",
+      "source_sha256": "b58df6c8a03d1b0ed2d98231e6acea1a8def28d6086c3779ea51acf5d4d89d45",
+      "final_sha256": "32291d198c01bc91577efeb35d8354d7a772771d4a7628544ee710343429f9d1",
+      "sampled_key": "#06f80d",
+      "alpha": {"transparent": 15733, "partial": 0, "bbox": [2, 62, 158, 160], "transparent_corners": 4, "green_fringe_pixels": 0},
+      "visual_review": "Low high-oblique hide-and-palisade city has horn ridges, felt, red weaving, herd totems and one centered gate between drum rims."
+    }
+  ]
+}

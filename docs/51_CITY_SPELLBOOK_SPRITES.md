@@ -1,7 +1,8 @@
 # 51 — Cities, spellbook, and complete collectible sprites
 
-Status: design and inventory contract; runtime, UI, map migration, and bitmap production are not
-implemented by this work order. This document extends S02, S03, S05, S07, S08, and S09 and
+Status: design and inventory contract; the six faction-city bitmaps are now produced, while runtime,
+UI, map migration, spellbook, and collectible bitmap production remain implementation work. This
+document extends S02, S03, S05, S07, S08, and S09 and
 supersedes the 3×2 castle ground-contact clauses in docs 31, 32, 37, and 50. It also supersedes the
 spell-upgrade presentation wording in docs 34, 44, and 46 and the player-facing settlement word
 “Castle” wherever it remains in an earlier live work order. Existing internal `Castle` and `plus`
@@ -89,6 +90,13 @@ an opaque ID or faction name to a generator.
   ridges, ash-grey felt, blood-red weaving, herd totems, and a central drum-framed gate. It reads as
   a durable moving culture, not generic tents behind a stone castle.
 
+The six selected 160x160 RGBA city canvases live under `public/assets/cities/`. Their compatibility
+manifest IDs retain the internal `castle:` prefix, but each entry declares a 5x2 contact, entrance
+`(2,1)`, and anchor `{x:0,y:96}`. Exact built-in requests, retained chroma sources, selected hashes,
+alpha statistics, and visual review are recorded in `assets/jobs/city-sprites-built-in.json` and
+`assets/provenance/city-sprite-generation.json`; `scripts/buildCitySprites.py` reproduces the final
+native canvases after the documented local chroma-removal step.
+
 Neutral cities retain their authored faction’s material language and silhouette without an owner
 color. Ownership is always the separate runtime pennant overlay. No sprite bakes a player flag.
 
@@ -172,14 +180,14 @@ Current audited coverage at contract time is:
 |---|---:|---:|---:|
 | Artifacts | 90 | 0 | 90 |
 | Items/consumables | 37 | 4 | 33 |
-| Faction city designs conforming to 5×2 | 6 | 0 | 6 |
+| Faction city designs conforming to 5×2 | 6 | 6 | 0 |
 | Resource pickups | 4 | 4 | 0 |
 | Resource mines/sites | 4 | 4 | 0 |
 
 The four installed item sprites are generic Spell Scroll, Overseer’s Charter, Waybread, and Trade
 Goods. They count as current native coverage, but promotion into the complete shared family still
-requires style review against this work order. Existing 3×2 city sprites are useful visual
-provenance but do not conform to the new 5×2 geometry and therefore do not count toward the six.
+requires style review against this work order. Existing 3×2 city sprites remain useful historical
+visual provenance; the six new 5×2 designs are the installed city family.
 
 ## 5. Resource sites and shared art law
 

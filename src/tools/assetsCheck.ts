@@ -168,6 +168,23 @@ function validateEntry(item: AssetWorkItem, entry: AssetManifestEntry): string[]
       || entry.anchor.y !== entry.h - item.h)) {
     errors.push(`ground-contact footprint must fit at anchor x and use y:${entry.h - item.h}`);
   }
+  if (entry.contact) {
+    const { w, h, entrance } = entry.contact;
+    if (![w, h, entrance.x, entrance.y].every(Number.isInteger)
+        || w <= 0 || h <= 0 || entrance.x < 0 || entrance.x >= w
+        || entrance.y < 0 || entrance.y >= h) {
+      errors.push('explicit contact and entrance must use positive whole-tile geometry');
+    }
+    if (entry.w !== w * 32 || entry.anchor.x !== 0
+        || entry.anchor.y !== entry.h - h * 32) {
+      errors.push(`explicit contact ${w}x${h} must span the ${entry.w}px canvas width and `
+        + `begin at anchor {x:0,y:${entry.h - h * 32}}`);
+    }
+    if (item.category === 'castle'
+        && (w !== 5 || h !== 2 || entrance.x !== 2 || entrance.y !== 1)) {
+      errors.push('city contact must be 5x2 with its sole entrance at (2,1)');
+    }
+  }
   if ((item.category === 'hero' || item.category === 'guardian-unit'
       || item.category === 'battle-unit')
       && (entry.anchor.x !== Math.floor(entry.w / 2) || entry.anchor.y !== entry.h - 8)) {
@@ -201,6 +218,15 @@ function validateEntry(item: AssetWorkItem, entry: AssetManifestEntry): string[]
         }
         if (item.category !== 'terrain' && (!alpha.nonOpaque || !alpha.opaque)) {
           errors.push(`${item.category} PNG must contain both visible and transparent pixels`);
+        }
+        if (entry.contact) {
+          if (alpha.partial) errors.push(`city PNG has ${alpha.partial} partial-alpha fringe pixels`);
+          if (!alpha.bbox || alpha.bbox.bottom !== entry.h - 1) {
+            errors.push('city silhouette must be bottom-anchored on the contact band');
+          }
+          if (alpha.canvasSidePixels) {
+            errors.push(`city PNG has ${alpha.canvasSidePixels} visible canvas-side pixels`);
+          }
         }
         if (item.obstacleFamily && alpha.bbox) {
           const bboxWidth = alpha.bbox.right - alpha.bbox.left + 1;

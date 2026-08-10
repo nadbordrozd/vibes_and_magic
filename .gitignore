@@ -1,6 +1,8 @@
 node_modules/
 dist/
 *.tsbuildinfo
+__pycache__/
+*.py[cod]
 replay-crash-*.json
 smoke-*.png
 menu.png

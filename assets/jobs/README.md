@@ -5,6 +5,12 @@ names the manifest id, literal prompt, verified PixelLab v2 endpoint, native `[w
 three candidates, seed, endpoint parameters, manifest asset ids fulfilled by a family request, an
 explicit output directory, and any project-relative reference images.
 
+Built-in image-generation provenance jobs are the one explicit runner exception. They set
+`"generator": "built-in-imagegen"`, record one source and one promoted final per request, and are
+immutable audit/reproduction records rather than PixelLab submissions. `pixelgen --dry-run` and the
+ordinary job gate validate them; a live `pixelgen` submission refuses them and directs regeneration
+back through one built-in image-generation call per request plus the documented local bake.
+
 ```json
 {
   "version": 1,

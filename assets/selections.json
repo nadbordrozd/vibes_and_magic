@@ -318,6 +318,14 @@
     "b3-castle-toy-factory-replacement": [
       {"id":"castle:unfinished:castle","candidate":".pixel-work/pixelgen/b3-castle-toy-factory-replacement/final/toy-factory-castle.png","target":"public/assets/castles/unfinished-castle.png"}
     ],
+    "city-sprites-built-in": [
+      {"id":"castle:hearthguard:castle","candidate":"assets/sources/cities/hearthguard-city-source.png","target":"public/assets/cities/hearthguard-city.png"},
+      {"id":"castle:woundWrights:castle","candidate":"assets/sources/cities/wound-wrights-city-source.png","target":"public/assets/cities/wound-wrights-city.png"},
+      {"id":"castle:unfinished:castle","candidate":"assets/sources/cities/unfinished-city-source.png","target":"public/assets/cities/unfinished-city.png"},
+      {"id":"castle:vespiary:castle","candidate":"assets/sources/cities/vespiary-city-source.png","target":"public/assets/cities/vespiary-city.png"},
+      {"id":"castle:hagwood:castle","candidate":"assets/sources/cities/hagwood-city-source.png","target":"public/assets/cities/hagwood-city.png"},
+      {"id":"castle:wildergrass:castle","candidate":"assets/sources/cities/wildergrass-city-source.png","target":"public/assets/cities/wildergrass-city.png"}
+    ],
     "doc33-mountain-granite-existing": [
       {"id":"decoration:mountain:granite-massif-1","candidate":".pixel-work/pixelgen/doc33-mountain-granite-existing/candidate-3-bottom-anchored.png","target":"public/assets/decorations/mountain-granite-massif-1.png"}
     ]

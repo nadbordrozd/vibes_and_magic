@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { assetWorklist } from '../../assets/worklist';
 import { contentIconWorklist } from '../../assets/iconWorklist';
 
@@ -14,9 +15,10 @@ interface PixelRequest {
   assets: string[];
   output: string;
   prompt: string;
-  endpoint: string;
+  endpoint?: string;
   size: [number, number];
   candidates: number;
+  final?: string;
   variations_from_single_request?: number;
   resource_ids?: string[];
   review_only?: boolean;
@@ -26,6 +28,7 @@ interface PixelRequest {
 interface PixelJob {
   version: number;
   status?: 'ready' | 'staged';
+  generator?: 'built-in-imagegen';
   blocked_by?: string;
   contact_sheet: string;
   requests: PixelRequest[];
@@ -41,6 +44,7 @@ const outputs = new Map<string, string>();
 let ready = 0;
 let staged = 0;
 let requests = 0;
+let builtInJobs = 0;
 
 const DOC33_FIXED_PROMPT_CLAUSES = [
   'oblique front-on view with a slight overhead tilt',
@@ -51,6 +55,17 @@ const DOC33_FIXED_PROMPT_CLAUSES = [
 const DOC33_BANNED_PROMPT_WORDS = /\b(?:unfinished|draft|rough|wip|placeholder|first pass|simple|basic|quick|test|temporary|sprite|asset|sprite sheet|variant|version|tileable|png|beautiful|epic|masterpiece|highly detailed|4k)\b/i;
 const DOC33_SCALE_CLAUSE = /\b\d+(?:\.\d+)? tiles? wide and about \d+(?:\.\d+)? tiles? tall\b/;
 
+function sha256(value: string | Buffer): string {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+function safelyBelow(value: unknown, base: string): value is string {
+  if (typeof value !== 'string' || !value) return false;
+  const pathFromBase = relative(resolve(root, base), resolve(root, value));
+  return pathFromBase !== '' && pathFromBase !== '..'
+    && !pathFromBase.startsWith(`..${sep}`) && !isAbsolute(pathFromBase);
+}
+
 for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.json')).sort()) {
   let job: PixelJob;
   try {
@@ -60,6 +75,8 @@ for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.jso
     continue;
   }
   const status = job.status ?? 'ready';
+  const builtIn = job.generator === 'built-in-imagegen';
+  if (builtIn) builtInJobs += 1;
   if (job.version !== 1 || !['ready', 'staged'].includes(status)) {
     errors.push(`${filename}: expected version 1 and ready/staged status`);
   }
@@ -72,7 +89,10 @@ for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.jso
     continue;
   }
   requests += job.requests.length;
-  if (!job.contact_sheet?.startsWith('assets/jobs/') || !job.contact_sheet.endsWith('.html')) {
+  const validContactSheet = builtIn
+    ? job.contact_sheet?.startsWith('.pixel-work/review/') && job.contact_sheet.endsWith('.png')
+    : job.contact_sheet?.startsWith('assets/jobs/') && job.contact_sheet.endsWith('.html');
+  if (!validContactSheet) {
     errors.push(`${filename}: invalid contact_sheet path`);
   }
   const requestIds = new Set<string>();
@@ -91,27 +111,43 @@ for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.jso
       const banned = request.prompt.match(DOC33_BANNED_PROMPT_WORDS)?.[0];
       if (banned) errors.push(`${label}: banned doc-33 prompt vocabulary "${banned}"`);
     }
-    if (!Array.isArray(request.size) || request.size.length !== 2
-        || request.size.some((value) => !Number.isInteger(value) || value <= 0)) {
+    const validNativeSize = Array.isArray(request.size) && request.size.length === 2
+      && request.size.every((value) => Number.isInteger(value) && value > 0);
+    if (!validNativeSize) {
       errors.push(`${label}: invalid native size`);
     }
     const singleVariationRequest = request.endpoint === 'generate-image-v2'
       && request.candidates === 1
       && Number.isInteger(request.variations_from_single_request)
       && (request.variations_from_single_request ?? 0) >= 2;
-    if (!singleVariationRequest && (request.candidates < 2 || request.candidates > 3)) {
+    if (builtIn && request.candidates !== 1) {
+      errors.push(`${label}: built-in generation must record exactly one selected source`);
+    } else if (!builtIn && !singleVariationRequest
+        && (request.candidates < 2 || request.candidates > 3)) {
       errors.push(`${label}: candidate count must be 2–3, or one generate-image-v2 request must declare its expected variation set`);
     }
     if (request.resource_ids && (request.resource_ids.length !== request.candidates
         || request.resource_ids.some((value) => !value))) {
       errors.push(`${label}: resource_ids must match candidate count`);
     }
-    if (!request.output?.startsWith('.pixel-work/pixelgen/')) {
-      errors.push(`${label}: output must stay below .pixel-work/pixelgen/`);
+    const validOutput = builtIn
+      ? safelyBelow(request.output, 'assets/sources')
+      : request.output?.startsWith('.pixel-work/pixelgen/');
+    if (!validOutput) {
+      errors.push(`${label}: invalid generator output path`);
     }
     const previous = outputs.get(request.output);
     if (previous) errors.push(`${label}: output collides with ${previous}`);
     outputs.set(request.output, label);
+    if (builtIn) {
+      if (validOutput && !existsSync(resolve(root, request.output))) {
+        errors.push(`${label}: missing built-in source`);
+      }
+      if (!safelyBelow(request.final, 'public/assets')
+          || !existsSync(resolve(root, request.final ?? ''))) {
+        errors.push(`${label}: missing or invalid promoted built-in final`);
+      }
+    }
     if (!Array.isArray(request.assets) || !request.assets.length) {
       errors.push(`${label}: no manifest asset ids declared`);
       continue;
@@ -129,6 +165,7 @@ for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.jso
         continue;
       }
       covered.set(assetId, [...covered.get(assetId) ?? [], label]);
+      if (!validNativeSize) continue;
       const [width, height] = request.size;
       if ('groundContact' in item && item.groundContact) {
         if (width % 32 || width < item.w || height < item.h) {
@@ -153,7 +190,67 @@ for (const item of worklist) {
   if (!covered.has(item.id)) errors.push(`${item.id}: no production job covers this work item`);
 }
 
-console.log(`PixelLab jobs: ${ready} ready · ${staged} staged · ${requests} requests`);
+try {
+  const cityJob = JSON.parse(readFileSync(
+    resolve(root, 'assets/jobs/city-sprites-built-in.json'), 'utf8',
+  )) as PixelJob;
+  const provenance = JSON.parse(readFileSync(
+    resolve(root, 'assets/provenance/city-sprite-generation.json'), 'utf8',
+  )) as {
+    version: number;
+    generator: string;
+    selections: Array<{
+      id: string;
+      request_id: string;
+      accepted: boolean;
+      source: string;
+      final: string;
+      prompt_sha256: string;
+      source_sha256: string;
+      final_sha256: string;
+    }>;
+  };
+  if (provenance.version !== 1 || provenance.generator !== 'built-in-imagegen'
+      || provenance.selections.length !== 6) {
+    errors.push('city sprite provenance must contain exactly six built-in selections');
+  }
+  const provenanceByRequest = new Map(
+    provenance.selections.map((selection) => [selection.request_id, selection]),
+  );
+  for (const request of cityJob.requests) {
+    const label = `city provenance:${request.id}`;
+    const selection = provenanceByRequest.get(request.id);
+    if (!selection || !selection.accepted) {
+      errors.push(`${label}: missing accepted selection`);
+      continue;
+    }
+    if (selection.id !== request.assets[0] || selection.source !== request.output
+        || selection.final !== request.final) {
+      errors.push(`${label}: selection path or compatibility id drift`);
+    }
+    if (!Array.isArray(request.size) || request.size[0] !== 160 || request.size[1] !== 160
+        || !request.output.startsWith('assets/sources/cities/')
+        || !request.final?.startsWith('public/assets/cities/')) {
+      errors.push(`${label}: city job must retain 160x160 source/final city paths`);
+    }
+    if (selection.prompt_sha256 !== sha256(request.prompt)) {
+      errors.push(`${label}: prompt hash drift`);
+    }
+    for (const [kind, file, expected] of [
+      ['source', selection.source, selection.source_sha256],
+      ['final', selection.final, selection.final_sha256],
+    ] as const) {
+      const path = resolve(root, file);
+      if (!existsSync(path) || sha256(readFileSync(path)) !== expected) {
+        errors.push(`${label}: ${kind} content hash drift`);
+      }
+    }
+  }
+} catch (error) {
+  errors.push(`city sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+console.log(`Pixel production jobs: ${ready} ready · ${staged} staged · ${requests} requests · ${builtInJobs} built-in provenance job`);
 console.log(`PixelLab worklist coverage: ${covered.size}/${worklist.length} assets have a production path`);
 if (errors.length) {
   console.error('\nPixelLab job validation failed:');

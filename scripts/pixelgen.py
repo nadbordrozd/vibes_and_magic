@@ -219,6 +219,35 @@ def validate_job(job: dict[str, Any], root: Path) -> None:
         raise JobError("job must have version 1 and a requests array")
     if job.get("status", "ready") not in {"ready", "staged"}:
         raise JobError("job status must be ready or staged")
+    if job.get("generator") == "built-in-imagegen":
+        ids: set[str] = set()
+        sources_root = (root / "assets/sources").resolve()
+        finals_root = (root / "public/assets").resolve()
+        for request in job["requests"]:
+            required = {"id", "assets", "prompt", "size", "candidates", "output", "final"}
+            missing = required - request.keys()
+            if missing:
+                raise JobError(f"built-in request missing {', '.join(sorted(missing))}")
+            if request["id"] in ids:
+                raise JobError(f"duplicate request id {request['id']}")
+            ids.add(request["id"])
+            if request["candidates"] != 1:
+                raise JobError(f"{request['id']} must record exactly one built-in generation")
+            if not isinstance(request["size"], list) or len(request["size"]) != 2 \
+                    or any(type(value) is not int or value <= 0 for value in request["size"]):
+                raise JobError(f"{request['id']} has invalid native size")
+            if not isinstance(request["assets"], list) or not request["assets"] \
+                    or not all(isinstance(value, str) and value for value in request["assets"]):
+                raise JobError(f"{request['id']} must declare one or more manifest ids")
+            source = safe_path(root, request["output"])
+            final = safe_path(root, request["final"])
+            if sources_root not in source.parents:
+                raise JobError(f"{request['id']} source must stay below assets/sources/")
+            if finals_root not in final.parents:
+                raise JobError(f"{request['id']} final must stay below public/assets/")
+            if not source.is_file() or not final.is_file():
+                raise JobError(f"{request['id']} built-in source/final is missing")
+        return
     ids: set[str] = set()
     for request in job["requests"]:
         required = {"id", "assets", "prompt", "endpoint", "size", "candidates", "output"}
@@ -356,6 +385,12 @@ def run() -> int:
             kind = "variations" if "variations_from_single_request" in request else "candidates"
             print(f"ok {request['id']} dry-run{status} {count} {kind} {request['size'][0]}x{request['size'][1]}")
         return 0
+
+    if job.get("generator") == "built-in-imagegen":
+        raise JobError(
+            "built-in-imagegen jobs are immutable provenance records; regenerate them with "
+            "one built-in image_gen call per request, then run the documented chroma/bake workflow"
+        )
 
     if job.get("status") == "staged":
         reason = job.get("blocked_by", "a required prior batch")

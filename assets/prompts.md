@@ -1209,6 +1209,24 @@ contract, source locations, canvas contracts, and deterministic fixed-palette ba
 `assets/prompts/missing-battle-rosters-built-in.md`. The native-canvas builder is
 `scripts/buildMissingBattleRosters.py`.
 
+## Six 5x2 faction cities — built-in sources
+
+The active faction-city sprites were generated on 2026-08-10 with exactly one built-in
+image-generation request per faction. Every request names the literal physical subject from
+`assets/adventureSpriteInventory.ts`, the front-facing high-oblique camera, lower-right/south-east
+key light, centered `(2,1)` entrance, flat green key, and complete terrain/flag/text exclusions.
+The exact literal requests and selected source/final pairs are in
+`assets/jobs/city-sprites-built-in.json`; accepted hashes, alpha review, and visual assessments are
+in `assets/provenance/city-sprite-generation.json`.
+
+The retained 1254x1254 chroma sources are under `assets/sources/cities/`. The installed helper
+removes the sampled flat border key with soft matte and despill; `scripts/buildCitySprites.py` then
+performs one deterministic nearest-neighbour reduction, applies hard alpha, bottom-centres the
+subject on a 160x160 canvas, and writes `public/assets/cities/`. The final canvas exposes the 5x2
+contact at `y=96..159`; the only entrance is centered over tile `(2,1)`. The builder also writes a
+nearest-neighbour ×3 native-final contact sheet to
+`.pixel-work/review/cities/city-sprites-contact-sheet.png`.
+
 ## Original base and bridge terrain — HoMM2 image retirement
 
 Eighteen native 32×32 opaque terrain cells were generated through PixelLab Pixflux using the
