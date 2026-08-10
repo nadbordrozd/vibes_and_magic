@@ -25,6 +25,14 @@ explicit orthogonal exception. A hero may occupy only a legal entrance/empty til
 battle; friendly heroes may exchange army stacks and items only while adjacent or co-located by a
 legal service. A hero has seven army slots, and same-unit stacks merge when a destination permits.
 
+Activating a visible friendly hero previews the least-cost legal route to a free adjacent tile; equal-
+cost destinations resolve north-to-south and then west-to-east. Already-adjacent heroes open exchange
+without moving. Otherwise terrain, overlays, boats, blockers, guardians, aggro, movement budget, and
+interruptions resolve normally through `MOVE_HERO`. The exchange surface opens only after the reducer
+confirms both living heroes remain friendly, distinct, and adjacent at the completed destination. A
+failed, partial, interrupted, newly blocked, or invalidated meeting never opens exchange and reports the
+reason. Enemy heroes retain attack intent. See work order 43.
+
 ## Terrain: three strictly separate layers
 
 1. **Gameplay terrain** is a closed rules-facing type with move cost, native faction, resonance,
@@ -63,6 +71,11 @@ rationed by authors to at most one per 12×12 region; generated decoration anoma
 independent one-per-region limit. Authoring guidance is in [`../MAPS.md`](../MAPS.md).
 
 ## Occupancy, footprints, and entrances
+
+Large conquest maps may use impassable terrain and authored obstacles as a dense navigation layer.
+Their starts must each retain a viable local economy and at least two routes into different regions;
+loops and alternate routes must keep intended guardian gates from accidentally sealing required
+content. Dense-map lint owns the numeric topology and density thresholds for each such scenario.
 
 Nothing overlaps. Every hero, guardian, pickup, building, mine, castle, dwelling, shrine, and site
 occupies its own footprint. Guardians stand next to the thing they protect. Object coordinates are
@@ -147,6 +160,13 @@ is the source of object kinds. Behavior falls into these stable shapes:
 Visits are per hero or per player exactly as the catalog action specifies. The inspection journal is
 per player and keyed by object kind. A moving object follows an authored, seeded route and remains
 fully replayable.
+
+Presentation routing for every registered object kind is exhaustive in
+[`../../src/ui/adventureStructureInteractions.ts`](../../src/ui/adventureStructureInteractions.ts).
+Explicit recruitment, purchase, upgrade, transformation, deposit, exchange, bridge, lesson, and
+tithe services open the shared contextual adventure dialog; canonical pending choices retain their
+focused choice dialogs; automatic no-choice visits report through the transient notice and activity
+log. This routing changes no visit rule or action authority. See work order 41.
 
 The Cache system authors one hidden Cache and 3–6 linked Patient Stones. Each visited stone reveals
 one sketch fragment to that hero; equipped Moth-Eaten Map contributes a virtual fragment. Digging

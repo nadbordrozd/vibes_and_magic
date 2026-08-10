@@ -96,7 +96,7 @@ export function chooseSpellUpgrade(state: GameState, spellId: SpellId): void {
     state.rng = rng;
     state.pendingChoice = {
       kind: 'level', playerId: hero.owner, heroId: hero.id, options,
-      canSkip: skillRank(hero, 'chronicler') >= 2,
+      canSkip: skillRank(hero, 'chronicler') >= 2, source: 'levelUp',
       canReroll: skillRank(hero, 'chronicler') >= 3,
     };
   }

@@ -39,6 +39,7 @@ import {
   useChrysalis, useReliquaryCairn,
 } from './game/mapObjects';
 import { armyPower, makeArmy } from './army';
+import { SIREN_LISTEN_STRENGTH_RATIO } from '../content/constants';
 
 export { createGame, firstAffordableBuilding, incomeForPlayer };
 
@@ -377,7 +378,8 @@ export function applyAutomaticChoice(state: GameState): GameState {
     const guardian = state.map.objects.find((object) => object.kind === 'guardian'
       && object.protects === pending.objectId);
     const safeToListen = Boolean(hero && guardian?.kind === 'guardian'
-      && armyPower(hero.army) >= armyPower(makeArmy(guardian.army)) * 1.2);
+      && armyPower(hero.army)
+        >= armyPower(makeArmy(guardian.army)) * SIREN_LISTEN_STRENGTH_RATIO);
     return apply(state, {
       type: 'CHOOSE_SIREN', choice: safeToListen ? 'listen' : 'rowPast',
     });

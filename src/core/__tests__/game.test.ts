@@ -155,9 +155,10 @@ describe('game state and economy', () => {
     expect(addUnits(makeArmy([]), 'lanceKnight', 2)?.[0]).toEqual({ unitId: 'lanceKnight', count: 2 });
   });
 
-  it('calculates army power from hp and average damage', () => {
-    expect(armyPower(makeArmy([{ unitId: 'yeoman', count: 1 }])))
-      .toBe(UNITS.yeoman.hp * 1.5);
+  it('calculates army power through the centralized unit strength rating', () => {
+    const one = armyPower(makeArmy([{ unitId: 'yeoman', count: 1 }]));
+    expect(one).toBeGreaterThan(0);
+    expect(armyPower(makeArmy([{ unitId: 'yeoman', count: 10 }]))).toBeCloseTo(one * 10, 10);
   });
 
   it('checks and pays resource costs', () => {

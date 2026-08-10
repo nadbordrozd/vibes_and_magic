@@ -11,6 +11,28 @@ import type { GameState, Hero } from '../types';
 import { terrainIdAt } from '../../content/terrain';
 import { PriorityQueue } from '../map/priorityQueue';
 
+export interface FriendlyHeroMeetingPlan {
+  targetHeroId: string;
+  destination: { x: number; y: number };
+  path: { x: number; y: number }[];
+  cost: number;
+  adjacent: boolean;
+}
+
+export type FriendlyHeroMeetingResult =
+  | { ok: true; plan: FriendlyHeroMeetingPlan }
+  | { ok: false; reason: string };
+
+export type FriendlyHeroMeetingCompletion =
+  | { ok: true }
+  | { ok: false; reason: string };
+
+interface AdventurePathOptions {
+  avoidAggro?: boolean;
+  fightGuardianId?: string;
+  allowDestinationGuardian?: boolean;
+}
+
 function blockedMapTiles(
   state: GameState, hero: Hero,
   options: { avoidAggro?: boolean; fightGuardianId?: string } = {},
@@ -52,7 +74,7 @@ function blockedMapTiles(
 export function adventurePath(
   state: GameState,
   destination: { x: number; y: number },
-  options: { avoidAggro?: boolean; fightGuardianId?: string } = {},
+  options: AdventurePathOptions = {},
 ): ReturnType<typeof findPath> {
   const hero = selectedActiveHero(state);
   if (state.map.objects.some((object) => object.kind === 'obstacle'
@@ -69,14 +91,135 @@ export function adventurePath(
     .sort((a, b) => a.id.localeCompare(b.id))[0];
   const pathOptions = {
     avoidAggro: options.avoidAggro ?? true,
-    fightGuardianId: options.fightGuardianId ?? destinationGuardian?.id,
+    fightGuardianId: options.fightGuardianId
+      ?? (options.allowDestinationGuardian === false ? undefined : destinationGuardian?.id),
   };
   const freeForest = state.players[hero.owner].adventureEffects.greenTideUntilWeek
     >= state.week;
-  return findMixedPath(
+  return findMixedPathResult(
     state.map, hero.position, destination, blockedMapTiles(state, hero, pathOptions), hero, state.omen,
     freeForest,
-  );
+  )?.path ?? null;
+}
+
+/**
+ * Choose the least-cost safe square beside a friendly hero. Equal-cost destinations use map order
+ * (north-to-south, then west-to-east), so saves, previews, and browsers choose the same route.
+ */
+export function friendlyHeroMeetingPlan(
+  state: GameState, targetHeroId: string,
+): FriendlyHeroMeetingResult {
+  if (state.phase !== 'adventure') {
+    return { ok: false, reason: 'Hero meetings are only available on the adventure map.' };
+  }
+  const hero = selectedActiveHero(state);
+  if (hero.id === targetHeroId) {
+    return { ok: false, reason: 'Choose another friendly hero to exchange with.' };
+  }
+  const target = Object.values(state.players).flatMap((player) => player.heroes)
+    .find((candidate) => candidate.id === targetHeroId);
+  if (!target || !target.alive) {
+    return { ok: false, reason: 'That hero is no longer available.' };
+  }
+  if (target.owner !== hero.owner) {
+    return { ok: false, reason: 'That hero is no longer friendly.' };
+  }
+  if (adjacent(hero.position, target.position)) {
+    return { ok: true, plan: {
+      targetHeroId, destination: { ...hero.position }, path: [{ ...hero.position }],
+      cost: 0, adjacent: true,
+    } };
+  }
+
+  const candidates = Array.from({ length: 3 }, (_, dy) =>
+    Array.from({ length: 3 }, (_, dx) => ({
+      x: target.position.x + dx - 1, y: target.position.y + dy - 1,
+    }))).flat().filter((position) => !same(position, target.position)
+      && legalMeetingDestination(state, hero, position));
+  const freeForest = state.players[hero.owner].adventureEffects.greenTideUntilWeek >= state.week;
+  const blocked = blockedMapTiles(state, hero, { avoidAggro: true });
+  const routes = candidates.flatMap((destination) => {
+    const passage = state.mapEffects.find((effect) => effect.kind === 'passage'
+      && effect.owner === hero.owner && effect.expiresDay >= state.day
+      && ((same(effect.entrances[0], hero.position) && same(effect.entrances[1], destination))
+        || (same(effect.entrances[1], hero.position) && same(effect.entrances[0], destination))));
+    const result = passage
+      ? { path: [{ ...hero.position }, { ...destination }], cost: 0 }
+      : findMixedPathResult(
+        state.map, hero.position, destination, blocked, hero, state.omen, freeForest,
+      );
+    return result ? [{ destination, ...result }] : [];
+  }).sort((a, b) => a.cost - b.cost
+    || a.destination.y - b.destination.y || a.destination.x - b.destination.x);
+  const route = routes[0];
+  if (!route) {
+    return {
+      ok: false,
+      reason: candidates.length
+        ? 'No safe route reaches a free tile beside that hero.'
+        : 'No free legal tile is available beside that hero.',
+    };
+  }
+  return { ok: true, plan: {
+    targetHeroId, destination: { ...route.destination },
+    path: route.path.map((position) => ({ ...position })), cost: route.cost, adjacent: false,
+  } };
+}
+
+/** Revalidate the rules-owned outcome after MOVE_HERO resolves before presentation opens exchange. */
+export function friendlyHeroMeetingCompletion(
+  state: GameState, sourceHeroId: string, targetHeroId: string,
+  destination: { x: number; y: number },
+): FriendlyHeroMeetingCompletion {
+  const source = Object.values(state.players).flatMap((player) => player.heroes)
+    .find((candidate) => candidate.id === sourceHeroId);
+  const target = Object.values(state.players).flatMap((player) => player.heroes)
+    .find((candidate) => candidate.id === targetHeroId);
+  if (!source?.alive) return { ok: false, reason: 'the travelling hero is no longer available.' };
+  if (!target?.alive) return { ok: false, reason: 'the other hero is no longer available.' };
+  if (source.owner !== target.owner) {
+    return { ok: false, reason: 'the heroes are no longer friendly.' };
+  }
+  if (state.phase !== 'adventure') {
+    return {
+      ok: false,
+      reason: `movement was interrupted${state.lastMessage ? `: ${state.lastMessage}` : '.'}`,
+    };
+  }
+  if (state.pendingChoice) {
+    return { ok: false, reason: `movement was interrupted: ${state.lastMessage}` };
+  }
+  if (!legalMeetingDestination(state, source, destination, source.id)) {
+    return { ok: false, reason: 'the meeting tile is no longer legal.' };
+  }
+  if (!same(source.position, destination) || !adjacent(source.position, target.position)) {
+    return { ok: false, reason: state.lastMessage || 'the destination was not reached.' };
+  }
+  return { ok: true };
+}
+
+function legalMeetingDestination(
+  state: GameState, hero: Hero, position: { x: number; y: number },
+  occupyingHeroId?: string,
+): boolean {
+  if (!inBounds(state.map, position)
+      || !Number.isFinite(movementCost(state.map, hero.position, position, hero, state.omen))) {
+    return false;
+  }
+  if (Object.values(state.players).flatMap((player) => player.heroes)
+    .some((candidate) => candidate.alive && candidate.id !== occupyingHeroId
+      && same(candidate.position, position))) return false;
+  if (state.map.objects.some((object) => isObjectActive(object)
+    && objectFootprintTiles(object).some((tile) => same(tile, position)))) return false;
+  if (state.castles.some((castle) => castleFootprintTiles(castle)
+    .some((tile) => same(tile, position)))) return false;
+  if (state.mapEffects.some((effect) => effect.kind === 'thicket'
+    && effect.expiresDay >= state.day && effect.positions.some((tile) => same(tile, position)))) {
+    return false;
+  }
+  return !state.map.objects.some((object) => object.kind === 'guardian'
+    && isObjectActive(object) && !object.stoodAsideFor?.includes(hero.id)
+    && guardianAggroTiles(object, state.map).some((tile) => same(tile, position)));
 }
 
 export function adventureMovementCost(
@@ -99,10 +242,10 @@ export function adventureMovementCost(
   return movementCost(state.map, from, to, hero, state.omen, freeForest);
 }
 
-function findMixedPath(
+function findMixedPathResult(
   map: GameState['map'], start: { x: number; y: number }, goal: { x: number; y: number },
   blocked: ReadonlySet<string>, hero: Hero, omen: GameState['omen'], freeForest: boolean,
-): { x: number; y: number }[] | null {
+): { path: { x: number; y: number }[]; cost: number } | null {
   const directions = [-1, 0, 1].flatMap((dx) => [-1, 0, 1]
     .filter((dy) => dx !== 0 || dy !== 0).map((dy) => ({ x: dx, y: dy })));
   type Node = { position: { x: number; y: number }; embarked: boolean };
@@ -122,7 +265,7 @@ function findMixedPath(
       const result: { x: number; y: number }[] = [];
       let cursor: string | undefined = currentKey;
       while (cursor) { result.unshift(nodes.get(cursor)!.position); cursor = previous.get(cursor); }
-      return result;
+      return { path: result, cost: distance.get(currentKey) ?? 0 };
     }
     const whirlpool = current.embarked ? map.objects.find((object) => object.kind === 'whirlpool'
       && same(object.position, current.position)) : undefined;
@@ -272,4 +415,8 @@ function whirlpoolRoutePenalty(hero: Hero): number {
 
 function same(a: { x: number; y: number }, b: { x: number; y: number }): boolean {
   return a.x === b.x && a.y === b.y;
+}
+
+function adjacent(a: { x: number; y: number }, b: { x: number; y: number }): boolean {
+  return !same(a, b) && Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y)) <= 1;
 }

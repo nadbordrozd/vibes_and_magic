@@ -11,11 +11,12 @@ interface Props {
   onSplit?: (sourceSlot: number, destinationSlot: number, count: number) => void;
   slotClass?: (slot: number) => string;
   slotDisabled?: (slot: number) => boolean;
+  slotAriaDisabled?: (slot: number) => boolean;
   slotTitle?: (slot: number) => string | undefined;
 }
 
 export function ArmySlots({
-  army, title, selected, onSelect, onSplit, slotClass, slotDisabled, slotTitle,
+  army, title, selected, onSelect, onSplit, slotClass, slotDisabled, slotAriaDisabled, slotTitle,
 }: Props) {
   const [splitting, setSplitting] = useState<number | null>(null);
   const source = splitting === null ? null : army[splitting];
@@ -32,6 +33,8 @@ export function ArmySlots({
             className={`army-slot ${selected === index ? 'selected' : ''} ${slotClass?.(index) ?? ''}`}
             onClick={() => onSelect?.(index)}
             disabled={!onSelect || slotDisabled?.(index)}
+            aria-disabled={slotAriaDisabled?.(index) || undefined}
+            aria-pressed={onSelect ? selected === index : undefined}
             title={slotTitle?.(index) ?? `${stack ? `${stack.count} ${UNITS[stack.unitId].name} · ${UNITS[stack.unitId].hexSize}-hex footprint` : 'Empty slot'}${!onSelect ? ' · view only here' : ''}`}
             data-inspect-kind={stack ? 'unit' : undefined}
             data-inspect-id={stack?.unitId}

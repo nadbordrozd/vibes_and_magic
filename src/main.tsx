@@ -7,13 +7,19 @@ import './ui/styles/castle.css';
 import './ui/styles/combat.css';
 import { preloadAssetManifest } from './ui/assets';
 import { TerrainShowcase } from './ui/components/TerrainShowcase';
+import { AdventureVisualShowcase } from './ui/components/AdventureVisualShowcase';
+import { ContentIconShowcase } from './ui/components/ContentIconShowcase';
 
 preloadAssetManifest();
 
 const standaloneTerrainShowcase = new URLSearchParams(location.search).has('terrain-showcase');
+const standaloneAdventureShowcase = new URLSearchParams(location.search).has('adventure-showcase');
+const standaloneContentIconShowcase = new URLSearchParams(location.search).has('content-icons');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {standaloneTerrainShowcase ? <TerrainShowcase /> : <App />}
+    {standaloneContentIconShowcase ? <ContentIconShowcase />
+      : standaloneAdventureShowcase ? <AdventureVisualShowcase />
+      : standaloneTerrainShowcase ? <TerrainShowcase /> : <App />}
   </StrictMode>,
 );

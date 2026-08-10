@@ -1,5 +1,19 @@
 # Implementation Decisions
 
+## 2026-08-07 — Adventure showcase and subordinate decoration density
+
+- The exhaustive adventure visual review is a standalone, deterministic browser fixture generated
+  from the terrain catalog, authored maps, asset worklist, and manifest. It uses the production
+  terrain adapter and mountain compositor, while its object layout is review transport only.
+- The ordinary-map decoration attempt rate is 4%, superseding the earlier 16% rate. The exhaustive
+  mixed-context native-scale capture showed repeated canopies, deadfalls, banners, letter-stones,
+  candles, and frozen ponds occupying the same visual tier as pickups and services at 16%. Four
+  percent preserves regional texture while restoring the binding decoration/interactable hierarchy.
+  Manywhere remains at 1.5%. This is deterministic presentation only and does not enter saves,
+  occupancy, pathfinding, map authoring, or gameplay state.
+- No sprite is replaced for this correction. Manifest geometry, native dimensions, anchors,
+  entrances, footprints, painter ordering, ownership flags, and mechanics remain unchanged.
+
 ## 2026-08-04 — Temporary H2 transition grammar is presentation-only
 
 - Implementation state, generated assets, and continuation instructions are consolidated in
@@ -558,3 +572,137 @@
   edge fragment, tile-sized rock, gradient, or broad value shift is rejected after full-field
   composition even if it looks attractive alone. Tiny details are sparse by construction; larger
   marks must remain flat ground features and below half a cell in span.
+
+## 2026-08-07 — UX acceptance uses one authored journey plus exhaustive fixtures
+
+- The binding new-player journey is Grand Muster seed 18, driven from the real title UI through
+  save/load, castle development, exploration, services, manual guardian combat, reward acceptance,
+  replay validation, and the authored retirement outcome. Direct state injection is forbidden in
+  this continuous path.
+- A single campaign is not distorted to manufacture every modal variant. Exhaustive pending-choice,
+  targeting, result, setup/save, transfer, ability, and hot-seat states remain synthetic fixtures,
+  indexed by one compile-time coverage manifest and exercised by the acceptance review runners.
+- Desktop and 390px evidence is required for all ten screen-matrix rows and eight walkthrough steps.
+  Evidence may be reused when the same honest UI state satisfies multiple requirements; every
+  reference must resolve to a generated pair.
+- The adventure and combat headers may wrap at narrow widths. This is a presentation-only response
+  to measured overflow and does not change their actions, availability, or deterministic results.
+
+## 2026-08-09 — Guardian strength uses a bounded geometric stat rating (doc 39)
+
+- The old `count × HP × average damage` heuristic is replaced by an additive per-unit rating based
+  on `sqrt(HP × average damage)`, a small Attack/Defense term, a bounded Speed term, and a bounded
+  list of stable ability-role adjustments. Matchup-specific abilities, hero state, and battlefield
+  state remain outside the scalar rather than turning it into an opaque battle predictor.
+- Deterministic paired-seat simulations set a ≤20% median break-even count error target and ≥80%
+  decisive mixed-ordering target. The chosen expression reaches 14.5% versus 26.6% legacy error and
+  orders 5/5 decisive mixed cases correctly. The simulation report is a checked offline artifact,
+  never runtime behavior.
+- Ordinary guarded-object routing keeps its 0.80 ratio. Immediate assaults and Siren listening move
+  from 1.20 to 1.25 so their cushion matches the estimator evidence. Gatherer, Diplomacy, Quiet
+  Horseshoe, Beastmaster, and Borrowed Legion ratios retain their explicit content contracts; the
+  latter now derives Candle-Wisp count from the same centralized per-unit rating.
+
+## 2026-08-09 — Dense maps are measured topology, not larger open fields (doc 40)
+
+- The Crooked Crown establishes 72×72 as the largest current authored-map contract and remains a
+  normal four-player selectable conquest scenario. Its four corner starts, twelve shaped chambers,
+  dogleg corridors, perimeter and central loops, oblique links, blind reward pockets, and guarded
+  shortcuts are committed deterministic data.
+- Dense-map acceptance pins start-route divergence and opening pickups, guarded reward and intended
+  gate coverage, at least 100 interactive objects, at least 5% interactions per passable tile, at
+  least 68% shaped/decorative terrain, at least 450 road tiles, and no unbroken passable square
+  larger than 10×10. The accepted map reaches 109, 6.34%, 74.0%, 575, and 9×9 respectively.
+- Guardian stack counts derive from authored target strengths through doc 39's centralized
+  `unitStrength` function. The accepted normal-difficulty armies span 89.00–350.79 rating with a
+  178.01 median; no map-local combat heuristic is introduced.
+- The linked Country Lords overview is a composition reference only. No external art, text,
+  scenario fiction, object coordinates, or exact route geometry is copied. Existing original
+  terrain, mountain, object, hero, castle, and guardian assets render the new authored data.
+
+## 2026-08-09 — Adventure structures use one contextual dialog (doc 41)
+
+- Explicit adventure-structure services leave the hero rail and open one shared modal frame on
+  arrival. The frame owns identity, flavor, exact reducer-projected terms, unavailable reasons,
+  inspection, focus containment, safe Escape/cancellation, and map-input blocking; structure kinds
+  supply only their catalog-backed content and canonical actions.
+- Every registered map-object kind has an exhaustive presentation route: contextual dialog,
+  existing rules-choice dialog, transient notice/log result, map control, combat/navigation, or
+  deliberately non-actionable. This catalog is a static UX gate, not a second behavior registry.
+- Hedge School payment now receives the same explicit confirmation as the other irreversible
+  structure actions before dispatch. Its seeded permanent lesson remains non-cancellable after the
+  canonical payment action creates the pending choice. Passive visits keep their existing immediate
+  reducer outcome and transient feedback; no replay or rules schema changes.
+
+## 2026-08-09 — Castle army transfer is direct and reducer-projected (doc 42)
+
+- A visiting hero and the castle garrison use two opposing seven-slot rows. Selecting a company and
+  then a legal target immediately dispatches a full move, merge, or whole-company swap. Partial
+  transfer is an explicit compact mode because the exact count is the only additional decision.
+- Every candidate target is projected through the real `TRANSFER_ARMY` reducer path. Illegal
+  targets remain focusable and expose the reducer reason; presentation does not maintain a parallel
+  transfer-rules table. Same-holder splitting continues to dispatch `SPLIT_ARMY`.
+- Warden installation, ownership/adjacency/visiting checks, count and identity conservation, and
+  seven-slot bounds remain core-owned. Remote castle inspection shows the true garrison but no
+  unusable transfer form. Adjacent-hero exchange keeps its existing confirmation flow.
+
+## 2026-08-09 — Friendly hero meetings route to verified adjacent tiles (doc 43)
+
+- Friendly and enemy hero targets are distinct map verbs: exchange arrows and an accessible Exchange
+  label for friends, crossed swords and Attack for enemies. Activating another friendly hero no longer
+  changes selection.
+- Non-adjacent meetings choose the least-cost safe legal adjacent destination, with y then x as the
+  stable equal-cost tie-break. Heroes, active footprints, castles, thickets, guardians, and active
+  aggro are excluded from meeting endpoints; ordinary mixed-domain pathfinding owns the route.
+- The UI records only `MOVE_HERO` and existing transfer actions. It opens exchange after post-reducer
+  validation of completion, adjacency, life, ownership, phase, pending choices, and endpoint legality;
+  invalidated or interrupted intents end with a visible reason.
+- Work order 41's structure modal continues to block map activation. Work order 42's castle-specific
+  direct-transfer mode is unchanged. Hero exchange retains confirmation and currently exposes armies
+  and consumables only because no explicit hero artifact-transfer action exists.
+
+## 2026-08-09 — Non-adventure screens are task surfaces, not reference pages (doc 44)
+
+- Every bounded non-adventure surface has one executable inventory row naming its job, essential
+  state, primary action, and reference route. Static validation requires representatives for setup,
+  hero, castle, combat, spellbook, choice, result, and save/import rather than treating a screenshot
+  list as the coverage contract.
+- Current state, cost, availability, disabled reason, confirmation, and ordinary action stay visible.
+  Flavor, comparisons, historical statistics, and rules prose move to inspection, contextual Help,
+  or local disclosures. On narrow screens a bounded overlay owns one scroll region while the page is
+  locked, and persistent help controls receive reserved space instead of covering task controls.
+- Castle uses Town, Recruit, Army, and Services task tabs while retaining doc 42 direct transfer and
+  doc 43 hero-meeting behavior. Spellbooks reuse existing imagery and reserve clean content slots;
+  the full spell/skill icon catalog remains separate work. No adventure shell, reducer, save schema,
+  deterministic action, or canonical rule changes are introduced.
+
+## 2026-08-09 — Adventure chrome is for routine turn decisions (doc 45)
+
+- The map owns the desktop viewport. Persistent adventure chrome is limited to a compact resource,
+  date, turn, and omen strip plus a narrow minimap/navigation/selected-hero/army/command/status rail.
+  The linked Heroes III image supplied information hierarchy only; no art or ornament was copied.
+- Hero stats and prose, company splitting, equipment/backpack/Debts, consumables and cache tools,
+  expanded skills and special controls, save/import/export/share, motion, and activity history move
+  to explicit Hero Details, Menu & Saves, spellbook, and contextual target surfaces. Removal from the
+  rail never means removal of a legal action.
+- Docs 41–44 remain composed rather than replaced: structures stay contextual, castle transfer stays
+  in Castle · Army, friendly meetings retain post-move exchange, and bounded non-adventure screens
+  retain their focused task hierarchy. Core actions, deterministic state, saves, and replay do not
+  change; full PixelLab spell/skill icon work remains deferred.
+
+## 2026-08-09 — Spell and skill icons are final-resolution catalog assets (doc 46)
+
+- Every canonical spell and secondary skill owns one distinct 32×32 transparent PixelLab bitmap.
+  Native 32px and exact ×2 review/choice presentation are the only supported display scales; the
+  selected provider bytes are never resampled, redrawn, or used as rules data.
+- PixelLab `generate-image-v2` currently returns 64 unique still-image alternatives for one seeded
+  asynchronous request. Icon jobs therefore record one receipt and its 64-variation response rather
+  than falsely claiming two independent provider submissions. Runner and catalog gates confine this
+  exception to that endpoint, require the declared response count, and retain the background-job ID.
+- A data-derived icon worklist and separate declarative manifest follow the canonical 68-spell and
+  21-skill registries. Accepted selections, literal job prompts, receipt provenance, prompt/asset
+  hashes, dimensions, alpha, unique paths, and unique image content are all executable gates.
+- One shared semantic image component supplies the asset across spellbooks, choices, targeting,
+  enchantments, guild/Palimpsest services, Hero Details, and inspection. Names and full school,
+  mana, face, rank, rules, keyboard, focus, and disabled-reason text remain independently available.
+  The linked Heroes II material informed icon-led scanning only; no supplied art was copied.

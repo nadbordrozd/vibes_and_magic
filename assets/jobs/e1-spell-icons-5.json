@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/e1-spell-icons-5-candidates.html",
+  "requests": [
+    {
+      "id": "spell-icon:summonSkiff",
+      "assets": [
+        "spell-icon:summonSkiff"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/summonSkiff",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Summon Skiff”: Summon a boat to the nearest shore. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746680,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:coldRoad",
+      "assets": [
+        "spell-icon:coldRoad"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/coldRoad",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Cold Road”: Travel between explored barrows. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746697,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:borrowedTime",
+      "assets": [
+        "spell-icon:borrowedTime"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/borrowedTime",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Borrowed Time”: Double movement today; zero tomorrow. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746714,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:paleProcession",
+      "assets": [
+        "spell-icon:paleProcession"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/paleProcession",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Pale Procession”: Raise temporary Candle-Wisps where 100 died. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746731,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:silenceThePassing",
+      "assets": [
+        "spell-icon:silenceThePassing"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/silenceThePassing",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Silence the Passing”: Enemy death triggers do not fire for 3 rounds. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746748,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:theToll",
+      "assets": [
+        "spell-icon:theToll"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/theToll",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “The Toll”: Gain 2 mana per destroyed stack. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746765,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:deathsLedger",
+      "assets": [
+        "spell-icon:deathsLedger"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/deathsLedger",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Death's Ledger”: Reveal every barrow and its scroll. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746782,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:graveSpeech",
+      "assets": [
+        "spell-icon:graveSpeech"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/graveSpeech",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Grave-Speech”: Replay a battle fought on this tile. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746799,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:gale",
+      "assets": [
+        "spell-icon:gale"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/gale",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Gale”: Push an enemy 2 hexes; collision deals 3% HP. Use leaf green, earthen ochre and moonlit teal; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746816,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:bloom",
+      "assets": [
+        "spell-icon:bloom"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/bloom",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Bloom”: Bloom 3 on an ally. Use leaf green, earthen ochre and moonlit teal; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746833,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

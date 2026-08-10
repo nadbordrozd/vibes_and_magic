@@ -3,7 +3,9 @@ import { ARTIFACTS } from '../../content/artifacts';
 import { HEROES } from '../../content/heroes';
 import { createManywhere, MANYWHERE_CASTLE_POSITIONS, MANYWHERE_NEUTRAL_TOWNS } from '../../content/maps/manywhere';
 import { MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
-import { deriveTerrainDecorations, TERRAIN, tile } from '../../content/terrain';
+import {
+  DEFAULT_TERRAIN_DECORATION_DENSITY, deriveTerrainDecorations, TERRAIN, tile,
+} from '../../content/terrain';
 import { runStrategyTurn } from '../../ai/strategy';
 import { makeArmy } from '../army';
 import { createBattle } from '../combat/battle';
@@ -74,6 +76,7 @@ describe('terrain and discovery expansions', () => {
     expect(deriveTerrainDecorations(map)).toEqual(first);
     expect(deriveTerrainDecorations(JSON.parse(JSON.stringify(map)) as GameMap)).toEqual(first);
     expect(JSON.stringify(map)).not.toContain('decoration-');
+    expect(DEFAULT_TERRAIN_DECORATION_DENSITY).toBe(0.04);
   });
 
   it('warns about native-heavy starts and keeps Manywhere registry-complete', () => {

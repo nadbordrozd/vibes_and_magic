@@ -29,7 +29,7 @@ export function checkLevel(
   state.rng = nextRng;
   state.pendingChoice = {
     kind: 'level', playerId, heroId: hero.id, options,
-    canSkip: skillRank(hero, 'chronicler') >= 2,
+    canSkip: skillRank(hero, 'chronicler') >= 2, source: 'levelUp',
     canReroll: skillRank(hero, 'chronicler') >= 3,
   };
 }

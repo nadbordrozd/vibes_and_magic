@@ -1,6 +1,7 @@
 import {
   Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { guardianIntel } from '../../core/selectors';
 import type {
   Coord, GameState, Hero, MapObject, ResourceId,
@@ -17,7 +18,10 @@ import {
 import { skillRank } from '../../core/heroBehaviors';
 import { SKILLS } from '../../content/skills';
 import { RANGED_PICKUP_MOVE_COST } from '../../content/constants';
-import { deriveTerrainDecorations, TERRAIN, terrainId } from '../../content/terrain';
+import {
+  DEFAULT_TERRAIN_DECORATION_DENSITY, LARGE_MAP_TERRAIN_DECORATION_DENSITY,
+  deriveTerrainDecorations, TERRAIN, terrainId,
+} from '../../content/terrain';
 import { PIXEL_SCALE, assetId, manifestEntry } from '../../../assets/manifest';
 import {
   OwnerFlag, PixelSprite, castleSpriteId, heroSpriteId, mapObjectSpriteId,
@@ -31,6 +35,7 @@ import { CASTLE_NAMES } from '../../content/factionPresentation';
 import { SPELL_SCHOOL_NAMES } from '../../content/spellPresentation';
 import { gameMapTerrainGrid } from '../terrainTransitions';
 import { NativeTerrainSurface } from './NativeTerrainSurface';
+import { friendlyHeroMeetingPlan } from '../../core/game/navigation';
 
 const TILE = 32 * PIXEL_SCALE;
 const HALF_TILE = TILE / 2;
@@ -272,15 +277,18 @@ interface Props {
   mapStep: number;
   onTile: (coord: Coord) => void;
   onSelectHero: (heroId: string) => void;
+  onMeetHero: (heroId: string) => void;
+  onPreviewHero: (heroId: string | null) => void;
   onPreview: (coord: Coord | null) => void;
   onPickup: (objectId: string) => void;
   targetTiles?: Set<string>;
   selectedTargetTiles?: Coord[];
+  minimapHost?: HTMLElement | null;
 }
 
 export function AdventureMap({
-  state, hero, reachable, path, movement, mapStep, onTile, onSelectHero, onPreview, onPickup,
-  targetTiles, selectedTargetTiles = [],
+  state, hero, reachable, path, movement, mapStep, onTile, onSelectHero, onMeetHero,
+  onPreviewHero, onPreview, onPickup, targetTiles, selectedTargetTiles = [], minimapHost,
 }: Props) {
   const frameRef = useRef<HTMLElement>(null);
   const mapRef = useRef<SVGSVGElement>(null);
@@ -291,10 +299,15 @@ export function AdventureMap({
     key: number; position: Coord; mark: string; resource?: ResourceId;
   } | null>(null);
   const [heroFacings, setHeroFacings] = useState<Record<string, string>>({});
+  const [meetingTargetId, setMeetingTargetId] = useState<string | null>(null);
+  const previewMapCoord = (position: Coord | null) => {
+    setMeetingTargetId(null); onPreviewHero(null); onPreview(position);
+  };
   const exploredList = state.players[state.activePlayer].explored;
   const explored = useMemo(() => new Set(exploredList), [exploredList]);
   const decorations = useMemo(() => deriveTerrainDecorations(
-    state.map, state.map.name.startsWith('Manywhere') ? 0.015 : 0.16,
+    state.map, state.map.name.startsWith('Manywhere') || state.map.id === 'crooked-crown'
+      ? LARGE_MAP_TERRAIN_DECORATION_DENSITY : DEFAULT_TERRAIN_DECORATION_DENSITY,
   ), [state.map]);
   const revealKit = hero ? kitBonuses(hero) : null;
   const pathDestination = path.at(-1);
@@ -303,7 +316,9 @@ export function AdventureMap({
   const aggroIndex = hero ? path.findIndex((coord, index) => index > 0
     && (Boolean(guardianAtPath(state, coord))
       || guardiansCovering(state.map, coord, hero.id).length > 0)) : -1;
-  const previewIntent = destinationIntent(state, hero, pathDestination, aggroIndex, pathInRange);
+  const previewIntent = destinationIntent(
+    state, hero, pathDestination, aggroIndex, pathInRange, meetingTargetId,
+  );
   const pickupRange = hero ? skillRank(hero, 'forager') >= 3
     ? SKILLS.forager.values.rank3Range : skillRank(hero, 'forager') >= 2
       ? SKILLS.forager.values.rank2Range : 1 : 0;
@@ -421,8 +436,37 @@ export function AdventureMap({
       kind: 'hero' as const, mapHero, mapPlayer, position,
     })),
   ]);
+  const minimap = <svg className="minimap"
+    aria-label="Minimap · choose a region to center the adventure map"
+    viewBox={`0 0 ${state.map.width} ${state.map.height}`}
+    onClick={(event) => {
+      const box = event.currentTarget.getBoundingClientRect();
+      const x = (event.clientX - box.left) / box.width;
+      const y = (event.clientY - box.top) / box.height;
+      frameRef.current?.scrollTo({
+        left: x * state.map.width * TILE - frameRef.current.clientWidth / 2,
+        top: y * state.map.height * TILE - frameRef.current.clientHeight / 2,
+      });
+    }}>
+    {minimapTerrain.map(({ color, path: terrainPath }) => (
+      <path key={color} d={terrainPath} fill={color} />
+    ))}
+    {state.map.objects.filter((object) => explored.has(`${object.position.x},${object.position.y}`))
+      .map((object) => <circle key={`mini-object-${object.id}`} cx={object.position.x + .5}
+        cy={object.position.y + .5} r=".28" fill={'owner' in object && object.owner
+          ? `var(--${object.owner})` : '#aaa'} />)}
+    {Object.values(state.players).flatMap((owner) => owner.heroes.filter((unit) => unit.alive
+      && explored.has(`${unit.position.x},${unit.position.y}`)).map((unit) => (
+      <circle key={`mini-hero-${unit.id}`} cx={unit.position.x + .5} cy={unit.position.y + .5}
+        r=".42" className={owner.id} />
+    )))}
+    <rect className="minimap-viewport" x={viewport.x * state.map.width}
+      y={viewport.y * state.map.height} width={viewport.w * state.map.width}
+      height={viewport.h * state.map.height} />
+  </svg>;
   return (
-    <section className="map-frame" ref={frameRef} onScroll={(event) => {
+    <section className="map-frame" ref={frameRef} tabIndex={-1}
+      aria-label="Adventure map viewport" onScroll={(event) => {
       const element = event.currentTarget;
       setViewport({
         x: element.scrollLeft / (state.map.width * TILE),
@@ -481,7 +525,7 @@ export function AdventureMap({
                 ? 'fight-destination' : ''} ${targetTiles?.has(key) ? 'spell-legal-target' : ''} ${
                   selectedTargetTiles.some((target) => target.x === x && target.y === y)
                     ? 'spell-selected-target' : ''}`} onClick={() => onTile({ x, y })}
-              onMouseEnter={() => onPreview({ x, y })}
+              onMouseEnter={() => previewMapCoord({ x, y })}
               data-inspect-kind={seen ? 'terrain' : undefined}
               data-inspect-id={seen ? terrain : undefined}
               aria-label={seen ? `${TERRAIN[terrain].label} terrain` : 'Unexplored terrain'}
@@ -574,7 +618,7 @@ export function AdventureMap({
             const footprint = objectFootprint(object);
             return <g key={item.key}>
               <MapObjectGlyph object={object} state={state} onPickup={handlePickup} onEnter={onTile}
-                onPreview={onPreview}
+                onPreview={previewMapCoord}
                 pickup={Boolean(hero && ['pile', 'item', 'chest', 'flotsam', 'sealedCask',
                   'castaway', 'messageBottle'].includes(object.kind)
                   && hero.movement >= RANGED_PICKUP_MOVE_COST
@@ -588,13 +632,12 @@ export function AdventureMap({
             return <g className="map-overlay-glyph castle-map-object" key={item.key}
               data-inspect-kind="castle" data-inspect-id={castle.id}
               onClick={(event) => { event.stopPropagation(); onTile(entrance); }}
-              onMouseEnter={() => onPreview(entrance)}>
+              onMouseEnter={() => previewMapCoord(entrance)}>
               <title>{`${CASTLE_NAMES[castle.faction]} · ${castle.owner === 'neutral'
-                ? 'Neutral' : state.players[castle.owner].name}${castle.flavor ? ` · ${castle.flavor}` : ''}`}{
+                ? 'Neutral' : state.players[castle.owner].name}${castle.flavor ? ` · ${castle.flavor}` : ''}${
                 hero && castle.owner === 'neutral' && hasEquippedArtifact(hero, 'crownHollowTown')
                   ? ` · garrison ${castle.garrison.flatMap((stack) => stack ? [stack.count] : []).join('/') || 'empty'}`
-                  : ''
-              }</title>
+                  : ''}`}</title>
               <PixelSprite id={castleSpriteId(castle)} x={castle.position.x * TILE}
                 y={castle.position.y * TILE} className="castle-pixel" fallback={<g
                   transform={`translate(${castle.position.x * TILE + 48} ${castle.position.y * TILE + 32})`}>
@@ -614,16 +657,41 @@ export function AdventureMap({
           }
           const { mapHero, mapPlayer, position } = item;
           const selected = mapHero.id === hero?.id;
-          return <g className={`map-overlay-glyph map-hero ${selected ? 'selected-hero' : ''}`}
+          const friendlyTarget = Boolean(hero && !selected && mapHero.owner === hero.owner);
+          const enemyTarget = Boolean(hero && mapHero.owner !== hero.owner);
+          const intent = friendlyTarget ? 'exchange' : enemyTarget ? 'attack' : 'select';
+          const accessibleLabel = friendlyTarget
+            ? `Exchange with ${mapHero.name}. Move to a safe adjacent tile first if needed.`
+            : enemyTarget ? `Attack ${mapHero.name}.` : `Select ${mapHero.name}.`;
+          const previewHero = () => {
+            if (friendlyTarget) {
+              setMeetingTargetId(mapHero.id); onPreviewHero(mapHero.id);
+            } else {
+              previewMapCoord(position);
+            }
+          };
+          const activate = () => {
+            if (friendlyTarget) onMeetHero(mapHero.id);
+            else if (mapPlayer.id === state.activePlayer) onSelectHero(mapHero.id);
+            else onTile(position);
+          };
+          return <g className={`map-overlay-glyph map-hero ${selected ? 'selected-hero' : ''} ${
+            friendlyTarget ? 'friendly-exchange-target' : enemyTarget ? 'enemy-attack-target' : ''}`}
             key={item.key}
             data-inspect-kind="hero" data-inspect-id={mapHero.id}
             data-selected={selected ? 'true' : 'false'}
+            data-map-intent={intent}
+            role="button" tabIndex={0} aria-label={accessibleLabel}
             onClick={(event) => {
               event.stopPropagation();
-              if (mapPlayer.id === state.activePlayer) onSelectHero(mapHero.id);
-              else onTile(position);
+              activate();
             }}
-            onMouseEnter={() => onPreview(position)}
+            onKeyDown={(event) => {
+              if (event.key !== 'Enter' && event.key !== ' ') return;
+              event.preventDefault(); event.stopPropagation(); activate();
+            }}
+            onMouseEnter={previewHero}
+            onFocus={previewHero}
             style={{
               transition: `transform ${mapStep}ms linear`,
               transform: `translate(${position.x * TILE + HALF_TILE}px, ${position.y * TILE + HALF_TILE}px)`,
@@ -696,42 +764,18 @@ export function AdventureMap({
             transform={`translate(${pathDestination.x * TILE + HALF_TILE} ${pathDestination.y * TILE + HALF_TILE})`}>
             <circle r={11} />
             {previewIntent.kind === 'interaction' && <path d="M0 -7 L7 0 L0 7 L-7 0 Z" />}
+            {previewIntent.kind === 'exchange'
+              && <path d="M-8 -4 H6 L3 -7 M6 -4 L3 -1 M8 4 H-6 L-3 1 M-6 4 L-3 7" />}
           </g>
         )}
       </svg>
-      <svg className="minimap"
-        viewBox={`0 0 ${state.map.width} ${state.map.height}`}
-        onClick={(event) => {
-          const box = event.currentTarget.getBoundingClientRect();
-          const x = (event.clientX - box.left) / box.width;
-          const y = (event.clientY - box.top) / box.height;
-          frameRef.current?.scrollTo({
-            left: x * state.map.width * TILE - frameRef.current.clientWidth / 2,
-            top: y * state.map.height * TILE - frameRef.current.clientHeight / 2,
-          });
-        }}>
-        {minimapTerrain.map(({ color, path }) => (
-          <path key={color} d={path} fill={color} />
-        ))}
-        {state.map.objects.filter((object) => explored.has(`${object.position.x},${object.position.y}`))
-          .map((object) => <circle key={`mini-object-${object.id}`} cx={object.position.x + .5}
-            cy={object.position.y + .5} r=".28" fill={'owner' in object && object.owner
-              ? `var(--${object.owner})` : '#aaa'} />)}
-        {Object.values(state.players).flatMap((owner) => owner.heroes.filter((unit) => unit.alive
-          && explored.has(`${unit.position.x},${unit.position.y}`)).map((unit) => (
-          <circle key={`mini-hero-${unit.id}`} cx={unit.position.x + .5} cy={unit.position.y + .5}
-            r=".42" className={owner.id} />
-        )))}
-        <rect className="minimap-viewport" x={viewport.x * state.map.width}
-          y={viewport.y * state.map.height} width={viewport.w * state.map.width}
-          height={viewport.h * state.map.height} />
-      </svg>
+      {minimapHost ? createPortal(minimap, minimapHost) : minimap}
     </section>
   );
 }
 
 interface DestinationIntent {
-  kind: 'idle' | 'safe' | 'interaction' | 'fight';
+  kind: 'idle' | 'safe' | 'interaction' | 'exchange' | 'fight';
   label: string;
   detail?: string;
 }
@@ -742,8 +786,28 @@ function destinationIntent(
   destination: Coord | undefined,
   aggroIndex: number,
   inRange: boolean,
+  meetingTargetId: string | null = null,
 ): DestinationIntent {
-  if (!hero || !destination) {
+  if (!hero) {
+    return { kind: 'idle', label: 'Hover for a safe route', detail: 'click once to travel' };
+  }
+  if (meetingTargetId) {
+    const target = Object.values(state.players).flatMap((player) => player.heroes)
+      .find((candidate) => candidate.id === meetingTargetId);
+    const meeting = friendlyHeroMeetingPlan(state, meetingTargetId);
+    if (!target || !meeting.ok) return {
+      kind: 'exchange', label: target ? `Cannot meet ${target.name}` : 'Meeting unavailable',
+      detail: meeting.ok ? undefined : meeting.reason,
+    };
+    return {
+      kind: 'exchange', label: `Exchange with ${target.name}`,
+      detail: meeting.plan.adjacent ? 'already adjacent · open now'
+        : `${meeting.plan.cost} movement to a free adjacent tile · ${
+          meeting.plan.cost <= hero.movement ? 'within today’s movement'
+            : 'travel continues as far as today allows'}`,
+    };
+  }
+  if (!destination) {
     return { kind: 'idle', label: 'Hover for a safe route', detail: 'click once to travel' };
   }
   const rangeDetail = inRange

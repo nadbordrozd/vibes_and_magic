@@ -15,6 +15,20 @@
 .castle-passive { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin-top: 14px; padding: 10px 12px; border-left: 3px solid var(--castle-accent); background: #0e140f; }
 .castle-passive b { color: var(--castle-accent); }.castle-passive span { color: #c1c8bd; font-size: 10px; line-height: 1.4; }
 .castle-passive small { grid-column: 2; color: #717c71; font-size: 8px; }
+.castle-task-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-top: 14px; }
+.castle-task-tabs button {
+  display: grid; gap: 3px; padding: 10px; color: #c5ccc1; border: 1px solid #485247;
+  background: #111712; text-align: left;
+}
+.castle-task-tabs button span { color: inherit; font-weight: 800; }
+.castle-task-tabs button small { color: #788377; font-size: 8px; }
+.castle-task-tabs button.selected { color: #17170f; border-color: var(--gold); background: var(--gold); }
+.castle-task-tabs button.selected small { color: #4e452a; }
+.castle-view { min-height: 470px; padding: 22px 0 8px; }
+.town-view .building-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.recruit-view .recruit-list { grid-template-columns: 1fr 1fr; }
+.services-view { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.services-view > section { min-width: 0; border: 1px solid #3b443a; padding: 15px; }
 .close-button { color: #bbbfae; border: 1px solid #50594e; background: #111612; width: 38px; height: 38px; font-size: 22px; }
 .castle-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 24px 0; }
 .castle-screen h3 { margin: 0 0 12px; color: #aab1a5; font-size: 10px; text-transform: uppercase; letter-spacing: .15em; }
@@ -67,15 +81,88 @@
 .transfer-area .army-block { margin: 0; }.transfer-arrow { color: var(--gold); text-align: center; font-size: 23px; }
 .castle-exchange { padding: 18px; border: 1px solid #3e483d; background: #0e130f; }
 .castle-exchange .transfer-area { padding: 0; border: 0; }
+.direct-exchange { margin: 0; }
+.direct-exchange .transfer-area { align-items: end; }
+.direct-transfer-side { min-width: 0; }
+.direct-transfer-side .army-block { margin-top: 7px; }
+.direct-transfer-side .army-slot-wrap { width: 100%; min-width: 0; }
+.direct-transfer-side .army-slot { width: 100%; max-width: 100%; }
+.direct-transfer-side .army-block h4 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.transfer-identity {
+  min-height: 50px; display: grid; grid-template-columns: 42px 1fr auto; gap: 9px;
+  align-items: center; padding: 7px 9px; border-bottom: 2px solid #465146; background: #151c16;
+}
+.direct-transfer-side.source-side .transfer-identity { border-color: var(--gold); background: #252314; }
+.transfer-identity > span { min-width: 0; display: grid; gap: 2px; }
+.transfer-identity small { color: #8d9789; font-size: 8px; letter-spacing: .13em; text-transform: uppercase; }
+.transfer-identity strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 13px Georgia, serif; }
+.transfer-identity > b { color: #9da899; font-size: 9px; }
+.transfer-hero-portrait { width: 38px; height: 38px; object-fit: contain; image-rendering: pixelated; transform: scale(1.75); }
+.transfer-garrison-crest {
+  width: 34px; height: 38px; display: grid; place-items: center; color: var(--castle-accent);
+  border: 2px solid currentColor; clip-path: polygon(0 0,100% 0,100% 78%,50% 100%,0 78%);
+}
+.direct-exchange .army-slot.valid-destination { position: relative; }
+.direct-exchange .army-slot.valid-destination::after {
+  content: "move"; position: absolute; left: 2px; right: 2px; bottom: 2px; padding: 1px;
+  color: #dff5df; background: #1c4b26e8; font-size: 7px; line-height: 1; text-transform: uppercase;
+}
+.direct-exchange .army-slot.target-merge::after { content: "merge"; background: #23563ee8; }
+.direct-exchange .army-slot.target-swap::after { content: "swap"; background: #675221ed; }
+.direct-transfer-controls {
+  min-height: 52px; display: grid; gap: 7px; margin-top: 9px; padding: 9px 11px;
+  border-left: 3px solid var(--castle-accent); background: #151b16;
+}
+.direct-transfer-controls p { margin: 0; color: #b7c0b3; font-size: 10px; line-height: 1.4; }
+.direct-transfer-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: end; }
+.direct-transfer-actions button, .direct-transfer-actions input {
+  min-height: 30px; color: var(--cream); border: 1px solid #566153; background: #222a23;
+}
+.direct-transfer-actions button { padding: 5px 9px; }
+.direct-transfer-actions button.selected { color: #16180f; border-color: var(--gold); background: var(--gold); }
+.direct-transfer-actions label { display: grid; gap: 2px; color: #b9c0b5; font-size: 8px; text-transform: uppercase; }
+.direct-transfer-actions input[type="number"] { width: 68px; padding: 4px 6px; }
+.direct-transfer-actions input[type="range"] { width: 120px; }
+.direct-transfer-actions kbd { color: #aab2a7; font-size: 8px; }
+.direct-transfer-controls .disabled-reason { margin-top: 2px; }
+.transfer-legend { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; color: #899386; font-size: 8px; }
+.transfer-legend span { padding: 3px 6px; border: 1px solid #425044; background: #121713; }
+.transfer-legend .merge { border-color: #477b60; }.transfer-legend .swap { border-color: #826c38; }
 .remote-castle-note { display: flex; flex-direction: column; gap: 5px; padding: 14px; border-left: 2px solid var(--gold); }
 .remote-castle-note b { font: 700 15px Georgia, serif; text-transform: uppercase; }
 .remote-castle-note span { color: #899386; font-size: 10px; line-height: 1.45; }
 .castle-screen > footer { color: #778174; font-size: 9px; text-align: center; margin-top: 15px; }
 @media (max-width: 1150px) {
   .castle-columns { grid-template-columns: 1fr; }
-  .building-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .town-view .building-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .recruit-view .recruit-list, .services-view { grid-template-columns: 1fr; }
   .transfer-area { grid-template-columns: 1fr; gap: 10px; }
   .transfer-arrow { transform: rotate(90deg); }
+  .direct-exchange .transfer-arrow { line-height: 18px; }
+}
+@media (max-width: 520px) {
+  .castle-screen { padding: 15px; }
+  .castle-screen > header { padding-bottom: 10px; }
+  .castle-screen h2 { font-size: 26px; }
+  .castle-passive { grid-template-columns: 1fr; }
+  .castle-passive small { grid-column: 1; }
+  .castle-task-tabs { grid-template-columns: 1fr 1fr; }
+  .castle-view { min-height: 0; padding-top: 16px; }
+  .town-view .building-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .building-card { min-height: 94px; padding: 6px; }
+  .building-picture { width: 62px; height: 44px; }
+  .recruit-row { grid-template-columns: 28px 44px 1fr; }
+  .recruit-row .stepper, .recruit-row .hire { grid-column: span 1; }
+  .recruit-row .stepper { grid-column: 2 / 4; }
+  .recruit-row .hire { grid-column: 3; }
+  .castle-exchange { padding: 10px; }
+  .services-view .tavern-offers { grid-template-columns: 1fr; }
+  .services-view .tavern-offers article { min-width: 0; flex-wrap: wrap; }
+  .services-view .tavern-offers article button { margin-left: auto; }
+  .transfer-identity { min-height: 42px; grid-template-columns: 34px 1fr auto; }
+  .transfer-hero-portrait { width: 30px; height: 30px; }
+  .transfer-garrison-crest { width: 29px; height: 32px; }
+  .direct-transfer-actions input[type="range"] { width: min(120px, 36vw); }
 }
 @media (max-width: 760px) {
   .exchange-screen .transfer-area, .item-transfer-area { grid-template-columns: 1fr; gap: 10px; }

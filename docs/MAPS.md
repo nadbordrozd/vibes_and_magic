@@ -45,3 +45,16 @@ the current example: six mixed-faction castles and six full-roster heroes belong
 the remote opponent uses the existing Dormant controller. The authored map still owns terrain,
 roads, guardian targets, resources, and structures, and must pass the same footprint/reachability
 lint as every ordinary scenario.
+
+## Dense labyrinth scenarios
+
+Large maps must earn their dimensions through route structure rather than open travel time. Use
+shaped chambers, narrow corridors, loops, alternate connections, guarded shortcuts, and optional
+spurs. Every start needs local unguarded income plus at least two routes toward different regions.
+Measure the result: exact dimensions, interactive objects per passable tile, authored/decorative
+terrain ratio, road coverage, largest unbroken passable square, start-route divergence, intended
+gates, and reward guardian coverage belong in map lint.
+
+The Crooked Crown is the reference implementation. Its guardians convert authored progression
+targets into stack counts through the centralized calibrated `unitStrength` rating; maps must not
+reintroduce HP × damage or another local strength heuristic.

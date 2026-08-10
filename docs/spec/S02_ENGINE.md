@@ -130,7 +130,9 @@ valid anchor positions rather than a one-hex path with a late collision check.
 reachable from starts across valid movement domains, linked guard efficacy including ranged-pickup
 positions, no aggro over starts/castle entrances, authored-only blocking obstacles, start-zone native
 terrain warnings, anomaly ration warnings, Cache/Patient-Stone consistency, and Manywhere registry
-coverage.
+coverage. A dense-map profile additionally pins exact dimensions, start exits and opening economy,
+intended guardian gates, guarded reward coverage, interactive/decorative density, road coverage,
+and the largest unbroken passable square.
 
 Catalogs validate on load or in tests: complete identity, nonempty flavor/story, legal costs and
 stats, count invariants where pinned, valid references, rarity and behavior metadata, and unique IDs.
@@ -142,7 +144,7 @@ Core evaluation and simulation run headlessly without rendering. Normal UI actio
 on exhaustive AI or simulation. World view uses low level-of-detail: terrain and major objects only,
 with decorations and tooltips disabled. Decorations are reproducible pure derivations and do not
 inflate state or saves. Keep the DOM/SVG representation compact enough for the largest authored
-56×44 map; animation queues are cancelable by the shared motion setting. Adventure reachability is
+72×72 map; animation queues are cancelable by the shared motion setting. Adventure reachability is
 a single bounded traversal per selected hero, never one point-to-point search per destination tile.
 The minimap batches terrain into color paths, and map tiles do not add wrapper elements solely for
 event handling.

@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/e1-spell-icons-4-candidates.html",
+  "requests": [
+    {
+      "id": "spell-icon:clarion",
+      "assets": [
+        "spell-icon:clarion"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/clarion",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Clarion”: Set an ally’s morale to 80. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746510,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:vigilOfTheHost",
+      "assets": [
+        "spell-icon:vigilOfTheHost"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/vigilOfTheHost",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Vigil of the Host”: Lowest-morale ally gains 15 each round. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746527,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:oathbind",
+      "assets": [
+        "spell-icon:oathbind"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/oathbind",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Oathbind”: Enemy receives no effects for 2 rounds. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746544,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:waysideShrine",
+      "assets": [
+        "spell-icon:waysideShrine"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/waysideShrine",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Wayside Shrine”: Next battle here has Rite resonance. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746561,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:gate",
+      "assets": [
+        "spell-icon:gate"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/gate",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Gate”: Open a paired passage between two explored points. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746578,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:saltTheVein",
+      "assets": [
+        "spell-icon:saltTheVein"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/saltTheVein",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Salt the Vein”: Visible enemy mine yields nothing for 5 days. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746595,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:falseColors",
+      "assets": [
+        "spell-icon:falseColors"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/falseColors",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “False Colors”: Appear as a neutral guardian band. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746612,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:clockworkCourier",
+      "assets": [
+        "spell-icon:clockworkCourier"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/clockworkCourier",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Clockwork Courier”: Transfer items or one stack between heroes. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746629,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:brittle",
+      "assets": [
+        "spell-icon:brittle"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/brittle",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Brittle”: Disable enemy abilities for 2 rounds. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746646,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:standingMirror",
+      "assets": [
+        "spell-icon:standingMirror"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/standingMirror",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Standing Mirror”: Enemy spells are copied at your Spell Power. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 746663,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

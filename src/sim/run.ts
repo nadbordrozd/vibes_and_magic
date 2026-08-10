@@ -71,7 +71,8 @@ export function simulateGame(
   seed: number, maxDays = 70, noMagic = false, opponent: 'ai' | 'dormant' = 'ai',
   mapId: MapId = 'border-marches',
 ): SimResult {
-  const playerCount = mapId === 'crosstitch' || mapId === 'crosstitch-kit' ? 4
+  const playerCount = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
+    || mapId === 'crooked-crown' ? 4
     : mapId === 'manywhere' ? 3 : 2;
   let state = createGame({
     seed, p1: 'ai', p2: opponent, p3: opponent, p4: opponent, mapId, playerCount,

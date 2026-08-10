@@ -5,6 +5,7 @@ import type {
 } from '../../core/types';
 import { previewAction } from '../actionPreview';
 import type { ActionDraft } from './ActionConfirmationDialog';
+import { ContentIcon } from './ContentIcon';
 
 export function PalimpsestService({
   state, hero, site, onDraft,
@@ -14,7 +15,7 @@ export function PalimpsestService({
   site: Castle | Extract<MapObject, { kind: 'shrine' }>;
   onDraft: (draft: ActionDraft) => void;
 }) {
-  return <section className="map-service-card palimpsest-service">
+  return <section className="contextual-service-section palimpsest-service">
     <h4>Palimpsest · rank {hero.skills.palimpsest}</h4>
     <b>{'faction' in site
       ? `Mage Guild at ${CASTLE_NAMES[site.faction]}`
@@ -34,7 +35,7 @@ export function PalimpsestService({
             action, title: `Forget ${SPELLS[spellId].name}`, actor: hero.name, target: hero.name,
             effect: `Permanently erase ${SPELLS[spellId].name}${hero.upgradedSpells.includes(spellId) ? '+' : ''}, then choose one replacement from the visible Palimpsest offer.`,
           })}
-        >Forget {SPELLS[spellId].name}{hero.upgradedSpells.includes(spellId) ? '+' : ''}</button>;
+        ><ContentIcon kind="spell" id={spellId} />Forget {SPELLS[spellId].name}{hero.upgradedSpells.includes(spellId) ? '+' : ''}</button>;
       })}
     </div>
   </section>;

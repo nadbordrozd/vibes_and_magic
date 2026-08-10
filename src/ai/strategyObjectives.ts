@@ -1,5 +1,6 @@
 import {
-  AI_GATHERER_THREAT_RATIO, AI_GATHERER_THREAT_TURNS, HERO_MOVE_POINTS,
+  AI_ASSAULT_STRENGTH_RATIO, AI_GATHERER_THREAT_RATIO, AI_GATHERER_THREAT_TURNS,
+  AI_GUARDIAN_SAFETY_RATIO, HERO_MOVE_POINTS,
 } from '../content/constants';
 import { armyPower, makeArmy } from '../core/army';
 import {
@@ -204,36 +205,37 @@ function collectObjectives(
         value: objectValue(object),
       });
     } else if (object.kind === 'chest' && !object.collected
-        && (guard === 0 || guard <= power * 0.8)) {
+        && (guard === 0 || guard <= power * AI_GUARDIAN_SAFETY_RATIO)) {
       objectives.push({
         id: targetId, position: targetPosition, priority: guard ? 2 : 0,
         power: guard, value: objectValue(object), guardianId: guardian?.id,
       });
     } else if (object.kind === 'mine' && object.owner !== hero.owner
-        && (guard === 0 || guard <= power * 0.8)) {
+        && (guard === 0 || guard <= power * AI_GUARDIAN_SAFETY_RATIO)) {
       objectives.push({
         id: targetId, position: targetPosition, priority: guard ? 2 : 1,
         power: guard, value: objectValue(object), guardianId: guardian?.id,
       });
     } else if (object.kind === 'shrine' && !object.visitedBy.includes(hero.id)
-        && guard <= power * 0.8) {
+        && guard <= power * AI_GUARDIAN_SAFETY_RATIO) {
       objectives.push({
         id: targetId, position: targetPosition, priority: 0,
         power: guard, value: 1000, guardianId: guardian?.id,
       });
-    } else if (object.kind === 'lock' && !object.cleared && guard <= power * 0.8) {
+    } else if (object.kind === 'lock' && !object.cleared
+        && guard <= power * AI_GUARDIAN_SAFETY_RATIO) {
       objectives.push({
         id: targetId, position: targetPosition, priority: 2,
         power: guard, value: objectValue(object), guardianId: guardian?.id,
       });
     } else if (object.kind === 'lighthouse' && object.owner !== hero.owner
-        && guard <= power * 0.8) {
+        && guard <= power * AI_GUARDIAN_SAFETY_RATIO) {
       objectives.push({
         id: targetId, position: targetPosition, priority: 1,
         power: guard, value: objectValue(object), guardianId: guardian?.id,
       });
     } else if ((object.kind === 'shipwreck' || object.kind === 'sirenRocks')
-        && !object.cleared && guard <= power * 0.8) {
+        && !object.cleared && guard <= power * AI_GUARDIAN_SAFETY_RATIO) {
       objectives.push({
         id: targetId, position: targetPosition, priority: 2,
         power: guard, value: objectValue(object), guardianId: guardian?.id,
@@ -285,7 +287,7 @@ export function chooseStrategyObjective(
   const objectives = safeObjectives.length ? safeObjectives : allObjectives;
   const ownPower = armyPower(hero.army);
   const immediate = objectives.filter((objective) =>
-    objective.priority === 3 && objective.power * 1.2 <= ownPower
+    objective.priority === 3 && objective.power * AI_ASSAULT_STRENGTH_RATIO <= ownPower
       && objectiveDistance(state, hero, objective) <= hero.movement)
     .sort((a, b) => objectiveDistance(state, hero, a)
       - objectiveDistance(state, hero, b))[0];

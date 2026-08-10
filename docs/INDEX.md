@@ -69,5 +69,15 @@ live in `docs/` until superseded by their implementation.
 | 34 | UX_COMPLETENESS | UX-only audit contract, shared interaction grammar, screen coverage matrix, automated gates, and new-player acceptance walkthrough | presentation work order; mechanics remain governed by S00–S09 |
 | 35 | MOUNTAIN_HANDOFF | Accepted grassy family, connectivity-first rocky backbone pipeline, arbitrary-shape compositor rules, showcase reproduction, pitfalls, and continuation guide | continuation note for 31/33; no mechanics changes |
 | 36 | TERRAIN_TRANSITIONS | Native terrain-transition compositor, H2 reference boundary, generated game-family assets, regeneration/review steps, and direct-Wang integration handoff | consolidates terrain entries in ASSETS_LOG/IMPLEMENTATION_LOG and extends 31; no mechanics changes |
+| 37 | ADVENTURE_VISUAL_SHOWCASE | Catalog-derived native-scale acceptance fixture for terrain, mountains, decorations, objects, castles, heroes, and guardians | presentation verification companion to 31/34/35/36; no mechanics changes |
+| 38 | NEW_PLAYER_WALKTHROUGH | Continuous title-to-authored-outcome browser journey, paired screen/step evidence, replay assertions, and exhaustive synthetic-coverage manifest | implemented acceptance companion to 34; no mechanics changes |
+| 39 | GUARDIAN_STRENGTH | Central stat/count army rating, deterministic battle calibration, consumer audit, and threshold recalibration | replaces the HP × average-damage strategic estimate; updates S04/S06/S09 |
+| 40 | CROOKED_CROWN | Selectable deterministic 72×72 dense labyrinth map, calibrated progression, topology lint, and browser evidence | extends S02/S03/S09 and the authored-map catalog |
+| 41 | ADVENTURE_STRUCTURE_DIALOGS | Shared contextual adventure-structure dialog, exhaustive object routing, focus/input safety, and browser evidence | presentation companion to 34/38; no mechanics changes |
+| 42 | CASTLE_ARMY_TRANSFER | Compact reducer-projected visiting-hero/garrison slot transfer, partial controls, remote-state honesty, and responsive evidence | presentation companion to 34; preserves S02/S06 actions and rules |
+| 43 | FRIENDLY_HERO_MEETINGS | Distinct map exchange intent, deterministic safe adjacent routing, verified post-move opening, and browser evidence | presentation/routing companion to 34/41/42; preserves S02/S03/S06 actions and rules |
+| 44 | FOCUSED_NON_ADVENTURE_SCREENS | Executable surface/job inventory and focused setup, hero, castle, combat, spellbook, choice, result, and save/import layouts | presentation companion to 34/38/41/42/43; preserves S00–S09 actions and rules |
+| 45 | ADVENTURE_MAP_FIRST_UI | Dominant adventure map, narrow routine-command rail, and dedicated hero/save/contextual secondary surfaces | presentation companion to 34/41/42/43/44; preserves S00–S09 actions and rules |
+| 46 | SPELL_SKILL_ICONS | Complete final-resolution PixelLab spell/skill icon contract, provenance, manifest gates, shared UI integration, and review evidence | presentation/assets companion to 31/34/44/45; preserves S05/S06 rules |
 
-Next free number: **37**.
+Next free number: **47**.

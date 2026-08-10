@@ -1,4 +1,5 @@
 import { ITEMS, itemName } from '../content/items';
+import { ABILITY_PRESENTATION } from '../content/abilityPresentation';
 import { SPELLS } from '../content/spells';
 import { BATTLE_COLS, BATTLE_ROWS } from '../content/constants';
 import { artifactEffectTotal } from '../core/artifacts';
@@ -10,21 +11,23 @@ import {
 } from '../core/combat/spells';
 import { spellManaCost } from '../core/combat/spellModifiers';
 import type {
-  Action, BattleHero, BattleSide, BattleStack, BattleState, Coord, ItemInstance, SpellId,
+  AbilityId, Action, BattleHero, BattleSide, BattleStack, BattleState, Coord, ItemInstance, SpellId,
 } from '../core/types';
 
 export type CombatTargetAction = Extract<
-  Action, { type: 'BATTLE_CAST' | 'BATTLE_USE_ITEM' }
+  Action, { type: 'BATTLE_CAST' | 'BATTLE_USE_ITEM' | 'BATTLE_USE_ABILITY' }
 >;
 export type CombatTargetField =
-  'effectId' | 'targetId' | 'secondaryTargetId' | 'replaceEnchantment' | 'skipRound';
+  'effectId' | 'targetId' | 'secondaryTargetId' | 'destination'
+  | 'replaceEnchantment' | 'skipRound';
 export type CombatTargetStage = CombatTargetField | 'positions' | 'confirm';
-export type CombatTargetValue = string | number;
+export type CombatTargetValue = string | number | Coord;
 
 export interface CombatTargetSource {
-  kind: 'spell' | 'item';
+  kind: 'spell' | 'item' | 'ability';
   spellId?: SpellId;
   inventorySlot?: number;
+  abilityId?: AbilityId;
 }
 
 export interface CombatTargetDraft {
@@ -38,8 +41,28 @@ export interface CombatTargetDraft {
   }>;
 }
 
+function actionTargetValue(
+  action: CombatTargetAction, field: CombatTargetField,
+): CombatTargetValue | undefined {
+  if (field === 'destination') {
+    return action.type === 'BATTLE_USE_ABILITY' ? action.destination : undefined;
+  }
+  if (field === 'effectId') {
+    return action.type !== 'BATTLE_USE_ABILITY' ? action.effectId : undefined;
+  }
+  if (field === 'targetId') return action.targetId;
+  if (field === 'secondaryTargetId') {
+    return action.type !== 'BATTLE_USE_ABILITY' ? action.secondaryTargetId : undefined;
+  }
+  if (field === 'replaceEnchantment') {
+    return action.type !== 'BATTLE_USE_ABILITY' ? action.replaceEnchantment : undefined;
+  }
+  return action.type !== 'BATTLE_USE_ABILITY' ? action.skipRound : undefined;
+}
+
 const FIELD_ORDER: CombatTargetField[] = [
-  'effectId', 'targetId', 'secondaryTargetId', 'replaceEnchantment', 'skipRound',
+  'effectId', 'targetId', 'secondaryTargetId', 'destination',
+  'replaceEnchantment', 'skipRound',
 ];
 
 function activeSide(battle: BattleState): BattleSide | null {
@@ -83,12 +106,36 @@ export function beginItemTargeting(
   };
 }
 
+export function beginAbilityTargeting(
+  actions: Action[], abilityId: AbilityId,
+): CombatTargetDraft | null {
+  const options = actions.filter((action): action is Extract<
+    Action, { type: 'BATTLE_USE_ABILITY' }
+  > => action.type === 'BATTLE_USE_ABILITY' && action.abilityId === abilityId);
+  if (!options.length) return null;
+  return {
+    source: { kind: 'ability', abilityId }, options,
+    selections: {}, positions: [], history: [],
+  };
+}
+
 export function matchingTargetActions(draft: CombatTargetDraft): CombatTargetAction[] {
   return draft.options.filter((action) => FIELD_ORDER.every((field) =>
-    !Object.hasOwn(draft.selections, field) || action[field] === draft.selections[field]));
+    !Object.hasOwn(draft.selections, field)
+      || targetValueEqual(actionTargetValue(action, field), draft.selections[field])));
+}
+
+function targetValueEqual(
+  left: CombatTargetValue | undefined, right: CombatTargetValue | undefined,
+): boolean {
+  if (left && right && typeof left === 'object' && typeof right === 'object') {
+    return left.x === right.x && left.y === right.y;
+  }
+  return left === right;
 }
 
 function resolvedSpellId(battle: BattleState, source: CombatTargetSource): SpellId | null {
+  if (source.kind === 'ability') return null;
   if (source.kind === 'spell') {
     if (source.spellId === 'echo') return battle.lastSpellCast?.spellId ?? null;
     return source.spellId ?? null;
@@ -140,9 +187,23 @@ export function combatTargetStage(
 export function combatTargetChoices(
   draft: CombatTargetDraft, field: CombatTargetField,
 ): CombatTargetValue[] {
-  return [...new Set(matchingTargetActions(draft)
+  const values = matchingTargetActions(draft)
     .filter((action) => Object.hasOwn(action, field))
-    .map((action) => action[field] as CombatTargetValue))];
+    .map((action) => actionTargetValue(action, field))
+    .filter((value): value is CombatTargetValue => value !== undefined);
+  if (field === 'destination') {
+    const unique = new Map(values.map((value) => {
+      const coord = value as Coord;
+      return [`${coord.x},${coord.y}`, coord] as const;
+    }));
+    return [...unique.values()];
+  }
+  return [...new Set(values)];
+}
+
+export function combatTargetDestinations(draft: CombatTargetDraft): Coord[] {
+  return combatTargetStagePlaceholder(draft) === 'destination'
+    ? combatTargetChoices(draft, 'destination') as Coord[] : [];
 }
 
 export function chooseCombatTarget(
@@ -194,7 +255,9 @@ export function confirmedCombatTargetAction(
   const option = matchingTargetActions(draft)[0];
   if (!option) return null;
   const action = { ...option, ...draft.selections } as CombatTargetAction;
-  return draft.positions.length ? { ...action, positions: draft.positions } : action;
+  if (!draft.positions.length) return action;
+  if (action.type === 'BATTLE_USE_ABILITY') return null;
+  return { ...action, positions: draft.positions };
 }
 
 export function combatTargetStackIds(draft: CombatTargetDraft): string[] {
@@ -212,13 +275,15 @@ function combatTargetStagePlaceholder(draft: CombatTargetDraft): CombatTargetFie
 
 export function combatTargetName(battle: BattleState, source: CombatTargetSource): string {
   if (source.kind === 'spell') return SPELLS[source.spellId!].name;
+  if (source.kind === 'ability') return ABILITY_PRESENTATION[source.abilityId!].name;
   return itemName(itemAt(battle, source.inventorySlot!)!);
 }
 
 export function combatTargetFace(
   battle: BattleState, source: CombatTargetSource,
-): 'Base' | 'Plus' | 'Item' {
+): 'Base' | 'Plus' | 'Item' | 'Ability' {
   const hero = activeHero(battle);
+  if (source.kind === 'ability') return 'Ability';
   if (source.kind === 'item') {
     const item = itemAt(battle, source.inventorySlot!);
     if (!item) return 'Item';
@@ -237,6 +302,7 @@ export function combatTargetFace(
 
 export function combatTargetCost(battle: BattleState, source: CombatTargetSource): string {
   const hero = activeHero(battle);
+  if (source.kind === 'ability') return '1 company action';
   if (source.kind === 'spell' && hero) {
     const side = activeSide(battle)!;
     const mana = spellManaCost(battle, side, hero, source.spellId!);
@@ -259,7 +325,9 @@ export function combatTargetConsequence(
   const spellId = resolvedSpellId(battle, draft.source);
   const face = combatTargetFace(battle, draft.source);
   let text: string;
-  if (draft.source.kind === 'item') {
+  if (draft.source.kind === 'ability') {
+    text = ABILITY_PRESENTATION[draft.source.abilityId!].description;
+  } else if (draft.source.kind === 'item') {
     const item = itemAt(battle, draft.source.inventorySlot!);
     text = item ? ITEMS[item.id].description : 'Unavailable item.';
   } else {
@@ -280,6 +348,8 @@ export function combatTargetConsequence(
     details.push(`replace slot ${Number(draft.selections.replaceEnchantment) + 1}`);
   }
   if (draft.selections.skipRound !== undefined) details.push(`skip round ${draft.selections.skipRound}`);
+  const destination = draft.selections.destination as Coord | undefined;
+  if (destination) details.push(`destination: (${destination.x},${destination.y})`);
   if (draft.positions.length) details.push(`hexes: ${draft.positions.map((p) => `${p.x},${p.y}`).join(' · ')}`);
   return `${text}${details.length ? ` ${details.join(' · ')}.` : ''}`;
 }
@@ -315,6 +385,7 @@ export function combatTargetStagePrompt(
     return resolvedSpellId(battle, draft.source) === 'overgrow'
       ? 'Choose the adjacent company to exclude.' : 'Choose the secondary company.';
   }
+  if (stage === 'destination') return 'Choose the explicit destination hex on the battlefield.';
   if (stage === 'replaceEnchantment') return 'Choose which occupied enchantment slot to replace.';
   if (stage === 'skipRound') return 'Choose the future round this company will skip.';
   if (stage === 'positions') {
@@ -348,7 +419,7 @@ export function combatTargetCoverageFamilies(): readonly string[] {
 
 export function unsupportedCombatTargetFields(actions: CombatTargetAction[]): string[] {
   const supported = new Set([
-    'type', 'spellId', 'inventorySlot', 'effectId', 'targetId', 'secondaryTargetId',
+    'type', 'spellId', 'inventorySlot', 'abilityId', 'effectId', 'targetId', 'secondaryTargetId', 'destination',
     'replaceEnchantment', 'skipRound', 'positions',
   ]);
   return [...new Set(actions.flatMap((action) => Object.keys(action))

@@ -29,6 +29,12 @@ async function clickButtonWithText(page: Page, text: string): Promise<void> {
   }, text);
 }
 
+async function openTitleExit(page: Page): Promise<void> {
+  await clickButtonWithText(page, 'Menu & saves');
+  await clickButtonWithText(page, 'Return to title');
+  await page.waitForSelector('.title-exit-dialog');
+}
+
 async function chooseFile(page: Page, buttonText: string, path: string): Promise<void> {
   const chooser = page.waitForFileChooser();
   await clickButtonWithText(page, buttonText);
@@ -39,15 +45,20 @@ async function auditMenu(page: Page, name: string): Promise<void> {
   const result = await page.evaluate(() => ({
     horizontalOverflow: document.documentElement.scrollWidth
       - document.documentElement.clientWidth,
-    mapChoices: document.querySelectorAll('.map-options button').length,
-    exactObjectives: document.querySelectorAll('.map-options button span').length,
+    setupVisible: Boolean(document.querySelector('.menu-modes button.selected')?.textContent?.includes('New')),
+    mapChoices: document.querySelectorAll('label select option').length,
+    exactObjectives: [...document.querySelectorAll('label select option')]
+      .filter((option) => (option.textContent ?? '').includes(' · ')).length,
     controllerLegend: document.querySelectorAll('.controller-legend span').length,
-    saves: [...document.querySelectorAll<HTMLButtonElement>('.save-row')].map((row) => ({
-      className: row.className, disabled: row.disabled, text: row.textContent ?? '',
+    saves: [...document.querySelectorAll<HTMLElement>('.save-row')].map((row) => ({
+      className: row.className,
+      disabled: Boolean(row.querySelector<HTMLButtonElement>('.load-button')?.disabled),
+      text: row.textContent ?? '',
     })),
   }));
-  if (result.horizontalOverflow > 2 || result.mapChoices !== 6
-      || result.exactObjectives !== 6 || result.controllerLegend !== 3) {
+  if (result.horizontalOverflow > 2
+      || (result.setupVisible && (result.mapChoices < 7
+        || result.exactObjectives < 7 || result.controllerLegend !== 3))) {
     throw new Error(`${name} setup audit failed: ${JSON.stringify(result)}`);
   }
 }
@@ -92,7 +103,8 @@ try {
   await page.reload({ waitUntil: 'networkidle0' });
   await auditMenu(page, 'desktop populated');
   const saveStates = await page.$$eval('.save-row', (rows) => rows.map((row) => ({
-    text: row.textContent ?? '', disabled: (row as HTMLButtonElement).disabled,
+    text: row.textContent ?? '',
+    disabled: Boolean(row.querySelector<HTMLButtonElement>('.load-button')?.disabled),
   })));
   if (saveStates.length !== 3 || !saveStates.some((row) => row.text.includes('content mismatch'))
       || !saveStates.some((row) => row.text.includes('corrupt data') && row.disabled)) {
@@ -105,11 +117,10 @@ try {
   await page.screenshot({ path: `${output}/03-populated-narrow.png`, fullPage: true });
 
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-  await page.locator('.save-row.compatible').click();
+  await page.locator('.save-row.compatible .load-button').click();
   await page.waitForSelector('.adventure-map');
   if (await page.$('.objective-primer')) await clickButtonWithText(page, 'Take the field');
-  await page.locator('.wordmark').click();
-  await page.waitForSelector('.title-exit-dialog');
+  await openTitleExit(page);
   const warning = await page.$eval('.title-exit-dialog', (node) => node.textContent ?? '');
   if (!warning.includes('entire campaign if no save exists')) {
     throw new Error(`Title exit does not state its consequence: ${warning}`);
@@ -117,7 +128,7 @@ try {
   await page.screenshot({ path: `${output}/04-title-exit-desktop.png` });
   await clickButtonWithText(page, 'Cancel — keep playing');
   if (!await page.$('.adventure-map')) throw new Error('Canceling title exit discarded the campaign');
-  await page.locator('.wordmark').click();
+  await openTitleExit(page);
   await clickButtonWithText(page, 'Leave and return to title');
   await page.waitForSelector('.menu-shell');
 
@@ -125,7 +136,7 @@ try {
   await page.waitForSelector('.adventure-map');
   await page.screenshot({ path: `${output}/05-imported-campaign.png` });
   if (await page.$('.objective-primer')) await clickButtonWithText(page, 'Take the field');
-  await page.locator('.wordmark').click();
+  await openTitleExit(page);
   await clickButtonWithText(page, 'Leave and return to title');
   await page.waitForSelector('.menu-shell');
 

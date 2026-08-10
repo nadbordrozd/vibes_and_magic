@@ -20,6 +20,7 @@ describe('pixel-art manifest worklist', () => {
     ]));
     expect(AUTHORED_MAPS.map((map) => map.id)).toEqual([
       'border-marches', 'crosstitch', 'torn-sound', 'manywhere', 'grand-muster',
+      'crooked-crown',
     ]);
     expect(worklist.filter((item) => item.category === 'battle-unit')).toHaveLength(
       Object.keys(UNITS).length,

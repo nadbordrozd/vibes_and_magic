@@ -11,6 +11,25 @@ The authoritative continuation guide for the 2026-08-04/05 terrain entries is
 vocabulary that remains to be selected directly at runtime. Live terrain work is tracked under
 Beads epic `vibes_and_magic-6sf`.
 
+## 2026-08-09 — Contextual adventure structures
+
+- Replaced the adventure rail's eleven-branch service-card switchboard with one arrival-driven,
+  focus-contained structure dialog backed by exact reducer projections and confirmations.
+- Added exhaustive presentation routing for all map-object kinds, moved Palimpsest into the shared
+  contextual frame, retained Cache digging as a map tool, and extended focused/browser acceptance.
+
+## 2026-08-09 — Compact visiting-hero and castle-garrison transfer
+
+- Replaced the castle's multi-step company confirmation with compact opposing identity rows and
+  direct full-company move, merge, and swap targets backed by reducer projections.
+- Added exact partial and split-evenly controls, visible legal/illegal target states and reasons,
+  Escape cancellation, responsive narrow layout, and honest read-only remote-garrison messaging.
+- Added focused conservation/Warden/UI coverage and desktop/narrow browser acceptance while keeping
+  canonical `TRANSFER_ARMY`/`SPLIT_ARMY` actions and adjacent-hero exchange behavior unchanged.
+- Validation passed 18 focused transfer/exchange/Warden tests, production build, static UX/spec
+  gates, full UX review, the 56-action authored walkthrough, and browser smoke. The complete suite
+  passed 528/529; only the pre-existing eight-week deterministic-AI winner assertion remained.
+
 ## 2026-08-05 — HoMM2 image boundary and original terrain replacement
 
 - Inventoried raw HoMM2 screenshots, exact crops, mixed generation guides, shipped placeholder
@@ -423,3 +442,79 @@ Beads epic `vibes_and_magic-6sf`.
   boundaries. Expanded the PixelLab base set from two to eight, derived eight matching no-resize
   transparent boundary forms, and made composition terrain-aware. Exposed segments now have low
   tapered ends and irregular bottoms; solid strip-filling forms are reserved for occluded interiors.
+
+## 2026-08-09 — Map-driven friendly hero meetings
+
+- Added a deterministic core meeting planner that selects a least-cost legal adjacent destination,
+  excludes occupancy/structure/guardian hazards, preserves mixed-domain movement rules, and validates
+  the post-move outcome before exchange opens.
+- Added distinct friendly exchange and enemy attack cursor/ARIA intent, keyboard hero activation,
+  adjacent immediate opening, routed completion status, and safe failure explanations without changing
+  the existing hero exchange or castle direct-transfer reducers.
+- Added focused routing, interruption, cursor/accessibility, conservation, and action-save replay tests,
+  plus a reproducible real-browser review command and evidence output for the complete interaction.
+
+## 2026-08-09 — Focused non-adventure screen hierarchy
+
+- Added an executable inventory for all eighteen bounded non-adventure surfaces and static coverage
+  for the eight representative acceptance jobs. Reworked setup/save-import, castle task tabs, both
+  spellbooks, combat support information, and choice/result hierarchy without changing reducers,
+  canonical actions, save data, or the adventure-map shell.
+- Preserved direct visiting-hero/castle transfer and friendly-hero meeting behavior. Existing resource,
+  portrait, town, unit, and spell imagery remains integrated; the full spell/skill icon catalog stays
+  deferred. HoMM2 screenshots were consulted only for hierarchy, never copied.
+- Added desktop/390 screenshot coverage, narrow overflow fixes, overlay root-scroll locking, and
+  runner assertions for the focused castle and setup controls. Validation evidence is recorded by the
+  issue handoff after all gates complete.
+- Validation passed 30 focused tests, TypeScript/build, static UX/spec/asset/map gates, setup/save
+  review, castle-transfer review, the complete UX screenshot matrix, and browser smoke. The full
+  suite passed 539/540 tests in 56/57 files; only the pre-existing deterministic eight-week AI winner
+  assertion remained (`mechanics-regression.test.ts:231`).
+
+## 2026-08-09 — Map-first adventure command shell
+
+- Reframed the adventure screen around a dominant map and a narrow persistent command rail. The
+  rail now contains only the minimap, hero/town navigation, concise selected-hero movement and mana,
+  a read-only army summary, primary commands, end turn, and immediate status.
+- Moved deeper hero management into a dedicated tabbed Hero Details surface: overview and identity,
+  army splitting, equipment and backpack, consumable items, and special skills. Spell preparation and
+  casting remain in the dedicated spellbook; save/import/export, speed, activity log, and title exit
+  moved to Menu & Saves. Contextual structure, castle-transfer, and friendly-meeting flows remain
+  unchanged and every previously legal action is still routed to its existing reducer action.
+- Added a compact resource/date/player strip, moved spell and item targeting into a map-context card,
+  and portaled the existing minimap into the rail without duplicating map state. At 390 px the map and
+  rail share one page flow with no nested rail scroller or horizontal overflow.
+- Used the linked HoMM3 screenshot only to study information hierarchy; no art, ornament, layout
+  decoration, or icon assets were copied. Full PixelLab spell/skill icon work remains outside this
+  change.
+- Desktop and narrow evidence is captured at `.pixel-work/review/ux/04-adventure.png` and
+  `.pixel-work/review/ux/04b-adventure-map-first-390.png`; dedicated transient-surface captures are
+  `.pixel-work/review/ux/04c2-hero-details.png` and `.pixel-work/review/ux/04c3-menu-saves.png`.
+  Browser assertions measured desktop map share at or above 78%, zero rail overflow, and zero 390 px
+  root/rail overflow.
+- Validation passed the 20-test focused matrix (5 files), TypeScript/Vite build, UX review,
+  service-action review, castle-transfer review, friendly-hero-meeting review, setup/save review,
+  the 55-action/30-screenshot new-player walkthrough, browser smoke, and static UX checks. The full
+  pretest asset, PixelLab, HoMM2-boundary, map-lint, spec-link, and UX gates passed. The complete test
+  suite passed 542/543 tests in 57/58 files; the sole failure is the previously known unrelated
+  deterministic eight-week AI winner assertion (`src/core/__tests__/mechanics-regression.test.ts:231`,
+  expected a winner but received `null`).
+
+## 2026-08-09 — Complete PixelLab spell and skill icon catalog
+
+- Added a final-resolution 32×32 RGBA contract and ten data-derived PixelLab jobs covering all 68
+  spells and 21 secondary skills. Extended the official quiet runner and job validator to describe
+  the endpoint's honest one-receipt/64-variation response instead of inventing extra submissions.
+- Added explicit accepted selections, PixelLab job/receipt/prompt/hash provenance, no-resize
+  promotion, separate icon manifest/worklist, and strict missing/extra/path/content/dimension/alpha/
+  acceptance/drift checks under the existing asset preflight.
+- Added one accessible `ContentIcon` component and integrated it across the executable eleven-surface
+  spell/skill inventory: spellbooks, choices, targeting, effects, guild and Palimpsest services, Hero
+  Details, and full rules inspection. Names, costs, schools, ranks, mechanics, focus, and disabled
+  reasons remain text and semantic controls.
+- Added a complete browser icon-sheet route, native selected-candidate sheet, desktop spellbook and
+  390px hero-skill review capture, focused manifest/surface tests, and doc 46 reproduction guidance.
+- Validation passed asset and PixelLab coverage, the 10-test focused UI matrix, TypeScript/Vite
+  build, spec links, the dedicated content-icon browser review, and browser smoke. The complete
+  suite passed 545/546 tests in 58/59 files; only the pre-existing deterministic seed-1/day-56 AI
+  winner assertion failed (`src/core/__tests__/mechanics-regression.test.ts:231`).

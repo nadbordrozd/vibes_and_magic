@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "failures": [
+    {
+      "id": "spell-icon:borrowedTime",
+      "jobFile": "assets/jobs/e1-spell-icons-5.json",
+      "seed": 746714,
+      "attempt": 1,
+      "backgroundJobId": "38b71819-dbfe-4faf-b7be-f0533660d6f6",
+      "terminalStatus": "failed",
+      "message": "Generation failed",
+      "resolution": "Isolated attempt 2 with the unchanged literal request succeeded with 64 variations.",
+      "successfulBackgroundJobId": "7cf53f11-c95b-4630-a11c-cb35da1fa55a"
+    },
+    {
+      "id": "spell-icon:census",
+      "jobFile": "assets/jobs/e1-spell-icons-3.json",
+      "seed": 746476,
+      "attempt": 1,
+      "backgroundJobId": "5adc6ef2-008c-4b1e-a230-aa213d449f13",
+      "terminalStatus": "failed-after-receipt-recovery",
+      "message": "Initial polling timed out after 900 seconds; receipt recovery then returned terminal provider failure: Generation timed out.",
+      "resolution": "Isolated attempt 2 with the unchanged literal request succeeded with 64 variations.",
+      "successfulBackgroundJobId": "3cfad176-aea1-4d01-80ea-11ef8fca2f0c"
+    },
+    {
+      "id": "spell-icon:thicket",
+      "jobFile": "assets/jobs/e1-spell-icons-6.json",
+      "seed": 746867,
+      "attempt": 1,
+      "backgroundJobId": "2391dd09-a55a-426a-b5e5-176af1e17e7c",
+      "terminalStatus": "failed",
+      "message": "Generation failed",
+      "resolution": "Isolated attempt 2 with the unchanged literal request succeeded with 64 variations.",
+      "successfulBackgroundJobId": "90022048-9dea-4701-aa44-ccfa5198b436"
+    },
+    {
+      "id": "skill-icon:wayfaring",
+      "jobFile": "assets/jobs/e2-skill-icons-1.json",
+      "seed": 759038,
+      "attempt": 1,
+      "backgroundJobId": "70943de2-86f3-498f-9e34-174596869959",
+      "terminalStatus": "completed-invalid-variation-count",
+      "message": "PixelLab returned 63 unique variations; the production contract requires 64.",
+      "resolution": "Isolated attempt 2 with the unchanged literal request succeeded with 64 variations.",
+      "successfulBackgroundJobId": "66fe0158-3112-4426-a28b-f0e576a2cf74"
+    }
+  ]
+}

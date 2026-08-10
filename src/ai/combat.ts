@@ -12,10 +12,10 @@ import { canCastSpell, isUpgraded } from '../core/combat/spells';
 import { legalTwistEffectIds } from '../core/combat/spellTargets';
 import { SPELLS } from '../content/spells';
 import { stackDistance } from '../core/combat/footprint';
+import { unitStrength } from '../core/army';
 
 function stackStrength(stack: BattleStack): number {
-  const unit = UNITS[stack.unitId];
-  return stack.count * unit.hp * ((unit.damage[0] + unit.damage[1]) / 2);
+  return stack.count * unitStrength(stack.unitId);
 }
 
 export function chooseSpellCast(battle: BattleState): Action | null {

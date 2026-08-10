@@ -94,6 +94,8 @@ describe('campaign outcome presentation', () => {
     expect(help).toContain('Help');
     expect(help).toContain('aria-haspopup="dialog"');
     expect(dialog).toContain('Return to title');
-    expect(dialog).toContain('Open Help to revisit the objective and reference');
+    expect(dialog).toContain('Equip or carry Tailor');
+    expect(dialog).toContain('Campaign complete · the loaded save remains unchanged.');
+    expect(dialog).not.toContain('Open Help to revisit the objective and reference');
   });
 });

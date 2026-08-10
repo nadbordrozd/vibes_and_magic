@@ -100,6 +100,12 @@ Record<TerrainId, readonly [string, string, number, boolean?][]>
   mire: [['reeds', 'The reeds lean away from solid ground.', 3]],
 };
 
+/** Cosmetic placement rates. Four percent keeps ordinary-map texture visible without promoting
+ * passable marks to the same repeated visual tier as interactables; the oversized Manywhere
+ * catalog surface stays quieter still. */
+export const DEFAULT_TERRAIN_DECORATION_DENSITY = 0.04;
+export const LARGE_MAP_TERRAIN_DECORATION_DENSITY = 0.015;
+
 function hash(seed: number, x: number, y: number): number {
   let value = (seed ^ Math.imul(x + 1, 0x9e3779b1) ^ Math.imul(y + 1, 0x85ebca6b)) >>> 0;
   value ^= value >>> 16; value = Math.imul(value, 0x7feb352d); value ^= value >>> 15;
@@ -107,7 +113,9 @@ function hash(seed: number, x: number, y: number): number {
 }
 
 /** Pure derivation: decorations are deterministic and intentionally absent from save data. */
-export function deriveTerrainDecorations(map: GameMap, density = 0.16): TerrainDecoration[] {
+export function deriveTerrainDecorations(
+  map: GameMap, density = DEFAULT_TERRAIN_DECORATION_DENSITY,
+): TerrainDecoration[] {
   const decorations: TerrainDecoration[] = [];
   const anomalyRegions = new Set<string>();
   for (let y = 0; y < map.height; y += 1) for (let x = 0; x < map.width; x += 1) {

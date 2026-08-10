@@ -9,7 +9,8 @@ const executablePath = process.platform === 'win32'
   : '/usr/bin/google-chrome';
 const baseUrl = process.env.BM_URL ?? 'http://127.0.0.1:5173/';
 const requestedMap = process.argv[2];
-const mapId = ['border-marches', 'crosstitch', 'torn-sound', 'manywhere', 'grand-muster']
+const mapId = ['border-marches', 'crosstitch', 'torn-sound', 'manywhere', 'grand-muster',
+  'crooked-crown']
   .includes(requestedMap)
   ? requestedMap as MapId
   : 'border-marches';
@@ -20,7 +21,7 @@ const state = createGame({
   seed: 1, mapId, difficulty: 'normal', p1: 'human', p2: 'ai',
 });
 let regionLabel = '';
-if (mapId === 'manywhere' || mapId === 'grand-muster') {
+if (mapId === 'manywhere' || mapId === 'grand-muster' || mapId === 'crooked-crown') {
   // Render oversized maps in bounded sections. Chromium stalls while mounting the full map SVG
   // before a screenshot can even be requested. Cropping the review-only
   // initial state retains each authored tile/object verbatim while keeping the production renderer

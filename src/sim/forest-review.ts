@@ -23,7 +23,12 @@ try {
     await setupChoice.click();
     await setup.waitForSelector('.choice-dialog', { hidden: true });
   }
-  await setup.locator('.topbar-action').click();
+  await setup.$eval('.rail-commands', (commands) => {
+    const menu = [...commands.querySelectorAll<HTMLButtonElement>('button')]
+      .find((button) => button.textContent?.includes('Menu & saves'))!;
+    menu.click();
+  });
+  await setup.locator('.command-menu-grid .primary').click();
   await setup.waitForSelector('.notice-toast');
   await setup.close();
 

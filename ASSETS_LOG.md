@@ -7,6 +7,37 @@ The current terrain implementation, asset inventory, reproduction commands, and 
 are consolidated in `docs/36_TERRAIN_TRANSITIONS.md`. The entries below remain the chronological
 reflection record.
 
+## 2026-08-09 — Complete spell and secondary-skill icon catalog
+
+- **Contract before generation:** all 68 spells and 21 skills use native 32×32 transparent RGBA,
+  one centered 25px-class silhouette, a selective dark outline, compact four-to-six-colour clusters,
+  lower-right light, upper-left shadow, and no frame, scenery, text, letters, numbers, logo, or
+  watermark. Spell schools share a palette family without sharing the central metaphor. UI display
+  is native ×1 or exact nearest-neighbour ×2; promotion copies provider bytes without resampling.
+- **Endpoint learning:** one seeded PixelLab `generate-image-v2` background job returned 64 unique
+  still images (64 byte hashes and 64 RGBA pixel arrays), not a sprite animation or tile family.
+  The first Rally audit is `.pixel-work/review/spell-skill-icons/rally-variation-audit.png`.
+  Jobs and validators now state this honest one-receipt/64-variation response instead of pretending
+  that the set came from multiple provider calls.
+- **What read well:** most selected first variations favored the prompt's central metaphor:
+  Rally's trumpet, Blessing's crowned light, Standard of Dawn's sun banner, Hymn's lyre,
+  Forgefire's anvil, Reckoning's hourglass, and the equally literal skill tools remain recognizable
+  at 32px. Compact silhouettes, real alpha, dark outlines, and limited palette clusters compose
+  cleanly on both dark panels and the warmer school accents.
+- **What was rejected:** later alternatives in the same response often drifted from the exact
+  mechanic into generic swords, torches, crowns, shields, or praying hands. The complete sheet
+  therefore keeps 87 first variations, but replaces Mourners' Veil v1's near-empty dark shield
+  with v24's readable veil/face and Wayside Shrine v1's text-like stone mark with v13's flame/slab.
+  No candidate was patched, combined, recolored, or cleaned after generation.
+- **Composition review:** `.pixel-work/review/spell-skill-icons/complete-selected-icon-sheet.png`
+  compares all selected files at exact ×2 with names; the browser-native manifest and representative
+  spellbook/Hero Details captures live beside it. No duplicate content, baked text, weak alpha,
+  horizontal overflow, or missing surface integration remained after review.
+- **Reproduction:** literal jobs are `assets/jobs/e1-spell-icons-*.json` and
+  `assets/jobs/e2-skill-icons-*.json`; accepted selection and receipt provenance are
+  `assets/iconSelections.json` and `assets/provenance/spell-skill-icon-jobs.json`. Work order 46
+  documents regeneration, review, promotion, and validation commands.
+
 ## 2026-08-05 — Original terrain materials and HoMM2 image retirement
 
 - **Generation:** three scripted PixelLab jobs produced two independent native variants for each of
@@ -952,3 +983,14 @@ against the superseded overhead terrain camera. It is not the final A2 acceptanc
   a boundary form; only an occluded middle segment may use the solid version. Two-cell overlaps
   preserve continuity. The refreshed eight-shape proof still uses 74 automatic placements but now
   exercises 17 variants and no longer presents rectangular side or bottom walls.
+
+## 2026-08-09 — The Crooked Crown uses existing original assets
+
+- The Country Lords full-map page at `https://vgmaps.de/maps/view?m=26522` was consulted only for
+  broad classic-map composition: shaped regions, dense obstacle masses, corridor scale, loops, and
+  contested connections. No bitmap, crop, palette sample, text, or exact placement entered the
+  repository.
+- The new 72×72 map is authored gameplay data rendered entirely through the existing original
+  terrain-transition families, mountain compositor, decoration catalog, map-object sprites,
+  castles, heroes, and guardian sprites. Placeholder reuse for landmark variants is intentional;
+  there is no new generation job, provider output, source image, prompt, or license dependency.

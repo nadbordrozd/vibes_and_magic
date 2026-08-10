@@ -1,10 +1,11 @@
 import { BARGAIN_IDS, BARGAINS } from '../../content/bargains';
 import { AI_BUILD_ORDER, BUILDINGS, buildingBelongsToFaction } from '../../content/buildings';
 import { UNITS } from '../../content/units';
-import { addUnits, armyPower } from '../army';
+import { addUnits, armyPower, unitStrength } from '../army';
 import { MAX_ACTIVE_DEBTS, scheduleDebt } from '../debts';
 import { findOwnedHero } from '../heroes';
 import { specialtyHandler } from '../heroBehaviors';
+import { castleEntrance } from '../map/occupancy';
 import { sameCoord } from '../map/pathfinding';
 import type {
   Action, BargainId, BuildingId, GameState, Hero, ResourceId,
@@ -12,6 +13,12 @@ import type {
 import { castleSupportsBuilding } from './economy';
 
 type BargainAction = Extract<Action, { type: 'CHOOSE_BARGAIN' }>;
+
+export interface BargainChoiceAvailability {
+  available: boolean;
+  reason: string;
+  castleId?: string;
+}
 
 function hash(seed: number, value: string): number {
   return [...value].reduce(
@@ -54,8 +61,7 @@ function addDebt(
 
 function borrowedLegion(state: GameState, hero: Hero): void {
   const power = Math.max(1, armyPower(hero.army) * 0.8);
-  const unit = UNITS.candleWisps;
-  const count = Math.max(1, Math.round(power / (unit.hp * ((unit.damage[0] + unit.damage[1]) / 2))));
+  const count = Math.max(1, Math.round(power / unitStrength('candleWisps')));
   const army = addUnits(hero.army, 'candleWisps', count);
   if (!army) throw new Error('Borrowed Legion needs a free army slot');
   hero.army = army;
@@ -80,6 +86,47 @@ function nextPromisedBuilding(state: GameState, hero: Hero, requested?: string) 
       || castle.buildings.includes(BUILDINGS[id].prerequisite!)));
   if (!buildingId) throw new Error('No building remains in this castle queue');
   return { castle, buildingId };
+}
+
+export function bargainChoiceAvailability(
+  state: GameState, hero: Hero, bargainId: BargainId,
+): BargainChoiceAvailability {
+  if (hero.debts.length >= MAX_ACTIVE_DEBTS) {
+    return { available: false, reason: 'This hero already carries the maximum of two Debts.' };
+  }
+  if (bargainId === 'borrowedLegion' && !addUnits(hero.army, 'candleWisps', 1)) {
+    return {
+      available: false,
+      reason: 'The borrowed company needs an empty army slot or an existing Candle Wisps company.',
+    };
+  }
+  if (bargainId === 'cuckoosDeal') {
+    const castle = state.castles.find((candidate) =>
+      candidate.owner !== hero.owner && candidate.owner !== 'neutral');
+    return castle
+      ? { available: true, reason: 'An enemy castle is available to watch.', castleId: castle.id }
+      : { available: false, reason: 'No enemy-owned castle exists for this bargain to watch.' };
+  }
+  if (bargainId === 'whatWasPromised') {
+    const castle = state.castles.find((candidate) => candidate.owner === hero.owner
+      && sameCoord(castleEntrance(candidate), hero.position));
+    if (!castle) {
+      return { available: false, reason: 'This bargain must be accepted at an owned castle entrance.' };
+    }
+    try {
+      nextPromisedBuilding(state, hero, castle.id);
+    } catch {
+      return {
+        available: false,
+        reason: 'This castle has no supported building left whose prerequisites are complete.',
+        castleId: castle.id,
+      };
+    }
+    return {
+      available: true, reason: 'This castle has an eligible next building.', castleId: castle.id,
+    };
+  }
+  return { available: true, reason: 'This bargain can be accepted now.' };
 }
 
 function grantMissingResources(

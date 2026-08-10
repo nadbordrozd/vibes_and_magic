@@ -4,6 +4,7 @@ import {
   adventureSpellMoveCost, canCastAdventureSpell, isAdventureSpell,
 } from '../../core/game/adventureSpells';
 import type { GameState, SpellId } from '../../core/types';
+import { ContentIcon } from './ContentIcon';
 
 interface Props {
   state: GameState;
@@ -22,19 +23,20 @@ export function AdventureSpellbook({ state, onClose, onCast }: Props) {
           <b>{hero.mana} mana · {hero.movement} move</b>
           <button aria-label="Close spellbook" title="Close spellbook" onClick={onClose}>×</button>
         </header>
-        <p className="spell-scaling">
-          Each cast also costs {adventureSpellMoveCost(hero)} movement.
-          Targeted spells will ask you to choose on the map.
-        </p>
-        <div className="spellbook-debts">
-          <b>Debts · {hero.debts.length}/2</b>
+        <div className="spellbook-summary">
+          <span>Mana <b>{hero.mana}</b></span>
+          <span>Movement <b>{hero.movement}</b></span>
+          <span>Cast movement <b>{adventureSpellMoveCost(hero)}</b></span>
+        </div>
+        <details className="spellbook-debts">
+          <summary>Debts · {hero.debts.length}/2</summary>
           {hero.debts.map((debt) => (
             <article key={debt.id}>
               <span>{debt.name}</span><small>{debt.description}</small>
             </article>
           ))}
           {!hero.debts.length && <small>No active Debts.</small>}
-        </div>
+        </details>
         <div className="spell-card-grid">
           {spells.map((spellId) => {
             const spell = SPELLS[spellId];
@@ -51,10 +53,9 @@ export function AdventureSpellbook({ state, onClose, onCast }: Props) {
             return (
               <article className={`spell-card ${spell.school} ${plus ? 'plus' : ''}`} key={spellId}
                 data-inspect-kind="spell" data-inspect-id={spellId}>
-                <div><b>{spell.name}{plus ? '+' : ''}</b><em>{spell.mana} mana · {spellCategory(spellId)}</em></div>
-                <p className="spell-flavor">{spell.flavor}</p>
-                <p className="spell-face"><strong>Base — </strong>{spell.base}</p>
-                <p className="spell-face"><strong>Upgrade — </strong>{spell.plus}</p>
+                <div className="spell-card-heading"><ContentIcon kind="spell" id={spellId} />
+                  <span><b>{spell.name}{plus ? '+' : ''}</b><em>{spell.mana} mana · {spellCategory(spellId)}</em></span></div>
+                <p className="spell-face current"><strong>{plus ? 'Current + face — ' : 'Current face — '}</strong>{plus ? spell.plus : spell.base}</p>
                 <button
                   disabled={!castable}
                   title={!castable
@@ -63,6 +64,12 @@ export function AdventureSpellbook({ state, onClose, onCast }: Props) {
                   onClick={() => onCast(spellId)}
                 >Cast</button>
                 {!castable && <small className="spell-unavailable">Unavailable · {unavailable}</small>}
+                <details className="spell-card-reference">
+                  <summary>Compare faces</summary>
+                  <p className="spell-flavor">{spell.flavor}</p>
+                  <p className="spell-face"><strong>Base — </strong>{spell.base}</p>
+                  <p className="spell-face"><strong>Upgrade — </strong>{spell.plus}</p>
+                </details>
               </article>
             );
           })}

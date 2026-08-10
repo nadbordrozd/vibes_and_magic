@@ -11,6 +11,7 @@ import type { GameState, SpellSchool } from '../../core/types';
 import {
   adventureDraftIncompleteReason, type AdventureCastAction, beastGuardianGold,
 } from '../adventureSpellTargeting';
+import { ContentIcon } from './ContentIcon';
 
 interface Props {
   state: GameState;
@@ -136,7 +137,8 @@ export function AdventureSpellTargetDialog({
     <section className="choice-dialog adventure-spell-target" role="dialog" aria-modal="true"
       aria-labelledby="adventure-spell-target-heading" onClick={(event) => event.stopPropagation()}>
       <span className="dialog-kicker">Adventure spell · stage 2 of 2</span>
-      <h2 id="adventure-spell-target-heading">{spell.name}{plus ? '+' : ''}</h2>
+      <h2 id="adventure-spell-target-heading" className="content-icon-label">
+        <ContentIcon kind="spell" id={action.spellId} />{spell.name}{plus ? '+' : ''}</h2>
       <p className="spell-target-cost"><b>{spell.mana} mana</b> · <b>{adventureSpellMoveCost(hero)} movement</b></p>
       <p>{plus ? spell.plus : spell.base}</p>
 
@@ -197,7 +199,8 @@ export function AdventureSpellTargetDialog({
         {battleRecord.spells.map((spellId) => <button key={spellId}
           disabled={hero.knownSpells.includes(spellId)} title={hero.knownSpells.includes(spellId) ? 'Already known.' : `Learn ${SPELLS[spellId].name}.`}
           className={action.learnSpellId === spellId ? 'selected' : ''}
-          onClick={() => choose({ learnSpellId: spellId, skipLearnSpell: false })}>{SPELLS[spellId].name}{hero.knownSpells.includes(spellId) ? ' · already known' : ''}</button>)}
+          onClick={() => choose({ learnSpellId: spellId, skipLearnSpell: false })}>
+          <ContentIcon kind="spell" id={spellId} />{SPELLS[spellId].name}{hero.knownSpells.includes(spellId) ? ' · already known' : ''}</button>)}
       </fieldset> : null}
       {action.spellId === 'beastTongue' && <><fieldset><legend>Beast guardian</legend>
         {beastGuardians.map((guardian) => <button key={guardian.id}

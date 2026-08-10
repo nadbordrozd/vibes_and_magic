@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "status": "ready",
+  "contact_sheet": "assets/jobs/e1-spell-icons-7-candidates.html",
+  "requests": [
+    {
+      "id": "spell-icon:rootAndRuin",
+      "assets": [
+        "spell-icon:rootAndRuin"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/rootAndRuin",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Root and Ruin”: Grow a three-tile map thicket for 3 days. Use leaf green, earthen ochre and moonlit teal; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 747020,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:fickleWeather",
+      "assets": [
+        "spell-icon:fickleWeather"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/fickleWeather",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Fickle Weather”: Replace the omen with one of two offers. Use leaf green, earthen ochre and moonlit teal; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 747037,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:shedSkin",
+      "assets": [
+        "spell-icon:shedSkin"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/shedSkin",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Shed Skin”: Remove one active effect; gain equal Bloom. Use leaf green, earthen ochre and moonlit teal; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 747054,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:hedgerowMarch",
+      "assets": [
+        "spell-icon:hedgerowMarch"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/hedgerowMarch",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Hedgerow March”: Forced movement grants allies 10 morale. Use leaf green, earthen ochre and moonlit teal; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 747071,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:hourglassCrack",
+      "assets": [
+        "spell-icon:hourglassCrack"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/hourglassCrack",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Hourglass Crack”: Target acts twice this round and skips next. Use copper, blue steel and furnace amber; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 747088,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:borrowShape",
+      "assets": [
+        "spell-icon:borrowShape"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/borrowShape",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Borrow Shape”: Copy abilities from an adjacent enemy. Use leaf green, earthen ochre and moonlit teal; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 747105,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:echo",
+      "assets": [
+        "spell-icon:echo"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/echo",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Echo”: Recast the last spell at your Spell Power. Use ivory, heraldic crimson and sunrise gold; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 747122,
+      "parameters": {
+        "no_background": true
+      }
+    },
+    {
+      "id": "spell-icon:loyalUntoDeath",
+      "assets": [
+        "spell-icon:loyalUntoDeath"
+      ],
+      "output": ".pixel-work/pixelgen/spell-skill-icons/spells/loyalUntoDeath",
+      "prompt": "Native final-resolution 32x32 transparent UI icon. Authentic hand-placed 1990s warm storybook fantasy strategy-game pixel art. One bold centered silhouette occupying about 25x25 pixels, crisp selective two-pixel dark outline, compact painterly clusters, restrained four-to-six-colour palette, lower-right key light and upper-left shadow. No frame, border, badge, background, ground, scenery, person portrait, tiny scattered symbols, gradients, antialiasing, smooth vector edges, text, letters, numbers, logo or watermark. Central visual metaphor for the spell “Loyal Unto Death”: Ally attacks its killer when destroyed. Use charcoal, bone white and muted violet; the silhouette and object vocabulary must be unique to this exact spell.",
+      "endpoint": "generate-image-v2",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "variations_from_single_request": 64,
+      "seed": 747139,
+      "parameters": {
+        "no_background": true
+      }
+    }
+  ]
+}

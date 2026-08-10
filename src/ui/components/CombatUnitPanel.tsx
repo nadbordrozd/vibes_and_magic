@@ -6,6 +6,10 @@ import type {
 } from '../../core/types';
 import { effectiveSpeed } from '../../core/combat/magicEffects';
 import { FACTION_PASSIVES } from '../../content/factionPresentation';
+import {
+  formatFootprint, type AttackPrediction,
+} from '../attackPrediction';
+import { ContentIcon } from './ContentIcon';
 
 interface Props {
   active: BattleStack | null;
@@ -14,10 +18,11 @@ interface Props {
   actions: Action[];
   humanControl: boolean;
   onAttack: () => void;
+  attackPrediction: AttackPrediction | null;
 }
 
 export function CombatUnitPanel({
-  active, selected, battle, actions, humanControl, onAttack,
+  active, selected, battle, actions, humanControl, onAttack, attackPrediction,
 }: Props) {
   const shown = selected ?? active;
   const unit = shown ? UNITS[shown.unitId] : null;
@@ -33,6 +38,30 @@ export function CombatUnitPanel({
       data-inspect-id={unit?.id}>
       <span>{selected ? 'Inspected unit' : 'Active stack'}</span>
       <h3>{unit?.name ?? 'Resolving'}</h3>
+      {attackPrediction && (
+        <section className="attack-prediction" role="status" aria-live="polite"
+          data-attack-mode={attackPrediction.mode.toLowerCase()}
+          data-attack-target={attackPrediction.targetId}>
+          <span>Visible attack prediction</span>
+          <h4>{attackPrediction.mode} strike · {UNITS[
+            battle.stacks.find((stack) => stack.id === attackPrediction.targetId)!.unitId
+          ].name}</h4>
+          <div className="prediction-ranges">
+            <b>Damage <strong>{attackPrediction.damageRange[0]}–{attackPrediction.damageRange[1]}</strong></b>
+            <b>Casualties <strong>{attackPrediction.casualtyRange[0]}–{attackPrediction.casualtyRange[1]}</strong></b>
+          </div>
+          <ul>
+            <li><b>Ranged / range</b>{attackPrediction.rangeModifier}</li>
+            <li><b>Adjacency</b>{attackPrediction.adjacencyModifier}</li>
+            <li><b>Walls</b>{attackPrediction.wallModifier}</li>
+            <li><b>Retaliation</b>{attackPrediction.retaliation}</li>
+            <li><b>Origin / direction</b>({attackPrediction.origin.x},{attackPrediction.origin.y}) · {attackPrediction.direction}</li>
+            <li><b>Origin footprint</b>{formatFootprint(attackPrediction.originFootprint)}</li>
+            <li><b>Target footprint</b>{formatFootprint(attackPrediction.targetFootprint)}</li>
+          </ul>
+          <small>Deterministic combat has one exact outcome, so each range has identical bounds.</small>
+        </section>
+      )}
       {shown && unit && (
         <>
           <div className="combat-stats detailed">
@@ -67,7 +96,8 @@ export function CombatUnitPanel({
                 data-inspect-id={counter}>{counter[0].toUpperCase() + counter.slice(1)} {count}</i>)}
             {shown.effects.map((effect) => (
               <i key={effect.id} data-inspect-kind="enchantment"
-                data-inspect-id={effect.spellId}>{SPELLS[effect.spellId].name} · {effect.duration} turns</i>
+                data-inspect-id={effect.spellId}><ContentIcon kind="spell"
+                  id={effect.spellId} />{SPELLS[effect.spellId].name} · {effect.duration} turns</i>
             ))}
           </div>
           {selected && (
