@@ -22,7 +22,7 @@ const terrain = (
 });
 
 export const TERRAIN: Record<TerrainId, TerrainDefinition> = {
-  meadow: terrain('meadow', 'Grass', 'Grass.', 100, 'hearthguard', null, 'meadow'),
+  meadow: terrain('meadow', 'Grass', 'Grass.', 100, 'hearthguard', null, 'meadow', ['default', 'coastal']),
   deepwood: terrain('deepwood', 'Deepwood', 'Old trees, older shade.', 150, 'hagwood', 'wild', 'deepwood', ['default', 'mossy']),
   mosswold: terrain('mosswold', 'Mosswold', 'The moss grows in a pattern. The pattern repeats.', 150, 'vespiary', null, 'mosswold', ['default', 'mossy']),
   ashsteppe: terrain('ashsteppe', 'Ashsteppe', 'The grass grew back. The ash stayed underneath.', 125, 'wildergrass', null, 'ashsteppe', ['default', 'south']),

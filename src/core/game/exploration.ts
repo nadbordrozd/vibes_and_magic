@@ -30,7 +30,7 @@ import { addItem, sellTradeGoods } from './items';
 import { offerChestChoice } from './chests';
 import { adventureMovementCost, adventurePath } from './navigation';
 import { dealBargains } from './bargains';
-import { visitCreativeObject } from './mapObjects';
+import { claimGuardianReward, visitCreativeObject } from './mapObjects';
 import { artifactEffectTotal } from '../artifacts';
 import { addArtifact, consumeEquippedArtifact, hasEquippedArtifact } from '../artifacts';
 import { canClaimWeeklyBeast } from '../skills/expansionHooks';
@@ -50,6 +50,7 @@ function objectAt(
     if (object.kind === 'pile') return !object.collected;
     if (object.kind === 'chest') return !object.collected;
     if (object.kind === 'item') return !object.collected;
+    if (object.kind === 'rewardPickup') return !object.collected;
     if (['flotsam', 'sealedCask', 'castaway', 'messageBottle'].includes(object.kind)) {
       return !('collected' in object) || !object.collected;
     }
@@ -160,6 +161,24 @@ function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
     }
     object.collected = true;
     state.lastMessage = 'Item collected.';
+    return;
+  }
+  if (object.kind === 'rewardPickup') {
+    const freeSlots = hero.inventory.filter((slot) => slot === null).length;
+    if ((object.reward.items?.length ?? 0) > freeSlots) {
+      state.lastMessage = 'Inventory full: make room for the complete reward bundle.';
+      return;
+    }
+    const rate = 1 + foragerRate(hero);
+    claimGuardianReward(state, hero, {
+      ...object.reward,
+      gold: object.reward.gold ? Math.floor(object.reward.gold * rate) : undefined,
+      timber: object.reward.timber ? Math.floor(object.reward.timber * rate) : undefined,
+      iron: object.reward.iron ? Math.floor(object.reward.iron * rate) : undefined,
+      essence: object.reward.essence ? Math.floor(object.reward.essence * rate) : undefined,
+    });
+    object.collected = true;
+    state.lastMessage = 'Reward collected.';
     return;
   }
   if (object.kind === 'flotsam') {
@@ -286,8 +305,12 @@ function claimLock(
   }
   const player = state.players[hero.owner];
   player.resources.gold += object.reward.gold ?? 0;
+  player.resources.timber += object.reward.timber ?? 0;
+  player.resources.iron += object.reward.iron ?? 0;
   player.resources.essence += object.reward.essence ?? 0;
   object.reward.gold = undefined;
+  object.reward.timber = undefined;
+  object.reward.iron = undefined;
   object.reward.essence = undefined;
   object.reward.items = (object.reward.items ?? []).filter((item) => !addItem(hero, item));
   for (const artifact of object.reward.artifacts ?? []) addArtifact(hero, artifact);
@@ -428,13 +451,16 @@ export function chooseToll(state: GameState, choice: 'pay' | 'fight'): void {
 function claimSeaReward(state: GameState, reward: Extract<MapObject,
 { kind: 'shipwreck' | 'sirenRocks' }>['reward'], hero: Hero): void {
   state.players[hero.owner].resources.gold += reward.gold ?? 0;
+  state.players[hero.owner].resources.timber += reward.timber ?? 0;
+  state.players[hero.owner].resources.iron += reward.iron ?? 0;
   state.players[hero.owner].resources.essence += reward.essence ?? 0;
   for (const item of reward.items ?? []) addItem(hero, item);
   for (const artifact of reward.artifacts ?? []) addArtifact(hero, artifact);
   if (reward.teachesSpell && !hero.knownSpells.includes(reward.teachesSpell)) {
     hero.knownSpells.push(reward.teachesSpell);
   }
-  reward.gold = undefined; reward.essence = undefined;
+  reward.gold = undefined; reward.timber = undefined; reward.iron = undefined;
+  reward.essence = undefined;
   reward.items = []; reward.artifacts = []; reward.teachesSpell = undefined;
 }
 
@@ -725,13 +751,17 @@ export function moveHero(
 export function pickupObject(state: GameState, objectId: string): void {
   const hero = selectedActiveHero(state);
   const object = state.map.objects.find((candidate) => candidate.id === objectId);
-  if (!object || !['pile', 'item', 'chest', 'flotsam', 'sealedCask', 'castaway',
+  if (!object || !['pile', 'item', 'rewardPickup', 'chest', 'flotsam', 'sealedCask', 'castaway',
     'messageBottle'].includes(object.kind)) {
     throw new Error('This object cannot be picked up at range');
   }
   if (!isObjectActive(object)) throw new Error('Pickup is no longer available');
   if (object.kind === 'item' && !hero.inventory.includes(null)) {
     throw new Error('Inventory full');
+  }
+  if (object.kind === 'rewardPickup'
+      && (object.reward.items?.length ?? 0) > hero.inventory.filter((slot) => slot === null).length) {
+    throw new Error('Inventory full for reward bundle');
   }
   const rank = skillRank(hero, 'forager');
   const range = rank >= 3 ? SKILLS.forager.values.rank3Range

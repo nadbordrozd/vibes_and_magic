@@ -82,5 +82,6 @@ live in `docs/` until superseded by their implementation.
 | 47 | MOUNTAIN_RENDER_BOUNDS | Executable north-only adventure-sprite overhang, clipped mountain footprints, full-visual-rectangle culling, and Crooked Crown evidence | presentation correction to 35/37/40; preserves authored terrain, collision, pathfinding, and native mountain assets |
 | 48 | INCREMENTAL_ADVENTURE_FOG | Rules-owned exploration union for every entered movement tile plus animation-prefix presentation and responsive frame evidence | extends S03 movement/exploration; preserves replay/save/link authority and doc 47 late fog |
 | 49 | SIXFOLD_TRIAL | Six real configurable player slots and a deterministic advanced-combat proving ground with developed castles, derived two-week armies, complete faction-school spellbooks, calibrated guardians, rewards, and browser evidence | extends S02/S03/S04/S09 and the authored-map/setup catalogs |
+| 50 | MAP_EDITOR | Versioned portable authored-map contract, in-game paint/shape editor, local revision storage, deterministic runtime conversion, import/export, lint, and promotion into the built-in catalog | extends S02/S03/S09; editor state remains outside rules and campaign saves |
 
-Next free number: **50**.
+Next free number: **51**.

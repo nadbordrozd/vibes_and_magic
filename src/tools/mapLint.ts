@@ -1,4 +1,3 @@
-import { pathToFileURL } from 'node:url';
 import { createBorderMarches } from '../content/maps/borderMarches';
 import {
   createCrosstitch, CROSSTITCH_CASTLE_POSITIONS,
@@ -17,19 +16,26 @@ import {
 import {
   createSixfoldTrial, SIXFOLD_GUARDIAN_BANDS, SIXFOLD_PLAYER_SETUP, sixfoldMetrics,
 } from '../content/maps/sixfoldTrial';
-import { MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
+import { MAP_OBJECT_KINDS, RUNTIME_ONLY_MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
 import { TERRAIN } from '../content/terrain';
 import type { Coord, GameMap } from '../core/types';
 import { coordKey, findPath, inBounds, sameCoord } from '../core/map/pathfinding';
 import {
-  footprintTiles, guardianAggroTiles, objectEntrance, objectEntranceTile,
+  castleEntrance, footprintTiles, guardianAggroTiles, objectEntrance, objectEntranceTile,
   objectFootprint, objectFootprintTiles,
 } from '../core/map/occupancy';
 import { terrainIdAt, tile } from '../content/terrain';
+import { builtInPortableMapDocuments } from '../content/maps/catalog';
+import { convertEditorMapDocument } from '../core/mapEditor/runtime';
+import { validateEditorMapDocument } from '../core/mapEditor/validation';
 
 export interface MapLintIssue { mapId: string; code: string; message: string }
 
-export function lintMap(map: GameMap, starts: Coord[]): MapLintIssue[] {
+export function lintMap(
+  map: GameMap,
+  starts: Coord[],
+  castleStarts: Coord[] = starts,
+): MapLintIssue[] {
   const issues: MapLintIssue[] = [];
   const report = (code: string, message: string) => issues.push({ mapId: map.id, code, message });
   const owners = new Map<string, string>();
@@ -39,9 +45,10 @@ export function lintMap(map: GameMap, starts: Coord[]): MapLintIssue[] {
   ]);
   if (map.id === 'manywhere') {
     const present = new Set(map.objects.map((object) => object.kind));
-    MAP_OBJECT_KINDS.forEach((kind) => {
+    MAP_OBJECT_KINDS.filter((kind) => !RUNTIME_ONLY_MAP_OBJECT_KINDS.includes(kind as never))
+      .forEach((kind) => {
       if (!present.has(kind)) report('registry-coverage', `Manywhere is missing ${kind}`);
-    });
+      });
     const caches = map.objects.filter((object) => object.kind === 'cache');
     const stones = map.objects.filter((object) => object.kind === 'patientStone');
     if (caches.length !== 1 || stones.length < 3 || stones.length > 6
@@ -75,7 +82,7 @@ export function lintMap(map: GameMap, starts: Coord[]): MapLintIssue[] {
   }
 
   const castleOwners = new Map<string, string>();
-  starts.forEach((entrance, index) => {
+  castleStarts.forEach((entrance, index) => {
     const anchor = { x: entrance.x - 1, y: entrance.y - 1 };
     for (const tile of footprintTiles(anchor, { w: 3, h: 2 })) {
       if (!inBounds(map, tile)) report('castle-bounds', `castle ${index + 1} leaves the map`);
@@ -108,7 +115,7 @@ export function lintMap(map: GameMap, starts: Coord[]): MapLintIssue[] {
       }
     });
   }
-  starts.forEach((entrance) => footprintTiles(
+  castleStarts.forEach((entrance) => footprintTiles(
     { x: entrance.x - 1, y: entrance.y - 1 }, { w: 3, h: 2 },
   ).forEach((tile) => { if (!sameCoord(tile, entrance)) unavailable.add(coordKey(tile)); }));
 
@@ -147,7 +154,7 @@ export function lintMap(map: GameMap, starts: Coord[]): MapLintIssue[] {
       }
     });
   }
-  starts.forEach((entrance) => footprintTiles(
+  castleStarts.forEach((entrance) => footprintTiles(
     { x: entrance.x - 1, y: entrance.y - 1 }, { w: 3, h: 2 },
   ).forEach((tile) => { if (!sameCoord(tile, entrance)) blocked.add(coordKey(tile)); }));
   const navigableMap: GameMap = {
@@ -278,6 +285,18 @@ export function lintSixfoldTrial(map: GameMap): MapLintIssue[] {
 }
 
 export function lintAuthoredMaps(): MapLintIssue[] {
+  const portableIssues = builtInPortableMapDocuments().flatMap((document) => {
+    const diagnostics = validateEditorMapDocument(document)
+      .filter((diagnostic) => diagnostic.severity === 'error')
+      .map((diagnostic) => ({
+        mapId: document.id, code: `portable-${diagnostic.code}`, message: diagnostic.message,
+      }));
+    if (diagnostics.length) return diagnostics;
+    const converted = convertEditorMapDocument(document, 1);
+    const castleStarts = converted.setup.castles.map(castleEntrance);
+    const starts = [...castleStarts, ...converted.setup.heroes.map((hero) => hero.position)];
+    return lintMap(converted.map, starts, castleStarts);
+  });
   return [
     ...lintMap(createBorderMarches(1), [{ x: 3, y: 10 }, { x: 24, y: 10 }]),
     ...lintMap(createCrosstitch(1), CROSSTITCH_CASTLE_POSITIONS),
@@ -294,10 +313,12 @@ export function lintAuthoredMaps(): MapLintIssue[] {
     ...lintCrookedCrown(createCrookedCrown(1)),
     ...lintMap(createSixfoldTrial(1), SIXFOLD_PLAYER_SETUP.map((slot) => slot.entrance)),
     ...lintSixfoldTrial(createSixfoldTrial(1)),
+    ...portableIssues,
   ];
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+const directPath = typeof process === 'undefined' ? '' : process.argv[1]?.replace(/\\/g, '/');
+if (directPath && import.meta.url.endsWith(directPath)) {
   const issues = lintAuthoredMaps();
   if (issues.length) {
     issues.forEach((issue) => console.error(`${issue.mapId} ${issue.code}: ${issue.message}`));

@@ -1,24 +1,11 @@
-import { createBorderMarches } from '../content/maps/borderMarches';
-import { createCrosstitch, createCrosstitchKit } from '../content/maps/crosstitch';
-import { createGrandMuster } from '../content/maps/grandMuster';
-import { createManywhere } from '../content/maps/manywhere';
-import { createTornSound } from '../content/maps/tornSound';
-import { createCrookedCrown } from '../content/maps/crookedCrown';
-import { createSixfoldTrial } from '../content/maps/sixfoldTrial';
-import type { GameMap, MapId } from '../core/types';
+import {
+  builtInPortableMapDocuments, LEGACY_MAP_FACTORIES, type LegacyMapId,
+} from '../content/maps/catalog';
+import type { BuiltInMapId, GameMap } from '../core/types';
 
-const MAP_FACTORIES = {
-  'border-marches': createBorderMarches,
-  crosstitch: createCrosstitch,
-  'crosstitch-kit': createCrosstitchKit,
-  'torn-sound': createTornSound,
-  manywhere: createManywhere,
-  'grand-muster': createGrandMuster,
-  'crooked-crown': createCrookedCrown,
-  'sixfold-trial': createSixfoldTrial,
-} satisfies Record<MapId, (seed?: number) => GameMap>;
+const MAP_FACTORIES = LEGACY_MAP_FACTORIES satisfies Record<LegacyMapId, (seed?: number) => GameMap>;
 
-const MAP_STYLES: Record<MapId, string> = {
+const MAP_STYLES: Record<LegacyMapId, string> = {
   'border-marches': 'Two-player conquest campaign',
   crosstitch: 'Two-to-four-player conquest campaign',
   'crosstitch-kit': 'Two-to-four-player artifact-assembly scenario',
@@ -30,14 +17,14 @@ const MAP_STYLES: Record<MapId, string> = {
 };
 
 export interface CampaignPresentation {
-  id: MapId;
+  id: BuiltInMapId;
   name: string;
   style: string;
   objective: string;
   flavor: string;
 }
 
-export const CAMPAIGN_PRESENTATIONS = (Object.keys(MAP_FACTORIES) as MapId[])
+const LEGACY_CAMPAIGN_PRESENTATIONS = (Object.keys(MAP_FACTORIES) as LegacyMapId[])
   .map((id): CampaignPresentation => {
     const map = MAP_FACTORIES[id](1);
     return {
@@ -46,6 +33,21 @@ export const CAMPAIGN_PRESENTATIONS = (Object.keys(MAP_FACTORIES) as MapId[])
     };
   });
 
+export function portableCampaignPresentations(
+  documents = builtInPortableMapDocuments(),
+): CampaignPresentation[] {
+  return documents.map((document): CampaignPresentation => ({
+    id: document.id as BuiltInMapId,
+    name: document.metadata.name,
+    style: document.metadata.style,
+    objective: document.victory.mechanics,
+    flavor: document.victory.flavor,
+  }));
+}
+
+export const CAMPAIGN_PRESENTATIONS = LEGACY_CAMPAIGN_PRESENTATIONS
+  .concat(portableCampaignPresentations());
+
 export const CAMPAIGN_PRESENTATION = Object.fromEntries(
   CAMPAIGN_PRESENTATIONS.map((entry) => [entry.id, entry]),
-) as Record<MapId, CampaignPresentation>;
+) as Record<BuiltInMapId, CampaignPresentation>;

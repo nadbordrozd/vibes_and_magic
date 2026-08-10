@@ -562,3 +562,42 @@ Beads epic `vibes_and_magic-6sf`.
   day-6 walkthrough, and the dedicated 11-capture Sixfold review. The complete suite passed 564/565
   tests in 61/62 files; only the pre-existing deferred seed-1/day-56 deterministic-AI termination
   assertion failed at `src/core/__tests__/mechanics-regression.test.ts:231`.
+
+## 2026-08-10 — In-game map editor acceptance
+
+- Completed the title-launched portable map editor across all nine ordered palette sections:
+  paint/shape terrain and mountains, props, registered structures, independently owned and
+  factioned castles/heroes, every canonical guardian creature with editable stack counts, all
+  artifacts/items, resources, reward carriers, taught spells, and overlays. Blank-map details now
+  include the required objective flavor and mechanics, so a map created from scratch can become
+  playable without editing JSON.
+- Completed offline draft/frozen-revision storage, canonical import/export, local test play and
+  title-screen play, and repository-backed promotion. A local campaign's Menu & Saves surface now
+  exports the exact frozen map revision/hash it requires; a missing or mismatched revision produces
+  an actionable import instruction and never substitutes the newest draft.
+- Added deterministic `npm run review:map-editor`. The real-browser journey covers title launch,
+  creation, smear/shapes, all palette categories, player/faction independence, guardian count/link,
+  keyboard focus and undo/redo, pointer cancellation, save/reopen, export/import collision choices,
+  test play/return context, and byte-identical isolated promotion. The 1440×1000 and 390×844 review
+  writes nine captures only under `.pixel-work/review/map-editor/` and asserts no narrow horizontal
+  overflow.
+- The accepted export had zero diagnostics and normalized hash `3c5b9893`. The final 128×128 browser
+  performance sample created the canvas in 1.77 seconds and painted a 17×17 filled rectangle in
+  3.93 seconds, below the executable 8/5-second budgets. Pretest catalogs/assets, map lint, spec
+  links, static UX, TypeScript/Vite build, 144 focused tests, browser smoke, and the dedicated review
+  passed. The complete suite passed 711/712 tests in 73/74 files; the only failure remains the known
+  unrelated seed-1/day-56 AI winner assertion at
+  `src/core/__tests__/mechanics-regression.test.ts:231`.
+
+## 2026-08-10 — Map editor authoring UX refinement
+
+- Replaced the always-visible portable-identity column with sensible new-map metadata/objective
+  defaults and a collapsed **Edit map details** control.
+- Enlarged the palette and converted all nine sections to compact accessible icon stamps. Existing
+  native terrain, prop, structure, castle, hero, battle-unit, item, resource, spell, and overlay art
+  is reused; artifacts use compact slot/class emblems. Castles expose six direct faction stamps.
+- Replaced ordinary count-one guardian placement with deterministic tier bases
+  48/30/20/12/6/5 and stable ±20% placement variation. Added six portable random-tier creature
+  placeholders that resolve from explicit campaign seed and stable guardian/stack identity.
+- Made the canvas column vertically scrollable while retaining a bounded map viewport, keeping long
+  selected guardian inspectors and count fields reachable at desktop and narrow sizes.

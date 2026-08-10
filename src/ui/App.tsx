@@ -11,6 +11,8 @@ import {
 import type {
   Action, GameState, NewGameOptions, PlayerId,
 } from '../core/types';
+import type { LocalMapId } from '../core/types';
+import { parseLocalMapReference } from '../core/mapReference';
 import { AdventureScreen } from './components/AdventureScreen';
 import { CastleScreen } from './components/CastleScreen';
 import { CombatScreen } from './components/CombatScreen';
@@ -19,14 +21,17 @@ import {
 } from './components/Dialogs';
 import { buildBattleResult, type BattleResultData } from './battleResult';
 import { MainMenu } from './components/MainMenu';
+import { MapEditor } from './components/MapEditor';
 import { InspectionLayer } from './components/InspectionLayer';
 import { ContextHelp, type HelpContext } from './components/ContextHelp';
 import { ResourceRichText } from './components/ResourceToken';
 import {
   autoSaveGame, createBattleReplayLink, createGameLink, exportSaveFile, importSaveFile,
-  loadBattleReplayLink, loadGame, loadGameLink, saveGame, savedGameSummary,
+  loadBattleReplayLink, loadGameDetailed, loadGameLink, saveGame, savedGameSummary,
   type SaveSlot, type SaveSummary,
 } from './persistence';
+import { createGameMapRepository } from './mapRepository';
+import { exportFrozenEditorMapReference } from './mapPersistence';
 import {
   type AnimationSpeed,
 } from './animation';
@@ -40,6 +45,9 @@ function casualtyCount(losses: Record<string, number | undefined>): number {
 
 export function App() {
   const [game, setGame] = useState<GameState | null>(null);
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editorDocumentId, setEditorDocumentId] = useState<string | null>(null);
+  const [gameReturnTarget, setGameReturnTarget] = useState<'title' | 'editor-library' | 'editor-workspace'>('title');
   const [openCastleId, setOpenCastleId] = useState<string | null>(null);
   const [passPlayer, setPassPlayer] = useState<PlayerId | null>(null);
   const [battleResult, setBattleResult] = useState<BattleResultData | null>(null);
@@ -127,12 +135,13 @@ export function App() {
   };
 
   const loadSavedState = (slot?: SaveSlot) => {
-    const saved = loadGame(undefined, slot ?? 'primary');
-    if (!saved) {
-      setError('The saved game could not be loaded. It remains untouched; dismiss this message and choose another slot.');
+    const loaded = loadGameDetailed(undefined, slot ?? 'primary');
+    if (!loaded.state) {
+      setError(`${loaded.error ?? 'The saved game could not be loaded.'} It remains untouched; dismiss this message and choose another slot.`);
       return;
     }
-    setGame(saved);
+    setGame(loaded.state);
+    setGameReturnTarget('title');
     setOpenCastleId(null);
     setBattleResult(null);
     setPassPlayer(null);
@@ -143,6 +152,18 @@ export function App() {
     const url = URL.createObjectURL(new Blob([exportSaveFile(game)], { type: 'application/json' }));
     const anchor = document.createElement('a');
     anchor.href = url; anchor.download = `${game.map.id}-day-${game.day}.vam-save.json`;
+    anchor.click(); URL.revokeObjectURL(url);
+  };
+
+  const exportRequiredMap = () => {
+    if (!game) return;
+    const reference = parseLocalMapReference(game.map.id);
+    if (!reference) return;
+    const exported = exportFrozenEditorMapReference(game.map.id as LocalMapId);
+    if (!exported.ok) { setError(exported.error.message); return; }
+    const url = URL.createObjectURL(new Blob([exported.value.contents], { type: exported.value.mimeType }));
+    const anchor = document.createElement('a');
+    anchor.href = url; anchor.download = exported.value.filename;
     anchor.click(); URL.revokeObjectURL(url);
   };
 
@@ -209,11 +230,40 @@ export function App() {
   const start = (options: NewGameOptions) => {
     cancelAnimations();
     setMapAnimating(false);
-    setGame(createGame(options));
+    try {
+      setGame(createGame(options, createGameMapRepository()));
+      setError('');
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : String(caught));
+      return;
+    }
+    setGameReturnTarget('title');
+    setEditorOpen(false);
     setOpenCastleId(null);
     setBattleResult(null);
     setBattleReplay(null);
     projectionRef.current = null;
+  };
+
+  const playLocalMap = (mapId: LocalMapId, returnTo: 'workspace' | 'library' | 'title') => {
+    const reference = parseLocalMapReference(mapId);
+    try {
+      cancelAnimations();
+      setMapAnimating(false);
+      setGame(createGame({ seed: crypto.getRandomValues(new Uint32Array(1))[0], mapId,
+        p1: 'human', p2: 'ai' }, createGameMapRepository()));
+      setGameReturnTarget(returnTo === 'workspace' ? 'editor-workspace'
+        : returnTo === 'library' ? 'editor-library' : 'title');
+      setEditorDocumentId(returnTo === 'workspace' ? reference?.documentId ?? null : null);
+      setEditorOpen(false);
+      setOpenCastleId(null);
+      setBattleResult(null);
+      setBattleReplay(null);
+      projectionRef.current = null;
+      setError('');
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : String(caught));
+    }
   };
 
   const load = (slot?: SaveSlot) => {
@@ -226,6 +276,10 @@ export function App() {
 
   const returnToMenu = () => {
     setGame(null);
+    if (gameReturnTarget !== 'title') {
+      setEditorOpen(true);
+      if (gameReturnTarget === 'editor-library') setEditorDocumentId(null);
+    }
     setSavedSummary(savedGameSummary());
     setManualSummaries([1, 2, 3].map((slot) => savedGameSummary(undefined, slot)));
     setAutoSummaries([0, 1, 2].map((slot) => savedGameSummary(undefined, `auto-${slot}`)));
@@ -315,9 +369,18 @@ export function App() {
   ]);
 
   if (!game) {
+    if (editorOpen) return <MapEditor
+      initialDocumentId={editorDocumentId}
+      onPlayMap={(mapId, returnTo) => playLocalMap(mapId, returnTo)}
+      onReturnToTitle={() => { setEditorOpen(false); setEditorDocumentId(null); }} />;
     return <><MainMenu onStart={start} savedGame={savedSummary}
       manualSaves={manualSummaries} autoSaves={autoSummaries} onLoad={load}
-      onImport={importFile} /><ContextHelp state={null} context="menu" />
+      onImport={importFile}
+      onPlayLocal={(mapId) => playLocalMap(mapId, 'title')}
+      onOpenEditor={(documentId) => {
+        setError(''); setEditorDocumentId(documentId ?? null); setEditorOpen(true);
+      }} />
+      <ContextHelp state={null} context="menu" />
       {error && <button className="error-toast" role="alert"
         onClick={() => setError('')}>{error} · Dismiss ×</button>}</>;
   }
@@ -368,6 +431,7 @@ export function App() {
             onMenu={returnToMenu}
             onSave={save}
             onExport={exportFile} onImport={importFile}
+            onExportMap={parseLocalMapReference(game.map.id) ? exportRequiredMap : undefined}
             onShare={() => { void shareLink(false); }}
             animationSpeed={animationSpeed}
             onAnimationSpeedChange={setAnimationSpeed}

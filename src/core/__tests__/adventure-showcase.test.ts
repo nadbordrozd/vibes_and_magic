@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
+import { MAP_OBJECT_KINDS, RUNTIME_ONLY_MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
 import {
   DEFAULT_TERRAIN_DECORATION_DENSITY, LARGE_MAP_TERRAIN_DECORATION_DENSITY,
   TERRAIN, TERRAIN_DECORATIONS, terrainIdAt,
@@ -42,7 +42,8 @@ describe('adventure visual showcase', () => {
     const representatives = representativeMapObjects();
     expect(representatives.size).toBe(inventory.length);
     inventory.forEach((item) => expect(representatives.has(item.id), item.id).toBe(true));
-    for (const kind of MAP_OBJECT_KINDS.filter((kind) => kind !== 'guardian')) {
+    for (const kind of MAP_OBJECT_KINDS.filter((kind) => kind !== 'guardian'
+      && !RUNTIME_ONLY_MAP_OBJECT_KINDS.includes(kind as never))) {
       expect([...representatives.values()].some((object) => object.kind === kind), kind).toBe(true);
     }
   });

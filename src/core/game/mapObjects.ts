@@ -210,8 +210,10 @@ export function useReliquaryCairn(
   state.lastMessage = 'The Cairn returns another shape of the same old power.';
 }
 
-function claimReward(state: GameState, hero: Hero, reward: GuardianReward): void {
+export function claimGuardianReward(state: GameState, hero: Hero, reward: GuardianReward): void {
   state.players[hero.owner].resources.gold += reward.gold ?? 0;
+  state.players[hero.owner].resources.timber += reward.timber ?? 0;
+  state.players[hero.owner].resources.iron += reward.iron ?? 0;
   state.players[hero.owner].resources.essence += reward.essence ?? 0;
   for (const item of reward.items ?? []) addItem(hero, item);
   for (const artifact of reward.artifacts ?? []) addArtifact(hero, artifact);
@@ -246,7 +248,7 @@ export function digCache(state: GameState, position: { x: number; y: number }): 
     return;
   }
   cache.dug = true; cache.hidden = false;
-  claimReward(state, hero, cache.reward);
+  claimGuardianReward(state, hero, cache.reward);
   state.lastMessage = 'The buried Cache is opened.';
 }
 
@@ -368,7 +370,7 @@ export function visitCreativeObject(state: GameState, object: MapObject, hero: H
     }
   } else if (['skeletonGrass', 'coldCampfire', 'shepherdsLeanTo', 'overgrownCart']
       .includes(object.kind) && 'searched' in object && !object.searched) {
-    object.searched = true; claimReward(state, hero, object.reward);
+    object.searched = true; claimGuardianReward(state, hero, object.reward);
   } else if (object.kind === 'patientStone') {
     if (!object.revealedBy.includes(hero.id)) object.revealedBy.push(hero.id);
     state.lastMessage = 'The Patient Stone adds another piece to the sketch.';

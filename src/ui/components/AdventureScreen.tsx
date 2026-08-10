@@ -57,6 +57,7 @@ interface Props {
   onMenu: () => void;
   onSave: (slot?: number) => void;
   onExport: () => void;
+  onExportMap?: () => void;
   onImport: () => void;
   onShare: () => void;
   animationSpeed: AnimationSpeed;
@@ -66,7 +67,7 @@ interface Props {
 
 
 export function AdventureScreen({
-  state, dispatch, onOpenCastle, onMenu, onSave, onExport, onImport, onShare,
+  state, dispatch, onOpenCastle, onMenu, onSave, onExport, onExportMap, onImport, onShare,
   animationSpeed, onAnimationSpeedChange, onMovementStateChange,
 }: Props) {
   const [preview, setPreview] = useState<Coord | null>(null);
@@ -601,6 +602,7 @@ export function AdventureScreen({
             </section>
             <section><h3>Campaign file</h3>
               <button onClick={onExport}>Export save</button>
+              {onExportMap && <button onClick={onExportMap}>Export required map</button>}
               <button onClick={onImport}>Import save</button>
               <button onClick={onShare}>Copy share link</button>
             </section>

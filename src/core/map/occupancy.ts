@@ -75,7 +75,8 @@ export function isObjectActive(object: MapObject): boolean {
   // A Cache is an authored secret tile, not a physical map blocker. It is found
   // by the dig action rather than by collision/entrance handling.
   if (object.kind === 'cache') return false;
-  if (object.kind === 'pile' || object.kind === 'item' || object.kind === 'barrowField') return !object.collected;
+  if (object.kind === 'pile' || object.kind === 'item' || object.kind === 'rewardPickup'
+      || object.kind === 'barrowField') return !object.collected;
   if (object.kind === 'chest') return !object.collected;
   if (object.kind === 'flotsam' || object.kind === 'sealedCask'
       || object.kind === 'castaway' || object.kind === 'messageBottle') return !object.collected;

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { ARTIFACTS } from '../../content/artifacts';
 import { HEROES } from '../../content/heroes';
 import { createManywhere, MANYWHERE_CASTLE_POSITIONS, MANYWHERE_NEUTRAL_TOWNS } from '../../content/maps/manywhere';
-import { MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
+import { MAP_OBJECT_KINDS, RUNTIME_ONLY_MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
 import {
   DEFAULT_TERRAIN_DECORATION_DENSITY, deriveTerrainDecorations, TERRAIN, tile,
 } from '../../content/terrain';
@@ -91,7 +91,8 @@ describe('terrain and discovery expansions', () => {
     expect(MANYWHERE_CASTLE_POSITIONS).toHaveLength(3);
     expect(MANYWHERE_NEUTRAL_TOWNS).toHaveLength(4);
     expect(new Set(manywhere.objects.map((object) => object.kind)))
-      .toEqual(new Set(MAP_OBJECT_KINDS));
+      .toEqual(new Set(MAP_OBJECT_KINDS.filter((kind) =>
+        !RUNTIME_ONLY_MAP_OBJECT_KINDS.includes(kind as never))));
   });
 
   it('ships 80 regular artifacts, 36 heroes, four neutral towns, and sandbox retirement', () => {

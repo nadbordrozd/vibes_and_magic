@@ -28,6 +28,7 @@ export const ADVENTURE_OBJECT_INTERACTION_ROUTES = {
   chest: 'rules-choice-dialog',
   shrine: 'rules-choice-dialog',
   item: 'map-control',
+  rewardPickup: 'map-control',
   richVein: 'transient-result',
   waystation: 'transient-result',
   lock: 'combat-or-navigation',

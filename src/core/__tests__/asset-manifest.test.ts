@@ -6,7 +6,7 @@ import {
 } from '../../../assets/manifest';
 import { AUTHORED_MAPS, assetWorklist } from '../../../assets/worklist';
 import { FACTIONS } from '../../content/factions';
-import { MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
+import { MAP_OBJECT_KINDS, RUNTIME_ONLY_MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
 import { UNITS } from '../../content/units';
 import { painterOrder } from '../../ui/assets';
 
@@ -29,7 +29,8 @@ describe('pixel-art manifest worklist', () => {
     expect(worklist.filter((item) => item.category === 'hero')).toHaveLength(
       Object.keys(FACTIONS).length * 8,
     );
-    for (const kind of MAP_OBJECT_KINDS.filter((candidate) => candidate !== 'guardian')) {
+    for (const kind of MAP_OBJECT_KINDS.filter((candidate) => candidate !== 'guardian'
+      && !RUNTIME_ONLY_MAP_OBJECT_KINDS.includes(candidate as never))) {
       expect(worklist.some((item) => item.id.startsWith(`map-object:${kind}:`)), kind).toBe(true);
     }
   });
@@ -44,6 +45,12 @@ describe('pixel-art manifest worklist', () => {
       expect(Boolean(ASSET_MANIFEST[item.id] || NON_SPRITE_REPRESENTATIONS[item.id]), item.id)
         .toBe(true);
     }
+  });
+
+  it('keeps runtime-only reward lowering out of the authored native-art worklist', () => {
+    expect(RUNTIME_ONLY_MAP_OBJECT_KINDS).toEqual(['rewardPickup']);
+    expect(assetWorklist().some((item) => item.id.startsWith('map-object:rewardPickup:')))
+      .toBe(false);
   });
 
   it('bottom-anchors ground-contact canvases and requires ownership flag anchors', () => {

@@ -38,7 +38,7 @@ function render(savedGame: SaveSummary | null, manualSaves: Array<SaveSummary | 
   autoSaves: Array<SaveSummary | null> = []): string {
   return renderToStaticMarkup(<MainMenu onStart={() => undefined} savedGame={savedGame}
     manualSaves={manualSaves} autoSaves={autoSaves} onLoad={() => undefined}
-    onImport={() => undefined} />);
+    onImport={() => undefined} onOpenEditor={() => undefined} />);
 }
 
 describe('setup and save menu presentation', () => {
@@ -57,6 +57,7 @@ describe('setup and save menu presentation', () => {
     expect(html).toContain('Same seed + setup reproduces offers and outcomes.');
     expect(html).toContain('New campaign');
     expect(html).toContain('Continue / import');
+    expect(html).toContain('Map Editor');
     expect(html).not.toContain('save-row');
   });
 

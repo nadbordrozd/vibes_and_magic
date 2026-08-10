@@ -144,6 +144,7 @@ function objectVariant(object: MapObject): string {
   if (object.kind === 'pile' || object.kind === 'mine') return object.resource;
   if (object.kind === 'shrine') return object.school;
   if (object.kind === 'item') return object.item.id;
+  if (object.kind === 'rewardPickup') return 'default';
   if (object.kind === 'dwelling') return object.unitId;
   if (object.kind === 'lock') return object.id;
   if (object.kind === 'obstacle') return object.prop;

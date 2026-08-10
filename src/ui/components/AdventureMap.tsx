@@ -60,6 +60,7 @@ function objectTitle(object: MapObject): string {
     : object.resource === 'timber' ? 'Timber Camp'
       : object.resource === 'iron' ? 'Iron Mine' : 'Essence Spring';
   if (object.kind === 'item') return itemName(object.item);
+  if (object.kind === 'rewardPickup') return 'Reward Pickup';
   if (object.kind === 'richVein') {
     return 'Rich Vein';
   }
@@ -215,6 +216,21 @@ function MapObjectGlyph({
       </g>
     );
   }
+  if (object.kind === 'rewardPickup') {
+    const resource = (Object.keys(object.reward)
+      .find((key) => ['gold', 'timber', 'iron', 'essence'].includes(key)) ?? null) as ResourceId | null;
+    const mark = object.reward.artifacts?.length ? '◆'
+      : object.reward.items?.length ? '◇'
+        : resource ? RESOURCE_MARK[resource] : object.reward.teachesSpell ? '✦' : '?';
+    return (
+      <g {...inspect} className={`map-object-glyph ${pickup ? 'pickup-eligible' : ''}`}
+        transform={`translate(${x + 16} ${y + 16})`}>
+        <title>{title}</title>
+        <path className={`pile ${resource ?? 'essence'}`} d="M0 -10 L10 0 L0 10 L-10 0 Z" />
+        <text y="4">{mark}</text>
+      </g>
+    );
+  }
   if (object.kind === 'richVein') {
     return (
       <g {...inspect} className="map-object-glyph" transform={`translate(${x + 16} ${y + 16})`}>
@@ -339,7 +355,9 @@ export function AdventureMap({
     onPickup(objectId);
     if (!object) return;
     const mark = object.kind === 'pile' ? RESOURCE_MARK[object.resource]
-      : object.kind === 'item' ? '◇' : '✦';
+      : object.kind === 'item' ? '◇'
+        : object.kind === 'rewardPickup' && object.reward.artifacts?.length ? '◆'
+          : object.kind === 'rewardPickup' && object.reward.items?.length ? '◇' : '✦';
     setPickupFlight({
       key: Date.now(), position: objectEntranceTile(object), mark,
       resource: object.kind === 'pile' ? object.resource : undefined,
@@ -914,7 +932,7 @@ function destinationIntent(
     return entrance.x === destination.x && entrance.y === destination.y;
   });
   if (object) {
-    const pickup = ['pile', 'item', 'chest', 'flotsam', 'sealedCask', 'castaway', 'messageBottle']
+    const pickup = ['pile', 'item', 'rewardPickup', 'chest', 'flotsam', 'sealedCask', 'castaway', 'messageBottle']
       .includes(object.kind);
     const capture = 'owner' in object && object.owner !== hero.owner;
     return {

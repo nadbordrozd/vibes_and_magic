@@ -1,6 +1,7 @@
 import type {
   AbilityId, ArtifactInstance, HeroArtifacts, ItemInstance, ItemSlot,
 } from './contentTypes';
+import type { PortableBuiltInMapId } from '../content/maps/authored';
 import type { Action } from './actionTypes';
 export type {
   AbilityId, ArtifactId, ArtifactInstance, ArtifactSlot, EquipmentSlotId,
@@ -10,8 +11,15 @@ export type { Action } from './actionTypes';
 
 export const PLAYER_IDS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'] as const;
 export type PlayerId = typeof PLAYER_IDS[number];
-export type MapId = 'border-marches' | 'crosstitch' | 'crosstitch-kit' | 'torn-sound'
-  | 'manywhere' | 'grand-muster' | 'crooked-crown' | 'sixfold-trial';
+export const LEGACY_BUILT_IN_MAP_IDS = [
+  'border-marches', 'crosstitch', 'crosstitch-kit', 'torn-sound',
+  'manywhere', 'grand-muster', 'crooked-crown', 'sixfold-trial',
+] as const;
+export type LegacyBuiltInMapId = typeof LEGACY_BUILT_IN_MAP_IDS[number];
+export type BuiltInMapId = LegacyBuiltInMapId | PortableBuiltInMapId;
+/** Runtime validation further constrains every segment; this type keeps the namespace explicit. */
+export type LocalMapId = `local:v1:${string}:r${number}:h${string}`;
+export type MapId = BuiltInMapId | LocalMapId;
 export type Difficulty = 'easy' | 'normal' | 'hard' | 'brutal';
 export type FactionId =
   | 'hearthguard' | 'woundWrights' | 'unfinished'
@@ -236,6 +244,8 @@ export interface Guardian {
 
 export interface GuardianReward {
   gold?: number;
+  timber?: number;
+  iron?: number;
   essence?: number;
   items?: ItemInstance[];
   artifacts?: ArtifactInstance[];
@@ -260,6 +270,11 @@ export type MapObject = {
     teaches: SpellId; cleared: boolean; visitedBy: string[];
   }
   | { id: string; kind: 'item'; position: Coord; item: ItemInstance; collected: boolean }
+  | {
+    /** Lossless runtime carrier for one portable direct reward bundle. */
+    id: string; kind: 'rewardPickup'; position: Coord;
+    reward: GuardianReward; collected: boolean;
+  }
   | {
     id: string; kind: 'richVein'; position: Coord; owner: PlayerId | null;
     flaggedOnDay: number | null; depleted: boolean; income: number; days: number;

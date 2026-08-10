@@ -58,6 +58,8 @@ import type {
   Resources, SpellId,
 } from '../types';
 import { PLAYER_IDS } from '../types';
+import type { GameMapRepository } from '../mapRepository';
+import { builtInMapRepository } from '../../content/maps/catalog';
 import { checkVictory, updateCastlelessCountdowns } from './outcomes';
 import { refreshAllTaverns } from './tavern';
 import { addItem } from './items';
@@ -187,6 +189,9 @@ function makeCastle(
   };
 }
 
+// Portable-map conversion uses the exact same canonical setup defaults as built-in campaigns.
+export { makeHero as createInitialHero, makeCastle as createInitialCastle };
+
 function inactivePlayer(id: PlayerId, faction: FactionId): Player {
   return {
     id, name: `Player ${id.slice(1)}`, faction, controller: 'ai', active: false,
@@ -218,7 +223,10 @@ const SIXFOLD_COMMON_BUILDINGS: BuildingId[] = [
   'dwelling1', 'dwelling2', 'dwelling3', 'dwelling4', 'dwelling5', 'dwelling6',
 ];
 
-export function createGame(options: NewGameOptions): GameState {
+export function createGame(
+  options: NewGameOptions,
+  mapRepository: GameMapRepository = builtInMapRepository,
+): GameState {
   validateUnits();
   validateBuildings();
   validateFactions();
@@ -233,29 +241,29 @@ export function createGame(options: NewGameOptions): GameState {
   validateMapObjectRegistry();
   const mapId = options.mapId ?? 'border-marches';
   const difficulty = options.difficulty ?? 'normal';
-  const map = mapId === 'crosstitch' ? createCrosstitch(options.seed)
-    : mapId === 'crosstitch-kit' ? createCrosstitchKit(options.seed)
-      : mapId === 'torn-sound' ? createTornSound(options.seed)
-        : mapId === 'manywhere' ? createManywhere(options.seed)
-          : mapId === 'grand-muster' ? createGrandMuster(options.seed)
-            : mapId === 'crooked-crown' ? createCrookedCrown(options.seed)
-              : mapId === 'sixfold-trial' ? createSixfoldTrial(options.seed)
-        : createBorderMarches(options.seed);
+  const resolvedMap = mapRepository.resolve(mapId, options.seed);
+  const map = resolvedMap.map;
+  map.id = mapId;
   validateMap(map);
-  const p1Faction = mapId === 'grand-muster' ? 'hearthguard'
-    : options.p1Faction ?? 'hearthguard';
-  const p2Faction = mapId === 'grand-muster' ? GRAND_MUSTER_ENEMY_CASTLE.faction
-    : options.p2Faction ?? 'woundWrights';
-  const playerCount = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
+  const portableSetup = resolvedMap.setup;
+  const portablePlayers = new Map(portableSetup?.players.map((player) => [player.id, player]));
+  const p1Faction = portablePlayers.get('p1')?.faction ?? (mapId === 'grand-muster' ? 'hearthguard'
+    : options.p1Faction ?? 'hearthguard');
+  const p2Faction = portablePlayers.get('p2')?.faction ?? (mapId === 'grand-muster'
+    ? GRAND_MUSTER_ENEMY_CASTLE.faction : options.p2Faction ?? 'woundWrights');
+  const playerCount = portableSetup ? portableSetup.players.length
+    : mapId === 'crosstitch' || mapId === 'crosstitch-kit'
     || mapId === 'crooked-crown'
     ? options.playerCount ?? 4 : mapId === 'sixfold-trial' ? 6
       : mapId === 'manywhere' ? options.playerCount ?? 1 : 2;
   const ids: PlayerId[] = [...PLAYER_IDS];
-  const stateIds = mapId === 'sixfold-trial' ? ids : ids.slice(0, 4);
+  const stateIds = playerCount > 4 ? ids : ids.slice(0, 4);
   const factions: Record<PlayerId, FactionId> = {
     p1: p1Faction, p2: p2Faction,
-    p3: options.p3Faction ?? 'unfinished', p4: options.p4Faction ?? 'vespiary',
-    p5: options.p5Faction ?? 'hagwood', p6: options.p6Faction ?? 'wildergrass',
+    p3: portablePlayers.get('p3')?.faction ?? options.p3Faction ?? 'unfinished',
+    p4: portablePlayers.get('p4')?.faction ?? options.p4Faction ?? 'vespiary',
+    p5: portablePlayers.get('p5')?.faction ?? options.p5Faction ?? 'hagwood',
+    p6: portablePlayers.get('p6')?.faction ?? options.p6Faction ?? 'wildergrass',
   };
   const positions = mapId === 'crosstitch' || mapId === 'crosstitch-kit'
     ? CROSSTITCH_CASTLE_POSITIONS : mapId === 'torn-sound'
@@ -265,7 +273,7 @@ export function createGame(options: NewGameOptions): GameState {
           : mapId === 'sixfold-trial' ? SIXFOLD_PLAYER_SETUP.map((slot) => slot.entrance)
         : [{ x: 3, y: 10 }, { x: 24, y: 10 }];
   const startPositions = mapId === 'manywhere' ? MANYWHERE_CASTLE_POSITIONS : positions;
-  const castles = mapId === 'grand-muster'
+  const castles = portableSetup ? structuredClone(portableSetup.castles) : mapId === 'grand-muster'
     ? [
       ...GRAND_MUSTER_CASTLES.map(({ faction, entrance }) => {
         const castle = makeCastle('p1', faction, options.seed, entrance, `muster-${faction}-castle`);
@@ -301,22 +309,33 @@ export function createGame(options: NewGameOptions): GameState {
   }
   let rng = options.seed >>> 0;
   const controllers: Record<PlayerId, Player['controller']> = {
-    p1: mapId === 'grand-muster' ? 'human' : options.p1,
-    p2: mapId === 'grand-muster' ? 'dormant' : options.p2,
-    p3: options.p3 ?? 'ai', p4: options.p4 ?? 'ai',
-    p5: options.p5 ?? 'ai', p6: options.p6 ?? 'ai',
+    p1: portablePlayers.get('p1')?.controller ?? (mapId === 'grand-muster' ? 'human' : options.p1),
+    p2: portablePlayers.get('p2')?.controller ?? (mapId === 'grand-muster' ? 'dormant' : options.p2),
+    p3: portablePlayers.get('p3')?.controller ?? options.p3 ?? 'ai',
+    p4: portablePlayers.get('p4')?.controller ?? options.p4 ?? 'ai',
+    p5: portablePlayers.get('p5')?.controller ?? options.p5 ?? 'ai',
+    p6: portablePlayers.get('p6')?.controller ?? options.p6 ?? 'ai',
   };
   const players = {} as Record<PlayerId, Player>;
   for (const [index, id] of stateIds.entries()) {
     if (index >= playerCount) { players[id] = inactivePlayer(id, factions[id]); continue; }
     const playerCastle = mapId === 'grand-muster' && id === 'p2'
-      ? castles[castles.length - 1] : castles[index];
+      ? castles[castles.length - 1] : castles.find((castle) => castle.owner === id);
+    const authoredHeroes = portableSetup?.heroes.filter((hero) => hero.owner === id) ?? [];
+    const startPosition = authoredHeroes[0]?.position ?? (playerCastle
+      ? castleEntrance(playerCastle) : { x: 0, y: 0 });
     [players[id], rng] = makePlayer(
-      id, controllers[id], factions[id], rng, castleEntrance(playerCastle),
+      id, controllers[id], factions[id], rng, startPosition,
     );
+    if (portableSetup) {
+      players[id].name = portablePlayers.get(id)?.name ?? `Player ${id.slice(1)}`;
+      players[id].heroes = structuredClone(authoredHeroes);
+      players[id].activeHeroId = players[id].heroes[0]?.id ?? null;
+      players[id].hero = players[id].heroes[0] ?? null;
+    }
   }
   const { p1, p2, p3, p4, p5, p6 } = players;
-  if (mapId === 'grand-muster') {
+  if (!portableSetup && mapId === 'grand-muster') {
     p1.name = 'The Muster';
     p1.resources = { gold: 50_000, timber: 50, iron: 50, essence: 50 };
     p1.heroes[0].army = grandMusterArmy('hearthguard');
@@ -333,7 +352,7 @@ export function createGame(options: NewGameOptions): GameState {
     p2.name = 'The Distant Observer';
     p2.heroes.forEach((hero) => { hero.movement = 0; });
   }
-  if (mapId === 'sixfold-trial') {
+  if (!portableSetup && mapId === 'sixfold-trial') {
     for (const slot of SIXFOLD_PLAYER_SETUP) {
       const player = players[slot.id];
       const castle = castles.find((candidate) => candidate.owner === slot.id)!;
@@ -397,7 +416,14 @@ export function createGame(options: NewGameOptions): GameState {
   const announcement = omenAnnouncement(omen, 1);
   return {
     version: 4, seed: options.seed >>> 0, difficulty,
-    setup: { ...options, difficulty, mapId }, rng,
+    setup: {
+      ...options, difficulty, mapId,
+      ...(portableSetup ? {
+        playerCount: portableSetup.players.length as NewGameOptions['playerCount'],
+        ...Object.fromEntries(portableSetup.players.flatMap((player) => [[player.id, player.controller],
+          [`${player.id}Faction`, player.faction]])),
+      } : {}),
+    }, rng,
     day: 1, week: 1, activePlayer: 'p1', phase: 'adventure',
     players, castles, map, battle: null,
     pendingChoice: null, winner: null, replay: [],

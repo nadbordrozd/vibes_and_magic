@@ -126,6 +126,69 @@ describe('milestone 24 occupancy', () => {
     expect(state.players.p1.resources[pile.resource]).toBe(gold + pile.amount);
   });
 
+  it('claims a lowered mixed reward pickup as one lossless interaction', () => {
+    const state = createGame(options);
+    const hero = state.players.p1.hero!;
+    const pickup: Extract<MapObject, { kind: 'rewardPickup' }> = {
+      id: 'portable-reward', kind: 'rewardPickup', position: { x: 6, y: 6 },
+      reward: {
+        gold: 125, timber: 2, iron: 3, essence: 4,
+        items: [{ id: 'spellScroll', storedSpellId: 'rally', plus: true }],
+        artifacts: [{ id: 'seamstone', chosenSchool: 'wild' }], teachesSpell: 'ward',
+      },
+      collected: false,
+    };
+    state.map.objects = [pickup];
+    hero.position = { x: 5, y: 6 };
+    hero.movement = 500;
+    delete hero.skills.forager;
+    const before = { ...state.players.p1.resources };
+    pickupObject(state, pickup.id);
+    expect(pickup.collected).toBe(true);
+    expect(state.players.p1.resources).toEqual({
+      gold: before.gold + 125, timber: before.timber + 2,
+      iron: before.iron + 3, essence: before.essence + 4,
+    });
+    expect(hero.inventory).toContainEqual({ id: 'spellScroll', storedSpellId: 'rally', plus: true });
+    expect(hero.artifacts.backpack).toContainEqual({ id: 'seamstone', chosenSchool: 'wild' });
+    expect(hero.knownSpells).toContain('ward');
+  });
+
+  it('leaves a direct reward completely untouched when the whole item array cannot fit', () => {
+    const state = createGame(options);
+    const hero = state.players.p1.hero!;
+    hero.inventory = hero.inventory.map((_slot, index) => index === 0
+      ? null : { id: 'waybread' });
+    const pickup: Extract<MapObject, { kind: 'rewardPickup' }> = {
+      id: 'too-many-items', kind: 'rewardPickup', position: { x: 6, y: 6 },
+      reward: {
+        gold: 999, timber: 8, iron: 7, essence: 6,
+        items: [{ id: 'waybread' }, { id: 'smellingSalts' }],
+        artifacts: [{ id: 'seamstone', chosenSchool: 'craft' }], teachesSpell: 'ward',
+      },
+      collected: false,
+    };
+    state.map.objects = [pickup];
+    hero.position = { x: 5, y: 6 };
+    hero.movement = 500;
+    const before = {
+      resources: structuredClone(state.players.p1.resources),
+      inventory: structuredClone(hero.inventory), artifacts: structuredClone(hero.artifacts),
+      spells: [...hero.knownSpells], movement: hero.movement,
+    };
+    expect(() => pickupObject(state, pickup.id)).toThrow('Inventory full for reward bundle');
+    expect({
+      resources: state.players.p1.resources, inventory: hero.inventory,
+      artifacts: hero.artifacts, spells: hero.knownSpells, movement: hero.movement,
+    }).toEqual(before);
+    expect(pickup.collected).toBe(false);
+    expect(pickup.reward).toEqual({
+      gold: 999, timber: 8, iron: 7, essence: 6,
+      items: [{ id: 'waybread' }, { id: 'smellingSalts' }],
+      artifacts: [{ id: 'seamstone', chosenSchool: 'craft' }], teachesSpell: 'ward',
+    });
+  });
+
   it('does not trigger aggro for ranged pickup from a safe adjacent tile', () => {
     const state = createGame(options);
     const hero = state.players.p1.hero!;

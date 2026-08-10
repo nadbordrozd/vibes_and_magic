@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import type { Difficulty, MapId, NewGameOptions } from '../../core/types';
+import type { BuiltInMapId, Difficulty, LocalMapId, NewGameOptions } from '../../core/types';
+import { encodeLocalMapReference } from '../../core/mapReference';
 import type { FactionId } from '../../core/types';
 import { FACTIONS } from '../../content/factions';
 import { FACTION_PASSIVES } from '../../content/factionPresentation';
 import { DIFFICULTY_MODIFIERS } from '../../content/constants';
 import type { SaveSlot, SaveSummary } from '../persistence';
 import { CAMPAIGN_PRESENTATION, CAMPAIGN_PRESENTATIONS } from '../campaignPresentation';
+import {
+  duplicateEditorMap, listEditorMaps, type EditorMapSummary,
+} from '../mapPersistence';
 
 interface Props {
   onStart: (options: NewGameOptions) => void;
@@ -14,6 +18,9 @@ interface Props {
   autoSaves: Array<SaveSummary | null>;
   onLoad: (slot?: SaveSlot) => void;
   onImport: () => void;
+  onOpenEditor: (documentId?: string) => void;
+  onPlayLocal?: (mapId: LocalMapId) => void;
+  localMaps?: EditorMapSummary[];
 }
 
 function freshSeed(): number {
@@ -85,7 +92,8 @@ function resolveFaction(choice: FactionChoice, seed: number, slot: number): Fact
 }
 
 export function MainMenu({
-  onStart, savedGame, manualSaves, autoSaves, onLoad, onImport,
+  onStart, savedGame, manualSaves, autoSaves, onLoad, onImport, onOpenEditor, onPlayLocal,
+  localMaps: suppliedLocalMaps,
 }: Props) {
   const [seed, setSeed] = useState(() => freshSeed());
   const [p1, setP1] = useState<'human' | 'ai' | 'dormant'>('human');
@@ -100,11 +108,16 @@ export function MainMenu({
   const [p4Faction, setP4Faction] = useState<FactionChoice>('vespiary');
   const [p5Faction, setP5Faction] = useState<FactionChoice>('hagwood');
   const [p6Faction, setP6Faction] = useState<FactionChoice>('wildergrass');
-  const [mapId, setMapId] = useState<MapId>('border-marches');
+  const [mapId, setMapId] = useState<BuiltInMapId>('border-marches');
   const [playerCount, setPlayerCount] = useState<1 | 2 | 3 | 4 | 5 | 6>(4);
   const [difficulty, setDifficulty] = useState<Difficulty>('normal');
   const hasSaves = Boolean(savedGame || manualSaves.some(Boolean) || autoSaves.some(Boolean));
   const [mode, setMode] = useState<'new' | 'continue'>(hasSaves ? 'continue' : 'new');
+  const [localMaps, setLocalMaps] = useState(() => {
+    if (suppliedLocalMaps) return suppliedLocalMaps;
+    const result = listEditorMaps();
+    return result.ok ? result.value.maps : [];
+  });
   const selectedMap = CAMPAIGN_PRESENTATION[mapId];
 
   return (
@@ -120,6 +133,7 @@ export function MainMenu({
               aria-pressed={mode === 'continue'} onClick={() => setMode('continue')}>
               Continue{hasSaves ? '' : ' / import'}
             </button>
+            <button aria-pressed="false" onClick={() => onOpenEditor()}>Map Editor</button>
           </nav>
         </header>
         {mode === 'new' ? <>
@@ -131,7 +145,7 @@ export function MainMenu({
         <div className="menu-fields">
           <label>Campaign map
             <select value={mapId} onChange={(event) => {
-              const next = event.target.value as MapId; setMapId(next);
+              const next = event.target.value as BuiltInMapId; setMapId(next);
               if (next === 'manywhere') setPlayerCount(1);
               else if (next === 'grand-muster') setPlayerCount(2);
               else if (next === 'crooked-crown') setPlayerCount(4);
@@ -292,6 +306,44 @@ export function MainMenu({
         })}>
           Begin campaign <span>→</span>
         </button>
+        <section className="title-local-maps" aria-labelledby="title-local-maps-heading">
+          <div className="selected-map-identity"><span>Frozen local maps</span>
+            <b id="title-local-maps-heading">Play an exact authored revision</b>
+            <small>Campaign saves and replays pin the displayed revision and hash.</small></div>
+          {localMaps.length === 0 ? <p>No local maps yet. Open Map Editor to create or import one.</p>
+            : localMaps.map((map) => {
+              const playable = map.latestPlayable;
+              return <article className="save-row" key={map.id}>
+                <div className="save-row-primary"><span><b>{playable?.name ?? map.name}</b>
+                  <small>{map.id}{playable ? ` · frozen revision ${playable.revision} · ${playable.width}×${playable.height}` : ' · no playable revision'}</small>
+                  {playable && <small>{playable.author || 'Unknown author'} · {playable.style || 'Unspecified style'} · hash {playable.mapHash}</small>}</span>
+                  <div className="editor-library-actions"><button onClick={() => onOpenEditor(map.id)}
+                    disabled={!map.mapHash}
+                    data-disabled-reason={!map.mapHash ? 'This local draft is unreadable.' : undefined}
+                    title={!map.mapHash ? 'This local draft is unreadable.' : `Edit ${map.name}`}>Edit draft</button>
+                  <button disabled={!map.mapHash}
+                    data-disabled-reason={!map.mapHash ? 'This local draft is unreadable.' : undefined}
+                    title={!map.mapHash ? 'This local draft is unreadable.' : `Duplicate ${map.name}`}
+                    onClick={() => {
+                    const copied = duplicateEditorMap(map.id);
+                    if (!copied.ok) return;
+                    const refreshed = listEditorMaps();
+                    if (refreshed.ok) setLocalMaps(refreshed.value.maps);
+                    onOpenEditor(copied.value.document.id);
+                  }}>Duplicate as draft</button>
+                  <button className="primary" disabled={!playable || !onPlayLocal}
+                    data-disabled-reason={!playable ? 'Freeze a zero-error revision in Map Editor first.'
+                      : !onPlayLocal ? 'Local play is unavailable in this view.' : undefined}
+                    title={!playable ? 'Freeze a zero-error revision in Map Editor first.'
+                      : !onPlayLocal ? 'Local play is unavailable in this view.'
+                      : `Play ${playable.name} revision ${playable.revision}`}
+                    onClick={() => playable && onPlayLocal?.(encodeLocalMapReference({
+                      documentId: map.id, revision: playable.revision, mapHash: playable.mapHash,
+                    }))}>Play</button></div>
+                </div>
+              </article>;
+            })}
+        </section>
         </> : <section className="continue-panel">
         <div className="selected-map-identity">
           <span>{hasSaves ? 'Campaign saves' : 'No local campaigns'}</span>

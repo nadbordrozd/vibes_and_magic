@@ -136,6 +136,11 @@ contains the only copy of a rule.
 - [`../../src/content/maps/occupancyAuthoring.ts`](../../src/content/maps/occupancyAuthoring.ts):
   guardian/target materialization and authoring helpers.
 - [`../MAPS.md`](../MAPS.md): current map-authoring guidance.
+- [Work order 50](../50_MAP_EDITOR.md): the versioned portable editor-map schema, authoring/runtime
+  boundary, local revision repository, import/export rules, validation, and built-in promotion path.
+- [`../../src/content/maps/authored/index.ts`](../../src/content/maps/authored/index.ts): generated
+  portable built-in registry; `npm run promote-map -- <export.vam-map.json>` is its only normal
+  authoring path and the registered JSON bytes feed setup, presentation, hashing, and map lint.
 
 Maps are committed authored data: dimensions, normalized terrain tiles/skins, overlays, objects,
 guardians, castles/starts, victory/defeat, routes, Cache links, and optional bans. Generated
@@ -153,6 +158,25 @@ complete developed castles, level/stat/skill packages, two-week faction armies d
 growth, complete configured-school spellbooks derived from `SCHOOL_SPELLS`, start exits, chest and
 ordinary-artifact totals, and at least four guardians in each of four named strength bands.
 
+Local maps, built-in clones, and newly promoted built-ins share the work-order-50 portable JSON
+contract. The document owns metadata, rectangular terrain/skin tiles, overlays, one-to-six player
+slots, independently owned/factioned castles and starting heroes, objects, guardian stacks and
+counts (including authoring-only random tier 1–6 creature placeholders), separate rewards, and
+victory/defeat. It references these catalogs by stable IDs and cannot
+define executable behavior or custom stats. One pure codec/validator supplies import, export,
+editor diagnostics, deterministic runtime conversion, promotion, and map lint.
+
+The editor palette keeps the canonical nine-section order but uses compact accessible icon stamps.
+Six castle faction sprites are direct choices; structures use their map sprites, guardians use all
+50 battle portraits, and artifact/item/resource/spell/overlay choices use native art or declared
+compact emblems. New guardian counts use tier bases 48/30/20/12/6/5 with stable ±20% variation;
+catalog-average `unitStrength × count` increases across tiers.
+
+Editor drafts and immutable revisions use the same injected browser-storage boundary as game saves
+but a distinct versioned namespace and envelope. The portable `.vam-map.json` contains no local
+timestamps or editor UI state. Promotion checks the exported JSON unchanged into the authored-map
+directory and registers it in the built-in manifest; no TypeScript map reconstruction is allowed.
+
 ## Acquisition invariants
 
 - Rarity is implicit in weights and source tables; the UI does not print Common/Uncommon/Rare.
@@ -169,3 +193,9 @@ Catalog validators and tests fail on duplicate/missing IDs, invalid references, 
 illegal counts, missing behavior handlers, or malformed values. `npm run map-lint` validates authored
 maps. `npm run spec-link-check` validates all relative links in this directory and runs in the test
 preflight. A port must provide equivalent gates even if file layout changes.
+
+Portable-map validation also rejects unsupported schema versions, unsafe/non-JSON values, malformed
+tile matrices, non-finite/out-of-bounds coordinates, invalid slots or independent owner/faction
+references, empty or oversized hero armies, nonpositive guardian counts, missing reward contents,
+broken links, and any ordinary S02/S03 lint failure. Structurally valid drafts may remain local or be
+exported with diagnostics; test play, campaign start, and built-in promotion require zero errors.

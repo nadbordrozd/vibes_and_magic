@@ -66,6 +66,8 @@ presentation rules only and never widen terrain collision or pathfinding.
 Gameplay terrains are Meadow, Deepwood, Mosswold, Ashsteppe, Barrowfield, Lacquer Flats, The Hush,
 Mire, Mountain, and Water. Mountain is impassable. Water requires a boat. Road and Seam are overlays:
 Road sets cost to 65; Seam sets cost to 100 and battles on it are resonant in all four schools.
+The Coastal skin is a shared presentation family for Meadow, Mire, and Water; Torn Sound uses it
+across island ground, bog, and sea without changing those three gameplay terrains.
 
 A hero pays 100 on their own faction’s native terrain, based on hero faction rather than army
 composition. In combat on native ground, qualifying faction stacks gain +1 speed; both sides can
@@ -86,6 +88,20 @@ Adventure obstacle objects are point-impassables with `{kind: obstacle, prop, fo
 appearance may follow local skin but placement legality is independent. A flagged anomaly prop is
 rationed by authors to at most one per 12×12 region; generated decoration anomalies have their own
 independent one-per-region limit. Authoring guidance is in [`../MAPS.md`](../MAPS.md).
+
+The versioned portable authoring document in [work order 50](../50_MAP_EDITOR.md) is the shared
+source format for local maps, built-in clones, and promoted built-ins. It stores initial authored
+facts only. Editor selection, tools, undo history, camera state, and runtime visit/growth/battle
+fields are not map rules or game state. A pure codec applies canonical defaults and produces a fresh
+runtime map/setup from the document, explicit campaign seed, and setup.
+
+Player slots use `p1` through `p6`; the player ID selects the canonical flag color. Starting castles
+and heroes each store `owner` and `faction` independently, so a flag color never implies faction and
+nearby placement never implies ownership. An owned castle defaults through the canonical basic-castle
+construction path. A newly placed starting hero receives a small nonempty army derived from the
+selected hero faction's catalog `hireArmy`; the normalized authored army is then explicit, positive,
+and limited to seven slots. Runtime setup creates exactly the declared slots and entities rather
+than recovering them from array order or a map-specific UI path.
 
 ## Occupancy, footprints, and entrances
 
@@ -156,6 +172,17 @@ cannot cast, and never retreat.
 Puzzle locks are authored fights with a legible tell and a discoverable lever, designed to resist
 brute force and pay a disproportionate reward. Guardian data, reward data, and sites remain separate
 even when an encounter supplies both.
+
+Portable guardians may use any canonical creature and store explicit positive integer counts for
+one to seven stacks. An editor stack may instead store a tier 1–6 random-creature placeholder;
+runtime conversion resolves it to a non-battlefield canonical creature using the explicit game
+seed plus stable guardian/stack identity before any adventure rules run. The resolved runtime stack
+is ordinary replay/save data. New ordinary stamps use decreasing tier count bases with stable
+±20% authoring variation; authors may override every positive count. Their optional `protects` link materializes the reciprocal `guardedBy` relation;
+the editor never embeds a reward in the guardian. Portable reward bundles separately reference
+canonical artifacts, item instances/consumables, resources, or a taught spell and select a
+rules-supported direct-pickup or reward-site delivery kind. Direct rewards use the ordinary pickup
+and ranged-pickup interaction, including guard-efficacy lint.
 
 ## Object taxonomy
 

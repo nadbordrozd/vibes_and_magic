@@ -1,5 +1,9 @@
 import { apply, createGame } from '../core/game';
 import type { Action, Difficulty, GameState, MapId, NewGameOptions } from '../core/types';
+import type { GameMapRepository } from '../core/mapRepository';
+import { builtInMapRepository, builtInPortableMapDocuments } from '../content/maps/catalog';
+import { parseLocalMapReference } from '../core/mapReference';
+import { createGameMapRepository } from './mapRepository';
 import { UNITS } from '../content/units';
 import { BUILDINGS, DWELLINGS } from '../content/buildings';
 import { SPELLS } from '../content/spells';
@@ -46,6 +50,8 @@ function stableStringify(value: unknown): string {
   return JSON.stringify(value);
 }
 
+const PORTABLE_BUILT_IN_MAPS = builtInPortableMapDocuments();
+
 export const CONTENT_HASH = hashText(stableStringify({
   UNITS, BUILDINGS, DWELLINGS, SPELLS, FACTIONS, ARTIFACTS, ITEMS, SKILLS, OMENS,
   HEROES, FACTION_HEROES, BARGAINS, BATTLE_TILE_TYPES, CONSTANTS, MARKETPLACE,
@@ -60,8 +66,15 @@ export const CONTENT_HASH = hashText(stableStringify({
     grandMuster: createGrandMuster(1),
     crookedCrown: createCrookedCrown(1),
     sixfoldTrial: createSixfoldTrial(1),
+    ...(PORTABLE_BUILT_IN_MAPS.length ? { portable: PORTABLE_BUILT_IN_MAPS } : {}),
   },
 }));
+
+/** Legacy built-ins keep their historical hash; local content adds its pinned normalized hash. */
+export function contentHashForMap(mapId: MapId): string {
+  const local = parseLocalMapReference(mapId);
+  return local ? hashText(`${CONTENT_HASH}\nlocal-map:${local.mapHash}`) : CONTENT_HASH;
+}
 
 export interface ActionSave {
   contentHash: string;
@@ -107,13 +120,13 @@ export interface StorageLike {
 
 export type SaveSlot = number | 'primary' | `auto-${number}`;
 
-function browserStorage(): StorageLike | null {
+export function browserStorage(): StorageLike | null {
   try { return typeof window === 'undefined' ? null : window.localStorage; } catch { return null; }
 }
 
 export function actionSave(state: GameState): ActionSave {
   return {
-    contentHash: CONTENT_HASH, mapId: state.map.id,
+    contentHash: contentHashForMap(state.map.id), mapId: state.map.id,
     difficulty: state.difficulty ?? 'normal', seed: state.seed,
     actionLog: [
       { type: 'CAMPAIGN_SETUP', options: { ...state.setup } },
@@ -127,13 +140,17 @@ function validSave(value: unknown): value is ActionSave {
   if (!value || typeof value !== 'object') return false;
   const save = value as Partial<ActionSave>;
   return typeof save.contentHash === 'string'
-    && ['border-marches', 'crosstitch', 'crosstitch-kit', 'torn-sound', 'manywhere',
-      'grand-muster', 'crooked-crown', 'sixfold-trial'].includes(save.mapId ?? '')
+    && typeof save.mapId === 'string'
+    && (builtInMapRepository.has(save.mapId) || parseLocalMapReference(save.mapId) !== null)
     && ['easy', 'normal', 'hard', 'brutal'].includes(save.difficulty ?? '')
     && Number.isInteger(save.seed) && Array.isArray(save.actionLog);
 }
 
-function initialStateForSave(save: ActionSave, setupOverride?: NewGameOptions): GameState {
+function initialStateForSave(
+  save: ActionSave,
+  setupOverride?: NewGameOptions,
+  repository: GameMapRepository = createGameMapRepository(),
+): GameState {
   const header = save.actionLog[0]?.type === 'CAMPAIGN_SETUP'
     ? save.actionLog[0].options : undefined;
   const setup = setupOverride ?? header;
@@ -145,33 +162,38 @@ function initialStateForSave(save: ActionSave, setupOverride?: NewGameOptions): 
       || save.mapId === 'crooked-crown')
       ? { playerCount: 4 as const } : {}),
     ...(!setup && save.mapId === 'sixfold-trial' ? { playerCount: 6 as const } : {}),
-  });
+  }, repository);
 }
 
 function assertContentMatch(save: ActionSave, refuseMismatch: boolean): void {
-  if (save.contentHash !== CONTENT_HASH && refuseMismatch) {
+  if (save.contentHash !== contentHashForMap(save.mapId) && refuseMismatch) {
     throw new Error('This replay uses different content data and cannot be opened safely.');
   }
 }
 
 export function replaySave(
   save: ActionSave, refuseMismatch = false, setupOverride?: NewGameOptions,
+  repository: GameMapRepository = createGameMapRepository(),
 ): GameState {
   assertContentMatch(save, refuseMismatch);
-  let state = initialStateForSave(save, setupOverride);
+  let state = initialStateForSave(save, setupOverride, repository);
   for (const action of save.actionLog) {
     if (action.type !== 'CAMPAIGN_SETUP') state = apply(state, action);
   }
-  if (save.contentHash !== CONTENT_HASH) {
+  if (save.contentHash !== contentHashForMap(save.mapId)) {
     state.eventLog.push('Warning: this local save was made with different content data.');
   }
   return state;
 }
 
 /** Reconstruct the start of the latest battle and retain its logged actions for a spectator. */
-export function replayBattleSave(save: ActionSave, refuseMismatch = false): BattleReplay {
+export function replayBattleSave(
+  save: ActionSave,
+  refuseMismatch = false,
+  repository: GameMapRepository = createGameMapRepository(),
+): BattleReplay {
   assertContentMatch(save, refuseMismatch);
-  let state = initialStateForSave(save);
+  let state = initialStateForSave(save, undefined, repository);
   let current: BattleReplay | null = null;
   let latest: BattleReplay | null = null;
   for (const action of save.actionLog) {
@@ -204,7 +226,9 @@ function writeSlot(state: GameState, key: string, storage: StorageLike): SaveSum
   storage.setItem(`${key}.setup`, JSON.stringify(state.setup));
   // Compatibility for untouched setup screens: the canonical save remains the exact
   // five-field action save, while this sidecar preserves custom hot-seat setup choices.
-  if (state.replay.length === 0) storage.setItem(`${key}.initial`, JSON.stringify(state));
+  if (state.replay.length === 0 && !parseLocalMapReference(state.map.id)) {
+    storage.setItem(`${key}.initial`, JSON.stringify(state));
+  }
   else storage.removeItem(`${key}.initial`);
   const result = summaryFor(state, savedAt);
   storage.setItem(`${key}${META_SUFFIX}`, JSON.stringify(result));
@@ -228,19 +252,18 @@ export function autoSaveGame(state: GameState, storage = browserStorage()): Save
   } catch { return null; }
 }
 
-export function loadGame(
+function loadGameUnchecked(
   storage = browserStorage(), slot: SaveSlot = 'primary',
-): GameState | null {
-  if (!storage) return null;
-  try {
+): GameState {
+  if (!storage) throw new Error('Browser storage is unavailable.');
     const parsed: unknown = JSON.parse(storage.getItem(keyFor(slot)) ?? 'null');
-    if (!validSave(parsed)) return null;
+    if (!validSave(parsed)) throw new Error('The save payload has invalid replay fields.');
     const initial = storage.getItem(`${keyFor(slot)}.initial`);
     const gameplayActions = parsed.actionLog.filter((action) => action.type !== 'CAMPAIGN_SETUP');
-    if (gameplayActions.length === 0 && initial) {
+    if (gameplayActions.length === 0 && initial && !parseLocalMapReference(parsed.mapId)) {
       const state = JSON.parse(initial) as Partial<GameState>;
       if (state.version === 4 && state.seed === parsed.seed && state.map?.id === parsed.mapId) {
-        if (parsed.contentHash !== CONTENT_HASH && Array.isArray(state.eventLog)) {
+        if (parsed.contentHash !== contentHashForMap(parsed.mapId) && Array.isArray(state.eventLog)) {
           state.eventLog = [...state.eventLog,
             'Warning: this local save was made with different content data.'];
         }
@@ -249,8 +272,24 @@ export function loadGame(
     }
     const setupRaw = storage.getItem(`${keyFor(slot)}.setup`);
     const setup = setupRaw ? JSON.parse(setupRaw) as NewGameOptions : undefined;
-    return replaySave(parsed, false, setup);
-  } catch { return null; }
+    return replaySave(parsed, false, setup, createGameMapRepository(storage));
+}
+
+export function loadGame(
+  storage = browserStorage(), slot: SaveSlot = 'primary',
+): GameState | null {
+  try { return loadGameUnchecked(storage, slot); } catch { return null; }
+}
+
+export function loadGameDetailed(
+  storage = browserStorage(), slot: SaveSlot = 'primary',
+): { state: GameState | null; error: string | null } {
+  try { return { state: loadGameUnchecked(storage, slot), error: null }; } catch (caught) {
+    return {
+      state: null,
+      error: caught instanceof Error ? caught.message : String(caught),
+    };
+  }
 }
 
 export function savedGameSummary(
@@ -271,10 +310,13 @@ export function savedGameSummary(
     const explicitSchema = Number.isInteger(meta?.schemaVersion) ? meta!.schemaVersion! : null;
     let summary: SaveSummary;
     try {
-      summary = summaryFor(replaySave(parsed), typeof meta?.savedAt === 'number'
+      summary = summaryFor(replaySave(
+        parsed, false, undefined, createGameMapRepository(storage),
+      ), typeof meta?.savedAt === 'number'
         ? meta.savedAt : null);
-    } catch {
-      return corruptSummary('The replay could not be reconstructed; keep the file for recovery or overwrite the slot.');
+    } catch (caught) {
+      const reason = caught instanceof Error ? caught.message : String(caught);
+      return corruptSummary(`The replay could not be reconstructed: ${reason} Keep the file for recovery or import the required map.`);
     }
     if (explicitSchema !== null && explicitSchema !== LOCAL_SAVE_SCHEMA) {
       return {
@@ -282,7 +324,7 @@ export function savedGameSummary(
         warning: `Schema v${explicitSchema} is not supported by this build (v${LOCAL_SAVE_SCHEMA}); export or replace this slot.`,
       };
     }
-    if (parsed.contentHash !== CONTENT_HASH) {
+    if (parsed.contentHash !== contentHashForMap(parsed.mapId)) {
       return {
         ...summary, contentHash: parsed.contentHash, compatibility: 'content-mismatch',
         warning: 'Content differs from this build; loading is allowed but replay results may differ.',
@@ -316,7 +358,7 @@ function summaryFor(state: GameState, savedAt: number | null): SaveSummary {
     activePlayer: state.players[state.activePlayer].name,
     mapId: state.map.id, mapName: state.map.name, objective: state.map.victory.mechanics,
     difficulty: state.difficulty, seed: state.seed, players,
-    schemaVersion: LOCAL_SAVE_SCHEMA, contentHash: CONTENT_HASH,
+    schemaVersion: LOCAL_SAVE_SCHEMA, contentHash: contentHashForMap(state.map.id),
     compatibility: 'compatible',
   };
 }
@@ -375,12 +417,18 @@ async function decodeLink(fragment: string): Promise<ActionSave> {
   return parsed;
 }
 
-export async function loadGameLink(fragment: string): Promise<GameState> {
-  return replaySave(await decodeLink(fragment), true);
+export async function loadGameLink(
+  fragment: string,
+  repository: GameMapRepository = createGameMapRepository(),
+): Promise<GameState> {
+  return replaySave(await decodeLink(fragment), true, undefined, repository);
 }
 
-export async function loadBattleReplayLink(fragment: string): Promise<BattleReplay> {
-  return replayBattleSave(await decodeLink(fragment), true);
+export async function loadBattleReplayLink(
+  fragment: string,
+  repository: GameMapRepository = createGameMapRepository(),
+): Promise<BattleReplay> {
+  return replayBattleSave(await decodeLink(fragment), true, repository);
 }
 
 export function stateHash(state: GameState): string {

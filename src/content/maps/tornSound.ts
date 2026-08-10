@@ -19,6 +19,8 @@ function terrain(): TerrainTile[][] {
       if ((west || east || centre) && (x + y) % 5 === 0) return tile('mire', 'coastal');
       if (centre && (x + y) % 9 === 0) return tile('barrowfield');
       if ((west || east) && (x * 3 + y) % 13 === 0) return tile('deepwood', 'mossy');
+      // The islands use the same salt-faded coastal presentation family as their waterline Mire;
+      // gameplay remains ordinary Meadow away from the scattered bog cells.
       return tile('meadow', 'coastal');
     }));
 }

@@ -749,3 +749,27 @@
   for progression without inventing a special chest reward rule. Guardian counts use doc 39's
   strategic strength function and populate four executable bands; premium artifacts remain behind
   ordinary linked guardian interactions.
+
+## 2026-08-10 — Local and built-in maps share one portable authoring document (doc 50)
+
+- The in-game editor authors a versioned, JSON-only `.vam-map.json`; it owns initial map facts but
+  never movement, occupancy, setup, reward, or combat rules. One pure schema/codec/validator supplies
+  editor diagnostics, import/export, test play, runtime conversion, map lint, and promotion.
+- Player ID is the canonical flag color. Castles and starting heroes store owner and faction
+  independently. Newly placed heroes derive a small nonempty company from catalog `hireArmy`, while
+  guardian stacks accept any catalog creature and explicit positive counts. Guardians and rewards
+  remain separate linked records.
+- Editor drafts and immutable revisions use the campaign storage adapter but a separate namespace.
+  The five-field campaign save remains unchanged; a local `mapId` resolves an exact document ID,
+  revision, and map hash, and reconstruction refuses a missing or mismatched map instead of silently
+  choosing another revision.
+- Built-ins are cloned into ordinary portable records, including their start setup. Promotion checks
+  the validated exported JSON into the authored-map catalog and registers it without repainting or
+  transcribing the map into TypeScript.
+- New map metadata and conquest objective text receive usable defaults; the advanced details editor
+  is collapsed by default. Palette choices are icon-first and retain accessible names/tooltips, with
+  six direct faction castle stamps and selected-entity inspectors owning detailed text controls.
+- Guardian placement uses decreasing tier base counts 48/30/20/12/6/5 plus stable ±20% variation.
+  Random-tier guardian stacks are authoring discriminants, never fake `UnitId`s: conversion hashes
+  campaign seed, guardian ID, stack index, and tier into a concrete non-battlefield creature. Saves
+  and replays therefore retain ordinary resolved stacks without ambient randomness.

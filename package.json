@@ -10,6 +10,7 @@
     "pixel-jobs-check": "tsx src/tools/pixelJobsCheck.ts",
     "homm2-assets-check": "tsx src/tools/homm2AssetCheck.ts",
     "map-lint": "tsx src/tools/mapLint.ts",
+    "promote-map": "tsx scripts/promoteMap.ts",
     "spec-link-check": "tsx src/tools/specLinkCheck.ts",
     "ux-check": "tsx src/tools/uxCheck.ts",
     "pretest": "npm run assets-check && npm run pixel-jobs-check && npm run homm2-assets-check && npm run map-lint && npm run spec-link-check && npm run ux-check",
@@ -45,6 +46,7 @@
     "review:campaign-outcomes": "tsx src/sim/campaign-outcome-review.ts",
     "review:crooked-crown": "tsx src/sim/crooked-crown-review.ts",
     "review:sixfold-trial": "tsx src/sim/sixfold-trial-review.ts",
+    "review:map-editor": "tsx src/sim/map-editor-review.ts",
     "review:walkthrough": "tsx src/sim/new-player-walkthrough.ts",
     "review:acceptance": "npm run review:setup-save && npm run review:service-actions && npm run review:combat-targeting && npm run review:campaign-outcomes && npm run review:ux && npm run review:walkthrough",
     "smoke": "tsx src/sim/browser-smoke.ts"

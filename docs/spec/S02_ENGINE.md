@@ -52,6 +52,11 @@ their own stream and pre-roll the next omen. Battle obstacles derive from the ba
 decorations derive from map seed and region but are not stored in saves. Never use `Date`,
 `Math.random`, or UI event timing inside rules.
 
+Portable map-editor random-tier guardian placeholders follow the same rule: conversion hashes the
+explicit campaign seed with stable guardian ID, stack index, and tier to select a concrete canonical
+creature. Placeholder resolution never consumes ambient randomness and the runtime/save contains the
+resolved creature stack.
+
 ## Replay is save
 
 The canonical save payload has exactly:
@@ -64,6 +69,14 @@ Loading reconstructs initial state and applies the log. A campaign-setup action 
 preserves player count, controllers, and factions. Local storage may keep compatibility sidecars,
 but exported files and links use only the canonical payload. Autosave rotates three turn-end slots;
 manual slots and file export/import use the same payload.
+
+A campaign on a local authored map preserves that same five-field payload. Its `mapId` is a canonical
+local reference containing portable document ID, immutable revision, and normalized map hash. Before
+initial-state construction, the map repository must resolve that exact revision; missing or
+hash-mismatched local map content refuses reconstruction rather than substituting the newest draft
+or a built-in map. The resolved map hash participates in `contentHash`. The portable map document is
+a separate import/export artifact and is never embedded in or mutated by a campaign save. See
+[work order 50](../50_MAP_EDITOR.md).
 
 Game and battle links deflate the payload, encode it as base64url, and put it in the URL fragment.
 Warn above roughly 50 KB compressed and offer file export. Local saves with a mismatched content
@@ -139,6 +152,14 @@ terrain warnings, anomaly ration warnings, Cache/Patient-Stone consistency, and 
 coverage. A dense-map profile additionally pins exact dimensions, start exits and opening economy,
 intended guardian gates, guarded reward coverage, interactive/decorative density, road coverage,
 and the largest unbroken passable square.
+
+Portable editor documents use the same pure schema validation, normalization, runtime conversion,
+and lint functions in the editor, import, test play, promotion, tests, and this CI gate. Drafts may
+retain playable-lint errors, but runtime conversion may not proceed with one. Validation additionally
+covers document version and identity, rectangular tiles, unique entity IDs, player slots, independent
+owner/faction references, legal nonempty starting-hero armies, castle defaults/overrides, positive
+guardian stack counts, rewards, and reciprocal guard links. Diagnostics have stable codes, severity,
+and entity/cell targets; editor UI does not own or reinterpret their legality.
 
 Catalogs validate on load or in tests: complete identity, nonempty flavor/story, legal costs and
 stats, count invariants where pinned, valid references, rarity and behavior metadata, and unique IDs.

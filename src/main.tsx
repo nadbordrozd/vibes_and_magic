@@ -5,6 +5,7 @@ import './ui/styles/base.css';
 import './ui/styles/game.css';
 import './ui/styles/castle.css';
 import './ui/styles/combat.css';
+import './ui/styles/map-editor.css';
 import { preloadAssetManifest } from './ui/assets';
 import { TerrainShowcase } from './ui/components/TerrainShowcase';
 import { AdventureVisualShowcase } from './ui/components/AdventureVisualShowcase';

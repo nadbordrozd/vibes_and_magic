@@ -4,6 +4,27 @@ Maps store gameplay tiles as `{ terrain, skin? }`. The terrain is the only part 
 skins are authored presentation, and decorations are derived deterministically from the map seed.
 Never commit generated decorations to a map or save.
 
+Skins are legal only for the terrain families listed in the executable terrain catalog. A visual
+family may be deliberately shared: `coastal` is valid for Meadow, Mire, and Water, and Torn Sound
+uses that continuity to carry its salt-faded shoreline look across distinct gameplay terrain.
+
+The in-game editor, local maps, built-in clones, and newly promoted built-ins share the versioned
+portable authoring contract in [`50_MAP_EDITOR.md`](50_MAP_EDITOR.md). An editor export is promoted
+as validated JSON through the built-in manifest; do not manually reconstruct its terrain, starts,
+entities, guardians, or rewards in a TypeScript factory. Existing hand-authored maps remain inputs to
+the built-in-to-portable clone adapter until they are migrated.
+
+Promote an editor export with `npm run promote-map -- path/to/map.vam-map.json`, then verify the
+checked registration with the same command plus `--check`. The adapter rejects noncanonical bytes,
+catalog incompatibility, validation/lint errors, and duplicate IDs; it copies the JSON unchanged and
+generates only the authored-registry import/entry. See the exact workflow in
+[`50_MAP_EDITOR.md`](50_MAP_EDITOR.md#exact-promotion-workflow).
+
+Run `npm run review:map-editor` against the local Vite app for the repeatable desktop/390 px
+authoring journey, exact local-revision export, and isolated promotion-readiness check. Its evidence
+is written only to `.pixel-work/review/map-editor/`; the exercised interaction and performance
+coverage is listed in [`50_MAP_EDITOR.md`](50_MAP_EDITOR.md#reproducible-acceptance-review).
+
 ## Starts and terrain
 
 Start zones should mix neutral terrain instead of gifting a faction its native ground. Native
