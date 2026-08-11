@@ -6,6 +6,7 @@ import { join, resolve } from 'node:path';
 import puppeteer, { type ElementHandle, type Page } from 'puppeteer-core';
 import { promoteMapFile } from '../../scripts/promoteMap';
 import {
+  convertEditorMapDocument, EDITOR_GUARDIAN_BASE_COUNTS, EDITOR_RANDOM_GUARDIAN_UNITS,
   hashEditorMapDocument, parseEditorMapDocument, validateEditorMapForPlay,
 } from '../core/mapEditor';
 
@@ -158,7 +159,69 @@ async function auditLayout(page: Page, label: string): Promise<void> {
   }
 }
 
-function verifyPromotionReady(path: string): { hash: string; diagnostics: number } {
+async function auditSelectedGuardian(page: Page, label: string): Promise<number> {
+  const audit = await page.$eval(
+    'input[aria-label="Guardian army stack 1 count"]',
+    (input) => {
+      input.scrollIntoView({ block: 'center', inline: 'nearest' });
+      const field = input.getBoundingClientRect();
+      const column = input.closest('.editor-canvas-column')!.getBoundingClientRect();
+      return {
+        count: Number((input as HTMLInputElement).value),
+        heading: document.querySelector('#editor-guardian-inspector-title')?.textContent?.trim() ?? '',
+        field: { top: field.top, bottom: field.bottom, left: field.left, right: field.right },
+        column: { top: column.top, bottom: column.bottom, left: column.left, right: column.right },
+      };
+    },
+  );
+  if (!audit.heading || audit.count < 1
+      || audit.field.top < audit.column.top || audit.field.bottom > audit.column.bottom
+      || audit.field.left < audit.column.left || audit.field.right > audit.column.right) {
+    throw new Error(`${label} selected guardian inspector is not reachable: ${JSON.stringify(audit)}`);
+  }
+  return audit.count;
+}
+
+async function auditIconPalette(page: Page, label: string): Promise<void> {
+  await page.waitForFunction(() => {
+    const images = [...document.querySelectorAll<HTMLImageElement>(
+      '.editor-castle-grid img, .editor-guardian-catalog img',
+    )];
+    return images.length === 56 && images.every((image) => image.complete && image.naturalWidth > 0);
+  }, { timeout: 30_000 });
+  const audit = await page.evaluate(() => {
+    const cities = [...document.querySelectorAll<HTMLButtonElement>('.editor-castle-stamp')];
+    const guardians = [...document.querySelectorAll<HTMLButtonElement>('.editor-guardian-choice')];
+    const randomTiers = [...document.querySelectorAll<HTMLButtonElement>('.editor-random-guardian')];
+    const cityImages = cities.map((button) => button.querySelector<HTMLImageElement>('img')!);
+    const guardianImages = guardians.map((button) => button.querySelector<HTMLImageElement>('img')!);
+    return {
+      cities: cities.length,
+      guardians: guardians.length,
+      randomTiers: randomTiers.length,
+      namedCities: cities.every((button) => Boolean(button.getAttribute('aria-label'))),
+      namedGuardians: guardians.every((button) => Boolean(button.getAttribute('aria-label'))),
+      iconOnlyGuardians: guardians.every((button) => (button.textContent ?? '').trim() === ''),
+      cityNativeSizes: [...new Set(cityImages.map((image) =>
+        `${image.naturalWidth}x${image.naturalHeight}`))],
+      minCityIcon: Math.min(...cityImages.map((image) => image.getBoundingClientRect().width)),
+      minGuardianIcon: Math.min(...guardianImages.map((image) => image.getBoundingClientRect().width)),
+      guardianFallbacks: document.querySelectorAll('.editor-guardian-fallback').length,
+    };
+  });
+  if (audit.cities !== 6 || audit.guardians !== 50 || audit.randomTiers !== 6
+      || !audit.namedCities || !audit.namedGuardians || !audit.iconOnlyGuardians
+      || audit.cityNativeSizes.join(',') !== '160x160'
+      || audit.minCityIcon < 63 || audit.minGuardianIcon < 45 || audit.guardianFallbacks) {
+    throw new Error(`${label} icon palette audit failed: ${JSON.stringify(audit)}`);
+  }
+}
+
+function verifyPromotionReady(path: string): {
+  hash: string;
+  diagnostics: number;
+  randomGuardian: { tier: number; count: number; resolvedUnitId: string };
+} {
   const contents = readFileSync(path, 'utf8');
   const parsed = parseEditorMapDocument(contents);
   if (!parsed.document) throw new Error(`Export is not a portable map: ${JSON.stringify(parsed.diagnostics)}`);
@@ -171,6 +234,9 @@ function verifyPromotionReady(path: string): { hash: string; diagnostics: number
   const p1Hero = authored.heroes.find((hero) => hero.owner === 'p1');
   const p2Hero = authored.heroes.find((hero) => hero.owner === 'p2');
   const guardian = authored.guardians[0];
+  const randomGuardian = authored.guardians.find((candidate) =>
+    candidate.army.some((stack) => 'randomTier' in stack));
+  const randomStack = randomGuardian?.army.find((stack) => 'randomTier' in stack);
   const preservation = {
     deepwood: deepwood >= 10, mountains: mountains >= 5,
     pointerCancel: authored.tiles[1][25].terrain === 'meadow',
@@ -185,6 +251,11 @@ function verifyPromotionReady(path: string): { hash: string; diagnostics: number
       && (!city.entrance || city.entrance.dx === 2 && city.entrance.dy === 1)),
     heroes: p1Hero?.faction === 'woundWrights' && p2Hero?.faction === 'wildergrass',
     guardian: guardian?.army[0]?.count === 37 && guardian.protects?.startsWith('windmill'),
+    randomGuardian: randomGuardian && randomStack && 'randomTier' in randomStack
+      && randomStack.randomTier === 4
+      && randomStack.count >= Math.round(EDITOR_GUARDIAN_BASE_COUNTS[4] * .8)
+      && randomStack.count <= Math.round(EDITOR_GUARDIAN_BASE_COUNTS[4] * 1.2)
+      && randomGuardian.protects?.startsWith('waystation'),
     artifactReward: authored.rewards.some((reward) => reward.bundle.artifacts.length),
     itemReward: authored.rewards.some((reward) => reward.bundle.items.length),
     resourceReward: authored.rewards.some((reward) => Object.values(reward.bundle.resources)
@@ -199,6 +270,23 @@ function verifyPromotionReady(path: string): { hash: string; diagnostics: number
   if (diagnostics.length) throw new Error(
     `Export is not promotion-ready: ${diagnostics.map((item) => `${item.code}: ${item.message}`).join('; ')}`,
   );
+  if (!randomGuardian || !randomStack || !('randomTier' in randomStack)) {
+    throw new Error('Export lost the authored random-tier guardian placeholder');
+  }
+  const resolveRandomGuardian = (seed: number) => {
+    const converted = convertEditorMapDocument(authored, seed);
+    const runtimeGuardian = converted.map.objects.find((object) =>
+      object.kind === 'guardian' && object.id === randomGuardian.id);
+    if (!runtimeGuardian || runtimeGuardian.kind !== 'guardian') {
+      throw new Error(`Converted random guardian ${randomGuardian.id} is missing`);
+    }
+    return runtimeGuardian.army[0].unitId;
+  };
+  const resolvedUnitId = resolveRandomGuardian(50_500_013);
+  if (resolvedUnitId !== resolveRandomGuardian(50_500_013)
+      || !EDITOR_RANDOM_GUARDIAN_UNITS[randomStack.randomTier].includes(resolvedUnitId)) {
+    throw new Error(`Random guardian resolution is not seed-stable: ${resolvedUnitId}`);
+  }
   const temporaryRoot = mkdtempSync(join(tmpdir(), 'vam-map-promotion-review-'));
   try {
     const authored = join(temporaryRoot, 'src/content/maps/authored');
@@ -217,7 +305,12 @@ function verifyPromotionReady(path: string): { hash: string; diagnostics: number
   } finally {
     rmSync(temporaryRoot, { recursive: true, force: true });
   }
-  return { hash: hashEditorMapDocument(parsed.document), diagnostics: parsed.diagnostics.length };
+  return {
+    hash: hashEditorMapDocument(parsed.document), diagnostics: parsed.diagnostics.length,
+    randomGuardian: {
+      tier: randomStack.randomTier, count: randomStack.count, resolvedUnitId,
+    },
+  };
 }
 
 const browser = await puppeteer.launch({
@@ -257,6 +350,20 @@ try {
   await setLabelValue(page, '.new-map-card', 'Player slots', '2');
   await clickButton(page, 'Create map', '.new-map-card');
   await page.waitForSelector('[data-surface="map-editor-workspace"]');
+  const defaultDetails = await page.$eval('.editor-identity', (node) => ({
+    open: (node as HTMLDetailsElement).open,
+    values: [...node.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')]
+      .map((control) => control.value),
+  }));
+  const expectedDefaults = [
+    'Acceptance Archipelago', 'A custom map created in the in-game editor.',
+    'Local mapmaker', '2-player conquest map',
+    'Claim the realm before your rivals do.', 'Defeat every active opponent.',
+  ];
+  if (defaultDetails.open || JSON.stringify(defaultDetails.values) !== JSON.stringify(expectedDefaults)) {
+    throw new Error(`Advanced map details are not collapsed with valid defaults: ${JSON.stringify(defaultDetails)}`);
+  }
+  await page.screenshot({ path: join(output, '01b-default-workspace-desktop.png') });
   await page.click('.editor-identity summary');
   await setLabelValue(page, '.editor-identity', 'Objective presentation',
     'Chart the archipelago and outlast every rival claim.');
@@ -270,6 +377,7 @@ try {
   if (paletteOrder.map((entry) => entry.order).join(',') !== '1,2,3,4,5,6,7,8,9') {
     throw new Error(`Palette order is not canonical: ${JSON.stringify(paletteOrder)}`);
   }
+  await auditIconPalette(page, 'desktop');
   await page.waitForFunction(() => {
     const images = [...document.querySelectorAll<HTMLImageElement>(
       '.editor-artifact-palette .artifact-sprite, .editor-item-palette .item-sprite',
@@ -401,17 +509,25 @@ try {
 
   await page.$eval('.editor-guardian-choice', (button) => (button as HTMLButtonElement).click());
   await clickCell(page, 14, 7);
+  const defaultGuardian = await page.$eval('.editor-guardian-inspector', (inspector) => {
+    const creature = inspector.querySelector<HTMLSelectElement>(
+      'select[aria-label="Guardian army stack 1 creature"]',
+    )!;
+    const count = inspector.querySelector<HTMLInputElement>(
+      'input[aria-label="Guardian army stack 1 count"]',
+    )!;
+    return { option: creature.selectedOptions[0].textContent?.trim() ?? '', count: Number(count.value) };
+  });
+  const placedTier = Number(defaultGuardian.option.match(/^T([1-6])/)?.[1]);
+  const placedBase = EDITOR_GUARDIAN_BASE_COUNTS[placedTier as keyof typeof EDITOR_GUARDIAN_BASE_COUNTS];
+  if (!placedBase || defaultGuardian.count < Math.round(placedBase * .8)
+      || defaultGuardian.count > Math.round(placedBase * 1.2)) {
+    throw new Error(`Placed guardian did not receive a tier-scaled ±20% count: ${JSON.stringify(defaultGuardian)}`);
+  }
   await setAriaValue(page, 'Guardian army stack 1 count', '37');
-  const guardianCountReachable = await page.$eval(
-    'input[aria-label="Guardian army stack 1 count"]',
-    (input) => {
-      input.scrollIntoView({ block: 'center' });
-      const field = input.getBoundingClientRect();
-      const column = input.closest('.editor-canvas-column')!.getBoundingClientRect();
-      return field.top >= column.top && field.bottom <= column.bottom;
-    },
-  );
-  if (!guardianCountReachable) throw new Error('Selected guardian count is clipped outside the scrollable canvas column.');
+  if (await auditSelectedGuardian(page, 'desktop') !== 37) {
+    throw new Error('Desktop selected guardian count edit did not remain visible and editable.');
+  }
   const protectTarget = await page.$eval('select[aria-label="Guardian protects object"]', (select) =>
     [...(select as HTMLSelectElement).options]
       .find((option) => (option.textContent ?? '').includes('windmill'))?.value ?? '');
@@ -426,6 +542,33 @@ try {
     throw new Error(`Placed structure was not offered as a guardian target: ${JSON.stringify(placementState)}`);
   }
   await page.select('select[aria-label="Guardian protects object"]', protectTarget);
+  await frames(page);
+  await page.screenshot({ path: join(output, '03a-selected-guardian-desktop.png') });
+
+  await clickButton(page, 'Waystation', '.editor-structure-palette');
+  await clickCell(page, 18, 13);
+  await clickButton(page, 'Random tier 4 creature', '.editor-random-guardian-grid');
+  await clickCell(page, 18, 12);
+  const randomGuardian = await page.$eval('.editor-guardian-inspector', (inspector) => ({
+    creature: inspector.querySelector<HTMLSelectElement>(
+      'select[aria-label="Guardian army stack 1 creature"]',
+    )!.value,
+    count: Number(inspector.querySelector<HTMLInputElement>(
+      'input[aria-label="Guardian army stack 1 count"]',
+    )!.value),
+  }));
+  if (randomGuardian.creature !== 'random:4'
+      || randomGuardian.count < Math.round(EDITOR_GUARDIAN_BASE_COUNTS[4] * .8)
+      || randomGuardian.count > Math.round(EDITOR_GUARDIAN_BASE_COUNTS[4] * 1.2)) {
+    throw new Error(`Random-tier stamp did not preserve its tier-scaled placeholder: ${JSON.stringify(randomGuardian)}`);
+  }
+  const randomProtectTarget = await page.$eval(
+    'select[aria-label="Guardian protects object"]',
+    (select) => [...(select as HTMLSelectElement).options]
+      .find((option) => (option.textContent ?? '').includes('waystation'))?.value ?? '',
+  );
+  if (!randomProtectTarget) throw new Error('Placed Waystation was not offered to the random guardian');
+  await page.select('select[aria-label="Guardian protects object"]', randomProtectTarget);
   await frames(page);
 
   await page.$eval('.editor-artifact-palette .editor-icon-button', (button) =>
@@ -487,6 +630,7 @@ try {
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   await page.$eval('.editor-canvas-panel', (node) => node.scrollIntoView({ block: 'start' }));
   await auditLayout(page, '390px workspace');
+  await auditIconPalette(page, '390px');
   const narrowCollectibles = await page.evaluate(() => ({
     artifacts: document.querySelectorAll('.editor-artifact-palette .artifact-sprite').length,
     items: document.querySelectorAll('.editor-item-palette .item-sprite').length,
@@ -499,8 +643,16 @@ try {
     throw new Error(`Narrow collectible editor palette is incomplete: ${JSON.stringify(narrowCollectibles)}`);
   }
   await page.screenshot({ path: join(output, '04-workspace-390.png') });
+  await clickButton(page, 'Select / move', '.editor-toolstrip');
+  await clickCell(page, 14, 7);
+  if (await auditSelectedGuardian(page, '390px') !== 37) {
+    throw new Error('390px selected guardian count edit did not remain visible and editable.');
+  }
+  await page.screenshot({ path: join(output, '04a-selected-guardian-390.png') });
   await page.$eval('.editor-artifact-palette', (node) => node.scrollIntoView({ block: 'start' }));
   await page.screenshot({ path: join(output, '04c-collectible-palettes-390.png') });
+  await clickButton(page, 'Select / move', '.editor-toolstrip');
+  await clickCell(page, 17, 17);
   await cellPoint(page, 17, 17);
   await (await page.$('.editor-canvas-viewport'))!.screenshot({
     path: join(output, '04b-neutral-city-canvas-390.png'),
@@ -593,7 +745,7 @@ try {
     result: 'Map editor review passed', output, palette: paletteOrder.map((entry) => entry.heading),
     mapHash: promotion.hash, exportDiagnostics: promotion.diagnostics,
     largeMap: { dimensions: '128x128', creationMs: Math.round(creationMs), paintMs: Math.round(paintMs) },
-    collectibles: collectiblePalette, screenshots: 13,
+    collectibles: collectiblePalette, randomGuardian: promotion.randomGuardian, screenshots: 16,
   }, null, 2));
 } finally {
   await browser.close();

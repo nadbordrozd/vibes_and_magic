@@ -139,6 +139,12 @@ function assertAudit(label: string, audit: Awaited<ReturnType<typeof auditBook>>
   }
 }
 
+function manaFromVitals(text: string | null): number {
+  const mana = text?.match(/Mana\s*(\d+)\//)?.[1];
+  if (mana === undefined) throw new Error(`Could not read mana from spellbook vitals: ${text}`);
+  return Number(mana);
+}
+
 async function openAdventureBook(page: Page) {
   const status = await page.evaluate(() => {
     const buttons = [...document.querySelectorAll<HTMLButtonElement>('.adventure-spell-button')];
@@ -211,6 +217,31 @@ try {
     }
     assertAudit(`adventure detail ${viewport.name}`, await auditBook(page, true));
     await page.screenshot({ path: `${outputDir}/adventure-upgraded-detail-${viewport.name}.png` });
+    await page.locator('[data-cast-spell-id="beacon"]').click();
+    await page.waitForSelector('.adventure-spell-target');
+    if (await page.$('.stitched-spellbook')) {
+      throw new Error('Adventure Cast did not leave selection for the explicit confirmation step');
+    }
+    const cityOptions = await page.$$eval('.adventure-spell-target select option', (options) =>
+      options.map((option) => (option as HTMLOptionElement).value).filter(Boolean));
+    if (cityOptions.length < 2) throw new Error('Upgraded Beacon did not offer friendly-city targets');
+    await page.select('.adventure-spell-target select', cityOptions[cityOptions.length - 1]);
+    await page.waitForFunction(() => {
+      const button = document.querySelector<HTMLButtonElement>(
+        '.adventure-spell-target .dialog-actions .primary',
+      );
+      return Boolean(button && !button.disabled);
+    });
+    await page.screenshot({ path: `${outputDir}/adventure-cast-confirm-${viewport.name}.png` });
+    await page.locator('.adventure-spell-target .dialog-actions .primary').click();
+    await page.waitForSelector('.adventure-spell-target', { hidden: true });
+    await openAdventureBook(page);
+    const manaAfterAdventureCast = await page.$eval('.spellbook-vitals', (node) => node.textContent);
+    if (manaFromVitals(manaAfterAdventureCast) >= manaFromVitals(manaBeforeAdventureSelection)) {
+      throw new Error(`Confirmed adventure Cast did not spend mana: ${manaAfterAdventureCast}`);
+    }
+    await page.locator('.spellbook-close').click();
+    await page.waitForSelector('.stitched-spellbook', { hidden: true });
 
     await install(page, combatFixture(), '.combat-shell');
     await page.locator('.spellbook-button').click();
@@ -227,8 +258,34 @@ try {
     }
     assertAudit(`combat detail ${viewport.name}`, await auditBook(page, true));
     await page.screenshot({ path: `${outputDir}/combat-temporary-detail-${viewport.name}.png` });
+    await page.locator('[data-cast-spell-id="forgeSpark"]').click();
+    await page.waitForSelector('.combat-targeting-banner');
+    if (await page.$('.stitched-spellbook')) {
+      throw new Error('Combat Cast did not leave selection for explicit targeting');
+    }
+    const targetingStage = await page.$eval('.combat-targeting-banner', (banner) =>
+      banner.getAttribute('data-target-stage'));
+    if (targetingStage === 'targetId') {
+      const target = await page.$('.battle-hex.target-choice');
+      if (!target) throw new Error('Forge Spark targeting offered no legal stack');
+      await target.click();
+    } else if (targetingStage !== 'confirm') {
+      throw new Error(`Unexpected Forge Spark targeting stage: ${targetingStage}`);
+    }
+    await page.waitForFunction(() => {
+      const confirm = document.querySelector<HTMLButtonElement>('.combat-targeting-banner .confirm-target');
+      return Boolean(confirm && !confirm.disabled);
+    });
+    await page.screenshot({ path: `${outputDir}/combat-cast-confirm-${viewport.name}.png` });
+    await page.locator('.combat-targeting-banner .confirm-target').click();
+    await page.waitForSelector('.combat-targeting-banner', { hidden: true });
+    const combatManaAfter = await page.$eval('.spellbook-button', (button) => button.textContent ?? '');
+    if (Number(combatManaAfter.match(/(\d+)\s*$/)?.[1])
+        >= manaFromVitals(manaBeforeCombatSelection)) {
+      throw new Error(`Confirmed combat Cast did not spend mana: ${combatManaAfter}`);
+    }
   }
-  console.log('Spellbook browser review passed: 8 screenshots; desktop and 390px list/detail audits clean.');
+  console.log('Spellbook browser review passed: 12 screenshots; desktop and 390px list/detail/confirmed-Cast audits clean.');
 } finally {
   await browser.close();
 }

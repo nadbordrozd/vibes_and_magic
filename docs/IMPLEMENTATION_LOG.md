@@ -677,3 +677,23 @@ Beads epic `vibes_and_magic-6sf`.
   map-editor review had zero diagnostics and measured the 128×128 sample at 2.18 seconds creation and
   4.33 seconds paint. Focused tests, pretest, production build, diff check, and full-suite results are
   recorded in the task handoff.
+
+## 2026-08-11 — Integrated Cities, spellbook, sprites, and editor release acceptance
+
+- Strengthened the deterministic map-editor browser journey to assert the refinement contract in the
+  real application: collapsed valid metadata/objective defaults, canonical nine-section ordering,
+  six native 160×160 faction-city stamps, 50 icon-only guardian creature choices, six random-tier
+  placeholders, tier-scaled ±20% counts, seed-stable placeholder conversion, and selected guardian
+  count reachability at both 1440×1000 and 390×844. The promotion-ready export had zero diagnostics,
+  hash `1cfae590`, and a tier-4 count-12 placeholder that deterministically resolved to Aurochs Herd
+  for seed 50,500,013. Sixteen captures and both exported maps are under
+  `.pixel-work/review/map-editor/`.
+- Extended the shared spellbook browser review from selection-only coverage through explicit Cast
+  confirmation. Upgraded Beacon now selects a friendly City and commits its mana/movement spend;
+  resonant Forge-Spark enters explicit stack targeting, confirms, and spends mana. The twelve
+  desktop/390 list, detail, and confirmation captures are under `.pixel-work/review/spellbook/`.
+- Re-ran collectible, mine, City/adventure-atlas, promotion, asset, PixelLab, HoMM2-boundary,
+  map-lint, spec-link, UX, build, and regression gates. Focused release coverage passed 134/134.
+  The complete suite passed 752/753 tests in 78/79 files; the sole failure remains the explicitly
+  accepted pre-existing seed-1/day-56 no-winner assertion at
+  `src/core/__tests__/mechanics-regression.test.ts:231`.
