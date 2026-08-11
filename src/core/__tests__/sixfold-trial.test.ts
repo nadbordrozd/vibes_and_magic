@@ -32,7 +32,7 @@ describe('The Sixfold Trial advanced combat showcase', () => {
     expect(lintMap(map, SIXFOLD_PLAYER_SETUP.map((slot) => slot.entrance))).toEqual([]);
     expect(lintSixfoldTrial(map)).toEqual([]);
     expect(sixfoldMetrics(map)).toMatchObject({
-      chests: 36, artifacts: 18, guardians: 18, roads: 258,
+      chests: 36, artifacts: 18, guardians: 18, roads: 226,
     });
     expect(new Set(SIXFOLD_ARTIFACTS).size).toBe(18);
     expect(SIXFOLD_ARTIFACTS.every((id) =>

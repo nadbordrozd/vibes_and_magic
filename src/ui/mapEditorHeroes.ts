@@ -3,6 +3,7 @@ import { FACTIONS } from '../content/factions';
 import { FACTION_HEROES, HEROES } from '../content/heroes';
 import { FACTION_UNITS } from '../content/units';
 import type { ArmyStack, FactionId, HeroDefinitionId, PlayerId, UnitId } from '../core/types';
+import { CITY_ENTRANCE } from '../core/map/occupancy';
 import {
   createDefaultEditorHero, editorEntityIds, stableEntityId,
   EDITOR_ARMY_UNIT_IDS, isEditorArmyUnitId,
@@ -60,8 +61,8 @@ export function canPlaceEditorHero(
 ) {
   const castle = owner ? document.castles.find((candidate) => {
     if (candidate.owner !== owner) return false;
-    return candidate.position.x + 1 === position.x
-      && candidate.position.y + 1 === position.y;
+    return candidate.position.x + CITY_ENTRANCE.dx === position.x
+      && candidate.position.y + CITY_ENTRANCE.dy === position.y;
   }) : undefined;
   // Canonical starts may stand at their same-owner castle entrance. Only that castle is ignored;
   // another hero, object, guardian, pickup, castle, or the map bounds can still reject the cell.

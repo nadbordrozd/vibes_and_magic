@@ -538,7 +538,7 @@ function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
       ? `Trade Goods sold for ${sold} gold.`
       : learned.length
       ? `Hero learned ${learned.length} Mage Guild spell${learned.length === 1 ? '' : 's'}.`
-      : 'Hero entered the castle.';
+      : 'Hero entered the city.';
     if (buildingIsActive(castle, 'bargainPost')
         && castle.bargainOfferWeek !== state.week && hero.debts.length < 2) {
       castle.bargainOfferWeek = state.week;
@@ -584,6 +584,7 @@ function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
       castle.vault = undefined;
     }
     castle.owner = hero.owner;
+    castle.garrisonSource = 'explicit';
     castle.wardenHeroId = null;
     const sold = sellTradeGoods(state, hero, entrance);
     state.lastMessage = sold > 0

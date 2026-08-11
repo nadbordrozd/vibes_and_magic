@@ -487,7 +487,7 @@ export function AdventureScreen({
                 className={castleHere?.id === castle.id ? 'hero-present' : ''}
                 disabled={Boolean(movement)} title={`${castleHere?.id === castle.id ? 'Enter' : 'View'} ${
                   CASTLE_NAMES[castle.faction]}.`} onClick={() => onOpenCastle(castle.id)}>
-                <span>{castleHere?.id === castle.id ? 'Enter' : 'Town'}</span>
+                <span>{castleHere?.id === castle.id ? 'Enter' : 'City'}</span>
                 <b>{CASTLE_NAMES[castle.faction]}</b>
               </button>)}
             </div>
@@ -530,7 +530,7 @@ export function AdventureScreen({
           </div>
           {player.castlelessDays > 0 && (
             <div className="loss-countdown">
-              No castle: {7 - player.castlelessDays} day{
+              No city: {7 - player.castlelessDays} day{
                 7 - player.castlelessDays === 1 ? '' : 's'
               } remaining
             </div>

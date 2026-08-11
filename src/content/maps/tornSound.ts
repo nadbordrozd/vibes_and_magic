@@ -10,8 +10,11 @@ export const TORN_SOUND_CASTLE_POSITIONS: Coord[] = [{ x: 2, y: 12 }, { x: 29, y
 function terrain(): TerrainTile[][] {
   return Array.from({ length: TORN_SOUND_HEIGHT }, (_, y) =>
     Array.from({ length: TORN_SOUND_WIDTH }, (_, x): TerrainTile => {
-      const west = x >= 1 && x <= 8 && y >= 7 && y <= 16;
-      const east = x >= 23 && x <= 30 && y >= 7 && y <= 16;
+      if ((y === 13 && x >= 5 && x <= 8) || (y === 12 && x >= 23 && x <= 26)) {
+        return tile('water', 'coastal');
+      }
+      const west = x >= 0 && x <= 8 && y >= 7 && y <= 16;
+      const east = x >= 23 && x <= 31 && y >= 7 && y <= 16;
       const centre = x >= 13 && x <= 19 && y >= 8 && y <= 15;
       const islet = (x >= 14 && x <= 17 && y >= 2 && y <= 4)
         || (x >= 14 && x <= 18 && y >= 18 && y <= 20);

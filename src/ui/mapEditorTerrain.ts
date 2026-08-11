@@ -8,6 +8,7 @@ import { editorEntityIds, stableEntityId, type EditorMapObject } from '../core/m
 import {
   adventurePropByName, type AdventurePropDefinition,
 } from '../content/adventureProps';
+import { CITY_FOOTPRINT } from '../core/map/occupancy';
 
 export interface EditorCell { x: number; y: number }
 export interface EditorMapSize { width: number; height: number }
@@ -409,7 +410,7 @@ function occupiedEntityCells(document: EditorMapDocument, exceptEntityId?: strin
     editorFootprintCells(position, footprint).forEach((cell) => cells.add(cellKey(cell)));
   };
   document.castles.forEach((castle) => {
-    if (castle.id !== exceptEntityId) add(castle.position, castle.footprint ?? { w: 3, h: 2 });
+    if (castle.id !== exceptEntityId) add(castle.position, castle.footprint ?? CITY_FOOTPRINT);
   });
   document.heroes.forEach((hero) => {
     if (hero.id !== exceptEntityId) add(hero.position, { w: 1, h: 1 });

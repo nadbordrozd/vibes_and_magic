@@ -3,7 +3,9 @@ import type {
 } from '../../core/types';
 import { FACTION_UNITS, UNITS } from '../units';
 import { tile } from '../terrain';
-import { materializeGuardians, type AuthoredGuardian } from './occupancyAuthoring';
+import {
+  materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
+} from './occupancyAuthoring';
 import { validateMap } from './borderMarches';
 
 export const MANYWHERE_WIDTH = 48;
@@ -133,7 +135,7 @@ function authoredObjects(seed: number): MapObject[] {
     { id: 'manywhere-lighthouse', kind: 'lighthouse', position: { x: 34, y: 34 }, owner: null },
     { id: 'manywhere-watermill', kind: 'watermill', position: { x: 4, y: 31 }, owner: null },
     { id: 'manywhere-windmill', kind: 'windmill', position: { x: 8, y: 31 }, owner: null, rareResource: seed % 2 ? 'iron' : 'essence' },
-    { id: 'manywhere-trading', kind: 'tradingCamp', position: { x: 12, y: 31 }, owner: null },
+    { id: 'manywhere-trading', kind: 'tradingCamp', position: { x: 11, y: 31 }, owner: null },
     { id: 'manywhere-sparring', kind: 'sparringStone', position: { x: 4, y: 24 }, visitedBy: [] },
     { id: 'manywhere-listening', kind: 'listeningStones', position: { x: 8, y: 24 }, visitedBy: [] },
     { id: 'manywhere-draught', kind: 'longDraught', position: { x: 12, y: 24 }, visitedBy: [] },
@@ -190,10 +192,10 @@ export function createManywhere(seed = 1): GameMap {
     id: 'manywhere', name: 'Manywhere', seed,
     width: MANYWHERE_WIDTH, height: MANYWHERE_HEIGHT, terrain: terrain(),
     objects: authoredObjects(seed),
-    roads: [
+    roads: trimRoadsForCities([
       ...Array.from({ length: 40 }, (_, index) => ({ x: index + 4, y: 7 })),
       ...Array.from({ length: 23 }, (_, index) => ({ x: 24, y: index + 7 })),
-    ],
+    ], [...MANYWHERE_CASTLE_POSITIONS, ...MANYWHERE_NEUTRAL_TOWNS.map((town) => town.entrance)]),
     seams: Array.from({ length: 18 }, (_, index) => ({ x: 24, y: index + 9 })),
     victory: { type: 'none', flavor: 'Go until the road has nothing left to surprise you with.', mechanics: 'Sandbox: retire when you are ready.' },
   }, guardians());

@@ -59,7 +59,7 @@ describe('castle building cards milestone', () => {
 
     castle.bannedBuildings.push('marketplace');
     expect(buildingStatus(state, castle, 'marketplace')).toMatchObject({
-      state: 'unavailable', color: 'grey', reason: 'Cannot be built in this castle.',
+      state: 'unavailable', color: 'grey', reason: 'Cannot be built in this city.',
     });
     castle.bannedBuildings = [];
     state.players.p1.resources = { gold: 0, timber: 0, iron: 0, essence: 0 };

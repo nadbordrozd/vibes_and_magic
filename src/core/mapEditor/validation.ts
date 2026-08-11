@@ -10,7 +10,8 @@ import { TERRAIN } from '../../content/terrain';
 import { UNITS } from '../../content/units';
 import { adventurePropByName } from '../../content/adventureProps';
 import { PLAYER_IDS } from '../types';
-import { EDITOR_CATALOG_HASH } from './catalog';
+import { CITY_ENTRANCE, CITY_FOOTPRINT } from '../map/occupancy';
+import { EDITOR_CATALOG_HASH, LEGACY_3X2_EDITOR_CATALOG_HASH } from './catalog';
 import { EDITOR_CASTLE_VARIANTS_BY_FACTION, isEditorArmyUnitId } from './defaults';
 import type {
   EditorDiagnosticStage, EditorDiagnosticTarget, EditorMapDiagnostic, EditorMapDocument,
@@ -159,6 +160,11 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
     report('compatibility.catalog.mismatch',
       `Map catalog ${value.compatibility.catalogHash} differs from installed ${EDITOR_CATALOG_HASH}.`,
       'compatibility', { kind: 'document', path: 'compatibility.catalogHash' }, 'warning');
+    if (value.compatibility.catalogHash === LEGACY_3X2_EDITOR_CATALOG_HASH
+        && Array.isArray(value.castles) && value.castles.length > 0) report(
+      'compatibility.city_geometry.migration_required',
+      'This map uses the former 3×2 settlement anchors. Run “Migrate cities to 5×2”; each anchor will move one cell west to preserve its gate, then resolve any reported bounds or overlaps.',
+      'compatibility', { kind: 'document', path: 'castles' });
   }
 
   let width = -1; let height = -1;
@@ -318,6 +324,11 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
       'structure', target);
     army.forEach((stack, index) => {
       if (!isRecord(stack)) { report('army.stack.invalid', `Army stack ${index} is invalid.`, 'structure', target); return; }
+      const allowedStackFields = allowRandomTier
+        ? new Set(['unitId', 'randomTier', 'count']) : new Set(['unitId', 'count']);
+      for (const key of Object.keys(stack)) if (!allowedStackFields.has(key)) report(
+        'army.stack.field.unsupported', `Army stack ${index + 1} does not support ${key}.`,
+        'structure', { ...target, path: `army[${index}].${key}` } as EditorDiagnosticTarget);
       const hasUnit = typeof stack.unitId === 'string';
       const hasRandomTier = stack.randomTier !== undefined;
       if (allowRandomTier && hasRandomTier) {
@@ -337,34 +348,36 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
 
   const castles = Array.isArray(value.castles) ? value.castles : [];
   castles.forEach((castle, index) => {
-    if (!isRecord(castle)) { report('castle.invalid', `Castle ${index} must be an object.`, 'schema'); return; }
+    if (!isRecord(castle)) { report('castle.invalid', `City ${index} must be an object.`, 'schema'); return; }
     const target = registerEntity(castle, 'castle', index);
     validateFields(castle, [
       'id', 'position', 'owner', 'faction', 'footprint', 'entrance', 'buildings',
       'bannedBuildings', 'available', 'garrison', 'guildDeck', 'variant', 'vault', 'flavor',
     ], target);
     validateCoord(castle.position, target, 'position');
-    validateFootprint(castle, target, { w: 3, h: 2 }, { dx: 1, dy: 1 });
+    validateFootprint(castle, target, CITY_FOOTPRINT, CITY_ENTRANCE);
     if (castle.footprint !== undefined && (!isRecord(castle.footprint)
-        || castle.footprint.w !== 3 || castle.footprint.h !== 2)) report(
-      'castle.footprint.noncanonical', 'Castles use the canonical 3×2 footprint.',
+        || castle.footprint.w !== CITY_FOOTPRINT.w
+        || castle.footprint.h !== CITY_FOOTPRINT.h)) report(
+      'castle.footprint.noncanonical', 'Cities use the canonical 5×2 footprint.',
       'catalog', target);
     if (castle.entrance !== undefined && (!isRecord(castle.entrance)
-        || castle.entrance.dx !== 1 || castle.entrance.dy !== 1)) report(
-      'castle.entrance.noncanonical', 'Castle entrance must be bottom-center at +1,+1.',
+        || castle.entrance.dx !== CITY_ENTRANCE.dx
+        || castle.entrance.dy !== CITY_ENTRANCE.dy)) report(
+      'castle.entrance.noncanonical', 'City entrance must be bottom-center at +2,+1.',
       'catalog', target);
     if (castle.owner !== 'neutral' && !playerIds.has(String(castle.owner))) report(
-      'reference.owner.unknown', `Castle owner ${String(castle.owner)} is not a declared slot.`,
+      'reference.owner.unknown', `City owner ${String(castle.owner)} is not a declared slot.`,
       'reference', target);
     if (!Object.hasOwn(FACTIONS, String(castle.faction))) report('catalog.faction.unknown',
-      `Unknown castle faction: ${String(castle.faction)}.`, 'catalog', target);
+      `Unknown city faction: ${String(castle.faction)}.`, 'catalog', target);
     if (castle.variant !== undefined) {
       const variants = EDITOR_CASTLE_VARIANTS_BY_FACTION[
         String(castle.faction) as keyof typeof EDITOR_CASTLE_VARIANTS_BY_FACTION
       ];
       if (typeof castle.variant !== 'string' || !variants?.includes(castle.variant as never)) report(
         'castle.variant.unknown',
-        `Variant ${String(castle.variant)} has no native ${String(castle.faction)} castle.`,
+        `Variant ${String(castle.variant)} has no native ${String(castle.faction)} city.`,
         'catalog', { ...target, path: 'variant' } as EditorDiagnosticTarget);
     }
     if (castle.garrison !== undefined) {
@@ -373,13 +386,13 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
         const units = castle.garrison.flatMap((stack) => isRecord(stack)
           && typeof stack.unitId === 'string' ? [stack.unitId] : []);
         if (new Set(units).size !== units.length) report('castle.garrison.duplicate_unit',
-          'Castle garrison must combine duplicate creature stacks.', 'structure', target);
+          'City garrison must combine duplicate creature stacks.', 'structure', target);
       }
     }
     if (castle.available !== undefined && (!Array.isArray(castle.available)
       || castle.available.length !== 6 || castle.available.some((count) =>
         !isFiniteInteger(count) || count < 0))) report('castle.available.invalid',
-      'Castle availability must contain six nonnegative integer tier counts.',
+      'City availability must contain six nonnegative integer tier counts.',
       'structure', target);
     for (const key of ['buildings', 'bannedBuildings']) if (castle[key] !== undefined) {
       if (!Array.isArray(castle[key])) report('castle.buildings.invalid', `${key} must be an array.`,
@@ -408,7 +421,7 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
     if (castle.guildDeck !== undefined) {
       if (!Array.isArray(castle.guildDeck)
           || castle.guildDeck.length > Object.keys(SPELLS).length) report(
-        'castle.guild.invalid', 'Castle guild deck must be a bounded canonical spell list.',
+        'castle.guild.invalid', 'City guild deck must be a bounded canonical spell list.',
         'structure', target);
       else {
         const seen = new Set<string>();
@@ -423,20 +436,20 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
     }
     if (castle.vault !== undefined) {
       if (!isRecord(castle.vault)) report('castle.vault.invalid',
-        'Castle vault must be a resource object.', 'structure', target);
+        'City vault must be a resource object.', 'structure', target);
       else {
         if ([...RESOURCE_IDS].some((resource) => !Object.hasOwn(castle.vault!, resource))) report(
-          'castle.vault.invalid', 'Castle vault must state all four resource amounts.',
+          'castle.vault.invalid', 'City vault must state all four resource amounts.',
           'structure', target);
         for (const [resource, amount] of Object.entries(castle.vault)) {
           if (!RESOURCE_IDS.has(resource) || !isFiniteInteger(amount) || amount < 0) report(
-            'castle.vault.invalid', `Invalid castle vault entry ${resource}.`, 'structure', target);
+            'castle.vault.invalid', `Invalid city vault entry ${resource}.`, 'structure', target);
         }
       }
     }
     if (castle.flavor !== undefined && (typeof castle.flavor !== 'string'
         || !castle.flavor.trim())) report('castle.flavor.invalid',
-      'Explicit castle flavor must be nonempty text.', 'structure', target);
+      'Explicit city flavor must be nonempty text.', 'structure', target);
   });
 
   const heroes = Array.isArray(value.heroes) ? value.heroes : [];
@@ -712,7 +725,7 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
       else occupied.set(key, String(entity.id));
     }
   };
-  castles.forEach((castle) => { if (isRecord(castle)) occupy(castle, { w: 3, h: 2 }); });
+  castles.forEach((castle) => { if (isRecord(castle)) occupy(castle, CITY_FOOTPRINT); });
   heroes.forEach((hero) => {
     if (!isRecord(hero) || !isRecord(hero.position)
         || !isFiniteInteger(hero.position.x) || !isFiniteInteger(hero.position.y)) return;
@@ -723,7 +736,8 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
     const ownCastleEntrance = castles.some((castle) => {
       if (!isRecord(castle) || castle.owner !== heroOwner || !isRecord(castle.position)
           || !isFiniteInteger(castle.position.x) || !isFiniteInteger(castle.position.y)) return false;
-      return castle.position.x + 1 === heroX && castle.position.y + 1 === heroY;
+      return castle.position.x + CITY_ENTRANCE.dx === heroX
+        && castle.position.y + CITY_ENTRANCE.dy === heroY;
     });
     const priorHero = heroOccupied.get(key);
     if (priorHero) report('entity.overlap', `${String(hero.id)} overlaps ${priorHero} at ${key}.`,
@@ -776,7 +790,7 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
     const hasStart = castles.some((castle) => isRecord(castle) && castle.owner === player.id)
       || heroes.some((hero) => isRecord(hero) && hero.owner === player.id);
     if (!hasStart) report('playable.player_start.required',
-      `${String(player.id)} needs an owned starting hero or castle.`, 'playable',
+      `${String(player.id)} needs an owned starting hero or city.`, 'playable',
       { kind: 'entity', entityId: String(player.id) });
   }
   return diagnostics;

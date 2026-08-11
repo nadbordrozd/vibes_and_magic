@@ -105,7 +105,7 @@ function moveToCastle(state: GameState, hero: Hero, action: AdventureCast, plus:
     ? castles.find((castle) => castle.id === action.castleId)
     : [...castles].sort((a, b) => distance(hero.position, a.position)
       - distance(hero.position, b.position) || a.id.localeCompare(b.id))[0];
-  if (!chosen) throw new Error('No eligible friendly castle');
+  if (!chosen) throw new Error('No eligible friendly city');
   hero.position = castleEntrance(chosen);
   hero.pathMemory = [];
 }
@@ -319,7 +319,7 @@ function resolveWild(state: GameState, hero: Hero, action: AdventureCast, plus: 
   } else if (action.spellId === 'wildGrowth') {
     const castle = state.castles.find((candidate) => candidate.id === action.castleId
       && candidate.owner === hero.owner);
-    if (!castle) throw new Error('Choose an owned castle or dwelling');
+    if (!castle) throw new Error('Choose an owned city or dwelling');
     castle.growthEffects.push({
       id: `wild-growth-${hero.id}-${state.week}-${castle.id}`,
       multiplier: plus ? 1.75 : 1.5, expiresWeek: state.week,

@@ -30,7 +30,7 @@ export const INSPECTION_KIND_NAMES: Record<InspectionKind, string> = {
   spell: 'Spell', artifact: 'Artifact', item: 'Consumable', skill: 'Secondary skill',
   hero: 'Hero', counter: 'Counter', enchantment: 'Enchantment', omen: 'Weekly omen',
   battleTile: 'Battlefield tile', decoration: 'Landscape', ability: 'Creature ability',
-  castle: 'Castle',
+  castle: 'City',
 };
 export interface InspectionTarget { kind: InspectionKind; id: string }
 export interface InspectionCard {

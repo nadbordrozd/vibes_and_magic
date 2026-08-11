@@ -2,6 +2,7 @@ import type { GuardianReward, MapObject, Resources, TerrainTile } from '../types
 import type { GameMap, ItemInstance } from '../types';
 import { emptyArmy, makeArmy } from '../army';
 import { createInitialCastle, createInitialHero } from '../game/setup';
+import { CITY_ENTRANCE, CITY_FOOTPRINT } from '../map/occupancy';
 import { logisticsRate } from '../heroBehaviors';
 import { HERO_MOVE_POINTS } from '../../content/constants';
 import { cloneEditorMapDocument } from './codec';
@@ -169,8 +170,8 @@ export function convertEditorMapDocument(
   };
 
   const castles = document.castles.map((authored) => {
-    const footprint = authored.footprint ?? { w: 3, h: 2 };
-    const entrance = authored.entrance ?? { dx: 1, dy: 1 };
+    const footprint = authored.footprint ?? CITY_FOOTPRINT;
+    const entrance = authored.entrance ?? CITY_ENTRANCE;
     const entrancePosition = {
       x: authored.position.x + entrance.dx,
       y: authored.position.y + entrance.dy,
@@ -184,8 +185,15 @@ export function convertEditorMapDocument(
     if (authored.buildings) castle.buildings = [...authored.buildings];
     if (authored.bannedBuildings) castle.bannedBuildings = [...authored.bannedBuildings];
     if (authored.available) castle.available = [...authored.available];
-    if (authored.garrison) castle.garrison = makeArmy(authored.garrison);
-    else castle.garrison = emptyArmy();
+    if (authored.garrison !== undefined) {
+      castle.garrison = makeArmy(authored.garrison);
+      castle.garrisonSource = 'explicit';
+    } else if (authored.owner !== 'neutral') {
+      castle.garrison = emptyArmy();
+      castle.garrisonSource = 'explicit';
+    } else {
+      castle.garrisonSource = 'inherited';
+    }
     if (authored.guildDeck) castle.guildDeck = [...authored.guildDeck];
     if (authored.variant) castle.variant = authored.variant;
     if (authored.vault) castle.vault = { ...authored.vault };

@@ -81,15 +81,15 @@ describe('multi-hero strategy AI', () => {
     if (!guardian || guardian.kind !== 'guardian') throw new Error('Mine guardian missing');
     mine.cleared = false;
     mine.owner = null;
-    mine.position = { x: 6, y: 10 };
+    mine.position = { x: 6, y: 11 };
     guardian.army = [{ unitId: 'yeoman', count: 1 }];
     guardian.split = true;
     guardian.position = { x: 6, y: 12 };
     item.collected = false;
-    item.position = { x: 4, y: 10 };
+    item.position = { x: 4, y: 11 };
     vein.depleted = false;
     vein.owner = null;
-    vein.position = { x: 5, y: 10 };
+    vein.position = { x: 5, y: 11 };
 
     expect(chooseStrategyObjective(state, hero, 'main', new Set())?.id)
       .toBe('west-gold');

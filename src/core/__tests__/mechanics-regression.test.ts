@@ -18,7 +18,7 @@ describe('mechanics regressions', () => {
     const actions: Action[] = [
       { type: 'BUILD', castleId: 'p1-castle', buildingId: 'townHall' },
       { type: 'RECRUIT', castleId: 'p1-castle', tier: 1, count: 2 },
-      { type: 'MOVE_HERO', destination: { x: 4, y: 10 } },
+      { type: 'MOVE_HERO', destination: { x: 3, y: 11 } },
       { type: 'END_TURN' },
     ];
     const first = actions.reduce(apply, createGame(options));

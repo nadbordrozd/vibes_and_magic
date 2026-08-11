@@ -5,8 +5,12 @@ import type {
 } from '../../core/types';
 import { terrainId, terrainIdAt, tile } from '../terrain';
 import {
-  materializeGuardians, type AuthoredGuardian,
+  materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
 } from './occupancyAuthoring';
+
+export const BORDER_MARCHES_CITY_ENTRANCES: readonly Coord[] = [
+  { x: 3, y: 10 }, { x: 24, y: 10 },
+];
 
 function makeTerrain(): TerrainTile[][] {
   return Array.from({ length: MAP_HEIGHT }, (_, y) =>
@@ -251,8 +255,11 @@ export function createBorderMarches(seed = 1): GameMap {
     terrain,
     objects: makeObjects(seed),
     seams: [{ x: 13, y: 10 }],
-    roads: Array.from({ length: 22 }, (_, index) => ({ x: index + 3, y: 10 }))
-      .filter((position) => !['mountain', 'water'].includes(terrainId(terrain[position.y][position.x]))),
+    roads: trimRoadsForCities(
+      Array.from({ length: 22 }, (_, index) => ({ x: index + 3, y: 10 }))
+        .filter((position) => !['mountain', 'water'].includes(terrainId(terrain[position.y][position.x]))),
+      BORDER_MARCHES_CITY_ENTRANCES,
+    ),
     victory: {
       type: 'conquest',
       flavor: 'Break every rival banner and keep your own flying.',

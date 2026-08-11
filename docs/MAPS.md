@@ -27,6 +27,27 @@ coverage is listed in [`50_MAP_EDITOR.md`](50_MAP_EDITOR.md#reproducible-accepta
 
 ## Starts and terrain
 
+### Canonical 5×2 city migration
+
+All eight legacy built-in factories now preserve their former city entrance coordinates while
+deriving top-left anchors with offset `(2,1)`. Their full ten-cell contacts and single gates pass the
+same bounds, terrain, overlap, reachability, and guard checks as portable maps.
+
+- Border Marches keeps both gates and reconnects each road at the centered approach.
+- Crosstitch and Tailor's Kit keep four gates; the north-west iron mine, south-east timber mine,
+  and two Kit guardians move clear of the widened starts.
+- Torn Sound keeps both coastal gates, widens their island ground honestly, and cuts connected
+  one-cell harbor channels so both city footprints remain passable while Shipyards still launch.
+- Manywhere keeps all seven gates and moves the Free Town trading camp clear of its wider contact.
+- Grand Muster keeps its seven gates and carves exact five-cell city rows before road trimming.
+- Crooked Crown and Sixfold Trial keep all four and six gates respectively and trim/reconnect roads
+  that formerly ran beneath now-blocking city cells. Their pinned road totals are 564 and 226.
+
+Road trimming removes overlays beneath the nine blocked cells, preserves a gate road when authored,
+adds its south approach, and removes isolated remnants. This changes presentation topology only;
+settlement ownership, factions, variants, armies, vaults, objectives, and entrance locations remain
+their authored gameplay metadata.
+
 Start zones should mix neutral terrain instead of gifting a faction its native ground. Native
 movement and battle tempo are intended to shape expansion routes, not compound opening advantage.
 Map lint warns when more than 30% of tiles within six spaces of a start share one faction's native

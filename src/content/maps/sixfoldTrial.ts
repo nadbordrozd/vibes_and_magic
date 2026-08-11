@@ -5,7 +5,9 @@ import type {
 } from '../../core/types';
 import { PLAYER_IDS } from '../../core/types';
 import { tile } from '../terrain';
-import { materializeGuardians, type AuthoredGuardian } from './occupancyAuthoring';
+import {
+  materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
+} from './occupancyAuthoring';
 import { validateMap } from './borderMarches';
 
 export const SIXFOLD_TRIAL_WIDTH = 54;
@@ -167,7 +169,9 @@ export function createSixfoldTrial(seed = 1): GameMap {
   const map = materializeGuardians({
     id: 'sixfold-trial', name: 'The Sixfold Trial', seed,
     width: SIXFOLD_TRIAL_WIDTH, height: SIXFOLD_TRIAL_HEIGHT,
-    terrain: terrain(), roads: roads(), objects: [...treasureChests(), ...artifactSites()],
+    terrain: terrain(), roads: trimRoadsForCities(
+      roads(), SIXFOLD_PLAYER_SETUP.map((slot) => slot.entrance),
+    ), objects: [...treasureChests(), ...artifactSites()],
     seams: [{ x: 26, y: 20 }, { x: 27, y: 20 }, { x: 26, y: 21 }, { x: 27, y: 21 }],
     victory: {
       type: 'conquest',

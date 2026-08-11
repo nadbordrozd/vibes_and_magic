@@ -41,8 +41,8 @@ describe('phase C adventure spells', () => {
   it('creates a usable paired Gate and an impassable Root and Ruin wall', () => {
     const [state, hero] = prepared('gate', 'rootAndRuin');
     const first = { x: 3, y: 10 };
-    const second = { x: 5, y: 10 };
-    state.players.p1.explored.push('5,10');
+    const second = { x: 3, y: 12 };
+    state.players.p1.explored.push('3,12');
     castAdventureSpell(state, {
       type: 'CAST_ADVENTURE_SPELL', spellId: 'gate',
       target: first, secondaryTarget: second,

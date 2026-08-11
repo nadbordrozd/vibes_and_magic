@@ -30,7 +30,7 @@ export const FACTION_PASSIVES: Record<FactionId, FactionPassivePresentation> = {
   },
   vespiary: {
     name: 'Render Down',
-    description: 'After a victory, destroyed enemy HP is rendered into Larvae for the castle pool.',
+    description: 'After a victory, destroyed enemy HP is rendered into Larvae for the city pool.',
   },
   hagwood: {
     name: 'Crooked Luck',

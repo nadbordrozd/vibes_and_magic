@@ -1,12 +1,43 @@
 import type { Coord, GameMap, Guardian, MapObject } from '../../core/types';
 import { coordKey, inBounds } from '../../core/map/pathfinding';
-import { objectEntranceTile, objectFootprintTiles } from '../../core/map/occupancy';
+import {
+  CITY_ENTRANCE, CITY_FOOTPRINT, footprintTiles, objectEntranceTile, objectFootprintTiles,
+} from '../../core/map/occupancy';
 import { terrainIdAt } from '../terrain';
 
 export interface AuthoredGuardian extends Guardian {
   targetId: string;
   id?: string;
   position?: Coord;
+}
+
+/** Roads may meet a City only at its centered gate, never continue beneath blocked contact. */
+export function trimRoadsForCities(roads: Coord[], entrances: readonly Coord[]): Coord[] {
+  const original = new Set(roads.map(coordKey));
+  const blocked = new Set(entrances.flatMap((entrance) => footprintTiles({
+    x: entrance.x - CITY_ENTRANCE.dx, y: entrance.y - CITY_ENTRANCE.dy,
+  }, CITY_FOOTPRINT).filter((cell) => cell.x !== entrance.x || cell.y !== entrance.y)
+    .map(coordKey)));
+  const kept = new Map(roads.filter((road) => !blocked.has(coordKey(road)))
+    .map((road) => [coordKey(road), road]));
+  for (const entrance of entrances) if (original.has(coordKey(entrance))) {
+    const approach = { x: entrance.x, y: entrance.y + 1 };
+    kept.set(coordKey(approach), approach);
+  }
+  const gateKeys = new Set(entrances.map(coordKey));
+  let removed = true;
+  while (removed) {
+    removed = false;
+    for (const [key, road] of kept) {
+      if (gateKeys.has(key)) continue;
+      const connected = [
+        { x: road.x + 1, y: road.y }, { x: road.x - 1, y: road.y },
+        { x: road.x, y: road.y + 1 }, { x: road.x, y: road.y - 1 },
+      ].some((neighbor) => kept.has(coordKey(neighbor)));
+      if (!connected) { kept.delete(key); removed = true; }
+    }
+  }
+  return [...kept.values()];
 }
 
 /** Place separately-authored guardians beside their targets and link both objects. */

@@ -50,7 +50,9 @@ function adaptCastle(castle: Castle, seed: number): EditorMapCastle {
       ? { bannedBuildings: [...castle.bannedBuildings] } : {}),
     ...(!same(castle.available, inherited.available)
       ? { available: [...castle.available] } : {}),
-    ...(!same(garrison, inheritedGarrison) ? { garrison } : {}),
+    ...(castle.owner === 'neutral'
+      ? castle.garrisonSource === 'explicit' ? { garrison } : {}
+      : !same(garrison, inheritedGarrison) ? { garrison } : {}),
     ...(!same(castle.guildDeck, inherited.guildDeck)
       ? { guildDeck: [...castle.guildDeck] } : {}),
     ...(castle.variant ? { variant: castle.variant } : {}),

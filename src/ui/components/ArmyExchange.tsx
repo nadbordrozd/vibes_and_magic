@@ -224,7 +224,7 @@ function DirectArmyExchange({
   };
 
   return (
-    <section className="explicit-exchange direct-exchange" aria-label="Visiting hero and castle company transfer">
+    <section className="explicit-exchange direct-exchange" aria-label="Visiting hero and city company transfer">
       <div className="transfer-area">
         {renderSide('left', left)}
         <div className="transfer-arrow" aria-label="Transfers work in both directions">⇄</div>

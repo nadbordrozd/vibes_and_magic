@@ -19,6 +19,8 @@ function fnv1a(value: string): string {
 }
 
 const catalogIds = [
+  'city-geometry:5x2:entrance-2,1',
+  'neutral-city-garrison:presence-based:three-weeks-tiers-1-3',
   ...Object.keys(TERRAIN).map((id) => `terrain:${id}:${TERRAIN[id as keyof typeof TERRAIN].skins.join(',')}`),
   ...Object.keys(FACTIONS).map((id) => `faction:${id}`),
   ...Object.keys(HEROES).map((id) => `hero:${id}`),
@@ -34,5 +36,7 @@ const catalogIds = [
 
 /** Changes whenever the installed authoring-facing catalog identity changes. */
 export const EDITOR_CATALOG_HASH = fnv1a(catalogIds.join('\n'));
+/** Last catalog identity whose omitted city geometry meant 3×2 with entrance +1,+1. */
+export const LEGACY_3X2_EDITOR_CATALOG_HASH = 'a6d180da' as const;
 
 export const editorMapHash = fnv1a;

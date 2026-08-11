@@ -3,6 +3,7 @@ import { buildingBelongsToFaction } from '../content/buildings';
 import { FACTIONS } from '../content/factions';
 import { FACTION_UNITS } from '../content/units';
 import { createInitialCastle } from '../core/game/setup';
+import { CITY_ENTRANCE, CITY_FOOTPRINT } from '../core/map/occupancy';
 import type { BuildingId, Castle, FactionId, PlayerId, SpellId, UnitId } from '../core/types';
 import { PLAYER_IDS } from '../core/types';
 import {
@@ -15,8 +16,8 @@ import {
   type PropMutationFailure,
 } from './mapEditorTerrain';
 
-export const EDITOR_CASTLE_FOOTPRINT = { w: 3, h: 2 } as const;
-export const EDITOR_CASTLE_ENTRANCE = { dx: 1, dy: 1 } as const;
+export const EDITOR_CASTLE_FOOTPRINT = CITY_FOOTPRINT;
+export const EDITOR_CASTLE_ENTRANCE = CITY_ENTRANCE;
 export const EDITOR_PLAYER_FLAGS: Readonly<Record<PlayerId, {
   label: string; color: string;
 }>> = {
@@ -237,7 +238,7 @@ export function addEditorPlayerSlot(document: EditorMapDocument): PlayerSlotMuta
 export function playerSlotReferences(document: EditorMapDocument, playerId: PlayerId): string[] {
   return [
     ...document.castles.filter((castle) => castle.owner === playerId)
-      .map((castle) => `castle ${castle.id}`),
+      .map((castle) => `city ${castle.id}`),
     ...document.heroes.filter((hero) => hero.owner === playerId)
       .map((hero) => `hero ${hero.id}`),
     ...document.objects.filter((object) => object.properties.owner === playerId)

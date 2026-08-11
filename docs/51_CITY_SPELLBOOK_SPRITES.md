@@ -1,7 +1,7 @@
 # 51 — Cities, spellbook, and complete collectible sprites
 
-Status: design and inventory contract; the six faction-city bitmaps are now produced, while runtime,
-UI, map migration, spellbook, and collectible bitmap production remain implementation work. This
+Status: city mechanics, presentation, editor compatibility, and built-in-map migration implemented
+2026-08-11; spellbook and collectible bitmap production remain implementation work. This
 document extends S02, S03, S05, S07, S08, and S09 and
 supersedes the 3×2 castle ground-contact clauses in docs 31, 32, 37, and 50. It also supersedes the
 spell-upgrade presentation wording in docs 34, 44, and 46 and the player-facing settlement word
@@ -22,12 +22,12 @@ or entrance. The sprite may rise north above the contact but may not imply a sec
 gate, hero arrival point, capture interaction, services, garrison battle, fog distance, flag, lint,
 and pathfinding all use the same centered entrance.
 
-The 5×2 rule is prospective until the implementation migration lands. That migration must re-anchor
-all built-in cities around their existing world-space entrance where possible, re-author terrain,
-objects, heroes, roads, guards, and start clearances where the wider contact would overlap, update
-portable-map defaults and compatibility diagnostics, and regenerate/review city sprites at a native
-canvas at least 160 pixels wide. A renderer must not stretch the existing 96-pixel city art to fill
-the new contact.
+The 5×2 migration re-anchors every built-in city around its prior world-space entrance. Wider-contact
+terrain, object, guard, road, and start-clearance collisions are explicitly re-authored and linted.
+The runtime, editor, map adapter, renderer hit target, fog, and pathfinder share one geometry
+constant. Legacy 3×2 local documents receive an explicit migration action keyed by their former
+catalog hash; they are never silently interpreted using the new geometry. All six canonical city
+sprites are native 160×160 assets rather than stretched 96-pixel art.
 
 ### Neutral capture and deterministic default garrison
 
@@ -96,6 +96,10 @@ manifest IDs retain the internal `castle:` prefix, but each entry declares a 5x2
 alpha statistics, and visual review are recorded in `assets/jobs/city-sprites-built-in.json` and
 `assets/provenance/city-sprite-generation.json`; `scripts/buildCitySprites.py` reproduces the final
 native canvases after the documented local chroma-removal step.
+
+Earlier 96×128 City requests remain historical provenance with explicit `superseded_by` markers.
+They neither satisfy current coverage nor inherit the 160×160 contract; the job gate requires the
+built-in City job to be the sole active production claim for all six Cities and four visual aliases.
 
 Neutral cities retain their authored faction’s material language and silhouette without an owner
 color. Ownership is always the separate runtime pennant overlay. No sprite bakes a player flag.
@@ -237,6 +241,7 @@ manifests, validation, and browser evidence:
   a label or color-only cue;
 - no supplied reference artwork or generated imitation of it ships in the repository.
 
-Until those gates land, current renderer fallbacks and old city geometry reveal implementation gaps;
-they do not weaken this specification or authorize silent stretching, shared placeholder art, or
+The city gates above landed on 2026-08-11. Remaining spellbook and collectible gates continue to
+track their own implementation gaps. They do not weaken this specification or authorize silent
+stretching, shared placeholder art, or
 default-garrison inference in UI code.

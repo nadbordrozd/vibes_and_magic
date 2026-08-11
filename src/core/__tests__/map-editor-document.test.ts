@@ -40,7 +40,7 @@ function playableDocument(): EditorMapDocument {
     'p1-castle', { x: 1, y: 1 }, 'p1', 'hearthguard',
   )];
   document.heroes = [createDefaultEditorHero(
-    'p1-aldith', { x: 2, y: 2 }, 'p1', 'hearthguard', 'aldith',
+    'p1-aldith', { x: 3, y: 2 }, 'p1', 'hearthguard', 'aldith',
   )];
   return document;
 }
@@ -195,7 +195,7 @@ describe('portable editor map document', () => {
     const document = playableDocument();
     const converted = convertEditorMapDocument(document, 19);
     expect(converted.map.width).toBe(8);
-    expect(converted.setup.castles[0].footprint).toEqual({ w: 3, h: 2 });
+    expect(converted.setup.castles[0].footprint).toEqual({ w: 5, h: 2 });
     expect(converted.setup.castles[0].buildings)
       .toEqual(['villageHall', 'dwelling1', 'tavern']);
     expect(converted.setup.heroes[0].army[0]).toEqual({ unitId: 'yeoman', count: 8 });
@@ -272,7 +272,7 @@ describe('portable editor map document', () => {
     const runtime = createTornSound(1);
     const coastalMeadow = runtime.terrain.flat().filter((cell) => typeof cell === 'object'
       && cell.terrain === 'meadow' && cell.skin === 'coastal');
-    expect(coastalMeadow).toHaveLength(183);
+    expect(coastalMeadow).toHaveLength(191);
     expect(TERRAIN.meadow.skins).toContain('coastal');
   });
 

@@ -74,7 +74,7 @@ describe('explicit exchange and equipment UI', () => {
     hero.army = [null, null, null, null, null, null, null];
     castle.garrison = [{ unitId: 'bannerman', count: 9 }, null, null, null, null, null, null];
     const garrison: ArmyExchangeSide = {
-      label: 'Castle garrison', holder: { kind: 'garrison', id: castle.id },
+      label: 'City garrison', holder: { kind: 'garrison', id: castle.id },
       army: castle.garrison,
     };
     const visitingHero: ArmyExchangeSide = {

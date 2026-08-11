@@ -190,7 +190,7 @@ describe('Milestone 12 tricks', () => {
 
   it('automatically sells Trade Goods on entering a friendly castle', () => {
     let state = createGame({ seed: 16, p1: 'human', p2: 'human' });
-    state = apply(state, { type: 'MOVE_HERO', destination: { x: 4, y: 10 } });
+    state = apply(state, { type: 'MOVE_HERO', destination: { x: 3, y: 11 } });
     const hero = activeHero(state);
     hero.inventory[0] = { id: 'tradeGoods', origin: { x: 9, y: 10 } };
     const before = state.players.p1.resources.gold;

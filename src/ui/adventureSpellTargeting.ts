@@ -71,7 +71,7 @@ export function mapTargetReason(
     const occupied = state.castles.some((castle) => castleFootprintTiles(castle)
       .some((tile) => sameCoord(tile, target))) || state.map.objects.some((object) =>
       objectFootprintTiles(object).some((tile) => sameCoord(tile, target)));
-    return occupied ? 'Choose an empty tile without a castle or map object.' : null;
+    return occupied ? 'Choose an empty tile without a city or map object.' : null;
   }
   return null;
 }
@@ -123,8 +123,8 @@ export function adventureDraftIncompleteReason(
   const hero = state.players[state.activePlayer].hero!;
   const plus = hero.upgradedSpells.includes(action.spellId);
   const ownedCastles = state.castles.filter((castle) => castle.owner === hero.owner);
-  if (action.spellId === 'beacon' && !ownedCastles.length) return 'No friendly castle can receive the hero.';
-  if (action.spellId === 'beacon' && plus && !action.castleId) return 'Choose a friendly castle.';
+  if (action.spellId === 'beacon' && !ownedCastles.length) return 'No friendly city can receive the hero.';
+  if (action.spellId === 'beacon' && plus && !action.castleId) return 'Choose a friendly city.';
   if (action.spellId === 'feastDay' && ownedCastles.some((castle) =>
     castle.growthEffects.some((effect) => effect.id === `feast-${state.week}`))) {
     return 'Feast Day was already cast this week.';
@@ -162,7 +162,7 @@ export function adventureDraftIncompleteReason(
   if (action.spellId === 'graveSpeech' && ![...state.battleRecords].reverse().some((entry) =>
     sameCoord(entry.position, hero.position))) return 'No battle was fought on this tile.';
   if (action.spellId === 'wildGrowth' && !action.castleId) return ownedCastles.length
-    ? 'Choose an owned castle.' : 'No owned castle is currently eligible.';
+    ? 'Choose an owned city.' : 'No owned city is currently eligible.';
   if (action.spellId === 'beastTongue') {
     const value = beastGuardianGold(state, action.targetId);
     if (value === null) return state.map.objects.some((object) => object.kind === 'guardian'

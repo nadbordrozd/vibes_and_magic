@@ -302,7 +302,17 @@ for (const [id, entry] of Object.entries(ASSET_MANIFEST)) {
   }
   for (const detail of validateEntry(item, entry)) errors.push(`${id}: ${detail}`);
   const previous = seenFiles.get(entry.file);
-  if (previous) errors.push(`${id}: shares ${entry.file} with ${previous}; each prompt-owned asset needs its own file`);
+  if (previous) {
+    const target = entry.aliasOf ? ASSET_MANIFEST[entry.aliasOf] : undefined;
+    if (!target || entry.aliasOf !== previous || target.file !== entry.file
+        || target.w !== entry.w || target.h !== entry.h
+        || JSON.stringify(target.anchor) !== JSON.stringify(entry.anchor)
+        || JSON.stringify(target.contact) !== JSON.stringify(entry.contact)) {
+      errors.push(`${id}: shares ${entry.file} with ${previous} without an exact validated alias`);
+    }
+  } else if (entry.aliasOf) {
+    errors.push(`${id}: alias target ${entry.aliasOf} must precede it and own the same file`);
+  }
   seenFiles.set(entry.file, id);
 }
 

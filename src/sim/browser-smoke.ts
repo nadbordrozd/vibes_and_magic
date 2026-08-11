@@ -157,7 +157,7 @@ try {
   await page.locator('.castle-screen .close-button').click();
   await page.waitForSelector('.castle-screen', { hidden: true });
 
-  // The castle's full 3x2 picture is now an entrance-routed hit target, so leave by the first
+  // The city's full 5x2 picture is an entrance-routed hit target, so leave by the first
   // passable tile below its footprint rather than clicking a non-entrance footprint cell.
   await clickMapTile(page, 4, 11);
   await page.waitForFunction(

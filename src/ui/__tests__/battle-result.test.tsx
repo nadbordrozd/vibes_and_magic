@@ -154,10 +154,10 @@ describe('consequence-complete battle contexts', () => {
       return resolve(state).result;
     };
     expect(castleFight(true).consequences).toContainEqual(expect.objectContaining({
-      label: 'Castle ownership', detail: expect.stringContaining('captured'),
+      label: 'City ownership', detail: expect.stringContaining('captured'),
     }));
     expect(castleFight(false).consequences).toContainEqual(expect.objectContaining({
-      label: 'Castle ownership', detail: expect.stringContaining('remains'),
+      label: 'City ownership', detail: expect.stringContaining('remains'),
     }));
   });
 

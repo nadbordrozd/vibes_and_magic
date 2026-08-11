@@ -5,6 +5,9 @@ import { coordKey, inBounds, sameCoord } from './pathfinding';
 export const DEFAULT_FOOTPRINT = { w: 1, h: 1 } as const;
 export const MINE_FOOTPRINT = { w: 2, h: 1 } as const;
 export const DEFAULT_ENTRANCE = { dx: 0, dy: 0 } as const;
+/** Canonical City ground contact. Serialized `Castle` names remain compatibility identifiers. */
+export const CITY_FOOTPRINT = { w: 5, h: 2 } as const;
+export const CITY_ENTRANCE = { dx: 2, dy: 1 } as const;
 
 export function objectFootprint(object: MapObject): { w: number; h: number } {
   return object.footprint ?? (object.kind === 'mine' ? MINE_FOOTPRINT : DEFAULT_FOOTPRINT);

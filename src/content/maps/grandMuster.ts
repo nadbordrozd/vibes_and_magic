@@ -4,7 +4,9 @@ import type {
 import { objectFootprintTiles } from '../../core/map/occupancy';
 import { FACTION_UNITS, UNITS } from '../units';
 import { terrainId, tile } from '../terrain';
-import { materializeGuardians, type AuthoredGuardian } from './occupancyAuthoring';
+import {
+  materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
+} from './occupancyAuthoring';
 import { validateMap } from './borderMarches';
 
 export const GRAND_MUSTER_WIDTH = 56;
@@ -177,8 +179,8 @@ function carvePassableGround(
   terrain: TerrainTile[][], objects: MapObject[], roadTiles: Coord[], guardianPosts: Coord[],
 ): void {
   const castleTiles = [...GRAND_MUSTER_CASTLES, GRAND_MUSTER_ENEMY_CASTLE].flatMap((castle) => {
-    const anchor = { x: castle.entrance.x - 1, y: castle.entrance.y - 1 };
-    return Array.from({ length: 2 }, (_, dy) => Array.from({ length: 3 }, (_, dx) => ({
+    const anchor = { x: castle.entrance.x - 2, y: castle.entrance.y - 1 };
+    return Array.from({ length: 2 }, (_, dy) => Array.from({ length: 5 }, (_, dx) => ({
       x: anchor.x + dx, y: anchor.y + dy,
     }))).flat();
   });
@@ -200,7 +202,9 @@ export function createGrandMuster(seed = 1): GameMap {
   const map = materializeGuardians({
     id: 'grand-muster', name: 'The Grand Muster', seed,
     width: GRAND_MUSTER_WIDTH, height: GRAND_MUSTER_HEIGHT,
-    terrain, objects, roads: roadTiles,
+    terrain, objects, roads: trimRoadsForCities(
+      roadTiles, [...GRAND_MUSTER_CASTLES, GRAND_MUSTER_ENEMY_CASTLE].map((city) => city.entrance),
+    ),
     victory: {
       type: 'none',
       flavor: 'Every banner has come to compare notes, creatures, and bruises.',

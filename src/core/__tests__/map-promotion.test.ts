@@ -27,10 +27,10 @@ function document() {
   ];
   map.castles = [
     createDefaultEditorCastle('proof-red', { x: 1, y: 1 }, 'p1', 'hearthguard'),
-    createDefaultEditorCastle('proof-blue', { x: 8, y: 5 }, 'p2', 'woundWrights'),
+    createDefaultEditorCastle('proof-blue', { x: 7, y: 5 }, 'p2', 'woundWrights'),
   ];
   map.heroes = [
-    createDefaultEditorHero('proof-hero', { x: 2, y: 2 }, 'p1', 'hearthguard', 'aldith'),
+    createDefaultEditorHero('proof-hero', { x: 3, y: 2 }, 'p1', 'hearthguard', 'aldith'),
   ];
   return map;
 }

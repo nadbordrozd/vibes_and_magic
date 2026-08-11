@@ -1,6 +1,8 @@
 import { terrainId } from '../../content/terrain';
 import type { TerrainTile } from '../types';
-import { EDITOR_CATALOG_HASH, editorMapHash } from './catalog';
+import {
+  EDITOR_CATALOG_HASH, LEGACY_3X2_EDITOR_CATALOG_HASH, editorMapHash,
+} from './catalog';
 import type {
   BlankEditorMapOptions, EditorMapDecodeResult, EditorMapDiagnostic, EditorMapDocument,
   EditorMapObject, EditorMapReward, JsonValue,
@@ -180,6 +182,26 @@ export function cloneEditorMapDocument(document: EditorMapDocument): EditorMapDo
   const decoded = parseEditorMapDocument(serializeEditorMapDocument(document));
   if (!decoded.document) throw new EditorMapCodecError(decoded.diagnostics);
   return decoded.document;
+}
+
+/**
+ * Explicit compatibility migration for schema-v1 maps authored while omitted city geometry meant
+ * 3×2/+1,+1. Every anchor moves one cell west so the world-space entrance stays unchanged.
+ * Validation then reports any newly exposed bounds/overlap that the author must resolve.
+ */
+export function migrateEditorMapCitiesTo5x2(document: EditorMapDocument): EditorMapDocument {
+  if (document.compatibility.catalogHash !== LEGACY_3X2_EDITOR_CATALOG_HASH) return document;
+  return normalizeEditorMapDocument({
+    ...structuredClone(document),
+    compatibility: { catalogHash: EDITOR_CATALOG_HASH },
+    castles: document.castles.map((castle) => {
+      const migrated = structuredClone(castle);
+      migrated.position.x -= 1;
+      delete migrated.footprint;
+      delete migrated.entrance;
+      return migrated;
+    }),
+  });
 }
 
 export function hashEditorMapDocument(document: EditorMapDocument): string {

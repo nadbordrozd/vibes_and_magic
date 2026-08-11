@@ -21,8 +21,8 @@ import { TERRAIN } from '../content/terrain';
 import type { Coord, GameMap } from '../core/types';
 import { coordKey, findPath, inBounds, sameCoord } from '../core/map/pathfinding';
 import {
-  castleEntrance, footprintTiles, guardianAggroTiles, objectEntrance, objectEntranceTile,
-  objectFootprint, objectFootprintTiles,
+  CITY_ENTRANCE, CITY_FOOTPRINT, castleEntrance, footprintTiles, guardianAggroTiles,
+  objectEntrance, objectEntranceTile, objectFootprint, objectFootprintTiles,
 } from '../core/map/occupancy';
 import { terrainIdAt, tile } from '../content/terrain';
 import { builtInPortableMapDocuments } from '../content/maps/catalog';
@@ -83,8 +83,8 @@ export function lintMap(
 
   const castleOwners = new Map<string, string>();
   castleStarts.forEach((entrance, index) => {
-    const anchor = { x: entrance.x - 1, y: entrance.y - 1 };
-    for (const tile of footprintTiles(anchor, { w: 3, h: 2 })) {
+    const anchor = { x: entrance.x - CITY_ENTRANCE.dx, y: entrance.y - CITY_ENTRANCE.dy };
+    for (const tile of footprintTiles(anchor, CITY_FOOTPRINT)) {
       if (!inBounds(map, tile)) report('castle-bounds', `castle ${index + 1} leaves the map`);
       const object = owners.get(coordKey(tile));
       if (object) report('castle-overlap', `castle ${index + 1} overlaps ${object} at ${coordKey(tile)}`);
@@ -116,7 +116,7 @@ export function lintMap(
     });
   }
   castleStarts.forEach((entrance) => footprintTiles(
-    { x: entrance.x - 1, y: entrance.y - 1 }, { w: 3, h: 2 },
+    { x: entrance.x - CITY_ENTRANCE.dx, y: entrance.y - CITY_ENTRANCE.dy }, CITY_FOOTPRINT,
   ).forEach((tile) => { if (!sameCoord(tile, entrance)) unavailable.add(coordKey(tile)); }));
 
   for (const protectedObject of map.objects.filter((object) => object.guardedBy?.length)) {
@@ -155,7 +155,7 @@ export function lintMap(
     });
   }
   castleStarts.forEach((entrance) => footprintTiles(
-    { x: entrance.x - 1, y: entrance.y - 1 }, { w: 3, h: 2 },
+    { x: entrance.x - CITY_ENTRANCE.dx, y: entrance.y - CITY_ENTRANCE.dy }, CITY_FOOTPRINT,
   ).forEach((tile) => { if (!sameCoord(tile, entrance)) blocked.add(coordKey(tile)); }));
   const navigableMap: GameMap = {
     ...map, terrain: map.terrain.map((row, y) => row.map((_terrain, x) =>

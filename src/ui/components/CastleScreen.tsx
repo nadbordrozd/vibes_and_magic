@@ -119,24 +119,24 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
         <BuildingSymbols />
         <header>
           <div>
-            <span>{FACTIONS[castle.faction].name.replace(/^The /, '')} stronghold</span>
+            <span>{FACTIONS[castle.faction].name.replace(/^The /, '')} city</span>
             <h2>{CASTLE_NAMES[castle.faction]}</h2>
           </div>
           <button className="close-button" onClick={onClose}>×</button>
         </header>
         <div className="castle-passive" data-inspect-kind="castle" data-inspect-id={castle.id}>
           <b>{FACTION_PASSIVES[castle.faction].name}</b>
-          <span>{castle.owner === 'neutral' ? 'Neutral stronghold' : `Owned by ${state.players[castle.owner].name}`}</span>
+          <span>{castle.owner === 'neutral' ? 'Neutral city' : `Owned by ${state.players[castle.owner].name}`}</span>
           <small>{heroIsVisiting ? `${hero?.name ?? 'Visiting hero'} is present`
             : 'Remote view · Company transfer requires a visiting hero; no remote transfer actions are available.'} · Right-click for complete town rules.</small>
         </div>
-        <nav className="castle-task-tabs" aria-label="Castle task">
+        <nav className="castle-task-tabs" aria-label="City task">
           <button data-castle-view="town" className={view === 'town' ? 'selected' : ''} aria-pressed={view === 'town'}
             onClick={() => setView('town')}><span>Town</span><small>Build</small></button>
           <button data-castle-view="recruit" className={view === 'recruit' ? 'selected' : ''} aria-pressed={view === 'recruit'}
             onClick={() => setView('recruit')}><span>Recruit</span><small>{castle.available.reduce((sum, count) => sum + count, 0)} ready</small></button>
           <button data-castle-view="army" className={view === 'army' ? 'selected' : ''} aria-pressed={view === 'army'}
-            onClick={() => setView('army')}><span>Army</span><small>{heroIsVisiting ? 'Transfer' : 'Castle garrison'}</small></button>
+            onClick={() => setView('army')}><span>Army</span><small>{heroIsVisiting ? 'Transfer' : 'City garrison'}</small></button>
           <button data-castle-view="services" className={view === 'services' ? 'selected' : ''} aria-pressed={view === 'services'}
             onClick={() => setView('services')}><span>Services</span><small>Guild · trade · tavern</small></button>
         </nav>
@@ -214,7 +214,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
               })}
             </div>
         </section>}
-        {view === 'army' && <section className="castle-view castle-exchange" aria-label="Castle company exchange">
+        {view === 'army' && <section className="castle-view castle-exchange" aria-label="City company exchange">
           {hero && heroIsVisiting ? (
             <ArmyExchange
               state={state}
@@ -229,7 +229,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
               }}
               right={{
                 label: CASTLE_NAMES[castle.faction],
-                kindLabel: 'Castle garrison',
+                kindLabel: 'City garrison',
                 identity: <span className="transfer-garrison-crest" aria-hidden="true">◆</span>,
                 holder: { kind: 'garrison', id: castle.id },
                 army: castle.garrison,
@@ -239,11 +239,11 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             <div className="transfer-area">
               <div className="remote-castle-note">
                 <b>Remote command</b>
-                <span>This is the current castle garrison. Company transfer requires a visiting
-                  hero at this castle entrance; no remote transfer actions are available.</span>
+                <span>This is the current city garrison. Company transfer requires a visiting
+                  hero at this city entrance; no remote transfer actions are available.</span>
               </div>
               <div className="transfer-arrow">→</div>
-              <ArmySlots army={castle.garrison} title="Castle garrison" />
+              <ArmySlots army={castle.garrison} title="City garrison" />
             </div>
           )}
         </section>}
@@ -251,7 +251,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
         <section className="guild-panel">
           <h3>Mage Guild</h3>
           {guildSpells.length === 0 ? (
-            <p>Build Mage Guild 1 to reveal this castle’s spell deal.</p>
+            <p>Build Mage Guild 1 to reveal this city’s spell deal.</p>
           ) : (
             <div className="guild-spells">
               {guildSpells.map((spellId) => {
@@ -324,7 +324,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
           {!buildingIsActive(castle, 'marketplace') ? (
             <p>Build the Marketplace to exchange resources at concessionary rates.</p>
           ) : !heroIsVisiting ? (
-            <p>A hero must visit this castle to trade.</p>
+            <p>A hero must visit this city to trade.</p>
           ) : (
             <div className="tavern-offers">
               {(['timber', 'iron', 'essence'] as const).map((resource) => {
@@ -422,15 +422,15 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                 onClick={() => stageAction({
                   type: 'TUNNEL_TRAVEL', destinationCastleId: destination.id,
                 }, 'Travel through Deep Tunnels', CASTLE_NAMES[destination.faction],
-                `Move ${hero?.name ?? 'the visiting hero'} to that castle entrance and spend 500 movement.`)}
+                `Move ${hero?.name ?? 'the visiting hero'} to that city entrance and spend 500 movement.`)}
               >Travel to {CASTLE_NAMES[destination.faction]} · 500 move</button>
             ))}
-            {!tunnelDestinations.length && <p>No other Tunnel-castle is connected.</p>}
+            {!tunnelDestinations.length && <p>No other city with Deep Tunnels is connected.</p>}
           </section>
         )}
         {buildingIsActive(castle, 'henLeggedFence') && (state.day - 1) % 7 === 0 && (
           <section className="tavern-panel">
-            <h3>The castle may walk</h3>
+            <h3>The city may walk</h3>
             <div className="tavern-offers">
               {relocationTargets.slice(0, 8).map((destination) => (
                 <button key={`${destination.x},${destination.y}`}
@@ -439,7 +439,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     type: 'RELOCATE_CASTLE', castleId: castle.id, destination,
                   }, `Move ${CASTLE_NAMES[castle.faction]}`,
                   `${TERRAIN[terrainIdAt(state.map, destination)].label} tile ${destination.x}, ${destination.y}`,
-                  'Relocate the complete castle footprint once this week; visiting heroes move with its entrance.')}
+                  'Relocate the complete city footprint once this week; visiting heroes move with its entrance.')}
                 >Move {Math.max(Math.abs(destination.x - castle.position.x),
                     Math.abs(destination.y - castle.position.y))} tiles {
                     Math.abs(destination.x - castle.position.x) > Math.abs(destination.y - castle.position.y)
@@ -502,7 +502,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
             </article>
           </div>
         )}
-        <footer>{view === 'town' ? 'One building may be constructed in each castle per day.'
+        <footer>{view === 'town' ? 'One building may be constructed in each city per day.'
           : view === 'recruit' ? 'Choose a creature, set the amount, then hire.'
             : view === 'army' ? 'Choose a source company, then a highlighted destination.'
               : 'Services use the visiting hero and current town buildings.'}</footer>

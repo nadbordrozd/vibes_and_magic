@@ -288,8 +288,8 @@ export function AdventureStructureDialog({
         <p>Pay once per player each week. Every owned castle gains <b>+10% creature growth</b>
           for the current week.</p>
         <StructureAction state={state} action={{ type: 'PAY_TITHE', objectId: object.id }}
-          label="Pay the tithe" title="Pay the tithe" actor={actor} target="Every owned castle"
-          effect="Grant every owned castle +10% creature growth for this week."
+          label="Pay the tithe" title="Pay the tithe" actor={actor} target="Every owned city"
+          effect="Grant every owned city +10% creature growth for this week."
           onDraft={onDraft} />
       </>}
     </ContextualDialogFrame>

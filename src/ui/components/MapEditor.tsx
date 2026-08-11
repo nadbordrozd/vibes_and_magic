@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { FACTIONS } from '../../content/factions';
 import { TERRAIN } from '../../content/terrain';
 import {
-  parseEditorMapDocument, slugifyEditorId, validateEditorMapForPlay,
+  migrateEditorMapCitiesTo5x2, parseEditorMapDocument, slugifyEditorId,
+  validateEditorMapForPlay,
   type EditorMapDiagnostic, type EditorMapDocument,
 } from '../../core/mapEditor';
 import { encodeLocalMapReference } from '../../core/mapReference';
@@ -386,6 +387,15 @@ export function MapEditor({
       {error && <div className="editor-alert" role="alert">{error}
         <button aria-label="Dismiss error" onClick={() => setError('')}>×</button></div>}
       {notice && <div className="editor-notice" role="status">{notice}</div>}
+      {diagnostics.some((item) => item.code === 'compatibility.city_geometry.migration_required')
+        && <div className="editor-alert" role="alert">
+          This draft predates canonical 5×2 cities. Migration preserves each world-space gate and
+          leaves any new collision visible for you to fix.
+          <button onClick={() => {
+            updateDocument(migrateEditorMapCitiesTo5x2(open.document));
+            setNotice('Cities migrated to 5×2. Review all remaining overlap and bounds diagnostics.');
+          }}>Migrate cities to 5×2</button>
+        </div>}
       <div className="editor-workspace-grid">
         <details className="editor-identity">
           <summary>Edit map details</summary>
@@ -505,7 +515,7 @@ export function MapEditor({
 
         <section className="editor-library-card clone-map-card">
           <span className="editor-step">03</span><h2>Clone built-in map</h2>
-          <p>Copy canonical terrain, setup, castles, heroes, objects, guardians, rewards, and objectives.</p>
+          <p>Copy canonical terrain, setup, cities, heroes, objects, guardians, rewards, and objectives.</p>
           <label>Built-in map<select value={builtInId} onChange={(event) => {
             const id = event.target.value as BuiltInMapId;
             const presentation = CAMPAIGN_PRESENTATIONS.find((item) => item.id === id)!;

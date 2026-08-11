@@ -172,7 +172,7 @@ describe('secondary skill ranks', () => {
     expect(foragerRate(hero)).toBe(0.5);
     const pile = game.map.objects.find((object): object is Extract<MapObject, { kind: 'pile' }> =>
       object.kind === 'pile')!;
-    pile.position = { x: 4, y: 10 };
+    pile.position = { x: 3, y: 11 };
     pile.resource = 'gold';
     pile.amount = 100;
     const before = game.players.p1.resources.gold;
@@ -188,7 +188,7 @@ describe('secondary skill ranks', () => {
     adjacent.resource = 'timber';
     adjacent.amount = 4;
     const timber = game.players.p1.resources.timber;
-    game = apply(game, { type: 'MOVE_HERO', destination: { x: 4, y: 10 } });
+    game = apply(game, { type: 'MOVE_HERO', destination: { x: 3, y: 11 } });
     expect(game.players.p1.resources.timber).toBeGreaterThanOrEqual(timber + 6);
     const collected = game.map.objects.find((object) => object.id === adjacent.id);
     expect(collected?.kind === 'pile' && collected.collected).toBe(true);

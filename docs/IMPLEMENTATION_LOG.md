@@ -6,6 +6,30 @@ next concrete work moved to Beads on 2026-08-05; use `bd prime`, `bd ready`, and
 New implementation checkpoints may still be recorded here when they preserve useful technical
 provenance, but this file is no longer the task tracker.
 
+## 2026-08-11 — Canonical City mechanics and built-in migration
+
+- Replaced the live settlement contact with shared 5×2 geometry and centered `(2,1)` entrance
+  across runtime setup, pathfinding, fog, renderer hit targets, map lint, editor stamps/moves,
+  validation, conversion, adapters, and player-facing City copy.
+- Added presence-based neutral defense derivation for all six factions, explicit provenance through
+  conversion and battle outcomes, immediate empty capture, ordinary defended capture, and strict
+  rejection of null, partial, random-tier, additive, invalid-count, duplicate, or oversized armies.
+- Re-anchored 32 distinct built-in city positions around their existing gates. Resolved Crosstitch
+  mines/Kit guards, Manywhere's trading camp, Torn Sound coastal ground/harbors, and every road under
+  newly blocking contact; map lint reports no overlap, unreachable entrance, or ineffective guard.
+- Added exact validated manifest aliases for Free Town, Hollow Town, Coastal, and Old Seat art;
+  retained each variant's faction, buildings, garrison, vault, flavor, and other scenario metadata.
+- Added explicit former-catalog migration diagnostics/action for local 3×2 documents and focused
+  coverage for all six default armies, authored presence states, neutral battles/capture,
+  save/replay determinism, geometry/path/fog/render/editor behavior, aliases, and built-in clones.
+- Verification: 58/58 focused City/editor/occupancy tests pass; map lint, 366/366 asset coverage,
+  spec links, static UX, TypeScript, and the production build pass. The full suite passes 728/729;
+  its sole failure remains the known day-56 deterministic-AI cutoff. The adventure showcase passes
+  at 1600×1000 and 390×844, and editor evidence under `.pixel-work/review/map-editor/` includes the
+  inherited neutral City at both widths. The editor journey's functional and visual assertions pass;
+  two final loaded-machine runs exceeded its separate 5-second 128×128 paint budget by 166/198 ms
+  after a prior 4.75-second pass.
+
 ## 2026-08-10 — Incremental adventure fog
 
 - Added one pure movement-path reveal projection shared by the deterministic reducer and adventure

@@ -77,6 +77,10 @@ export function adventurePath(
   options: AdventurePathOptions = {},
 ): ReturnType<typeof findPath> {
   const hero = selectedActiveHero(state);
+  if (state.castles.some((castle) => castleFootprintTiles(castle)
+    .some((tile) => same(tile, destination)) && !same(castleEntrance(castle), destination))) {
+    return null;
+  }
   if (state.map.objects.some((object) => object.kind === 'obstacle'
       && objectFootprintTiles(object).some((tile) => same(tile, destination)))) return null;
   const passage = state.mapEffects.find((effect) => effect.kind === 'passage'

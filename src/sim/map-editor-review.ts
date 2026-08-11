@@ -167,25 +167,32 @@ function verifyPromotionReady(path: string): { hash: string; diagnostics: number
   const mountains = authored.tiles.flat().filter((tile) => tile.terrain === 'mountain').length;
   const p1Castle = authored.castles.find((castle) => castle.owner === 'p1');
   const p2Castle = authored.castles.find((castle) => castle.owner === 'p2');
+  const neutralCity = authored.castles.find((castle) => castle.owner === 'neutral');
   const p1Hero = authored.heroes.find((hero) => hero.owner === 'p1');
   const p2Hero = authored.heroes.find((hero) => hero.owner === 'p2');
   const guardian = authored.guardians[0];
-  if (deepwood < 10 || mountains < 5
-      || authored.tiles[1][25].terrain !== 'meadow'
-      || !authored.objects.some((object) => object.kind === 'obstacle')
-      || !authored.objects.some((object) => object.kind === 'windmill')
-      || authored.players[0]?.faction !== 'woundWrights'
-      || authored.players[1]?.faction !== 'hagwood'
-      || p1Castle?.faction !== 'hagwood' || p2Castle?.faction !== 'vespiary'
-      || p1Hero?.faction !== 'woundWrights' || p2Hero?.faction !== 'wildergrass'
-      || guardian?.army[0]?.count !== 37
-      || !guardian.protects?.startsWith('windmill')
-      || !authored.rewards.some((reward) => reward.bundle.artifacts.length)
-      || !authored.rewards.some((reward) => reward.bundle.items.length)
-      || !authored.rewards.some((reward) => Object.values(reward.bundle.resources)
-        .some((amount) => amount > 0))
-      || authored.overlays.roads.length < 7) {
-    throw new Error('Canonical export does not preserve every exercised authoring category, independent owner/faction choice, guardian count/link, undo/redo shape, or pointer-cancel result.');
+  const preservation = {
+    deepwood: deepwood >= 10, mountains: mountains >= 5,
+    pointerCancel: authored.tiles[1][25].terrain === 'meadow',
+    obstacle: authored.objects.some((object) => object.kind === 'obstacle'),
+    windmill: authored.objects.some((object) => object.kind === 'windmill'),
+    playerFactions: authored.players[0]?.faction === 'woundWrights'
+      && authored.players[1]?.faction === 'hagwood',
+    ownedCities: p1Castle?.faction === 'hagwood' && p2Castle?.faction === 'vespiary',
+    neutralCity: neutralCity?.faction === 'unfinished' && neutralCity.garrison === undefined,
+    cityGeometry: authored.castles.every((city) => (!city.footprint
+      || city.footprint.w === 5 && city.footprint.h === 2)
+      && (!city.entrance || city.entrance.dx === 2 && city.entrance.dy === 1)),
+    heroes: p1Hero?.faction === 'woundWrights' && p2Hero?.faction === 'wildergrass',
+    guardian: guardian?.army[0]?.count === 37 && guardian.protects?.startsWith('windmill'),
+    artifactReward: authored.rewards.some((reward) => reward.bundle.artifacts.length),
+    itemReward: authored.rewards.some((reward) => reward.bundle.items.length),
+    resourceReward: authored.rewards.some((reward) => Object.values(reward.bundle.resources)
+      .some((amount) => amount > 0)),
+    roads: authored.overlays.roads.length >= 7,
+  };
+  if (Object.values(preservation).some((preserved) => !preserved)) {
+    throw new Error(`Canonical export lost exercised authoring data: ${JSON.stringify(preservation)}`);
   }
   const diagnostics = validateEditorMapForPlay(parsed.document)
     .filter((item) => item.severity === 'error');
@@ -353,11 +360,11 @@ try {
     throw new Error(`Structure stamp did not select an object: ${JSON.stringify(structureState)}`);
   }
 
-  await page.select('select[aria-label="Castle owner flag"]', 'p1');
-  await clickButton(page, 'Hagwood castle', '.editor-castle-palette');
+  await page.select('select[aria-label="City owner flag"]', 'p1');
+  await clickButton(page, 'Hagwood city', '.editor-castle-palette');
   await clickCell(page, 2, 2);
-  await page.select('select[aria-label="Castle owner flag"]', 'p2');
-  await clickButton(page, 'Vespiary castle', '.editor-castle-palette');
+  await page.select('select[aria-label="City owner flag"]', 'p2');
+  await clickButton(page, 'Vespiary city', '.editor-castle-palette');
   await clickCell(page, 22, 15);
 
   await page.select('select[aria-label="Hero owner flag"]', 'p1');
@@ -412,6 +419,19 @@ try {
   await dragCells(page, { x: 1, y: 11 }, { x: 7, y: 11 });
   await frames(page, 4);
 
+  // Keep the final desktop inspector on an inherited neutral defense so the review proves both
+  // the 5×2 stamp and the presence-based omission contract in the actual authoring surface.
+  await page.select('select[aria-label="City owner flag"]', 'neutral');
+  await clickButton(page, 'Unfinished city', '.editor-castle-palette');
+  await clickCell(page, 15, 16);
+  const neutralInspector = await page.$eval('.editor-castle-inspector', (node) =>
+    (node.textContent ?? '').replace(/\s+/g, ' ').trim());
+  if (!neutralInspector.includes('Canonical 5×2 top-left footprint')
+      || !neutralInspector.includes('Garrison Inherited from core')
+      || !neutralInspector.includes('54 Candle-Wisps · 27 Couriers · 18 Sentries')) {
+    throw new Error(`Neutral city inspector does not expose the inherited defense contract: ${neutralInspector}`);
+  }
+
   const diagnosticText = await page.$eval('.editor-diagnostics header strong', (node) =>
     node.textContent?.replace(/\s+/g, ' ').trim() ?? '');
   if (!diagnosticText.startsWith('0 errors')) {
@@ -421,6 +441,10 @@ try {
   }
   await page.$eval('.editor-canvas-panel', (node) => node.scrollIntoView({ block: 'start' }));
   await page.screenshot({ path: join(output, '03-all-categories-desktop.png') });
+  await cellPoint(page, 17, 17);
+  await (await page.$('.editor-canvas-viewport'))!.screenshot({
+    path: join(output, '03b-neutral-city-canvas-desktop.png'),
+  });
 
   await clickButton(page, 'Save draft', '.editor-topbar');
   await page.waitForFunction(() => document.querySelector('.editor-notice')?.textContent?.includes('saved locally'));
@@ -441,6 +465,10 @@ try {
   await page.$eval('.editor-canvas-panel', (node) => node.scrollIntoView({ block: 'start' }));
   await auditLayout(page, '390px workspace');
   await page.screenshot({ path: join(output, '04-workspace-390.png') });
+  await cellPoint(page, 17, 17);
+  await (await page.$('.editor-canvas-viewport'))!.screenshot({
+    path: join(output, '04b-neutral-city-canvas-390.png'),
+  });
 
   await clickButton(page, 'Map library', '.editor-topbar');
   await page.waitForSelector('[data-surface="map-editor-library"]');
@@ -529,7 +557,7 @@ try {
     result: 'Map editor review passed', output, palette: paletteOrder.map((entry) => entry.heading),
     mapHash: promotion.hash, exportDiagnostics: promotion.diagnostics,
     largeMap: { dimensions: '128x128', creationMs: Math.round(creationMs), paintMs: Math.round(paintMs) },
-    screenshots: 9,
+    screenshots: 11,
   }, null, 2));
 } finally {
   await browser.close();

@@ -1,5 +1,19 @@
 # Implementation Decisions
 
+## 2026-08-11 — City geometry and neutral defense have one canonical boundary (doc 51)
+
+- Internal `Castle`/`castles` identifiers remain save and API compatibility names, while every
+  player-facing surface says City. One shared 5×2 top-left contact and `(2,1)` gate drives setup,
+  occupancy, navigation, fog, rendering, lint, editor placement, conversion, and migration.
+- Neutral ownership is not a player slot. Omitted neutral garrisons derive three ordered stacks from
+  the faction's tier-1–3 unit IDs at exactly three times base growth; `[]` and legal nonempty armies
+  are explicit whole replacements. Runtime records retain inherited/explicit provenance so an
+  editor adapter cannot turn battle casualties into a fresh default defense.
+- Legacy local maps are recognized by the exact former catalog hash and require an explicit
+  gate-preserving migration. Built-in gates remain fixed while widened terrain, entity, guard, and
+  road collisions are re-authored and linted. Four scenario visual variants are validated aliases
+  of their faction's canonical 160×160 city art; their gameplay metadata remains independent.
+
 ## 2026-08-10 — Entered movement tiles own incremental fog (doc 48)
 
 - Each coordinate a hero actually occupies during `MOVE_HERO` is a deterministic exploration event.

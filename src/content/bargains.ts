@@ -22,7 +22,7 @@ export const BARGAINS: Record<BargainId, BargainDefinition> = {
   cuckoosDeal: {
     id: 'cuckoosDeal', name: "The Cuckoo's Deal",
     flavor: 'One nest is watched, and another learns who watched it.',
-    benefit: 'Permanently inspect one enemy castle.',
+    benefit: 'Permanently inspect one enemy city.',
     debt: 'Its owner permanently sees your highest-level hero.',
   },
   milkTeeth: {
@@ -46,7 +46,7 @@ export const BARGAINS: Record<BargainId, BargainDefinition> = {
   whatWasPromised: {
     id: 'whatWasPromised', name: 'What Was Promised',
     flavor: 'The missing things arrive first. Payment follows faithfully.',
-    benefit: 'Gain exactly the missing resources for the next castle building.',
+    benefit: 'Gain exactly the missing resources for the next city building.',
     debt: 'Pay 3 essence each week for three weeks or the building is dormant.',
   },
 };

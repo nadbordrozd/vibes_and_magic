@@ -153,7 +153,7 @@ export function useAdventureItem(
     const castle = state.castles.filter((candidate) => candidate.owner === hero.owner)
       .sort((a, b) => Math.hypot(a.position.x - hero.position.x, a.position.y - hero.position.y)
         - Math.hypot(b.position.x - hero.position.x, b.position.y - hero.position.y))[0];
-    if (!castle) throw new Error('No friendly castle answers the Hearthstone');
+    if (!castle) throw new Error('No friendly city answers the Hearthstone');
     hero.position = castleEntrance(castle);
   } else if (definition.behavior === 'impassableStep') {
     if (!target) throw new Error('Choose a landing tile');
@@ -163,7 +163,7 @@ export function useAdventureItem(
   } else if (definition.behavior === 'militiaWrit') {
     const castle = state.castles.find((candidate) =>
       candidate.id === castleId && candidate.owner === hero.owner);
-    if (!castle) throw new Error('Choose an owned castle');
+    if (!castle) throw new Error('Choose an owned city');
     const count = castle.available[0];
     const unitId = FACTION_UNITS[castle.faction][0];
     const doubled = Object.fromEntries(Object.entries(UNITS[unitId].cost).map(

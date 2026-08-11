@@ -132,7 +132,7 @@ const RAW_ITEMS = {
   },
   hearthstone: {
     id: 'hearthstone', name: 'Hearthstone', use: 'adventure', behavior: 'recall',
-    description: 'Return to the nearest owned castle.',
+    description: 'Return to the nearest owned city.',
   },
   ferrymansCoin: {
     id: 'ferrymansCoin', name: "Ferryman's Coin", use: 'adventure',
@@ -141,7 +141,7 @@ const RAW_ITEMS = {
   },
   militiaWrit: {
     id: 'militiaWrit', name: 'Militia Writ', use: 'adventure', behavior: 'militiaWrit',
-    description: 'Recruit a castle’s available tier-one growth remotely at double gold cost.',
+    description: 'Recruit a city’s available tier-one growth remotely at double gold cost.',
   },
   beggarsCoin: {
     id: 'beggarsCoin', name: "Beggar's Coin", use: 'adventure', behavior: 'draftBoost',
@@ -163,7 +163,7 @@ const RAW_ITEMS = {
   tradeGoods: {
     id: 'tradeGoods', name: 'Trade Goods', use: 'automatic',
     behavior: 'tradeGoods', amount: 25, baseGold: 300,
-    description: 'Sold at a friendly castle for 300 gold plus 25 per straight-line tile.',
+    description: 'Sold at a friendly city for 300 gold plus 25 per straight-line tile.',
   },
 } satisfies Record<ItemId, Omit<ItemDefinition, 'flavor'> | ItemDefinition>;
 

@@ -77,7 +77,7 @@ describe('editor player color slots', () => {
     map = commitTerrainEdit(map, EMPTY_TERRAIN_HISTORY, castle.edit).document;
     expect(removeEditorPlayerSlot(map, 'p1')).toEqual({ ok: false, reason: 'not-last' });
     expect(removeEditorPlayerSlot(map, 'p2')).toMatchObject({
-      ok: false, reason: 'referenced', references: ['castle p2-hagwood-castle'],
+      ok: false, reason: 'referenced', references: ['city p2-hagwood-castle'],
     });
     const neutral = createCastleUpdateEdit(map, castle.castle!.id, { owner: 'neutral' });
     expect(neutral.ok).toBe(true);
@@ -299,12 +299,12 @@ describe('castle validation and native editor presentation', () => {
     expect(html.indexOf('data-palette-order="3"')).toBeLessThan(
       html.indexOf('data-palette-order="4"'),
     );
-    for (const label of ['Castles', 'Player color slots', 'Castle owner flag',
-      'Crimson', 'Azure', 'Verdant', 'Amber', 'Violet', 'Teal', '3×2', 'entrance +1,+1']) {
+    for (const label of ['Cities', 'Player color slots', 'City owner flag',
+      'Crimson', 'Azure', 'Verdant', 'Amber', 'Violet', 'Teal', '5×2', 'entrance +2,+1']) {
       expect(html).toContain(label);
     }
     for (const faction of Object.values(FACTIONS)) {
-      expect(html).toContain(`aria-label="${faction.name} castle"`);
+      expect(html).toContain(`aria-label="${faction.name} city"`);
     }
     expect((html.match(/class="editor-icon-button editor-castle-stamp/g) ?? [])).toHaveLength(6);
     const placed = createCastlePlacementEdit(map, { x: 2, y: 2 }, 'p3', 'hagwood');
@@ -314,7 +314,7 @@ describe('castle validation and native editor presentation', () => {
       ...placed.castle!, buildings: ['villageHall'],
     }}
       document={map} onDelete={() => undefined} onUpdate={() => undefined} />);
-    for (const label of ['Stable ID', 'Owner flag', 'Castle faction', 'Native variant',
+    for (const label of ['Stable ID', 'Owner flag', 'City faction', 'Native variant',
       'Inherited from core', 'Buildings', 'Banned buildings', 'Available recruits', 'Garrison',
       'Guild deck', 'vault', 'Flavor', 'Reset to inherited']) expect(inspector).toContain(label);
     expect(inspector).not.toContain('{&quot;');
@@ -323,11 +323,11 @@ describe('castle validation and native editor presentation', () => {
     )).every((id) => inspector.includes(`value="${id}"`))).toBe(true);
   });
 
-  it('exposes the canonical 3×2 preflight and bottom-center entrance', () => {
+  it('exposes the canonical 5×2 preflight and centered bottom entrance', () => {
     const map = document();
-    expect(EDITOR_CASTLE_FOOTPRINT).toEqual({ w: 3, h: 2 });
-    expect(EDITOR_CASTLE_ENTRANCE).toEqual({ dx: 1, dy: 1 });
-    expect(canPlaceEditorCastle(map, { x: 15, y: 10 })).toEqual({ ok: true });
-    expect(canPlaceEditorCastle(map, { x: 16, y: 10 })).toEqual({ ok: false, reason: 'out-of-bounds' });
+    expect(EDITOR_CASTLE_FOOTPRINT).toEqual({ w: 5, h: 2 });
+    expect(EDITOR_CASTLE_ENTRANCE).toEqual({ dx: 2, dy: 1 });
+    expect(canPlaceEditorCastle(map, { x: 13, y: 10 })).toEqual({ ok: true });
+    expect(canPlaceEditorCastle(map, { x: 14, y: 10 })).toEqual({ ok: false, reason: 'out-of-bounds' });
   });
 });

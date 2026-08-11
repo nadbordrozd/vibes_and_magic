@@ -34,7 +34,7 @@ function fixture(): {
     state,
     hero: { label: hero.name, holder: { kind: 'hero', id: hero.id }, army: hero.army },
     garrison: {
-      label: 'Castle garrison', holder: { kind: 'garrison', id: castle.id },
+      label: 'City garrison', holder: { kind: 'garrison', id: castle.id },
       army: castle.garrison,
     },
   };
@@ -109,7 +109,7 @@ describe('direct castle army transfer', () => {
       dispatch={() => undefined} onClose={() => undefined} />);
     expect(html).toContain('Company transfer requires a visiting hero');
     expect(html).toContain('no remote transfer actions are available');
-    expect(html).toContain('Castle garrison');
+    expect(html).toContain('City garrison');
     expect(html).not.toContain('direct-exchange');
     expect(html).not.toContain('split-stack');
     expect(html).not.toContain('Split this company');

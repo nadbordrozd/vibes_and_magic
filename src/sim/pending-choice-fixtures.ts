@@ -145,7 +145,7 @@ export function pendingChoiceFixtures(): PendingChoiceFixture[] {
       };
     }, ['Source · Wayward Crone', 'Borrowed Legion', 'What Was Promised', 'Unavailable'], 0, [
       'The borrowed company needs an empty army slot or an existing Candle Wisps company.',
-      'This bargain must be accepted at an owned castle entrance.',
+      'This bargain must be accepted at an owned city entrance.',
     ]),
     withChoice('toll-unaffordable', 3715, (state, hero) => {
       const toll = objectOfKind(state, 'tollGate');

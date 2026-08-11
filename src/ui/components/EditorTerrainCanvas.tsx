@@ -1049,7 +1049,7 @@ export function EditorTerrainCanvas({
       else if (object) commitObjectMutation(object.kind === 'obstacle'
         ? createPropEraseEdit(document, object.id) : createStructureDeleteEdit(document, object.id));
       else if (reward) commitRewardMutation(createRewardDeleteEdit(document, reward.id));
-      else setMutationMessage('No authored object, castle, hero, guardian, or reward occupies that cell.');
+      else setMutationMessage('No authored object, city, hero, guardian, or reward occupies that cell.');
       event.currentTarget.releasePointerCapture(event.pointerId);
       return;
     }
@@ -1068,7 +1068,7 @@ export function EditorTerrainCanvas({
         ?? (object ? document.rewards.find((candidate) => candidate.delivery.kind === 'site'
           && candidate.delivery.objectId === object.id)?.id ?? null : null));
       setMutationMessage(castle || hero || guardian || object || reward
-        ? '' : 'No authored object, castle, hero, guardian, or reward occupies that cell.');
+        ? '' : 'No authored object, city, hero, guardian, or reward occupies that cell.');
       const entity = hero ?? guardian ?? castle ?? object ?? reward;
       if (entity) {
         const entityPosition = 'position' in entity ? entity.position
@@ -1269,7 +1269,7 @@ export function EditorTerrainCanvas({
     setSelectedGuardianId(null);
     setSelectedRewardId(null);
     setPendingWhirlpool(null); setMutationMessage(
-      'Stamp the 3×2 top-left footprint. The blue square marks its bottom-center entrance.',
+      'Stamp the 5×2 top-left city footprint. The blue square marks entrance +2,+1.',
     );
   };
   const selectHeroPlacement = () => {
@@ -1468,25 +1468,25 @@ export function EditorTerrainCanvas({
           <section className="editor-palette-section editor-castle-palette"
             data-palette-order="4" aria-labelledby="castle-palette-title">
             <span className="editor-palette-number">04</span>
-            <h3 id="castle-palette-title">Castles</h3>
-            <p>Player color, player faction, and castle faction are independent authored facts.</p>
+            <h3 id="castle-palette-title">Cities</h3>
+            <p>Player color, player faction, and city faction are independent authored facts.</p>
             <EditorPlayerSlots document={document} onEdit={commitPlayerEdit}
               onMessage={setMutationMessage} />
-            <label>Owner flag<select aria-label="Castle owner flag" value={effectiveCastleOwner}
+            <label>Owner flag<select aria-label="City owner flag" value={effectiveCastleOwner}
               onChange={(event) => setCastleOwner(event.target.value as PlayerId | 'neutral')}>
               <option value="neutral">Neutral · no flag</option>
               {document.players.map((player) => <option key={player.id} value={player.id}>
                 {player.id.toUpperCase()} · {EDITOR_PLAYER_FLAGS[player.id].label}
               </option>)}
             </select></label>
-            <div className="editor-castle-grid" role="radiogroup" aria-label="Castle faction stamps">
+            <div className="editor-castle-grid" role="radiogroup" aria-label="City faction stamps">
               {Object.values(FACTIONS).map((faction) => {
                 const sprite = manifestEntry(editorCastleSpriteId({ faction: faction.id }));
                 const selected = tool === 'castle' && castleFaction === faction.id;
                 return <button key={faction.id} role="radio" aria-checked={selected}
                   className={`editor-icon-button editor-castle-stamp ${selected ? 'selected' : ''}`}
-                  aria-label={`${faction.name} castle`}
-                  title={`Place ${faction.name} castle · 3×2 · entrance +1,+1`}
+                  aria-label={`${faction.name} city`}
+                  title={`Place ${faction.name} city · 5×2 · entrance +2,+1`}
                   onClick={() => { setCastleFaction(faction.id); selectCastlePlacement(); }}>
                   {sprite && <span className="editor-castle-thumbnail">
                     <img src={sprite.file} alt="" aria-hidden="true" />
@@ -1496,7 +1496,7 @@ export function EditorTerrainCanvas({
                 </button>;
               })}
             </div>
-            <small>New castles inherit canonical buildings, recruits, empty garrison, and guild derivation.</small>
+            <small>New owned cities inherit an empty garrison. Neutral cities inherit their faction’s three-week tier 1–3 defense until explicitly set empty or custom.</small>
           </section>
           <section className="editor-palette-section editor-hero-palette"
             data-palette-order="5" aria-labelledby="hero-palette-title">
@@ -1545,7 +1545,7 @@ export function EditorTerrainCanvas({
               </span>}
             </button>
             {!effectiveHeroOwner && <small className="editor-workflow-note" role="status">
-              Placement disabled: add at least one player slot in Castles first.
+              Placement disabled: add at least one player slot in Cities first.
             </small>}
             <small>New heroes use the core default constructor and serialize the selected faction’s small nonempty hire army.</small>
           </section>
@@ -1821,7 +1821,7 @@ export function EditorTerrainCanvas({
               const resetVariant = update.faction !== undefined && selectedCastle.variant !== undefined;
               if (commitObjectMutation(createCastleUpdateEdit(document, selectedCastle.id, update))
                   && resetVariant) setMutationMessage(
-                'Faction changed. Any incompatible explicit architectural variant was reset to the native basic castle.',
+                'Faction changed. Any incompatible explicit architectural variant was reset to the faction city.',
               );
             }} />}
           {selectedHero && <EditorHeroInspector hero={selectedHero} document={document}

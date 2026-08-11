@@ -41,13 +41,13 @@ export function buildingStatus(
     reasons: [castle.dormantBuildings[buildingId] ? 'Dormant — Debt unpaid.' : 'Built.'],
   };
   if (castle.owner === 'neutral') return {
-    state: 'unavailable', color: 'grey', reason: 'Cannot be built in this castle.',
-    reasons: ['Cannot be built in this castle.'],
+    state: 'unavailable', color: 'grey', reason: 'Cannot be built in this city.',
+    reasons: ['Cannot be built in this city.'],
   };
   const definition = BUILDINGS[buildingId];
   if (!castleSupportsBuilding(state, castle, buildingId)) return {
-    state: 'unavailable', color: 'grey', reason: 'Cannot be built in this castle.',
-    reasons: ['Cannot be built in this castle.'],
+    state: 'unavailable', color: 'grey', reason: 'Cannot be built in this city.',
+    reasons: ['Cannot be built in this city.'],
   };
   const reasons: string[] = [];
   if (definition.prerequisite && !castle.buildings.includes(definition.prerequisite)) {

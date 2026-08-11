@@ -218,6 +218,8 @@ export interface Castle {
   bannedBuildings: BuildingId[];
   available: number[];
   garrison: Army;
+  /** Preserves the portable neutral-city omission boundary through runtime/editor adapters. */
+  garrisonSource?: 'inherited' | 'explicit';
   builtOnDay: number | null;
   guildDeck: SpellId[];
   growthEffects: Array<{ id: string; multiplier: number; expiresWeek: number; tier?: UnitTier }>;

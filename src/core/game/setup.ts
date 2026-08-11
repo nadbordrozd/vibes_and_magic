@@ -51,7 +51,7 @@ import { resolveDebtEvent } from '../debts';
 import { syncHeroView } from '../heroes';
 import { sameCoord } from '../map/pathfinding';
 import { revealForPlayer } from '../map/visibility';
-import { castleEntrance } from '../map/occupancy';
+import { castleEntrance, CITY_ENTRANCE, CITY_FOOTPRINT } from '../map/occupancy';
 import { randomInt, shuffle } from '../rng';
 import type {
   BuildingId, Castle, FactionId, GameState, Hero, NewGameOptions, Player, PlayerId,
@@ -168,6 +168,12 @@ function guildDeck(owner: PlayerId | 'neutral', factionId: FactionId, seed: numb
     ...order(offPair, owner === 'p1' ? 23 : 29).slice(0, 2)];
 }
 
+export function neutralCityDefaultGarrison(factionId: FactionId) {
+  return makeArmy(FACTION_UNITS[factionId].slice(0, 3).map((unitId) => ({
+    unitId, count: UNITS[unitId].growth * 3,
+  })));
+}
+
 function makeCastle(
   owner: PlayerId | 'neutral', factionId: FactionId, seed: number,
   entrancePosition: { x: number; y: number }, id = `${owner}-castle`,
@@ -175,11 +181,17 @@ function makeCastle(
   return {
     id, owner,
     faction: factionId,
-    position: { x: entrancePosition.x - 1, y: entrancePosition.y - 1 },
-    footprint: { w: 3, h: 2 }, entrance: { dx: 1, dy: 1 },
+    position: {
+      x: entrancePosition.x - CITY_ENTRANCE.dx,
+      y: entrancePosition.y - CITY_ENTRANCE.dy,
+    },
+    footprint: { ...CITY_FOOTPRINT }, entrance: { ...CITY_ENTRANCE },
     buildings: ['villageHall', 'dwelling1', 'tavern'], bannedBuildings: [],
     available: [UNITS[FACTION_UNITS[factionId][0]].growth,
-      0, 0, 0, 0, 0], garrison: emptyArmy(), builtOnDay: null,
+      0, 0, 0, 0, 0],
+    garrison: owner === 'neutral' ? neutralCityDefaultGarrison(factionId) : emptyArmy(),
+    garrisonSource: owner === 'neutral' ? 'inherited' : 'explicit',
+    builtOnDay: null,
     guildDeck: guildDeck(owner, factionId, seed),
     growthEffects: [], dormantBuildings: {},
     marketScroll: null, marketScrollWeek: 0,
@@ -305,6 +317,7 @@ export function createGame(
       castle.garrison = makeArmy([{ unitId: FACTION_UNITS[town.faction][3], count: 12 }]);
     } else if (town.variant === 'hollowTown') castle.garrison = emptyArmy();
     else castle.garrison = makeArmy([{ unitId: FACTION_UNITS[town.faction][1], count: 25 }]);
+    castle.garrisonSource = 'explicit';
     castles.push(castle);
   }
   let rng = options.seed >>> 0;

@@ -139,7 +139,7 @@ export const SKILLS: Record<SecondarySkillId, SkillDefinition> = {
   siegewright: skill('siegewright', 'Siegewright', [
     'Enemy Walls bonuses are halved.',
     'Wall of the Maker hexes become 40-HP barriers.',
-    'Breach one wall hex before a castle assault.',
+    'Breach one wall hex before a city assault.',
   ], { wallsMultiplier: 0.5, wallHp: 40, breach: 1 }),
 };
 

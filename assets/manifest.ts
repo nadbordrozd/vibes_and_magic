@@ -28,6 +28,8 @@ export interface AssetManifestEntry {
     h: number;
     entrance: { x: number; y: number };
   };
+  /** Exact validated presentation alias; entity gameplay metadata remains independent. */
+  aliasOf?: string;
 }
 
 function terrainFamily(terrain: string, skin: string): Record<string, AssetManifestEntry> {
@@ -438,24 +440,27 @@ const LEGACY_ASSET_CANDIDATES: Readonly<Record<string, AssetManifestEntry>> = {
     anchor: { x: 0, y: 96 }, contact: { w: 5, h: 2, entrance: { x: 2, y: 1 } },
   },
   'castle:hearthguard:freeTown': {
-    file: 'assets/castles/hearthguard-free-town.png', w: 96, h: 128,
-    anchor: { x: 0, y: 0 },
+    file: 'assets/cities/hearthguard-city.png', w: 160, h: 160,
+    anchor: { x: 0, y: 96 }, contact: { w: 5, h: 2, entrance: { x: 2, y: 1 } },
+    aliasOf: 'castle:hearthguard:castle',
   },
   'castle:unfinished:castle': {
     file: 'assets/cities/unfinished-city.png', w: 160, h: 160,
     anchor: { x: 0, y: 96 }, contact: { w: 5, h: 2, entrance: { x: 2, y: 1 } },
   },
   'castle:unfinished:hollowTown': {
-    file: 'assets/castles/unfinished-hollow-town.png', w: 96, h: 128,
-    anchor: { x: 0, y: 0 },
+    file: 'assets/cities/unfinished-city.png', w: 160, h: 160,
+    anchor: { x: 0, y: 96 }, contact: { w: 5, h: 2, entrance: { x: 2, y: 1 } },
+    aliasOf: 'castle:unfinished:castle',
   },
   'castle:vespiary:castle': {
     file: 'assets/cities/vespiary-city.png', w: 160, h: 160,
     anchor: { x: 0, y: 96 }, contact: { w: 5, h: 2, entrance: { x: 2, y: 1 } },
   },
   'castle:vespiary:coastal': {
-    file: 'assets/castles/vespiary-coastal.png', w: 96, h: 128,
-    anchor: { x: 0, y: 0 },
+    file: 'assets/cities/vespiary-city.png', w: 160, h: 160,
+    anchor: { x: 0, y: 96 }, contact: { w: 5, h: 2, entrance: { x: 2, y: 1 } },
+    aliasOf: 'castle:vespiary:castle',
   },
   'castle:wildergrass:castle': {
     file: 'assets/cities/wildergrass-city.png', w: 160, h: 160,
@@ -466,8 +471,9 @@ const LEGACY_ASSET_CANDIDATES: Readonly<Record<string, AssetManifestEntry>> = {
     anchor: { x: 0, y: 96 }, contact: { w: 5, h: 2, entrance: { x: 2, y: 1 } },
   },
   'castle:woundWrights:oldSeat': {
-    file: 'assets/castles/wound-wrights-old-seat.png', w: 96, h: 128,
-    anchor: { x: 0, y: 0 },
+    file: 'assets/cities/wound-wrights-city.png', w: 160, h: 160,
+    anchor: { x: 0, y: 96 }, contact: { w: 5, h: 2, entrance: { x: 2, y: 1 } },
+    aliasOf: 'castle:woundWrights:castle',
   },
   'map-object:shrine:craft': {
     file: 'assets/map-objects/shrine-craft.png', w: 32, h: 48,

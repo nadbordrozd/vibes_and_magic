@@ -137,9 +137,9 @@ function pushUnique(items: Map<string, AssetWorkItem>, item: AssetWorkItem): voi
 function castleWorkItem(faction: FactionId, variant: NonNullable<Castle['variant']> | 'castle'):
 AssetWorkItem {
   return {
-    id: assetId.castle(faction, variant), category: 'castle', w: 96, h: 64,
+    id: assetId.castle(faction, variant), category: 'castle', w: 160, h: 64,
     groundContact: true, ownable: true,
-    source: variant === 'castle' ? 'playable faction castle' : `Manywhere ${variant}`,
+    source: variant === 'castle' ? 'playable faction city' : `Manywhere ${variant}`,
   };
 }
 

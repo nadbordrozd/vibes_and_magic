@@ -53,7 +53,7 @@ export function AdventureItemDialog({
             ([resource, amount]) => [resource, (amount ?? 0) * 2 * castle.available[0]],
           ));
           return <button key={castle.id} disabled={!preview.legal}
-            title={!preview.legal ? preview.reason ?? 'This castle cannot muster militia.'
+            title={!preview.legal ? preview.reason ?? 'This city cannot muster militia.'
               : `Send the Writ to ${castle.id}.`}
             onClick={() => onDraft(draft)}>
             <b>{CASTLE_NAMES[castle.faction]}</b>
@@ -64,7 +64,7 @@ export function AdventureItemDialog({
         })}
       </div>
       {definition.behavior === 'militiaWrit' && castles.length === 0
-        && <p className="action-preview-error">Unavailable · No owned castle can receive the Writ.</p>}
+        && <p className="action-preview-error">Unavailable · No owned city can receive the Writ.</p>}
       <div className="dialog-actions"><button autoFocus onClick={onCancel}>
         Cancel · keep {itemName(item)}
       </button></div>

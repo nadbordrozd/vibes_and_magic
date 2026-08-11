@@ -714,8 +714,8 @@ export function AdventureMap({
                   : ''}`}</title>
               <PixelSprite id={castleSpriteId(castle)} x={castle.position.x * TILE}
                 y={castle.position.y * TILE} className="castle-pixel" fallback={<g
-                  transform={`translate(${castle.position.x * TILE + 48} ${castle.position.y * TILE + 32})`}>
-                  <rect className={`castle-glyph ${castle.owner}`} x="-46" y="-30" width="92" height="60" />
+                  transform={`translate(${castle.position.x * TILE + 80} ${castle.position.y * TILE + 32})`}>
+                  <rect className={`castle-glyph ${castle.owner}`} x="-78" y="-30" width="156" height="60" />
                   <text y="5">♜</text>
                 </g>} />
               <OwnerFlag id={castleSpriteId(castle)} x={castle.position.x * TILE}

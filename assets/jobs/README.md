@@ -11,6 +11,13 @@ immutable audit/reproduction records rather than PixelLab submissions. `pixelgen
 ordinary job gate validate them; a live `pixelgen` submission refuses them and directs regeneration
 back through one built-in image-generation call per request plus the documented local bake.
 
+Historical requests that once targeted a current manifest ID declare `superseded_by` with the
+replacement job filename. They remain immutable prompt/candidate provenance, but do not count as
+current worklist coverage and are not checked against the replacement asset's current dimensions.
+The gate still validates their job structure and requires the named replacement job to actively
+cover every superseded ID. City assets additionally require exactly one active production claim
+from `city-sprites-built-in.json`, so reviving an old-size claim fails validation.
+
 ```json
 {
   "version": 1,

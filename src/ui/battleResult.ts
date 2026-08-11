@@ -159,7 +159,7 @@ export function buildBattleResult(
 
   let encounter: string;
   if (context.kind === 'castle' && castleBefore) {
-    encounter = `Castle assault · ${CASTLE_NAMES[castleBefore.faction]}`;
+    encounter = `City assault · ${CASTLE_NAMES[castleBefore.faction]}`;
   } else if (context.kind === 'guardian') {
     const protectedCard = guardianBefore?.kind === 'guardian' && guardianBefore.protects
       ? inspectTarget(prior, prior.castles.some((castle) => castle.id === guardianBefore.protects)
@@ -279,7 +279,7 @@ export function buildBattleResult(
   if (context.kind === 'castle' && castleBefore) {
     const castleAfter = next.castles.find((castle) => castle.id === castleBefore.id)!;
     consequences.push({
-      label: 'Castle ownership',
+      label: 'City ownership',
       detail: castleAfter.owner !== castleBefore.owner
         ? `${CASTLE_NAMES[castleBefore.faction]} captured by ${next.players[castleAfter.owner as PlayerId].name}; its garrison was cleared.`
         : `${CASTLE_NAMES[castleBefore.faction]} remains under ${castleAfter.owner === 'neutral'

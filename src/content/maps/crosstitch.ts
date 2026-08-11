@@ -6,7 +6,7 @@ import type {
 import { terrainId, tile } from '../terrain';
 import { validateMap } from './borderMarches';
 import {
-  materializeGuardians, type AuthoredGuardian,
+  materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
 } from './occupancyAuthoring';
 
 export const CROSSTITCH_WIDTH = 36;
@@ -61,10 +61,10 @@ function factionDwellings(): MapObject[] {
 
 function standardObjects(): MapObject[] {
   const minePositions = [
-    [[5, 7], [2, 6], [6, 2], [9, 6]],
+    [[5, 7], [2, 6], [6, 1], [9, 6]],
     [[30, 7], [33, 6], [27, 2], [26, 6]],
     [[6, 19], [1, 20], [6, 25], [9, 20]],
-    [[28, 19], [33, 21], [29, 25], [26, 20]],
+    [[28, 19], [33, 23], [29, 25], [26, 20]],
   ];
   const resources = [
     ['gold', 1_000], ['timber', 2], ['iron', 1], ['essence', 1],
@@ -188,8 +188,11 @@ function authoredGuardians(): AuthoredGuardian[] {
       targetId: 'seam-echo-lock', army: [{ unitId: 'sleeper', count: 6 }], split: false,
     },
     ...['nw-kit-lock', 'ne-kit-lock', 'sw-kit-lock', 'se-kit-lock'].map(
-      (targetId): AuthoredGuardian => ({
-        targetId, army: [{ unitId: 'mirrorBound', count: 10 }], split: false, static: true,
+      (targetId, index): AuthoredGuardian => ({
+        targetId,
+        ...(index === 0 ? { position: { x: 1, y: 2 } }
+          : index === 1 ? { position: { x: 34, y: 2 } } : {}),
+        army: [{ unitId: 'mirrorBound', count: 10 }], split: false, static: true,
       }),
     ),
   ];
@@ -210,7 +213,7 @@ export function createCrosstitch(seed = 1): GameMap {
   const map: GameMap = materializeGuardians({
     id: 'crosstitch', name: 'Crosstitch', seed, width: CROSSTITCH_WIDTH,
     height: CROSSTITCH_HEIGHT, terrain: authoredTerrain, objects: objects(seed), seams,
-    roads,
+    roads: trimRoadsForCities(roads, CROSSTITCH_CASTLE_POSITIONS),
     victory: {
       type: 'conquest',
       flavor: 'Unpick every rival claim upon the Crosstitch.',

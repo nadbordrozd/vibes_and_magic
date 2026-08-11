@@ -1,6 +1,7 @@
 # 50 — In-game map editor and portable authored maps
 
-Status: implemented and browser-accepted 2026-08-10. This work
+Status: implemented and browser-accepted 2026-08-10; migrated to the canonical 5×2 City and neutral
+garrison contract 2026-08-11. This work
 order defines one JSON authoring format shared by the in-game editor, local maps, built-in-map
 clones, test play, and promoted built-in maps. It does not make editor UI state part of game state
 or permit maps to define new rules. Work order 51 supersedes its player-facing Castle terminology,
@@ -232,6 +233,13 @@ import the required `.vam-map.json`; they never fall back to a built-in map or t
 resolved map hash participates in `contentHash`. Campaign export does not embed or mutate the map
 document, and the UI offers the matching map export alongside a local-map campaign save.
 
+Schema version 1 keeps the internal `castles` collection for compatibility. Documents whose
+catalog hash is the former 3×2 baseline `a6d180da` are blocked from playable conversion with
+`compatibility.city_geometry.migration_required`. The editor offers **Migrate cities to 5×2**,
+moves each top-left anchor one cell west to preserve the former world-space gate, removes obsolete
+geometry overrides, and updates the catalog hash. Validation then reports any new bounds or overlap
+that needs an authored terrain/entity move; import never applies this migration silently.
+
 ## Validation, lint, and deterministic conversion
 
 Validation is layered and uses the same pure functions in editor diagnostics, import, test play,
@@ -303,14 +311,16 @@ npm run review:map-editor
 The deterministic real-browser journey starts at the title screen, creates a blank portable map,
 authors the two required objective texts, and exercises terrain smear and filled shapes, mountain
 smear and filled shapes, an obstacle prop, registered structure, independently owned/factioned
-cities and heroes, a linked guardian with an edited troop count, artifact/item/resource rewards,
-and a road overlay. It also checks keyboard shortcut ownership, undo/redo, cancelled pointer
+cities and heroes, an Unfinished neutral City with its inherited three-week defense, a linked
+guardian with an edited troop count, artifact/item/resource rewards, and a road overlay. It also
+checks keyboard shortcut ownership, undo/redo, cancelled pointer
 gestures, local save and reopen, canonical download, non-destructive import collision handling,
 test play and return-to-editor context, and the campaign menu's exact frozen-revision map download.
 
 The command checks the canonical palette order, zero playable errors, 390 px horizontal overflow,
-and a 128×128 creation/shape-paint performance budget. It then validates the exported bytes through
+the neutral City’s inherited defense copy, owned/neutral 5×2 canvas presentation, and a 128×128
+creation/shape-paint performance budget. It then validates the exported bytes through
 the real promotion adapter in an isolated temporary repository and verifies `--check` without
-changing the working tree. Nine desktop/narrow captures and both intercepted portable downloads are
-written deliberately under `.pixel-work/review/map-editor/`; no screenshots are written at the
-repository root.
+changing the working tree. Eleven desktop/narrow captures, including dedicated neutral-City canvas
+frames at both widths, and both intercepted portable downloads are written deliberately under
+`.pixel-work/review/map-editor/`; no screenshots are written at the repository root.

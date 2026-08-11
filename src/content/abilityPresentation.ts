@@ -56,7 +56,7 @@ export const ABILITY_PRESENTATION: Record<AbilityId, AbilityPresentation> = {
   undergrass: ability('Undergrass', 'Ignores movement blockers and cannot be retaliated against.'),
   storm_wake: ability('Storm Wake', 'After attacking, applies Burn to enemies adjacent to the target.'),
   siege_wall: ability('Wall Section', 'An immobile siege obstacle that blocks movement and protects the defending side.'),
-  siege_ram: ability('Siege Ram', 'A broad construct that deals double damage to castle walls.'),
+  siege_ram: ability('Siege Ram', 'A broad construct that deals double damage to city walls.'),
   immobile: ability('Immobile', 'Cannot move from its battlefield position.'),
   mirror_hex: ability('Mirror Hex', 'An immobile mirror created as a battlefield obstacle.'),
   aquatic: ability('Aquatic', 'Ignores shallow-water movement cost and gains speed while standing in shallows.'),

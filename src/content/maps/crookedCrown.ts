@@ -5,7 +5,9 @@ import type {
 import { coordKey } from '../../core/map/pathfinding';
 import { FACTION_UNITS, UNITS } from '../units';
 import { terrainId, tile } from '../terrain';
-import { materializeGuardians, type AuthoredGuardian } from './occupancyAuthoring';
+import {
+  materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
+} from './occupancyAuthoring';
 import { validateMap } from './borderMarches';
 
 export const CROOKED_CROWN_WIDTH = 72;
@@ -402,9 +404,9 @@ export function createCrookedCrown(seed = 1): GameMap {
     id: 'crooked-crown', name: 'The Crooked Crown', seed,
     width: CROOKED_CROWN_WIDTH, height: CROOKED_CROWN_HEIGHT,
     terrain: topology.terrain, objects: authoredObjects(seed),
-    roads: roads.filter((position) => !['mountain', 'water'].includes(
+    roads: trimRoadsForCities(roads.filter((position) => !['mountain', 'water'].includes(
       terrainId(topology.terrain[position.y][position.x]),
-    )),
+    )), CROOKED_CROWN_STARTS),
     seams: [
       { x: 35, y: 35 }, { x: 36, y: 35 }, { x: 36, y: 36 }, { x: 35, y: 36 },
     ],

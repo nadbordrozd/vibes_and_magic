@@ -36,10 +36,10 @@ function playable() {
   ];
   document.castles = [
     createDefaultEditorCastle('red-keep', { x: 1, y: 1 }, 'p1', 'hearthguard'),
-    createDefaultEditorCastle('blue-keep', { x: 8, y: 5 }, 'p2', 'woundWrights'),
+    createDefaultEditorCastle('blue-keep', { x: 7, y: 5 }, 'p2', 'woundWrights'),
   ];
   document.heroes = [
-    createDefaultEditorHero('red-one', { x: 2, y: 2 }, 'p1', 'hearthguard', 'aldith'),
+    createDefaultEditorHero('red-one', { x: 3, y: 2 }, 'p1', 'hearthguard', 'aldith'),
     createDefaultEditorHero('red-two', { x: 4, y: 3 }, 'p1', 'hearthguard', 'corwin'),
     createDefaultEditorHero('blue-one', { x: 9, y: 6 }, 'p2', 'woundWrights', 'petra'),
   ];

@@ -25,6 +25,7 @@ interface JobRequest {
   parameters: Record<string, unknown>;
   references?: Reference[];
   review_only?: boolean;
+  superseded_by?: string;
 }
 
 const ROOT = resolve(import.meta.dirname, '..');
@@ -648,12 +649,12 @@ chunks(castleItems, 5).forEach((items, index) => writeJob(`b3-castles-${index + 
   items.map((item) => {
     const [, faction, variant] = item.id.split(':');
     const variantText = variant === 'castle' ? 'faction castle' : pretty(variant);
-    return mapObjectRequest('b3-castles', item, [96, 128],
+    return { ...mapObjectRequest('b3-castles', item, [96, 128],
       `the ${pretty(faction)} ${variantText}, built from ${FACTION_MATERIAL[faction]}`,
       'The bottom 64px is the exact 3x2 ground contact. Draw the only convincing gate dead-centre '
         + 'on the bottom edge, inside pixels x=32..63 and y=96..127. Towers and roofs rise through '
         + 'the upper 64px. Keep a clear pennant planting edge near pixel x=86,y=80. No other door '
-        + 'may imply a legal entrance. ');
+        + 'may imply a legal entrance. '), superseded_by: 'city-sprites-built-in.json' };
   })));
 
 const b4Kinds = new Set(['barrowField', 'manaSpring', 'waystation', 'shrine']);

@@ -24,7 +24,7 @@ export function build(
   buildingId: BuildingId,
 ): void {
   const castle = state.castles.find((item) => item.id === castleId);
-  if (!castle || castle.owner !== state.activePlayer) throw new Error('Castle not owned');
+  if (!castle || castle.owner !== state.activePlayer) throw new Error('City not owned');
   const definition = BUILDINGS[buildingId];
   if (!definition || ['villageHall', 'dwelling1'].includes(buildingId)) {
     throw new Error('Building cannot be constructed');
@@ -34,14 +34,14 @@ export function build(
   }
   if (castle.buildings.includes(buildingId)) throw new Error('Already built');
   if (!castleSupportsBuilding(state, castle, buildingId)) {
-    throw new Error('Building is unavailable in this castle');
+    throw new Error('Building is unavailable in this city');
   }
   if (castle.builtOnDay === state.day) throw new Error('Already built today');
   if (definition.prerequisite && !castle.buildings.includes(definition.prerequisite)) {
     throw new Error('Missing prerequisite');
   }
   if (buildingId === 'shipyard' && !coastalWater(state, castle, 3).length) {
-    throw new Error('Shipyard requires a coastal castle');
+    throw new Error('Shipyard requires a coastal city');
   }
   const player = state.players[state.activePlayer];
   if (!canAfford(player.resources, definition.cost)) throw new Error('Cannot afford');
@@ -102,7 +102,7 @@ export function recruit(
   count: number,
 ): void {
   const castle = state.castles.find((item) => item.id === castleId);
-  if (!castle || castle.owner !== state.activePlayer) throw new Error('Castle not owned');
+  if (!castle || castle.owner !== state.activePlayer) throw new Error('City not owned');
   if (tier > 1 && !buildingIsActive(castle, `dwelling${tier}` as BuildingId)) {
     throw new Error('Dwelling not built');
   }
@@ -138,7 +138,7 @@ export function swapArmy(
   const hero = selectedHero(state.players[state.activePlayer]);
   if (!castle || castle.owner !== state.activePlayer || !hero
       || !sameCoord(hero.position, castleEntrance(castle))) {
-    throw new Error('Hero is not visiting this castle');
+    throw new Error('Hero is not visiting this city');
   }
   if (heroSlot < 0 || heroSlot >= 7 || garrisonSlot < 0 || garrisonSlot >= 7) {
     throw new Error('Invalid army slot');

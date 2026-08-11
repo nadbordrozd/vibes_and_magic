@@ -110,7 +110,7 @@ describe('editor hero transactions and safe inspector edits', () => {
       .toEqual({ ok: false, reason: 'no-player' });
     const html = renderToStaticMarkup(<EditorTerrainCanvas document={map}
       onDocumentChange={() => undefined} />);
-    expect(html).toContain('Placement disabled: add at least one player slot in Castles first.');
+    expect(html).toContain('Placement disabled: add at least one player slot in Cities first.');
     expect(html).toContain('No player slots available');
     expect(html).toContain('Add at least one player slot before placing a starting hero.');
   });
@@ -145,7 +145,7 @@ describe('editor hero transactions and safe inspector edits', () => {
     const map = document();
     map.castles = [{ id: 'p1-castle', position: { x: 2, y: 2 }, owner: 'p1',
       faction: 'hearthguard' }];
-    const entrance = { x: 3, y: 3 };
+    const entrance = { x: 4, y: 3 };
     expect(canPlaceEditorHero(map, entrance, 'p1')).toEqual({ ok: true });
     expect(canPlaceEditorHero(map, entrance, 'p2')).toEqual({ ok: false, reason: 'overlap' });
     expect(canPlaceEditorHero(map, { x: 2, y: 2 }, 'p1'))
@@ -199,7 +199,7 @@ describe('editor hero transactions and safe inspector edits', () => {
 
   it('applies the entrance exception symmetrically to castle stamps, moves, and owner edits', () => {
     let map = document();
-    const hero = createHeroPlacementEdit(map, { x: 3, y: 3 }, 'p1', 'hearthguard', 'aldith');
+    const hero = createHeroPlacementEdit(map, { x: 4, y: 3 }, 'p1', 'hearthguard', 'aldith');
     expect(hero.ok).toBe(true);
     if (!hero.ok) return;
     map = commitTerrainEdit(map, EMPTY_TERRAIN_HISTORY, hero.edit).document;
@@ -207,7 +207,7 @@ describe('editor hero transactions and safe inspector edits', () => {
       .toMatchObject({ ok: true });
     expect(createCastlePlacementEdit(map, { x: 2, y: 2 }, 'p2', 'hagwood'))
       .toEqual({ ok: false, reason: 'overlap' });
-    expect(createCastlePlacementEdit(map, { x: 3, y: 3 }, 'p1', 'hagwood'))
+    expect(createCastlePlacementEdit(map, { x: 4, y: 3 }, 'p1', 'hagwood'))
       .toEqual({ ok: false, reason: 'overlap' });
 
     const castle = createCastlePlacementEdit(map, { x: 2, y: 2 }, 'p1', 'hagwood');
@@ -218,7 +218,7 @@ describe('editor hero transactions and safe inspector edits', () => {
       .toEqual({ ok: false, reason: 'overlap' });
 
     const secondHero = createHeroPlacementEdit(
-      map, { x: 11, y: 7 }, 'p1', 'hearthguard', 'berta',
+      map, { x: 12, y: 7 }, 'p1', 'hearthguard', 'berta',
     );
     expect(secondHero.ok).toBe(true);
     if (!secondHero.ok) return;

@@ -67,13 +67,13 @@ describe('explicit adventure spell targeting', () => {
       winner: 'attacker', summary: 'Remembered battle.',
     });
     const cases: Array<[Cast, string[]]> = [
-      [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'beacon' }, ['Friendly castle', 'at']],
+      [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'beacon' }, ['Friendly city', 'at']],
       [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'saltTheVein' }, ['enemy mine', '/day']],
       [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'clockworkCourier', courierKind: 'army', sourceSlot: 0 },
         ['Send from', 'Exact destination', 'Item 1: Waybread', 'garrison']],
       [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'beastTongue', targetId: guardian.id },
         ['Beast guardian', 'Ashmane Wolves', 'Disperse', 'Recruit']],
-      [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'wildGrowth' }, ['Owned castle', 'current growth effects']],
+      [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'wildGrowth' }, ['Owned city', 'current growth effects']],
       [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'fickleWeather' }, ['Dealt omen', 'Week of']],
       [{ type: 'CAST_ADVENTURE_SPELL', spellId: 'graveSpeech' }, ['Remembered spell', 'Wither', 'learn nothing']],
     ];
@@ -102,7 +102,7 @@ describe('explicit adventure spell targeting', () => {
     state.castles.forEach((castle) => { castle.owner = 'p2'; });
     expect(adventureDraftIncompleteReason(state, {
       type: 'CAST_ADVENTURE_SPELL', spellId: 'wildGrowth',
-    })).toContain('owned castle');
+    })).toContain('owned city');
   });
 
   it('marks only legal map targets and builds ordered, confirmation-ready actions', () => {

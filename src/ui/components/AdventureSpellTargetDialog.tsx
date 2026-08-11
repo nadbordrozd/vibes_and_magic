@@ -142,7 +142,7 @@ export function AdventureSpellTargetDialog({
       <p className="spell-target-cost"><b>{spell.mana} mana</b> · <b>{adventureSpellMoveCost(hero)} movement</b></p>
       <p>{plus ? spell.plus : spell.base}</p>
 
-      {action.spellId === 'beacon' && plus && <label>Friendly castle
+      {action.spellId === 'beacon' && plus && <label>Friendly city
         <select value={action.castleId ?? ''} onChange={(event) => choose({ castleId: event.target.value || undefined })}>
           <option value="">Choose a destination…</option>
           {ownedCastles.map((castle) => <option key={castle.id} value={castle.id}>{castleLabel(state, castle.id)}</option>)}
@@ -212,7 +212,7 @@ export function AdventureSpellTargetDialog({
         <button className={action.recruit === false ? 'selected' : ''} onClick={() => choose({ recruit: false })}>Disperse · pay 2× value</button>
         <button className={action.recruit === true ? 'selected' : ''} onClick={() => choose({ recruit: true })}>Recruit · pay 3× value · needs army space</button>
       </fieldset>}</>}
-      {action.spellId === 'wildGrowth' && <fieldset><legend>Owned castle</legend>
+      {action.spellId === 'wildGrowth' && <fieldset><legend>Owned city</legend>
         {ownedCastles.map((castle) => <button key={castle.id} className={action.castleId === castle.id ? 'selected' : ''}
           onClick={() => choose({ castleId: castle.id })}>{castleLabel(state, castle.id)} · current growth effects {castle.growthEffects.length}</button>)}
       </fieldset>}

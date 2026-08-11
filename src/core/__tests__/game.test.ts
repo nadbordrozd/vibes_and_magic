@@ -103,7 +103,7 @@ describe('game state and economy', () => {
 
   it('recruits into a remote castle garrison when the hero is away', () => {
     let game = createGame({ seed: 1, p1: 'human', p2: 'ai' });
-    game = apply(game, { type: 'MOVE_HERO', destination: { x: 4, y: 10 } });
+    game = apply(game, { type: 'MOVE_HERO', destination: { x: 3, y: 11 } });
     game = apply(game, {
       type: 'RECRUIT', castleId: 'p1-castle', tier: 1, count: 2,
     });
@@ -116,9 +116,9 @@ describe('game state and economy', () => {
     const movement = initial.players.p1.hero!.movement;
     const game = apply(
       initial,
-      { type: 'MOVE_HERO', destination: { x: 4, y: 10 } },
+      { type: 'MOVE_HERO', destination: { x: 3, y: 11 } },
     );
-    expect(game.players.p1.hero!.position).toEqual({ x: 4, y: 10 });
+    expect(game.players.p1.hero!.position).toEqual({ x: 3, y: 11 });
     expect(game.players.p1.hero!.movement).toBeLessThan(movement);
   });
 

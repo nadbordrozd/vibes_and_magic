@@ -78,13 +78,13 @@ function borrowedLegion(state: GameState, hero: Hero): void {
 function nextPromisedBuilding(state: GameState, hero: Hero, requested?: string) {
   const castle = state.castles.find((candidate) => candidate.owner === hero.owner
     && (candidate.id === requested || sameCoord(candidate.position, hero.position)));
-  if (!castle) throw new Error('What Was Promised requires a current castle');
+  if (!castle) throw new Error('What Was Promised requires a current city');
   const buildingId = AI_BUILD_ORDER.find((id) => !castle.buildings.includes(id)
     && buildingBelongsToFaction(id, castle.faction)
     && castleSupportsBuilding(state, castle, id)
     && (!BUILDINGS[id].prerequisite
       || castle.buildings.includes(BUILDINGS[id].prerequisite!)));
-  if (!buildingId) throw new Error('No building remains in this castle queue');
+  if (!buildingId) throw new Error('No building remains in this city queue');
   return { castle, buildingId };
 }
 
@@ -104,26 +104,26 @@ export function bargainChoiceAvailability(
     const castle = state.castles.find((candidate) =>
       candidate.owner !== hero.owner && candidate.owner !== 'neutral');
     return castle
-      ? { available: true, reason: 'An enemy castle is available to watch.', castleId: castle.id }
-      : { available: false, reason: 'No enemy-owned castle exists for this bargain to watch.' };
+      ? { available: true, reason: 'An enemy city is available to watch.', castleId: castle.id }
+      : { available: false, reason: 'No enemy-owned city exists for this bargain to watch.' };
   }
   if (bargainId === 'whatWasPromised') {
     const castle = state.castles.find((candidate) => candidate.owner === hero.owner
       && sameCoord(castleEntrance(candidate), hero.position));
     if (!castle) {
-      return { available: false, reason: 'This bargain must be accepted at an owned castle entrance.' };
+      return { available: false, reason: 'This bargain must be accepted at an owned city entrance.' };
     }
     try {
       nextPromisedBuilding(state, hero, castle.id);
     } catch {
       return {
         available: false,
-        reason: 'This castle has no supported building left whose prerequisites are complete.',
+        reason: 'This city has no supported building left whose prerequisites are complete.',
         castleId: castle.id,
       };
     }
     return {
-      available: true, reason: 'This castle has an eligible next building.', castleId: castle.id,
+      available: true, reason: 'This city has an eligible next building.', castleId: castle.id,
     };
   }
   return { available: true, reason: 'This bargain can be accepted now.' };
@@ -162,7 +162,7 @@ export function chooseBargain(state: GameState, action: BargainAction): void {
   } else if (id === 'cuckoosDeal') {
     const castle = state.castles.find((candidate) => candidate.id === action.castleId
       && candidate.owner !== hero.owner);
-    if (!castle) throw new Error('Choose an enemy castle');
+    if (!castle) throw new Error('Choose an enemy city');
     player.adventureEffects.spiedCastles.push(castle.id);
     if (castle.owner === 'neutral') throw new Error('Neutral towns keep no rival correspondence');
     state.players[castle.owner].adventureEffects.exposedHeroOwner = hero.owner;

@@ -453,6 +453,7 @@ function applyAttackerVictory(state: GameState, hero: Hero): void {
     castle.owner = hero.owner;
     castle.wardenHeroId = null;
     castle.garrison = emptyArmy();
+    castle.garrisonSource = 'explicit';
     sellTradeGoods(state, hero, castleEntrance(castle));
     if (context.defenderHeroId) defeatHero(state, context.defenderHeroId);
   } else if (context.defenderHeroId) {
@@ -479,6 +480,7 @@ function applyDefenderVictory(state: GameState, defenderHero: Hero | null): void
     } else {
       castle.garrison = survivors;
     }
+    castle.garrisonSource = 'explicit';
   } else if (context.kind === 'hero' && defenderHero) {
     defenderHero.army = survivors;
   }

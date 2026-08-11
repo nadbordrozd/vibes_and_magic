@@ -24,12 +24,12 @@ const CONTEXT_HELP: Record<HelpContext, HelpSection> = {
       'Click a hero in the right panel, then hover a map tile to preview a safe route. Click once to travel.',
       'Crossed swords mean the destination begins a fight. A guardian’s red hover region shows where it will engage.',
       'Hover anything for its name. Right-click for rules and flavor. Inspect mode makes the same cards available with left-click.',
-      'Build and recruit from owned castles. When useful heroes have spent their movement, choose End turn.',
+      'Build and recruit from owned cities. When useful heroes have spent their movement, choose End turn.',
     ],
   },
   castle: {
-    title: 'Castle',
-    body: 'A castle converts daily income into buildings and weekly creature growth. Each castle may construct one building per day.',
+    title: 'City',
+    body: 'A city converts daily income into buildings and weekly creature growth. Each city may construct one building per day.',
     steps: [
       'Building cards show four states: built, available, unaffordable, or locked. Select one for its function, cost, requirement, and exact reason.',
       'Recruitment rows show weekly availability and per-creature cost. Choose a number, then Hire.',

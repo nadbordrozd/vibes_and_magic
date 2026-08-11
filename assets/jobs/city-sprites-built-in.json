@@ -6,7 +6,7 @@
   "requests": [
     {
       "id": "city:hearthguard:built-in",
-      "assets": ["castle:hearthguard:castle"],
+      "assets": ["castle:hearthguard:castle", "castle:hearthguard:freeTown"],
       "output": "assets/sources/cities/hearthguard-city-source.png",
       "final": "public/assets/cities/hearthguard-city.png",
       "size": [160, 160],
@@ -15,7 +15,7 @@
     },
     {
       "id": "city:wound-wrights:built-in",
-      "assets": ["castle:woundWrights:castle"],
+      "assets": ["castle:woundWrights:castle", "castle:woundWrights:oldSeat"],
       "output": "assets/sources/cities/wound-wrights-city-source.png",
       "final": "public/assets/cities/wound-wrights-city.png",
       "size": [160, 160],
@@ -24,7 +24,7 @@
     },
     {
       "id": "city:unfinished:built-in",
-      "assets": ["castle:unfinished:castle"],
+      "assets": ["castle:unfinished:castle", "castle:unfinished:hollowTown"],
       "output": "assets/sources/cities/unfinished-city-source.png",
       "final": "public/assets/cities/unfinished-city.png",
       "size": [160, 160],
@@ -33,7 +33,7 @@
     },
     {
       "id": "city:vespiary:built-in",
-      "assets": ["castle:vespiary:castle"],
+      "assets": ["castle:vespiary:castle", "castle:vespiary:coastal"],
       "output": "assets/sources/cities/vespiary-city-source.png",
       "final": "public/assets/cities/vespiary-city.png",
       "size": [160, 160],

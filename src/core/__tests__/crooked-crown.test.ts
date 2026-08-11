@@ -25,7 +25,7 @@ describe('The Crooked Crown dense adventure map', () => {
     const metrics = crookedCrownMetrics(map);
     expect(metrics).toMatchObject({
       interactiveObjects: 109, guardians: 20, authoredLandmarks: 12,
-      roads: 575, maxOpenSquare: 9,
+      roads: 564, maxOpenSquare: 9,
     });
     expect(metrics.decorationBlockerRatio).toBeGreaterThanOrEqual(0.68);
     expect(metrics.interactionPerPassableTile).toBeGreaterThanOrEqual(0.05);

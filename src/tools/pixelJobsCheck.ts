@@ -22,6 +22,7 @@ interface PixelRequest {
   variations_from_single_request?: number;
   resource_ids?: string[];
   review_only?: boolean;
+  superseded_by?: string;
   references?: PixelReference[];
 }
 
@@ -41,6 +42,7 @@ const byId = new Map(worklist.map((item) => [item.id, item]));
 const errors: string[] = [];
 const covered = new Map<string, string[]>();
 const outputs = new Map<string, string>();
+const supersededClaims: Array<{ assetId: string; label: string; replacement: string }> = [];
 let ready = 0;
 let staged = 0;
 let requests = 0;
@@ -66,7 +68,9 @@ function safelyBelow(value: unknown, base: string): value is string {
     && !pathFromBase.startsWith(`..${sep}`) && !isAbsolute(pathFromBase);
 }
 
-for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.json')).sort()) {
+const jobFilenames = readdirSync(jobsDir).filter((name) => name.endsWith('.json')).sort();
+const knownJobs = new Set(jobFilenames);
+for (const filename of jobFilenames) {
   let job: PixelJob;
   try {
     job = JSON.parse(readFileSync(resolve(jobsDir, filename), 'utf8')) as PixelJob;
@@ -152,10 +156,25 @@ for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.jso
       errors.push(`${label}: no manifest asset ids declared`);
       continue;
     }
+    if (request.review_only && request.superseded_by) {
+      errors.push(`${label}: request cannot be both review-only and superseded`);
+    }
+    if (request.superseded_by && (!knownJobs.has(request.superseded_by)
+        || request.superseded_by === filename)) {
+      errors.push(`${label}: superseded_by must name a different catalog job`);
+    }
     for (const assetId of request.assets) {
       if (request.review_only) {
         if (!assetId.startsWith('review:')) {
           errors.push(`${label}: review-only asset ids must start with review:`);
+        }
+        continue;
+      }
+      if (request.superseded_by) {
+        if (!byId.has(assetId)) {
+          errors.push(`${label}: historical asset ${assetId} is not in the data-derived worklist`);
+        } else {
+          supersededClaims.push({ assetId, label, replacement: request.superseded_by });
         }
         continue;
       }
@@ -188,6 +207,18 @@ for (const filename of readdirSync(jobsDir).filter((name) => name.endsWith('.jso
 
 for (const item of worklist) {
   if (!covered.has(item.id)) errors.push(`${item.id}: no production job covers this work item`);
+}
+for (const claim of supersededClaims) {
+  if (!(covered.get(claim.assetId) ?? []).some((label) =>
+    label.startsWith(`${claim.replacement}:`))) {
+    errors.push(`${claim.label}: ${claim.replacement} does not actively replace ${claim.assetId}`);
+  }
+}
+for (const item of worklist.filter((candidate) => candidate.category === 'castle')) {
+  const claims = covered.get(item.id) ?? [];
+  if (claims.length !== 1 || !claims[0].startsWith('city-sprites-built-in.json:')) {
+    errors.push(`${item.id}: expected exactly one active production claim from city-sprites-built-in.json, found ${claims.join(', ') || 'none'}`);
+  }
 }
 
 try {

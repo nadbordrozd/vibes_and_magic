@@ -68,7 +68,7 @@ export function EditorPlayerSlots({
       if (result.ok) { onEdit(result.edit); onMessage(`${result.player!.id.toUpperCase()} added.`); }
       else onMessage('All six player slots are already present.');
     }}>+ Add next color slot</button>
-    <small>Flag color comes from the slot ID. Changing a slot faction never recolors or refactions a castle.</small>
+    <small>Flag color comes from the slot ID. Changing a slot faction never recolors or refactions a city.</small>
   </div>;
 }
 
@@ -99,7 +99,7 @@ export function EditorCastleInspector({
   const ownerLabel = castle.owner === 'neutral' ? 'Neutral' : `${castle.owner.toUpperCase()} · ${EDITOR_PLAYER_FLAGS[castle.owner].label}`;
   return <section className="editor-object-inspector editor-castle-inspector"
     aria-labelledby="editor-castle-inspector-title">
-    <header><div><span className="kicker">Selected castle</span>
+    <header><div><span className="kicker">Selected city</span>
       <h3 id="editor-castle-inspector-title">{castle.id}</h3></div>
       <button className="danger" onClick={onDelete}>Delete</button></header>
     <div className="editor-object-form editor-castle-basics">
@@ -110,25 +110,25 @@ export function EditorCastleInspector({
         {document.players.map((player) => <option key={player.id} value={player.id}>
           {player.id.toUpperCase()} · {EDITOR_PLAYER_FLAGS[player.id].label}{player.name ? ` · ${player.name}` : ''}
         </option>)}
-      </select><small>{ownerLabel}; independent of castle faction.</small></label>
-      <label>Castle faction<select value={castle.faction} onChange={(event) =>
+      </select><small>{ownerLabel}; independent of city faction.</small></label>
+      <label>City faction<select value={castle.faction} onChange={(event) =>
         onUpdate({ faction: event.target.value as FactionId })}>
         {factionEntries.map((faction) => <option key={faction.id} value={faction.id}>{faction.name}</option>)}
       </select><small>Controls native architecture and roster, not owner color.</small></label>
       <label>Native variant<select value={castle.variant ?? ''} onChange={(event) =>
         onUpdate({ variant: (event.target.value || undefined) as EditorMapCastle['variant'] })}>
-        <option value="">Basic castle · inherited</option>
+        <option value="">Faction city · inherited</option>
         {editorCastleVariants(castle.faction).map((variant) =>
           <option key={variant} value={variant}>{variant}</option>)}
       </select></label>
     </div>
-    <p className="editor-footprint-summary">Canonical 3×2 top-left footprint · entrance +1,+1 bottom-center.</p>
+    <p className="editor-footprint-summary">Canonical 5×2 top-left footprint · entrance +2,+1 bottom-center.</p>
     <div className="editor-castle-overrides">
       <InheritedField label="Buildings" inherited={inherited.buildings.join(', ')}
         explicit={castle.buildings !== undefined}
         onOverride={() => onUpdate({ buildings: [...inherited.buildings] })}
         onReset={() => onUpdate({ buildings: undefined })}>
-        <select multiple aria-label="Explicit castle buildings" value={castle.buildings ?? []}
+        <select multiple aria-label="Explicit city buildings" value={castle.buildings ?? []}
           onChange={(event) => onUpdate(reconcileCastleBuildingOverrides(
             'buildings', selectValues(event.target.options) as BuildingId[], castle,
           ))}>
@@ -157,7 +157,10 @@ export function EditorCastleInspector({
               available[index] = Number(event.target.value); onUpdate({ available });
             }} /></label>)}</div>
       </InheritedField>
-      <InheritedField label="Garrison" inherited="Empty canonical garrison"
+      <InheritedField label="Garrison" inherited={castle.owner === 'neutral'
+        ? inherited.garrison.flatMap((stack) => stack
+          ? [`${stack.count} ${UNITS[stack.unitId].name}`] : []).join(' · ')
+        : 'Empty canonical garrison'}
         explicit={castle.garrison !== undefined} onOverride={() => onUpdate({ garrison: [] })}
         onReset={() => onUpdate({ garrison: undefined })}>
         <div className="editor-garrison-editor">{(castle.garrison ?? []).map((stack, index) =>
@@ -206,7 +209,7 @@ export function EditorCastleInspector({
       </InheritedField>
       <fieldset className="editor-castle-override" data-state={castle.flavor === undefined ? 'inherited' : 'explicit'}>
         <legend>Flavor <em>{castle.flavor === undefined ? 'Inherited / none' : 'Explicit override'}</em></legend>
-        <textarea value={castle.flavor ?? ''} placeholder="Optional initial castle flavor"
+        <textarea value={castle.flavor ?? ''} placeholder="Optional initial city flavor"
           onChange={(event) => onUpdate({ flavor: event.target.value || undefined })} />
         {castle.flavor !== undefined && <button onClick={() => onUpdate({ flavor: undefined })}>Reset to inherited</button>}
       </fieldset>
