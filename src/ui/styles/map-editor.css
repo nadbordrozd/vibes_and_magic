@@ -73,9 +73,21 @@
 .editor-topbar { align-items: center; max-width: none; }
 .editor-topbar small { color: #8d9789; }
 .editor-topbar nav { display: flex; flex-wrap: wrap; justify-content: end; gap: 7px; }
+.editor-workspace { padding: 10px clamp(10px, 1.5vw, 22px) 18px; }
+.editor-workspace .editor-topbar {
+  align-items: center; margin-bottom: 8px; padding-bottom: 7px; gap: 14px;
+}
+.editor-workspace .editor-topbar h1 {
+  display: inline; margin: 0 9px 0 0; font-size: clamp(22px, 2.3vw, 30px); line-height: 1;
+}
+.editor-workspace .editor-topbar .kicker { display: block; margin-bottom: 3px; font-size: 8px; }
+.editor-workspace .editor-topbar small { font-size: 9px; white-space: nowrap; }
+.editor-workspace .editor-topbar nav { flex: 1; flex-wrap: nowrap; }
+.editor-workspace .editor-topbar button { padding: 7px 9px; font-size: 10px; white-space: nowrap; }
 .editor-workspace-grid {
-  display: grid; grid-template-columns: minmax(420px, 1fr) minmax(260px, 340px);
-  align-items: start; gap: 14px; min-height: calc(100vh - 180px);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  grid-template-areas: "identity diagnostics" "canvas canvas";
+  align-items: start; gap: 8px; min-height: 0;
 }
 .editor-identity, .editor-canvas-panel, .editor-diagnostics {
   min-width: 0; padding: 18px; border: 1px solid #455143; background: #131914e8;
@@ -83,7 +95,7 @@
 .editor-identity dl { margin: 20px 0 0; border-top: 1px solid #394438; }
 .editor-identity dl div { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid #303a30; }
 .editor-identity dt { color: #859181; }.editor-identity dd { margin: 0; overflow-wrap: anywhere; }
-.editor-identity { grid-column: 1 / -1; padding: 10px 14px; }
+.editor-identity { grid-area: identity; padding: 8px 11px; }
 .editor-identity summary {
   width: max-content; cursor: pointer; color: #e6d49d; font: 700 15px Georgia, serif;
 }
@@ -92,10 +104,12 @@
   margin-top: 14px;
 }
 .editor-canvas-panel {
-  display: grid; grid-template-rows: auto minmax(0, 1fr); align-self: start;
-  width: 100%; height: max(620px, calc(100vh - 180px)); gap: 12px; padding: 14px;
+  grid-area: canvas; display: grid; grid-template-rows: auto minmax(0, 1fr); align-self: start;
+  width: 100%; height: max(620px, calc(100dvh - 140px)); gap: 8px; padding: 9px;
 }
 .editor-canvas-heading { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.editor-canvas-heading .kicker { font-size: 8px; }
+.editor-canvas-heading h2 { font-size: 21px; }
 .editor-canvas-heading h2 { margin-bottom: 0; }
 .editor-history-controls { display: flex; gap: 6px; }
 .editor-history-controls button { padding: 7px 9px; font-size: 10px; }
@@ -173,6 +187,8 @@
 .editor-icon-button img {
   width: 42px; height: 42px; object-fit: contain; image-rendering: pixelated;
 }
+.editor-mine-stamp { height: 68px; }
+.editor-mine-stamp img { width: 48px; height: 60px; }
 .editor-icon-fallback { font-size: 25px; }
 .editor-structure-choice { width: 100%; margin-top: 7px; text-align: left; }
 .editor-structure-choice.selected {
@@ -427,10 +443,23 @@
 .editor-route-field { grid-template-columns: 1fr 1fr; align-items: center; }
 .editor-route-field button { padding: 5px; font-size: 8px; }
 .editor-footprint-summary { margin: 8px 0 0 !important; font-size: 9px; color: #8f9a8b !important; }
-.editor-diagnostics header { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
-.editor-diagnostics header strong { color: #9ec696; font-size: 10px; }
-.editor-diagnostics header strong.has-errors { color: #e49182; }
-.editor-diagnostic-groups { max-height: calc(100vh - 290px); overflow: auto; }
+.editor-diagnostics { grid-area: diagnostics; padding: 0; }
+.editor-diagnostics > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 37px; padding: 7px 10px; cursor: pointer; list-style: none;
+}
+.editor-diagnostics > summary::-webkit-details-marker { display: none; }
+.editor-diagnostics > summary::before {
+  content: '▸'; flex: none; color: var(--gold); font-size: 13px;
+}
+.editor-diagnostics[open] > summary::before { content: '▾'; }
+.editor-diagnostics > summary > span:first-child { display: flex; align-items: baseline; gap: 8px; }
+.editor-diagnostics > summary .kicker { font-size: 7px; }
+.editor-diagnostics > summary strong { color: #e6d49d; font: 700 14px Georgia, serif; }
+.editor-diagnostic-count { color: #9ec696; font-size: 9px; font-weight: 750; white-space: nowrap; }
+.editor-diagnostic-count.has-errors { color: #e49182; }
+.editor-diagnostics-body { padding: 0 10px 9px; border-top: 1px solid #354034; }
+.editor-diagnostic-groups { max-height: min(420px, calc(100dvh - 210px)); overflow: auto; }
 .editor-diagnostic-groups h3 { margin: 12px 0 0; color: #d8c997; font-size: 10px; text-transform: uppercase; }
 .editor-diagnostics ul { margin: 0; padding: 0; list-style: none; }
 .editor-diagnostics li { display: grid; gap: 3px; padding: 9px 0; border-top: 1px solid #354034; }
@@ -448,17 +477,25 @@
 .editor-confirm .dialog-actions { margin-top: 20px; flex-wrap: wrap; }
 
 @media (max-width: 1100px) {
-  .editor-workspace-grid { grid-template-columns: 1fr; }
-  .editor-identity, .editor-canvas-panel, .editor-diagnostics { grid-column: 1; }
+  .editor-workspace-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: "identity" "diagnostics" "canvas";
+  }
   .editor-diagnostic-groups { max-height: 300px; }
+  .editor-workspace .editor-topbar nav { flex-wrap: wrap; }
 }
 
 @media (max-width: 720px) {
   .map-editor-shell { padding: 12px 9px 64px; }
   .editor-library-header, .editor-topbar { align-items: stretch; flex-direction: column; gap: 12px; }
+  .editor-workspace { padding-top: 7px; }
+  .editor-workspace .editor-topbar { gap: 6px; margin-bottom: 6px; padding-bottom: 6px; }
+  .editor-workspace .editor-topbar h1 { font-size: 22px; }
+  .editor-workspace .editor-topbar small { display: block; margin-top: 3px; white-space: normal; }
   .editor-library-header > button { align-self: start; }
   .editor-library-grid, .editor-workspace-grid, .editor-form-grid { grid-template-columns: 1fr; }
-  .editor-topbar nav { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .editor-topbar nav { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .editor-workspace .editor-topbar button { min-width: 0; white-space: normal; }
   .editor-diagnostics { grid-column: auto; }
   .editor-canvas-panel { height: auto; }
   .editor-tool-layout { grid-template-columns: 1fr; }

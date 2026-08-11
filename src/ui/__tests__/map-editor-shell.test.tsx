@@ -164,6 +164,9 @@ describe('map editor workspace shell and navigation safety', () => {
     expect(html).toContain('Claim the realm before your rivals do.');
     expect(html).toContain('Defeat every active opponent.');
     expect(html).toContain('<details class="editor-identity">');
+    expect(html).toContain('<details class="editor-diagnostics">');
+    expect(html).not.toContain('<details class="editor-diagnostics" open="">');
+    expect(html).toContain('2 errors · 0 warnings');
     expect(html).toContain('Editable 10 by 8 terrain map');
     expect(html).toContain('playable.player_start.required');
   });
@@ -210,8 +213,10 @@ describe('map editor workspace shell and navigation safety', () => {
 
   it('defines distinct desktop and narrow responsive workspace structures', () => {
     const css = readFileSync(resolve('src/ui/styles/map-editor.css'), 'utf8');
-    expect(css).toMatch(/\.editor-workspace-grid\s*\{[\s\S]*grid-template-columns:\s*minmax\(420px, 1fr\)/);
-    expect(css).toMatch(/\.editor-canvas-panel\s*\{[\s\S]*height:\s*max\(620px, calc\(100vh - 180px\)\)/);
+    expect(css).toMatch(/\.editor-workspace-grid\s*\{[\s\S]*grid-template-areas:\s*"identity diagnostics" "canvas canvas"/);
+    expect(css).toMatch(/\.editor-canvas-panel\s*\{[\s\S]*height:\s*max\(620px, calc\(100dvh - 140px\)\)/);
+    expect(css).toMatch(/\.editor-workspace \.editor-topbar h1\s*\{[\s\S]*font-size:\s*clamp\(22px, 2\.3vw, 30px\)/);
+    expect(css).toMatch(/\.editor-diagnostics > summary::before\s*\{[\s\S]*content:\s*'▸'/);
     expect(css).toMatch(/@media \(max-width: 720px\)[\s\S]*\.editor-library-grid, \.editor-workspace-grid, \.editor-form-grid\s*\{\s*grid-template-columns: 1fr/);
   });
 });

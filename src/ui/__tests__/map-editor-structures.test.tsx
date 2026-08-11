@@ -81,10 +81,32 @@ describe('registered structure authoring', () => {
     expect(html).toContain('aria-label="Registered map objects"');
     expect(html).toContain('Structures &amp; map objects');
     for (const entry of EDITOR_STRUCTURE_CATALOG) {
-      expect(html, entry.kind).toContain(`aria-label="${entry.label.replace('&', '&amp;')}"`);
+      if (entry.kind !== 'mine') {
+        expect(html, entry.kind).toContain(`aria-label="${entry.label.replace('&', '&amp;')}"`);
+      }
+    }
+    for (const resource of ['Gold', 'Timber', 'Iron', 'Essence']) {
+      expect(html).toContain(`aria-label="${resource} mine"`);
     }
     expect((html.match(/class="editor-icon-button/g) ?? []).length)
-      .toBeGreaterThanOrEqual(EDITOR_STRUCTURE_CATALOG.length);
+      .toBeGreaterThanOrEqual(EDITOR_STRUCTURE_CATALOG.length + 3);
+  });
+
+  it('authors each direct mine stamp with its selected resource and canonical income', () => {
+    const expected = { gold: 1_000, timber: 2, iron: 1, essence: 1 } as const;
+    for (const [resource, income] of Object.entries(expected)) {
+      const placed = createStructurePlacementEdit(
+        document(), 'mine', { x: 2, y: 3 }, { mineResource: resource as keyof typeof expected },
+      );
+      expect(placed.ok, resource).toBe(true);
+      if (!placed.ok || !placed.object) continue;
+      expect(placed.object).toMatchObject({
+        kind: 'mine', footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 },
+        properties: { resource, income, owner: null },
+      });
+      expect(editorSelectionAfterObjectMutation(placed, document(), 'leave-unselected'))
+        .toEqual(EMPTY_EDITOR_CANVAS_SELECTION);
+    }
   });
 
   it('places every safe standalone kind with catalog-derived defaults and native runtime sprites', () => {

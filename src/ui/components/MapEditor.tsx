@@ -58,34 +58,36 @@ function MapDiagnostics({ diagnostics }: { diagnostics: EditorMapDiagnostic[] })
   const counts = diagnosticCounts(diagnostics);
   const groups = [...new Set(diagnostics.map((item) => item.stage))];
   return (
-    <section className="editor-diagnostics" aria-labelledby="editor-diagnostics-title">
-      <header>
-        <div><span className="kicker">Live validation</span>
-          <h2 id="editor-diagnostics-title">Diagnostics</h2></div>
-        <strong className={counts.errors ? 'has-errors' : ''}>
+    <details className="editor-diagnostics">
+      <summary>
+        <span><span className="kicker">Live validation</span>
+          <strong id="editor-diagnostics-title">Diagnostics</strong></span>
+        <span className={`editor-diagnostic-count ${counts.errors ? 'has-errors' : ''}`}>
           {counts.errors} errors · {counts.warnings} warnings
-        </strong>
-      </header>
-      {diagnostics.length === 0 ? <p className="editor-valid">No diagnostics.</p> : (
-        <div className="editor-diagnostic-groups">{groups.map((stage) => (
-          <section key={stage} aria-labelledby={`editor-diagnostics-${stage}`}>
-            <h3 id={`editor-diagnostics-${stage}`}>{stage}</h3>
-            <ul>{diagnostics.filter((item) => item.stage === stage)
-              .map((diagnostic, index) => (
-                <li key={`${diagnostic.code}-${index}`} className={diagnostic.severity}>
-                  <b>{diagnostic.code}</b><span>{diagnostic.message}</span>
-                  <small>{diagnostic.target.kind === 'entity'
-                    ? `Entity: ${diagnostic.target.entityId}`
-                    : diagnostic.target.kind === 'cell'
-                      ? `Cell: ${diagnostic.target.x},${diagnostic.target.y}`
-                      : diagnostic.target.path ? `Document: ${diagnostic.target.path}`
-                        : 'Document'}</small>
-                </li>
-              ))}</ul>
-          </section>
-        ))}</div>
-      )}
-    </section>
+        </span>
+      </summary>
+      <div className="editor-diagnostics-body">
+        {diagnostics.length === 0 ? <p className="editor-valid">No diagnostics.</p> : (
+          <div className="editor-diagnostic-groups">{groups.map((stage) => (
+            <section key={stage} aria-labelledby={`editor-diagnostics-${stage}`}>
+              <h3 id={`editor-diagnostics-${stage}`}>{stage}</h3>
+              <ul>{diagnostics.filter((item) => item.stage === stage)
+                .map((diagnostic, index) => (
+                  <li key={`${diagnostic.code}-${index}`} className={diagnostic.severity}>
+                    <b>{diagnostic.code}</b><span>{diagnostic.message}</span>
+                    <small>{diagnostic.target.kind === 'entity'
+                      ? `Entity: ${diagnostic.target.entityId}`
+                      : diagnostic.target.kind === 'cell'
+                        ? `Cell: ${diagnostic.target.x},${diagnostic.target.y}`
+                        : diagnostic.target.path ? `Document: ${diagnostic.target.path}`
+                          : 'Document'}</small>
+                  </li>
+                ))}</ul>
+            </section>
+          ))}</div>
+        )}
+      </div>
+    </details>
   );
 }
 

@@ -150,7 +150,10 @@ describe('four literal adventure resource operations', () => {
     });
     const palette = renderToStaticMarkup(<EditorTerrainCanvas document={document}
       onDocumentChange={() => undefined} />);
-    expect(palette).toContain(ASSET_MANIFEST[assetId.mapObject('mine', 'gold')].file);
+    for (const resource of resources) {
+      expect(palette).toContain(ASSET_MANIFEST[assetId.mapObject('mine', resource)].file);
+      expect(palette).toContain(`aria-label="${resource[0].toUpperCase()}${resource.slice(1)} mine"`);
+    }
     for (const [index, resource] of resources.entries()) {
       const object: EditorMapObject = {
         id: `editor-mine-${resource}`, kind: 'mine', position: { x: 2 + index * 3, y: 5 },

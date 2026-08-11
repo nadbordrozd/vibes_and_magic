@@ -159,6 +159,41 @@ async function auditLayout(page: Page, label: string): Promise<void> {
   }
 }
 
+async function auditMapFirstWorkspace(page: Page, label: string): Promise<void> {
+  const audit = await page.evaluate(() => {
+    const topbar = document.querySelector<HTMLElement>('.editor-topbar')!.getBoundingClientRect();
+    const panel = document.querySelector<HTMLElement>('.editor-canvas-panel')!.getBoundingClientRect();
+    const viewport = document.querySelector<HTMLElement>('.editor-canvas-viewport')!.getBoundingClientRect();
+    const diagnostics = document.querySelector<HTMLDetailsElement>('.editor-diagnostics')!;
+    const actions = [...document.querySelectorAll<HTMLButtonElement>('.editor-topbar button')]
+      .map((button) => ({ label: button.textContent?.replace(/\s+/g, ' ').trim() ?? '',
+        width: button.getBoundingClientRect().width, height: button.getBoundingClientRect().height }));
+    return {
+      window: { width: window.innerWidth, height: window.innerHeight },
+      topbar: { height: topbar.height, bottom: topbar.bottom },
+      panel: { width: panel.width, height: panel.height, top: panel.top },
+      viewport: { width: viewport.width, height: viewport.height },
+      diagnosticsOpen: diagnostics.open,
+      actions,
+    };
+  });
+  const desktop = audit.window.width > 1100;
+  const missingAction = ['Map library', 'Title screen', 'Save draft', 'test play', 'Export map']
+    .find((label) => !audit.actions.some((action) => action.label.toLocaleLowerCase()
+      .includes(label.toLocaleLowerCase())
+      && action.width > 20 && action.height > 20));
+  if (missingAction || audit.diagnosticsOpen) {
+    throw new Error(`${label} compact controls are not reachable/default-collapsed: ${JSON.stringify(audit)}`);
+  }
+  if (desktop && (audit.topbar.height > 82
+      || audit.panel.height < audit.window.height * .78
+      || audit.viewport.height < audit.window.height * .56
+      || audit.panel.width < audit.window.width * .94
+      || audit.panel.height < (audit.panel.top * 4))) {
+    throw new Error(`${label} is not measurably map-first: ${JSON.stringify(audit)}`);
+  }
+}
+
 async function auditSelectedGuardian(page: Page, label: string): Promise<number> {
   const audit = await page.$eval(
     'input[aria-label="Guardian army stack 1 count"]',
@@ -364,7 +399,22 @@ try {
   if (defaultDetails.open || JSON.stringify(defaultDetails.values) !== JSON.stringify(expectedDefaults)) {
     throw new Error(`Advanced map details are not collapsed with valid defaults: ${JSON.stringify(defaultDetails)}`);
   }
+  await auditLayout(page, 'desktop workspace');
+  await auditMapFirstWorkspace(page, 'desktop workspace');
   await page.screenshot({ path: join(output, '01b-default-workspace-desktop.png') });
+  await page.click('.editor-diagnostics summary');
+  const expandedDiagnostics = await page.$eval('.editor-diagnostics', (node) => {
+    const details = node as HTMLDetailsElement;
+    const body = details.querySelector<HTMLElement>('.editor-diagnostics-body')!.getBoundingClientRect();
+    return { open: details.open, bodyWidth: body.width, bodyHeight: body.height,
+      viewportWidth: window.innerWidth };
+  });
+  if (!expandedDiagnostics.open || expandedDiagnostics.bodyWidth < 200
+      || expandedDiagnostics.bodyWidth > expandedDiagnostics.viewportWidth) {
+    throw new Error(`Expanded diagnostics are not usable: ${JSON.stringify(expandedDiagnostics)}`);
+  }
+  await page.screenshot({ path: join(output, '01c-diagnostics-expanded-desktop.png') });
+  await page.click('.editor-diagnostics summary');
   await page.click('.editor-identity summary');
   await setLabelValue(page, '.editor-identity', 'Objective presentation',
     'Chart the archipelago and outlast every rival claim.');
@@ -436,6 +486,7 @@ try {
   if (await detailsName.evaluate((input) => (input as HTMLInputElement).value) !== nameBefore) {
     throw new Error('Metadata keyboard focus did not preserve text editing');
   }
+  await page.click('.editor-identity summary');
 
   await clickButton(page, 'Deepwood', '.editor-terrain-choices');
   await clickButton(page, 'Brush', '.editor-toolstrip');
@@ -510,6 +561,37 @@ try {
   }
   await setLabelValue(page, '.editor-object-inspector', 'Rare resource', 'essence');
   await page.screenshot({ path: join(output, '02b-structure-explicit-selection-desktop.png') });
+
+  const mineStamps = await page.$$eval('.editor-mine-stamp', (buttons) => buttons.map((button) => ({
+    label: button.getAttribute('aria-label') ?? '',
+    source: button.querySelector('img')?.getAttribute('src') ?? '',
+  })));
+  if (mineStamps.map((stamp) => stamp.label).join(',')
+      !== 'Gold mine,Timber mine,Iron mine,Essence mine'
+      || new Set(mineStamps.map((stamp) => stamp.source)).size !== 4) {
+    throw new Error(`Four direct native mine stamps are unavailable: ${JSON.stringify(mineStamps)}`);
+  }
+  await clickButton(page, 'Essence mine', '.editor-structure-palette');
+  await clickCell(page, 16, 9);
+  if (await page.$('#editor-object-inspector-title')) {
+    throw new Error('Direct mine placement opened details without explicit selection');
+  }
+  await clickButton(page, 'Select / move', '.editor-toolstrip');
+  await clickCell(page, 16, 9);
+  const selectedMine = await page.$eval('.editor-object-inspector', (inspector) => ({
+    heading: inspector.querySelector('h3')?.textContent?.trim() ?? '',
+    resource: [...inspector.querySelectorAll<HTMLLabelElement>('label')]
+      .find((label) => label.textContent?.trim().startsWith('Resource'))
+      ?.querySelector<HTMLSelectElement>('select')?.value ?? '',
+    income: [...inspector.querySelectorAll<HTMLLabelElement>('label')]
+      .find((label) => label.textContent?.trim().startsWith('Daily income'))
+      ?.querySelector<HTMLInputElement>('input')?.value ?? '',
+  }));
+  if (selectedMine.heading !== 'Mine' || selectedMine.resource !== 'essence'
+      || selectedMine.income !== '1') {
+    throw new Error(`Essence mine did not stamp its actual resource defaults: ${JSON.stringify(selectedMine)}`);
+  }
+  await page.screenshot({ path: join(output, '02c-direct-essence-mine-desktop.png') });
 
   await page.select('select[aria-label="City owner flag"]', 'p1');
   await clickButton(page, 'Hagwood city', '.editor-castle-palette');
@@ -618,7 +700,7 @@ try {
     throw new Error(`Neutral city inspector does not expose the inherited defense contract: ${neutralInspector}`);
   }
 
-  const diagnosticText = await page.$eval('.editor-diagnostics header strong', (node) =>
+  const diagnosticText = await page.$eval('.editor-diagnostic-count', (node) =>
     node.textContent?.replace(/\s+/g, ' ').trim() ?? '');
   if (!diagnosticText.startsWith('0 errors')) {
     const diagnostics = await page.$$eval('.editor-diagnostics li', (items) =>
@@ -650,8 +732,28 @@ try {
   const promotion = verifyPromotionReady(exportedPath);
 
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await frames(page);
+  await auditLayout(page, '390px compact chrome');
+  await auditMapFirstWorkspace(page, '390px compact chrome');
+  await page.screenshot({ path: join(output, '04-compact-chrome-390.png') });
+  await page.click('.editor-diagnostics summary');
+  const narrowDiagnostics = await page.$eval('.editor-diagnostics', (node) => {
+    const details = node as HTMLDetailsElement;
+    const body = details.querySelector<HTMLElement>('.editor-diagnostics-body')!.getBoundingClientRect();
+    return { open: details.open, left: body.left, right: body.right, width: body.width,
+      viewportWidth: window.innerWidth };
+  });
+  if (!narrowDiagnostics.open || narrowDiagnostics.left < 0
+      || narrowDiagnostics.right > narrowDiagnostics.viewportWidth + 1
+      || narrowDiagnostics.width < 300) {
+    throw new Error(`390px expanded diagnostics are not reachable: ${JSON.stringify(narrowDiagnostics)}`);
+  }
+  await page.screenshot({ path: join(output, '04e-diagnostics-expanded-390.png') });
+  await page.click('.editor-diagnostics summary');
   await page.$eval('.editor-canvas-panel', (node) => node.scrollIntoView({ block: 'start' }));
   await auditLayout(page, '390px workspace');
+  await auditMapFirstWorkspace(page, '390px workspace');
   await auditIconPalette(page, '390px');
   const narrowCollectibles = await page.evaluate(() => ({
     artifacts: document.querySelectorAll('.editor-artifact-palette .artifact-sprite').length,
@@ -779,7 +881,7 @@ try {
     result: 'Map editor review passed', output, palette: paletteOrder.map((entry) => entry.heading),
     mapHash: promotion.hash, exportDiagnostics: promotion.diagnostics,
     largeMap: { dimensions: '128x128', creationMs: Math.round(creationMs), paintMs: Math.round(paintMs) },
-    collectibles: collectiblePalette, randomGuardian: promotion.randomGuardian, screenshots: 19,
+    collectibles: collectiblePalette, randomGuardian: promotion.randomGuardian, screenshots: 23,
   }, null, 2));
 } finally {
   await browser.close();

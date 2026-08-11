@@ -3,7 +3,7 @@ import { MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
 import { SKILLS } from '../content/skills';
 import { SPELLS } from '../content/spells';
 import { UNITS } from '../content/units';
-import type { ItemId, MapObject, PlayerId, SpellSchool } from '../core/types';
+import type { ItemId, MapObject, PlayerId, ResourceId, SpellSchool } from '../core/types';
 import {
   editorEntityIds, stableEntityId, type EditorMapDocument, type EditorMapObject,
   type JsonObject, type JsonValue,
@@ -135,12 +135,20 @@ const firstSpell = (school: SpellSchool) =>
 export const editorItemInstance = (id: ItemId, position: EditorCell = { x: 0, y: 0 }): JsonValue =>
   createDefaultEditorItemInstance(id, position) as unknown as JsonValue;
 
+export function defaultEditorMineProperties(resource: ResourceId): JsonObject {
+  return {
+    resource,
+    income: resource === 'gold' ? 1_000 : resource === 'timber' ? 2 : 1,
+    owner: null,
+  };
+}
+
 /** Catalog-backed untouched initial facts; visit/growth state is deliberately absent. */
 export function defaultEditorStructureProperties(
   kind: EditorStructureKind, position: EditorCell, document?: EditorMapDocument,
 ): JsonObject {
   switch (kind) {
-    case 'mine': return { resource: 'gold', income: 1000, owner: null };
+    case 'mine': return defaultEditorMineProperties('gold');
     case 'pile': return { resource: 'gold', amount: 500 };
     case 'shrine': return { school: 'rite', teaches: firstSpell('rite') };
     case 'item': return { item: editorItemInstance('waybread', position) };
@@ -200,6 +208,7 @@ function edit(document: EditorMapDocument, after: EditorMapObject[], object: Edi
 
 export function createStructurePlacementEdit(
   document: EditorMapDocument, kind: Exclude<EditorStructureKind, 'whirlpool'>, position: EditorCell,
+  options?: { mineResource?: ResourceId },
 ): PropMutationResult {
   const footprint = kind === 'mine' ? { w: 2, h: 1 } : { w: 1, h: 1 };
   const legal = canPlaceEditorStructure(document, kind, position);
@@ -216,7 +225,9 @@ export function createStructurePlacementEdit(
   const object: EditorMapObject = {
     id: stableEntityId(humanize(kind), editorEntityIds(document)), kind, position: { ...position },
     ...(kind === 'mine' ? { footprint, entrance: { dx: 0, dy: 0 } } : {}),
-    properties: defaultEditorStructureProperties(kind, position, document),
+    properties: kind === 'mine' && options?.mineResource
+      ? defaultEditorMineProperties(options.mineResource)
+      : defaultEditorStructureProperties(kind, position, document),
   };
   return edit(document, [...document.objects, object], object);
 }

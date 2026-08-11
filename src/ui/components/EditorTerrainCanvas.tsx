@@ -37,7 +37,8 @@ import {
   createStructurePlacementEdit, createStructureUpdateEdit,
   createWhirlpoolPairPlacementEdit, editorStructureByKind,
   editorStructureEntrance, editorStructureFootprint, editorStructurePresentationObject,
-  canPlaceEditorStructure, defaultEditorStructureProperties, editorItemInstance, ownerChoices,
+  canPlaceEditorStructure, defaultEditorMineProperties, defaultEditorStructureProperties,
+  editorItemInstance, ownerChoices,
   type EditorStructureKind, type StructureFieldDefinition,
 } from '../mapEditorStructures';
 import {
@@ -328,6 +329,7 @@ export function EditorTerrainCanvas({
   const [history, setHistory] = useState<TerrainHistory>(EMPTY_TERRAIN_HISTORY);
   const [selectedPropId, setSelectedPropId] = useState<AdventurePropId>('old-oak');
   const [selectedStructureKind, setSelectedStructureKind] = useState<EditorStructureKind>('mine');
+  const [selectedMineResource, setSelectedMineResource] = useState<ResourceId>('gold');
   const [selectedObjectId, setSelectedObjectId] = useState<string | null>(null);
   const [selectedCastleId, setSelectedCastleId] = useState<string | null>(null);
   const [selectedHeroId, setSelectedHeroId] = useState<string | null>(null);
@@ -368,7 +370,6 @@ export function EditorTerrainCanvas({
   const selectedReward = document.rewards.find((reward) => reward.id === selectedRewardId) ?? null;
   const effectiveCastleOwner = castleOwner === 'neutral'
     || document.players.some((player) => player.id === castleOwner) ? castleOwner : 'neutral';
-  const selectedStructure = editorStructureByKind(selectedStructureKind);
   const effectiveHeroOwner = document.players.some((player) => player.id === heroOwner)
     ? heroOwner : document.players[0]?.id ?? null;
 
@@ -730,7 +731,9 @@ export function EditorTerrainCanvas({
       properties: { prop: selectedProp.prop, ...(selectedProp.anomaly ? { anomaly: true } : {}) },
     } : tool === 'structure' && hovered && selectedStructureKind !== 'whirlpool' ? {
       id: 'editor-structure-preview', kind: selectedStructureKind, position: hovered,
-      properties: defaultEditorStructureProperties(selectedStructureKind, hovered, document),
+      properties: selectedStructureKind === 'mine'
+        ? defaultEditorMineProperties(selectedMineResource)
+        : defaultEditorStructureProperties(selectedStructureKind, hovered, document),
     } : tool === 'select' && gesture.current?.kind === 'move' && selectedObject
       ? { ...selectedObject, position: { ...gesture.current.last } } : null;
     const castlePreview = tool === 'castle' && hovered ? {
@@ -939,7 +942,8 @@ export function EditorTerrainCanvas({
   }, [castleFaction, document, effectiveCastleOwner, effectiveHeroOwner, guardianStamp,
     heroDefinitionId, heroFaction, hovered, polygon, preview, selectedCastle, selectedGuardian,
     rewardStamp, selectedHero, selectedObject, selectedReward,
-    selectedProp, selectedStructureKind, selectedTile, size.height, size.width, tool, zoom]);
+    selectedMineResource, selectedProp, selectedStructureKind, selectedTile,
+    size.height, size.width, tool, zoom]);
 
   redrawLatest.current = draw;
   useEffect(draw, [draw]);
@@ -1040,7 +1044,9 @@ export function EditorTerrainCanvas({
           }
         }
       } else commitObjectMutation(
-        createStructurePlacementEdit(document, selectedStructureKind, cell), 'leave-unselected',
+        createStructurePlacementEdit(document, selectedStructureKind, cell,
+          selectedStructureKind === 'mine' ? { mineResource: selectedMineResource } : undefined),
+        'leave-unselected',
       );
       event.currentTarget.releasePointerCapture(event.pointerId);
       return;
@@ -1299,6 +1305,12 @@ export function EditorTerrainCanvas({
           ? 'A playable Cache sketch needs three to six linked Patient Stones.' : '');
   };
 
+  const selectMine = (resource: ResourceId) => {
+    setSelectedMineResource(resource);
+    selectStructure('mine');
+    setMutationMessage(`Stamp a ${resource} mine. Select it later to edit income, owner, or resource.`);
+  };
+
   const updateSelectedStructure = (properties: EditorMapObject['properties']) => {
     if (!selectedObject || selectedObject.kind === 'obstacle') return;
     commitObjectMutation(
@@ -1486,6 +1498,20 @@ export function EditorTerrainCanvas({
                 <details key={group} open><summary>{group}</summary>
                   <div className="editor-icon-grid">
                     {EDITOR_STRUCTURE_CATALOG.filter((entry) => entry.group === group).map((entry) => {
+                      if (entry.kind === 'mine') return EDITOR_RESOURCE_CHOICES.map((resource) => {
+                        const label = `${resource[0].toUpperCase()}${resource.slice(1)} mine`;
+                        const sprite = manifestEntry(assetId.mapObject('mine', resource));
+                        const selected = tool === 'structure' && selectedStructureKind === 'mine'
+                          && selectedMineResource === resource;
+                        return <button key={`mine-${resource}`} role="listitem"
+                          className={`editor-icon-button editor-mine-stamp ${selected ? 'selected' : ''}`}
+                          aria-label={label} aria-pressed={selected}
+                          title={`${label} — stamp its native 2×1 resource operation.`}
+                          onClick={() => selectMine(resource)}>
+                          {sprite ? <img src={sprite.file} alt="" aria-hidden="true" />
+                            : <span className="editor-icon-fallback" aria-hidden="true">⌂</span>}
+                        </button>;
+                      });
                       const previewObject: EditorMapObject = {
                         id: 'palette-object', kind: entry.kind, position: { x: 0, y: 0 },
                         properties: defaultEditorStructureProperties(entry.kind, { x: 0, y: 0 }, document),
