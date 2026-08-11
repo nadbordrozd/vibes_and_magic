@@ -1,4 +1,5 @@
 import { SKILL_IDS } from '../src/content/skills';
+import { SPELL_LEXICON, type SpellLexiconId } from '../src/content/spellLexicon';
 import { SPELL_IDS } from '../src/content/spells';
 import type { SecondarySkillId, SpellId } from '../src/core/types';
 
@@ -12,7 +13,7 @@ export interface ContentIconManifestEntry {
   file: string;
   w: typeof CONTENT_ICON_SIZE;
   h: typeof CONTENT_ICON_SIZE;
-  generator: 'pixellab';
+  generator: 'pixellab' | 'built-in-imagegen';
 }
 
 function iconEntry(kind: 'spells' | 'skills', id: string): ContentIconManifestEntry {
@@ -44,4 +45,20 @@ export function spellIcon(id: SpellId): ContentIconManifestEntry {
 
 export function skillIcon(id: SecondarySkillId): ContentIconManifestEntry {
   return SKILL_ICON_MANIFEST[id];
+}
+
+const effectIconEntries = Object.fromEntries(Object.keys(SPELL_LEXICON).map((id) => [id, {
+  file: `assets/icons/effects/${id}.png`,
+  w: CONTENT_ICON_SIZE,
+  h: CONTENT_ICON_SIZE,
+  generator: 'built-in-imagegen',
+}])) as Record<SpellLexiconId, ContentIconManifestEntry>;
+
+/** Native shared icons for the canonical spell-effect lexicon, independent of spell cards. */
+export const SPELL_EFFECT_ICON_MANIFEST: Readonly<
+  Record<SpellLexiconId, ContentIconManifestEntry>
+> = Object.freeze(effectIconEntries);
+
+export function spellEffectIcon(id: SpellLexiconId): ContentIconManifestEntry {
+  return SPELL_EFFECT_ICON_MANIFEST[id];
 }

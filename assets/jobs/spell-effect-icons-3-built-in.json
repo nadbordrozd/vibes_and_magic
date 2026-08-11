@@ -1,0 +1,308 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "contact_sheet": ".pixel-work/review/spell-effect-icons/native-contact-sheet.png",
+  "requests": [
+    {
+      "id": "spell-effect-icon:morale:built-in",
+      "assets": [
+        "spell-effect-icon:morale"
+      ],
+      "output": "assets/sources/spell-effects/morale-source.png",
+      "final": "public/assets/icons/effects/morale.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a company pennant rising beside a filled segmented meter and a second action arrow",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a company pennant rising beside a filled segmented meter and a second action arrow.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:omen:built-in",
+      "assets": [
+        "spell-effect-icon:omen"
+      ],
+      "output": "assets/sources/spell-effects/omen-source.png",
+      "final": "public/assets/icons/effects/omen.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a small weather vane above an open weekly almanac",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a small weather vane above an open weekly almanac.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:phase:built-in",
+      "assets": [
+        "spell-effect-icon:phase"
+      ],
+      "output": "assets/sources/spell-effects/phase-source.png",
+      "final": "public/assets/icons/effects/phase.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "literal_subject": "a translucent company marker passing through a wooden barricade toward an empty hex",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a translucent company marker passing through a wooden barricade toward an empty hex.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:resonance:built-in",
+      "assets": [
+        "spell-effect-icon:resonance"
+      ],
+      "output": "assets/sources/spell-effects/resonance-source.png",
+      "final": "public/assets/icons/effects/resonance.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "literal_subject": "four school-colored tuning forks around one battlefield tile",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: four school-colored tuning forks around one battlefield tile.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:spell-power:built-in",
+      "assets": [
+        "spell-effect-icon:spell-power"
+      ],
+      "output": "assets/sources/spell-effects/spell-power-source.png",
+      "final": "public/assets/icons/effects/spell-power.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a stitched spellbook beside a measuring rod marked at two, five, and six",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a stitched spellbook beside a measuring rod marked at two, five, and six.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:summon:built-in",
+      "assets": [
+        "spell-effect-icon:summon"
+      ],
+      "output": "assets/sources/spell-effects/summon-source.png",
+      "final": "public/assets/icons/effects/summon.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a newly arrived wooden soldier stepping from an open chalk circle",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a newly arrived wooden soldier stepping from an open chalk circle.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:timed-effect:built-in",
+      "assets": [
+        "spell-effect-icon:timed-effect"
+      ],
+      "output": "assets/sources/spell-effects/timed-effect-source.png",
+      "final": "public/assets/icons/effects/timed-effect.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a company marker beside a small sandglass and two removable round beads",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a company marker beside a small sandglass and two removable round beads.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:twister:built-in",
+      "assets": [
+        "spell-effect-icon:twister"
+      ],
+      "output": "assets/sources/spell-effects/twister-source.png",
+      "final": "public/assets/icons/effects/twister.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a curled ribbon connecting a counter pip, hourglass charm, and hanging banner",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a curled ribbon connecting a counter pip, hourglass charm, and hanging banner.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:undergrowth:built-in",
+      "assets": [
+        "spell-effect-icon:undergrowth"
+      ],
+      "output": "assets/sources/spell-effects/undergrowth-source.png",
+      "final": "public/assets/icons/effects/undergrowth.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "literal_subject": "a dense low thorn-and-fern patch contained within one empty battlefield hex",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a dense low thorn-and-fern patch contained within one empty battlefield hex.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    },
+    {
+      "id": "spell-effect-icon:wall-hex:built-in",
+      "assets": [
+        "spell-effect-icon:wall-hex"
+      ],
+      "output": "assets/sources/spell-effects/wall-hex-source.png",
+      "final": "public/assets/icons/effects/wall-hex.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "literal_subject": "one short timber-and-stone barricade fitted entirely inside a battlefield hex",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: one short timber-and-stone barricade fitted entirely inside a battlefield hex.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: centered high-oblique non-isometric object view with generous empty padding and no cropping. The complete raised six-sided stone battlefield hex must be plainly visible as one compact hexagonal tile. The barricade must be smaller than the tile and sit wholly within all six tile edges, leaving a visible stone margin on every side. One strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: warm timber, grey stone, brass fasteners, and restrained red cloth; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationship: exactly one short timber-and-stone barricade plus exactly one enclosing battlefield hex. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: free-standing barricade without a hex, barricade extending beyond the hex, text, letters, numerals, writing, glyphs, surrounding UI frame or panel, flag, shield emblem, aura, glow, rarity marker, amount marker, duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ]
+    }
+  ]
+}

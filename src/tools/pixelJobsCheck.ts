@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { assetWorklist } from '../../assets/worklist';
-import { contentIconWorklist } from '../../assets/iconWorklist';
+import { contentIconWorklist, spellEffectIconWorklist } from '../../assets/iconWorklist';
 import {
   ARTIFACT_SPRITE_SUBJECTS, ITEM_SPRITE_SUBJECTS, RESOURCE_MINE_SUBJECTS,
 } from '../../assets/adventureSpriteInventory';
@@ -49,7 +49,7 @@ interface PixelJob {
 
 const root = process.cwd();
 const jobsDir = resolve(root, 'assets/jobs');
-const worklist = [...assetWorklist(), ...contentIconWorklist()];
+const worklist = [...assetWorklist(), ...contentIconWorklist(), ...spellEffectIconWorklist()];
 const byId = new Map(worklist.map((item) => [item.id, item]));
 const errors: string[] = [];
 const covered = new Map<string, string[]>();

@@ -65,7 +65,7 @@ try {
       return box.left < 0 || box.right > document.documentElement.clientWidth;
     }).length,
   }));
-  if (sheetAudit.count !== 89 || sheetAudit.uniqueSources !== 89
+  if (sheetAudit.count !== 119 || sheetAudit.uniqueSources !== 119
       || sheetAudit.unloaded || sheetAudit.overflowing) {
     throw new Error(`Content icon sheet audit failed: ${JSON.stringify(sheetAudit)}`);
   }

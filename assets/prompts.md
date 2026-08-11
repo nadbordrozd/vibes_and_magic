@@ -1284,3 +1284,11 @@ The final native sources are under `public/assets/terrain/original-native/`; run
 `public/assets/terrain/original-showcase-*.png`. Local third-party image references and their exact
 provenance boundary are recorded separately in
 `assets/provenance/homm2-image-inventory.json` and are not production inputs.
+# Shared spell-effect icon family (work order 54)
+
+The 30 selected built-in prompts are recorded literally in
+`assets/jobs/spell-effect-icons-{1,2,3}-built-in.json`; the matching provider outputs, keyed sources,
+native finals, hashes, selection verdicts, and the single rejected missing-hex `wall-hex` attempt are
+recorded in `assets/provenance/spell-effect-icon-generation.json`. The keyed source family lives in
+`assets/sources/spell-effects/`, and `scripts/buildSpellEffectIcons.py` performs the deterministic
+native hard-alpha bake and emits native/3× review sheets.

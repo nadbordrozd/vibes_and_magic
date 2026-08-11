@@ -1,5 +1,6 @@
 import { SKILLS, SKILL_IDS } from '../src/content/skills';
 import { SPELLS, SPELL_IDS } from '../src/content/spells';
+import { SPELL_LEXICON, type SpellLexiconId } from '../src/content/spellLexicon';
 import { CONTENT_ICON_SIZE } from './iconManifest';
 
 export interface ContentIconWorkItem {
@@ -23,4 +24,22 @@ export function contentIconWorklist(): ContentIconWorkItem[] {
       source: `canonical secondary-skill catalog:${SKILLS[id].name}`,
     })),
   ];
+}
+
+export interface SpellEffectIconWorkItem {
+  id: `spell-effect-icon:${SpellLexiconId}`;
+  category: 'spell-effect-icon';
+  w: typeof CONTENT_ICON_SIZE;
+  h: typeof CONTENT_ICON_SIZE;
+  source: string;
+}
+
+export function spellEffectIconWorklist(): SpellEffectIconWorkItem[] {
+  return (Object.keys(SPELL_LEXICON) as SpellLexiconId[]).map((id) => ({
+    id: `spell-effect-icon:${id}`,
+    category: 'spell-effect-icon',
+    w: CONTENT_ICON_SIZE,
+    h: CONTENT_ICON_SIZE,
+    source: `canonical spell lexicon:${SPELL_LEXICON[id].name}`,
+  }));
 }

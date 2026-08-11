@@ -86,5 +86,6 @@ live in `docs/` until superseded by their implementation.
 | 51 | CITY_SPELLBOOK_SPRITES | Exact 5×2 cities, deterministic neutral-city garrisons, six architectural identities, school-grouped original spellbook, clean spell-upgrade language, and exhaustive artifact/item/resource visual inventory | extends S02/S03/S05/S07/S08/S09; supersedes prior live player-facing Castle terminology, 31/32/37/50 settlement footprint clauses, and 34/44/46 spell-upgrade presentation wording; contract/inventory only |
 | 52 | MOUNTAIN_SIDE_EDGES | Exact-width mountain end/shoulder vocabulary, whole-sprite topology overlap, shared production/showcase geometry, retained generation provenance, and desktop/390 real-map evidence | presentation correction to 35/37/47; supersedes centered horizontal mountain slicing while preserving authored terrain and gameplay footprints |
 | 53 | SPELL_EFFECT_LEXICON | Typed reusable player-rule lexicon, structured term tokens, all-68 runtime/term coverage, exhaustive ordinary-term disposition, and resolver-backed Bloom semantics | extends S05/S09 and spellbook/inspection presentation foundations; no mechanics, description, or art changes |
+| 54 | SPELL_EFFECT_ICONS | Complete native shared-icon coverage for all 30 spell-lexicon terms, exact built-in generation/provenance, deterministic hard-alpha bake, manifest/worklist gates, and shared renderer | assets/presentation companion to 53; no mechanics or spell-description changes |
 
-Next free number: **54**.
+Next free number: **55**.

@@ -734,3 +734,16 @@ Beads epic `vibes_and_magic-6sf`.
 - Routed counter inspection and the matching help glossary entries through the lexicon, replacing
   the incorrect legacy Bloom inspector claim of one HP per counter with the resolver-backed rule.
 - No spell mechanics, catalog descriptions, icons, or existing Spellbook behavior changed.
+
+## 2026-08-12 — Complete shared spell-effect icon family
+
+- Generated and retained one dedicated source for every one of the 30 `SPELL_LEXICON` subjects in
+  the established bright storybook pixel-art family. The first `wall-hex` source was retained and
+  rejected for omitting the enclosing hex; one corrective retry supplied the selected source.
+- Added three immutable built-in generation batches, a selection ledger, exact prompt/output/source/
+  final hash provenance, catalog-derived manifest/worklist coverage, and a deterministic keyed
+  32×32 hard-alpha bake with native and 3× contact sheets.
+- Added the shared no-fallback `SpellEffectIcon` renderer and catalog showcase without wiring term
+  tooltips or changing the 68 spell descriptions.
+- Added fail-closed catalog/path/hash/prompt/uniqueness/hard-alpha/provider-output/rejection/consumer
+  validation and focused manifest/renderer coverage.

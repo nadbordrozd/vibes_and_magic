@@ -74,7 +74,10 @@ aliases, and search tokens. Every spell is mapped to its actual combat/adventure
 has at least one reusable or explicitly ordinary term disposition; every disposition is used. Rule
 presentation tokens preserve term IDs for semantic UI and have a deterministic plain-text
 projection. The lexicon does not replace the catalog's Standard/Upgraded descriptions and cannot
-change resolver behavior. See [work order 53](../53_SPELL_EFFECT_LEXICON.md).
+change resolver behavior. Its 30 literal subjects have exact distinct native shared-icon coverage
+derived through the manifest/worklist, immutable generation batches, retained selections and
+hash-audited provenance; the renderer has no fallback path. See [work order 53](../53_SPELL_EFFECT_LEXICON.md)
+and [work order 54](../54_SPELL_EFFECT_ICONS.md).
 
 Every bargain has nonempty flavor, immediate benefit, exact Debt, handler, and visible altered terms
 where applicable. Debt effects obey the law in [`S01_RATIONALE.md`](S01_RATIONALE.md).

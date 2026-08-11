@@ -868,3 +868,17 @@
 - Bloom's implemented fixed spell amounts and shared counter lifecycle are documented and tested
   through real resolver functions. Its lack of default Spell Power counter scaling is recorded as a
   pre-existing S05/runtime mismatch; this no-mechanics work does not choose either correction.
+
+## 2026-08-12 — Shared spell terms own exact native visual references (doc 54)
+
+- Each of the 30 canonical spell-lexicon IDs owns one distinct shared 32×32 effect icon derived
+  from its exact `visualSubject`. These are mechanic references, not substitutes for individual
+  spell-card art.
+- Generation uses one separate built-in call per asset, retained keyed sources, and one deterministic
+  local hard-alpha bake. Exact prompts, provider outputs, sources, finals, hashes, selections, and
+  rejected attempts are immutable provenance rather than reconstruction notes.
+- The shared renderer is manifest-backed and has no glyph, emoji, or generic fallback. Later UI may
+  consume it, but this work does not wire tooltips or rewrite spell descriptions.
+- A generated attempt is retried only for a real semantic/style rejection. The first `wall-hex`
+  omitted the required enclosing hex and is retained as rejected; its single corrective retry is the
+  selected source.

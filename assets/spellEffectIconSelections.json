@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "contract": "One accepted built-in source and one deterministic native 32x32 hard-alpha bake per canonical SPELL_LEXICON entry.",
+  "entries": [
+    {
+      "id": "spell-effect-icon:ability",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/ability-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:active-effect",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/active-effect-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:barrowfield",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/barrowfield-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:battle-enchantment",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/battle-enchantment-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:beast",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/beast-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:beneficial-effect",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/beneficial-effect-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:bloom",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/bloom-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:burn",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/burn-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:chill",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/chill-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:cleanse",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/cleanse-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:company-status",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/company-status-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:counter",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/counter-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:death-trigger",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/death-trigger-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:deepwood",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/deepwood-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:extra-action",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/extra-action-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:forced-movement",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/forced-movement-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:growth",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/growth-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:guardian",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/guardian-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:harmful-effect",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/harmful-effect-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:hex",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/hex-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:morale",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/morale-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:omen",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/omen-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:phase",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/phase-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:resonance",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/resonance-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:spell-power",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/spell-power-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:summon",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/summon-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:timed-effect",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/timed-effect-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:twister",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/twister-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:undergrowth",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/undergrowth-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:wall-hex",
+      "accepted": true,
+      "source": "assets/sources/spell-effects/wall-hex-source.png",
+      "review": "Accepted after complete source, native, and integer-scale contact-sheet review on 2026-08-12."
+    }
+  ]
+}

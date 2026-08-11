@@ -1,0 +1,776 @@
+{
+  "version": 1,
+  "generator": "built-in-imagegen",
+  "jobs": [
+    "assets/jobs/spell-effect-icons-1-built-in.json",
+    "assets/jobs/spell-effect-icons-2-built-in.json",
+    "assets/jobs/spell-effect-icons-3-built-in.json"
+  ],
+  "generated_on": "2026-08-12",
+  "style_references": [
+    "assets/sources/items/bannerWhistle-source.png",
+    "assets/sources/items/potionOfVigor-source.png",
+    "assets/sources/artifacts/falconersGlove-source.png"
+  ],
+  "selections": [
+    {
+      "id": "spell-effect-icon:ability",
+      "request_id": "spell-effect-icon:ability:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-f30aac20-9bdd-4f6f-8861-30343c5fe1d1.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/ability-source.png",
+      "final": "public/assets/icons/effects/ability.png",
+      "literal_subject": "a small open field manual beside a plain heraldic badge",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a small open field manual beside a plain heraldic badge.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: warm parchment, wood, brass, and restrained heraldic red and blue; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory. Keep the open manual and plain heraldic badge distinct and equally legible. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, background badge, aura, glow, rarity marker, overlaid amount marker, overlaid duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "3963d223d24f65cc89dfe48f7231f37c9d348b2224d2d4ea1c96219ffce68ddf",
+      "source_sha256": "ad5521ad307db253cd7ed9f20ae3b9376e377c1ad7d053618cde4fec17407480",
+      "final_sha256": "5a36cf0355c228953ce3ebf90d118aeaa9feb3fabef279794ea35e950229748d",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:active-effect",
+      "request_id": "spell-effect-icon:active-effect:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-06f59895-21a4-439c-9024-6bccecf8fa59.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/active-effect-source.png",
+      "final": "public/assets/icons/effects/active-effect.png",
+      "literal_subject": "three labeled tokens—a pip, a small hourglass, and a hanging banner—joined by one selection ring",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: three labeled tokens—a pip, a small hourglass, and a hanging banner—joined by one selection ring.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "70ddb2bb580ae667896df7849de6149a5bb98839a2203713838b85dd91b4d19c",
+      "source_sha256": "688761d224b48c7c71d5d065d442dcf75d083c91f0ada35f694c905084ee7da4",
+      "final_sha256": "f65c9e157f7cdb55803e9871095222433842e4d8d857755c7e81d3c5da1055e1",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:barrowfield",
+      "request_id": "spell-effect-icon:barrowfield:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-fb270ad0-a032-42b2-9c77-47ccacccac16.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/barrowfield-source.png",
+      "final": "public/assets/icons/effects/barrowfield.png",
+      "literal_subject": "a low grass burial mound with a small stone door and a bare thorn",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a low grass burial mound with a small stone door and a bare thorn.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "35f73bf14a8a7960f8c7d536a6efaafdf72783789b24368148511f7c151a2287",
+      "source_sha256": "7109301008f519999f9478a057ce25d5de2b1c13d2f9eebaf84cc9e57ddfd7df",
+      "final_sha256": "0b0e9112a376a7c6c40c30e8168dfd0fd3e40fb3c7116d614a24d169fb6b7142",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:battle-enchantment",
+      "request_id": "spell-effect-icon:battle-enchantment:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-37fc285e-3071-4478-acac-89bfa33dba22.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/battle-enchantment-source.png",
+      "final": "public/assets/icons/effects/battle-enchantment.png",
+      "literal_subject": "two hanging cloth charms on a short wooden rail, with one empty hook emphasized",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: two hanging cloth charms on a short wooden rail, with one empty hook emphasized.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "dd11faf6db2e7704162028d7aac471503a38759c60cb49eeedfa4b1bf5e82a0d",
+      "source_sha256": "acf98ce62b79369474183fabd3d6d29b825aa029f68d7a4b7d931fb02c9c4baf",
+      "final_sha256": "6f598c5b187597019f166fc23e25837b88787af0ace9d97d77aaaa1d6fdfe25e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:beast",
+      "request_id": "spell-effect-icon:beast:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-3de2d927-ed2c-461d-b9ba-5c4ca21c9a90.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/beast-source.png",
+      "final": "public/assets/icons/effects/beast.png",
+      "literal_subject": "a plain horn-and-paw field sign tied to a short stake",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a plain horn-and-paw field sign tied to a short stake.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "78ff7f9ecca3eb05e1dfa69a7bb102cce48ac0d6435f8eaf71f9fd72f1705525",
+      "source_sha256": "55549b2db262a7549cfae67d366237e0d6a0fe810533d436c4d0d11c0258d4c3",
+      "final_sha256": "e20d0181a580402180792543baee7f4e3a6833ca78319fd3cceb2fb09d4dcfe6",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:beneficial-effect",
+      "request_id": "spell-effect-icon:beneficial-effect:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-5ee9743e-55c1-4d3b-a144-ed94d8301d25.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/beneficial-effect-source.png",
+      "final": "public/assets/icons/effects/beneficial-effect.png",
+      "literal_subject": "a company marker beneath a small upward-pointing green ribbon and a plain hourglass",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a company marker beneath a small upward-pointing green ribbon and a plain hourglass.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "53cff182655dfbb4338b29533ecc9187e8c2e3a0a9a41956c6767e2de778f0ef",
+      "source_sha256": "84d3c43a861b2bf38c636b1fd5e3fe1d3140d0def4d12885b6d5a05512ee6595",
+      "final_sha256": "a1c508a16221e20ceeebafce0bb54092c50151a6f4015b4bf69b446ffcc233d8",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:bloom",
+      "request_id": "spell-effect-icon:bloom:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-09b0f304-143b-4cff-ab60-153520e86b09.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/bloom-source.png",
+      "final": "public/assets/icons/effects/bloom.png",
+      "literal_subject": "a green sprout curling around nine small wooden counting pips",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a green sprout curling around nine small wooden counting pips.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "0350cc799279968d8a0f400dff9366ad96dc33921c724fa59f29bbb9e3677913",
+      "source_sha256": "9e1e42ab44d4dcc453944b0eba007a032c2060619d331b27f598eeef5e999b4d",
+      "final_sha256": "a6e4ed1b5cee240b5e93485b94fd41ddef583ae79554c1242aa737ebbd606f60",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:burn",
+      "request_id": "spell-effect-icon:burn:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-2fc269cc-f8fc-4f27-b96b-94dd232c7cd4.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/burn-source.png",
+      "final": "public/assets/icons/effects/burn.png",
+      "literal_subject": "a singed wooden company marker beside nine ember-red counting pips",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a singed wooden company marker beside nine ember-red counting pips.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "10f610126f03d695e821a9147cefee0e52251044fee332423143de498e7de558",
+      "source_sha256": "a16d751ed742b07de43109635b4a7a380f85af0d365495886cdefc6be9c43313",
+      "final_sha256": "50f90bb7bc4df1bb931b6c26c96286ef051053ac245107e15deae951cde90991",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:chill",
+      "request_id": "spell-effect-icon:chill:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-fabd27f4-f70a-4ae3-a4c9-b07771306817.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/chill-source.png",
+      "final": "public/assets/icons/effects/chill.png",
+      "literal_subject": "a frosted boot beside nine pale-blue counting pips",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a frosted boot beside nine pale-blue counting pips.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "e5e3a6ed26fbddb1b09d2728d2f9df97d364fc9ef0a59f3acb5c9926f775670f",
+      "source_sha256": "995e1345486e5a6299cd4569b4a3e2b231222b757a9fed12eb07f223a035779f",
+      "final_sha256": "5b07851071ffafface951265cade2f49be3ba85cf34ce9bba5ebde53e66d0e09",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:cleanse",
+      "request_id": "spell-effect-icon:cleanse:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-ecb8bfa8-3837-49f1-8d9e-b87794d32ca4.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/cleanse-source.png",
+      "final": "public/assets/icons/effects/cleanse.png",
+      "literal_subject": "a clean linen cloth sweeping four colored counting pips from a wooden company marker",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a clean linen cloth sweeping four colored counting pips from a wooden company marker.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "6534b4acdf613007c41043d02096a95858cb5c4d34482efdff373808991589d8",
+      "source_sha256": "8b75459eacc19823eab3087973a3b60a06c8bf7ac6a23d1850a1fffbc6af682f",
+      "final_sha256": "dcd7808ff43b2f46bbce59d6bbeb7e860af9c150de005e987d57d127013f87f7",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:company-status",
+      "request_id": "spell-effect-icon:company-status:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-8d4cf8ab-338f-417d-a2e8-f0f4b328c0b2.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/company-status-source.png",
+      "final": "public/assets/icons/effects/company-status.png",
+      "literal_subject": "a wooden company marker carrying one colored pip and one small hourglass tag",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a wooden company marker carrying one colored pip and one small hourglass tag.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "f7aa7bd485decf70055494fb17d1fcea327b7ff3e38f3c405b4995950ab452d1",
+      "source_sha256": "2859882bea761ca3502078d1811e72e0684ec764260f837c45c02cce5d9d9bd4",
+      "final_sha256": "afd1b3ce62daf0b55a567757e15fe4dd6689ac5106a1f7ac15255b16942f7b00",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:counter",
+      "request_id": "spell-effect-icon:counter:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-11acfb97-c61a-4a7c-a7c1-a9366e46d5da.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/counter-source.png",
+      "final": "public/assets/icons/effects/counter.png",
+      "literal_subject": "four neat rows of colored wooden pips, each row ending at the ninth pip",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: four neat rows of colored wooden pips, each row ending at the ninth pip.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "55121222cf7a7e56818c47b88e5be262115061062232e7b13c7cb681bfedd27a",
+      "source_sha256": "ca238107173990c4cc7da85a385ad2b65feefcd31383e4004520183553d0fcf4",
+      "final_sha256": "02f7ae76b94e8735eb3be265c43061a1b6ce7b814a76263e6b4c298480b74cda",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:death-trigger",
+      "request_id": "spell-effect-icon:death-trigger:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-694627fb-fbc1-4307-bfef-1f3f7594c0a6.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/death-trigger-source.png",
+      "final": "public/assets/icons/effects/death-trigger.png",
+      "literal_subject": "a fallen wooden company marker ringing a small handbell",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a fallen wooden company marker ringing a small handbell.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "d4f239a377b9f42a7bb05ff2a734fac3ceba41ab6692099500b1073004d34dd6",
+      "source_sha256": "07e7c5eeb95c78a063aa0a2db6f261cb00127f265e72f874848a2d8de2b19616",
+      "final_sha256": "fd7ac7b4915949a13581c4d4da69785e950ed458bf29269b10464704931ea471",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:deepwood",
+      "request_id": "spell-effect-icon:deepwood:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-f11152ef-4b30-4a5d-a6d1-e76294242efb.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/deepwood-source.png",
+      "final": "public/assets/icons/effects/deepwood.png",
+      "literal_subject": "three close old trees whose roots form a clear path opening",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: three close old trees whose roots form a clear path opening.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "d33136242b5ebb3ec9bf8e0cf2a5e637ba9364e0da548c0b2213338aac736a1f",
+      "source_sha256": "3cd06b7a6e13c6f32e42245c68d1491b481b5db002f640324040754d223da0ac",
+      "final_sha256": "fcd2c559b8379e89b8ba2d5d39be57643655928fdf4843b3fe708ec6154849b8",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:extra-action",
+      "request_id": "spell-effect-icon:extra-action:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-4d2ae112-5efb-4c55-bfb4-e6afbcfa2355.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/extra-action-source.png",
+      "final": "public/assets/icons/effects/extra-action.png",
+      "literal_subject": "one wooden company marker followed by a second matching action arrow",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: one wooden company marker followed by a second matching action arrow.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "6d2e906cf1942ba86a587593321cc152b368959474d170e4be254594e904c92f",
+      "source_sha256": "741fb7c66d35a884a379c198561275e98f59ce4595b494b819610cf79dc0a5c9",
+      "final_sha256": "cb760f631cbcfce38dd8b5f431ee75588c059852684641bbf54c86762cf0222c",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:forced-movement",
+      "request_id": "spell-effect-icon:forced-movement:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-42748c1b-2c91-407a-b216-fcaa707674df.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/forced-movement-source.png",
+      "final": "public/assets/icons/effects/forced-movement.png",
+      "literal_subject": "a wooden company marker sliding along a bold arrow after a gust",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a wooden company marker sliding along a bold arrow after a gust.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "6876c84bc5430f6be7af136bb74718b0a95d2ea48fa2914949280f83286f091d",
+      "source_sha256": "a749e7a432314ccba2a4a40319d80a58d64087d0df47604bad0d6e2b84041580",
+      "final_sha256": "ff855580f9e07f27b7e40f106d001b825caf61e52d91e8a9e3cdb5f33bb220c0",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:growth",
+      "request_id": "spell-effect-icon:growth:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-716782ea-05e8-44ff-8ef5-786b7231665b.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/growth-source.png",
+      "final": "public/assets/icons/effects/growth.png",
+      "literal_subject": "a small dwelling tally board with one row of newly added wooden figures",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a small dwelling tally board with one row of newly added wooden figures.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "e79c796f87a495736c679baaf9dd9eca9e8b514c2c0bf2b6e7ba1b06db9b1347",
+      "source_sha256": "8d4a4b4d0eb5aee9bbe05ea83642f595d84853c35e42b8e6bf7e8f8e1d221a9d",
+      "final_sha256": "58705792a8cbd57e9a2e0cd623355dc33b7a75922fba2af72bdf2124627539f2",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:guardian",
+      "request_id": "spell-effect-icon:guardian:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-ec21a1c6-8609-4f1b-a44a-02802868a659.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/guardian-source.png",
+      "final": "public/assets/icons/effects/guardian.png",
+      "literal_subject": "a neutral shield-bearing company marker standing before a closed treasure chest",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a neutral shield-bearing company marker standing before a closed treasure chest.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "85cff9e9cf7b7c490a8f543364320c4067ae0fc8587f34ea347e5a323ed33ec7",
+      "source_sha256": "030d1abbc9f8666ec19ee0b8df4d16c6c5be7bb416ca088a56e3de173431f7ba",
+      "final_sha256": "64bf0bef83017382beba185a9c574ee8abca4d7964d0836b50ec4bdcb1d327bd",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:harmful-effect",
+      "request_id": "spell-effect-icon:harmful-effect:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-eb5b03b5-a5dd-4fb5-aa50-caef23051a14.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/harmful-effect-source.png",
+      "final": "public/assets/icons/effects/harmful-effect.png",
+      "literal_subject": "a company marker beneath a small downward-pointing violet ribbon and a plain hourglass",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a company marker beneath a small downward-pointing violet ribbon and a plain hourglass.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "4a58a64951e3d5bb3c340872425e7d9a2725e2755f449127092adf4e0a81e96f",
+      "source_sha256": "1e16619923f2e1b490810cca2fccc7bdf46e3f7f8a808199077e829e043e2407",
+      "final_sha256": "d3aa1e85dd208304b40d8473d335b7b522f89786f2633bd01d6396b39f3c59ef",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:hex",
+      "request_id": "spell-effect-icon:hex:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-2af3b8f0-14a6-4705-b891-837ede5c2fca.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/hex-source.png",
+      "final": "public/assets/icons/effects/hex.png",
+      "literal_subject": "a cracked violet wax charm beside nine purple counting pips",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a cracked violet wax charm beside nine purple counting pips.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "32dc3a14f9a5e49f101aa6a67e09b75a1ab79ae70e18df85934bdf99553fcef7",
+      "source_sha256": "7cb546805de7206454f651528b69700b892b0be0399c2e55b1cdaf8658e4d6d9",
+      "final_sha256": "9ce1a1e96b4c71519c60dac32691fd2636344b30d1fe7ba0189a404aad674c44",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:morale",
+      "request_id": "spell-effect-icon:morale:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-4fb0ed8b-bd60-4979-a65f-c48e7f6c078e.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/morale-source.png",
+      "final": "public/assets/icons/effects/morale.png",
+      "literal_subject": "a company pennant rising beside a filled segmented meter and a second action arrow",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a company pennant rising beside a filled segmented meter and a second action arrow.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "08c068e037184a2a4ead2caf0d490424ce5f24866c3a4f300bbc85c2454c008b",
+      "source_sha256": "229c43a27b7fef1147ad660969085f4fafb8f39780d0f15d55ae57c49b1714f4",
+      "final_sha256": "8b2dd8dfd67c911d7d2e7844aff6cb60b121849cc0575504ed4fe9e22eeaddfa",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:omen",
+      "request_id": "spell-effect-icon:omen:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-896c02c8-c364-4426-bf23-16ddec804394.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/omen-source.png",
+      "final": "public/assets/icons/effects/omen.png",
+      "literal_subject": "a small weather vane above an open weekly almanac",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a small weather vane above an open weekly almanac.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "8b5e2f2dee4e0090f0d0322b94a40912682294eb823dae93bf52cc6abfcb3e12",
+      "source_sha256": "b13a266a62141ebeb517f356689a597579a8e5ebdd6492adb11b0c3e0c69ca41",
+      "final_sha256": "875d28b9ea5c81b6b1357cf641e3d6b88bdd9f80820114b2396ce7846cfed915",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:phase",
+      "request_id": "spell-effect-icon:phase:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-f22e0c70-774a-4fad-8259-56c7f90da603.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/phase-source.png",
+      "final": "public/assets/icons/effects/phase.png",
+      "literal_subject": "a translucent company marker passing through a wooden barricade toward an empty hex",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a translucent company marker passing through a wooden barricade toward an empty hex.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "e8db7c5de3154e33aa4fdcce33db0ee49956845197b01204d4709bf5ed3f9ebc",
+      "source_sha256": "28d9d678f57d21e3a5182f36a4069f9459001ddd1072951ab2f3201fb2beb604",
+      "final_sha256": "f57acb89e79f83c0a8f61c32ba13285f692cd158a23f90ddbca3471e7ae501c7",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:resonance",
+      "request_id": "spell-effect-icon:resonance:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-82917c7b-0cc5-42b8-857e-4dc12c21b82e.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/resonance-source.png",
+      "final": "public/assets/icons/effects/resonance.png",
+      "literal_subject": "four school-colored tuning forks around one battlefield tile",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: four school-colored tuning forks around one battlefield tile.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "2266a51eab4e1d31cc915135a2bb17d88bdf223dcec11908e7c708baf8f8ac1b",
+      "source_sha256": "cde64b31dc83cada512e8d8dae50aba6188f71c1da41a146c167d227cd08c447",
+      "final_sha256": "8bf5eb1230c5a589e8e7a8ff2c7a765206484dd33e3937bc66f7b0c443477e79",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:spell-power",
+      "request_id": "spell-effect-icon:spell-power:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-586bdc0d-176d-443f-8e63-49e19f315910.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/spell-power-source.png",
+      "final": "public/assets/icons/effects/spell-power.png",
+      "literal_subject": "a stitched spellbook beside a measuring rod marked at two, five, and six",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a stitched spellbook beside a measuring rod marked at two, five, and six.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "6387d8157d003cabc97dd72ca77d9453e12f383b3478c368614b651754eac369",
+      "source_sha256": "6e3f28eaee8987d1ff44f3ed3832d387cbe3ba63904d98335fe5a81c391ba785",
+      "final_sha256": "83d8ab913d52631b94ab146ea92acab4a8772e17ae51fb5b18499890d0e5a00f",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:summon",
+      "request_id": "spell-effect-icon:summon:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-e83bb903-1746-4874-a85a-4449b613fd4f.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/summon-source.png",
+      "final": "public/assets/icons/effects/summon.png",
+      "literal_subject": "a newly arrived wooden soldier stepping from an open chalk circle",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a newly arrived wooden soldier stepping from an open chalk circle.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal. If translucency is requested, depict it with pale blue material and interrupted contour clusters while keeping the subject opaque for clean keying.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "25261d2e9196ea5873485d4489bd3ba75cc5ac551856e4f4a48aa803a1b7e218",
+      "source_sha256": "b0a7ea76ba709cb517a286cba1b6b8ff219765c5dc18ce3c6c2cce72209cf1cd",
+      "final_sha256": "5d118012522ddc7e5af4ba2a108b71bb62d4d7fb840f612674c3e168336571a7",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:timed-effect",
+      "request_id": "spell-effect-icon:timed-effect:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-1daf3ca5-fc30-4cdf-99d8-e0a1a20fe800.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/timed-effect-source.png",
+      "final": "public/assets/icons/effects/timed-effect.png",
+      "literal_subject": "a company marker beside a small sandglass and two removable round beads",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a company marker beside a small sandglass and two removable round beads.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "3811486606771e806d49f18b419c6c05fb5b53ee243690a65417a80c8ea6d8e0",
+      "source_sha256": "48f82aa90b9e5d576108a2cdee510882517e6eb4b5f4a2e0cb5a9b61ecb8cb25",
+      "final_sha256": "7574fb505b18fe49ad7ba96e43215b9b9d2da0f95224ce0c03f19aa92c9cc116",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:twister",
+      "request_id": "spell-effect-icon:twister:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-654fdfe1-abb5-4496-a265-137a291e61a6.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/twister-source.png",
+      "final": "public/assets/icons/effects/twister.png",
+      "literal_subject": "a curled ribbon connecting a counter pip, hourglass charm, and hanging banner",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a curled ribbon connecting a counter pip, hourglass charm, and hanging banner.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "403426fe00e81034fab1d8d75e0c2f3ad9a1fa4e6a12df96de068140f703f618",
+      "source_sha256": "fd1ba52ad7a1da7ee56174e9355926ecb36dd0c3a64cffe69e8c3de05cfb3896",
+      "final_sha256": "6b80a63dd85951413c458183f1088d3571948eeb0fdfb6360a2690a5ea89958b",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#00FF00",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:undergrowth",
+      "request_id": "spell-effect-icon:undergrowth:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-bc169837-d442-4b9a-9781-ecae1c3f52b3.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/spell-effects/undergrowth-source.png",
+      "final": "public/assets/icons/effects/undergrowth.png",
+      "literal_subject": "a dense low thorn-and-fern patch contained within one empty battlefield hex",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: a dense low thorn-and-fern patch contained within one empty battlefield hex.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "2bb3fd0e1f2778e5b54cd5fa82f6cb57936669ac93dfc885d618a58271962901",
+      "source_sha256": "7c53a58852e3837c0dca59f285e09289f33e4192953e94ba4bcbebd43a2bf3b6",
+      "final_sha256": "d5f2802485a4f4e2178793f198af93cc405c0d779cfb11bf7e334f62e6e7e670",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    },
+    {
+      "id": "spell-effect-icon:wall-hex",
+      "request_id": "spell-effect-icon:wall-hex:built-in",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-747989e4-982e-4a6d-9787-221cddc349e3.png",
+      "discarded_outputs": [
+        {
+          "built_in_output": "/home/nadbor/.codex/generated_images/019fec66-bea1-7442-98bd-e3fbc7a46ab7/exec-a794c9c4-d4e4-4518-ba93-3756447c40f5.png",
+          "source": "assets/sources/spell-effects/rejected/wall-hex-missing-hex-source.png",
+          "reason": "Rejected: the barricade was present but the enclosing battlefield hex was omitted.",
+          "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: one short timber-and-stone barricade fitted entirely inside a battlefield hex.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: complete subject centered in a high-oblique non-isometric object view where depth applies, visible upper surfaces, generous empty padding, no cropping, and one strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: subject-appropriate warm wood, cloth, stone, parchment, and restrained jewel colors; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationships. Any requested labels must be conveyed by distinct physical token shapes and colors, never writing. Any requested counting pips, beads, meter segments, or measuring marks are physical parts of the subject, not UI overlays. Perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: text, letters, numerals, writing, glyphs, surrounding UI frame or panel, aura, glow, rarity marker, unrequested amount marker, unrequested duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+          "prompt_sha256": "d4afa1f61f27e607650d73239ce972510cf5d167c816f8850411627a49585811",
+          "source_sha256": "74163b47c57056342adf4c4581e9afbe496356c9695d8104b0a68f62cd93acb2"
+        }
+      ],
+      "source": "assets/sources/spell-effects/wall-hex-source.png",
+      "final": "public/assets/icons/effects/wall-hex.png",
+      "literal_subject": "one short timber-and-stone barricade fitted entirely inside a battlefield hex",
+      "prompt": "Use case: stylized-concept\nAsset type: production shared spell-effect icon for a bright storybook strategy game\nInput images: Images 1–3 are style, palette, camera, and lighting references only. Do not copy their subjects.\nPrimary request: Create exactly one isolated, tightly unified physical icon subject: one short timber-and-stone barricade fitted entirely inside a battlefield hex.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines, compact painterly pixel clusters, and the same cheerful tactile miniature quality as the references.\nComposition/framing: centered high-oblique non-isometric object view with generous empty padding and no cropping. The complete raised six-sided stone battlefield hex must be plainly visible as one compact hexagonal tile. The barricade must be smaller than the tile and sit wholly within all six tile edges, leaving a visible stone margin on every side. One strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nColor palette: warm timber, grey stone, brass fasteners, and restrained red cloth; flat readable color groups and restrained highlights.\nConstraints: preserve exactly the requested semantic inventory and spatial relationship: exactly one short timber-and-stone barricade plus exactly one enclosing battlefield hex. Perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged subject suitable for chroma removal.\nAvoid: free-standing barricade without a hex, barricade extending beyond the hex, text, letters, numerals, writing, glyphs, surrounding UI frame or panel, flag, shield emblem, aura, glow, rarity marker, amount marker, duration marker, upgrade marker, watermark, cast shadow on the background, contact shadow on the background, scenery, and extra objects.",
+      "prompt_sha256": "54daa36cbb1a38c49c01b2069b7d19afc26b2051f3b25c7029b1d2d42ff387aa",
+      "source_sha256": "63d48e68c6de2a9e7336ea8e2dc43c9aaf39941875889e34dc126d9844d19303",
+      "final_sha256": "576076af155a6069a76bfd4b608f4b4acd550a260997ac696ae623574d2c13df",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "chroma_key": "#FF00FF",
+      "bake": "installed remove_chroma_key soft-matte 12/220/despill, crop, nearest-neighbour fit to 28px, adaptive 40-colour palette, alpha>=128 hard bake, centered 32px canvas",
+      "review": "Accepted after source, native, and 3x contact-sheet inspection on 2026-08-12."
+    }
+  ]
+}
