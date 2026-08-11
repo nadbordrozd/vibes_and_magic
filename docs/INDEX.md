@@ -40,7 +40,7 @@ live in `docs/` until superseded by their implementation.
 | 05 | SETTING | Canon v2: premise, tone, Assimilation Laws, visual identity laws, six factions + rosters, hidden Seamborn, neutral cultures, naming | supersedes its own v1 |
 | 06 | FACTIONS_HEARTHGUARD_WOUNDWRIGHTS | Implementation spec: first two factions, tiers 1–5, heroes, buildings | tier 6 added by 14; skills section of 11 superseded by 16 |
 | 07 | MAGIC | Four schools, six unique pairs, opposition structure, acquisition weights | |
-| 08 | SPELL_SYSTEM | Casting, counters, enchantment slots, twisters, upgrades (+faces), resonance, precedence rule, guilds | |
+| 08 | SPELL_SYSTEM | Casting, counters, enchantment slots, twisters, Standard/Upgraded rules, resonance, precedence rule, guilds | |
 | 09 | SPELLS_V1 | Rite/Craft/Grave 1–10 fully specced; Wild penciled | Wild superseded by 15 |
 | 10 | MILESTONE_MAGIC | Build order: faction swap + spell engine + acquisition + UI + AI + sim gates | balance gates relaxed per 13 |
 | 11 | MILESTONE_HEROES | Tavern, named heroes, secondary skills, multi-hero AI, loss conditions | §3 skills superseded by 16 |

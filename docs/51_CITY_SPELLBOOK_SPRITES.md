@@ -1,7 +1,7 @@
 # 51 — Cities, spellbook, and complete collectible sprites
 
-Status: city mechanics, presentation, editor compatibility, and built-in-map migration implemented
-2026-08-11; spellbook and collectible bitmap production remain implementation work. This
+Status: city mechanics, presentation, editor compatibility, built-in-map migration, and shared
+combat/adventure spellbook implemented 2026-08-11; collectible bitmap production remains. This
 document extends S02, S03, S05, S07, S08, and S09 and
 supersedes the 3×2 castle ground-contact clauses in docs 31, 32, 37, and 50. It also supersedes the
 spell-upgrade presentation wording in docs 34, 44, and 46 and the player-facing settlement word

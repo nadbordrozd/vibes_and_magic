@@ -83,10 +83,10 @@ export function pendingChoiceFixtures(): PendingChoiceFixture[] {
     withChoice('shrine-two-choices', 3707, (state, hero) => ({
       kind: 'shrine', objectId: objectOfKind(state, 'shrine').id,
       playerId: 'p1', heroId: hero.id, options: ['rally', 'blessing'], choicesRemaining: 2,
-    }), ['additional shrine choice follows', 'Rally+', 'Blessing+'], 3),
+    }), ['additional shrine choice follows', 'Rally · Upgraded', 'Blessing · Upgraded'], 3),
     withChoice('inscription', 3708, (_state, hero) => ({
       kind: 'inscribe', playerId: 'p1', heroId: hero.id, options: ['rally', 'blessing'],
-    }), ['Level-up reward · Inscribe', 'Permanently use the + face'], 2),
+    }), ['Level-up reward · Inscribe', 'Permanently learn the Upgraded rules'], 2),
     withChoice('diplomacy-affordable', 3709, (state, hero) => {
       const guardian = objectOfKind(state, 'guardian');
       guardian.army = [{ unitId: 'yeoman', count: 12 }];
@@ -117,7 +117,7 @@ export function pendingChoiceFixtures(): PendingChoiceFixture[] {
         kind: 'spellthief', playerId: 'p1', heroId: hero.id,
         options: ['forgeSpark', 'ward'], upgradeOptions: ['blessing'],
       };
-    }, ['Defeated rival · Spellthief', 'also learns and upgrades Blessing+'], 2),
+    }, ['Defeated rival · Spellthief', 'also learns Blessing as Upgraded'], 2),
     withChoice('palimpsest', 3712, (_state, hero) => ({
       kind: 'palimpsest', playerId: 'p1', heroId: hero.id, options: ['forgeSpark', 'ward'],
     }), ['Forgotten spell · Palimpsest', 'every other offer is lost'], 2),

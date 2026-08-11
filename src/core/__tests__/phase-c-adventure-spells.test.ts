@@ -100,7 +100,7 @@ describe('phase C adventure spells', () => {
     expect(hero.knownSpells).toContain('wither');
   });
 
-  it('parleys with beast guardians and can recruit them on the plus face', () => {
+  it('parleys with beast guardians and can recruit them when Upgraded', () => {
     const [state, hero] = prepared('beastTongue');
     hero.upgradedSpells.push('beastTongue');
     const chest = state.map.objects.find((object) => object.kind === 'chest'

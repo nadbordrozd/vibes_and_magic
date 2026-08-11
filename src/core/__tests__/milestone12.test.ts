@@ -115,7 +115,7 @@ describe('Milestone 12 tricks', () => {
     });
   });
 
-  it('sources all authored barrow scroll pickups with their plus face', () => {
+  it('sources all authored barrow scroll pickups as Upgraded', () => {
     const map = createBorderMarches(12);
     const barrowItems = map.objects.filter((object) =>
       object.kind === 'item'

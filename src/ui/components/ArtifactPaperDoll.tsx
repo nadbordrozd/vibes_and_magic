@@ -101,8 +101,8 @@ export function ArtifactPaperDoll({
       </div>
       {kit.pieces >= 2 && (
         <p className="kit-bonus">
-          <ResourceRichText>{kit.pieces >= 4 ? 'All stats +2 · all spells + · all resonances · Unstitch'
-            : kit.pieces === 3 ? 'All stats +2 · all spells resolve as +'
+          <ResourceRichText>{kit.pieces >= 4 ? 'All stats +2 · all spells Upgraded · all resonances · Unstitch'
+            : kit.pieces === 3 ? 'All stats +2 · all spells use Upgraded rules'
               : 'All stats +2 · essence and seams revealed'}</ResourceRichText>
         </p>
       )}

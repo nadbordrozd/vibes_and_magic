@@ -83,7 +83,7 @@ export function EditorGuardianInspector({
         <option value="">No direct item drop</option>
         {Object.values(ITEMS).map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
       </select><small>Schema v1 preserves one runtime-supported item instance here. Portable reward bundles remain separate records.</small></label>
-      {guardian.drop && ITEMS[guardian.drop.id].behavior === 'scroll' && <label>Drop + face
+      {guardian.drop && ITEMS[guardian.drop.id].behavior === 'scroll' && <label>Drop Upgraded spell
         <input type="checkbox" checked={guardian.drop.plus ?? false}
           onChange={(event) => onUpdate({ drop: { ...guardian.drop!, plus: event.target.checked } })} />
         <small>The same canonical scroll instance state is used by direct rewards.</small>

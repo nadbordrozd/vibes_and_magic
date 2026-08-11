@@ -128,8 +128,8 @@
 - Item inventory entries are JSON item instances rather than bare IDs so a scroll can
   retain its stored face and Trade Goods can retain their pickup coordinate; legacy
   string slots remain transferable for Milestone-11 replay/test compatibility.
-- A base scroll uses its stored base face even under terrain resonance; a barrow
-  scroll uses its stored plus face. Bottled Echo repeats the recorded face and, for
+- A Standard scroll uses its stored Standard rules even under terrain resonance; a barrow
+  scroll uses its stored Upgraded rules. Bottled Echo repeats the recorded version and, for
   an X-cost spell, its recorded spend, while recomputing scaling from the user’s SP.
 - Trade Goods use floored Euclidean distance for “straight-line tile distance,” so
   prices remain whole multiples of 25 gold.
@@ -209,7 +209,7 @@
   entrance to the other; this keeps paths serializable without a hidden teleport edge format.
 - Standing Mirror is an attackable, immobile 30-HP pseudo-stack and does not consume an
   enchantment slot. Its base reflection preserves target allegiance by choosing the first stable
-  legal counterpart. The + face uses the same deterministic choice in AI and headless play; a
+  legal counterpart. The Upgraded rules use the same deterministic choice in AI and headless play; a
   separate interrupt-time target dialog was not added to the already-resolving enemy cast.
 - Peddler sale values use 500/1000/2000 gold for common/uncommon/rare consumables because the
   catalog specifies a 60% sale rate but no base prices. A stocked generic scroll costs 1000 gold.
@@ -743,7 +743,7 @@
   hashes, dimensions, alpha, unique paths, and unique image content are all executable gates.
 - One shared semantic image component supplies the asset across spellbooks, choices, targeting,
   enchantments, guild/Palimpsest services, Hero Details, and inspection. Names and full school,
-  mana, face, rank, rules, keyboard, focus, and disabled-reason text remain independently available.
+  mana, active version, rank, rules, keyboard, focus, and disabled-reason text remain independently available.
   The linked Heroes II material informed icon-led scanning only; no supplied art was copied.
 
 ## 2026-08-10 — Advanced combat uses six real slots and derived setup authority (doc 49)
@@ -822,3 +822,21 @@
   high-oblique non-isometric camera, south-east/screen-lower-right key light, and north-west shadow.
   Physical subject descriptions live in `assets/adventureSpriteInventory.ts`; opaque names, terrain
   plates, scenery, text, frames, baked rarity, owner colors, and baked flags are rejected.
+
+## 2026-08-11 — Combat and adventure share one selection-first stitched spellbook (doc 51)
+
+- Both casting contexts adapt their rules into one catalog-ordered presentation component. The
+  shared layer owns the open-book composition, canonical school tabs, large icon grid, selected
+  detail, upgrade marker, Debts, and responsive navigation; it never owns or duplicates casting
+  legality.
+- A spell grid cell is a selection button only. The explicit detail-page Cast control is the sole
+  route from the book into existing combat or map targeting, so inspection cannot spend mana or
+  movement. Combat includes map-only spells and adventure includes combat-only spells as learned,
+  disabled entries with an exact cross-context reason.
+- Permanent upgrades use a gold upward stitch plus **Upgraded**. Temporary specialty, skill, Kit,
+  or resonance activation uses **Upgraded here** and its reason. Internal `base` and `plus` values
+  remain engine and save compatibility fields; all semantic copy at and beyond the catalog boundary
+  uses Standard and Upgraded.
+- Wide layouts keep the selected detail on the facing page. At narrow widths the same DOM reading
+  order becomes a bounded list/detail sheet with 64px icons and persistent Back, Cast, and Close
+  actions instead of compressing the desktop book.

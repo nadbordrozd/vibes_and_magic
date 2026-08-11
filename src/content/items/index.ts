@@ -191,7 +191,7 @@ export function itemName(item: ItemInstance | string | null): string {
   if (typeof item === 'string') return item;
   const stored = item.id === 'spellScroll' && item.storedSpellId
     ? ` of ${SPELLS[item.storedSpellId as SpellId]?.name ?? item.storedSpellId}` : '';
-  return `${ITEMS[item.id].name}${stored}${item.plus ? '+' : ''}`;
+  return `${ITEMS[item.id].name}${stored}${item.plus ? ' · Upgraded' : ''}`;
 }
 
 export function validateItems(): void {

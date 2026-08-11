@@ -78,7 +78,7 @@ describe('named hero specialties', () => {
     expect([aldithDamage, damageBy(ordinary, defender)]).toEqual([35, 17]);
   });
 
-  it('Corwin resolves Rally as the plus face', () => {
+  it('Corwin resolves Rally as Upgraded', () => {
     const game = createGame({ seed: 2, p1: 'human', p2: 'human' });
     const corwin = useHero(game, 'p1', 'corwin');
     const defender = useHero(game, 'p2', 'petra');
@@ -157,7 +157,7 @@ describe('named hero specialties', () => {
     ]).toEqual([29, 30]);
   });
 
-  it('Silas resolves Wither as the plus face', () => {
+  it('Silas resolves Wither as Upgraded', () => {
     const game = createGame({ seed: 6, p1: 'human', p2: 'human' });
     const attacker = useHero(game, 'p1', 'aldith');
     const silas = useHero(game, 'p2', 'silas');

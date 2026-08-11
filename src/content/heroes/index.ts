@@ -43,7 +43,7 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
   }),
   corwin: hero('corwin', 'Corwin', 'hearthguard', 'banneret', {
     id: 'brightRally',
-    description: 'Rally always resolves as its + face.',
+    description: 'Rally always uses its Upgraded rules.',
     values: {},
   }, ['rally']),
   berta: hero('berta', 'Berta', 'hearthguard', 'banneret', {
@@ -63,7 +63,7 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
   }),
   silas: hero('silas', 'Silas', 'woundWrights', 'guildmaster', {
     id: 'brightWither',
-    description: 'Wither always resolves as its + face.',
+    description: 'Wither always uses its Upgraded rules.',
     values: {},
   }, ['wither']),
   grigor: hero('grigor', 'Grigor', 'woundWrights', 'guildmaster', {
@@ -80,7 +80,7 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
     id: 'deepLastLight', description: "Candle-Wisps' Last Light applies Hex 3 instead of 2.", values: { hex: 3 },
   }),
   elgiva: hero('elgiva', 'Elgiva', 'unfinished', 'chandler', {
-    id: 'brightRemembrance', description: 'Remembrance always resolves as its + face.', values: {},
+    id: 'brightRemembrance', description: 'Remembrance always uses its Upgraded rules.', values: {},
   }, ['remembrance']),
   tobiah: hero('tobiah', 'Tobiah', 'unfinished', 'chandler', {
     id: 'watchfulRetaliation', description: 'Sentries retaliate with 25% more damage.', values: { multiplier: 1.25 },
@@ -98,13 +98,13 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
     id: 'swiftPaperWasps', description: 'Paper-Wasp Lancers gain +1 speed.', values: { speed: 1 },
   }),
   humm: hero('humm', 'Humm', 'vespiary', 'broodspeaker', {
-    id: 'brightBloom', description: 'Bloom always resolves as its + face.', values: {},
+    id: 'brightBloom', description: 'Bloom always uses its Upgraded rules.', values: {},
   }, ['bloom']),
   babaZima: hero('babaZima', 'Baba Zima', 'hagwood', 'crone', {
     id: 'gentleDebts', description: 'Debts trigger one step later or with a lighter payment.', values: { delay: 1 },
   }),
   yagaOlen: hero('yagaOlen', 'Yaga Olen', 'hagwood', 'crone', {
-    id: 'brightSour', description: 'Sour always resolves as its + face.', values: {},
+    id: 'brightSour', description: 'Sour always uses its Upgraded rules.', values: {},
   }, ['sour']),
   oldMarta: hero('oldMarta', 'Old Marta', 'hagwood', 'crone', {
     id: 'vengefulCrows', description: 'Crow Chorus also applies Hex when retaliating.', values: {},
@@ -119,7 +119,7 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
     id: 'hungryPack', description: "Ashmane Wolves' Pack Hunger deals 25% more damage.", values: { multiplier: 1.25 },
   }),
   anai: hero('anai', 'Anai', 'wildergrass', 'ashrider', {
-    id: 'brightGale', description: 'Gale always resolves as its + face.', values: {},
+    id: 'brightGale', description: 'Gale always uses its Upgraded rules.', values: {},
   }, ['gale']),
   bataar: hero('bataar', 'Bataar', 'wildergrass', 'ashrider', {
     id: 'unhinderedSkirmish', description: 'Outrider skirmish movement ignores speed and adjacency slows.', values: {},
@@ -128,10 +128,10 @@ export const HEROES: Record<HeroDefinitionId, HeroDefinition> = {
     id: 'kennelMuster', description: 'Garrisons Edwin installs gain +5 morale each round.', values: { meter: 5 },
   }),
   maud: hero('maud', 'Maud', 'hearthguard', 'banneret', {
-    id: 'brightTrial', description: 'Trial always resolves as its + face.', values: {},
+    id: 'brightTrial', description: 'Trial always uses its Upgraded rules.', values: {},
   }, ['trial']),
   ansel: hero('ansel', 'Ansel', 'woundWrights', 'guildmaster', {
-    id: 'brightEscort', description: 'Clockwork Escort always resolves as its + face.', values: {},
+    id: 'brightEscort', description: 'Clockwork Escort always uses its Upgraded rules.', values: {},
   }, ['clockworkEscort']),
   rivka: hero('rivka', 'Rivka', 'woundWrights', 'guildmaster', {
     id: 'swiftMarionettes', description: 'Marionettes gain +1 speed.', values: { speed: 1 },

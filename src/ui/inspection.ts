@@ -255,7 +255,7 @@ export function inspectTarget(state: GameState, target: InspectionTarget): Inspe
   }
   if (target.kind === 'spell' || target.kind === 'enchantment') {
     const spell = SPELLS[target.id as SpellId]; if (!spell) return null;
-    return { name: spell.name, flavor: spell.flavor, mechanics: [`${spell.mana} mana · ${spellCategory(spell.id)}`, `Base: ${spell.base}`, `Plus: ${spell.plus}`] };
+    return { name: spell.name, flavor: spell.flavor, mechanics: [`${spell.mana} mana · ${spellCategory(spell.id)}`, `Standard: ${spell.base}`, `Upgraded: ${spell.plus}`] };
   }
   if (target.kind === 'artifact') {
     const artifact = ARTIFACTS[target.id as ArtifactId]; if (!artifact) return null;

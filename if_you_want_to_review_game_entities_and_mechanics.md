@@ -24,7 +24,7 @@ Read [docs/spec/S00_OVERVIEW.md](docs/spec/S00_OVERVIEW.md) first. It defines th
 - [docs/spec/S04_COMBAT.md](docs/spec/S04_COMBAT.md): combat sequence, damage, morale, retaliation,
   stack footprints, strategic army strength, sieges, and battle results.
 - [docs/spec/S05_MAGIC.md](docs/spec/S05_MAGIC.md): spell schools, casting, counters, enchantments,
-  spell faces, resonance, acquisition, Bargains, and Debts.
+  spell versions, resonance, acquisition, Bargains, and Debts.
 - [docs/spec/S06_HEROES.md](docs/spec/S06_HEROES.md): hero progression, secondary skills, armies,
   consumables, scrolls, and artifact equipment.
 - [docs/spec/S07_ECONOMY.md](docs/spec/S07_ECONOMY.md): resources, recruitment, creature growth,

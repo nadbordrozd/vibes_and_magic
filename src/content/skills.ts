@@ -93,7 +93,7 @@ export const SKILLS: Record<SecondarySkillId, SkillDefinition> = {
   ], { rank1Draw: 2, rank2Draw: 3 }, { guildmaster: 6 }),
   twicetold: skill('twicetold', 'Twicetold', [
     'First twister each battle costs no mana.',
-    'Twisters resolve as their + faces.',
+    'Twisters use their Upgraded rules.',
     'Once per battle, a twister does not consume the hero-act.',
   ], {}, { guildmaster: 6 }),
   curseEater: skill('curseEater', 'Curse-Eater', [

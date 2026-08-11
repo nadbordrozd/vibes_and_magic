@@ -69,6 +69,10 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
   letter-spacing: .09em; font-size: 9px;
 }
 .help-toggle b { display: grid; place-items: center; width: 19px; height: 19px; border: 1px solid #d6c27d; border-radius: 50%; font: 700 13px Georgia, serif; }
+body:has(.stitched-spellbook) :is(.help-toggle, .inspect-toggle) {
+  visibility: hidden;
+  pointer-events: none;
+}
 .help-backdrop { position: fixed; z-index: 90; inset: 0; display: grid; place-items: center; padding: 24px; background: #050806e8; }
 .help-dialog { width: min(760px, 94vw); max-height: 90vh; overflow: auto; padding: 24px; color: #e7e1cf; background: #121812; border: 1px solid #aa9862; box-shadow: 0 24px 90px #000; }
 .help-dialog > header { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid #394338; padding-bottom: 14px; }

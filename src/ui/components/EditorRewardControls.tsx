@@ -82,7 +82,7 @@ export function EditorRewardInspector({
               updateBundle({ ...reward.bundle, items });
             }}>{EDITOR_ITEM_CATALOG.map((entry) => <option key={entry.item.id}
               value={entry.item.id}>{entry.groupLabel} · {entry.item.name}</option>)}</select>
-          {definition.behavior === 'scroll' && <label>+ face<input type="checkbox"
+          {definition.behavior === 'scroll' && <label>Upgraded spell<input type="checkbox"
             checked={item.plus ?? false} onChange={(event) => {
               const items = reward.bundle.items.map((candidate, candidateIndex) =>
                 candidateIndex === index ? { ...candidate, plus: event.target.checked } : candidate);

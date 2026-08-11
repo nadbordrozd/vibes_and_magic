@@ -7,8 +7,8 @@ export interface ContentIconSurface {
 
 /** Executable inventory of player-facing surfaces that present a spell or secondary skill. */
 export const CONTENT_ICON_SURFACES: readonly ContentIconSurface[] = [
-  { id: 'combat-spellbook', source: 'src/ui/components/SpellbookPanel.tsx', content: 'spell', evidence: 'combat spell cards and targeting' },
-  { id: 'adventure-spellbook', source: 'src/ui/components/AdventureSpellbook.tsx', content: 'spell', evidence: 'adventure spell cards' },
+  { id: 'combat-spellbook', source: 'src/ui/components/Spellbook.tsx', content: 'spell', evidence: 'shared combat spell grid and details' },
+  { id: 'adventure-spellbook', source: 'src/ui/components/Spellbook.tsx', content: 'spell', evidence: 'shared adventure spell grid and details' },
   { id: 'adventure-targeting', source: 'src/ui/components/AdventureSpellTargetDialog.tsx', content: 'spell', evidence: 'target dialog and remembered-spell choices' },
   { id: 'map-targeting', source: 'src/ui/components/AdventureScreen.tsx', content: 'spell', evidence: 'map targeting status card' },
   { id: 'combat-targeting', source: 'src/ui/components/CombatScreen.tsx', content: 'spell', evidence: 'targeting banner and enchantment slots' },

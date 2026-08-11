@@ -130,7 +130,7 @@ describe('spell engine', () => {
     })).toThrow('cannot be cast');
   });
 
-  it('resonance temporarily resolves a base spell as its plus face', () => {
+  it('resonance temporarily resolves a Standard spell with its Upgraded rules', () => {
     const state = magicBattle();
     state.resonance = 'craft';
     castSpell(state, {
@@ -139,13 +139,13 @@ describe('spell engine', () => {
     expect(state.stacks.find((stack) => stack.id === 'defender-0')!.counters.burn).toBe(4);
   });
 
-  it.each(COMBAT_SPELL_IDS)('%s base face resolves', (id) => {
+  it.each(COMBAT_SPELL_IDS)('%s Standard rules resolve', (id) => {
     const [state, action] = preparedCast(id, false);
     expect(() => castSpell(state, action)).not.toThrow();
     expect(state.log.at(-1)).toContain(SPELLS[id].name);
   });
 
-  it.each(COMBAT_SPELL_IDS)('%s plus face resolves', (id) => {
+  it.each(COMBAT_SPELL_IDS)('%s Upgraded rules resolve', (id) => {
     const [state, action] = preparedCast(id, true);
     expect(() => castSpell(state, action)).not.toThrow();
     expect(state.log.at(-1)).toContain(`${SPELLS[id].name}+`);
@@ -203,7 +203,7 @@ describe('spell engine', () => {
       .every((stack) => stack.counters.hex === 3)).toBe(true);
   });
 
-  it('Forgefire doubles Burn damage and its plus face stops decay', () => {
+  it('Forgefire doubles Burn damage and its Upgraded rules stop decay', () => {
     const state = magicBattle();
     const target = state.stacks.find((stack) => stack.side === 'defender')!;
     target.count = 1;

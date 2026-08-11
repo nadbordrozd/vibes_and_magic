@@ -154,7 +154,7 @@ export const ARTIFACTS: Record<ArtifactId, ArtifactDefinition> = {
   leadenCrown: { ...artifact('leadenCrown', 'Leaden Crown', 'head', 'burden', '+3 spell power; −25% movement.', ['primary_stat', 'daily_move'], { spellPower: 3, percent: -25 }), burdenRemoval: 'Visit any shrine and pay 5 essence.' },
   hungryBlade: { ...artifact('hungryBlade', 'The Hungry Blade', 'weapon', 'burden', '+4 attack; after each battle it eats 5% of your largest stack.', ['primary_stat', 'post_battle_stack_loss'], { attack: 4, percent: 5 }), burdenRemoval: 'Defeat any puzzle-lock while wielding it.' },
   beggarsRing: { ...artifact('beggarsRing', "Beggar's Ring", 'ring', 'burden', 'Luck +2; all prices against you ×1.5.', ['luck', 'price_penalty'], { amount: 2, percent: 50 }), burdenRemoval: 'Throw 5000 gold into a Wishing Well.' },
-  patternlessCoat: { ...artifact('patternlessCoat', 'The Patternless Coat', 'armor', 'burden', '+3 defense; your spells never resolve as + faces.', ['primary_stat', 'spell_plus_block'], { defense: 3 }), burdenRemoval: 'Trade it at the Reliquary Cairn.' },
+  patternlessCoat: { ...artifact('patternlessCoat', 'The Patternless Coat', 'armor', 'burden', '+3 defense; your spells always use their Standard rules.', ['primary_stat', 'spell_plus_block'], { defense: 3 }), burdenRemoval: 'Trade it at the Reliquary Cairn.' },
 };
 
 export const EQUIPMENT_SLOTS: readonly EquipmentSlotId[] = [

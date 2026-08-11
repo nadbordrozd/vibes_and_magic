@@ -138,7 +138,7 @@ export function AdventureSpellTargetDialog({
       aria-labelledby="adventure-spell-target-heading" onClick={(event) => event.stopPropagation()}>
       <span className="dialog-kicker">Adventure spell · stage 2 of 2</span>
       <h2 id="adventure-spell-target-heading" className="content-icon-label">
-        <ContentIcon kind="spell" id={action.spellId} />{spell.name}{plus ? '+' : ''}</h2>
+        <ContentIcon kind="spell" id={action.spellId} />{spell.name} · {plus ? 'Upgraded' : 'Standard'}</h2>
       <p className="spell-target-cost"><b>{spell.mana} mana</b> · <b>{adventureSpellMoveCost(hero)} movement</b></p>
       <p>{plus ? spell.plus : spell.base}</p>
 

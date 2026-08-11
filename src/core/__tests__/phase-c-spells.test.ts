@@ -57,7 +57,7 @@ describe('Phase C complete spell catalog', () => {
     expect(canCastSpell(state, 'greenway')).toBe(false);
   });
 
-  it('resolves Bloom, Rains, Storm, and Thicket faces', () => {
+  it('resolves Bloom, Rains, Storm, and Thicket versions', () => {
     const state = battle(
       [{ unitId: 'yeoman', count: 20 }, { unitId: 'longbowman', count: 5 }],
       [{ unitId: 'oriflammeWyvern', count: 2 }],

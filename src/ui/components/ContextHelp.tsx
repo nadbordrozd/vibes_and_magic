@@ -82,7 +82,7 @@ const GLOSSARY = [
   ['Company', 'One army stack: a number of identical creatures acting together.'],
   ['Morale', 'The gold gauge around a company. At its threshold—normally 100—that company acts again after its current action.'],
   ['Growth', 'Creatures added to a built dwelling at the start of each week.'],
-  ['Base / Upgrade', 'Every spell has a normal face and a stronger + face unlocked by upgrades or resonance.'],
+  ['Standard / Upgraded', 'Every spell has Standard and Upgraded rules. Permanent learning says Upgraded; resonance says Upgraded here and names the reason.'],
   ['Resonance', 'A school condition that makes matching spells resolve with its + effect.'],
   ['Counter', 'Burn, Chill, Hex, or Bloom placed on a company; inspect each counter for its rule.'],
   ['Enchantment', 'A longer spell effect occupying one of two slots for a side.'],

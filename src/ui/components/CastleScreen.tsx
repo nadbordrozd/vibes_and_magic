@@ -273,8 +273,8 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                       }).reason ?? `Upgrade ${SPELLS[spellId].name}.`}
                       onClick={() => stageAction({
                         type: 'GUILD_INSCRIBE', castleId: castle.id, spellId,
-                      }, `Inscribe ${SPELLS[spellId].name}+`, hero?.name ?? 'Visiting hero',
-                      `Permanently replace the known base face with: ${SPELLS[spellId].plus}`)}
+                      }, `Inscribe ${SPELLS[spellId].name} · Upgraded`, hero?.name ?? 'Visiting hero',
+                      `Permanently learn the Upgraded rules: ${SPELLS[spellId].plus}`)}
                     >Inscribe · <ResourceAmount resource="essence" amount={4} compact /></button>
                   </article>
                 );

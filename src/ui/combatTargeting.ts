@@ -281,23 +281,23 @@ export function combatTargetName(battle: BattleState, source: CombatTargetSource
 
 export function combatTargetFace(
   battle: BattleState, source: CombatTargetSource,
-): 'Base' | 'Plus' | 'Item' | 'Ability' {
+): 'Standard' | 'Upgraded' | 'Item' | 'Ability' {
   const hero = activeHero(battle);
   if (source.kind === 'ability') return 'Ability';
   if (source.kind === 'item') {
     const item = itemAt(battle, source.inventorySlot!);
     if (!item) return 'Item';
     const definition = ITEMS[item.id];
-    if (definition.behavior === 'scroll') return item.plus ? 'Plus' : 'Base';
-    if (definition.behavior === 'echo') return battle.lastSpellCast?.plus ? 'Plus' : 'Base';
+    if (definition.behavior === 'scroll') return item.plus ? 'Upgraded' : 'Standard';
+    if (definition.behavior === 'echo') return battle.lastSpellCast?.plus ? 'Upgraded' : 'Standard';
     return 'Item';
   }
-  if (!hero) return 'Base';
+  if (!hero) return 'Standard';
   const spellId = source.spellId!;
   const definition = SPELLS[spellId];
   const plus = isUpgraded(battle, hero, spellId)
     || (definition.kind === 'twister' && skillRank(hero, 'twicetold') >= 2);
-  return plus ? 'Plus' : 'Base';
+  return plus ? 'Upgraded' : 'Standard';
 }
 
 export function combatTargetCost(battle: BattleState, source: CombatTargetSource): string {
@@ -332,7 +332,7 @@ export function combatTargetConsequence(
     text = item ? ITEMS[item.id].description : 'Unavailable item.';
   } else {
     const definition = SPELLS[spellId ?? draft.source.spellId!];
-    text = face === 'Plus' ? definition.plus : definition.base;
+    text = face === 'Upgraded' ? definition.plus : definition.base;
   }
   const details: string[] = [];
   const stackLabel = (id?: string) => {

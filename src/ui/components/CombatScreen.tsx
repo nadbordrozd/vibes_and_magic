@@ -187,6 +187,9 @@ export function CombatScreen({
     ? stackHexes(active, movePreview).map((coord) => `${coord.x},${coord.y}`) : []);
   const activeHero = active?.side === 'defender'
     ? battle.defenderHero : active ? battle.attackerHero : null;
+  const activeCampaignHero = activeHero ? Object.values(state.players)
+    .flatMap((player) => player.heroes)
+    .find((hero) => hero.id === activeHero.id) : null;
   const activeInventory = active?.side === 'defender'
     ? battle.defenderHero?.inventory ?? [] : battle.attackerHero.inventory;
   const resonances = activeHero ? effectiveResonances(battle, activeHero) : [];
@@ -398,7 +401,7 @@ export function CombatScreen({
                 <h3 className="content-icon-label">
                   {targeting.source.kind === 'spell' && <ContentIcon kind="spell"
                     id={targeting.source.spellId!} />}
-                  {combatTargetName(battle, targeting.source)} <em>{combatTargetFace(battle, targeting.source)} face</em></h3>
+                  {combatTargetName(battle, targeting.source)} <em>{combatTargetFace(battle, targeting.source)}</em></h3>
                 <p className="targeting-stage"><b>{targetingStage === 'confirm' ? 'Confirm' : `Stage: ${targetingStage.replace(/([A-Z])/g, ' $1')}`}</b>{combatTargetStagePrompt(battle, targeting)}</p>
                 <p className="targeting-cost">Cost · {combatTargetCost(battle, targeting.source)}</p>
                 <p className="targeting-consequence">Prediction · {combatTargetConsequence(battle, targeting)}</p>
@@ -455,7 +458,7 @@ export function CombatScreen({
           )}
           {resonances.length > 0 && (
             <div className="resonance-banner">
-              {resonances.join(' + ')} resonance · matching spells use their + face
+              {resonances.join(' + ')} resonance · matching spells are Upgraded here
             </div>
           )}
           <div className="enchantment-row">
@@ -911,6 +914,7 @@ export function CombatScreen({
       {spellbookOpen && active && (
         <SpellbookPanel
           battle={battle} side={active.side}
+          maxMana={activeCampaignHero ? activeCampaignHero.knowledge * 10 : undefined}
           onClose={() => setSpellbookOpen(false)}
           onSelect={chooseSpell}
         />

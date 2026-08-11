@@ -408,7 +408,8 @@ export function AdventureScreen({
           className="map-context-card" role="status" aria-live="polite">
           {castingSpell && <div className="map-cast-prompt">
             <b className="content-icon-label"><ContentIcon kind="spell"
-              id={castingSpell.spellId} />{SPELLS[castingSpell.spellId].name} · choose targets</b>
+              id={castingSpell.spellId} />{SPELLS[castingSpell.spellId].name} · {
+                hero.upgradedSpells.includes(castingSpell.spellId) ? 'Upgraded' : 'Standard'} · choose targets</b>
             <span>{SPELLS[castingSpell.spellId][hero.upgradedSpells.includes(castingSpell.spellId)
               ? 'plus' : 'base']}</span>
             <span>{SPELLS[castingSpell.spellId].mana} mana · {adventureSpellMoveCost(hero)} movement

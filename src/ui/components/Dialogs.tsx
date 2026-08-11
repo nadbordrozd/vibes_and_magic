@@ -214,8 +214,8 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
                 onClick={() => dispatch({ type: 'CHOOSE_STOLEN_SPELL', spellId })}
               >
                 <ContentIcon large kind="spell" id={spellId} /><b>{SPELLS[spellId].name}</b>
-                <small>Learn permanently: {SPELLS[spellId].base}{copiedUpgrade
-                  ? ` Spellthief rank 2 also learns and upgrades ${SPELLS[copiedUpgrade].name}+ automatically.`
+                <small>Learn permanently · Standard: {SPELLS[spellId].base}{copiedUpgrade
+                  ? ` Spellthief rank 2 also learns ${SPELLS[copiedUpgrade].name} as Upgraded automatically.`
                   : ''}</small>
               </button>
             ))}
@@ -240,7 +240,7 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
                 onClick={() => dispatch({ type: 'CHOOSE_PALIMPSEST', spellId })}
               >
                 <ContentIcon large kind="spell" id={spellId} /><b>{SPELLS[spellId].name}</b>
-                <small>Learn permanently: {SPELLS[spellId].base}</small>
+                <small>Learn permanently · Standard: {SPELLS[spellId].base}</small>
               </button>
             ))}
           </div>
@@ -388,7 +388,7 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
             label={pending.kind === 'shrine' && shrine ? mapObjectName(shrine)
               : 'Level-up reward · Inscribe'} />
           <h2>{hero?.name ?? 'This hero'} upgrades one known spell</h2>
-          <p>Choose one permanent + face. The base spell remains known.</p>
+          <p>Choose one spell whose Upgraded rules will be learned permanently. Its Standard rules remain visible for comparison.</p>
           <div className="choice-cards three">
             {pending.options.map((spellId) => (
               <button
@@ -396,8 +396,8 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
                 data-inspect-kind="spell" data-inspect-id={spellId}
                 onClick={() => dispatch({ type: 'CHOOSE_SPELL_UPGRADE', spellId })}
               >
-                <ContentIcon large kind="spell" id={spellId} /><b>{SPELLS[spellId].name}+</b>
-                <small>Permanently use the + face: {SPELLS[spellId].plus}</small>
+                <ContentIcon large kind="spell" id={spellId} /><b>{SPELLS[spellId].name} · Upgraded</b>
+                <small>Permanently learn the Upgraded rules: {SPELLS[spellId].plus}</small>
               </button>
             ))}
           </div>

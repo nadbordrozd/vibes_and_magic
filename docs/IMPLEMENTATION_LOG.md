@@ -469,7 +469,7 @@ Beads epic `vibes_and_magic-6sf`.
   browser review proves full-hex right-click selection, ranged projectile → damage timing, and two
   distinct top/bottom melee origins; the full browser smoke still reaches and resolves combat.
 - Both spellbooks now show flavor plus Base and Upgrade mechanics for every spell rather than only
-  the currently active face.
+  the currently active version.
 
 ## 2026-08-05 — Composable rocky mountain ranges
 
@@ -625,3 +625,26 @@ Beads epic `vibes_and_magic-6sf`.
   placeholders that resolve from explicit campaign seed and stable guardian/stack identity.
 - Made the canvas column vertically scrollable while retaining a bounded map viewport, keeping long
   selected guardian inspectors and count fields reachable at desktop and narrow sizes.
+
+## 2026-08-11 — Shared stitched-storybook spellbook
+
+- Replaced the separate combat and adventure card lists with one responsive selection-first
+  `Spellbook` presentation. It renders a stitched parchment two-page book at wide widths and a
+  bounded 390px list/detail sheet, with a hero/mana/power/context header, visible Close, canonical
+  Rite/Craft/Grave/Wild button-tabs, 64px native icon cells, and separate Debts.
+- Both adapters now expose all learned spells in catalog order. Each grid cell keeps full name,
+  adjusted or X mana, permanent/temporary upgrade text, and an exact disabled reason visible before
+  selection. Details include kind/school, mana and movement costs, flavor, target summary, scaled
+  current values, direct Standard/Upgraded rules, upgrade reason, legal consequences, and the only
+  Cast control; selecting a cell cannot spend resources or enter targeting.
+- Audited all 68 catalog entries and rewrote every Upgraded description as a concrete mechanical
+  rule/delta. Player-facing catalog, inspection, targeting, help, city, choice, editor, specialty,
+  skill, artifact, and review copy now consistently says Standard, Upgraded, or Upgraded here while
+  preserving internal `base`/`plus` serialization fields.
+- Added `spellbook-contract.test.tsx`, covering 68 icons/copy records, four 17-spell school groups and
+  ordering, name/mana grid, selection/Cast separation, all-68 adapter entries, learned/temporary/
+  standard states and reasons, disabled reasons, ARIA keyboard tabs, and wide/narrow static layout.
+  The focused build/static/targeting/icon matrix passed 26/26 tests. A dedicated eight-capture
+  desktop/390 browser journey under `review:spellbook` now checks list/detail bounds, action
+  visibility, selection without resource spending, and isolation from the global Help/Inspect
+  toggles. Its adventure and combat evidence passed at both widths.

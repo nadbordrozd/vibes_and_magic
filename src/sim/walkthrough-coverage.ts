@@ -26,7 +26,7 @@ export const SCREEN_MATRIX_COVERAGE = [
   { id: 'combat', title: 'Combat', requirement: 'Actor, reach, attacks, prediction, spell/item targeting, effects, Wait, Defend, withdrawal, log, and result.', evidence: pair('matrix-05-combat') },
   { id: 'offers-choices', title: 'Offers/choices', requirement: 'Source, exclusivity, cost/consequence, inspection, disabled reason, and cancellation rule.', evidence: pair('matrix-06-offers-choices') },
   { id: 'exchange-equipment', title: 'Exchange/equipment', requirement: 'Source/destination, valid slot, exact transfer result, artifact class/slot/effect, and restrictions.', evidence: pair('matrix-07-exchange-equipment') },
-  { id: 'spellbooks', title: 'Spellbooks', requirement: 'Timing, costs, faces, targets, unavailability, and visible scheduled magic.', evidence: pair('matrix-08-spellbooks') },
+  { id: 'spellbooks', title: 'Spellbooks', requirement: 'Timing, costs, Standard and Upgraded rules, targets, unavailability, and visible scheduled magic.', evidence: pair('matrix-08-spellbooks') },
   { id: 'results-victory', title: 'Results/victory', requirement: 'Winner/outcome, losses/rewards, persistent consequences, and next action.', evidence: pair('matrix-09-results-victory') },
   { id: 'global-reference', title: 'Global reference', requirement: 'Contextual controls, legend, glossary, objective, and help in every phase.', evidence: pair('matrix-10-global-reference') },
 ] as const satisfies readonly WalkthroughCoverageEntry[];
