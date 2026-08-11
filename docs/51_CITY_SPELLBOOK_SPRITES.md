@@ -238,6 +238,19 @@ Mines retain their canonical 2×1 contact and bottom-left entrance. Their left c
 hero; machinery, basin, rock, shelter, or stock physically occupies the right cell. City widening
 does not change mine mechanics.
 
+The four installed resource operations use native 64×96 RGBA canvases under
+`public/assets/mines/`, anchored at `(0,64)` so their bottom 64×32 strip is exactly the 2×1 contact.
+Each manifest entry explicitly repeats contact 2×1 and entrance `(0,0)`; ownership remains the
+separate runtime pennant and resource, income, owner, cleared, chartered, and suppression state
+remain data. Each selected source came from one separate built-in image-generation call and is
+retained under `assets/sources/mines/`. Exact prompts, output identities, source/final hashes,
+hard-alpha statistics, the deterministic timber framing crop, and visual decisions live in
+`assets/jobs/mine-sprites-built-in.json` and
+`assets/provenance/mine-sprite-generation.json`; `scripts/buildMineSprites.py` reproduces all four
+finals and `.pixel-work/review/mines/mine-sprites-contact-sheet.png`. Earlier B2, camera-lock, and
+doc-33 mine requests are historical superseded claims and do not provide current coverage. The
+four 32×32 resource-pickup bitmaps remain unchanged.
+
 ## 6. Completed collectible integration and acceptance
 
 The collectible family completed final integration and visual acceptance on 2026-08-11. Catalog,

@@ -44,6 +44,7 @@
       "assets": [
         "map-object:mine:gold"
       ],
+      "superseded_by": "mine-sprites-built-in.json",
       "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-mine-gold",
       "prompt": "a timber-framed gold mine mouth cut into grey rock, dark oak braces with warm ochre ore, an open tunnel on the lower left and a blocked ore shed on the right, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 2 tiles wide and about 2.5 tiles tall, HoMM2-era storybook pixel art",
       "endpoint": "generate-image-v2",
@@ -62,6 +63,7 @@
       "assets": [
         "map-object:mine:iron"
       ],
+      "superseded_by": "mine-sprites-built-in.json",
       "output": ".pixel-work/pixelgen/doc33-core-prop-replacements/map-object-mine-iron",
       "prompt": "a timber-framed iron mine mouth cut into charcoal rock, dark oak braces with blue-grey ore, an open tunnel on the lower left and a blocked ore shed on the right, oblique front-on view with a slight overhead tilt, light from the lower right with shadows falling to the upper left, flat horizontal ground contact, 2 tiles wide and about 2.5 tiles tall, HoMM2-era storybook pixel art",
       "endpoint": "generate-image-v2",

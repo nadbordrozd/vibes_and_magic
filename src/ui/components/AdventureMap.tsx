@@ -56,9 +56,9 @@ function objectTitle(object: MapObject): string {
   if (object.kind === 'pile') return 'Resource Pile';
   if (object.kind === 'chest') return 'Treasure Chest';
   if (object.kind === 'shrine') return `${SPELL_SCHOOL_NAMES[object.school]} Shrine`;
-  if (object.kind === 'mine') return object.resource === 'gold' ? 'Gold Mine'
-    : object.resource === 'timber' ? 'Timber Camp'
-      : object.resource === 'iron' ? 'Iron Mine' : 'Essence Spring';
+  if (object.kind === 'mine') return object.resource === 'gold' ? 'Gold Quarry'
+    : object.resource === 'timber' ? 'Timber Saw Yard'
+      : object.resource === 'iron' ? 'Iron Headframe Mine' : 'Essence Stitchwell';
   if (object.kind === 'item') return itemName(object.item);
   if (object.kind === 'rewardPickup') return 'Reward Pickup';
   if (object.kind === 'richVein') {

@@ -4,7 +4,7 @@ import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { assetWorklist } from '../../assets/worklist';
 import { contentIconWorklist } from '../../assets/iconWorklist';
 import {
-  ARTIFACT_SPRITE_SUBJECTS, ITEM_SPRITE_SUBJECTS,
+  ARTIFACT_SPRITE_SUBJECTS, ITEM_SPRITE_SUBJECTS, RESOURCE_MINE_SUBJECTS,
 } from '../../assets/adventureSpriteInventory';
 import { ARTIFACTS } from '../content/artifacts';
 import { ITEMS } from '../content/items';
@@ -32,6 +32,8 @@ interface PixelRequest {
   collectible_family?: string;
   catalog_key?: string;
   catalog_group?: string;
+  resource_id?: string;
+  literal_subject?: string;
   chroma_key?: string;
 }
 
@@ -243,6 +245,13 @@ for (const item of worklist.filter((candidate) => candidate.category === 'castle
     errors.push(`${item.id}: expected exactly one active production claim from city-sprites-built-in.json, found ${claims.join(', ') || 'none'}`);
   }
 }
+for (const resource of Object.keys(RESOURCE_MINE_SUBJECTS)) {
+  const id = `map-object:mine:${resource}`;
+  const claims = covered.get(id) ?? [];
+  if (claims.length !== 1 || !claims[0].startsWith('mine-sprites-built-in.json:')) {
+    errors.push(`${id}: expected exactly one active production claim from mine-sprites-built-in.json, found ${claims.join(', ') || 'none'}`);
+  }
+}
 
 try {
   const cityJob = JSON.parse(readFileSync(
@@ -302,6 +311,101 @@ try {
   }
 } catch (error) {
   errors.push(`city sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+try {
+  const mineJob = JSON.parse(readFileSync(
+    resolve(root, 'assets/jobs/mine-sprites-built-in.json'), 'utf8',
+  )) as PixelJob;
+  const provenance = JSON.parse(readFileSync(
+    resolve(root, 'assets/provenance/mine-sprite-generation.json'), 'utf8',
+  )) as { version: number; generator: string; job: string; selections: Array<{
+    id: string; request_id: string; resource_id: string; accepted: boolean;
+    built_in_output: string; discarded_outputs: unknown[]; source: string; final: string;
+    prompt_sha256: string; source_sha256: string; final_sha256: string;
+    source_dimensions: [number, number]; final_dimensions: [number, number];
+    alpha: { transparent: number; opaque: number; partial: number;
+      transparent_corners: number; chroma_fringe_pixels: number };
+  }> };
+  const resources = Object.keys(RESOURCE_MINE_SUBJECTS).sort();
+  const jobResources = mineJob.requests.map((request) => request.resource_id ?? '').sort();
+  const selectionResources = provenance.selections.map((selection) => selection.resource_id).sort();
+  if (mineJob.generator !== 'built-in-imagegen' || mineJob.requests.length !== 4
+      || provenance.version !== 1 || provenance.generator !== 'built-in-imagegen'
+      || provenance.job !== 'assets/jobs/mine-sprites-built-in.json'
+      || provenance.selections.length !== 4
+      || JSON.stringify(jobResources) !== JSON.stringify(resources)
+      || JSON.stringify(selectionResources) !== JSON.stringify(resources)) {
+    errors.push('mine sprite job/provenance must contain exactly four catalog resource selections');
+  }
+  const byRequest = new Map(provenance.selections.map((entry) => [entry.request_id, entry]));
+  const subjectTerms: Record<string, readonly string[]> = {
+    gold: ['quarried-limestone', 'adit', 'hand-cranked wooden winch', 'gold-bearing chips'],
+    iron: ['headframe', 'pulley wheel', 'iron rails', 'ore trolley', 'iron-bearing stone'],
+    timber: ['logging yard', 'saw shelter', 'sawbench', 'crosscut saw', 'round-ended cut logs'],
+    essence: ['stitchwell', 'stone-lined extraction basin', 'world seam', 'copper pump',
+      'winding drum', 'glass collection vessel'],
+  };
+  const sourcePaths = new Set<string>(); const finalPaths = new Set<string>();
+  const outputs = new Set<string>(); const sourceHashes = new Set<string>();
+  const finalHashes = new Set<string>();
+  for (const request of mineJob.requests) {
+    const resource = request.resource_id ?? '';
+    const selection = byRequest.get(request.id);
+    const label = `mine provenance:${request.id}`;
+    if (!selection?.accepted || selection.id !== request.assets[0]
+        || selection.resource_id !== resource || selection.source !== request.output
+        || selection.final !== request.final || selection.discarded_outputs.length) {
+      errors.push(`${label}: missing or drifted accepted one-shot selection`); continue;
+    }
+    if (!request.output.startsWith(`assets/sources/mines/${resource}-source.png`)
+        || request.final !== `public/assets/mines/${resource}.png`
+        || request.size[0] !== 64 || request.size[1] !== 96 || request.candidates !== 1) {
+      errors.push(`${label}: mine source/final/native geometry drift`);
+    }
+    if (request.literal_subject !== RESOURCE_MINE_SUBJECTS[
+      resource as keyof typeof RESOURCE_MINE_SUBJECTS
+    ]) errors.push(`${label}: canonical literal subject drift`);
+    for (const clause of [
+      'high-oblique non-isometric', 'screen lower-right/map south-east',
+      'screen upper-left/map north-west', 'generous empty padding',
+      'no pole or flag', 'terrain', 'text',
+      ...(subjectTerms[resource] ?? []),
+    ]) if (!request.prompt.includes(clause)) errors.push(`${label}: missing prompt clause "${clause}"`);
+    if (resource === 'essence' && ![
+      'generic crystals', 'gem cave', 'wizard tower', 'sci-fi machine',
+    ].every((clause) => request.prompt.includes(clause))) {
+      errors.push(`${label}: essence exclusions drift`);
+    }
+    if (selection.prompt_sha256 !== sha256(request.prompt)) {
+      errors.push(`${label}: prompt hash drift`);
+    }
+    for (const [kind, file, expected] of [
+      ['source', selection.source, selection.source_sha256],
+      ['final', selection.final, selection.final_sha256],
+    ] as const) {
+      const path = resolve(root, file);
+      if (!existsSync(path) || sha256(readFileSync(path)) !== expected) {
+        errors.push(`${label}: ${kind} content hash drift`);
+      }
+    }
+    if (selection.final_dimensions[0] !== 64 || selection.final_dimensions[1] !== 96
+        || selection.source_dimensions[0] <= 64 || selection.source_dimensions[1] <= 96
+        || selection.alpha.partial !== 0 || selection.alpha.transparent_corners !== 4
+        || selection.alpha.chroma_fringe_pixels !== 0
+        || selection.alpha.transparent + selection.alpha.opaque !== 64 * 96) {
+      errors.push(`${label}: dimensions or hard-alpha audit drift`);
+    }
+    sourcePaths.add(selection.source); finalPaths.add(selection.final);
+    outputs.add(selection.built_in_output); sourceHashes.add(selection.source_sha256);
+    finalHashes.add(selection.final_sha256);
+  }
+  if ([sourcePaths, finalPaths, outputs, sourceHashes, finalHashes]
+    .some((set) => set.size !== 4)) {
+    errors.push('mine sprites must retain four distinct source/final/output/hash selections');
+  }
+} catch (error) {
+  errors.push(`mine sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
 }
 
 try {

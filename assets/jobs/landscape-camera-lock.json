@@ -69,6 +69,7 @@
     {
       "id": "map-object:mine:timber-camera-lock",
       "assets": ["map-object:mine:timber"],
+      "superseded_by": "mine-sprites-built-in.json",
       "output": ".pixel-work/pixelgen/landscape-camera-lock/timber-camp",
       "prompt": "Native 64x80 transparent adventure-map timber camp sprite. SCALE: fills its exact 2-tile-wide footprint and rises about 2.5 tiles tall; broad working building, visibly smaller than a 3-tile-wide 4-tile-tall castle. CAMERA: classic 1990s oblique fantasy strategy-map projection, front façade faces south toward the camera with only a slight low top-down tilt around 30 degrees. The wall bottoms meet one clean HORIZONTAL ground-contact band across pixels x=4..63 near y=76. Isometric false; oblique projection true; never a corner-on view and never a diamond ground plane. Ordinary warm umber timber shed with a shallow charcoal-brown shingle roof, open braced work arch wholly inside the lower-left entrance tile x=0..31, and a neat stack of cut logs on the right. Crisp selective dark outlines, compact painterly pixel clusters, upper-left light. Match the shipped meadow's rich natural contrast without recoloring the wood: meadow anchors #27612f, #3d7d33, #67a045; wood anchors #503722, #8d5c30, #bd8246. Transparent right up to the walls and below them. No grass, flowers, pebbles, dirt, terrain skirt, base plate, pedestal, cast scenery, horizon, flag, banner, owner color, diagonal footprint, UI, text, logo or watermark.",
       "endpoint": "create-image-bitforge",

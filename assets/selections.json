@@ -326,6 +326,12 @@
       {"id":"castle:hagwood:castle","candidate":"assets/sources/cities/hagwood-city-source.png","target":"public/assets/cities/hagwood-city.png"},
       {"id":"castle:wildergrass:castle","candidate":"assets/sources/cities/wildergrass-city-source.png","target":"public/assets/cities/wildergrass-city.png"}
     ],
+    "mine-sprites-built-in": [
+      {"id":"map-object:mine:gold","candidate":"assets/sources/mines/gold-source.png","target":"public/assets/mines/gold.png"},
+      {"id":"map-object:mine:timber","candidate":"assets/sources/mines/timber-source.png","target":"public/assets/mines/timber.png"},
+      {"id":"map-object:mine:iron","candidate":"assets/sources/mines/iron-source.png","target":"public/assets/mines/iron.png"},
+      {"id":"map-object:mine:essence","candidate":"assets/sources/mines/essence-source.png","target":"public/assets/mines/essence.png"}
+    ],
     "doc33-mountain-granite-existing": [
       {"id":"decoration:mountain:granite-massif-1","candidate":".pixel-work/pixelgen/doc33-mountain-granite-existing/candidate-3-bottom-anchored.png","target":"public/assets/decorations/mountain-granite-massif-1.png"}
     ],

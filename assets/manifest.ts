@@ -431,20 +431,20 @@ const LEGACY_ASSET_CANDIDATES: Readonly<Record<string, AssetManifestEntry>> = {
     anchor: { x: 0, y: 0 },
   },
   'map-object:mine:gold': {
-    file: 'assets/map-objects/mine-gold.png', w: 64, h: 80,
-    anchor: { x: 0, y: 0 },
+    file: 'assets/mines/gold.png', w: 64, h: 96,
+    anchor: { x: 0, y: 64 }, contact: { w: 2, h: 1, entrance: { x: 0, y: 0 } },
   },
   'map-object:mine:timber': {
-    file: 'assets/map-objects/mine-timber.png', w: 64, h: 80,
-    anchor: { x: 0, y: 0 },
+    file: 'assets/mines/timber.png', w: 64, h: 96,
+    anchor: { x: 0, y: 64 }, contact: { w: 2, h: 1, entrance: { x: 0, y: 0 } },
   },
   'map-object:mine:iron': {
-    file: 'assets/map-objects/mine-iron.png', w: 64, h: 80,
-    anchor: { x: 0, y: 0 },
+    file: 'assets/mines/iron.png', w: 64, h: 96,
+    anchor: { x: 0, y: 64 }, contact: { w: 2, h: 1, entrance: { x: 0, y: 0 } },
   },
   'map-object:mine:essence': {
-    file: 'assets/map-objects/mine-essence.png', w: 64, h: 80,
-    anchor: { x: 0, y: 0 },
+    file: 'assets/mines/essence.png', w: 64, h: 96,
+    anchor: { x: 0, y: 64 }, contact: { w: 2, h: 1, entrance: { x: 0, y: 0 } },
   },
   'map-object:richVein:default': {
     file: 'assets/map-objects/richVein-default.png', w: 32, h: 48,

@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "generator": "built-in-imagegen",
+  "generated_on": "2026-08-11",
+  "job": "assets/jobs/mine-sprites-built-in.json",
+  "workflow": {
+    "source": "exactly one separate built-in image_gen call per resource mine",
+    "bake": "uv run --no-project --with pillow python scripts/buildMineSprites.py",
+    "resampling": "nearest-neighbour reduction, adaptive 48-colour palette, hard alpha and post-quantization chroma re-key",
+    "geometry": "64x96 canvas; anchor (0,64); 2x1 contact; bottom-left entrance (0,0)",
+    "review": ".pixel-work/review/mines/mine-sprites-contact-sheet.png"
+  },
+  "selections": [
+    {
+      "id": "map-object:mine:gold",
+      "request_id": "mine:gold:built-in",
+      "resource_id": "gold",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fefaf-638c-7f60-a30f-eeff3190a020/exec-3f99daf9-5bef-4356-9126-5ecf3cd73adf.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/mines/gold-source.png",
+      "final": "public/assets/mines/gold.png",
+      "prompt_sha256": "25e0800701092f3bd15f2d857eff9e0de3e11f19549f26fb3370249256f8be68",
+      "source_sha256": "b1b2e11de5dadf8d8646f63c68918c8e5b0f3dd820c443ee022b9530daa74f4f",
+      "final_sha256": "78e41a5941cc3a30ce7fe5d0e728ceadc74ae41780eef99c62b39e8b33def8fd",
+      "source_dimensions": [1402, 1122],
+      "final_dimensions": [64, 96],
+      "alpha": {"transparent": 4265, "opaque": 1879, "partial": 0, "bbox": [2, 52, 62, 96], "transparent_corners": 4, "chroma_fringe_pixels": 0},
+      "visual_review": "Pale quarried-rock adit, chestnut braces and a hand winch with restrained embedded gold flecks read as a practical gold operation; the open mouth is on the left and working rock blocks the right."
+    },
+    {
+      "id": "map-object:mine:iron",
+      "request_id": "mine:iron:built-in",
+      "resource_id": "iron",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fefaf-638c-7f60-a30f-eeff3190a020/exec-979a404f-7187-4c67-b0f6-7dca33b9e415.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/mines/iron-source.png",
+      "final": "public/assets/mines/iron.png",
+      "prompt_sha256": "588743cdc07594f5f87573cde2a20adc9def569c76c3e7e4a531a31e863c4c0f",
+      "source_sha256": "7dad915b989f3bcd1350ffab96d3cd377bda60a7c5121e3300d5e013ffd61878",
+      "final_sha256": "89ff3139ca4dd38f4519abbf78a01c11389fdcf831785f000a4842aa7481c59e",
+      "source_dimensions": [1199, 1312],
+      "final_dimensions": [64, 96],
+      "alpha": {"transparent": 3858, "opaque": 2286, "partial": 0, "bbox": [2, 37, 62, 96], "transparent_corners": 4, "chroma_fringe_pixels": 0},
+      "visual_review": "Dark timber headframe, pulley, rope, rails, empty trolley and cool-edged iron-bearing rock form a literal working iron hoist with its adit on the left."
+    },
+    {
+      "id": "map-object:mine:timber",
+      "request_id": "mine:timber:built-in",
+      "resource_id": "timber",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fefaf-638c-7f60-a30f-eeff3190a020/exec-c8e3ac2f-90ea-4e8a-8444-08d810d4b943.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/mines/timber-source.png",
+      "final": "public/assets/mines/timber.png",
+      "prompt_sha256": "21c55fade97ebb71357381aac839efe2d0431c286020a4a35e727bdc6ab49d96",
+      "source_sha256": "df2c478a692105d042055fba0502c96745772a17cacb7c4ae99ceecc320dd98c",
+      "final_sha256": "f5d3a6b848f232c48d15c31ead72a1b407cb0230cb33b6492c21c8c94d5bfa76",
+      "source_dimensions": [1402, 1122],
+      "final_dimensions": [64, 96],
+      "alpha": {"transparent": 3592, "opaque": 2552, "partial": 0, "bbox": [2, 38, 62, 96], "transparent_corners": 4, "chroma_fringe_pixels": 0},
+      "visual_review": "The deterministic framing retains the shingled saw shelter, work opening, sawbench, long crosscut saw and right-side round-ended log stack while excluding a detached source-display pile."
+    },
+    {
+      "id": "map-object:mine:essence",
+      "request_id": "mine:essence:built-in",
+      "resource_id": "essence",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fefaf-638c-7f60-a30f-eeff3190a020/exec-c5237997-137b-41fe-93c4-62d0e37f56be.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/mines/essence-source.png",
+      "final": "public/assets/mines/essence.png",
+      "prompt_sha256": "4fe7d92ef0c86a6e6aa5721c049006fabd3dc6eeb07e35c8e559062f5bf6078b",
+      "source_sha256": "ce625ebd9cb14681f1c7348f97252f1d6a0ebaf838e29a2b88dcad9fdae2f8d5",
+      "final_sha256": "449f84de94a63b7311e50c6b1977318f95e2835666e2a6d7b98c24c488dfe79e",
+      "source_dimensions": [1407, 1118],
+      "final_dimensions": [64, 96],
+      "alpha": {"transparent": 4685, "opaque": 1459, "partial": 0, "bbox": [2, 48, 62, 96], "transparent_corners": 4, "chroma_fringe_pixels": 0},
+      "visual_review": "Rural stone-lined extraction basin, visible hairline blue-violet world seam, crooked copper pump and pipe, winding drum and glass vessel read as the stitchwell rather than crystals, a fountain, tower or sci-fi machine."
+    }
+  ]
+}

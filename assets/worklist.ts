@@ -18,6 +18,7 @@ import type {
   Castle, FactionId, GameMap, MapObject, TerrainSkinId,
 } from '../src/core/types';
 import { assetId, type AssetCategory } from './manifest';
+import { RESOURCE_MINE_SUBJECTS } from './adventureSpriteInventory';
 
 export interface AssetWorkItem {
   id: string;
@@ -151,6 +152,13 @@ export function assetWorklist(): AssetWorkItem[] {
   pushUnique(items, {
     id: assetId.terrainField('meadow'), category: 'terrain', w: 256, h: 256,
     source: 'continuous adventure-map meadow field support',
+  });
+
+  // Resource operations are catalog-owned rather than map-occurrence-owned. Their 64x32
+  // worklist geometry is the 2x1 ground contact; the native manifest canvas may rise above it.
+  for (const [resource, subject] of Object.entries(RESOURCE_MINE_SUBJECTS)) pushUnique(items, {
+    id: assetId.mapObject('mine', resource), category: 'map-object', w: 64, h: 32,
+    groundContact: true, ownable: true, source: `canonical resource operation: ${subject}`,
   });
 
   for (const map of AUTHORED_MAPS) {
