@@ -8,6 +8,7 @@ import { OMENS, omenEffectSummary } from '../content/omens';
 import { SKILLS } from '../content/skills';
 import { SPELLS } from '../content/spells';
 import { spellCategory } from '../content/spellPresentation';
+import { SPELL_LEXICON } from '../content/spellLexicon';
 import { UNITS } from '../content/units';
 import { ABILITY_PRESENTATION } from '../content/abilityPresentation';
 import { FACTIONS } from '../content/factions';
@@ -54,10 +55,10 @@ const titleCase = (value: string): string => value.replaceAll('-', ' ')
   .replace(/([a-z])([A-Z])/g, '$1 $2').replace(/\b\w/g, (letter) => letter.toUpperCase());
 
 const COUNTERS: Record<CounterId, InspectionCard> = {
-  burn: { name: 'Burn', flavor: 'The fire has found somewhere to stay.', mechanics: ['At turn start, each counter deals 1% of the company’s current total HP (at least 1 damage per counter). Decays by 1 at turn end.'] },
-  chill: { name: 'Chill', flavor: 'The cold has settled into every joint.', mechanics: ['Each counter reduces Speed by 1, to a minimum of 1. Decays by 1 at turn end.'] },
-  hex: { name: 'Hex', flavor: 'Bad luck has learned the company’s name.', mechanics: ['Incoming attack damage increases by 5% per counter. Decays by 1 at turn end.'] },
-  bloom: { name: 'Bloom', flavor: 'Green life insists on returning.', mechanics: ['At turn start, restores 1 HP per counter without reviving creatures. Decays by 1 at turn end.'] },
+  burn: { name: SPELL_LEXICON.burn.name, flavor: 'The fire has found somewhere to stay.', mechanics: [SPELL_LEXICON.burn.rule] },
+  chill: { name: SPELL_LEXICON.chill.name, flavor: 'The cold has settled into every joint.', mechanics: [SPELL_LEXICON.chill.rule] },
+  hex: { name: SPELL_LEXICON.hex.name, flavor: 'Bad luck has learned the company’s name.', mechanics: [SPELL_LEXICON.hex.rule] },
+  bloom: { name: SPELL_LEXICON.bloom.name, flavor: 'Green life insists on returning.', mechanics: [SPELL_LEXICON.bloom.rule] },
 };
 
 export function mapObjectName(object: MapObject): string {

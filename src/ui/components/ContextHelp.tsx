@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { GameState } from '../../core/types';
+import { SPELL_LEXICON } from '../../content/spellLexicon';
 
 export type HelpContext = 'menu' | 'adventure' | 'castle' | 'combat' | 'choice' | 'result'
   | 'campaign';
@@ -80,15 +81,15 @@ const CONTEXT_HELP: Record<HelpContext, HelpSection> = {
 
 const GLOSSARY = [
   ['Company', 'One army stack: a number of identical creatures acting together.'],
-  ['Morale', 'The gold gauge around a company. At its threshold—normally 100—that company acts again after its current action.'],
-  ['Growth', 'Creatures added to a built dwelling at the start of each week.'],
+  [SPELL_LEXICON.morale.name, SPELL_LEXICON.morale.rule],
+  [SPELL_LEXICON.growth.name, SPELL_LEXICON.growth.rule],
   ['Standard / Upgraded', 'Every spell has Standard and Upgraded rules. Permanent learning says Upgraded; resonance says Upgraded here and names the reason.'],
-  ['Resonance', 'A school condition that makes matching spells resolve with its + effect.'],
-  ['Counter', 'Burn, Chill, Hex, or Bloom placed on a company; inspect each counter for its rule.'],
-  ['Enchantment', 'A longer spell effect occupying one of two slots for a side.'],
+  [SPELL_LEXICON.resonance.name, SPELL_LEXICON.resonance.rule],
+  [SPELL_LEXICON.counter.name, SPELL_LEXICON.counter.rule],
+  [SPELL_LEXICON['battle-enchantment'].name, SPELL_LEXICON['battle-enchantment'].rule],
   ['Debt', 'A visible future cost accepted in exchange for an immediate bargain benefit.'],
   ['Burden', 'A powerful artifact with a visible drawback and removal condition.'],
-  ['Guardian', 'A neutral army that fights when entered directly or through its marked aggro region.'],
+  [SPELL_LEXICON.guardian.name, SPELL_LEXICON.guardian.rule],
 ] as const;
 
 const CONTEXT_SHORTCUTS: Partial<Record<HelpContext, Array<[string, string]>>> = {

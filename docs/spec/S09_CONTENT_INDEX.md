@@ -53,6 +53,9 @@ is invalid.
   base catalog, rarity assignment, source filters, scroll eligibility, and guild pools.
 - [`../../src/content/spells/expansion.ts`](../../src/content/spells/expansion.ts): Wild and expanded
   authored spell definitions.
+- [`../../src/content/spellLexicon.ts`](../../src/content/spellLexicon.ts): typed reusable
+  player-mechanic definitions, structured term tokens, literal future-art subjects, explicit
+  ordinary-term dispositions, and all-68 runtime/term coverage.
 - [`../../src/content/bargains.ts`](../../src/content/bargains.ts): eight benefits and visible Debts.
 - [`../../src/core/combat/spells.ts`](../../src/core/combat/spells.ts) and
   [`../../src/core/combat/expansionSpellEffects.ts`](../../src/core/combat/expansionSpellEffects.ts):
@@ -65,6 +68,13 @@ upgraded rules, AI target/timing hints, and any effect-operation tag. The upgrad
 Internal `base`/`plus` field names remain a compatibility detail and are not player-facing copy. Provenance rares and
 Summon Skiff are excluded from ordinary guild/scroll pools as specified. The catalog count is 16 per
 school plus four provenance rares: 68 total.
+
+Every reusable spell term has a stable ID, player name, concise rule, literal visual subject,
+aliases, and search tokens. Every spell is mapped to its actual combat/adventure resolver domain and
+has at least one reusable or explicitly ordinary term disposition; every disposition is used. Rule
+presentation tokens preserve term IDs for semantic UI and have a deterministic plain-text
+projection. The lexicon does not replace the catalog's Standard/Upgraded descriptions and cannot
+change resolver behavior. See [work order 53](../53_SPELL_EFFECT_LEXICON.md).
 
 Every bargain has nonempty flavor, immediate benefit, exact Debt, handler, and visible altered terms
 where applicable. Debt effects obey the law in [`S01_RATIONALE.md`](S01_RATIONALE.md).

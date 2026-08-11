@@ -152,3 +152,11 @@ specialty terms must be printed on the offered card.
 The catalog supplies spell names, school, mana, kind, rarity, standard/upgraded text, AI hints, effect operation,
 and provenance eligibility. Rules code supplies generic operation handlers. See
 [`S09_CONTENT_INDEX.md`](S09_CONTENT_INDEX.md) for validation invariants and data ownership.
+
+Reusable player mechanics are defined once in
+[`../../src/content/spellLexicon.ts`](../../src/content/spellLexicon.ts). Stable term IDs, names,
+plain-English rules, aliases/tokens, and literal future-art subjects belong to that content layer;
+the all-spell coverage table maps every catalog entry to its real resolver branch and either a
+lexicon term or an explicit ordinary-language disposition. Structured rule tokens may reference a
+term ID without copying its definition. The lexicon is explanatory and cannot override a resolver,
+create an effect, or infer mechanics from presentation. See [work order 53](../53_SPELL_EFFECT_LEXICON.md).

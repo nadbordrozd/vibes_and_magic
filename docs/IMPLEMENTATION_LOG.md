@@ -717,3 +717,20 @@ Beads epic `vibes_and_magic-6sf`.
   The complete serial suite passed 755/756 tests in 78/79 files; its sole failure is the accepted
   unrelated seed-1/day-56 no-winner assertion at
   `src/core/__tests__/mechanics-regression.test.ts:231`.
+
+## 2026-08-11 — Authoritative spell effect lexicon
+
+- Added a typed 30-entry spell-mechanics lexicon with stable IDs, safe player rules, literal future
+  visual subjects, aliases/tokens, semantic rule-reference tokens, and plain-text projection.
+- Mapped all 68 spells to their actual combat/adventure resolver branches and their reusable terms.
+  Nineteen ordinary-language buckets explicitly account for terms that do not warrant reusable
+  mechanic definitions; tests reject missing spells and orphaned reusable or ordinary entries.
+- Added resolver-backed Bloom acceptance for Standard/Upgraded application, adjacency, cap,
+  turn-start healing, no resurrection, and normal end-turn decay. Recorded without changing the
+  engine that Bloom applies fixed 3/4 amounts despite S05's default counter-scaling law.
+- Recorded the other material audit differences for later ruling: Unmake's missing combined
+  Upgraded removal, Overgrow source duplication, Shed Skin's missing Upgraded target/spread,
+  Summon Skiff ownership, Wild Growth dwelling support, and omitted timed-effect durations.
+- Routed counter inspection and the matching help glossary entries through the lexicon, replacing
+  the incorrect legacy Bloom inspector claim of one HP per counter with the resolver-backed rule.
+- No spell mechanics, catalog descriptions, icons, or existing Spellbook behavior changed.

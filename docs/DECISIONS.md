@@ -854,3 +854,17 @@
 - Generated candidates remain subject to composition review after alpha acceptance. The first
   column-3 was retained and rejected as a corkscrew; its corrective broken-crag edit is the selected
   source with complete prompt/output/source/final provenance.
+
+## 2026-08-11 — Spell mechanics use stable semantic references (doc 53)
+
+- Reusable spell concepts have stable lexicon IDs independent from their player wording. A
+  structured rule token references an ID and may supply a contextual label; plain-text consumers
+  deterministically render the same sequence without losing readable rules.
+- The lexicon explains shared mechanics but never owns executable behavior. Each of the 68 spells is
+  mapped to its real resolver branch, while ordinary language is retained through explicit audited
+  disposition buckets rather than an implicit exclusion list.
+- Literal visual subjects are inventory for a later image work order, not generated-icon coverage.
+  This work does not generate art or rewrite the 68 Standard/Upgraded catalog descriptions.
+- Bloom's implemented fixed spell amounts and shared counter lifecycle are documented and tested
+  through real resolver functions. Its lack of default Spell Power counter scaling is recorded as a
+  pre-existing S05/runtime mismatch; this no-mechanics work does not choose either correction.
