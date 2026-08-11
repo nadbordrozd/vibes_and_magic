@@ -65,6 +65,16 @@ async function audit(page: Page, name: string, width: number, height: number): P
     const mountainPieces = [...document.querySelectorAll<SVGImageElement>('.mountain-showcase-piece')];
     let previous = [-1, -1];
     mountainPieces.forEach((piece) => {
+      const nativeWidth = Number(piece.dataset.nativeWidth);
+      const visualX = Number(piece.dataset.visualX);
+      const visualWidth = Number(piece.dataset.visualWidth);
+      const mountedX = Number(piece.getAttribute('x'));
+      const mountedWidth = Number(piece.getAttribute('width'));
+      if (mountedX !== visualX || mountedWidth !== visualWidth
+          || mountedWidth !== nativeWidth) {
+        failures.push(`${piece.dataset.assetId}: mounted x/width ${mountedX}/${mountedWidth}, `
+          + `visual x/width ${visualX}/${visualWidth}, native width ${nativeWidth}`);
+      }
       const next = [Number(piece.dataset.painterRow), Number(piece.dataset.painterCol)];
       if (next[0] < previous[0] || (next[0] === previous[0] && next[1] < previous[1])) {
         failures.push(`mountain painter order regressed at ${piece.dataset.assetId}`);

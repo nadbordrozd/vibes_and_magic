@@ -206,6 +206,37 @@ function drawEditorGuardianFallback(
 }
 
 const tileKey = ({ x, y }: EditorCell) => `${x},${y}`;
+export const EDITOR_TERRAIN_RASTER_MAX_PIXELS = 4096 * 4096;
+
+export function editorTerrainRasterCanCache(width: number, height: number): boolean {
+  return Number.isInteger(width) && Number.isInteger(height) && width > 0 && height > 0
+    && width <= EDITOR_TERRAIN_RASTER_MAX_PIXELS / height;
+}
+
+/** Immutable editor edits share untouched rows; value comparison also keeps imports/clones safe. */
+export function changedEditorTerrainCells(
+  before: EditorMapDocument['tiles'], after: EditorMapDocument['tiles'],
+): EditorCell[] {
+  const changed: EditorCell[] = [];
+  for (let y = 0; y < after.length; y += 1) {
+    if (before[y] === after[y]) continue;
+    for (let x = 0; x < after[y].length; x += 1) {
+      const previous = before[y]?.[x];
+      const next = after[y][x];
+      if (previous && previous.terrain === next.terrain && previous.skin === next.skin) continue;
+      changed.push({ x, y });
+    }
+  }
+  return changed;
+}
+
+export function editorPreviewChangesMountainTopology(
+  tiles: EditorMapDocument['tiles'], preview: readonly EditorCell[],
+  selectedTile: EditorMapDocument['tiles'][number][number],
+): boolean {
+  return selectedTile.terrain === 'mountain'
+    || preview.some((cell) => tiles[cell.y]?.[cell.x]?.terrain === 'mountain');
+}
 
 export function ensureEditorCanvasImage(
   cache: Map<string, HTMLImageElement>, file: string, onLoad: () => void,
@@ -313,6 +344,10 @@ export function EditorTerrainCanvas({
   const spaceHeld = useRef(false);
   const images = useRef(new Map<string, HTMLImageElement>());
   const redrawLatest = useRef<() => void>(() => undefined);
+  const terrainRaster = useRef<{
+    documentId: string; tiles: EditorMapDocument['tiles']; canvas: HTMLCanvasElement;
+    loading: boolean;
+  } | null>(null);
   const [tool, setTool] = useState<TerrainPaintTool>('pencil');
   const [terrain, setTerrain] = useState<TerrainId>('meadow');
   const [skin, setSkin] = useState<TerrainSkinId>(TERRAIN.meadow.skins[0]);
@@ -357,6 +392,11 @@ export function EditorTerrainCanvas({
 
   const size = document.dimensions;
   const selectedTile = useMemo(() => legalEditorTerrainTile(terrain, skin), [skin, terrain]);
+  const documentMountainRanges = useMemo(() => deriveMountainRanges({
+    id: document.id, name: document.metadata.name, width: size.width, height: size.height,
+    seed: 0, terrain: document.tiles, objects: [], victory: document.victory,
+  } as GameMap), [document.id, document.metadata.name, document.tiles, document.victory,
+    size.height, size.width]);
   const terrainChoices = useMemo(
     () => Object.values(TERRAIN).filter((entry) => entry.id !== 'mountain'),
     [],
@@ -545,23 +585,92 @@ export function EditorTerrainCanvas({
     context.clearRect(0, 0, canvas.width, canvas.height);
     let loading = false;
     const previewSet = new Set(preview.map(tileKey));
-    const displayTiles = document.tiles.map((row, y) => row.map((tile, x) =>
-      previewSet.has(`${x},${y}`) && pointerStartsPaint(0, tool, false)
-        ? selectedTile : tile));
-    for (let y = 0; y < size.height; y += 1) for (let x = 0; x < size.width; x += 1) {
-      const tile = displayTiles[y][x];
+    const drawTerrainTile = (
+      target: CanvasRenderingContext2D,
+      tile: EditorMapDocument['tiles'][number][number], x: number, y: number,
+      onImageLoad: () => void,
+    ): boolean => {
       const legalSkin = TERRAIN[tile.terrain].skins.includes(tile.skin as TerrainSkinId)
         ? tile.skin! : TERRAIN[tile.terrain].skins[0];
-      context.fillStyle = fallbackTerrainColor(tile.terrain);
-      context.fillRect(x * TILE, y * TILE, TILE, TILE);
+      target.fillStyle = fallbackTerrainColor(tile.terrain);
+      target.fillRect(x * TILE, y * TILE, TILE, TILE);
       const file = terrainAssetFile(tile.terrain, legalSkin, x, y);
       if (file && typeof Image !== 'undefined') {
-        const image = ensureEditorCanvasImage(images.current, file,
-          () => redrawLatest.current());
+        const image = ensureEditorCanvasImage(images.current, file, onImageLoad);
         if (image?.complete && image.naturalWidth) {
-          context.drawImage(image, x * TILE, y * TILE, TILE, TILE);
-        } else loading = true;
+          target.drawImage(image, x * TILE, y * TILE, TILE, TILE);
+          return true;
+        }
+        return false;
       }
+      return true;
+    };
+    if (!editorTerrainRasterCanCache(canvas.width, canvas.height)) {
+      // A 256×256 map already owns one 8192² visible canvas (~256 MiB RGBA). Do not silently
+      // double that browser allocation; oversized maps retain the direct single-canvas path.
+      terrainRaster.current = null;
+      for (let y = 0; y < size.height; y += 1) for (let x = 0; x < size.width; x += 1) {
+        if (!drawTerrainTile(context, document.tiles[y][x], x, y,
+          () => redrawLatest.current())) {
+          loading = true;
+        }
+      }
+    } else {
+      let raster = terrainRaster.current;
+      const newRaster = !raster || raster.documentId !== document.id
+        || raster.canvas.width !== canvas.width || raster.canvas.height !== canvas.height;
+      if (newRaster) {
+        const rasterCanvas = canvas.ownerDocument.createElement('canvas');
+        rasterCanvas.width = canvas.width;
+        rasterCanvas.height = canvas.height;
+        const rasterContext = rasterCanvas.getContext('2d');
+        if (!rasterContext) return;
+        rasterContext.imageSmoothingEnabled = false;
+        let rasterLoading = false;
+        const invalidateRaster = () => {
+          terrainRaster.current = null;
+          redrawLatest.current();
+        };
+        for (let y = 0; y < size.height; y += 1) for (let x = 0; x < size.width; x += 1) {
+          if (!drawTerrainTile(rasterContext, document.tiles[y][x], x, y, invalidateRaster)) {
+            rasterLoading = true;
+          }
+        }
+        raster = {
+          documentId: document.id, tiles: document.tiles, canvas: rasterCanvas,
+          loading: rasterLoading,
+        };
+        // A fallback-backed raster is transient. Existing in-flight images may own an earlier
+        // onload callback, so only retain the raster once every terrain image is actually ready.
+        terrainRaster.current = rasterLoading ? null : raster;
+      } else if (raster && raster.tiles !== document.tiles) {
+        const rasterContext = raster.canvas.getContext('2d');
+        if (!rasterContext) return;
+        rasterContext.imageSmoothingEnabled = false;
+        let rasterLoading = false;
+        const invalidateRaster = () => {
+          terrainRaster.current = null;
+          redrawLatest.current();
+        };
+        for (const { x, y } of changedEditorTerrainCells(raster.tiles, document.tiles)) {
+          if (!drawTerrainTile(rasterContext, document.tiles[y][x], x, y, invalidateRaster)) {
+            rasterLoading = true;
+          }
+        }
+        raster = { ...raster, tiles: document.tiles, loading: rasterLoading };
+        terrainRaster.current = rasterLoading ? null : raster;
+      }
+      if (!raster) return;
+      context.drawImage(raster.canvas, 0, 0);
+      loading = raster.loading;
+    }
+
+    const paintsTerrainPreview = previewSet.size > 0 && pointerStartsPaint(0, tool, false);
+    if (paintsTerrainPreview) for (const cell of preview) {
+      if (!drawTerrainTile(context, selectedTile, cell.x, cell.y, () => {
+        terrainRaster.current = null;
+        redrawLatest.current();
+      })) loading = true;
     }
     const roadKeys = new Set(document.overlays.roads.map((cell) => tileKey(cell)));
     for (const position of document.overlays.seams) {
@@ -588,11 +697,17 @@ export function EditorTerrainCanvas({
         context.lineTo(position.x * TILE + 32, position.y * TILE + 16); context.stroke();
       }
     }
-    const displayMap = {
-      id: document.id, name: document.metadata.name, width: size.width, height: size.height,
-      seed: 0, terrain: displayTiles, objects: [], victory: document.victory,
-    } as GameMap;
-    const ranges = deriveMountainRanges(displayMap);
+    const previewChangesMountains = paintsTerrainPreview
+      && editorPreviewChangesMountainTopology(document.tiles, preview, selectedTile);
+    let ranges = documentMountainRanges;
+    if (previewChangesMountains) {
+      const displayTiles = document.tiles.map((row) => [...row]);
+      for (const cell of preview) displayTiles[cell.y][cell.x] = selectedTile;
+      ranges = deriveMountainRanges({
+        id: document.id, name: document.metadata.name, width: size.width, height: size.height,
+        seed: 0, terrain: displayTiles, objects: [], victory: document.victory,
+      } as GameMap);
+    }
     const objectItems = document.objects.flatMap((object) => {
       if (object.kind === 'obstacle' && !adventurePropByName(String(object.properties.prop))) return [];
       const footprint = object.kind === 'obstacle'
@@ -939,7 +1054,7 @@ export function EditorTerrainCanvas({
     }
     if (loading) canvas.dataset.loadingTerrain = 'true';
     else delete canvas.dataset.loadingTerrain;
-  }, [castleFaction, document, effectiveCastleOwner, effectiveHeroOwner, guardianStamp,
+  }, [castleFaction, document, documentMountainRanges, effectiveCastleOwner, effectiveHeroOwner, guardianStamp,
     heroDefinitionId, heroFaction, hovered, polygon, preview, selectedCastle, selectedGuardian,
     rewardStamp, selectedHero, selectedObject, selectedReward,
     selectedMineResource, selectedProp, selectedStructureKind, selectedTile,

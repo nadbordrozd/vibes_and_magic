@@ -10,7 +10,8 @@ import {
   validateEditorMapDocument,
 } from '../../core/mapEditor';
 import {
-  EditorTerrainCanvas, editorPropCanvasGeometry, ensureEditorCanvasImage,
+  EditorTerrainCanvas, changedEditorTerrainCells, editorPreviewChangesMountainTopology,
+  editorPropCanvasGeometry, editorTerrainRasterCanCache, ensureEditorCanvasImage,
 } from '../components/EditorTerrainCanvas';
 import { editorDocumentIsDirty } from '../mapEditorLibrary';
 import {
@@ -185,6 +186,34 @@ describe('terrain edit transactions and editor state boundaries', () => {
       .document.tiles[0][0];
     expect(changed.terrain).toBe('mire');
     expect(changed.skin).toBe('coastal');
+  });
+
+  it('advances the cached terrain raster only across changed cells and re-derives mountain previews', () => {
+    const original = document(128, 128);
+    const cells = rasterizeEditorRectangle(
+      { x: 56, y: 56 }, { x: 72, y: 72 }, original.dimensions,
+    );
+    const changed = commitTerrainEdit(original, EMPTY_TERRAIN_HISTORY,
+      createTerrainEdit(original, cells, { terrain: 'deepwood', skin: 'mossy' })).document;
+    expect(changedEditorTerrainCells(original.tiles, changed.tiles)).toEqual(cells);
+    expect(changedEditorTerrainCells(changed.tiles, structuredClone(changed.tiles))).toEqual([]);
+
+    expect(editorPreviewChangesMountainTopology(
+      original.tiles, [{ x: 1, y: 1 }], { terrain: 'deepwood', skin: 'mossy' },
+    )).toBe(false);
+    expect(editorPreviewChangesMountainTopology(
+      original.tiles, [{ x: 1, y: 1 }], { terrain: 'mountain', skin: 'granite' },
+    )).toBe(true);
+    const withMountain = commitTerrainEdit(original, EMPTY_TERRAIN_HISTORY,
+      createTerrainEdit(original, [{ x: 2, y: 2 }], { terrain: 'mountain', skin: 'granite' }))
+      .document;
+    expect(editorPreviewChangesMountainTopology(
+      withMountain.tiles, [{ x: 2, y: 2 }], { terrain: 'meadow', skin: 'default' },
+    )).toBe(true);
+
+    expect(editorTerrainRasterCanCache(128 * 32, 128 * 32)).toBe(true);
+    expect(editorTerrainRasterCanCache(129 * 32, 129 * 32)).toBe(false);
+    expect(editorTerrainRasterCanCache(256 * 32, 256 * 32)).toBe(false);
   });
 
   it('distinguishes pan from primary paint and clamps zoom to supported steps', () => {

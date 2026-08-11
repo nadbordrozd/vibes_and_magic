@@ -128,8 +128,16 @@ try {
       const clip = node.querySelector('svg.mountain-footprint-clip');
       const image = node.querySelector('image.pixel-sprite');
       if (!clip || !image) return true;
-      return Number(clip.getAttribute('x')) !== Number(image.getAttribute('x'))
-        || Number(clip.getAttribute('width')) !== Number(image.getAttribute('width'));
+      const viewBox = (clip.getAttribute('viewBox') ?? '').split(/\s+/).map(Number);
+      const visualX = Number((node as SVGGElement).dataset.visualX);
+      const visualWidth = Number((node as SVGGElement).dataset.visualWidth);
+      const clipX = Number(clip.getAttribute('x'));
+      const clipWidth = Number(clip.getAttribute('width'));
+      return !viewBox.every(Number.isFinite) || viewBox.length !== 4
+        || clipX !== Number(image.getAttribute('x'))
+        || clipWidth !== Number(image.getAttribute('width'))
+        || viewBox[0] !== clipX || viewBox[2] !== clipWidth
+        || visualX !== clipX || visualWidth !== clipWidth;
     }).length);
   if (internalHorizontalCrops) {
     throw new Error(`${mapId} mounts ${internalHorizontalCrops} mountain images across a horizontal crop`);

@@ -278,6 +278,17 @@ function verifyPromotionReady(path: string): {
     obstacle: authored.objects.some((object) => object.kind === 'obstacle'),
     windmill: authored.objects.some((object) => object.kind === 'windmill'
       && object.properties.rareResource === 'essence'),
+    mines: JSON.stringify(authored.objects.filter((object) => object.kind === 'mine')
+      .map((object) => ({
+        resource: object.properties.resource,
+        income: object.properties.income,
+      })).sort((left, right) => String(left.resource).localeCompare(String(right.resource))))
+      === JSON.stringify([
+        { resource: 'essence', income: 1 },
+        { resource: 'gold', income: 1_000 },
+        { resource: 'iron', income: 1 },
+        { resource: 'timber', income: 2 },
+      ]),
     playerFactions: authored.players[0]?.faction === 'woundWrights'
       && authored.players[1]?.faction === 'hagwood',
     ownedCities: p1Castle?.faction === 'hagwood' && p2Castle?.faction === 'vespiary',
@@ -571,27 +582,35 @@ try {
       || new Set(mineStamps.map((stamp) => stamp.source)).size !== 4) {
     throw new Error(`Four direct native mine stamps are unavailable: ${JSON.stringify(mineStamps)}`);
   }
-  await clickButton(page, 'Essence mine', '.editor-structure-palette');
-  await clickCell(page, 16, 9);
-  if (await page.$('#editor-object-inspector-title')) {
-    throw new Error('Direct mine placement opened details without explicit selection');
+  const authoredMines = [
+    { label: 'Gold mine', position: { x: 20, y: 8 }, resource: 'gold', income: '1000' },
+    { label: 'Timber mine', position: { x: 23, y: 8 }, resource: 'timber', income: '2' },
+    { label: 'Iron mine', position: { x: 3, y: 8 }, resource: 'iron', income: '1' },
+    { label: 'Essence mine', position: { x: 16, y: 9 }, resource: 'essence', income: '1' },
+  ] as const;
+  for (const mine of authoredMines) {
+    await clickButton(page, mine.label, '.editor-structure-palette');
+    await clickCell(page, mine.position.x, mine.position.y);
+    if (await page.$('#editor-object-inspector-title')) {
+      throw new Error(`${mine.label} placement opened details without explicit selection`);
+    }
+    await clickButton(page, 'Select / move', '.editor-toolstrip');
+    await clickCell(page, mine.position.x, mine.position.y);
+    const selectedMine = await page.$eval('.editor-object-inspector', (inspector) => ({
+      heading: inspector.querySelector('h3')?.textContent?.trim() ?? '',
+      resource: [...inspector.querySelectorAll<HTMLLabelElement>('label')]
+        .find((label) => label.textContent?.trim().startsWith('Resource'))
+        ?.querySelector<HTMLSelectElement>('select')?.value ?? '',
+      income: [...inspector.querySelectorAll<HTMLLabelElement>('label')]
+        .find((label) => label.textContent?.trim().startsWith('Daily income'))
+        ?.querySelector<HTMLInputElement>('input')?.value ?? '',
+    }));
+    if (selectedMine.heading !== 'Mine' || selectedMine.resource !== mine.resource
+        || selectedMine.income !== mine.income) {
+      throw new Error(`${mine.label} did not stamp its actual resource defaults: ${JSON.stringify(selectedMine)}`);
+    }
   }
-  await clickButton(page, 'Select / move', '.editor-toolstrip');
-  await clickCell(page, 16, 9);
-  const selectedMine = await page.$eval('.editor-object-inspector', (inspector) => ({
-    heading: inspector.querySelector('h3')?.textContent?.trim() ?? '',
-    resource: [...inspector.querySelectorAll<HTMLLabelElement>('label')]
-      .find((label) => label.textContent?.trim().startsWith('Resource'))
-      ?.querySelector<HTMLSelectElement>('select')?.value ?? '',
-    income: [...inspector.querySelectorAll<HTMLLabelElement>('label')]
-      .find((label) => label.textContent?.trim().startsWith('Daily income'))
-      ?.querySelector<HTMLInputElement>('input')?.value ?? '',
-  }));
-  if (selectedMine.heading !== 'Mine' || selectedMine.resource !== 'essence'
-      || selectedMine.income !== '1') {
-    throw new Error(`Essence mine did not stamp its actual resource defaults: ${JSON.stringify(selectedMine)}`);
-  }
-  await page.screenshot({ path: join(output, '02c-direct-essence-mine-desktop.png') });
+  await page.screenshot({ path: join(output, '02c-direct-mines-desktop.png') });
 
   await page.select('select[aria-label="City owner flag"]', 'p1');
   await clickButton(page, 'Hagwood city', '.editor-castle-palette');
@@ -863,11 +882,16 @@ try {
   const creationMs = performance.now() - creationStarted;
   const paintStarted = performance.now();
   await clickButton(page, 'Deepwood', '.editor-terrain-choices');
+  const terrainSelectionMs = performance.now() - paintStarted;
   await clickButton(page, 'Rectangle', '.editor-toolstrip');
+  const toolSelectionMs = performance.now() - paintStarted - terrainSelectionMs;
   await dragCells(page, { x: 56, y: 56 }, { x: 72, y: 72 });
+  const gestureMs = performance.now() - paintStarted - terrainSelectionMs - toolSelectionMs;
   const paintMs = performance.now() - paintStarted;
   if (creationMs > 8_000 || paintMs > 5_000) {
-    throw new Error(`Large-map interaction exceeded review budget: create ${creationMs.toFixed(0)}ms, paint ${paintMs.toFixed(0)}ms`);
+    throw new Error(`Large-map interaction exceeded review budget: create ${creationMs.toFixed(0)}ms, `
+      + `paint ${paintMs.toFixed(0)}ms (terrain ${terrainSelectionMs.toFixed(0)}ms, `
+      + `tool ${toolSelectionMs.toFixed(0)}ms, gesture ${gestureMs.toFixed(0)}ms)`);
   }
   await page.$eval('.editor-canvas-panel', (node) => node.scrollIntoView({ block: 'start' }));
   await page.screenshot({ path: join(output, '09-large-map-desktop.png') });
@@ -880,7 +904,11 @@ try {
   console.log(JSON.stringify({
     result: 'Map editor review passed', output, palette: paletteOrder.map((entry) => entry.heading),
     mapHash: promotion.hash, exportDiagnostics: promotion.diagnostics,
-    largeMap: { dimensions: '128x128', creationMs: Math.round(creationMs), paintMs: Math.round(paintMs) },
+    largeMap: {
+      dimensions: '128x128', creationMs: Math.round(creationMs), paintMs: Math.round(paintMs),
+      terrainSelectionMs: Math.round(terrainSelectionMs),
+      toolSelectionMs: Math.round(toolSelectionMs), gestureMs: Math.round(gestureMs),
+    },
     collectibles: collectiblePalette, randomGuardian: promotion.randomGuardian, screenshots: 23,
   }, null, 2));
 } finally {
