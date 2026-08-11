@@ -1048,6 +1048,330 @@
       "candidates": 1,
       "chroma_key": "#00FF00",
       "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A palm-sized blank porcelain mask with rosy cheeks, simple joint holes, and a visible repair seam.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:sunderedHourglass:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "sunderedHourglass",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:sunderedHourglass"
+      ],
+      "output": "assets/sources/artifacts/sunderedHourglass-source.png",
+      "final": "public/assets/artifacts/sunderedHourglass.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A brass hourglass broken cleanly through its waist while gold sand hangs in both bulbs.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:longestCandle:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "longestCandle",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:longestCandle"
+      ],
+      "output": "assets/sources/artifacts/longestCandle-source.png",
+      "final": "public/assets/artifacts/longestCandle.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: An improbably tall ivory candle in a tiny iron socket, with many colored wax repairs.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: flame, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:crookedDistaff:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "crookedDistaff",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:crookedDistaff"
+      ],
+      "output": "assets/sources/artifacts/crookedDistaff-source.png",
+      "final": "public/assets/artifacts/crookedDistaff.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A bent black-birch spinning distaff wound with berry-red and white thread.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:bannerOfTheFirstField:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "bannerOfTheFirstField",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:bannerOfTheFirstField"
+      ],
+      "output": "assets/sources/artifacts/bannerOfTheFirstField-source.png",
+      "final": "public/assets/artifacts/bannerOfTheFirstField.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A folded cream battle banner on a short brass pole, bearing a bold red rising field emblem.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:patchworkStandard:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "patchworkStandard",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:patchworkStandard"
+      ],
+      "output": "assets/sources/artifacts/patchworkStandard-source.png",
+      "final": "public/assets/artifacts/patchworkStandard.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A small standard sewn from six differently colored cloth patches around one brass boss.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:seamstone:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "seamstone",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:seamstone"
+      ],
+      "output": "assets/sources/artifacts/seamstone-source.png",
+      "final": "public/assets/artifacts/seamstone.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A smooth grey stone split by four thin colored mineral seams meeting off-center.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; the four mineral seams are intrinsic physical detail only and do not encode or select any gameplay school; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: chosen-school marker, school icon, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:mirrorshardPendant:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "mirrorshardPendant",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:mirrorshardPendant"
+      ],
+      "output": "assets/sources/artifacts/mirrorshardPendant-source.png",
+      "final": "public/assets/artifacts/mirrorshardPendant.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A triangular mirror shard in a copper wire pendant, reflecting one sharp blue-white wedge.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; render the mirror as opaque stylized silver-blue pixel clusters with one sharp blue-white wedge, never see-through green; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: reflected scene, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:bellsClapper:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "bellsClapper",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:bellsClapper"
+      ],
+      "output": "assets/sources/artifacts/bellsClapper-source.png",
+      "final": "public/assets/artifacts/bellsClapper.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A heavy dark-brass bell clapper on a frayed cream rope, without the bell.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: bell, full bell body, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:queensAmber:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "queensAmber",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:queensAmber"
+      ],
+      "output": "assets/sources/artifacts/queensAmber-source.png",
+      "final": "public/assets/artifacts/queensAmber.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A large honey-amber cabochon containing the clear silhouette of a tiny crowned insect.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; render amber as opaque stylized honey-gold pixel clusters with the insect silhouette clearly inside, never see-through green; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: loose insect outside the amber, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:wolfMothersTorc:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "wolfMothersTorc",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:wolfMothersTorc"
+      ],
+      "output": "assets/sources/artifacts/wolfMothersTorc-source.png",
+      "final": "public/assets/artifacts/wolfMothersTorc.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A thick ash-silver neck torc ending in two stylized ochre wolf heads.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: living wolves, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:hornOfTheBroadWorld:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "hornOfTheBroadWorld",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:hornOfTheBroadWorld"
+      ],
+      "output": "assets/sources/artifacts/hornOfTheBroadWorld-source.png",
+      "final": "public/assets/artifacts/hornOfTheBroadWorld.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A huge curled black-and-gold insect horn fitted with a small leather blowing mouthpiece.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; the insect horn is an instrument body with a clearly fitted blowing mouthpiece; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: living insect, ordinary mammal horn, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:toyKnightsHeart:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "toyKnightsHeart",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:toyKnightsHeart"
+      ],
+      "output": "assets/sources/artifacts/toyKnightsHeart-source.png",
+      "final": "public/assets/artifacts/toyKnightsHeart.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A red enamel clockwork heart with brass wind-up key, seam, and tiny shield plate.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: anatomical flesh heart, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:longSpoon:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "longSpoon",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:longSpoon"
+      ],
+      "output": "assets/sources/artifacts/longSpoon-source.png",
+      "final": "public/assets/artifacts/longSpoon.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: An absurdly long dark-silver spoon curled around itself, with a deep black bowl.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: food, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:firstDrum:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "firstDrum",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:firstDrum"
+      ],
+      "output": "assets/sources/artifacts/firstDrum-source.png",
+      "final": "public/assets/artifacts/firstDrum.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: An ancient hide war drum with one original ochre panel amid many red stitched repairs.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: drumsticks, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:crownHollowTown:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "crownHollowTown",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:crownHollowTown"
+      ],
+      "output": "assets/sources/artifacts/crownHollowTown-source.png",
+      "final": "public/assets/artifacts/crownHollowTown.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A thin pale crown shaped from empty house fronts and dark vacant windows, still clean and ceremonial.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable crown silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; the house fronts form the crown itself and are not a town scene; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: ruined town, terrain, streets, text, letters, writing, glyphs, UI, frame, badge, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:weathercockIllOmen:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "weathercockIllOmen",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:weathercockIllOmen"
+      ],
+      "output": "assets/sources/artifacts/weathercockIllOmen-source.png",
+      "final": "public/assets/artifacts/weathercockIllOmen.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A crooked black iron weathercock with four tiny colored wind vanes and one red eye bead.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: roof, building, compass letters, cardinal direction labels, text, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:seamRipper:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "seamRipper",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:seamRipper"
+      ],
+      "output": "assets/sources/artifacts/seamRipper-source.png",
+      "final": "public/assets/artifacts/seamRipper.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A heavy silver seam-ripping hook with four colored threads caught beneath its forked tip.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: fabric panel, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:lastToy:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "lastToy",
+      "catalog_group": "relic",
+      "assets": [
+        "map-object:artifact:lastToy"
+      ],
+      "output": "assets/sources/artifacts/lastToy-source.png",
+      "final": "public/assets/artifacts/lastToy.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A tiny worn wooden horse with one wheel, cream paint, red saddle, and a lovingly repaired broken leg.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; the wheel belongs to the toy horse and the repaired broken leg remains visible; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: living horse, rider, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
     }
   ]
 }

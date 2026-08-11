@@ -429,6 +429,26 @@
       {"id": "map-object:artifact:unsentLetter", "candidate": "assets/sources/artifacts/unsentLetter-source.png", "target": "public/assets/artifacts/unsentLetter.png"},
       {"id": "map-object:artifact:mothEatenMap", "candidate": "assets/sources/artifacts/mothEatenMap-source.png", "target": "public/assets/artifacts/mothEatenMap.png"},
       {"id": "map-object:artifact:spareFace", "candidate": "assets/sources/artifacts/spareFace-source.png", "target": "public/assets/artifacts/spareFace.png"}
+    ],
+    "artifact-sprites-relic-built-in": [
+      {"id": "map-object:artifact:sunderedHourglass", "candidate": "assets/sources/artifacts/sunderedHourglass-source.png", "target": "public/assets/artifacts/sunderedHourglass.png"},
+      {"id": "map-object:artifact:longestCandle", "candidate": "assets/sources/artifacts/longestCandle-source.png", "target": "public/assets/artifacts/longestCandle.png"},
+      {"id": "map-object:artifact:crookedDistaff", "candidate": "assets/sources/artifacts/crookedDistaff-source.png", "target": "public/assets/artifacts/crookedDistaff.png"},
+      {"id": "map-object:artifact:bannerOfTheFirstField", "candidate": "assets/sources/artifacts/bannerOfTheFirstField-source.png", "target": "public/assets/artifacts/bannerOfTheFirstField.png"},
+      {"id": "map-object:artifact:patchworkStandard", "candidate": "assets/sources/artifacts/patchworkStandard-source.png", "target": "public/assets/artifacts/patchworkStandard.png"},
+      {"id": "map-object:artifact:seamstone", "candidate": "assets/sources/artifacts/seamstone-source.png", "target": "public/assets/artifacts/seamstone.png"},
+      {"id": "map-object:artifact:mirrorshardPendant", "candidate": "assets/sources/artifacts/mirrorshardPendant-source.png", "target": "public/assets/artifacts/mirrorshardPendant.png"},
+      {"id": "map-object:artifact:bellsClapper", "candidate": "assets/sources/artifacts/bellsClapper-source.png", "target": "public/assets/artifacts/bellsClapper.png"},
+      {"id": "map-object:artifact:queensAmber", "candidate": "assets/sources/artifacts/queensAmber-source.png", "target": "public/assets/artifacts/queensAmber.png"},
+      {"id": "map-object:artifact:wolfMothersTorc", "candidate": "assets/sources/artifacts/wolfMothersTorc-source.png", "target": "public/assets/artifacts/wolfMothersTorc.png"},
+      {"id": "map-object:artifact:hornOfTheBroadWorld", "candidate": "assets/sources/artifacts/hornOfTheBroadWorld-source.png", "target": "public/assets/artifacts/hornOfTheBroadWorld.png"},
+      {"id": "map-object:artifact:toyKnightsHeart", "candidate": "assets/sources/artifacts/toyKnightsHeart-source.png", "target": "public/assets/artifacts/toyKnightsHeart.png"},
+      {"id": "map-object:artifact:longSpoon", "candidate": "assets/sources/artifacts/longSpoon-source.png", "target": "public/assets/artifacts/longSpoon.png"},
+      {"id": "map-object:artifact:firstDrum", "candidate": "assets/sources/artifacts/firstDrum-source.png", "target": "public/assets/artifacts/firstDrum.png"},
+      {"id": "map-object:artifact:crownHollowTown", "candidate": "assets/sources/artifacts/crownHollowTown-source.png", "target": "public/assets/artifacts/crownHollowTown.png"},
+      {"id": "map-object:artifact:weathercockIllOmen", "candidate": "assets/sources/artifacts/weathercockIllOmen-source.png", "target": "public/assets/artifacts/weathercockIllOmen.png"},
+      {"id": "map-object:artifact:seamRipper", "candidate": "assets/sources/artifacts/seamRipper-source.png", "target": "public/assets/artifacts/seamRipper.png"},
+      {"id": "map-object:artifact:lastToy", "candidate": "assets/sources/artifacts/lastToy-source.png", "target": "public/assets/artifacts/lastToy.png"}
     ]
   }
 }

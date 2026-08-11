@@ -2106,6 +2106,654 @@
         "chroma_fringe_pixels": 2
       },
       "visual_review": "Literal spareFace subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:sunderedHourglass",
+      "request_id": "collectible:artifact:sunderedHourglass:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "sunderedHourglass",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-76be7e45-f5ed-43fd-8f2c-36e56302977c.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/sunderedHourglass-source.png",
+      "final": "public/assets/artifacts/sunderedHourglass.png",
+      "prompt_sha256": "3a2b341a0f95de7fcfc19ce6a2c1185587f5a22d0349c884231071af08ba3119",
+      "source_sha256": "49523ee480f74fd0936c2e137d6d2229ea8b2148db8ed2530bcb8e67ea4c1228",
+      "final_sha256": "de4490a2dad148754122773f365757c830a3f763f687a3e1a29c6ff4b65fbecf",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 708,
+        "opaque": 316,
+        "partial": 0,
+        "bbox": [
+          8,
+          2,
+          23,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal sunderedHourglass subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:longestCandle",
+      "request_id": "collectible:artifact:longestCandle:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "longestCandle",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-3bb463ff-7c4c-4fac-8b88-93d554cd1930.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/longestCandle-source.png",
+      "final": "public/assets/artifacts/longestCandle.png",
+      "prompt_sha256": "da1c2e6daac10befbb05195b60d2d7ccccb57e2f15f2b634d2bb555938db40f2",
+      "source_sha256": "dbd52d29756fd187576d720a14d55630020daee63f8d9e44e060a1d20c47fdfc",
+      "final_sha256": "d5b2d6ea1c3a1d492faf1a53bcfe1572d887eddf1abc84bf8672f2bfb32affd5",
+      "source_dimensions": [
+        1024,
+        1536
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 914,
+        "opaque": 110,
+        "partial": 0,
+        "bbox": [
+          12,
+          2,
+          19,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the many colored wax repairs reduce to tiny varied pixels at native size, while the improbably tall candle and tiny iron socket remain unmistakable."
+    },
+    {
+      "id": "map-object:artifact:crookedDistaff",
+      "request_id": "collectible:artifact:crookedDistaff:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "crookedDistaff",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-6e2a0463-d27c-4280-a375-6ccf4c11ec6b.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/crookedDistaff-source.png",
+      "final": "public/assets/artifacts/crookedDistaff.png",
+      "prompt_sha256": "70a67ed567b70e1604b5f7ce693c5c89a3b67addc3a72963d0a68390c710e429",
+      "source_sha256": "8040a89dc83e27d63fa4cf6c4368bae2422532af1b854cfc85ea31643d15ac6a",
+      "final_sha256": "67a80d35fca93a9058e1963c0e030e7e257f0876bdf2a77131bd513cc612a465",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 868,
+        "opaque": 156,
+        "partial": 0,
+        "bbox": [
+          8,
+          2,
+          23,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal crookedDistaff subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:bannerOfTheFirstField",
+      "request_id": "collectible:artifact:bannerOfTheFirstField:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "bannerOfTheFirstField",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-602289fa-8c51-47df-a1e6-6a61a63d19e5.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/bannerOfTheFirstField-source.png",
+      "final": "public/assets/artifacts/bannerOfTheFirstField.png",
+      "prompt_sha256": "182fb5346c108e7c3c7ecae26826362ce1f297cdf9039628385e681c1fd104d1",
+      "source_sha256": "e6de6e7392d60559d85cdc798aa1b76033b81da9b4542a8e61b84da484d1649d",
+      "final_sha256": "e694d956c8250d88666a583f6865f01e5584f96e8da5392d34ff84a8149bbe3c",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 715,
+        "opaque": 309,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal bannerOfTheFirstField subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:patchworkStandard",
+      "request_id": "collectible:artifact:patchworkStandard:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "patchworkStandard",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-43990b3a-64a1-464f-9c7b-a306ce6fd5e0.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/patchworkStandard-source.png",
+      "final": "public/assets/artifacts/patchworkStandard.png",
+      "prompt_sha256": "1170e8defd3c1e8c4785e7f6ddd757bee0f4a25671c02c5344525401686e48c2",
+      "source_sha256": "4c4c4e2c6369ab2eb13b2efdaa371af0aab7585270297031bcad2ccd57e77368",
+      "final_sha256": "d939b356fde2f7049fd95b841363caf44e0ac67ece3e7eee2f131bd690e5f2f4",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 576,
+        "opaque": 448,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal patchworkStandard subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:seamstone",
+      "request_id": "collectible:artifact:seamstone:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "seamstone",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-8e99c33f-f5f9-4c1d-b001-fbccdcb9ef9f.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/seamstone-source.png",
+      "final": "public/assets/artifacts/seamstone.png",
+      "prompt_sha256": "d3c1040721605595104d56eb7113bace9c489a3b354a4fc67e8591fcff64d694",
+      "source_sha256": "7ea36e2e81e708a3a10312b7ab47d885d92cdeaca5890f955eb299661d502a9e",
+      "final_sha256": "d290f6c52140a63d8ef490081c5ab03bf976f60547ca349f91e08582f5d4f4d4",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 460,
+        "opaque": 564,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Accepted after source and 3x-final review: four colored mineral seams meet off-center in one smooth grey stone. The bitmap is intentionally instance-neutral; chosenSchool remains data/UI state and is not baked into the art."
+    },
+    {
+      "id": "map-object:artifact:mirrorshardPendant",
+      "request_id": "collectible:artifact:mirrorshardPendant:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "mirrorshardPendant",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-acfeb4cd-161a-45db-929f-f31289b26e41.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/mirrorshardPendant-source.png",
+      "final": "public/assets/artifacts/mirrorshardPendant.png",
+      "prompt_sha256": "c5cc7b213b662c4db41a416e5a6d284ae07fbdc9adf1bab86d925e45c304e5fa",
+      "source_sha256": "9d91676337402d75f883f99bb0ccabb2bf76420155c89cd940ddaf311dc70759",
+      "final_sha256": "b2df6f00261473f4042de1590d8010c2b8758158d951b3e5f8e68b0bc6cbf37c",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 774,
+        "opaque": 250,
+        "partial": 0,
+        "bbox": [
+          6,
+          2,
+          25,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal mirrorshardPendant subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:bellsClapper",
+      "request_id": "collectible:artifact:bellsClapper:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "bellsClapper",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-03e37a1b-34e5-45d3-b500-8f704fe8b692.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/bellsClapper-source.png",
+      "final": "public/assets/artifacts/bellsClapper.png",
+      "prompt_sha256": "718ccff7bec0ec883e7617938c3b05ce66729f07b0f6d143f69141a4501d1703",
+      "source_sha256": "dacdfa96fbfb71257ece6f80979b46393b2ea282fa3373d7fb4cbb367dc45863",
+      "final_sha256": "c348cf147d167f72186059347426fefcf650bdc02214c4522118f9bae5cd1cd3",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 861,
+        "opaque": 163,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal bellsClapper subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:queensAmber",
+      "request_id": "collectible:artifact:queensAmber:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "queensAmber",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-09d92b19-aa6a-4b7f-93d8-5deb8e45e42d.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/queensAmber-source.png",
+      "final": "public/assets/artifacts/queensAmber.png",
+      "prompt_sha256": "a27872c3bf450a59f102ae28af98b7f291809bcff6e570a2ea15a4f144dcf26e",
+      "source_sha256": "cd323818fd4c4f207a437389ea79b5f782a669f50e7f614ee8f3c2d9122bd9a2",
+      "final_sha256": "287df6aaf5d829fc4f777d464a0919dfda739ff90017d6b34ba231001e121c12",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 441,
+        "opaque": 583,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 4
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the tiny insect crown is fine detail at native size, while the trapped dark insect silhouette and large honey-amber cabochon remain strongly readable."
+    },
+    {
+      "id": "map-object:artifact:wolfMothersTorc",
+      "request_id": "collectible:artifact:wolfMothersTorc:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "wolfMothersTorc",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-16159dcf-120e-47e3-a9f8-de9304eb7c4a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/wolfMothersTorc-source.png",
+      "final": "public/assets/artifacts/wolfMothersTorc.png",
+      "prompt_sha256": "43e07cd0e2e4046780ea89f71709d7ba39c26b8f1a8ec18db28485c02657acf6",
+      "source_sha256": "8693e4e29b4a54a8bf7ef9b04fd8dfa722f9cbf960091a8e002c6c7d7550c843",
+      "final_sha256": "8a3a04f07f8367eb21c3dbc42258f1dabcdc4727851c9271b852b156b1e3db7e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 737,
+        "opaque": 287,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal wolfMothersTorc subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:hornOfTheBroadWorld",
+      "request_id": "collectible:artifact:hornOfTheBroadWorld:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "hornOfTheBroadWorld",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-23ce09b8-dd9c-46b2-9e48-70c96ac9827c.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/hornOfTheBroadWorld-source.png",
+      "final": "public/assets/artifacts/hornOfTheBroadWorld.png",
+      "prompt_sha256": "5cdf8e4b720169254c0d4d387babd706fc27c80325652ed386c83bdc84705aab",
+      "source_sha256": "2e3a59c292f97d2bbfc33dd45a967cdaa4a94b680df93ae2a18254121cad4eb8",
+      "final_sha256": "958129ff906fd75d782e472d305a8badcee57d3da4479b7775edc69921968111",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 581,
+        "opaque": 443,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal hornOfTheBroadWorld subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:toyKnightsHeart",
+      "request_id": "collectible:artifact:toyKnightsHeart:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "toyKnightsHeart",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-79cb9e91-859d-43a4-bd5b-ea816d422f86.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/toyKnightsHeart-source.png",
+      "final": "public/assets/artifacts/toyKnightsHeart.png",
+      "prompt_sha256": "c79129180bd61bcbc57680795bda63f8521ced6dbb9b5556a23c9ebce0a5c63c",
+      "source_sha256": "81b7246afc268763c4a201755c42f97ccee2b878b7c7ff8a8968fac22504ea81",
+      "final_sha256": "0e3a081e10b1180c815a4fc7d94f45d97bd1fa33d3eb9ae3fac2c23b004c5370",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 605,
+        "opaque": 419,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal toyKnightsHeart subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:longSpoon",
+      "request_id": "collectible:artifact:longSpoon:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "longSpoon",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-931d5fbe-24a9-4274-8f97-a1bc8f8b046a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/longSpoon-source.png",
+      "final": "public/assets/artifacts/longSpoon.png",
+      "prompt_sha256": "ff16359f25a616631214953c7807459c1c667e93b3dd5162d410e97a700b82aa",
+      "source_sha256": "8f2061ccaa3020b73817faab05a28dd619ff56b186ed426058f04c223caf6972",
+      "final_sha256": "00f356dcd36584557d9eca9297b70a406949104dd595b963dbbc2cfd95c4d1f7",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 852,
+        "opaque": 172,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal longSpoon subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:firstDrum",
+      "request_id": "collectible:artifact:firstDrum:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "firstDrum",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-54dea506-3a69-44d4-96a1-232b07beb1f1.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/firstDrum-source.png",
+      "final": "public/assets/artifacts/firstDrum.png",
+      "prompt_sha256": "fc8bf394153ee2ce60e67732d1bddefd590833852b56b01f22049c89a6325cd0",
+      "source_sha256": "10d523c79b5930f994a27bcb57d47f387089a1e0e4137063d9a905d93eb1494b",
+      "final_sha256": "17dc970a961264c320c77306dfce03a438926fdf8828edde8660395913d421b2",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 408,
+        "opaque": 616,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal firstDrum subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:crownHollowTown",
+      "request_id": "collectible:artifact:crownHollowTown:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "crownHollowTown",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-d104dbe7-11d7-463b-8784-1fa156b5fe56.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/crownHollowTown-source.png",
+      "final": "public/assets/artifacts/crownHollowTown.png",
+      "prompt_sha256": "c86f9dec298f267b11d2dbed59ca225426a76929b55e1bf835e90f04ef782033",
+      "source_sha256": "5437b03a3cfde6885951512f52deef87e237d0708e58d3e1ba0244104e47615e",
+      "final_sha256": "3bd59d34f50a775c1f01eed658f9536983d1f73baff30eae025bddcaecc76e37",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 564,
+        "opaque": 460,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 3
+      },
+      "visual_review": "Literal crownHollowTown subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:weathercockIllOmen",
+      "request_id": "collectible:artifact:weathercockIllOmen:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "weathercockIllOmen",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-dd78dcb2-ec33-441b-a5fc-16950da17544.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/weathercockIllOmen-source.png",
+      "final": "public/assets/artifacts/weathercockIllOmen.png",
+      "prompt_sha256": "e41a42fcfb4446849ba0001a1588fbd19139185f4c268bad9ec3c00e7528d44a",
+      "source_sha256": "58007fcdf3efd56c967820185ff0796e58484c2409e7a67e288fb924c12a9ad8",
+      "final_sha256": "bfae2a0c09d4c2f7d7a616c2d970c6d851add3350f71acb6f48cefb3fbcae43e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 837,
+        "opaque": 187,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the four colored wind vanes become small busy accents at native size, while the crooked black weathercock and red eye bead keep a distinctive silhouette."
+    },
+    {
+      "id": "map-object:artifact:seamRipper",
+      "request_id": "collectible:artifact:seamRipper:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "seamRipper",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-998ce101-46be-47f3-9e35-f0bf19edc365.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/seamRipper-source.png",
+      "final": "public/assets/artifacts/seamRipper.png",
+      "prompt_sha256": "e72bfccdbb20b650bd40af51eda614a52e284a2a4d7900ff79fd2101b081e26d",
+      "source_sha256": "3a64c1ba6ab377c0d66858726b2f416b1302723ebd19210b65f71f34626d4b42",
+      "final_sha256": "1267c37181e873caf0f4bf4d3aa72d2d5108782756fa6797642a6d27df60de92",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 764,
+        "opaque": 260,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal seamRipper subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:lastToy",
+      "request_id": "collectible:artifact:lastToy:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "lastToy",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c/exec-a877679b-6922-41b8-8d99-78a45cceaaf4.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/lastToy-source.png",
+      "final": "public/assets/artifacts/lastToy.png",
+      "prompt_sha256": "34cd99f5bd2b3d3aea167a33e592c4b29861f7242c217be127291f17b2170a4a",
+      "source_sha256": "fa4fad2d621259c4a7a96d29727da16e9d78d7001dc03568a1b79eb429c919f1",
+      "final_sha256": "28075ce275be7f50d5fc59fa69734be7271a5f6f57d70328bf2cafbc501ff2a2",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 635,
+        "opaque": 389,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 6
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the lovingly repaired leg becomes a few banded pixels at native size, while the worn wooden horse, cream paint, red saddle, and single wheel remain clear."
     }
   ]
 }

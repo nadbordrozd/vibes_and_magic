@@ -99,6 +99,24 @@ const artifactCalls: Record<string, string> = {
   unsentLetter: 'exec-5c4ca09b-15c2-4571-9eec-30932925910d.png',
   mothEatenMap: 'exec-946d6243-87a6-4ef2-aaf9-b0e9d1a6ab6f.png',
   spareFace: 'exec-f837110a-d7ee-40e2-aa08-729b8dd03fae.png',
+  sunderedHourglass: 'exec-76be7e45-f5ed-43fd-8f2c-36e56302977c.png',
+  longestCandle: 'exec-3bb463ff-7c4c-4fac-8b88-93d554cd1930.png',
+  crookedDistaff: 'exec-6e2a0463-d27c-4280-a375-6ccf4c11ec6b.png',
+  bannerOfTheFirstField: 'exec-602289fa-8c51-47df-a1e6-6a61a63d19e5.png',
+  patchworkStandard: 'exec-43990b3a-64a1-464f-9c7b-a306ce6fd5e0.png',
+  seamstone: 'exec-8e99c33f-f5f9-4c1d-b001-fbccdcb9ef9f.png',
+  mirrorshardPendant: 'exec-acfeb4cd-161a-45db-929f-f31289b26e41.png',
+  bellsClapper: 'exec-03e37a1b-34e5-45d3-b500-8f704fe8b692.png',
+  queensAmber: 'exec-09d92b19-aa6a-4b7f-93d8-5deb8e45e42d.png',
+  wolfMothersTorc: 'exec-16159dcf-120e-47e3-a9f8-de9304eb7c4a.png',
+  hornOfTheBroadWorld: 'exec-23ce09b8-dd9c-46b2-9e48-70c96ac9827c.png',
+  toyKnightsHeart: 'exec-79cb9e91-859d-43a4-bd5b-ea816d422f86.png',
+  longSpoon: 'exec-931d5fbe-24a9-4274-8f97-a1bc8f8b046a.png',
+  firstDrum: 'exec-54dea506-3a69-44d4-96a1-232b07beb1f1.png',
+  crownHollowTown: 'exec-d104dbe7-11d7-463b-8784-1fa156b5fe56.png',
+  weathercockIllOmen: 'exec-dd78dcb2-ec33-441b-a5fc-16950da17544.png',
+  seamRipper: 'exec-998ce101-46be-47f3-9e35-f0bf19edc365.png',
+  lastToy: 'exec-a877679b-6922-41b8-8d99-78a45cceaaf4.png',
 };
 
 const magenta = new Set(['scrollSour', 'haresHeel', 'waybread']);
@@ -158,6 +176,46 @@ Avoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, 
 }
 
 function artifactPromptFor(input: CollectibleInput): string {
+  if (input.group === 'relic') {
+    const subjectConstraints: Record<string, string> = {
+      seamstone: ' the four mineral seams are intrinsic physical detail only and do not encode or select any gameplay school;',
+      mirrorshardPendant: ' render the mirror as opaque stylized silver-blue pixel clusters with one sharp blue-white wedge, never see-through green;',
+      queensAmber: ' render amber as opaque stylized honey-gold pixel clusters with the insect silhouette clearly inside, never see-through green;',
+      hornOfTheBroadWorld: ' the insect horn is an instrument body with a clearly fitted blowing mouthpiece;',
+      crownHollowTown: ' the house fronts form the crown itself and are not a town scene;',
+      lastToy: ' the wheel belongs to the toy horse and the repaired broken leg remains visible;',
+    };
+    const avoid: Record<string, string> = {
+      longestCandle: 'flame, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      bannerOfTheFirstField: 'text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      patchworkStandard: 'text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      seamstone: 'chosen-school marker, school icon, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      mirrorshardPendant: 'reflected scene, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      bellsClapper: 'bell, full bell body, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      queensAmber: 'loose insect outside the amber, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      wolfMothersTorc: 'living wolves, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      hornOfTheBroadWorld: 'living insect, ordinary mammal horn, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      toyKnightsHeart: 'anatomical flesh heart, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      longSpoon: 'food, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      firstDrum: 'drumsticks, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      crownHollowTown: 'ruined town, terrain, streets, text, letters, writing, glyphs, UI, frame, badge, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      weathercockIllOmen: 'roof, building, compass letters, cardinal direction labels, text, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      seamRipper: 'fabric panel, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+      lastToy: 'living horse, rider, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.',
+    };
+    const defaultAvoid = 'text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.';
+    const readable = input.catalogKey === 'crownHollowTown'
+      ? 'strong readable crown silhouette' : 'strong readable silhouette';
+    return `Use case: stylized-concept
+Asset type: production collectible Relic artifact sprite for a storybook strategy game
+Primary request: Create exactly one isolated artifact: ${input.subject}
+Scene/backdrop: perfectly flat solid ${input.chromaKey} chroma-key background for local background removal.
+Style/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.
+Composition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a ${readable} when reduced to 32x32.
+Lighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.
+Constraints: preserve the exact literal artifact subject;${subjectConstraints[input.catalogKey] ?? ''} perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use ${input.chromaKey} in the subject; opaque crisp-edged object suitable for chroma removal.
+Avoid: ${avoid[input.catalogKey] ?? defaultAvoid}`;
+  }
   if (input.catalogKey === 'skirmishersBlade') return `Use case: stylized-concept
 Asset type: production collectible Vanilla artifact sprite for a storybook strategy game
 Primary request: Create exactly one isolated artifact: A short practical polished steel sword whose blade has a leaf-shaped outline only, with a leather grip, a clear small metal crossguard, and one nick near the tip. The blade material must unmistakably read as steel or iron, never as a botanical leaf.
@@ -288,6 +346,7 @@ const itemInputs = Object.values(ITEMS).map((item): CollectibleInput => ({
 }));
 const artifactSession = '/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451';
 const charmArtifactSession = '/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942';
+const relicArtifactSession = '/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c';
 const artifactMagenta = new Set([
   'hoodOfTheHedgeMage', 'wayfarersMantle', 'bootsOfTheDrover', 'surveyorsBoots',
   'ashwoodBracer', 'quietHorseshoe', 'saltCrustedCompass', 'purseOfThePrudentToad',
@@ -303,6 +362,11 @@ const artifactVisualReviews: Record<string, string> = {
   candleSnuffersRing: 'Accepted after source and 3x-final review. Borderline: the crossed candle-snuffer setting is tiny at native size, while the blackened silver ring silhouette and paired conical cups remain readable.',
   hexKeepersLocket: 'Accepted after source and 3x-final review. Borderline: the chain under glass becomes a dark linked stripe at 32x32, while the plum enamel locket silhouette stays unmistakable.',
   mothEatenMap: 'Accepted after source and 3x-final review. Borderline: the stitched red route fragment is only a few pixels at native size, while the folded parchment and moth holes remain strongly distinct.',
+  longestCandle: 'Accepted after source and 3x-final review. Borderline: the many colored wax repairs reduce to tiny varied pixels at native size, while the improbably tall candle and tiny iron socket remain unmistakable.',
+  seamstone: 'Accepted after source and 3x-final review: four colored mineral seams meet off-center in one smooth grey stone. The bitmap is intentionally instance-neutral; chosenSchool remains data/UI state and is not baked into the art.',
+  queensAmber: 'Accepted after source and 3x-final review. Borderline: the tiny insect crown is fine detail at native size, while the trapped dark insect silhouette and large honey-amber cabochon remain strongly readable.',
+  weathercockIllOmen: 'Accepted after source and 3x-final review. Borderline: the four colored wind vanes become small busy accents at native size, while the crooked black weathercock and red eye bead keep a distinctive silhouette.',
+  lastToy: 'Accepted after source and 3x-final review. Borderline: the lovingly repaired leg becomes a few banded pixels at native size, while the worn wooden horse, cream paint, red saddle, and single wheel remain clear.',
 };
 const vanillaArtifactInputs = Object.values(ARTIFACTS)
   .filter((artifact) => artifact.class === 'vanilla')
@@ -322,11 +386,23 @@ const charmArtifactInputs = Object.values(ARTIFACTS)
     chromaKey: artifactMagenta.has(artifact.id) ? '#FF00FF' : '#00FF00',
     builtInOutput: `${charmArtifactSession}/${artifactCalls[artifact.id]}`,
   }));
+const relicArtifactInputs = Object.values(ARTIFACTS)
+  .filter((artifact) => artifact.class === 'relic')
+  .map((artifact): CollectibleInput => ({
+    catalogKey: artifact.id,
+    subject: ARTIFACT_SPRITE_SUBJECTS[artifact.id],
+    group: artifact.class,
+    chromaKey: ['patchworkStandard', 'seamstone', 'seamRipper'].includes(artifact.id)
+      ? '#FF00FF' : '#00FF00',
+    builtInOutput: `${relicArtifactSession}/${artifactCalls[artifact.id]}`,
+  }));
 const selectionsPath = resolve(root, 'assets/selections.json');
 const family = process.argv.includes('--artifact') ? 'artifact' : 'item';
-const artifactClass = process.argv.includes('--charm') ? 'charm' : 'vanilla';
+const artifactClass = process.argv.includes('--relic') ? 'relic'
+  : process.argv.includes('--charm') ? 'charm' : 'vanilla';
 const selectedInputs = family === 'artifact'
-  ? artifactClass === 'charm' ? charmArtifactInputs : vanillaArtifactInputs
+  ? artifactClass === 'relic' ? relicArtifactInputs
+    : artifactClass === 'charm' ? charmArtifactInputs : vanillaArtifactInputs
   : itemInputs;
 writeCollectibleJob(
   family, selectedInputs, family === 'artifact' ? artifactPromptFor : promptFor,
