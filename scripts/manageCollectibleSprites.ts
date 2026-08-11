@@ -117,6 +117,20 @@ const artifactCalls: Record<string, string> = {
   weathercockIllOmen: 'exec-dd78dcb2-ec33-441b-a5fc-16950da17544.png',
   seamRipper: 'exec-998ce101-46be-47f3-9e35-f0bf19edc365.png',
   lastToy: 'exec-a877679b-6922-41b8-8d99-78a45cceaaf4.png',
+  leadenCrown: 'exec-b32b2ac3-688a-4e15-8876-de23f0493e35.png',
+  hungryBlade: 'exec-8dafe67c-21a8-4790-ac67-1a50fc01dd44.png',
+  beggarsRing: 'exec-99ad3684-0845-4ccf-915a-a09a6cb966c5.png',
+  patternlessCoat: 'exec-90e916d7-0e98-4e14-b35a-9d1e4c2a6b41.png',
+  tailorsNeedle: 'exec-48f0d5a9-7dce-4981-b1de-ce2a5dfc04dc.png',
+  goldenThread: 'exec-310478ca-5108-4d9b-8017-f8d5d61f4abe.png',
+  tailorsThimble: 'exec-a16d1048-3fe4-4bd5-8ac4-58115bd42655.png',
+  patternbook: 'exec-1901505a-189b-439c-acce-84115c2e4aac.png',
+  knucklebonesOfTheSaint: 'exec-b1d81501-1c5a-4458-9d0b-f0436ecb9749.png',
+  drumOfTheDeepGrass: 'exec-d578e859-1893-41e5-9dcf-73482c2fc568.png',
+  censerOfStillness: 'exec-a31b459c-dc69-46cb-91ed-4b8e8a18262c.png',
+  pocketSundial: 'exec-459b05f1-99ac-4231-a352-ae6fbc84b31e.png',
+  ironNail: 'exec-33afff14-8039-469e-9bac-2bf2f302579b.png',
+  mirrorMask: 'exec-ae2bdc8f-f5ae-419c-8384-ef9e83aa7c32.png',
 };
 
 const magenta = new Set(['scrollSour', 'haresHeel', 'waybread']);
@@ -175,7 +189,37 @@ Constraints: perfectly uniform flat chroma background with no gradient, texture,
 Avoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.`;
 }
 
+function remainingArtifactPromptFor(input: CollectibleInput): string {
+  const label = input.group === 'kit' ? 'Kit'
+    : input.group === 'burden' ? 'Burden' : 'Trinket';
+  const semantic = input.group === 'burden'
+    ? 'Burden removal condition and equipment lock are semantic data only; do not depict chains, locks, removal instructions, penalty symbols, or class/slot markers.'
+    : input.group === 'kit'
+      ? 'Kit ownership, assembly, and progression are semantic data only; do not depict completion effects, ownership color, progress markers, or class/slot markers.'
+      : 'Trinket behavior and spent/trigger state are semantic data only; do not depict effect symbols, state variants, rarity, or class/slot markers.';
+  const subjectAvoid: Record<string, string> = {
+    censerOfStillness: 'smoke, incense cloud, open lid',
+    pocketSundial: 'numbers, compass letters, inscriptions, clock hands',
+    ironNail: 'multiple nails, hammer, wood, spent or broken state',
+    mirrorMask: 'face, wearer, reflected person, reflected scene, full helmet',
+  };
+  const targetedAvoid = subjectAvoid[input.catalogKey]
+    ? `${subjectAvoid[input.catalogKey]}, ` : '';
+  return `Use case: stylized-concept
+Asset type: production collectible ${label} artifact sprite for a storybook strategy game
+Primary request: Create exactly one isolated artifact: ${input.subject}
+Scene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.
+Style/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.
+Composition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.
+Lighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.
+Constraints: preserve the exact literal artifact subject; ${semantic} Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.
+Avoid: ${targetedAvoid}text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.`;
+}
+
 function artifactPromptFor(input: CollectibleInput): string {
+  if (['burden', 'kit', 'trinket'].includes(input.group)) {
+    return remainingArtifactPromptFor(input);
+  }
   if (input.group === 'relic') {
     const subjectConstraints: Record<string, string> = {
       seamstone: ' the four mineral seams are intrinsic physical detail only and do not encode or select any gameplay school;',
@@ -347,6 +391,7 @@ const itemInputs = Object.values(ITEMS).map((item): CollectibleInput => ({
 const artifactSession = '/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451';
 const charmArtifactSession = '/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942';
 const relicArtifactSession = '/home/nadbor/.codex/generated_images/019fef27-6dba-7d31-88fb-5b1abaa8342c';
+const remainingArtifactSession = '/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b';
 const artifactMagenta = new Set([
   'hoodOfTheHedgeMage', 'wayfarersMantle', 'bootsOfTheDrover', 'surveyorsBoots',
   'ashwoodBracer', 'quietHorseshoe', 'saltCrustedCompass', 'purseOfThePrudentToad',
@@ -367,6 +412,20 @@ const artifactVisualReviews: Record<string, string> = {
   queensAmber: 'Accepted after source and 3x-final review. Borderline: the tiny insect crown is fine detail at native size, while the trapped dark insect silhouette and large honey-amber cabochon remain strongly readable.',
   weathercockIllOmen: 'Accepted after source and 3x-final review. Borderline: the four colored wind vanes become small busy accents at native size, while the crooked black weathercock and red eye bead keep a distinctive silhouette.',
   lastToy: 'Accepted after source and 3x-final review. Borderline: the lovingly repaired leg becomes a few banded pixels at native size, while the worn wooden horse, cream paint, red saddle, and single wheel remain clear.',
+  leadenCrown: 'Accepted after source and 3x-final review: the low heavy lead band, four dominant blunt points, and strained red lining remain readable without a Burden or lock marker.',
+  hungryBlade: 'Accepted after source and 3x-final review: the broad dark iron sword, restrained tooth-like edge, red grip, and empty brass ration hook remain distinct.',
+  beggarsRing: 'Accepted after source and 3x-final review: the battered thin copper band and bright blue glass pebble retain a strong ring silhouette without penalty or removal imagery.',
+  patternlessCoat: 'Accepted after source and 3x-final review. Borderline: panel and button misalignment compresses into asymmetric dark folds at native size, while the folded charcoal coat and pale lining remain clear.',
+  tailorsNeedle: 'Accepted after source and 3x-final review. Borderline: the weapon-like red grip makes the native silhouette sword-like, while the needle eye and gold thread loop preserve the literal sewing-needle identity.',
+  goldenThread: 'Accepted after source and 3x-final review: bright gold thread, dark wooden bobbin, and one loose looping strand remain unambiguous without Kit progression imagery.',
+  tailorsThimble: 'Accepted after source and 3x-final review: the polished gold thimble and spiral dimple pattern remain distinct at native size.',
+  patternbook: 'Accepted after source and 3x-final review. Borderline: the blank geometric paper patterns reduce to pale stepped tabs, while the thick cream tailoring book, red binding, and brass corners remain unmistakable.',
+  knucklebonesOfTheSaint: 'Accepted after source and 3x-final review. Borderline: the gold repair is only a few pixels at native size, while all four ivory knucklebones and red drawstring pouch remain readable.',
+  drumOfTheDeepGrass: 'Accepted after source and 3x-final review: the low ochre hide drum, ashwood rim, and red zigzag binding retain a clean distinct silhouette.',
+  censerOfStillness: 'Accepted after source and 3x-final review: the small closed silver censer, short chain, and blue enamel vent remain readable with no smoke or behavior marker.',
+  pocketSundial: 'Accepted after source and 3x-final review: the hinged brass case, open blank dial, and triangular gnomon remain clear without numbers or prebattle-cast imagery.',
+  ironNail: 'Accepted after source and 3x-final review. Borderline: the cream binding is a narrow light band at native size, while the single heavy hand-forged black nail remains unmistakable and unspent.',
+  mirrorMask: 'Accepted after source and 3x-final review. Borderline: the cracked reflected edge becomes fine dark pixels at native size, while the smooth silver half-mask and dark eye holes remain clear without a wearer or reflect-effect marker.',
 };
 const vanillaArtifactInputs = Object.values(ARTIFACTS)
   .filter((artifact) => artifact.class === 'vanilla')
@@ -396,13 +455,27 @@ const relicArtifactInputs = Object.values(ARTIFACTS)
       ? '#FF00FF' : '#00FF00',
     builtInOutput: `${relicArtifactSession}/${artifactCalls[artifact.id]}`,
   }));
+const remainingArtifactInputs = Object.values(ARTIFACTS)
+  .filter((artifact) => ['burden', 'kit', 'trinket'].includes(artifact.class))
+  .map((artifact): CollectibleInput => ({
+    catalogKey: artifact.id,
+    subject: ARTIFACT_SPRITE_SUBJECTS[artifact.id],
+    group: artifact.class,
+    chromaKey: '#00FF00',
+    builtInOutput: `${remainingArtifactSession}/${artifactCalls[artifact.id]}`,
+  }));
 const selectionsPath = resolve(root, 'assets/selections.json');
 const family = process.argv.includes('--artifact') ? 'artifact' : 'item';
-const artifactClass = process.argv.includes('--relic') ? 'relic'
-  : process.argv.includes('--charm') ? 'charm' : 'vanilla';
+const artifactClass = process.argv.includes('--trinket') ? 'trinket'
+  : process.argv.includes('--kit') ? 'kit'
+    : process.argv.includes('--burden') ? 'burden'
+      : process.argv.includes('--relic') ? 'relic'
+        : process.argv.includes('--charm') ? 'charm' : 'vanilla';
 const selectedInputs = family === 'artifact'
-  ? artifactClass === 'relic' ? relicArtifactInputs
-    : artifactClass === 'charm' ? charmArtifactInputs : vanillaArtifactInputs
+  ? ['burden', 'kit', 'trinket'].includes(artifactClass)
+    ? remainingArtifactInputs.filter((input) => input.group === artifactClass)
+    : artifactClass === 'relic' ? relicArtifactInputs
+      : artifactClass === 'charm' ? charmArtifactInputs : vanillaArtifactInputs
   : itemInputs;
 writeCollectibleJob(
   family, selectedInputs, family === 'artifact' ? artifactPromptFor : promptFor,

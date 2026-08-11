@@ -22,7 +22,7 @@ Reusable collectible jobs additionally declare `collectible_family` at job and r
 `catalog_key`, `catalog_group`, and `chroma_key` on every request. Their larger request arrays are
 catalog batches, but each row still represents exactly one separate built-in call and one selected
 source—never an `n`-variation sheet. `scripts/buildCollectibleSprites.py` accepts this generic family
-shape so later artifact catalogs use the same bake/provenance contract without an ItemId-only type.
+shape so all six artifact classes use the same bake/provenance contract without an ItemId-only type.
 
 ```json
 {

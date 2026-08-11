@@ -44,7 +44,7 @@ const ARTIFACT_GROUP_ORDER: ArtifactClass[] = [
   'vanilla', 'charm', 'relic', 'burden', 'kit', 'trinket',
 ];
 
-/** Exhaustive artifact disposition; installed catalog batches use native sprites, others stay explicit. */
+/** Exhaustive artifact disposition; the complete catalog is native and the guard fallback stays explicit. */
 export const EDITOR_ARTIFACT_CATALOG: readonly EditorArtifactCatalogEntry[] =
   (Object.values(ARTIFACTS) as ArtifactDefinition[]).map((artifact) => ({
     artifact,

@@ -1236,11 +1236,30 @@ padding, and a removable flat green or magenta key. Sources live in `assets/sour
 hard-alpha finals in `public/assets/items/`, and exact prompts/call paths/hashes/selections in
 `assets/jobs/item-sprites-built-in.json` and `assets/provenance/item-sprite-generation.json`.
 
-`scripts/buildCollectibleSprites.py` is family-generic for later artifact batches. It removes the
+`scripts/buildCollectibleSprites.py` is family-generic across items and all six artifact classes. It removes the
 declared chroma locally, crops, nearest-neighbour reduces, applies a compact adaptive palette and
 hard alpha, then emits group contact sheets under `.pixel-work/review/collectibles/item/`. Contact
 review rejected the first Scroll of Quiet because a full bell dominated its parchment; that source
 is retained under `assets/sources/items/discarded/` and the selected targeted retry is parchment-first.
+
+## Complete canonical artifact family — built-in sources
+
+All 90 canonical artifacts were generated with one separate built-in image-generation call per
+ArtifactId: 36 Vanilla, 22 Charm, 18 Relic, 4 Burden, 4 Kit, and 6 migrated Trinket sprites. Each
+active request embeds the exact literal subject from `assets/adventureSpriteInventory.ts` plus the
+shared bright cartoony storybook pixel treatment, high-oblique non-isometric object view,
+south-east key light, generous padding, flat green or magenta key, and text/UI/terrain/class/slot
+marker exclusions. Sources live in `assets/sources/artifacts/`, native hard-alpha finals in
+`public/assets/artifacts/`, and the cumulative prompts/call paths/hashes/selections in
+`assets/jobs/artifact-sprites-built-in.json` and
+`assets/provenance/artifact-sprite-generation.json`.
+
+The generic deterministic bake emits one contact sheet per artifact class under
+`.pixel-work/review/collectibles/artifact/`. The first Skirmisher's Blade source was rejected because
+its green veined blade read as a botanical leaf; that source, prompt, output, hashes, and rejection
+remain retained under `assets/sources/artifacts/discarded/`. No other artifact required a retry.
+Burden removal and lock, Kit ownership and assembly progress, Relic chosen-school state, and
+Trinket behavior or spent state remain semantic data rather than bitmap variants.
 
 ## Original base and bridge terrain — HoMM2 image retirement
 

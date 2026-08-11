@@ -170,9 +170,22 @@ export const RELIC_ARTIFACT_IDS = (Object.values(ARTIFACTS)
   .filter((artifact) => artifact.class === 'relic')
   .map((artifact) => artifact.id)) as readonly ArtifactId[];
 
-/** Catalog-derived native sprite coverage; later classes append without changing earlier sets. */
+export const BURDEN_ARTIFACT_IDS = (Object.values(ARTIFACTS)
+  .filter((artifact) => artifact.class === 'burden')
+  .map((artifact) => artifact.id)) as readonly ArtifactId[];
+
+export const KIT_ARTIFACT_IDS = (Object.values(ARTIFACTS)
+  .filter((artifact) => artifact.class === 'kit')
+  .map((artifact) => artifact.id)) as readonly ArtifactId[];
+
+export const TRINKET_ARTIFACT_IDS = (Object.values(ARTIFACTS)
+  .filter((artifact) => artifact.class === 'trinket')
+  .map((artifact) => artifact.id)) as readonly ArtifactId[];
+
+/** Catalog-derived complete native sprite coverage in published batch order. */
 export const INSTALLED_ARTIFACT_IDS = [
   ...VANILLA_ARTIFACT_IDS, ...CHARM_ARTIFACT_IDS, ...RELIC_ARTIFACT_IDS,
+  ...BURDEN_ARTIFACT_IDS, ...KIT_ARTIFACT_IDS, ...TRINKET_ARTIFACT_IDS,
 ] as readonly ArtifactId[];
 
 export const EQUIPMENT_SLOTS: readonly EquipmentSlotId[] = [

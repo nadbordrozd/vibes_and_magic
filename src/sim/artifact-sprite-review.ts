@@ -1,6 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import puppeteer from 'puppeteer-core';
-import { RELIC_ARTIFACT_IDS } from '../content/artifacts';
+import { INSTALLED_ARTIFACT_IDS } from '../content/artifacts';
 import { createGame } from '../core/game';
 import { actionSave } from '../ui/persistence';
 
@@ -14,16 +14,16 @@ const state = createGame({ seed: 515102, mapId: 'grand-muster', difficulty: 'nor
   p1: 'human', p2: 'dormant' });
 const hero = state.players.p1.hero!;
 hero.artifacts.equipment = {
-  head: { id: 'crownHollowTown' }, cloak: { id: 'bannerOfTheFirstField' },
-  amulet: { id: 'seamstone', chosenSchool: 'rite' }, weapon: { id: 'seamRipper' },
-  shield: null, armor: null,
-  ring1: { id: 'queensAmber' }, ring2: null,
-  boots: null, misc1: { id: 'hornOfTheBroadWorld' },
-  misc2: { id: 'toyKnightsHeart' },
+  head: { id: 'leadenCrown' }, cloak: { id: 'bannerOfTheFirstField' },
+  amulet: { id: 'goldenThread' }, weapon: { id: 'tailorsNeedle' },
+  shield: { id: 'yeomansBuckler' }, armor: { id: 'patternlessCoat' },
+  ring1: { id: 'beggarsRing' }, ring2: { id: 'tailorsThimble' },
+  boots: { id: 'sevenLeagueBoots' }, misc1: { id: 'patternbook' },
+  misc2: { id: 'mirrorMask' },
 };
 const equipped = new Set(Object.values(hero.artifacts.equipment).flatMap((artifact) =>
   artifact ? [artifact.id] : []));
-hero.artifacts.backpack = RELIC_ARTIFACT_IDS
+hero.artifacts.backpack = INSTALLED_ARTIFACT_IDS
   .filter((id) => !equipped.has(id)).map((id) => ({ id }));
 state.pendingChoice = null;
 const persisted = actionSave(state);
@@ -58,23 +58,35 @@ try {
     button.click();
   });
   await page.waitForSelector('.artifact-paper-doll .artifact-sprite');
+  await page.waitForFunction((expected) => {
+    const images = [...document.querySelectorAll<HTMLImageElement>(
+      '.artifact-paper-doll .artifact-sprite',
+    )];
+    return images.length === expected && images.every((image) =>
+      image.complete && image.naturalWidth === 32 && image.naturalHeight === 32);
+  }, { timeout: 30_000 }, INSTALLED_ARTIFACT_IDS.length);
   const audit = await page.evaluate(() => ({
     sprites: document.querySelectorAll('.artifact-paper-doll .artifact-sprite').length,
     semanticCards: document.querySelectorAll('.artifact-paper-doll [data-inspect-kind="artifact"]').length,
+    fallbacks: document.querySelectorAll('.artifact-paper-doll .artifact-sprite-fallback').length,
+    broken: [...document.querySelectorAll<HTMLImageElement>('.artifact-paper-doll .artifact-sprite')]
+      .filter((image) => !image.complete || image.naturalWidth !== 32 || image.naturalHeight !== 32)
+      .map((image) => image.src),
     rootOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
   }));
-  if (audit.sprites !== RELIC_ARTIFACT_IDS.length
-      || audit.semanticCards !== RELIC_ARTIFACT_IDS.length || audit.rootOverflow > 2) {
+  if (audit.sprites !== INSTALLED_ARTIFACT_IDS.length
+      || audit.semanticCards !== INSTALLED_ARTIFACT_IDS.length || audit.fallbacks
+      || audit.broken.length || audit.rootOverflow > 2) {
     throw new Error(`Artifact desktop audit failed: ${JSON.stringify(audit)}`);
   }
-  await page.screenshot({ path: `${output}/relic-equipment-desktop.png`, fullPage: true });
+  await page.screenshot({ path: `${output}/complete-equipment-desktop.png`, fullPage: true });
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   const narrowOverflow = await page.evaluate(() =>
     document.documentElement.scrollWidth - document.documentElement.clientWidth);
   if (narrowOverflow > 2) throw new Error(`Artifact narrow layout overflows by ${narrowOverflow}px`);
-  await page.screenshot({ path: `${output}/relic-equipment-390.png`, fullPage: true });
+  await page.screenshot({ path: `${output}/complete-equipment-390.png`, fullPage: true });
   await page.$eval('.hero-details-body', (body) => { body.scrollTop = body.scrollHeight; });
-  await page.screenshot({ path: `${output}/relic-backpack-390.png`, fullPage: true });
+  await page.screenshot({ path: `${output}/complete-backpack-390.png`, fullPage: true });
   console.log(`Artifact sprite browser review: ${audit.sprites} sprites, desktop + 390px, no overflow`);
 } finally {
   await browser.close();

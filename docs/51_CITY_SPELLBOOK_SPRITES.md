@@ -1,9 +1,9 @@
 # 51 — Cities, spellbook, and complete collectible sprites
 
 Status: city mechanics, presentation, editor compatibility, built-in-map migration, shared
-combat/adventure spellbook, the complete 37-item collectible bitmap family, and the 36-sprite
-Vanilla, 22-sprite Charm, and 18-sprite Relic artifact batches implemented 2026-08-11; later
-artifact classes remain in production. This document extends S02, S03, S05, S07, S08, and S09 and
+combat/adventure spellbook, the complete 37-item collectible bitmap family, and all 90 artifact
+sprites implemented 2026-08-11: 36 Vanilla, 22 Charm, 18 Relic, 4 Burden, 4 Kit, and 6 Trinket.
+This document extends S02, S03, S05, S07, S08, and S09 and
 supersedes the 3×2 castle ground-contact clauses in docs 31, 32, 37, and 50. It also supersedes the
 spell-upgrade presentation wording in docs 34, 44, and 46 and the player-facing settlement word
 “Castle” wherever it remains in an earlier live work order. Existing internal `Castle` and `plus`
@@ -183,7 +183,7 @@ Current audited coverage at contract time is:
 
 | Family | Catalog target | Installed native sprite | Gap |
 |---|---:|---:|---:|
-| Artifacts | 90 | 76 Vanilla + Charm + Relic | 14 |
+| Artifacts | 90 | 90 | 0 |
 | Items/consumables | 37 | 37 | 0 |
 | Faction city designs conforming to 5×2 | 6 | 6 | 0 |
 | Resource pickups | 4 | 4 | 0 |
@@ -195,8 +195,9 @@ because their earlier camera/light contract did not match this work order. Exist
 remain useful historical visual provenance; the six new 5×2 designs are the installed city family.
 
 The first artifact batch installs all 36 catalog definitions whose class is `vanilla`. The second
-installs all 22 definitions whose class is `charm`, and the third installs all 18 definitions whose
-class is `relic`; cumulative native coverage is therefore 76/90.
+installs all 22 definitions whose class is `charm`, the third installs all 18 definitions whose
+class is `relic`, and the final production pass installs 4 Burdens, 4 Kit pieces, and 6 migrated
+Trinkets; cumulative native coverage is therefore 90/90.
 Each selected source came from a separate built-in image-generation call and bakes through the same
 generic collectible pipeline as items. The active incremental job is
 `assets/jobs/artifact-sprites-built-in.json`, provenance is
@@ -204,9 +205,11 @@ generic collectible pipeline as items. The active incremental job is
 `assets/sources/artifacts/`, and native hard-alpha finals are under `public/assets/artifacts/`.
 The rejected first Skirmisher's Blade source remains in the `discarded/` source folder with its
 prompt, output path, hashes, and semantic rejection reason; no other Vanilla source required a
-retry. No Charm or Relic source required a retry. Seamstone's bitmap remains instance-neutral: its
-chosen school is data/UI state and is never baked into the four intrinsic mineral seams. Burden,
-Kit, and Trinket batches append without replacing any accepted batch.
+retry. No Charm, Relic, Burden, Kit, or Trinket source required a retry. Seamstone's bitmap remains instance-neutral: its
+chosen school is data/UI state and is never baked into the four intrinsic mineral seams. Burden
+removal and equipment lock, Kit ownership and assembly progression, and Trinket behavior or spent
+state remain semantic data rather than bitmap variants. The final batches append without replacing
+any accepted source, final, prompt, output, or hash.
 
 ## 5. Resource sites and shared art law
 

@@ -449,6 +449,26 @@
       {"id": "map-object:artifact:weathercockIllOmen", "candidate": "assets/sources/artifacts/weathercockIllOmen-source.png", "target": "public/assets/artifacts/weathercockIllOmen.png"},
       {"id": "map-object:artifact:seamRipper", "candidate": "assets/sources/artifacts/seamRipper-source.png", "target": "public/assets/artifacts/seamRipper.png"},
       {"id": "map-object:artifact:lastToy", "candidate": "assets/sources/artifacts/lastToy-source.png", "target": "public/assets/artifacts/lastToy.png"}
+    ],
+    "artifact-sprites-burden-built-in": [
+      {"id": "map-object:artifact:leadenCrown", "candidate": "assets/sources/artifacts/leadenCrown-source.png", "target": "public/assets/artifacts/leadenCrown.png"},
+      {"id": "map-object:artifact:hungryBlade", "candidate": "assets/sources/artifacts/hungryBlade-source.png", "target": "public/assets/artifacts/hungryBlade.png"},
+      {"id": "map-object:artifact:beggarsRing", "candidate": "assets/sources/artifacts/beggarsRing-source.png", "target": "public/assets/artifacts/beggarsRing.png"},
+      {"id": "map-object:artifact:patternlessCoat", "candidate": "assets/sources/artifacts/patternlessCoat-source.png", "target": "public/assets/artifacts/patternlessCoat.png"}
+    ],
+    "artifact-sprites-kit-built-in": [
+      {"id": "map-object:artifact:tailorsNeedle", "candidate": "assets/sources/artifacts/tailorsNeedle-source.png", "target": "public/assets/artifacts/tailorsNeedle.png"},
+      {"id": "map-object:artifact:goldenThread", "candidate": "assets/sources/artifacts/goldenThread-source.png", "target": "public/assets/artifacts/goldenThread.png"},
+      {"id": "map-object:artifact:tailorsThimble", "candidate": "assets/sources/artifacts/tailorsThimble-source.png", "target": "public/assets/artifacts/tailorsThimble.png"},
+      {"id": "map-object:artifact:patternbook", "candidate": "assets/sources/artifacts/patternbook-source.png", "target": "public/assets/artifacts/patternbook.png"}
+    ],
+    "artifact-sprites-trinket-built-in": [
+      {"id": "map-object:artifact:knucklebonesOfTheSaint", "candidate": "assets/sources/artifacts/knucklebonesOfTheSaint-source.png", "target": "public/assets/artifacts/knucklebonesOfTheSaint.png"},
+      {"id": "map-object:artifact:drumOfTheDeepGrass", "candidate": "assets/sources/artifacts/drumOfTheDeepGrass-source.png", "target": "public/assets/artifacts/drumOfTheDeepGrass.png"},
+      {"id": "map-object:artifact:censerOfStillness", "candidate": "assets/sources/artifacts/censerOfStillness-source.png", "target": "public/assets/artifacts/censerOfStillness.png"},
+      {"id": "map-object:artifact:pocketSundial", "candidate": "assets/sources/artifacts/pocketSundial-source.png", "target": "public/assets/artifacts/pocketSundial.png"},
+      {"id": "map-object:artifact:ironNail", "candidate": "assets/sources/artifacts/ironNail-source.png", "target": "public/assets/artifacts/ironNail.png"},
+      {"id": "map-object:artifact:mirrorMask", "candidate": "assets/sources/artifacts/mirrorMask-source.png", "target": "public/assets/artifacts/mirrorMask.png"}
     ]
   }
 }

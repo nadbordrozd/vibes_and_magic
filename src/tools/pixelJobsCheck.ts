@@ -372,32 +372,44 @@ try {
     .filter((artifact) => artifact.class === 'charm').map((artifact) => artifact.id).sort();
   const relicIds = Object.values(ARTIFACTS)
     .filter((artifact) => artifact.class === 'relic').map((artifact) => artifact.id).sort();
-  const installedIds = [...vanillaIds, ...charmIds, ...relicIds].sort();
+  const burdenIds = Object.values(ARTIFACTS)
+    .filter((artifact) => artifact.class === 'burden').map((artifact) => artifact.id).sort();
+  const kitIds = Object.values(ARTIFACTS)
+    .filter((artifact) => artifact.class === 'kit').map((artifact) => artifact.id).sort();
+  const trinketIds = Object.values(ARTIFACTS)
+    .filter((artifact) => artifact.class === 'trinket').map((artifact) => artifact.id).sort();
+  const installedIds = Object.keys(ARTIFACTS).sort();
   const requestKeys = artifactJob.requests.map((request) => request.catalog_key ?? '').sort();
-  const requestGroups = new Map(['vanilla', 'charm', 'relic'].map((group) => [group,
+  const requestGroups = new Map([
+    'vanilla', 'charm', 'relic', 'burden', 'kit', 'trinket',
+  ].map((group) => [group,
     artifactJob.requests.filter((request) => request.catalog_group === group)
       .map((request) => request.catalog_key ?? '').sort()]));
-  if (artifactJob.collectible_family !== 'artifact' || artifactJob.requests.length !== 76
+  if (artifactJob.collectible_family !== 'artifact' || artifactJob.requests.length !== 90
       || provenance.version !== 1 || provenance.generator !== 'built-in-imagegen'
       || provenance.job !== 'assets/jobs/artifact-sprites-built-in.json'
-      || provenance.selections.length !== 76
+      || provenance.selections.length !== 90
       || JSON.stringify(requestKeys) !== JSON.stringify(installedIds)
       || JSON.stringify(requestGroups.get('vanilla')) !== JSON.stringify(vanillaIds)
       || JSON.stringify(requestGroups.get('charm')) !== JSON.stringify(charmIds)
-      || JSON.stringify(requestGroups.get('relic')) !== JSON.stringify(relicIds)) {
-    errors.push('artifact collectible job/provenance must contain exactly 36 Vanilla, 22 Charm, and 18 Relic selections');
+      || JSON.stringify(requestGroups.get('relic')) !== JSON.stringify(relicIds)
+      || JSON.stringify(requestGroups.get('burden')) !== JSON.stringify(burdenIds)
+      || JSON.stringify(requestGroups.get('kit')) !== JSON.stringify(kitIds)
+      || JSON.stringify(requestGroups.get('trinket')) !== JSON.stringify(trinketIds)) {
+    errors.push('artifact collectible job/provenance must contain exactly 36 Vanilla, 22 Charm, 18 Relic, 4 Burden, 4 Kit, and 6 Trinket selections');
   }
   const byRequest = new Map(provenance.selections.map((entry) => [entry.request_id, entry]));
   const sourcePaths = new Set<string>(); const finalPaths = new Set<string>();
   const sourceHashes = new Set<string>(); const finalHashes = new Set<string>();
-  const outputs = new Set<string>();
+  const outputs = new Set<string>(); const prompts = new Set<string>();
   for (const request of artifactJob.requests) {
     const selection = byRequest.get(request.id);
     const label = `artifact provenance:${request.id}`;
     if (!selection?.accepted || selection.id !== request.assets[0]
         || selection.collectible_family !== 'artifact'
         || selection.catalog_key !== request.catalog_key
-        || !['vanilla', 'charm', 'relic'].includes(request.catalog_group ?? '')
+        || !['vanilla', 'charm', 'relic', 'burden', 'kit', 'trinket']
+          .includes(request.catalog_group ?? '')
         || selection.source !== request.output || selection.final !== request.final) {
       errors.push(`${label}: missing or drifted accepted installed-class selection`); continue;
     }
@@ -422,12 +434,12 @@ try {
     }
     if (sourcePaths.has(selection.source) || finalPaths.has(selection.final)
         || sourceHashes.has(selection.source_sha256) || finalHashes.has(selection.final_sha256)
-        || outputs.has(selection.built_in_output)) {
-      errors.push(`${label}: duplicate source/final path, bytes, or built-in output`);
+        || outputs.has(selection.built_in_output) || prompts.has(selection.prompt_sha256)) {
+      errors.push(`${label}: duplicate source/final path, bytes, prompt, or built-in output`);
     }
     sourcePaths.add(selection.source); finalPaths.add(selection.final);
     sourceHashes.add(selection.source_sha256); finalHashes.add(selection.final_sha256);
-    outputs.add(selection.built_in_output);
+    outputs.add(selection.built_in_output); prompts.add(selection.prompt_sha256);
     for (const discarded of selection.discarded_outputs) {
       if (!discarded.reason.trim() || !existsSync(resolve(root, discarded.source))) {
         errors.push(`${label}: rejected source must remain retained with an honest reason`);

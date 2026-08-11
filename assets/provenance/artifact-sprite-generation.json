@@ -2754,6 +2754,510 @@
         "chroma_fringe_pixels": 6
       },
       "visual_review": "Accepted after source and 3x-final review. Borderline: the lovingly repaired leg becomes a few banded pixels at native size, while the worn wooden horse, cream paint, red saddle, and single wheel remain clear."
+    },
+    {
+      "id": "map-object:artifact:leadenCrown",
+      "request_id": "collectible:artifact:leadenCrown:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "leadenCrown",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-b32b2ac3-688a-4e15-8876-de23f0493e35.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/leadenCrown-source.png",
+      "final": "public/assets/artifacts/leadenCrown.png",
+      "prompt_sha256": "45ed1562206c445f59800fa1a7dc5f496bd62da0d1a262d0d99a06d3d58b5f07",
+      "source_sha256": "6d6ab448c261682ef5715aee868755157049875b0a7eb79d7690c04dc506bf6b",
+      "final_sha256": "8e9936cae0cb5df8b2eb55783fc9ccfab7c3053d5a46b91c2a6bbb17713f1c43",
+      "source_dimensions": [
+        1315,
+        1196
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 622,
+        "opaque": 402,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 3
+      },
+      "visual_review": "Accepted after source and 3x-final review: the low heavy lead band, four dominant blunt points, and strained red lining remain readable without a Burden or lock marker."
+    },
+    {
+      "id": "map-object:artifact:hungryBlade",
+      "request_id": "collectible:artifact:hungryBlade:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "hungryBlade",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-8dafe67c-21a8-4790-ac67-1a50fc01dd44.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/hungryBlade-source.png",
+      "final": "public/assets/artifacts/hungryBlade.png",
+      "prompt_sha256": "22b12c875058bf847b163a3b4a1db81fe59e4b1bc5fc6941e15e3c66f59cae00",
+      "source_sha256": "2878f10fff3be8b01fded5cd1358469ca9a2be4c57c34a6a36b281ddf82444ea",
+      "final_sha256": "f1b9aa2bd726fd8ae9ef0a00e1c7bac2e149db103e0d4325f987e791c56dd2aa",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 831,
+        "opaque": 193,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Accepted after source and 3x-final review: the broad dark iron sword, restrained tooth-like edge, red grip, and empty brass ration hook remain distinct."
+    },
+    {
+      "id": "map-object:artifact:beggarsRing",
+      "request_id": "collectible:artifact:beggarsRing:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "beggarsRing",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-99ad3684-0845-4ccf-915a-a09a6cb966c5.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/beggarsRing-source.png",
+      "final": "public/assets/artifacts/beggarsRing.png",
+      "prompt_sha256": "c5b18cc76854c71e78cf527dbbb91905ddccd7bbd2d532e540d373ad85f8c8e8",
+      "source_sha256": "7988d12e2af4cac2721f7529c00ffa5a5d67ebef6419c011870ca4c04b21d610",
+      "final_sha256": "7879e676cfbc657f354c503f4b4bc27863e13e76332c51680e84992af1125150",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 764,
+        "opaque": 260,
+        "partial": 0,
+        "bbox": [
+          2,
+          6,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 8
+      },
+      "visual_review": "Accepted after source and 3x-final review: the battered thin copper band and bright blue glass pebble retain a strong ring silhouette without penalty or removal imagery."
+    },
+    {
+      "id": "map-object:artifact:patternlessCoat",
+      "request_id": "collectible:artifact:patternlessCoat:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "patternlessCoat",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-90e916d7-0e98-4e14-b35a-9d1e4c2a6b41.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/patternlessCoat-source.png",
+      "final": "public/assets/artifacts/patternlessCoat.png",
+      "prompt_sha256": "693a25052b44edd9373a351b2f65dad7c9aa9477cc58c63ac5ac93e41be96b35",
+      "source_sha256": "1cdacaae830c99e5c1ec7536f43f1a3f86e99b477829917960b88bb4fae96aaa",
+      "final_sha256": "4b1e8fcee529f86b39fba1f967f70fde1ff3b1719421561b331a02c51595cbea",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 469,
+        "opaque": 555,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: panel and button misalignment compresses into asymmetric dark folds at native size, while the folded charcoal coat and pale lining remain clear."
+    },
+    {
+      "id": "map-object:artifact:tailorsNeedle",
+      "request_id": "collectible:artifact:tailorsNeedle:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "tailorsNeedle",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-48f0d5a9-7dce-4981-b1de-ce2a5dfc04dc.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/tailorsNeedle-source.png",
+      "final": "public/assets/artifacts/tailorsNeedle.png",
+      "prompt_sha256": "57d2439a69f5af6181d21cef2e3b100419ad18ad96b31b6ec2c683e8b6c706dd",
+      "source_sha256": "fd354ab46173bcd5119ca9dab285cf76867b522ec8a24a3468560798a544c310",
+      "final_sha256": "6121bed5c632b2f7eadf4aef70f9b66f7797de0677367401210a3e044a8dab50",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 929,
+        "opaque": 95,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the weapon-like red grip makes the native silhouette sword-like, while the needle eye and gold thread loop preserve the literal sewing-needle identity."
+    },
+    {
+      "id": "map-object:artifact:goldenThread",
+      "request_id": "collectible:artifact:goldenThread:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "goldenThread",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-310478ca-5108-4d9b-8017-f8d5d61f4abe.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/goldenThread-source.png",
+      "final": "public/assets/artifacts/goldenThread.png",
+      "prompt_sha256": "916cb2dcfdf9b1d0ec4877101215a879ec3ed7bed69764d7a93d3f305913b84a",
+      "source_sha256": "2d76bb5de7f5c31cd7853227de8502a19f90c9b7f704c3404773534f1014c9c7",
+      "final_sha256": "4f06ed57185bd2179fcb36858490d301a4886902ad3711fef70c10d625effa26",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 675,
+        "opaque": 349,
+        "partial": 0,
+        "bbox": [
+          7,
+          2,
+          24,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 3
+      },
+      "visual_review": "Accepted after source and 3x-final review: bright gold thread, dark wooden bobbin, and one loose looping strand remain unambiguous without Kit progression imagery."
+    },
+    {
+      "id": "map-object:artifact:tailorsThimble",
+      "request_id": "collectible:artifact:tailorsThimble:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "tailorsThimble",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-a16d1048-3fe4-4bd5-8ac4-58115bd42655.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/tailorsThimble-source.png",
+      "final": "public/assets/artifacts/tailorsThimble.png",
+      "prompt_sha256": "52160150bdacd4bf96d41d9eda0cce58933869190068add8c44014ff604a7e01",
+      "source_sha256": "cf3dacd8f106fa5b05c5b2b90e8b1cb66548935206475d18b2a664d45b03842d",
+      "final_sha256": "b301e87b570f6289ea7b349731f87a02cd2619c69db86119b9df06ec9e0e2023",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 550,
+        "opaque": 474,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Accepted after source and 3x-final review: the polished gold thimble and spiral dimple pattern remain distinct at native size."
+    },
+    {
+      "id": "map-object:artifact:patternbook",
+      "request_id": "collectible:artifact:patternbook:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "patternbook",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-1901505a-189b-439c-acce-84115c2e4aac.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/patternbook-source.png",
+      "final": "public/assets/artifacts/patternbook.png",
+      "prompt_sha256": "1ee3575e9a1452f8b9e9442550c3c0ac2a5133290afca2c8586d7731a441043b",
+      "source_sha256": "55f01930e312c57ad6a5de0673e7603bd586a0bfdc44d0bd46ff378e54f1594d",
+      "final_sha256": "858259daff216ea6cc2109020305a6c60cf4d3b9fc869cd804b72f142497bdc8",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 533,
+        "opaque": 491,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the blank geometric paper patterns reduce to pale stepped tabs, while the thick cream tailoring book, red binding, and brass corners remain unmistakable."
+    },
+    {
+      "id": "map-object:artifact:knucklebonesOfTheSaint",
+      "request_id": "collectible:artifact:knucklebonesOfTheSaint:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "knucklebonesOfTheSaint",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-b1d81501-1c5a-4458-9d0b-f0436ecb9749.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/knucklebonesOfTheSaint-source.png",
+      "final": "public/assets/artifacts/knucklebonesOfTheSaint.png",
+      "prompt_sha256": "2011844ed2321edf4d5a76482ba1e41f9031f8a4ab1c81c84c5298a8fc3e6c83",
+      "source_sha256": "98269446522d30f8dd633bd46ba7aae2f3dc246a6a90d350e534042ba1e8ce77",
+      "final_sha256": "033610421b4c1cc386b805355e3cf3508d08a2b6e21b196ac1e7a423763133de",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 699,
+        "opaque": 325,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the gold repair is only a few pixels at native size, while all four ivory knucklebones and red drawstring pouch remain readable."
+    },
+    {
+      "id": "map-object:artifact:drumOfTheDeepGrass",
+      "request_id": "collectible:artifact:drumOfTheDeepGrass:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "drumOfTheDeepGrass",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-d578e859-1893-41e5-9dcf-73482c2fc568.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/drumOfTheDeepGrass-source.png",
+      "final": "public/assets/artifacts/drumOfTheDeepGrass.png",
+      "prompt_sha256": "12dd9cfc2d47870d90da022614189806ebc1a2932b2139d0c6595d6709f0d489",
+      "source_sha256": "f152b24ef6d675a480c6db70fc0863eac6345431bd2fdf1b3d623d7cdf683a88",
+      "final_sha256": "9abadd2f330b4bb5e9c294e4800126eb3db835a2de790df8535cd644e20ac972",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 537,
+        "opaque": 487,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Accepted after source and 3x-final review: the low ochre hide drum, ashwood rim, and red zigzag binding retain a clean distinct silhouette."
+    },
+    {
+      "id": "map-object:artifact:censerOfStillness",
+      "request_id": "collectible:artifact:censerOfStillness:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "censerOfStillness",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-a31b459c-dc69-46cb-91ed-4b8e8a18262c.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/censerOfStillness-source.png",
+      "final": "public/assets/artifacts/censerOfStillness.png",
+      "prompt_sha256": "b007a02deb3d2618d10a9f7c9e8a21c9c4e8e609172093fb98a939441aa24d8f",
+      "source_sha256": "4378e6dd171034dfaffa8c7847f63568958052d7797f0a09801e05eec1062a93",
+      "final_sha256": "b716bb6b47c57f5fd442214734fa69635748e6f6913e19ad15e6a31e06ff834c",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 609,
+        "opaque": 415,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 4
+      },
+      "visual_review": "Accepted after source and 3x-final review: the small closed silver censer, short chain, and blue enamel vent remain readable with no smoke or behavior marker."
+    },
+    {
+      "id": "map-object:artifact:pocketSundial",
+      "request_id": "collectible:artifact:pocketSundial:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "pocketSundial",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-459b05f1-99ac-4231-a352-ae6fbc84b31e.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/pocketSundial-source.png",
+      "final": "public/assets/artifacts/pocketSundial.png",
+      "prompt_sha256": "22cff6d3f2cd3df495d1cf30295d53d041c6cad23427bbe7eb900a774d53458b",
+      "source_sha256": "ff783f46d8bae127dc258aa80be21abd2dfba59080469bd2334c886f6fb18af2",
+      "final_sha256": "f5d0a293bcd2d23087771aed1120cc3e83b0db3ab77a9a9623d6bf078dac2d76",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 659,
+        "opaque": 365,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted after source and 3x-final review: the hinged brass case, open blank dial, and triangular gnomon remain clear without numbers or prebattle-cast imagery."
+    },
+    {
+      "id": "map-object:artifact:ironNail",
+      "request_id": "collectible:artifact:ironNail:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ironNail",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-33afff14-8039-469e-9bac-2bf2f302579b.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/ironNail-source.png",
+      "final": "public/assets/artifacts/ironNail.png",
+      "prompt_sha256": "25d1bca98ea4b7bddb3b9775af565e63daa8458c063125a03b518db3ddc81756",
+      "source_sha256": "731370b4ed10ae15b801dc64b9d8fe0eba210394bf680d31059cc6fb682664b5",
+      "final_sha256": "f5698c49e2211fc6400711a5f41c91b8384e9ea2338fc13850becbd41ac2b4e2",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 798,
+        "opaque": 226,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the cream binding is a narrow light band at native size, while the single heavy hand-forged black nail remains unmistakable and unspent."
+    },
+    {
+      "id": "map-object:artifact:mirrorMask",
+      "request_id": "collectible:artifact:mirrorMask:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "mirrorMask",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fef4a-55a1-7c82-8c7f-360f0d68890b/exec-ae2bdc8f-f5ae-419c-8384-ef9e83aa7c32.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/mirrorMask-source.png",
+      "final": "public/assets/artifacts/mirrorMask.png",
+      "prompt_sha256": "7078104e25b469c9ed2b11ae7765c872afdf8a961208f731888c38f858164adc",
+      "source_sha256": "57a0bc4d503a2f0ef7814027d2777af2be99529b4a3c63a8010a0a39708fff3a",
+      "final_sha256": "f877433137fa6d9a7f42a241c60aca90c8465f26380bb75446c08eb49fc4a771",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 683,
+        "opaque": 341,
+        "partial": 0,
+        "bbox": [
+          2,
+          7,
+          30,
+          24
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the cracked reflected edge becomes fine dark pixels at native size, while the smooth silver half-mask and dark eye holes remain clear without a wearer or reflect-effect marker."
     }
   ]
 }

@@ -1372,6 +1372,258 @@
       "candidates": 1,
       "chroma_key": "#00FF00",
       "prompt": "Use case: stylized-concept\nAsset type: production collectible Relic artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A tiny worn wooden horse with one wheel, cream paint, red saddle, and a lovingly repaired broken leg.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-color pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; the wheel belongs to the toy horse and the repaired broken leg remains visible; perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: living horse, rider, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:leadenCrown:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "leadenCrown",
+      "catalog_group": "burden",
+      "assets": [
+        "map-object:artifact:leadenCrown"
+      ],
+      "output": "assets/sources/artifacts/leadenCrown-source.png",
+      "final": "public/assets/artifacts/leadenCrown.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Burden artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A low brutally heavy grey lead crown with four blunt points and a strained red inner band.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Burden removal condition and equipment lock are semantic data only; do not depict chains, locks, removal instructions, penalty symbols, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:hungryBlade:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "hungryBlade",
+      "catalog_group": "burden",
+      "assets": [
+        "map-object:artifact:hungryBlade"
+      ],
+      "output": "assets/sources/artifacts/hungryBlade-source.png",
+      "final": "public/assets/artifacts/hungryBlade.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Burden artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A broad dark iron sword whose edge resembles restrained teeth, with a red leather grip and empty brass ration hook.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Burden removal condition and equipment lock are semantic data only; do not depict chains, locks, removal instructions, penalty symbols, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:beggarsRing:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "beggarsRing",
+      "catalog_group": "burden",
+      "assets": [
+        "map-object:artifact:beggarsRing"
+      ],
+      "output": "assets/sources/artifacts/beggarsRing-source.png",
+      "final": "public/assets/artifacts/beggarsRing.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Burden artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A thin battered copper ring set with a surprisingly bright blue glass pebble.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Burden removal condition and equipment lock are semantic data only; do not depict chains, locks, removal instructions, penalty symbols, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:patternlessCoat:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "patternlessCoat",
+      "catalog_group": "burden",
+      "assets": [
+        "map-object:artifact:patternlessCoat"
+      ],
+      "output": "assets/sources/artifacts/patternlessCoat-source.png",
+      "final": "public/assets/artifacts/patternlessCoat.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Burden artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A folded charcoal coat whose panels, buttons, and hems deliberately fail to align, lined in pale cream.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Burden removal condition and equipment lock are semantic data only; do not depict chains, locks, removal instructions, penalty symbols, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:tailorsNeedle:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "tailorsNeedle",
+      "catalog_group": "kit",
+      "assets": [
+        "map-object:artifact:tailorsNeedle"
+      ],
+      "output": "assets/sources/artifacts/tailorsNeedle-source.png",
+      "final": "public/assets/artifacts/tailorsNeedle.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Kit artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: An elegant long silver sewing needle with a gold thread loop and weapon-like red grip.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Kit ownership, assembly, and progression are semantic data only; do not depict completion effects, ownership color, progress markers, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:goldenThread:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "goldenThread",
+      "catalog_group": "kit",
+      "assets": [
+        "map-object:artifact:goldenThread"
+      ],
+      "output": "assets/sources/artifacts/goldenThread-source.png",
+      "final": "public/assets/artifacts/goldenThread.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Kit artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A bright gold thread wound around a small dark wooden bobbin with one loose looping strand.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Kit ownership, assembly, and progression are semantic data only; do not depict completion effects, ownership color, progress markers, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:tailorsThimble:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "tailorsThimble",
+      "catalog_group": "kit",
+      "assets": [
+        "map-object:artifact:tailorsThimble"
+      ],
+      "output": "assets/sources/artifacts/tailorsThimble-source.png",
+      "final": "public/assets/artifacts/tailorsThimble.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Kit artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A polished gold thimble punched with a precise spiral of dark dimples.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Kit ownership, assembly, and progression are semantic data only; do not depict completion effects, ownership color, progress markers, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:patternbook:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "patternbook",
+      "catalog_group": "kit",
+      "assets": [
+        "map-object:artifact:patternbook"
+      ],
+      "output": "assets/sources/artifacts/patternbook-source.png",
+      "final": "public/assets/artifacts/patternbook.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Kit artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A thick cream tailoring book with red binding, brass corner pieces, and blank geometric paper patterns peeking out.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Kit ownership, assembly, and progression are semantic data only; do not depict completion effects, ownership color, progress markers, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:knucklebonesOfTheSaint:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "knucklebonesOfTheSaint",
+      "catalog_group": "trinket",
+      "assets": [
+        "map-object:artifact:knucklebonesOfTheSaint"
+      ],
+      "output": "assets/sources/artifacts/knucklebonesOfTheSaint-source.png",
+      "final": "public/assets/artifacts/knucklebonesOfTheSaint.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Trinket artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: Four small ivory knucklebones in a red drawstring pouch, one bone showing a gold repair.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Trinket behavior and spent/trigger state are semantic data only; do not depict effect symbols, state variants, rarity, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:drumOfTheDeepGrass:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "drumOfTheDeepGrass",
+      "catalog_group": "trinket",
+      "assets": [
+        "map-object:artifact:drumOfTheDeepGrass"
+      ],
+      "output": "assets/sources/artifacts/drumOfTheDeepGrass-source.png",
+      "final": "public/assets/artifacts/drumOfTheDeepGrass.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Trinket artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A low ochre hide hand drum with ashwood rim and red zigzag binding.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Trinket behavior and spent/trigger state are semantic data only; do not depict effect symbols, state variants, rarity, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:censerOfStillness:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "censerOfStillness",
+      "catalog_group": "trinket",
+      "assets": [
+        "map-object:artifact:censerOfStillness"
+      ],
+      "output": "assets/sources/artifacts/censerOfStillness-source.png",
+      "final": "public/assets/artifacts/censerOfStillness.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Trinket artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A small closed silver censer on a short chain, with no smoke and one blue enamel vent.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Trinket behavior and spent/trigger state are semantic data only; do not depict effect symbols, state variants, rarity, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: smoke, incense cloud, open lid, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:pocketSundial:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "pocketSundial",
+      "catalog_group": "trinket",
+      "assets": [
+        "map-object:artifact:pocketSundial"
+      ],
+      "output": "assets/sources/artifacts/pocketSundial-source.png",
+      "final": "public/assets/artifacts/pocketSundial.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Trinket artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A hinged brass pocket sundial opened to show a triangular gnomon and blank dial.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Trinket behavior and spent/trigger state are semantic data only; do not depict effect symbols, state variants, rarity, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: numbers, compass letters, inscriptions, clock hands, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:ironNail:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ironNail",
+      "catalog_group": "trinket",
+      "assets": [
+        "map-object:artifact:ironNail"
+      ],
+      "output": "assets/sources/artifacts/ironNail-source.png",
+      "final": "public/assets/artifacts/ironNail.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Trinket artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: One heavy hand-forged black iron nail bound once with cream thread.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Trinket behavior and spent/trigger state are semantic data only; do not depict effect symbols, state variants, rarity, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: multiple nails, hammer, wood, spent or broken state, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:mirrorMask:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "mirrorMask",
+      "catalog_group": "trinket",
+      "assets": [
+        "map-object:artifact:mirrorMask"
+      ],
+      "output": "assets/sources/artifacts/mirrorMask-source.png",
+      "final": "public/assets/artifacts/mirrorMask.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Trinket artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A small smooth silver half-mask with dark eye holes and one visibly cracked reflected edge.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact flat-chroma color clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: preserve the exact literal artifact subject; Trinket behavior and spent/trigger state are semantic data only; do not depict effect symbols, state variants, rarity, or class/slot markers. Perfectly uniform flat chroma background with no gradient, texture, floor plane, shadows, reflections, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: face, wearer, reflected person, reflected scene, full helmet, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, ownership flag, class marker, slot marker, lock marker, progress marker, rarity marker, effect icon, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
     }
   ]
 }
