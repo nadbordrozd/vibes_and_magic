@@ -1,8 +1,8 @@
 # 51 — Cities, spellbook, and complete collectible sprites
 
 Status: city mechanics, presentation, editor compatibility, built-in-map migration, shared
-combat/adventure spellbook, and the complete 37-item collectible bitmap family implemented
-2026-08-11; artifact bitmap production remains. This
+combat/adventure spellbook, the complete 37-item collectible bitmap family, and the 36-sprite
+Vanilla artifact batch implemented 2026-08-11; later artifact classes remain in production. This
 document extends S02, S03, S05, S07, S08, and S09 and
 supersedes the 3×2 castle ground-contact clauses in docs 31, 32, 37, and 50. It also supersedes the
 spell-upgrade presentation wording in docs 34, 44, and 46 and the player-facing settlement word
@@ -183,8 +183,8 @@ Current audited coverage at contract time is:
 
 | Family | Catalog target | Installed native sprite | Gap |
 |---|---:|---:|---:|
-| Artifacts | 90 | 0 | 90 |
-| Items/consumables | 37 | 4 | 33 |
+| Artifacts | 90 | 36 Vanilla | 54 |
+| Items/consumables | 37 | 37 | 0 |
 | Faction city designs conforming to 5×2 | 6 | 6 | 0 |
 | Resource pickups | 4 | 4 | 0 |
 | Resource mines/sites | 4 | 4 | 0 |
@@ -193,6 +193,16 @@ All 37 item sprites are now installed as a distinct native family. The earlier g
 Overseer’s Charter, Waybread, and Trade Goods images were explicitly style-reviewed and regenerated
 because their earlier camera/light contract did not match this work order. Existing 3×2 city sprites
 remain useful historical visual provenance; the six new 5×2 designs are the installed city family.
+
+The first artifact batch installs all 36 catalog definitions whose class is `vanilla`. Each selected
+source came from a separate built-in image-generation call and bakes through the same generic
+collectible pipeline as items. The active incremental job is
+`assets/jobs/artifact-sprites-built-in.json`, provenance is
+`assets/provenance/artifact-sprite-generation.json`, retained keyed sources are under
+`assets/sources/artifacts/`, and native hard-alpha finals are under `public/assets/artifacts/`.
+The rejected first Skirmisher's Blade source remains in the `discarded/` source folder with its
+prompt, output path, hashes, and semantic rejection reason; no other Vanilla source required a
+retry. Later Charm, Relic, Burden, Kit, and Trinket batches append without replacing this batch.
 
 ## 5. Resource sites and shared art law
 

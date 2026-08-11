@@ -1,4 +1,5 @@
 import { ITEM_SPRITE_SUBJECTS } from './adventureSpriteInventory';
+import { VANILLA_ARTIFACT_IDS } from '../src/content/artifacts';
 
 // Adventure-map art is authored and displayed at its native size. Review tools may still enlarge
 // screenshots with nearest-neighbour scaling, but production world coordinates stay 32px per tile.
@@ -97,6 +98,13 @@ function collectibleItemSet(): Record<string, AssetManifestEntry> {
   ]));
 }
 
+function collectibleVanillaArtifactSet(): Record<string, AssetManifestEntry> {
+  return Object.fromEntries(VANILLA_ARTIFACT_IDS.map((artifactId) => [
+    `map-object:artifact:${artifactId}`,
+    { file: `assets/artifacts/${artifactId}.png`, w: 32, h: 32, anchor: { x: 0, y: 0 } },
+  ]));
+}
+
 /**
  * Rendering source of truth. Missing keys deliberately keep the procedural SVG glyph.
  * Add assets in small, independently shippable batches.
@@ -108,6 +116,7 @@ function collectibleItemSet(): Record<string, AssetManifestEntry> {
  */
 const LEGACY_ASSET_CANDIDATES: Readonly<Record<string, AssetManifestEntry>> = {
   ...collectibleItemSet(),
+  ...collectibleVanillaArtifactSet(),
   'terrain-field:meadow': {
     file: 'assets/terrain/meadow-landscape-field.png',
     w: 256, h: 256, anchor: { x: 0, y: 0 },
@@ -1313,6 +1322,7 @@ const REGENERATED_ASSET_IDS = new Set<string>([
     .flatMap((faction) => HERO_DIRECTIONS.map((direction) => `hero:${faction}:${direction}`)),
   ...AUTHORED_GUARDIAN_UNIT_IDS.map((unitId) => `guardian-unit:${unitId}`),
   ...Object.keys(ITEM_SPRITE_SUBJECTS).map((itemId) => `map-object:item:${itemId}`),
+  ...VANILLA_ARTIFACT_IDS.map((artifactId) => `map-object:artifact:${artifactId}`),
 ]);
 
 function groundContactHeight(id: string): number | null {

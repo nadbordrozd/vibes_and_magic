@@ -5,7 +5,9 @@ import { ARTIFACTS } from '../../content/artifacts';
 import { CASTLE_NAMES } from '../../content/factionPresentation';
 import { itemName } from '../../content/items';
 import { FACTION_UNITS, UNITS } from '../../content/units';
-import type { Action, Castle, FactionId, GameState, Hero, MapObject } from '../../core/types';
+import type {
+  Action, ArtifactId, Castle, FactionId, GameState, Hero, ItemId, MapObject,
+} from '../../core/types';
 import { previewAction } from '../actionPreview';
 import {
   type ContextualStructure,
@@ -14,6 +16,7 @@ import { inspectTarget, mapObjectName } from '../inspection';
 import type { ActionDraft } from './ActionConfirmationDialog';
 import { PalimpsestService } from './PalimpsestService';
 import { ResourceAmount, ResourceCost } from './ResourceToken';
+import { ArtifactSprite, ItemSprite } from '../assets';
 
 function ContextualDialogFrame({
   title, flavor, inspect, children, onClose,
@@ -107,6 +110,8 @@ function StructureAction({
         data-disabled-reason={!projected.legal ? reason : undefined}
         data-inspect-kind={inspect?.kind} data-inspect-id={inspect?.id}
         onClick={() => onDraft({ action, title, actor, target, effect })}>
+        {inspect?.kind === 'artifact' && <ArtifactSprite artifactId={inspect.id as ArtifactId} />}
+        {inspect?.kind === 'item' && <ItemSprite itemId={inspect.id as ItemId} />}
         <b>{label}</b>
         <span>{Object.keys(projected.cost).length
           ? <><span>Exact cost</span> <ResourceCost cost={projected.cost} compact /></>

@@ -68,9 +68,9 @@
   background: #090c09; border: 1px solid #3b4638; box-shadow: 0 18px 50px #0009;
 }
 .pixel-sprite { image-rendering: pixelated; pointer-events: none; }
-.item-sprite-wrap { position: relative; display: inline-grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; vertical-align: middle; }
-.item-sprite { width: 32px; height: 32px; object-fit: contain; image-rendering: pixelated; }
-.item-sprite-fallback { font-size: 1.25rem; }
+.item-sprite-wrap, .artifact-sprite-wrap { position: relative; display: inline-grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; vertical-align: middle; }
+.item-sprite, .artifact-sprite { width: 32px; height: 32px; object-fit: contain; image-rendering: pixelated; }
+.item-sprite-fallback, .artifact-sprite-fallback { font-size: 1.25rem; }
 .item-sprite-upgraded { position: absolute; right: -2px; top: -3px; color: #f3d56d; font-weight: 900; text-shadow: 0 1px #241b12; }
 
 .terrain-showcase-link { box-sizing: border-box; text-decoration: none; }
@@ -503,6 +503,12 @@
   min-height: 38px; padding: 4px 6px; border: 1px solid #343c34;
   background: #151a16; color: #b9c1b8; text-align: left;
 }
+.equipment-grid button.equipped, .artifact-backpack > button {
+  display: grid; grid-template-columns: 32px minmax(0, 1fr); column-gap: 6px; align-items: center;
+}
+.equipment-grid button.equipped > small, .artifact-backpack > button > small { grid-column: 2; }
+.equipment-grid button.equipped > .artifact-sprite-wrap,
+.artifact-backpack > button > .artifact-sprite-wrap { grid-row: 1 / span 3; }
 .equipment-grid button small, .equipment-grid button b,
 .artifact-backpack button small, .artifact-backpack button b { display: block; }
 .equipment-grid button small, .artifact-backpack button small {

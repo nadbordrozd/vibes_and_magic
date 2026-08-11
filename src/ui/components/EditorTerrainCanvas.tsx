@@ -18,7 +18,7 @@ import type {
   EditorMapReward, EditorRewardBundle, JsonValue,
 } from '../../core/mapEditor';
 import { createDefaultEditorGuardian, EDITOR_GUARDIAN_TIERS } from '../../core/mapEditor';
-import { mapObjectSpriteId } from '../assets';
+import { ArtifactSprite, mapObjectSpriteId } from '../assets';
 import {
   EMPTY_TERRAIN_HISTORY, appendUniqueEditorCells, canPlaceEditorProp, clampEditorZoom,
   commitTerrainEdit, createPropEraseEdit, createPropMoveEdit, createPropPlacementEdit,
@@ -1608,6 +1608,7 @@ export function EditorTerrainCanvas({
                   onClick={() => selectBundleStamp(
                     `${entry.artifact.name} reward`, artifactRewardBundle(entry.artifact.id),
                   )}>
+                  <ArtifactSprite artifactId={entry.artifact.id} />
                   <span className={`editor-artifact-icon artifact-${entry.artifact.class}`}
                     aria-hidden="true">{ARTIFACT_SLOT_GLYPHS[entry.artifact.slot]}</span>
                 </button>)}</div>

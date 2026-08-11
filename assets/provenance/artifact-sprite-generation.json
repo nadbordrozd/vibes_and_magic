@@ -1,0 +1,1319 @@
+{
+  "version": 1,
+  "generator": "built-in-imagegen",
+  "generated_on": "2026-08-11",
+  "job": "assets/jobs/artifact-sprites-built-in.json",
+  "workflow": {
+    "source": "one separate built-in image_gen call per catalog key",
+    "bake": "uv run --no-project --with pillow python scripts/buildCollectibleSprites.py --job assets/jobs/artifact-sprites-built-in.json",
+    "resampling": "nearest-neighbour reduction, adaptive 40-colour palette, hard alpha",
+    "review": ".pixel-work/review/collectibles/artifact/{catalog_group}-contact-sheet.png"
+  },
+  "selections": [
+    {
+      "id": "map-object:artifact:skirmishersBlade",
+      "request_id": "collectible:artifact:skirmishersBlade:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "skirmishersBlade",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-91863a33-35bd-4150-8e68-0d73847ab1d0.png",
+      "discarded_outputs": [
+        {
+          "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-2aa25f80-c309-40d1-ac00-3022b19398d7.png",
+          "source": "assets/sources/artifacts/discarded/skirmishersBlade-botanical-leaf-source.png",
+          "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A short practical leaf-shaped sword with a leather grip and one nick near the tip.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.",
+          "prompt_sha256": "1fd8bd7e8ddb69e0b50a2a0b708d300d26bd37762f18ca35f7a1376427251f1b",
+          "source_sha256": "0661242b0e390104bb2cf06031aff174455491c215642e76b862652d87d1688b",
+          "reason": "Rejected in contact review: the green veined blade read as a literal botanical leaf with a tiny handle, not a steel leaf-shaped sword."
+        }
+      ],
+      "source": "assets/sources/artifacts/skirmishersBlade-source.png",
+      "final": "public/assets/artifacts/skirmishersBlade.png",
+      "prompt_sha256": "79cfadfea9ce51f71503980f9aa5bf81e075caa4e95d83ce5c1ff14e964a6709",
+      "source_sha256": "46bd338c4c694c83a0d0d21b2549aba589068bbd7e0eed43d5d96dd655b2d750",
+      "final_sha256": "bf69863478f6c3b15b192abc86b900bee14602d75fcf09b8acc910a44f3a5bc3",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 834,
+        "opaque": 190,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted targeted retry after source and 3x-final review: polished steel leaf-shaped outline, crossguard, leather grip, and nick read clearly as a sword; the rejected botanical source remains retained and documented."
+    },
+    {
+      "id": "map-object:artifact:marchwardensSword",
+      "request_id": "collectible:artifact:marchwardensSword:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "marchwardensSword",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-d8972436-e611-476f-9079-9d212d390131.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/marchwardensSword-source.png",
+      "final": "public/assets/artifacts/marchwardensSword.png",
+      "prompt_sha256": "3f9736a541d745a55628a5be7ae890ec1aae1283b6c4610283e5c06be439e53b",
+      "source_sha256": "1aec23718a79eb2bf9f5d736892482a9bbb5065d419225ba107e153e793077a3",
+      "final_sha256": "3383047788b6fb3b60874625d018c295366553b07d70480d346278565e9b147c",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 805,
+        "opaque": 219,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 4
+      },
+      "visual_review": "Literal marchwardensSword subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:swordOfTheFirstField",
+      "request_id": "collectible:artifact:swordOfTheFirstField:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "swordOfTheFirstField",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-c0e5c102-ee49-408e-a11c-1fbb8ed84fea.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/swordOfTheFirstField-source.png",
+      "final": "public/assets/artifacts/swordOfTheFirstField.png",
+      "prompt_sha256": "95ad97a183b0078f4f3dbd0b007470a8462a7a3342b9857110f1c26ad7bab34d",
+      "source_sha256": "85862fbdbc6af869ff811e4b81b1da77af67411c90c03edaccb60fb1eda4f359",
+      "final_sha256": "231035c1ea492e54eae3792c1e3619d7217140dcf520eb17b88915c3a965b7ad",
+      "source_dimensions": [
+        1199,
+        1312
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 918,
+        "opaque": 106,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal swordOfTheFirstField subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:yeomansBuckler",
+      "request_id": "collectible:artifact:yeomansBuckler:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "yeomansBuckler",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-ff37deb5-9c60-4811-8743-fd06e2409de9.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/yeomansBuckler-source.png",
+      "final": "public/assets/artifacts/yeomansBuckler.png",
+      "prompt_sha256": "d2916b4ca0069b3502be3b36b0d7120d1a56ae2185694cf457a5113819aeacac",
+      "source_sha256": "e7dbc042739418cdd8836cffae8527a2a89ec1318d98bf783e062a1c8a6dde99",
+      "final_sha256": "f4393bda9eccebcc35d274da6e0e6c77fb94416cb2410a84817d62318576daaa",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 408,
+        "opaque": 616,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal yeomansBuckler subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:kiteOfTheOldWall",
+      "request_id": "collectible:artifact:kiteOfTheOldWall:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "kiteOfTheOldWall",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-4e95e179-7cae-4d3a-9d26-f2bd9497d234.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/kiteOfTheOldWall-source.png",
+      "final": "public/assets/artifacts/kiteOfTheOldWall.png",
+      "prompt_sha256": "a42074e84d73fcf985a0e63a181b72c9b725a4ae8c921bb497a4e25c21a92766",
+      "source_sha256": "f63ef5220d0abd3c0ea77645a02117b75490d521f119a15f80dbdde7da340676",
+      "final_sha256": "b6dbd39d7a7bb2ccdd45a9e19803ef3e7830662685e0ac11e99797871dc8c3e8",
+      "source_dimensions": [
+        1058,
+        1487
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 757,
+        "opaque": 267,
+        "partial": 0,
+        "bbox": [
+          9,
+          2,
+          22,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal kiteOfTheOldWall subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:aegisOfTheKeptOath",
+      "request_id": "collectible:artifact:aegisOfTheKeptOath:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "aegisOfTheKeptOath",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-8613af98-7138-4e27-8b73-c9955d291b2b.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/aegisOfTheKeptOath-source.png",
+      "final": "public/assets/artifacts/aegisOfTheKeptOath.png",
+      "prompt_sha256": "29c32b2b040f1da06b2a5c632ecef0ace9c80edaa431abbb1a3d08aa48bcaccb",
+      "source_sha256": "d636418e95b7f4a6d593a77f25d3794d071d86670fed4d4507a246ee83e31d90",
+      "final_sha256": "3cc942978f9ac5f3d3efdfef7cd7d74e7f47e90f61f8ac885d2dd07fb45ab4b2",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 573,
+        "opaque": 451,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal aegisOfTheKeptOath subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:circletOfSmallRites",
+      "request_id": "collectible:artifact:circletOfSmallRites:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "circletOfSmallRites",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-4d1b391c-114d-42db-bf7b-95c38fb9dc77.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/circletOfSmallRites-source.png",
+      "final": "public/assets/artifacts/circletOfSmallRites.png",
+      "prompt_sha256": "3c37cecb383e64436cc672d3ed7edfd2b25e6cfd95d0d0a22baebd300e196bf0",
+      "source_sha256": "b9fd7967f3162c5378e1c076d57f377203a2884e62147428c4f37e5d83cf5565",
+      "final_sha256": "2243fd5006f43fe287d5cad28e1f3bafffef2e442952de98e8ea29e0beb09a7e",
+      "source_dimensions": [
+        1330,
+        1182
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 882,
+        "opaque": 142,
+        "partial": 0,
+        "bbox": [
+          2,
+          9,
+          30,
+          22
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 7
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the three candle-shaped studs reduce to pale points at 32x32, while the narrow open circlet remains distinct from the two Vanilla crowns."
+    },
+    {
+      "id": "map-object:artifact:hoodOfTheHedgeMage",
+      "request_id": "collectible:artifact:hoodOfTheHedgeMage:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "hoodOfTheHedgeMage",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-ea616157-9c7f-4996-8af9-7f6291736ec5.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/hoodOfTheHedgeMage-source.png",
+      "final": "public/assets/artifacts/hoodOfTheHedgeMage.png",
+      "prompt_sha256": "7dfd05b6c64f4b7b702d8a908c66af7e5c1e0ebb8c891c9ef2405c38d628d154",
+      "source_sha256": "f909956c59e2c023ce864dc756551f110087ea7c42bc440b2457a011eb2e1ff4",
+      "final_sha256": "f5dfdc983cf951b70a3f824cc72a55381fe06b36c42b966e0eddc2ba01bedb8e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 557,
+        "opaque": 467,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal hoodOfTheHedgeMage subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:crownOfThePatternedSky",
+      "request_id": "collectible:artifact:crownOfThePatternedSky:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "crownOfThePatternedSky",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-3c6d10cf-0284-4723-b416-c38ede5e759a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/crownOfThePatternedSky-source.png",
+      "final": "public/assets/artifacts/crownOfThePatternedSky.png",
+      "prompt_sha256": "bc67673aca11c67fd4671d0f402b8e1caf9c3332beb77db27683dc7d4c13ffc7",
+      "source_sha256": "81f73df812c1f91cd56816ecc18c4cce6202d06d6f326b6e08d4164d2e6e0dc5",
+      "final_sha256": "869f5a5cb4a130c28ccecd123ade7e03a52245d1511bf92bdad9226371e73737",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 663,
+        "opaque": 361,
+        "partial": 0,
+        "bbox": [
+          2,
+          6,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal crownOfThePatternedSky subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:chapbookLocket",
+      "request_id": "collectible:artifact:chapbookLocket:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "chapbookLocket",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-f6b0cfce-c0fb-4be9-b3b5-b96c15ce476c.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/chapbookLocket-source.png",
+      "final": "public/assets/artifacts/chapbookLocket.png",
+      "prompt_sha256": "d1c6d55ba94ddb60980f8a5025ec967b52a83812fefecdd48ae652c7cc1c201d",
+      "source_sha256": "c5c8574530ec91950085410f148c9e1573438a8c13226d8f4f4b5624ebc6ce62",
+      "final_sha256": "2a12d5e792580b2da7721d3727abecf8a8ae8dd69b01861b315807c287c0e21b",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 688,
+        "opaque": 336,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 4
+      },
+      "visual_review": "Literal chapbookLocket subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:reliquaryPendant",
+      "request_id": "collectible:artifact:reliquaryPendant:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "reliquaryPendant",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-08929d2b-8fc8-4c7c-a1fd-162dad0f2718.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/reliquaryPendant-source.png",
+      "final": "public/assets/artifacts/reliquaryPendant.png",
+      "prompt_sha256": "f8ca35ea6c28a8055173fdd017edf916c046be196819caba39240b2f740b4ade",
+      "source_sha256": "6ecc2ddb62ffc6b946e60424e89b2a9304dbcc063d3a6de6c3c29a2aedde724e",
+      "final_sha256": "16ad7bfdf95c4593582bd958bd1a31473ae24518f07bf074044ae2b0753100a3",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 718,
+        "opaque": 306,
+        "partial": 0,
+        "bbox": [
+          7,
+          2,
+          24,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal reliquaryPendant subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:deepWellAmulet",
+      "request_id": "collectible:artifact:deepWellAmulet:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "deepWellAmulet",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-9705e7fe-db80-45d9-b48d-7b91d227a5a7.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/deepWellAmulet-source.png",
+      "final": "public/assets/artifacts/deepWellAmulet.png",
+      "prompt_sha256": "27624e8b0d0585b531e7d4a1905dcaafebc68d55a1f3608d1d20ffe682f85fb9",
+      "source_sha256": "b9e47b25336097cf0a0c7b1492294163a888b3a5c6c2a6abe61a93cdbd37ea1f",
+      "final_sha256": "ba83c1999a56ed3ae3df77b6a8b0afb1cab585274e2ce1b8ae080e45fba9c94f",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 697,
+        "opaque": 327,
+        "partial": 0,
+        "bbox": [
+          7,
+          2,
+          25,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal deepWellAmulet subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:quiltedCoat",
+      "request_id": "collectible:artifact:quiltedCoat:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "quiltedCoat",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-0ea36dba-d7c8-4aee-9c40-cd5f5a187a18.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/quiltedCoat-source.png",
+      "final": "public/assets/artifacts/quiltedCoat.png",
+      "prompt_sha256": "b6ffbe5f485719caeaa02f655b97e0b7df5a80036fd995837424f8654a76d06a",
+      "source_sha256": "08d023674ffffe9edf88f056c4491634666d820eb27da2b0b2eccc8aecdbd4e0",
+      "final_sha256": "9917011474e30ee28e034e7d5040c10be330ce97f6ebc1f0457e1163f41454bf",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 556,
+        "opaque": 468,
+        "partial": 0,
+        "bbox": [
+          2,
+          4,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal quiltedCoat subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:lamellarOfTheMarches",
+      "request_id": "collectible:artifact:lamellarOfTheMarches:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "lamellarOfTheMarches",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-80fbed0d-1831-469b-8ab4-f7ef3ebfc414.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/lamellarOfTheMarches-source.png",
+      "final": "public/assets/artifacts/lamellarOfTheMarches.png",
+      "prompt_sha256": "822af00daf05372406801e8fcb5c8ccbee62b79b88a5a0e4fa3b2b1d0878f15a",
+      "source_sha256": "e412bf6fb8f330c833650f16c6fbe40748cb7340e2858b64f31a239a99b4c7a3",
+      "final_sha256": "bca7c717ee5f3ad73046f1df38802a9c029e8066698a135f663d8b563b1d6c9a",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 473,
+        "opaque": 551,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal lamellarOfTheMarches subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:panoplyOfTheGreyKeep",
+      "request_id": "collectible:artifact:panoplyOfTheGreyKeep:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "panoplyOfTheGreyKeep",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-f292bc46-8d2e-434f-85e6-dc69e864ca99.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/panoplyOfTheGreyKeep-source.png",
+      "final": "public/assets/artifacts/panoplyOfTheGreyKeep.png",
+      "prompt_sha256": "bd0cf63e486fb5f05c55187ff327a315a48e3ef233280de0a1425fd09994de51",
+      "source_sha256": "ad50f689abec7c736a198b25e4f6facf89423f540db2262d0bed5e4bcd35d74c",
+      "final_sha256": "5256156a91e902c6eee7b25481094a0717282e08c05dab396bfb56d1b8585085",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 622,
+        "opaque": 402,
+        "partial": 0,
+        "bbox": [
+          6,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal panoplyOfTheGreyKeep subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:travelersCloak",
+      "request_id": "collectible:artifact:travelersCloak:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "travelersCloak",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-2a648af4-df50-4404-b60c-aecd94b34ccb.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/travelersCloak-source.png",
+      "final": "public/assets/artifacts/travelersCloak.png",
+      "prompt_sha256": "5240f4a5b1981138e3cae57ee442665127daf263a85c3b8be171dc5c932bd203",
+      "source_sha256": "b9ea05ec608978e999ab380868dca7af2fe73f816e7be1a18251863ad68e9c68",
+      "final_sha256": "ac8971fe8e6c4e928496237659738f3151c76f8ce8a46b7de6124dde57f08c3e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 594,
+        "opaque": 430,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal travelersCloak subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:wayfarersMantle",
+      "request_id": "collectible:artifact:wayfarersMantle:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "wayfarersMantle",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-682b168a-2d3c-4371-9f2b-b6936eaba059.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/wayfarersMantle-source.png",
+      "final": "public/assets/artifacts/wayfarersMantle.png",
+      "prompt_sha256": "b8aeeaadc0292e72961df060d2a00b6c2c43a93e8efd0bf7e571e67cb1acc4c7",
+      "source_sha256": "dbd52808142d14cf268dc2ddcf14ca6735d78c75740172288b3fef598602dcbb",
+      "final_sha256": "b1e6450982370eb187dcb9b5377c7d23b936d804e167e4c991e8ea1a691d0f21",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 556,
+        "opaque": 468,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal wayfarersMantle subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:cloakOfTheOpenRoad",
+      "request_id": "collectible:artifact:cloakOfTheOpenRoad:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "cloakOfTheOpenRoad",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-7c72d308-b3be-4888-b1ae-0d6bbf17527b.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/cloakOfTheOpenRoad-source.png",
+      "final": "public/assets/artifacts/cloakOfTheOpenRoad.png",
+      "prompt_sha256": "19c8dbe049412d8e43f1306afe2d6e591a015b2d6ac51418e8f6ff53630e9745",
+      "source_sha256": "6c764b34d613430ff2efd861c47b3bd6220100532ea62d1fd3461ea1ab05c0da",
+      "final_sha256": "eabfe5144464c1b0819ffa8508dc14054641f3fb6e3f8ef556541bc59031218c",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 569,
+        "opaque": 455,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal cloakOfTheOpenRoad subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:cobblersPride",
+      "request_id": "collectible:artifact:cobblersPride:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "cobblersPride",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-a6dfe1d6-ce65-4585-9ba9-ba76b3a870ec.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/cobblersPride-source.png",
+      "final": "public/assets/artifacts/cobblersPride.png",
+      "prompt_sha256": "2c2196c828813b8b40244267ff0afafa626f59583f39a3fd619e490c57fd2025",
+      "source_sha256": "5087be8939163f8c87ac2a2df88d704db5182b66a4e1d8b8bbc14264cd2cf447",
+      "final_sha256": "3d7a7bf0d2f7b98f907485bd89143851227b0a4073610bb0fcb34be9d06d46d3",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 617,
+        "opaque": 407,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal cobblersPride subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:bootsOfTheDrover",
+      "request_id": "collectible:artifact:bootsOfTheDrover:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "bootsOfTheDrover",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-2314222b-1fec-408d-802f-ed206b8f0eee.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/bootsOfTheDrover-source.png",
+      "final": "public/assets/artifacts/bootsOfTheDrover.png",
+      "prompt_sha256": "62cb6bb7c8aa26c3e0a899935349ba14c8c3823a75547778373d6007b534bf69",
+      "source_sha256": "88ca4d7eb1c4747e02ddce532384f580cd8422b37fe950c1181a16d6bf347920",
+      "final_sha256": "08c7e1f9d415ef7494b3673e9376a91957482bd2abd48ba674aa40e09131cd49",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 575,
+        "opaque": 449,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal bootsOfTheDrover subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:sevenLeagueBoots",
+      "request_id": "collectible:artifact:sevenLeagueBoots:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "sevenLeagueBoots",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-40daea75-b00a-4cbd-ab89-603a0090e992.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/sevenLeagueBoots-source.png",
+      "final": "public/assets/artifacts/sevenLeagueBoots.png",
+      "prompt_sha256": "6d79666509b8490cfe94d4b8b39b7eb884731dbfd4aeb05b8be9a5ef518ea0c6",
+      "source_sha256": "851070294e5664164bb58266a2ed54ae4161cb02580456c5ae43d1d8c0ef8e76",
+      "final_sha256": "a9649899a4a120dbb3a7482ba593f1145aa234f06c469d5e4f1031b7b710fb65",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 617,
+        "opaque": 407,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal sevenLeagueBoots subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:ringOfSmallMendings",
+      "request_id": "collectible:artifact:ringOfSmallMendings:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ringOfSmallMendings",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-44839189-7fb6-4551-945f-2eb5063e6057.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/ringOfSmallMendings-source.png",
+      "final": "public/assets/artifacts/ringOfSmallMendings.png",
+      "prompt_sha256": "e7b969d51631eb2f3fe4ba05a66773daf217a65a5843fc46cf54180d4c91f3f5",
+      "source_sha256": "2d41fd400022b6193f9fa530e24c2b2ab514ca9cb6fcddfba1f160f2e3208554",
+      "final_sha256": "dcf475fe75bc9fef7d5a484b0aabeabcdadf0df05d263ccc9f7b62ebc37d1544",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 781,
+        "opaque": 243,
+        "partial": 0,
+        "bbox": [
+          2,
+          7,
+          30,
+          24
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal ringOfSmallMendings subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:ringOfTheSteadyHand",
+      "request_id": "collectible:artifact:ringOfTheSteadyHand:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ringOfTheSteadyHand",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-d363eaaa-b3cc-4443-953d-55d6be703bb6.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/ringOfTheSteadyHand-source.png",
+      "final": "public/assets/artifacts/ringOfTheSteadyHand.png",
+      "prompt_sha256": "cee25a6d799421d998bf39d35f24f43ad80d620bb105bafdc0d9aa34f4985e4b",
+      "source_sha256": "9b24c3c458901a3e447f5213dde438738601fda35f632eb89ac6fcd8e6bbed9c",
+      "final_sha256": "b543891d73ec94554df75fcaf509065af63da320ffdc6a6a2ab43dd8982eb79e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 608,
+        "opaque": 416,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal ringOfTheSteadyHand subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:ringOfTheLongVigil",
+      "request_id": "collectible:artifact:ringOfTheLongVigil:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ringOfTheLongVigil",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-e6a1a50b-91eb-478e-8741-a1e974aa6997.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/ringOfTheLongVigil-source.png",
+      "final": "public/assets/artifacts/ringOfTheLongVigil.png",
+      "prompt_sha256": "d7f9d705394196e245ca5d5c340ba6219539c74841d99a4f8d89a9229a569b10",
+      "source_sha256": "88e2844604b415f475bedd54bad8c3aa2131dafe8df1447a75a977c9f06fc4c0",
+      "final_sha256": "d9c20f87904921619ea032bb54b24746ab7f2eada2b5e9146d5c18c8012db7f0",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 731,
+        "opaque": 293,
+        "partial": 0,
+        "bbox": [
+          7,
+          2,
+          25,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal ringOfTheLongVigil subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:sashOfTheLeviedMile",
+      "request_id": "collectible:artifact:sashOfTheLeviedMile:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "sashOfTheLeviedMile",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-4bc9d611-632d-4cb2-9a04-d02484723148.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/sashOfTheLeviedMile-source.png",
+      "final": "public/assets/artifacts/sashOfTheLeviedMile.png",
+      "prompt_sha256": "26b7785627b0c9a4a19eb805dfd65845c8c12bb202b61eee0aea4a046fbd7ac2",
+      "source_sha256": "0f8c95d25f4043f6dfbc34af8cdf9c8eaad0c05694005768cc3a6a8caf1fec25",
+      "final_sha256": "8218d19d0ba7ebeefee4c6f3dffa0fd1d014205386c8793896dd80395cc284ae",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 546,
+        "opaque": 478,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal sashOfTheLeviedMile subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:scribesCuff",
+      "request_id": "collectible:artifact:scribesCuff:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "scribesCuff",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-ce8cde60-ed85-4a9a-aa0d-49e0c74be0b1.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/scribesCuff-source.png",
+      "final": "public/assets/artifacts/scribesCuff.png",
+      "prompt_sha256": "14bec979cd9903d3878a8fb2898c511b66599bd71836c31d0451a838d56c80ae",
+      "source_sha256": "b6f3e6da79040216fcfca6b88ff4862c72bf42635b0aaef89a7f45bbb0d97dd2",
+      "final_sha256": "aa22985f2ff148f99d04e9672beeb785921db1d6c6c62386de9e569af9308e86",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 593,
+        "opaque": 431,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal scribesCuff subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:captainsWeathercoat",
+      "request_id": "collectible:artifact:captainsWeathercoat:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "captainsWeathercoat",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-f6f51248-bc11-4590-a257-dd72cc18d8cc.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/captainsWeathercoat-source.png",
+      "final": "public/assets/artifacts/captainsWeathercoat.png",
+      "prompt_sha256": "895a97a463ca3793c165bbe26cfaf03ffcc990f3d1c82fbce7800a9c2ffd607f",
+      "source_sha256": "356ce9d025f16dc6330e9589a21f095f9574a8f6a56ccd10907a35fb23c7f34e",
+      "final_sha256": "c8d818c500ba1057c963315f0a69813fc6eed94f0d878350e9d0148fa701b982",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 510,
+        "opaque": 514,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal captainsWeathercoat subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:lanternScholarsCap",
+      "request_id": "collectible:artifact:lanternScholarsCap:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "lanternScholarsCap",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-1cccd900-fb3c-4898-9be5-c953e8b07e95.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/lanternScholarsCap-source.png",
+      "final": "public/assets/artifacts/lanternScholarsCap.png",
+      "prompt_sha256": "f2536ee20b510b640b8c70432001c7dc99529a84e5d248631e41ac0ff71276b4",
+      "source_sha256": "b7ab6775a9d2febed8a65a7f07cd57635f1d08c72077f523db9519591906b436",
+      "final_sha256": "3f70ff6f5590e5ed361009992d4f5117c5515905af2dcf5868d655bdd11668b4",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 602,
+        "opaque": 422,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal lanternScholarsCap subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:pilgrimsBelt",
+      "request_id": "collectible:artifact:pilgrimsBelt:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "pilgrimsBelt",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-81fb0c54-ee4b-4f30-b6c5-a2b9fdff9bc3.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/pilgrimsBelt-source.png",
+      "final": "public/assets/artifacts/pilgrimsBelt.png",
+      "prompt_sha256": "2e0b59a9fc8b1784789478101c5c43a2416019d8f595708cf28e5ee0aa98515d",
+      "source_sha256": "034f05878a5458b9c30a8682e228f626187718a822abe4e89dc6bbc20501dd0e",
+      "final_sha256": "deb730b5c155703caf551c13f989eb52fc14be519bb9fd754a453a63c744101a",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 610,
+        "opaque": 414,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal pilgrimsBelt subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:surveyorsBoots",
+      "request_id": "collectible:artifact:surveyorsBoots:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "surveyorsBoots",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-ed29e6db-bf91-442f-aaef-b4a2d50b24d3.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/surveyorsBoots-source.png",
+      "final": "public/assets/artifacts/surveyorsBoots.png",
+      "prompt_sha256": "1bf72bb985a6ff1f7b5b683d19d3e4af0f6bec20948130562702b864acd8f7ee",
+      "source_sha256": "6dc6458b05b8cc173571426f0d92a810f2dab592b90622500e02cf153281a03b",
+      "final_sha256": "3bf7aa50e7213c23fd0d3864bc42b5a9563fdc3a35d6a88c037c6c34ee6d2f7e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 499,
+        "opaque": 525,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal surveyorsBoots subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:fieldClerksSeal",
+      "request_id": "collectible:artifact:fieldClerksSeal:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "fieldClerksSeal",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-8bccaf81-d585-4db1-b537-479e4ad13e00.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/fieldClerksSeal-source.png",
+      "final": "public/assets/artifacts/fieldClerksSeal.png",
+      "prompt_sha256": "4723294a275db9681880bb0cf089356423a63ad1c4ae56df11615077566f44a2",
+      "source_sha256": "70070a076ebbfe83997a86b25a6d1067d0b8d5deb39a82e9c7ca9db880055cf7",
+      "final_sha256": "e6ef2396dcdc30cfb3c363944b877278bca2a6b0977e13b1f51eaab77c0cde53",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 730,
+        "opaque": 294,
+        "partial": 0,
+        "bbox": [
+          2,
+          7,
+          30,
+          24
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the sheaf/tally relief becomes fine texture at 32x32, but the paired brass signet and plain red wax impression remain unmistakable and contain no text."
+    },
+    {
+      "id": "map-object:artifact:ashwoodBracer",
+      "request_id": "collectible:artifact:ashwoodBracer:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ashwoodBracer",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-30a452ee-f489-4ed2-8b78-619162e52d14.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/ashwoodBracer-source.png",
+      "final": "public/assets/artifacts/ashwoodBracer.png",
+      "prompt_sha256": "864a22c88a003caa459d3c1c1bcd628892581a34571d32754a6dc68863499724",
+      "source_sha256": "4bb5d4405418d782f4bcad8903fabad4470f6b366b53ffa60ee9a77c22a35355",
+      "final_sha256": "500161ac6bc122aeaf03e05a23c2b3a9c18f487e7c88979f456c03882af00d8f",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 666,
+        "opaque": 358,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal ashwoodBracer subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:quietWard",
+      "request_id": "collectible:artifact:quietWard:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "quietWard",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-ad200e2e-d29c-4c69-82e6-71f411560d23.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/quietWard-source.png",
+      "final": "public/assets/artifacts/quietWard.png",
+      "prompt_sha256": "f06b4041f30be8000d65d47de07d3c3d0a51f497d63fbb459d74ef0ecd442de6",
+      "source_sha256": "b41d3afe061bb50c29946eb6107bf817b379d811fd8c434e572f650d20141f9c",
+      "final_sha256": "c5eef0879f54009ca1083b2275a7ac661a851068b28f6de538dffef375e5e6ad",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 638,
+        "opaque": 386,
+        "partial": 0,
+        "bbox": [
+          6,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal quietWard subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:marchGlass",
+      "request_id": "collectible:artifact:marchGlass:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "marchGlass",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-310b5f7e-5a75-46c5-b625-d189d6593817.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/marchGlass-source.png",
+      "final": "public/assets/artifacts/marchGlass.png",
+      "prompt_sha256": "43f4466b36b0d3a23957215ec64497b467d75d2d1bd018afe05899769d3260d3",
+      "source_sha256": "6166d2deae60dbb0174c5ebd718ea4e0f28ea601fbe9ae98827c67f9b5e970e4",
+      "final_sha256": "0caf7b20cfe5bd09c97162d9d929ecfa826a74eccdde87967bb9b5493b7e6636",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 539,
+        "opaque": 485,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal marchGlass subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:keepersHalfCloak",
+      "request_id": "collectible:artifact:keepersHalfCloak:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "keepersHalfCloak",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-8ba029dd-fceb-4d70-afc7-afa634c967e5.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/keepersHalfCloak-source.png",
+      "final": "public/assets/artifacts/keepersHalfCloak.png",
+      "prompt_sha256": "ed0123f2720a626c2060ff849c71e67164394f804a5e8c536a36e2c4b741ede3",
+      "source_sha256": "67df648eade5586d87982a5bc9d93fd2dc79a4152b5b0b40296f4d0d6a7b9d16",
+      "final_sha256": "a529ccda557df080a899ab08ec9ad173118e735286b727dd781e7f0de4a2a82d",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 470,
+        "opaque": 554,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the key clasp is small at native size, but the asymmetric one-shoulder cream cloak silhouette remains unique."
+    },
+    {
+      "id": "map-object:artifact:mendersGorget",
+      "request_id": "collectible:artifact:mendersGorget:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "mendersGorget",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451/exec-1d05eadd-1735-4e96-bdeb-07072c712876.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/mendersGorget-source.png",
+      "final": "public/assets/artifacts/mendersGorget.png",
+      "prompt_sha256": "25b48bf3433d1561b8548cbf4ca236259ec57832a6f85ed1b27ee48b65feed09",
+      "source_sha256": "671bc43dc29a15201c84c538eea03822058feecd08c7feb35c50e9fd23e5f7f4",
+      "final_sha256": "fe558f7122c6ec35eb0d961cc459c779532d81e21a0543584b8b9da8f65ec5b5",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 538,
+        "opaque": 486,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal mendersGorget subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    }
+  ]
+}

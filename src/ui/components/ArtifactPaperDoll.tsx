@@ -8,6 +8,7 @@ import type {
   Action, EquipmentSlotId, GameState, Hero, SpellSchool,
 } from '../../core/types';
 import { ResourceRichText } from './ResourceToken';
+import { ArtifactSprite } from '../assets';
 
 const SLOT_NAMES: Record<EquipmentSlotId, string> = {
   head: 'Head', cloak: 'Cloak', amulet: 'Amulet', weapon: 'Weapon',
@@ -74,6 +75,7 @@ export function ArtifactPaperDoll({
               onClick={() => item && setDraft({ kind: 'unequip', equipmentSlot: slot })}
               data-inspect-kind={item ? 'artifact' : undefined} data-inspect-id={item?.id}>
               <small>{SLOT_NAMES[slot]}</small>
+              {item && <ArtifactSprite artifact={item} />}
               <b>{definition?.name ?? '—'}</b>
               {burdenReason && <span className="burden-mark">Burden · locked</span>}
             </button>
@@ -91,6 +93,7 @@ export function ArtifactPaperDoll({
               data-inspect-kind="artifact" data-inspect-id={item.id}
               onClick={() => setDraft({ kind: 'equip', backpackIndex: index, equipmentSlot: null,
                 chosenSchool: item.chosenSchool })}>
+              <ArtifactSprite artifact={item} />
               <b>{definition.name}</b>
               <small>{definition.class} · {definition.slot} · choose {slots.length} compatible {
                 slots.length === 1 ? 'slot' : 'slots'}</small>
@@ -127,7 +130,7 @@ export function ArtifactPaperDoll({
           <section className="choice-dialog equipment-dialog" role="dialog" aria-modal="true"
             aria-labelledby="equip-heading">
             <span className="dialog-kicker">Choose equipment destination</span>
-            <h2 id="equip-heading">Equip {equipDefinition.name}</h2>
+            <h2 id="equip-heading"><ArtifactSprite artifact={equipItem} />Equip {equipDefinition.name}</h2>
             <p>{equipDefinition.class} artifact · fits {equipDefinition.slot} slots. {
               equipDefinition.description}</p>
             <div className="equipment-destinations" role="group" aria-label="Equipment slots">
@@ -181,7 +184,7 @@ export function ArtifactPaperDoll({
           <section className="choice-dialog equipment-dialog" role="dialog" aria-modal="true"
             aria-labelledby="unequip-heading">
             <span className="dialog-kicker">Unequip to backpack</span>
-            <h2 id="unequip-heading">{unequipDefinition.name} · {SLOT_NAMES[draft.equipmentSlot]}</h2>
+            <h2 id="unequip-heading"><ArtifactSprite artifact={unequipItem} />{unequipDefinition.name} · {SLOT_NAMES[draft.equipmentSlot]}</h2>
             {unequipDefinition.class === 'burden' ? (
               <p className="disabled-reason"><b>Burden cannot be unequipped.</b> Removal condition: {
                 unequipDefinition.burdenRemoval}</p>

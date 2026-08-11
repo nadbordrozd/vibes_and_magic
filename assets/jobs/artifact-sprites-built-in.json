@@ -1,0 +1,657 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "collectible_family": "artifact",
+  "contact_sheet": ".pixel-work/review/collectibles/artifact",
+  "requests": [
+    {
+      "id": "collectible:artifact:skirmishersBlade:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "skirmishersBlade",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:skirmishersBlade"
+      ],
+      "output": "assets/sources/artifacts/skirmishersBlade-source.png",
+      "final": "public/assets/artifacts/skirmishersBlade.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A short practical polished steel sword whose blade has a leaf-shaped outline only, with a leather grip, a clear small metal crossguard, and one nick near the tip. The blade material must unmistakably read as steel or iron, never as a botanical leaf.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper blade planes, generous padding, and a strong readable sword silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal; polished silver-grey metal blade with restrained highlight.\nAvoid: botanical leaf, leaf veins, green blade, plant material, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:marchwardensSword:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "marchwardensSword",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:marchwardensSword"
+      ],
+      "output": "assets/sources/artifacts/marchwardensSword-source.png",
+      "final": "public/assets/artifacts/marchwardensSword.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A straight patrol sword with a broad brass crossguard and road-brown scabbard strap.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:swordOfTheFirstField:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "swordOfTheFirstField",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:swordOfTheFirstField"
+      ],
+      "output": "assets/sources/artifacts/swordOfTheFirstField-source.png",
+      "final": "public/assets/artifacts/swordOfTheFirstField.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A polished long sword with a wheat-sheaf pommel and restrained sunrise-gold fuller.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:yeomansBuckler:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "yeomansBuckler",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:yeomansBuckler"
+      ],
+      "output": "assets/sources/artifacts/yeomansBuckler-source.png",
+      "final": "public/assets/artifacts/yeomansBuckler.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A small round cream-painted wooden buckler with an iron boss and two honest repairs.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:kiteOfTheOldWall:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "kiteOfTheOldWall",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:kiteOfTheOldWall"
+      ],
+      "output": "assets/sources/artifacts/kiteOfTheOldWall-source.png",
+      "final": "public/assets/artifacts/kiteOfTheOldWall.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A tall weathered kite shield of grey wood and iron rim, painted with one cream wall block.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:aegisOfTheKeptOath:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "aegisOfTheKeptOath",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:aegisOfTheKeptOath"
+      ],
+      "output": "assets/sources/artifacts/aegisOfTheKeptOath-source.png",
+      "final": "public/assets/artifacts/aegisOfTheKeptOath.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A broad gold-rimmed heater shield with an upright closed-gate emblem and red leather lining.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:circletOfSmallRites:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "circletOfSmallRites",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:circletOfSmallRites"
+      ],
+      "output": "assets/sources/artifacts/circletOfSmallRites-source.png",
+      "final": "public/assets/artifacts/circletOfSmallRites.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A narrow brass circlet set with three candle-shaped cream studs.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:hoodOfTheHedgeMage:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "hoodOfTheHedgeMage",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:hoodOfTheHedgeMage"
+      ],
+      "output": "assets/sources/artifacts/hoodOfTheHedgeMage-source.png",
+      "final": "public/assets/artifacts/hoodOfTheHedgeMage.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A soft moss-green pointed hood with patched cream lining and one rowan pin.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:crownOfThePatternedSky:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "crownOfThePatternedSky",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:crownOfThePatternedSky"
+      ],
+      "output": "assets/sources/artifacts/crownOfThePatternedSky-source.png",
+      "final": "public/assets/artifacts/crownOfThePatternedSky.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A low gold crown whose blue enamel points form interlocking clouds and stars without text.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:chapbookLocket:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "chapbookLocket",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:chapbookLocket"
+      ],
+      "output": "assets/sources/artifacts/chapbookLocket-source.png",
+      "final": "public/assets/artifacts/chapbookLocket.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A tiny brass book-shaped locket on a cream cord, cover blank and clasp open.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:reliquaryPendant:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "reliquaryPendant",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:reliquaryPendant"
+      ],
+      "output": "assets/sources/artifacts/reliquaryPendant-source.png",
+      "final": "public/assets/artifacts/reliquaryPendant.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A small arched brass-and-glass pendant holding one folded white cloth relic.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:deepWellAmulet:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "deepWellAmulet",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:deepWellAmulet"
+      ],
+      "output": "assets/sources/artifacts/deepWellAmulet-source.png",
+      "final": "public/assets/artifacts/deepWellAmulet.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A dark-blue teardrop stone suspended in a deep silver ring like a bucket over a well.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:quiltedCoat:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "quiltedCoat",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:quiltedCoat"
+      ],
+      "output": "assets/sources/artifacts/quiltedCoat-source.png",
+      "final": "public/assets/artifacts/quiltedCoat.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A folded cream gambeson with red stitching, brass toggles, and thick diamond quilting.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:lamellarOfTheMarches:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "lamellarOfTheMarches",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:lamellarOfTheMarches"
+      ],
+      "output": "assets/sources/artifacts/lamellarOfTheMarches-source.png",
+      "final": "public/assets/artifacts/lamellarOfTheMarches.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: Overlapping brown iron-and-leather lamellar plates bound with warm red cord.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:panoplyOfTheGreyKeep:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "panoplyOfTheGreyKeep",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:panoplyOfTheGreyKeep"
+      ],
+      "output": "assets/sources/artifacts/panoplyOfTheGreyKeep-source.png",
+      "final": "public/assets/artifacts/panoplyOfTheGreyKeep.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A compact suit of pale steel plate with squared pauldrons and a cream-red waist sash.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:travelersCloak:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "travelersCloak",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:travelersCloak"
+      ],
+      "output": "assets/sources/artifacts/travelersCloak-source.png",
+      "final": "public/assets/artifacts/travelersCloak.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A rolled russet travelling cloak with a plain wooden clasp and dust-dark hem.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:wayfarersMantle:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "wayfarersMantle",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:wayfarersMantle"
+      ],
+      "output": "assets/sources/artifacts/wayfarersMantle-source.png",
+      "final": "public/assets/artifacts/wayfarersMantle.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A green-grey shoulder mantle fastened by a brass road-wheel brooch.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:cloakOfTheOpenRoad:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "cloakOfTheOpenRoad",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:cloakOfTheOpenRoad"
+      ],
+      "output": "assets/sources/artifacts/cloakOfTheOpenRoad-source.png",
+      "final": "public/assets/artifacts/cloakOfTheOpenRoad.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A wind-swept ochre cloak with a blue lining and an open brass gate clasp.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:cobblersPride:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "cobblersPride",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:cobblersPride"
+      ],
+      "output": "assets/sources/artifacts/cobblersPride-source.png",
+      "final": "public/assets/artifacts/cobblersPride.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: One immaculate brown ankle boot with bright hobnails, thick sole, and red pull loop.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:bootsOfTheDrover:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "bootsOfTheDrover",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:bootsOfTheDrover"
+      ],
+      "output": "assets/sources/artifacts/bootsOfTheDrover-source.png",
+      "final": "public/assets/artifacts/bootsOfTheDrover.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A sturdy pair of mud-brown riding boots with brass heel guards and green straps.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:sevenLeagueBoots:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "sevenLeagueBoots",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:sevenLeagueBoots"
+      ],
+      "output": "assets/sources/artifacts/sevenLeagueBoots-source.png",
+      "final": "public/assets/artifacts/sevenLeagueBoots.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: Long crimson travelling boots with wing-shaped cream cuffs and oversized golden buckles.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:ringOfSmallMendings:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ringOfSmallMendings",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:ringOfSmallMendings"
+      ],
+      "output": "assets/sources/artifacts/ringOfSmallMendings-source.png",
+      "final": "public/assets/artifacts/ringOfSmallMendings.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A slim silver ring closed by a visible golden repair staple.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:ringOfTheSteadyHand:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ringOfTheSteadyHand",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:ringOfTheSteadyHand"
+      ],
+      "output": "assets/sources/artifacts/ringOfTheSteadyHand-source.png",
+      "final": "public/assets/artifacts/ringOfTheSteadyHand.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A broad brass ring shaped like two clasped steady hands.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:ringOfTheLongVigil:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ringOfTheLongVigil",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:ringOfTheLongVigil"
+      ],
+      "output": "assets/sources/artifacts/ringOfTheLongVigil-source.png",
+      "final": "public/assets/artifacts/ringOfTheLongVigil.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A dark silver ring set with a tiny upright candle of pale amber.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:sashOfTheLeviedMile:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "sashOfTheLeviedMile",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:sashOfTheLeviedMile"
+      ],
+      "output": "assets/sources/artifacts/sashOfTheLeviedMile-source.png",
+      "final": "public/assets/artifacts/sashOfTheLeviedMile.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A rolled cream-red military sash pinned with a tiny brass milestone.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:scribesCuff:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "scribesCuff",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:scribesCuff"
+      ],
+      "output": "assets/sources/artifacts/scribesCuff-source.png",
+      "final": "public/assets/artifacts/scribesCuff.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A blue leather wrist cuff holding a cut quill, small chalk, and blank parchment slip.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:captainsWeathercoat:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "captainsWeathercoat",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:captainsWeathercoat"
+      ],
+      "output": "assets/sources/artifacts/captainsWeathercoat-source.png",
+      "final": "public/assets/artifacts/captainsWeathercoat.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A folded storm-blue waxed coat with brass toggles, red collar, and rain-beaded shoulders.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:lanternScholarsCap:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "lanternScholarsCap",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:lanternScholarsCap"
+      ],
+      "output": "assets/sources/artifacts/lanternScholarsCap-source.png",
+      "final": "public/assets/artifacts/lanternScholarsCap.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A soft dark-blue scholar cap pinned with a tiny warm brass lantern.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:pilgrimsBelt:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "pilgrimsBelt",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:pilgrimsBelt"
+      ],
+      "output": "assets/sources/artifacts/pilgrimsBelt-source.png",
+      "final": "public/assets/artifacts/pilgrimsBelt.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A broad worn brown belt carrying a cream cord, plain cup, and small road token.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:surveyorsBoots:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "surveyorsBoots",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:surveyorsBoots"
+      ],
+      "output": "assets/sources/artifacts/surveyorsBoots-source.png",
+      "final": "public/assets/artifacts/surveyorsBoots.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A pair of short green-grey boots with brass measuring ticks on their reinforced sides.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:fieldClerksSeal:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "fieldClerksSeal",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:fieldClerksSeal"
+      ],
+      "output": "assets/sources/artifacts/fieldClerksSeal-source.png",
+      "final": "public/assets/artifacts/fieldClerksSeal.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A brass signet ring beside a plain red wax impression shaped like a sheaf and tally mark.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:ashwoodBracer:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "ashwoodBracer",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:ashwoodBracer"
+      ],
+      "output": "assets/sources/artifacts/ashwoodBracer-source.png",
+      "final": "public/assets/artifacts/ashwoodBracer.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A curved ashwood forearm guard with black leather ties and one pale carved leaf.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:quietWard:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "quietWard",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:quietWard"
+      ],
+      "output": "assets/sources/artifacts/quietWard-source.png",
+      "final": "public/assets/artifacts/quietWard.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A small white padded amulet shield wrapped in blue thread, its central bell tied silent.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:marchGlass:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "marchGlass",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:marchGlass"
+      ],
+      "output": "assets/sources/artifacts/marchGlass-source.png",
+      "final": "public/assets/artifacts/marchGlass.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A thick brass monocular containing a pale blue lens and one red route needle.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:keepersHalfCloak:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "keepersHalfCloak",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:keepersHalfCloak"
+      ],
+      "output": "assets/sources/artifacts/keepersHalfCloak-source.png",
+      "final": "public/assets/artifacts/keepersHalfCloak.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A short one-shoulder cream cloak with grey lining and a large key-shaped clasp.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:mendersGorget:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "mendersGorget",
+      "catalog_group": "vanilla",
+      "assets": [
+        "map-object:artifact:mendersGorget"
+      ],
+      "output": "assets/sources/artifacts/mendersGorget-source.png",
+      "final": "public/assets/artifacts/mendersGorget.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A riveted brass neck guard visibly repaired with porcelain and red thread.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    }
+  ]
+}

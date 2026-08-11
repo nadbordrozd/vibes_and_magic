@@ -1,6 +1,7 @@
 import { FACTIONS } from '../src/content/factions';
 import { HEROES } from '../src/content/heroes';
 import { ITEMS } from '../src/content/items';
+import { ARTIFACTS, VANILLA_ARTIFACT_IDS } from '../src/content/artifacts';
 import { createBorderMarches } from '../src/content/maps/borderMarches';
 import { createCrosstitch } from '../src/content/maps/crosstitch';
 import { createManywhere } from '../src/content/maps/manywhere';
@@ -268,6 +269,10 @@ export function assetWorklist(): AssetWorkItem[] {
   for (const item of Object.values(ITEMS)) pushUnique(items, {
     id: assetId.mapObject('item', item.id), category: 'map-object', w: 32, h: 32,
     source: `canonical item catalog:${item.use}`,
+  });
+  for (const artifactId of VANILLA_ARTIFACT_IDS) pushUnique(items, {
+    id: assetId.mapObject('artifact', artifactId), category: 'map-object', w: 32, h: 32,
+    source: `canonical artifact catalog:${ARTIFACTS[artifactId].class}`,
   });
 
   for (const unit of Object.values(UNITS)) {

@@ -6,7 +6,8 @@ import {
 } from '../../assets/manifest';
 import { TERRAIN, terrainId } from '../content/terrain';
 import type {
-  Castle, GameMap, ItemId, ItemInstance, MapObject, TerrainSkinId, TerrainTile,
+  ArtifactId, ArtifactInstance, Castle, GameMap, ItemId, ItemInstance, MapObject,
+  TerrainSkinId, TerrainTile,
 } from '../core/types';
 
 type LoadState = 'loading' | 'loaded' | 'failed';
@@ -153,6 +154,12 @@ function objectVariant(object: MapObject): string {
 }
 
 export function mapObjectSpriteId(object: MapObject): string {
+  if (object.kind === 'rewardPickup') {
+    const artifact = object.reward.artifacts?.[0];
+    if (artifact) return assetId.mapObject('artifact', artifact.id);
+    const item = object.reward.items?.[0];
+    if (item) return assetId.mapObject('item', item.id);
+  }
   return assetId.mapObject(object.kind, objectVariant(object));
 }
 
@@ -216,5 +223,17 @@ export function ItemSprite({
     <ManifestPortrait id={assetId.mapObject('item', id)} className="item-sprite"
       fallback={<span className="item-sprite-fallback">◇</span>} />
     {item?.plus && <span className="item-sprite-upgraded">⌃</span>}
+  </span>;
+}
+
+/** Canonical HTML artifact image; class, slot, and instance state stay in semantic UI copy. */
+export function ArtifactSprite({
+  artifact, artifactId, className,
+}: { artifact?: ArtifactInstance; artifactId?: ArtifactId; className?: string }) {
+  const id = artifact?.id ?? artifactId;
+  if (!id) return null;
+  return <span className={`artifact-sprite-wrap ${className ?? ''}`} aria-hidden="true">
+    <ManifestPortrait id={assetId.mapObject('artifact', id)} className="artifact-sprite"
+      fallback={<span className="artifact-sprite-fallback">◆</span>} />
   </span>;
 }

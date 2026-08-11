@@ -1,7 +1,10 @@
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { ITEM_SPRITE_SUBJECTS } from '../assets/adventureSpriteInventory';
+import {
+  ARTIFACT_SPRITE_SUBJECTS, ITEM_SPRITE_SUBJECTS,
+} from '../assets/adventureSpriteInventory';
+import { ARTIFACTS } from '../src/content/artifacts';
 import { ITEMS } from '../src/content/items';
 
 type CollectibleFamily = 'item' | 'artifact';
@@ -15,7 +18,7 @@ interface CollectibleInput {
 
 const root = resolve(import.meta.dirname, '..');
 const session = '/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa';
-const calls: Record<string, string> = {
+const itemCalls: Record<string, string> = {
   spellScroll: 'exec-c0c119f8-0181-467e-85ae-7368e978f219.png', scrollRally: 'exec-4af99732-c50c-49f2-8f5a-976cc76c472c.png',
   scrollBlessing: 'exec-d1e5c96b-5f94-4271-ac7b-30dd5af1b10a.png', scrollForgeSpark: 'exec-6d0b3998-a0bf-4c03-982a-231d3ad4236a.png',
   scrollWard: 'exec-4b516789-3ed2-4430-b46f-5f636caf65c1.png', scrollWither: 'exec-2753e94e-2914-4d09-aa52-2a8561938f49.png',
@@ -37,6 +40,45 @@ const calls: Record<string, string> = {
   tradeGoods: 'exec-9a5f821e-6c7b-41cb-8f10-06f5ad757e3a.png',
 };
 
+const artifactCalls: Record<string, string> = {
+  skirmishersBlade: 'exec-91863a33-35bd-4150-8e68-0d73847ab1d0.png',
+  marchwardensSword: 'exec-d8972436-e611-476f-9079-9d212d390131.png',
+  swordOfTheFirstField: 'exec-c0e5c102-ee49-408e-a11c-1fbb8ed84fea.png',
+  yeomansBuckler: 'exec-ff37deb5-9c60-4811-8743-fd06e2409de9.png',
+  kiteOfTheOldWall: 'exec-4e95e179-7cae-4d3a-9d26-f2bd9497d234.png',
+  aegisOfTheKeptOath: 'exec-8613af98-7138-4e27-8b73-c9955d291b2b.png',
+  circletOfSmallRites: 'exec-4d1b391c-114d-42db-bf7b-95c38fb9dc77.png',
+  hoodOfTheHedgeMage: 'exec-ea616157-9c7f-4996-8af9-7f6291736ec5.png',
+  crownOfThePatternedSky: 'exec-3c6d10cf-0284-4723-b416-c38ede5e759a.png',
+  chapbookLocket: 'exec-f6b0cfce-c0fb-4be9-b3b5-b96c15ce476c.png',
+  reliquaryPendant: 'exec-08929d2b-8fc8-4c7c-a1fd-162dad0f2718.png',
+  deepWellAmulet: 'exec-9705e7fe-db80-45d9-b48d-7b91d227a5a7.png',
+  quiltedCoat: 'exec-0ea36dba-d7c8-4aee-9c40-cd5f5a187a18.png',
+  lamellarOfTheMarches: 'exec-80fbed0d-1831-469b-8ab4-f7ef3ebfc414.png',
+  panoplyOfTheGreyKeep: 'exec-f292bc46-8d2e-434f-85e6-dc69e864ca99.png',
+  travelersCloak: 'exec-2a648af4-df50-4404-b60c-aecd94b34ccb.png',
+  wayfarersMantle: 'exec-682b168a-2d3c-4371-9f2b-b6936eaba059.png',
+  cloakOfTheOpenRoad: 'exec-7c72d308-b3be-4888-b1ae-0d6bbf17527b.png',
+  cobblersPride: 'exec-a6dfe1d6-ce65-4585-9ba9-ba76b3a870ec.png',
+  bootsOfTheDrover: 'exec-2314222b-1fec-408d-802f-ed206b8f0eee.png',
+  sevenLeagueBoots: 'exec-40daea75-b00a-4cbd-ab89-603a0090e992.png',
+  ringOfSmallMendings: 'exec-44839189-7fb6-4551-945f-2eb5063e6057.png',
+  ringOfTheSteadyHand: 'exec-d363eaaa-b3cc-4443-953d-55d6be703bb6.png',
+  ringOfTheLongVigil: 'exec-e6a1a50b-91eb-478e-8741-a1e974aa6997.png',
+  sashOfTheLeviedMile: 'exec-4bc9d611-632d-4cb2-9a04-d02484723148.png',
+  scribesCuff: 'exec-ce8cde60-ed85-4a9a-aa0d-49e0c74be0b1.png',
+  captainsWeathercoat: 'exec-f6f51248-bc11-4590-a257-dd72cc18d8cc.png',
+  lanternScholarsCap: 'exec-1cccd900-fb3c-4898-9be5-c953e8b07e95.png',
+  pilgrimsBelt: 'exec-81fb0c54-ee4b-4f30-b6c5-a2b9fdff9bc3.png',
+  surveyorsBoots: 'exec-ed29e6db-bf91-442f-aaef-b4a2d50b24d3.png',
+  fieldClerksSeal: 'exec-8bccaf81-d585-4db1-b537-479e4ad13e00.png',
+  ashwoodBracer: 'exec-30a452ee-f489-4ed2-8b78-619162e52d14.png',
+  quietWard: 'exec-ad200e2e-d29c-4c69-82e6-71f411560d23.png',
+  marchGlass: 'exec-310b5f7e-5a75-46c5-b625-d189d6593817.png',
+  keepersHalfCloak: 'exec-8ba029dd-fceb-4d70-afc7-afa634c967e5.png',
+  mendersGorget: 'exec-1d05eadd-1735-4e96-bdeb-07072c712876.png',
+};
+
 const magenta = new Set(['scrollSour', 'haresHeel', 'waybread']);
 const opaqueGlass: Record<string, string> = {
   potionOfVigor: 'Render the glass as opaque stylized red pixel clusters and crisp highlights, not see-through green.',
@@ -49,8 +91,8 @@ const opaqueGlass: Record<string, string> = {
   secondCandle: 'Show a tiny ordinary flame only on the newly relit candle, with no aura or glow.',
 };
 
-const firstTen = new Set(Object.keys(calls).slice(0, 10));
-const secondTen = new Set(Object.keys(calls).slice(10, 20));
+const firstTen = new Set(Object.keys(itemCalls).slice(0, 10));
+const secondTen = new Set(Object.keys(itemCalls).slice(10, 20));
 
 function promptFor(input: CollectibleInput): string {
   if (input.catalogKey === 'scrollQuiet') return `Use case: stylized-concept
@@ -66,7 +108,7 @@ Avoid: full-size bell, bell-shaped scroll, scarf, text, letters, writing, glyphs
     ? 'one complete isolated object' : 'one complete isolated object or tightly unified described set';
   const reflection = firstTen.has(input.catalogKey) ? 'reflection'
     : 'reflection on the background';
-  const magical = Object.keys(calls).slice(20, 30).includes(input.catalogKey) ? 'magical glow' : 'glow';
+  const magical = Object.keys(itemCalls).slice(20, 30).includes(input.catalogKey) ? 'magical glow' : 'glow';
   return `Use case: stylized-concept
 Asset type: production collectible item sprite for a storybook strategy game
 Primary request: Create exactly one isolated item: ${input.subject}
@@ -76,6 +118,31 @@ Composition/framing: ${unified}, centered high-oblique non-isometric object view
 Lighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.
 Constraints: perfectly uniform ${input.chromaKey} background with no gradient, texture, floor plane, or lighting variation; do not use ${input.chromaKey} in the subject; opaque crisp-edged object suitable for chroma removal.${opaqueGlass[input.catalogKey] ? ` ${opaqueGlass[input.catalogKey]}` : ''}
 Avoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, ${magical}, aura, watermark, ${reflection}, cast shadow on the background, contact shadow on the background, extra objects.`;
+}
+
+function artifactLiteralPromptFor(input: CollectibleInput): string {
+  return `Use case: stylized-concept
+Asset type: production collectible Vanilla artifact sprite for a storybook strategy game
+Primary request: Create exactly one isolated artifact: ${input.subject}
+Scene/backdrop: perfectly flat solid ${input.chromaKey} chroma-key background for local background removal.
+Style/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.
+Composition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.
+Lighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.
+Constraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.
+Avoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.`;
+}
+
+function artifactPromptFor(input: CollectibleInput): string {
+  if (input.catalogKey === 'skirmishersBlade') return `Use case: stylized-concept
+Asset type: production collectible Vanilla artifact sprite for a storybook strategy game
+Primary request: Create exactly one isolated artifact: A short practical polished steel sword whose blade has a leaf-shaped outline only, with a leather grip, a clear small metal crossguard, and one nick near the tip. The blade material must unmistakably read as steel or iron, never as a botanical leaf.
+Scene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.
+Style/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.
+Composition/framing: one complete isolated object, centered in a high-oblique non-isometric object view with visible upper blade planes, generous padding, and a strong readable sword silhouette when reduced to 32x32.
+Lighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.
+Constraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal; polished silver-grey metal blade with restrained highlight.
+Avoid: botanical leaf, leaf veins, green blade, plant material, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.`;
+  return artifactLiteralPromptFor(input);
 }
 
 function sha(fileOrText: string | Buffer): string {
@@ -104,8 +171,13 @@ function upsertSelectionBatch(
   return contents.replace(/\n  }\n}\s*$/, `,\n${block}\n  }\n}\n`);
 }
 
-function writeCollectibleJob(family: CollectibleFamily, inputs: CollectibleInput[]): void {
-  const requests = inputs.map((input) => ({
+function writeCollectibleJob(
+  family: CollectibleFamily,
+  inputs: CollectibleInput[],
+  promptFactory: (input: CollectibleInput) => string,
+  incremental = false,
+): void {
+  const batchRequests = inputs.map((input) => ({
     id: `collectible:${family}:${input.catalogKey}:built-in`,
     collectible_family: family,
     catalog_key: input.catalogKey,
@@ -114,16 +186,24 @@ function writeCollectibleJob(family: CollectibleFamily, inputs: CollectibleInput
     output: `assets/sources/${family}s/${input.catalogKey}-source.png`,
     final: `public/assets/${family}s/${input.catalogKey}.png`,
     size: [32, 32], candidates: 1, chroma_key: input.chromaKey,
-    prompt: promptFor(input),
+    prompt: promptFactory(input),
   }));
   const jobPath = `assets/jobs/${family}-sprites-built-in.json`;
+  const existingJob = incremental && existsSync(resolve(root, jobPath))
+    ? JSON.parse(readFileSync(resolve(root, jobPath), 'utf8')) as { requests: typeof batchRequests }
+    : null;
+  const incomingKeys = new Set(batchRequests.map((request) => request.catalog_key));
+  const requests = [
+    ...(existingJob?.requests ?? []).filter((request) => !incomingKeys.has(request.catalog_key)),
+    ...batchRequests,
+  ];
   const job = { version: 1, status: 'ready', generator: 'built-in-imagegen',
     collectible_family: family,
     contact_sheet: `.pixel-work/review/collectibles/${family}`,
     requests };
   writeFileSync(resolve(root, jobPath), `${JSON.stringify(job, null, 2)}\n`);
 
-  const selections = requests.map((request) => {
+  const batchSelections = batchRequests.map((request) => {
     const input = inputs.find((candidate) => candidate.catalogKey === request.catalog_key)!;
     const sourcePath = resolve(root, request.output);
     const finalPath = resolve(root, request.final);
@@ -136,6 +216,14 @@ function writeCollectibleJob(family: CollectibleFamily, inputs: CollectibleInput
         built_in_output: `${session}/exec-52fc5e1d-d2aa-4a35-8815-5780297a4e05.png`,
         source: 'assets/sources/items/discarded/scrollQuiet-full-bell-source.png',
         reason: 'Rejected in contact review: full-size bell dominated and the parchment scroll was not readable.',
+      }] : request.catalog_key === 'skirmishersBlade' ? [{
+        built_in_output: `${artifactSession}/exec-2aa25f80-c309-40d1-ac00-3022b19398d7.png`,
+        source: 'assets/sources/artifacts/discarded/skirmishersBlade-botanical-leaf-source.png',
+        prompt: artifactLiteralPromptFor(input),
+        prompt_sha256: sha(artifactLiteralPromptFor(input)),
+        source_sha256: sha(readFileSync(resolve(root,
+          'assets/sources/artifacts/discarded/skirmishersBlade-botanical-leaf-source.png'))),
+        reason: 'Rejected in contact review: the green veined blade read as a literal botanical leaf with a tiny handle, not a steel leaf-shaped sword.',
       }] : [], source: request.output, final: request.final,
       prompt_sha256: sha(request.prompt),
       source_sha256: existsSync(sourcePath) ? sha(readFileSync(sourcePath)) : null,
@@ -143,17 +231,27 @@ function writeCollectibleJob(family: CollectibleFamily, inputs: CollectibleInput
       source_dimensions: existsSync(sourcePath) ? pngDimensions(sourcePath) : null,
       final_dimensions: existsSync(finalPath) ? pngDimensions(finalPath) : null,
       alpha: { hard: true, transparent_corners_required: 4 },
-      visual_review: `Literal ${request.catalog_key} subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain.`,
+      visual_review: family === 'artifact' && artifactVisualReviews[request.catalog_key]
+        ? artifactVisualReviews[request.catalog_key]
+        : `Literal ${request.catalog_key} subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain.`,
     };
   });
   const provenancePath = resolve(root, `assets/provenance/${family}-sprite-generation.json`);
+  const existingProvenance = incremental && existsSync(provenancePath)
+    ? JSON.parse(readFileSync(provenancePath, 'utf8')) as { selections: typeof batchSelections }
+    : null;
+  const selections = [
+    ...(existingProvenance?.selections ?? [])
+      .filter((selection) => !incomingKeys.has(selection.catalog_key)),
+    ...batchSelections,
+  ];
   mkdirSync(dirname(provenancePath), { recursive: true });
   writeFileSync(provenancePath, `${JSON.stringify({
     version: 1, generator: 'built-in-imagegen', generated_on: '2026-08-11', job: jobPath,
     workflow: { source: 'one separate built-in image_gen call per catalog key',
       bake: `uv run --no-project --with pillow python scripts/buildCollectibleSprites.py --job ${jobPath}`,
       resampling: 'nearest-neighbour reduction, adaptive 40-colour palette, hard alpha',
-      review: `.pixel-work/review/collectibles/${family}/{combat,adventure,automatic}-contact-sheet.png` },
+      review: `.pixel-work/review/collectibles/${family}/{catalog_group}-contact-sheet.png` },
     selections,
   }, null, 2)}\n`);
 }
@@ -161,16 +259,43 @@ function writeCollectibleJob(family: CollectibleFamily, inputs: CollectibleInput
 const itemInputs = Object.values(ITEMS).map((item): CollectibleInput => ({
   catalogKey: item.id, subject: ITEM_SPRITE_SUBJECTS[item.id], group: item.use,
   chromaKey: magenta.has(item.id) ? '#FF00FF' : '#00FF00',
-  builtInOutput: `${session}/${calls[item.id]}`,
+  builtInOutput: `${session}/${itemCalls[item.id]}`,
 }));
-writeCollectibleJob('item', itemInputs);
+const artifactSession = '/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451';
+const artifactMagenta = new Set([
+  'hoodOfTheHedgeMage', 'wayfarersMantle', 'bootsOfTheDrover', 'surveyorsBoots',
+  'ashwoodBracer',
+]);
+const artifactVisualReviews: Record<string, string> = {
+  skirmishersBlade: 'Accepted targeted retry after source and 3x-final review: polished steel leaf-shaped outline, crossguard, leather grip, and nick read clearly as a sword; the rejected botanical source remains retained and documented.',
+  circletOfSmallRites: 'Accepted after source and 3x-final review. Borderline: the three candle-shaped studs reduce to pale points at 32x32, while the narrow open circlet remains distinct from the two Vanilla crowns.',
+  fieldClerksSeal: 'Accepted after source and 3x-final review. Borderline: the sheaf/tally relief becomes fine texture at 32x32, but the paired brass signet and plain red wax impression remain unmistakable and contain no text.',
+  keepersHalfCloak: 'Accepted after source and 3x-final review. Borderline: the key clasp is small at native size, but the asymmetric one-shoulder cream cloak silhouette remains unique.',
+};
+const vanillaArtifactInputs = Object.values(ARTIFACTS)
+  .filter((artifact) => artifact.class === 'vanilla')
+  .map((artifact): CollectibleInput => ({
+    catalogKey: artifact.id,
+    subject: ARTIFACT_SPRITE_SUBJECTS[artifact.id],
+    group: artifact.class,
+    chromaKey: artifactMagenta.has(artifact.id) ? '#FF00FF' : '#00FF00',
+    builtInOutput: `${artifactSession}/${artifactCalls[artifact.id]}`,
+  }));
 const selectionsPath = resolve(root, 'assets/selections.json');
-const catalogSelectionEntries = itemInputs.map((input) => ({
-  id: `map-object:item:${input.catalogKey}`,
-  candidate: `assets/sources/items/${input.catalogKey}-source.png`,
-  target: `public/assets/items/${input.catalogKey}.png`,
+const family = process.argv.includes('--artifact') ? 'artifact' : 'item';
+const selectedInputs = family === 'artifact' ? vanillaArtifactInputs : itemInputs;
+writeCollectibleJob(
+  family, selectedInputs, family === 'artifact' ? artifactPromptFor : promptFor,
+  family === 'artifact',
+);
+const catalogSelectionEntries = selectedInputs.map((input) => ({
+  id: `map-object:${family}:${input.catalogKey}`,
+  candidate: `assets/sources/${family}s/${input.catalogKey}-source.png`,
+  target: `public/assets/${family}s/${input.catalogKey}.png`,
 }));
 writeFileSync(selectionsPath, upsertSelectionBatch(
-  readFileSync(selectionsPath, 'utf8'), 'item-sprites-built-in', catalogSelectionEntries,
+  readFileSync(selectionsPath, 'utf8'),
+  family === 'artifact' ? 'artifact-sprites-vanilla-built-in' : 'item-sprites-built-in',
+  catalogSelectionEntries,
 ));
-console.log(`Wrote generic collectible job/provenance for ${itemInputs.length} items.`);
+console.log(`Wrote generic collectible job/provenance for ${selectedInputs.length} ${family}s.`);

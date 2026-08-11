@@ -1,5 +1,5 @@
 import {
-  ASSET_MANIFEST, type AssetCategory, type AssetManifestEntry,
+  ASSET_MANIFEST, assetId, type AssetCategory, type AssetManifestEntry,
 } from '../../assets/manifest';
 import {
   AUTHORED_MAPS, assetWorklist, mapObjectAssetId, type AssetWorkItem,
@@ -10,6 +10,7 @@ import {
   type TerrainDecoration,
 } from '../content/terrain';
 import { ITEMS } from '../content/items';
+import { VANILLA_ARTIFACT_IDS } from '../content/artifacts';
 import type {
   GameMap, MapObject, TerrainId, TerrainSkinId, TerrainTile,
 } from '../core/types';
@@ -187,6 +188,13 @@ export function representativeMapObjects(): Map<string, MapObject> {
     const object: MapObject = { id: `showcase-item-${item.id}`, kind: 'item',
       position: { x: 0, y: 0 }, item: { id: item.id }, collected: false };
     representatives.set(mapObjectAssetId(object), object);
+  }
+  for (const artifactId of VANILLA_ARTIFACT_IDS) {
+    const object: MapObject = {
+      id: `showcase-artifact-${artifactId}`, kind: 'rewardPickup', position: { x: 0, y: 0 },
+      reward: { artifacts: [{ id: artifactId }] }, collected: false,
+    };
+    representatives.set(assetId.mapObject('artifact', artifactId), object);
   }
   return representatives;
 }

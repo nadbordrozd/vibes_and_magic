@@ -27,7 +27,7 @@ import { buildingIsActive } from '../../core/game/buildingStatus';
 import {
   RESOURCE_NAMES, ResourceAmount, ResourceCost, ResourceIcon, ResourceRichText,
 } from './ResourceToken';
-import { HeroPortrait, ItemSprite, UnitPortrait } from '../assets';
+import { ArtifactSprite, HeroPortrait, ItemSprite, UnitPortrait } from '../assets';
 import { CASTLE_NAMES, FACTION_PASSIVES } from '../../content/factionPresentation';
 import { FACTIONS } from '../../content/factions';
 import { SPELL_SCHOOL_NAMES } from '../../content/spellPresentation';
@@ -392,7 +392,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
               {(hero?.skills.peddler ?? 0) >= 2 && hero?.artifacts.backpack.map(
                 (artifact, index) => artifactMarketValue(artifact) > 0 ? (
                   <article key={`sell-artifact-${index}`} data-inspect-kind="artifact" data-inspect-id={artifact.id}>
-                    <div><b>{ARTIFACTS[artifact.id].name}</b><small>Artifact backpack</small></div>
+                    <ArtifactSprite artifact={artifact} /><div><b>{ARTIFACTS[artifact.id].name}</b><small>Artifact backpack</small></div>
                     <button onClick={() => stageAction({
                       type: 'SELL_MARKET_ARTIFACT', castleId: castle.id,
                       backpackIndex: index,

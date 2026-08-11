@@ -157,6 +157,11 @@ export const ARTIFACTS: Record<ArtifactId, ArtifactDefinition> = {
   patternlessCoat: { ...artifact('patternlessCoat', 'The Patternless Coat', 'armor', 'burden', '+3 defense; your spells always use their Standard rules.', ['primary_stat', 'spell_plus_block'], { defense: 3 }), burdenRemoval: 'Trade it at the Reliquary Cairn.' },
 };
 
+/** Catalog-derived installed batch; later collectible batches append their own class coverage. */
+export const VANILLA_ARTIFACT_IDS = (Object.values(ARTIFACTS)
+  .filter((artifact) => artifact.class === 'vanilla')
+  .map((artifact) => artifact.id)) as readonly ArtifactId[];
+
 export const EQUIPMENT_SLOTS: readonly EquipmentSlotId[] = [
   'head', 'cloak', 'amulet', 'weapon', 'shield', 'armor',
   'ring1', 'ring2', 'boots', 'misc1', 'misc2',

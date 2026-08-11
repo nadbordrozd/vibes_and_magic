@@ -3,6 +3,8 @@ import { createHash } from 'node:crypto';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { assetWorklist } from '../../assets/worklist';
 import { contentIconWorklist } from '../../assets/iconWorklist';
+import { ARTIFACT_SPRITE_SUBJECTS } from '../../assets/adventureSpriteInventory';
+import { ARTIFACTS } from '../content/artifacts';
 
 interface PixelReference {
   file: string;
@@ -345,6 +347,90 @@ try {
   }
 } catch (error) {
   errors.push(`item sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+try {
+  const artifactJob = JSON.parse(readFileSync(
+    resolve(root, 'assets/jobs/artifact-sprites-built-in.json'), 'utf8',
+  )) as PixelJob;
+  const provenance = JSON.parse(readFileSync(
+    resolve(root, 'assets/provenance/artifact-sprite-generation.json'), 'utf8',
+  )) as { version: number; generator: string; job: string; selections: Array<{
+    id: string; request_id: string; collectible_family: string; catalog_key: string;
+    accepted: boolean; built_in_output: string; discarded_outputs: Array<{
+      built_in_output: string; source: string; reason: string; prompt?: string;
+      prompt_sha256?: string; source_sha256?: string;
+    }>; source: string; final: string; prompt_sha256: string;
+    source_sha256: string; final_sha256: string; source_dimensions: [number, number];
+    final_dimensions: [number, number]; alpha: {
+      transparent: number; opaque: number; partial: number; transparent_corners: number;
+    };
+  }> };
+  const vanillaIds = Object.values(ARTIFACTS)
+    .filter((artifact) => artifact.class === 'vanilla').map((artifact) => artifact.id).sort();
+  const requestKeys = artifactJob.requests.map((request) => request.catalog_key ?? '').sort();
+  if (artifactJob.collectible_family !== 'artifact' || artifactJob.requests.length !== 36
+      || provenance.version !== 1 || provenance.generator !== 'built-in-imagegen'
+      || provenance.job !== 'assets/jobs/artifact-sprites-built-in.json'
+      || provenance.selections.length !== 36
+      || JSON.stringify(requestKeys) !== JSON.stringify(vanillaIds)) {
+    errors.push('artifact collectible job/provenance must contain exactly the 36 Vanilla selections');
+  }
+  const byRequest = new Map(provenance.selections.map((entry) => [entry.request_id, entry]));
+  const sourcePaths = new Set<string>(); const finalPaths = new Set<string>();
+  const sourceHashes = new Set<string>(); const finalHashes = new Set<string>();
+  const outputs = new Set<string>();
+  for (const request of artifactJob.requests) {
+    const selection = byRequest.get(request.id);
+    const label = `artifact provenance:${request.id}`;
+    if (!selection?.accepted || selection.id !== request.assets[0]
+        || selection.collectible_family !== 'artifact'
+        || selection.catalog_key !== request.catalog_key || request.catalog_group !== 'vanilla'
+        || selection.source !== request.output || selection.final !== request.final) {
+      errors.push(`${label}: missing or drifted accepted Vanilla selection`); continue;
+    }
+    const subject = ARTIFACT_SPRITE_SUBJECTS[selection.catalog_key as keyof typeof ARTIFACT_SPRITE_SUBJECTS];
+    const literalPrompt = request.prompt.includes(subject)
+      || selection.discarded_outputs.some((discarded) => discarded.prompt?.includes(subject));
+    if (!subject || !literalPrompt) errors.push(`${label}: literal catalog subject drift`);
+    if (selection.prompt_sha256 !== sha256(request.prompt)) errors.push(`${label}: prompt hash drift`);
+    for (const [kind, file, expected] of [
+      ['source', selection.source, selection.source_sha256],
+      ['final', selection.final, selection.final_sha256],
+    ] as const) {
+      const path = resolve(root, file);
+      if (!existsSync(path) || sha256(readFileSync(path)) !== expected) {
+        errors.push(`${label}: ${kind} content hash drift`);
+      }
+    }
+    if (selection.final_dimensions?.[0] !== 32 || selection.final_dimensions?.[1] !== 32
+        || selection.alpha.partial !== 0 || selection.alpha.transparent_corners !== 4
+        || selection.alpha.transparent + selection.alpha.opaque !== 1024) {
+      errors.push(`${label}: final must be native 32x32 with hard alpha and transparent corners`);
+    }
+    if (sourcePaths.has(selection.source) || finalPaths.has(selection.final)
+        || sourceHashes.has(selection.source_sha256) || finalHashes.has(selection.final_sha256)
+        || outputs.has(selection.built_in_output)) {
+      errors.push(`${label}: duplicate source/final path, bytes, or built-in output`);
+    }
+    sourcePaths.add(selection.source); finalPaths.add(selection.final);
+    sourceHashes.add(selection.source_sha256); finalHashes.add(selection.final_sha256);
+    outputs.add(selection.built_in_output);
+    for (const discarded of selection.discarded_outputs) {
+      if (!discarded.reason.trim() || !existsSync(resolve(root, discarded.source))) {
+        errors.push(`${label}: rejected source must remain retained with an honest reason`);
+      }
+      if (discarded.prompt && discarded.prompt_sha256 !== sha256(discarded.prompt)) {
+        errors.push(`${label}: rejected prompt hash drift`);
+      }
+      if (discarded.source_sha256
+          && sha256(readFileSync(resolve(root, discarded.source))) !== discarded.source_sha256) {
+        errors.push(`${label}: rejected source content hash drift`);
+      }
+    }
+  }
+} catch (error) {
+  errors.push(`artifact sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
 }
 
 console.log(`Pixel production jobs: ${ready} ready · ${staged} staged · ${requests} requests · ${builtInJobs} built-in provenance job`);
