@@ -840,3 +840,17 @@
 - Wide layouts keep the selected detail on the facing page. At narrow widths the same DOM reading
   order becomes a bounded list/detail sheet with 64px icons and persistent Back, Cast, and Close
   actions instead of compressing the desktop book.
+
+## 2026-08-11 — Mountain topology may overlap whole sprites but never slice opaque sides (doc 52)
+
+- Every composed mountain piece selects a native bitmap whose width exactly equals its horizontal
+  contact. Four- and five-cell shapes and long tails overlap complete landforms instead of exposing
+  an internal centered crop. Authored terrain remains the sole collision and pathfinding authority.
+- Rocky one-cell columns and vertically joined two-cell shoulders are distinct native roles. The
+  existing knolls, ridges, and six-cell boundary/backbone forms retain their native scale, anchor,
+  painter order, deterministic selection, and legal northern overhang.
+- Production, showcase, browser evidence, and static gates use the same geometry authority. A
+  width/contact mismatch is an error over every built-in placement, not a CSS seam to hide.
+- Generated candidates remain subject to composition review after alpha acceptance. The first
+  column-3 was retained and rejected as a corkscrew; its corrective broken-crag edit is the selected
+  source with complete prompt/output/source/final provenance.

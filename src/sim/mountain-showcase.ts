@@ -1,8 +1,9 @@
 import { mkdirSync } from 'node:fs';
 import puppeteer from 'puppeteer-core';
 import { PIXEL_SCALE, assetId, manifestEntry } from '../../assets/manifest';
-import type { Coord, GameMap, TerrainTile } from '../core/types';
-import { deriveMountainRanges } from '../ui/mountainRanges';
+import type { GameMap, TerrainTile } from '../core/types';
+import { deriveMountainRanges, mountainRangeGeometry,
+  type MountainRangeDecoration } from '../ui/mountainRanges';
 
 const executablePath = process.platform === 'win32'
   ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
@@ -101,14 +102,15 @@ const pieces = deriveMountainRanges(map).sort((a, b) =>
 const meadow = manifestEntry('terrain-field:meadow');
 if (!meadow) throw new Error('Missing meadow field asset');
 
-function spriteMarkup(position: Coord, variant: string): string {
-  const entry = manifestEntry(assetId.decoration('mountain', variant));
-  if (!entry) throw new Error(`Missing mountain sprite ${variant}`);
+function spriteMarkup(piece: MountainRangeDecoration): string {
+  const entry = manifestEntry(assetId.decoration('mountain', piece.variant));
+  if (!entry) throw new Error(`Missing mountain sprite ${piece.variant}`);
+  const geometry = mountainRangeGeometry(piece, TILE);
   const src = new URL(entry.file, baseUrl).href;
-  const x = position.x * TILE - entry.anchor.x * PIXEL_SCALE;
-  const y = position.y * TILE - entry.anchor.y * PIXEL_SCALE;
-  return `<img src="${src}" alt="" style="left:${x}px;top:${y}px;`
-    + `width:${entry.w * PIXEL_SCALE}px;height:${entry.h * PIXEL_SCALE}px">`;
+  return `<img src="${src}" alt="" data-contact-width="${piece.contactWidth}" `
+    + `data-visual-width="${geometry.visual.width}" style="left:${geometry.sprite.x}px;`
+    + `top:${geometry.sprite.y}px;width:${geometry.sprite.width}px;`
+    + `height:${geometry.sprite.height}px">`;
 }
 
 const canvasWidth = width * TILE;
@@ -121,7 +123,7 @@ const html = `<!doctype html><html><head><style>
     image-rendering:pixelated}
   img{position:absolute;display:block;image-rendering:pixelated}
 </style></head><body><main id="showcase">${pieces.map((piece) =>
-  spriteMarkup(piece.position, piece.variant)).join('')}</main></body></html>`;
+  spriteMarkup(piece)).join('')}</main></body></html>`;
 
 mkdirSync('.pixel-work/review', { recursive: true });
 const browser = await puppeteer.launch({

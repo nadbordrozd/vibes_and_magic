@@ -10,6 +10,7 @@ import {
   type MountainRangeDecoration,
 } from '../../ui/mountainRanges';
 import { manifestEntry } from '../../../assets/manifest';
+import { AUTHORED_MAPS } from '../../../assets/worklist';
 
 function mapWithMountainShape(rows: string[]): GameMap {
   const map = createManywhere(777);
@@ -23,11 +24,11 @@ function mapWithMountainShape(rows: string[]): GameMap {
 
 describe('mountain range decorations', () => {
   it.each([
-    ['one-tile knoll', 'rocky-knoll-1', 1],
-    ['narrow ridge', 'rocky-ridge-2', 2],
-    ['massif', 'rocky-massif-1', 5],
-    ['short backbone', 'rocky-boundary-3', 4],
-  ] as const)('clips representative %s paint to its footprint sides and south edge', (
+    ['one-tile column', 'rocky-column-1', 1],
+    ['two-tile shoulder', 'rocky-shoulder-2', 2],
+    ['three-tile ridge', 'rocky-ridge-3', 3],
+    ['six-tile backbone', 'rocky-boundary-4', 6],
+  ] as const)('uses a whole native %s exactly matching its contact', (
     _name, variant, contactWidth,
   ) => {
     const range: MountainRangeDecoration = {
@@ -42,14 +43,13 @@ describe('mountain range decorations', () => {
     expect(geometry.sprite.width).toBe(manifestEntry(
       `decoration:mountain:${variant}`,
     )!.w);
-    expect(geometry.sprite.x - geometry.visual.x)
-      .toBeCloseTo(-(geometry.sprite.x + geometry.sprite.width
-        - geometry.visual.x - geometry.visual.width));
+    expect(geometry.sprite.x).toBe(geometry.visual.x);
+    expect(geometry.sprite.width).toBe(geometry.visual.width);
   });
 
   it('culls against the complete clipped visual rectangle at every viewport edge', () => {
     const range: MountainRangeDecoration = {
-      key: 'edge', position: { x: 10, y: 10 }, variant: 'rocky-ridge-1', contactWidth: 1,
+      key: 'edge', position: { x: 10, y: 10 }, variant: 'rocky-column-1', contactWidth: 1,
     };
     const { footprint, visual } = mountainRangeGeometry(range);
     expect(mountainRangeIntersectsViewport(range, {
@@ -133,7 +133,9 @@ describe('mountain range decorations', () => {
         expect(terrainIdAt(map, position)).toBe('mountain');
       expect(range.variant.startsWith('rocky-')).toBe(true);
       }
-      expect(range.variant).toMatch(/^rocky-(?:scatter|knoll|ridge|massif|backbone|boundary)-/);
+      expect(range.variant).toMatch(
+        /^rocky-(?:scatter|column|shoulder|knoll|ridge|massif|backbone|boundary)-/,
+      );
     }
   });
 
@@ -145,11 +147,11 @@ describe('mountain range decorations', () => {
     expect(new Set(spines.map(({ variant }) => variant)).size).toBe(spines.length);
   });
 
-  it('uses tall overlapping ridges for one-cell-wide north-south spines', () => {
+  it('uses native-width columns for one-cell-wide north-south spines', () => {
     const ranges = deriveMountainRanges(mapWithMountainShape(['#', '#', '#', '#', '#']));
     expect(ranges).toHaveLength(5);
     expect(ranges.every(({ variant, contactWidth }) =>
-      variant.includes('ridge') && contactWidth === 1)).toBe(true);
+      variant.includes('column') && contactWidth === 1)).toBe(true);
   });
 
   it('layers back rows as well as the southern edge so ranges have visual depth', () => {
@@ -279,6 +281,18 @@ describe('mountain range decorations', () => {
     }
   });
 
+  it('never requires a horizontal sprite crop across any built-in placement', () => {
+    for (const map of AUTHORED_MAPS) {
+      for (const range of deriveMountainRanges(map)) {
+        const entry = manifestEntry(`decoration:mountain:${range.variant}`)!;
+        expect(entry.w, `${map.id}:${range.key}`).toBe(range.contactWidth * 32);
+        const geometry = mountainRangeGeometry(range);
+        expect(geometry.sprite.x, `${map.id}:${range.key}`).toBe(geometry.visual.x);
+        expect(geometry.sprite.width, `${map.id}:${range.key}`).toBe(geometry.visual.width);
+      }
+    }
+  });
+
   it('gives every skin a complete native-canvas family instead of resizing one landmark', () => {
     const roles = [
       ['scatter', 6, 32, 48],
@@ -287,6 +301,12 @@ describe('mountain range decorations', () => {
       ['massif', 2, 160, 112],
     ] as const;
     for (const skin of ['rocky', 'granite', 'snowcap'] as const) {
+      if (skin === 'rocky') for (const [role, w, h] of [
+        ['column', 32, 96], ['shoulder', 64, 96],
+      ] as const) for (let index = 1; index <= 4; index += 1) {
+        expect(manifestEntry(`decoration:mountain:${skin}-${role}-${index}`))
+          .toMatchObject({ w, h });
+      }
       for (const [role, count, w, h] of roles) {
         if (skin === 'rocky' && role === 'scatter') continue;
         for (let index = 1; index <= count; index += 1) {

@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "provider": "OpenAI built-in image_gen",
+  "mode": "built-in chroma-key generation plus deterministic local bake",
+  "job": "assets/jobs/mountain-edge-repair-built-in.json",
+  "assets": [
+    {
+      "id": "decoration:mountain:rocky-column-1",
+      "promptSha256": "a36c1d36a7b21c14d7e317cd2642d1c8b2fc3918b297f43ef9b761bd5be48d75",
+      "providerOutput": "assets/sources/mountain-edge-repair/keyed/rocky-column-1-keyed.png",
+      "providerOutputSha256": "d3700f3306ad77e8cd1252e0fe32f4ff4de0027d8d4af549b8e015eecbf363cb",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-column-1-transparent.png",
+      "transparentSourceSha256": "d48ef93fd61f2e4fcab97ee68283914f518db0d9ed1833d6d5bd225d86672c1a",
+      "reference": "public/assets/decorations/mountain-rocky-ridge-1.png",
+      "referenceSha256": "ccbe730eb9d6c48a1fb65412db9f0b8a5ae864d3850d791dfc9b878583e4178a",
+      "target": "public/assets/decorations/mountain-rocky-column-1.png",
+      "finalSha256": "4d256fc973c1fbecd5d38243590a43b5ce72ca8f75785cb2df46c17be759eed1",
+      "size": [
+        32,
+        96
+      ],
+      "alphaBake": "remove_chroma_key border/soft-matte 12/220/despill, then LANCZOS fit, alpha>=128, fixed rocky palette, largest 4-connected component, bottom anchor"
+    },
+    {
+      "id": "decoration:mountain:rocky-column-2",
+      "promptSha256": "52e6035e62e559af877cfa6f524abf5a9bdc210c1baddc976eaf4addc84e4f57",
+      "providerOutput": "assets/sources/mountain-edge-repair/keyed/rocky-column-2-keyed.png",
+      "providerOutputSha256": "19804c32eaa8451a72b57b8738cf316430450ac52a3f7c4f5dc06360f187d188",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-column-2-transparent.png",
+      "transparentSourceSha256": "f495f7b996d95519021968f2cff403d80af5ebe671ea4ae948cfdd0176f28912",
+      "reference": "public/assets/decorations/mountain-rocky-ridge-2.png",
+      "referenceSha256": "f574b2a09e796276c250c118eba2390264c5954dfa77f8f95f68e152fca45eab",
+      "target": "public/assets/decorations/mountain-rocky-column-2.png",
+      "finalSha256": "aae8fe59e89879204b078ebd927001940121234f62e5fb31b0a6dce60fde28a3",
+      "size": [
+        32,
+        96
+      ],
+      "alphaBake": "remove_chroma_key border/soft-matte 12/220/despill, then LANCZOS fit, alpha>=128, fixed rocky palette, largest 4-connected component, bottom anchor"
+    },
+    {
+      "id": "decoration:mountain:rocky-column-3",
+      "promptSha256": "24b5ec3551271aee890d0b259c5fa44e68f60c0004dc72bdeeb86303c3169e09",
+      "providerOutput": "assets/sources/mountain-edge-repair/keyed/rocky-column-3-keyed.png",
+      "providerOutputSha256": "1a835f34f6baa7241b50fa84ab2493774337c00f9070bc72ae35732907e8e254",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-column-3-transparent.png",
+      "transparentSourceSha256": "28f1f5964ed0ac00e653e4cd8d6bced895d5e7712aa7d5728da54cfae7281c52",
+      "reference": "assets/sources/mountain-edge-repair/rejected/rocky-column-3-corkscrew-keyed.png",
+      "referenceSha256": "6bf3bbc18a421d9e22534dd9c79006acb6e8f713ecfa1c423fd03129d22eeb30",
+      "target": "public/assets/decorations/mountain-rocky-column-3.png",
+      "finalSha256": "e8b248a187cbdb826f6e58a46901b8683ccc84b2d39f7e9933e92fc2335ccc54",
+      "size": [
+        32,
+        96
+      ],
+      "alphaBake": "remove_chroma_key border/soft-matte 12/220/despill, then LANCZOS fit, alpha>=128, fixed rocky palette, largest 4-connected component, bottom anchor"
+    },
+    {
+      "id": "decoration:mountain:rocky-column-4",
+      "promptSha256": "b8759457b5da8cd79015edb276c240a7c2d99aa957ebfb414301994a35f518cd",
+      "providerOutput": "assets/sources/mountain-edge-repair/keyed/rocky-column-4-keyed.png",
+      "providerOutputSha256": "0f809c219e1e0f49a6e39c70d5c7e74ca4dec24a786e87b21f62bddb42a35bd6",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-column-4-transparent.png",
+      "transparentSourceSha256": "939092d95f71e98da8013eae945064500d1da910b5bf7b617644edde7cfeb257",
+      "reference": "public/assets/decorations/mountain-rocky-ridge-4.png",
+      "referenceSha256": "f58e2910f786d99a0c345979491cf03e9ad2ceeda604b037a721e7d06084d4a0",
+      "target": "public/assets/decorations/mountain-rocky-column-4.png",
+      "finalSha256": "c68b30d38b4f392f18ddce52972b9cf6092391762ec442d7c7334f6b0072239a",
+      "size": [
+        32,
+        96
+      ],
+      "alphaBake": "remove_chroma_key border/soft-matte 12/220/despill, then LANCZOS fit, alpha>=128, fixed rocky palette, largest 4-connected component, bottom anchor"
+    },
+    {
+      "id": "decoration:mountain:rocky-shoulder-1",
+      "promptSha256": "81b5193e447c1d0b5198738889220cb63dc0820527a3ca61277ff59773f6d6b1",
+      "providerOutput": "assets/sources/mountain-edge-repair/keyed/rocky-shoulder-1-keyed.png",
+      "providerOutputSha256": "e05f75ad041db7b101611a8ae646e52611e4c287a4d7af06ed0073780824ab66",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-1-transparent.png",
+      "transparentSourceSha256": "7f2fcba2428d452d21ade8c4a0b36fcde55af1b52be1f8ad7edb6ae135755323",
+      "reference": "public/assets/decorations/mountain-rocky-ridge-1.png",
+      "referenceSha256": "ccbe730eb9d6c48a1fb65412db9f0b8a5ae864d3850d791dfc9b878583e4178a",
+      "target": "public/assets/decorations/mountain-rocky-shoulder-1.png",
+      "finalSha256": "2248d87cdcec09c84014bfd251fd274ebbfedacc2554ba70f255e460b85de38e",
+      "size": [
+        64,
+        96
+      ],
+      "alphaBake": "remove_chroma_key border/soft-matte 12/220/despill, then LANCZOS fit, alpha>=128, fixed rocky palette, largest 4-connected component, bottom anchor"
+    },
+    {
+      "id": "decoration:mountain:rocky-shoulder-2",
+      "promptSha256": "77c9b63b4282cce728ec7be6982d3bbd6a12e81054192e6212b6c1ce5dc17bd6",
+      "providerOutput": "assets/sources/mountain-edge-repair/keyed/rocky-shoulder-2-keyed.png",
+      "providerOutputSha256": "15a49fde10660bc8f19b8c35ba97853ab27d19c7e6cfd7bb0c18805c0da1f5bf",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-2-transparent.png",
+      "transparentSourceSha256": "438e99f3d111f42fa3c810d3109021afd9349143cf57dc0aa94c3ba01cfe4afc",
+      "reference": "public/assets/decorations/mountain-rocky-ridge-2.png",
+      "referenceSha256": "f574b2a09e796276c250c118eba2390264c5954dfa77f8f95f68e152fca45eab",
+      "target": "public/assets/decorations/mountain-rocky-shoulder-2.png",
+      "finalSha256": "8dea4265db695037608e5632ae2851543ac6925cfd2ce1f22ce2547fa4fcb0e5",
+      "size": [
+        64,
+        96
+      ],
+      "alphaBake": "remove_chroma_key border/soft-matte 12/220/despill, then LANCZOS fit, alpha>=128, fixed rocky palette, largest 4-connected component, bottom anchor"
+    },
+    {
+      "id": "decoration:mountain:rocky-shoulder-3",
+      "promptSha256": "c64072147a4ec835369e5f3d1bff337229b59a9f7928b954c40a8cbd02cc5daa",
+      "providerOutput": "assets/sources/mountain-edge-repair/keyed/rocky-shoulder-3-keyed.png",
+      "providerOutputSha256": "147bc3149f5125ad920d032536e92c0a9285e4b28fd6fa6a043ec77d1bda5cd9",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-3-transparent.png",
+      "transparentSourceSha256": "47b077eafbf757f26dea102fde35e1780929aa88c78066ff6fcf053a78ee59b7",
+      "reference": "public/assets/decorations/mountain-rocky-ridge-3.png",
+      "referenceSha256": "85b0ea42c2044ff066046d1ecd7a482a347ffa6adfa107b4980a5f47442ea117",
+      "target": "public/assets/decorations/mountain-rocky-shoulder-3.png",
+      "finalSha256": "106209d9a4a1f68b373edf6b8657d04b92e5fe1fcfb82bc2ce89dc3f0cc22243",
+      "size": [
+        64,
+        96
+      ],
+      "alphaBake": "remove_chroma_key border/soft-matte 12/220/despill, then LANCZOS fit, alpha>=128, fixed rocky palette, largest 4-connected component, bottom anchor"
+    },
+    {
+      "id": "decoration:mountain:rocky-shoulder-4",
+      "promptSha256": "44ffcfc5877eadb5a389a9220d2584fb640b50e1cd24de78cf4da7a7e1d0e9db",
+      "providerOutput": "assets/sources/mountain-edge-repair/keyed/rocky-shoulder-4-keyed.png",
+      "providerOutputSha256": "9979e6646ec7935a5cb0f7b450621e3c9a130306767efd1289f834da99191cb4",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-4-transparent.png",
+      "transparentSourceSha256": "10faf7df810bbcc7ff89350faaa822af02560adf0193b4b0889e36397b36ae0f",
+      "reference": "public/assets/decorations/mountain-rocky-ridge-4.png",
+      "referenceSha256": "f58e2910f786d99a0c345979491cf03e9ad2ceeda604b037a721e7d06084d4a0",
+      "target": "public/assets/decorations/mountain-rocky-shoulder-4.png",
+      "finalSha256": "edd77f587160a50045d3943303cbef6775a7bbe7f4b5534a10959fc9900719fc",
+      "size": [
+        64,
+        96
+      ],
+      "alphaBake": "remove_chroma_key border/soft-matte 12/220/despill, then LANCZOS fit, alpha>=128, fixed rocky palette, largest 4-connected component, bottom anchor"
+    }
+  ],
+  "rejectedVariants": [
+    {
+      "id": "decoration:mountain:rocky-column-3:corkscrew-rejected",
+      "reason": "Rejected after real-map review because the repeated wraparound ledges read as a conspicuous corkscrew or sticker rather than ordinary geology.",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create a narrow diagonal hogback mountain column with offset stepped ledges and two unequal crowns, an uninterrupted geological landform for a single-cell-wide north-to-south impassable spine. Give it a broad lower foreground face and naturally tapered low left and right shoulders. It must read as connected mountain terrain, not a freestanding icon.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; tall narrow silhouette roughly 1 unit wide by 2.4 units high; entire landform visible with generous padding; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; low self-terminating side extremes; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "providerOutput": "assets/sources/mountain-edge-repair/rejected/rocky-column-3-corkscrew-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/rejected/rocky-column-3-corkscrew-transparent.png",
+      "bakedReview": "assets/sources/mountain-edge-repair/rejected/rocky-column-3-corkscrew-final.png",
+      "promptSha256": "42404da3671c8be43297d53c1c4207bcb02a6e4e909e0d13b253f8eb34adc802",
+      "providerOutputSha256": "6bf3bbc18a421d9e22534dd9c79006acb6e8f713ecfa1c423fd03129d22eeb30",
+      "transparentSourceSha256": "8b0c997c60da853533e58d82a7057cf9c41787b798963a4ea3da1fd2cbc25502",
+      "bakedReviewSha256": "6941c4853860b26bb3bf2062c760687a08d1a625c4c066bee5e9192156c69473"
+    }
+  ]
+}

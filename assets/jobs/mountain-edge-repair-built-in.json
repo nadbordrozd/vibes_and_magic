@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "contact_sheet": ".pixel-work/review/mountain-edge-repair-native-contact.png",
+  "backgroundRemoval": "remove_chroma_key.py --auto-key border --soft-matte --transparent-threshold 12 --opaque-threshold 220 --despill",
+  "rejected_variants": [
+    {
+      "id": "decoration:mountain:rocky-column-3:corkscrew-rejected",
+      "reason": "Rejected after real-map review because the repeated wraparound ledges read as a conspicuous corkscrew or sticker rather than ordinary geology.",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create a narrow diagonal hogback mountain column with offset stepped ledges and two unequal crowns, an uninterrupted geological landform for a single-cell-wide north-to-south impassable spine. Give it a broad lower foreground face and naturally tapered low left and right shoulders. It must read as connected mountain terrain, not a freestanding icon.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; tall narrow silhouette roughly 1 unit wide by 2.4 units high; entire landform visible with generous padding; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; low self-terminating side extremes; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "providerOutput": "assets/sources/mountain-edge-repair/rejected/rocky-column-3-corkscrew-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/rejected/rocky-column-3-corkscrew-transparent.png",
+      "bakedReview": "assets/sources/mountain-edge-repair/rejected/rocky-column-3-corkscrew-final.png"
+    }
+  ],
+  "requests": [
+    {
+      "id": "decoration:mountain:rocky-column-1",
+      "assets": ["decoration:mountain:rocky-column-1"],
+      "size": [32, 96],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create one narrow north-to-south rocky mountain column, an uninterrupted geological landform for a single-cell-wide impassable spine. Give it two uneven crowns joined by a saddle, a broad lower foreground face, and naturally tapered low left and right shoulders. It must read as connected mountain terrain, not a freestanding icon.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered, isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; tall narrow silhouette roughly 1 unit wide by 2.4 units high; the entire landform visible with generous padding; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; low self-terminating side extremes; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "references": [{"parameter": "style/palette/camera/lighting reference", "file": "public/assets/decorations/mountain-rocky-ridge-1.png"}],
+      "output": "assets/sources/mountain-edge-repair/keyed/rocky-column-1-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-column-1-transparent.png",
+      "final": "public/assets/decorations/mountain-rocky-column-1.png"
+    },
+    {
+      "id": "decoration:mountain:rocky-column-2",
+      "assets": ["decoration:mountain:rocky-column-2"],
+      "size": [32, 96],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create a narrow forked mountain column with three uneven rear-to-front crowns and a shallow winding saddle, an uninterrupted geological landform for a single-cell-wide north-to-south impassable spine. Give it a broad lower foreground face and naturally tapered low left and right shoulders. It must read as connected mountain terrain, not a freestanding icon.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; tall narrow silhouette roughly 1 unit wide by 2.4 units high; entire landform visible with generous padding; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; low self-terminating side extremes; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "references": [{"parameter": "style/palette/camera/lighting reference", "file": "public/assets/decorations/mountain-rocky-ridge-2.png"}],
+      "output": "assets/sources/mountain-edge-repair/keyed/rocky-column-2-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-column-2-transparent.png",
+      "final": "public/assets/decorations/mountain-rocky-column-2.png"
+    },
+    {
+      "id": "decoration:mountain:rocky-column-3",
+      "assets": ["decoration:mountain:rocky-column-3"],
+      "size": [32, 96],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: corrective edit of a native adventure-map mountain sprite source\nInput image: preserve the exact flat #ff00ff chroma-key background, pixel-art finish, charcoal/slate-grey/warm-grey palette, sparse olive lichen, high-oblique non-isometric camera, southeast/lower-right key light, scale, generous padding, and complete isolated one-cell-wide rocky landform.\nPrimary edit: Replace the conspicuous corkscrew/braided stack and repeated diagonal wraparound bands with ordinary irregular geology: two unequal broken crag crowns joined by a shallow saddle, chunky angular fractured planes, a few short discontinuous ledges that do not wind around the silhouette, a broad lower foreground face, and naturally tapered low left and right shoulders. Keep it narrow enough for a single-cell-wide north-to-south impassable spine and make it read as connected mountain terrain, never a freestanding sticker.\nComposition/framing: centered isolated subject; tall narrow silhouette roughly 1 unit wide by 2.4 units high; entire landform visible with generous padding; flat horizontal ground contact; no paint may touch the left or right canvas edge.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nConstraints: perfectly uniform flat solid #ff00ff background with no gradient, texture, reflection, shadow, or lighting variation; one continuous opaque mountain subject; low self-terminating side extremes; crisp boundary; no transparent holes inside the mass; no cast or contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: spiral, corkscrew, braid, coil, stacked ribbon, repeated diagonal bands, drill bit, obelisk, isometric diamond, smooth cone, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon.",
+      "references": [{"parameter": "edit target and rejected silhouette", "file": "assets/sources/mountain-edge-repair/rejected/rocky-column-3-corkscrew-keyed.png"}],
+      "output": "assets/sources/mountain-edge-repair/keyed/rocky-column-3-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-column-3-transparent.png",
+      "final": "public/assets/decorations/mountain-rocky-column-3.png"
+    },
+    {
+      "id": "decoration:mountain:rocky-column-4",
+      "assets": ["decoration:mountain:rocky-column-4"],
+      "size": [32, 96],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create a narrow clustered mountain column with one low shoulder, a taller offset crown, and a crooked saddle, an uninterrupted geological landform for a single-cell-wide north-to-south impassable spine. Give it a broad lower foreground face and naturally tapered low left and right shoulders. It must read as connected mountain terrain, not a freestanding icon.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; tall narrow silhouette roughly 1 unit wide by 2.4 units high; entire landform visible with generous padding; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; low self-terminating side extremes; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "references": [{"parameter": "style/palette/camera/lighting reference", "file": "public/assets/decorations/mountain-rocky-ridge-4.png"}],
+      "output": "assets/sources/mountain-edge-repair/keyed/rocky-column-4-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-column-4-transparent.png",
+      "final": "public/assets/decorations/mountain-rocky-column-4.png"
+    },
+    {
+      "id": "decoration:mountain:rocky-shoulder-1",
+      "assets": ["decoration:mountain:rocky-shoulder-1"],
+      "size": [64, 96],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create a broad twin-crowned rocky shoulder with an off-center saddle and layered foreground apron, one uninterrupted geological landform for a two-cell-wide impassable mountain run that continues north and south. It must overlap vertically into a connected range while ending naturally at its left and right sides.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; broad silhouette roughly 2 units wide by 2.2 units high, with the entire landform visible and generous padding; broad foreground face; low irregular self-terminating side shoulders; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "references": [{"parameter": "style/palette/camera/lighting reference", "file": "public/assets/decorations/mountain-rocky-ridge-1.png"}],
+      "output": "assets/sources/mountain-edge-repair/keyed/rocky-shoulder-1-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-1-transparent.png",
+      "final": "public/assets/decorations/mountain-rocky-shoulder-1.png"
+    },
+    {
+      "id": "decoration:mountain:rocky-shoulder-2",
+      "assets": ["decoration:mountain:rocky-shoulder-2"],
+      "size": [64, 96],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create a broad forked rocky shoulder with three uneven crowns and a shallow central saddle, one uninterrupted geological landform for a two-cell-wide impassable mountain run that continues north and south. It must overlap vertically into a connected range while ending naturally at its left and right sides.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; broad silhouette roughly 2 units wide by 2.2 units high, with the entire landform visible and generous padding; broad foreground face; low irregular self-terminating side shoulders; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "references": [{"parameter": "style/palette/camera/lighting reference", "file": "public/assets/decorations/mountain-rocky-ridge-2.png"}],
+      "output": "assets/sources/mountain-edge-repair/keyed/rocky-shoulder-2-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-2-transparent.png",
+      "final": "public/assets/decorations/mountain-rocky-shoulder-2.png"
+    },
+    {
+      "id": "decoration:mountain:rocky-shoulder-3",
+      "assets": ["decoration:mountain:rocky-shoulder-3"],
+      "size": [64, 96],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create a broad diagonal hogback shoulder with stepped shelves and an offset rear crown, one uninterrupted geological landform for a two-cell-wide impassable mountain run that continues north and south. It must overlap vertically into a connected range while ending naturally at its left and right sides.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; broad silhouette roughly 2 units wide by 2.2 units high, with the entire landform visible and generous padding; broad foreground face; low irregular self-terminating side shoulders; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "references": [{"parameter": "style/palette/camera/lighting reference", "file": "public/assets/decorations/mountain-rocky-ridge-3.png"}],
+      "output": "assets/sources/mountain-edge-repair/keyed/rocky-shoulder-3-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-3-transparent.png",
+      "final": "public/assets/decorations/mountain-rocky-shoulder-3.png"
+    },
+    {
+      "id": "decoration:mountain:rocky-shoulder-4",
+      "assets": ["decoration:mountain:rocky-shoulder-4"],
+      "size": [64, 96],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: native adventure-map mountain sprite source\nInput images: Image 1 is a style, palette, camera, and lighting reference only.\nPrimary request: Create a broad crooked three-lobed shoulder with one tall crown and two descending side shelves, one uninterrupted geological landform for a two-cell-wide impassable mountain run that continues north and south. It must overlap vertically into a connected range while ending naturally at its left and right sides.\nStyle/medium: bright cartoony HoMM2-era storybook pixel art with crisp chunky pixel clusters, matching Image 1's charcoal, slate-grey, muted warm-grey rock and sparse olive lichen.\nComposition/framing: centered isolated subject; high-oblique top-down, non-isometric camera south of the obstacle looking north; broad silhouette roughly 2 units wide by 2.2 units high, with the entire landform visible and generous padding; broad foreground face; low irregular self-terminating side shoulders; flat horizontal ground contact.\nLighting/mood: key light from map southeast/screen lower-right; right-facing planes bright, left-facing planes cool shadow; shadows fall northwest/upper-left.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key background for local removal.\nConstraints: one continuous opaque mountain subject; crisp boundary; no transparent holes inside the mass; no cast shadow; no contact shadow; no floor plane; no text, UI, logo, or watermark; do not use #ff00ff in the subject.\nAvoid: isometric diamond, conical peak, volcano, snow, trees, flowers, detached rocks, ground plate, scenery, horizon, gradients, texture, reflections, or lighting variation in the background.",
+      "references": [{"parameter": "style/palette/camera/lighting reference", "file": "public/assets/decorations/mountain-rocky-ridge-4.png"}],
+      "output": "assets/sources/mountain-edge-repair/keyed/rocky-shoulder-4-keyed.png",
+      "transparentSource": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-4-transparent.png",
+      "final": "public/assets/decorations/mountain-rocky-shoulder-4.png"
+    }
+  ]
+}

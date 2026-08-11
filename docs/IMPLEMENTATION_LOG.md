@@ -697,3 +697,23 @@ Beads epic `vibes_and_magic-6sf`.
   The complete suite passed 752/753 tests in 78/79 files; the sole failure remains the explicitly
   accepted pre-existing seed-1/day-56 no-winner assertion at
   `src/core/__tests__/mechanics-regression.test.ts:231`.
+
+## 2026-08-11 — Mountain side-edge repair
+
+- Replaced centered horizontal mountain slicing with an exact-width topology compositor: native
+  columns, shoulders/knolls, ridges, and six-cell spines cover one-, two-, three-, and long-run
+  contacts; four/five-cell and long tails overlap whole sprites. Gameplay footprints and authored
+  map cells are unchanged.
+- Made `mountainRangeGeometry` reject any source/contact width mismatch. AdventureMap, Adventure
+  Visual Showcase, native mountain showcase, browser review, asset checks, and focused tests now
+  share that authority. All built-in placements are enumerated by the no-crop regression.
+- Added and promoted eight selected exact-width sprites with complete job, worklist, selection,
+  manifest, retained-source, and hash provenance. Production review rejected and replaced the
+  initial corkscrew column-3 while retaining it honestly.
+- Native and real Crooked Crown desktop/390 evidence show clean tapered sides for isolated, joined,
+  boundary, and varied placements. The review also asserts zero mounted horizontal image/viewbox
+  mismatches and no runtime glyph fallback.
+- Promotion, asset/job/HoMM2/map/spec/UX gates, 40 focused tests, and the production build passed.
+  The complete serial suite passed 755/756 tests in 78/79 files; its sole failure is the accepted
+  unrelated seed-1/day-56 no-winner assertion at
+  `src/core/__tests__/mechanics-regression.test.ts:231`.

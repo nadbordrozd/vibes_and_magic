@@ -475,6 +475,16 @@
       {"id": "map-object:artifact:pocketSundial", "candidate": "assets/sources/artifacts/pocketSundial-source.png", "target": "public/assets/artifacts/pocketSundial.png"},
       {"id": "map-object:artifact:ironNail", "candidate": "assets/sources/artifacts/ironNail-source.png", "target": "public/assets/artifacts/ironNail.png"},
       {"id": "map-object:artifact:mirrorMask", "candidate": "assets/sources/artifacts/mirrorMask-source.png", "target": "public/assets/artifacts/mirrorMask.png"}
+    ],
+    "mountain-edge-repair-built-in": [
+      {"id": "decoration:mountain:rocky-column-1", "candidate": "assets/sources/mountain-edge-repair/transparent/rocky-column-1-transparent.png", "target": "public/assets/decorations/mountain-rocky-column-1.png"},
+      {"id": "decoration:mountain:rocky-column-2", "candidate": "assets/sources/mountain-edge-repair/transparent/rocky-column-2-transparent.png", "target": "public/assets/decorations/mountain-rocky-column-2.png"},
+      {"id": "decoration:mountain:rocky-column-3", "candidate": "assets/sources/mountain-edge-repair/transparent/rocky-column-3-transparent.png", "target": "public/assets/decorations/mountain-rocky-column-3.png"},
+      {"id": "decoration:mountain:rocky-column-4", "candidate": "assets/sources/mountain-edge-repair/transparent/rocky-column-4-transparent.png", "target": "public/assets/decorations/mountain-rocky-column-4.png"},
+      {"id": "decoration:mountain:rocky-shoulder-1", "candidate": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-1-transparent.png", "target": "public/assets/decorations/mountain-rocky-shoulder-1.png"},
+      {"id": "decoration:mountain:rocky-shoulder-2", "candidate": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-2-transparent.png", "target": "public/assets/decorations/mountain-rocky-shoulder-2.png"},
+      {"id": "decoration:mountain:rocky-shoulder-3", "candidate": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-3-transparent.png", "target": "public/assets/decorations/mountain-rocky-shoulder-3.png"},
+      {"id": "decoration:mountain:rocky-shoulder-4", "candidate": "assets/sources/mountain-edge-repair/transparent/rocky-shoulder-4-transparent.png", "target": "public/assets/decorations/mountain-rocky-shoulder-4.png"}
     ]
   }
 }

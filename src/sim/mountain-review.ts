@@ -14,7 +14,12 @@ const mapId = ['border-marches', 'crosstitch', 'torn-sound', 'manywhere', 'grand
   .includes(requestedMap)
   ? requestedMap as MapId
   : 'border-marches';
-const outputDir = '.pixel-work/review/doc33-maps';
+const viewportWidth = Number.parseInt(process.argv[4] ?? '1440', 10);
+if (!Number.isInteger(viewportWidth) || viewportWidth < 320 || viewportWidth > 2560) {
+  throw new Error('Mountain review viewport must be an integer from 320 through 2560');
+}
+const viewportHeight = viewportWidth <= 390 ? 844 : 1000;
+const outputDir = '.pixel-work/review/mountain-edge-repair-maps';
 mkdirSync(outputDir, { recursive: true });
 
 const state = createGame({
@@ -76,7 +81,7 @@ const browser = await puppeteer.launch({
 
 try {
   const page = await browser.newPage();
-  await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
+  await page.setViewport({ width: viewportWidth, height: viewportHeight, deviceScaleFactor: 1 });
   await page.goto(baseUrl, { waitUntil: 'networkidle0' });
   await page.evaluate(({ save, initial }) => {
     localStorage.setItem('border-marches.save.v4', JSON.stringify(save));
@@ -118,6 +123,17 @@ try {
     throw new Error(`${mapId} still renders in-scope glyph fallbacks: ${JSON.stringify(fallbacks)}`);
   }
   const mountainCount = await page.$$eval('.mountain-range-decoration', (nodes) => nodes.length);
+  const internalHorizontalCrops = await page.$$eval('.mountain-range-decoration', (nodes) =>
+    nodes.filter((node) => {
+      const clip = node.querySelector('svg.mountain-footprint-clip');
+      const image = node.querySelector('image.pixel-sprite');
+      if (!clip || !image) return true;
+      return Number(clip.getAttribute('x')) !== Number(image.getAttribute('x'))
+        || Number(clip.getAttribute('width')) !== Number(image.getAttribute('width'));
+    }).length);
+  if (internalHorizontalCrops) {
+    throw new Error(`${mapId} mounts ${internalHorizontalCrops} mountain images across a horizontal crop`);
+  }
   const exposedMountainGround = await page.$$eval(
     '.terrain-mountain .terrain-pixel, .terrain-mountain .mountain-glyph',
     (nodes) => nodes.length,
@@ -127,14 +143,15 @@ try {
   }
   const map = await page.$('.adventure-map');
   if (!map) throw new Error('Adventure map is missing');
-  await map.screenshot({ path: `${outputDir}/${mapId}${regionLabel}-full-native.png` });
+  const evidenceStem = `${outputDir}/${mapId}${regionLabel}-${viewportWidth}px`;
+  await map.screenshot({ path: `${evidenceStem}-map-native.png` });
   const firstMountain = await page.$('.mountain-range-decoration image');
   if (firstMountain) {
     await firstMountain.evaluate((node) => node.scrollIntoView({ block: 'center', inline: 'center' }));
     await new Promise((resolve) => setTimeout(resolve, 250));
-    await page.screenshot({ path: `${outputDir}/${mapId}-mountain-single-native.png` });
+    await page.screenshot({ path: `${evidenceStem}-viewport.png` });
   }
-  console.log(`ok ${mapId}${regionLabel} native screenshot · ${mountainCount} mountain-family pieces · no in-scope glyphs`);
+  console.log(`ok ${mapId}${regionLabel} ${viewportWidth}px evidence · ${mountainCount} mountain-family pieces · no horizontal mountain crops or in-scope glyphs`);
 } finally {
   await browser.close();
 }

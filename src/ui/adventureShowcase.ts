@@ -129,6 +129,8 @@ export function createMountainTopologyFixture(): MountainTopologyFixture {
 
   // Multiple run sizes and exposed boundaries.
   [1, 2, 3, 4, 6, 10].forEach((length, index) => paintRun(terrain, 3 + index * 2, 2, 1 + length));
+  // Join the two-cell run northward so the fixture also exercises the vertical shoulder grammar.
+  terrain[4][2] = tile('mountain', 'granite');
   label('runs 1/2/3/4/6/10', 1, 1, 13, 14);
 
   // A corner and a three-way branch.

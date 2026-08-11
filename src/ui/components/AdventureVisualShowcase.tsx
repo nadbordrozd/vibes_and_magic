@@ -10,6 +10,7 @@ import { TERRAIN, terrainId } from '../../content/terrain';
 import { gameMapTerrainGrid } from '../terrainTransitions';
 import { NativeTerrainSurface } from './NativeTerrainSurface';
 import { painterOrder } from '../assets';
+import { mountainRangeGeometry } from '../mountainRanges';
 
 const TILE = 32 * PIXEL_SCALE;
 const STAGE_WIDTH = 224;
@@ -109,12 +110,14 @@ function MountainStudy() {
       {pieces.map((piece) => {
         const id = assetId.decoration('mountain', piece.variant);
         const entry = ASSET_MANIFEST[id];
+        const geometry = mountainRangeGeometry(piece, TILE);
         return <image key={piece.key} className="showcase-sprite mountain-showcase-piece"
           href={entry.file} data-asset-id={id} data-native-width={entry.w}
           data-native-height={entry.h} data-anchor-x={entry.anchor.x}
           data-anchor-y={entry.anchor.y} data-painter-row={piece.row} data-painter-col={piece.col}
-          x={piece.position.x * TILE - entry.anchor.x}
-          y={piece.position.y * TILE - entry.anchor.y} width={entry.w} height={entry.h} />;
+          data-visual-x={geometry.visual.x} data-visual-width={geometry.visual.width}
+          x={geometry.sprite.x} y={geometry.sprite.y}
+          width={geometry.sprite.width} height={geometry.sprite.height} />;
       })}
       {fixture.labels.map((label) => <g key={label.name} className="showcase-topology-label">
         <rect x={label.x * TILE} y={label.y * TILE} width={label.w * TILE} height={label.h * TILE} />

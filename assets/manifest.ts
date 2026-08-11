@@ -47,6 +47,8 @@ function terrainFamily(terrain: string, skin: string): Record<string, AssetManif
 
 function mountainDecorationFamily(skin: string): Record<string, AssetManifestEntry> {
   const roles = [
+    ['column', 4, 32, 96, 0, 64],
+    ['shoulder', 4, 64, 96, 0, 64],
     ['knoll', 4, 64, 64, 0, 32],
     ['ridge', 4, 96, 96, 0, 64],
     ['massif', 2, 160, 112, 48, 80],
@@ -1100,6 +1102,14 @@ const REGENERATED_ASSET_IDS = new Set<string>([
   'decoration:mountain:granite-ridge-3',
   'decoration:mountain:granite-ridge-4',
   'decoration:mountain:granite-massif-2',
+  'decoration:mountain:rocky-column-1',
+  'decoration:mountain:rocky-column-2',
+  'decoration:mountain:rocky-column-3',
+  'decoration:mountain:rocky-column-4',
+  'decoration:mountain:rocky-shoulder-1',
+  'decoration:mountain:rocky-shoulder-2',
+  'decoration:mountain:rocky-shoulder-3',
+  'decoration:mountain:rocky-shoulder-4',
   'decoration:mountain:rocky-knoll-1',
   'decoration:mountain:rocky-knoll-2',
   'decoration:mountain:rocky-knoll-3',
@@ -1331,6 +1341,7 @@ function groundContactHeight(id: string): number | null {
   if (id === 'decoration:deepwood:canopy-clump'
       || id === 'decoration:mountain:range-clump'
       || id === 'decoration:mountain:range-clump-b'
+      || id.startsWith('decoration:mountain:rocky-')
       || id.startsWith('decoration:mountain:granite-')
       || id.startsWith('decoration:mountain:snowcap-')) return 32;
   return id.startsWith('map-object:') ? 32 : null;

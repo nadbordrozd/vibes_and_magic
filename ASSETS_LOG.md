@@ -1005,3 +1005,20 @@ against the superseded overhead terrain camera. It is not the final A2 acceptanc
   terrain-transition families, mountain compositor, decoration catalog, map-object sprites,
   castles, heroes, and guardian sprites. Placeholder reuse for landmark variants is intentional;
   there is no new generation job, provider output, source image, prompt, or license dependency.
+
+## 2026-08-11 — Exact-width rocky mountain ends and shoulders
+
+- Added four native 32×96 rocky columns and four native 64×96 rocky shoulders through eight
+  distinct built-in imagegen calls, followed by one corrective edit call for column-3. All use flat
+  magenta source backgrounds, the existing storybook rocky palette/camera, and south-east light.
+- The installed chroma helper produces retained transparent intermediates. The deterministic
+  `scripts/promoteMountainEdgeRepair` bake performs one fit, hard alpha, fixed-palette mapping,
+  disconnected-speck removal, side-clearance validation, and bottom anchoring. It writes the native
+  dual-background contact sheet at `.pixel-work/review/mountain-edge-repair-native-contact.png`.
+- Real-map review rejected the original column-3 corkscrew silhouette. Its keyed, transparent, and
+  baked files are retained under `assets/sources/mountain-edge-repair/rejected/`; the selected
+  replacement reads as two broken crags. Exact prompts, paths, hashes, and reason are in the job and
+  provenance records.
+- Manifest/worklist/selection/job coverage now owns all eight selected targets. Every selected
+  source has transparent margins at both vertical canvas sides, hard alpha, fixed rocky palette,
+  exact native dimensions, and a deterministic source/final hash.

@@ -14,14 +14,14 @@ import {
 describe('adventure visual showcase', () => {
   it('covers every manifest-backed adventure renderable from the executable worklist', () => {
     const inventory = adventureShowcaseInventory();
-    expect(inventory).toHaveLength(439);
+    expect(inventory).toHaveLength(447);
     expect(new Set(inventory.map(({ id }) => id)).size).toBe(inventory.length);
     expect(new Set(inventory.map(({ category }) => category)))
       .toEqual(new Set(ADVENTURE_SHOWCASE_CATEGORIES));
     expect(Object.fromEntries(ADVENTURE_SHOWCASE_CATEGORIES.map((category) => [
       category, inventory.filter((item) => item.category === category).length,
     ]))).toEqual({
-      terrain: 43, overlay: 13, decoration: 80, 'map-object': 227,
+      terrain: 43, overlay: 13, decoration: 88, 'map-object': 227,
       castle: 10, hero: 48, 'guardian-unit': 18,
     });
   });
@@ -77,7 +77,9 @@ describe('adventure visual showcase', () => {
       'lobes + bottleneck', 'stair + hook', 'crescent + channels',
     ]);
     const roles = new Set(fixture.pieces.map(({ variant }) => variant.split('-')[1]));
-    expect(roles).toEqual(new Set(['knoll', 'ridge', 'backbone', 'boundary']));
+    expect(roles).toEqual(new Set([
+      'column', 'shoulder', 'knoll', 'ridge', 'backbone', 'boundary',
+    ]));
     const covered = new Set(fixture.pieces.flatMap((piece) =>
       Array.from({ length: piece.contactWidth }, (_, offset) =>
         `${piece.position.x + offset},${piece.position.y}`)));

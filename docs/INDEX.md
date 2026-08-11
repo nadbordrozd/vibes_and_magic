@@ -84,5 +84,6 @@ live in `docs/` until superseded by their implementation.
 | 49 | SIXFOLD_TRIAL | Six real configurable player slots and a deterministic advanced-combat proving ground with developed castles, derived two-week armies, complete faction-school spellbooks, calibrated guardians, rewards, and browser evidence | extends S02/S03/S04/S09 and the authored-map/setup catalogs |
 | 50 | MAP_EDITOR | Versioned portable authored-map contract, in-game paint/shape editor, local revision storage, deterministic runtime conversion, import/export, lint, and promotion into the built-in catalog | extends S02/S03/S09; editor state remains outside rules and campaign saves |
 | 51 | CITY_SPELLBOOK_SPRITES | Exact 5×2 cities, deterministic neutral-city garrisons, six architectural identities, school-grouped original spellbook, clean spell-upgrade language, and exhaustive artifact/item/resource visual inventory | extends S02/S03/S05/S07/S08/S09; supersedes prior live player-facing Castle terminology, 31/32/37/50 settlement footprint clauses, and 34/44/46 spell-upgrade presentation wording; contract/inventory only |
+| 52 | MOUNTAIN_SIDE_EDGES | Exact-width mountain end/shoulder vocabulary, whole-sprite topology overlap, shared production/showcase geometry, retained generation provenance, and desktop/390 real-map evidence | presentation correction to 35/37/47; supersedes centered horizontal mountain slicing while preserving authored terrain and gameplay footprints |
 
-Next free number: **52**.
+Next free number: **53**.

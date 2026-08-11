@@ -1,14 +1,16 @@
-import { readFileSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { inflateSync } from 'node:zlib';
 import {
   ASSET_MANIFEST, NON_SPRITE_REPRESENTATIONS, type AssetManifestEntry,
 } from '../../assets/manifest';
-import { assetWorklist, type AssetWorkItem } from '../../assets/worklist';
+import { AUTHORED_MAPS, assetWorklist, type AssetWorkItem } from '../../assets/worklist';
 import { validateAdventureSpriteInventory } from '../../assets/adventureSpriteInventory';
 import { ARTIFACTS } from '../content/artifacts';
 import { FACTIONS } from '../content/factions';
 import { ITEMS } from '../content/items';
+import { deriveMountainRanges } from '../ui/mountainRanges';
 
 function pngMetadata(path: string): { w: number; h: number; hasAlpha: boolean } {
   const bytes = readFileSync(path);
@@ -250,7 +252,8 @@ function validateEntry(item: AssetWorkItem, entry: AssetManifestEntry): string[]
           if (alpha.symmetry >= 0.92) {
             errors.push(`obstacle-family silhouette symmetry ${alpha.symmetry.toFixed(3)} is pyramid-like`);
           }
-          const minimumAspect = item.obstacleFamily.role === 'scatter' ? 0.75 : 1;
+          const minimumAspect = item.obstacleFamily.role === 'column' ? 0.35
+            : item.obstacleFamily.role === 'scatter' ? 0.75 : 1;
           if (bboxWidth / bboxHeight < minimumAspect) {
             errors.push(`obstacle-family visible aspect ${bboxWidth}x${bboxHeight} is too tall`);
           }
@@ -326,6 +329,90 @@ for (const item of worklist) {
   if (!ASSET_MANIFEST[item.id] && !NON_SPRITE_REPRESENTATIONS[item.id]) {
     errors.push(`${item.id}: no manifest sprite or deliberate non-sprite representation`);
   }
+}
+
+// A rendered mountain may never reveal an internal horizontal slice of a wider bitmap. Exact
+// native-width vocabulary and topology overlap make the authored contact itself the visual width;
+// the source alpha edge, rather than an SVG crop line, is therefore always what meets terrain.
+for (const map of AUTHORED_MAPS) for (const range of deriveMountainRanges(map)) {
+  const id = `decoration:mountain:${range.variant}`;
+  const entry = ASSET_MANIFEST[id];
+  if (!entry) {
+    errors.push(`${map.id}:${range.key}: missing mountain sprite ${id}`);
+  } else if (entry.w !== range.contactWidth * 32) {
+    errors.push(`${map.id}:${range.key}: ${entry.w}px sprite would require an internal crop for `
+      + `${range.contactWidth * 32}px authored contact`);
+  }
+}
+
+// The edge-repair selection ledger is executable provenance, not a descriptive convenience. Tie
+// every accepted candidate and target to the built-in job and generated provenance so a typo cannot
+// pass while promotion happens to read a different path.
+try {
+  const selectionLedger = JSON.parse(readFileSync(
+    resolve(process.cwd(), 'assets/selections.json'), 'utf8',
+  )) as { batches?: Record<string, Array<{ id: string; candidate: string; target: string }>> };
+  const job = JSON.parse(readFileSync(
+    resolve(process.cwd(), 'assets/jobs/mountain-edge-repair-built-in.json'), 'utf8',
+  )) as { requests?: Array<{
+    id: string; assets: string[]; output: string; transparentSource: string; final: string;
+  }> };
+  const provenance = JSON.parse(readFileSync(
+    resolve(process.cwd(), 'assets/provenance/mountain-edge-repair.json'), 'utf8',
+  )) as { assets?: Array<{
+    id: string; providerOutput: string; providerOutputSha256: string;
+    transparentSource: string; transparentSourceSha256: string;
+    target: string; finalSha256: string;
+  }> };
+  const batch = selectionLedger.batches?.['mountain-edge-repair-built-in'] ?? [];
+  const requests = job.requests ?? [];
+  const records = provenance.assets ?? [];
+  if (batch.length !== 8 || requests.length !== 8 || records.length !== 8) {
+    errors.push(`mountain edge selection/job/provenance must each contain exactly 8 accepted assets; `
+      + `found ${batch.length}/${requests.length}/${records.length}`);
+  }
+  const selectionsById = new Map(batch.map((selection) => [selection.id, selection]));
+  const provenanceById = new Map(records.map((record) => [record.id, record]));
+  const sha256File = (file: string): string =>
+    createHash('sha256').update(readFileSync(resolve(process.cwd(), file))).digest('hex');
+  for (const request of requests) {
+    const assetId = request.assets?.[0];
+    const selection = assetId ? selectionsById.get(assetId) : undefined;
+    const record = assetId ? provenanceById.get(assetId) : undefined;
+    const label = `mountain edge selection ${assetId ?? request.id}`;
+    if (!assetId || request.id !== assetId || request.assets.length !== 1
+        || !selection || !record) {
+      errors.push(`${label}: missing or mismatched selection/job/provenance id`);
+      continue;
+    }
+    if (selection.candidate !== request.transparentSource
+        || selection.candidate !== record.transparentSource) {
+      errors.push(`${label}: candidate must equal job/provenance transparent source`);
+    }
+    if (selection.target !== request.final || selection.target !== record.target) {
+      errors.push(`${label}: target must equal job/provenance final`);
+    }
+    if (request.output !== record.providerOutput) {
+      errors.push(`${label}: job output must equal provenance provider output`);
+    }
+    for (const [kind, file, expectedHash] of [
+      ['candidate', selection.candidate, record.transparentSourceSha256],
+      ['target', selection.target, record.finalSha256],
+      ['provider output', request.output, record.providerOutputSha256],
+    ] as const) {
+      if (!existsSync(resolve(process.cwd(), file))) {
+        errors.push(`${label}: ${kind} does not exist at ${file}`);
+      } else if (sha256File(file) !== expectedHash) {
+        errors.push(`${label}: ${kind} hash disagrees with provenance`);
+      }
+    }
+  }
+  const expectedIds = new Set(requests.flatMap((request) => request.assets ?? []));
+  for (const selection of batch) if (!expectedIds.has(selection.id)) {
+    errors.push(`mountain edge selection ${selection.id}: no matching production request`);
+  }
+} catch (error) {
+  errors.push(`mountain edge selection provenance: ${error instanceof Error ? error.message : String(error)}`);
 }
 
 const categories = [...new Set(worklist.map((item) => item.category))];

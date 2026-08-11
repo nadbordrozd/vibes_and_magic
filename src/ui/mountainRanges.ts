@@ -6,6 +6,8 @@ export type MountainFamilySkin = 'rocky' | 'granite' | 'snowcap';
 
 export type MountainFamilyVariant =
   | `${MountainFamilySkin}-scatter-${1 | 2 | 3 | 4 | 5 | 6}`
+  | `rocky-column-${1 | 2 | 3 | 4}`
+  | `rocky-shoulder-${1 | 2 | 3 | 4}`
   | `${MountainFamilySkin}-knoll-${1 | 2 | 3 | 4}`
   | `${MountainFamilySkin}-ridge-${1 | 2 | 3 | 4}`
   | `${MountainFamilySkin}-massif-${1 | 2}`
@@ -38,10 +40,10 @@ export interface MountainRangeGeometry {
 }
 
 /**
- * Converts one compositor result into executable render geometry. Narrow contacts take a centered
- * native-resolution slice of the role sprite: no bitmap is stretched or resampled. The clip keeps
- * all paint inside the authored width and southern edge while retaining the complete northern
- * overhang. This is shared by production painting, viewport culling, and regression tests.
+ * Converts one compositor result into executable render geometry. Every topology result uses a
+ * whole native sprite whose width equals its authored contact. This prevents the renderer from
+ * exposing a straight internal crop through opaque mountain pixels. The visual rectangle retains
+ * legal northern overhang while the authored contact remains the only gameplay footprint.
  */
 export function mountainRangeGeometry(
   range: MountainRangeDecoration,
@@ -58,6 +60,9 @@ export function mountainRangeGeometry(
   };
   const spriteWidth = entry.w * scale;
   const spriteHeight = entry.h * scale;
+  if (spriteWidth !== footprint.width) {
+    throw new Error(`Mountain ${range.variant} is ${spriteWidth}px wide for a ${footprint.width}px contact`);
+  }
   const spriteX = footprint.x + (footprint.width - spriteWidth) / 2;
   const spriteY = footprint.y - entry.anchor.y * scale;
   const sprite: MountainRectangle = {
@@ -135,7 +140,7 @@ function addPiece(
   variant: MountainFamilyVariant,
   contactWidth: MountainRangeDecoration['contactWidth'],
 ): void {
-  const match = /^(rocky|granite|snowcap)-(scatter|knoll|ridge|massif|backbone|boundary)-(\d)$/.exec(variant);
+  const match = /^(rocky|granite|snowcap)-(scatter|column|shoulder|knoll|ridge|massif|backbone|boundary)-(\d)$/.exec(variant);
   if (match) {
     const [, skin, role, rawIndex] = match;
     const count = role === 'scatter' ? 6
@@ -182,14 +187,21 @@ export function deriveMountainRanges(map: GameMap): MountainRangeDecoration[] {
         return hasSkin(map, { x, y: y - 1 }, skin) || hasSkin(map, { x, y: y + 1 }, skin);
       }).some(Boolean);
 
-      // One- to three-cell runs use the approved small vocabulary. Every longer row starts with
-      // a single continuous six-tile PixelLab backbone, so the staple can never regress to a
-      // necklace of self-terminating 2x1 formations.
-      if (length <= 2) {
+      // Every selected bitmap spans its complete authored contact. Narrow vertical pieces are
+      // purpose-built; wider rows overlap whole 2/3/6-cell landforms instead of slicing through
+      // the middle of a larger silhouette.
+      if (length === 1) {
         const variant = 1 + coordinateHash(seed, start, y, 17) % 4;
         addPiece(pieces, { x: start, y },
-          `${skin}-${continuesVertically ? 'ridge' : 'knoll'}-${variant}` as MountainFamilyVariant,
-          length as 1 | 2);
+          `${skin}-column-${variant}` as MountainFamilyVariant, 1);
+        start = end + 1;
+        continue;
+      }
+      if (length === 2) {
+        const variant = 1 + coordinateHash(seed, start, y, continuesVertically ? 23 : 29) % 4;
+        addPiece(pieces, { x: start, y },
+          `${skin}-${continuesVertically ? 'shoulder' : 'knoll'}-${variant}` as MountainFamilyVariant,
+          2);
         start = end + 1;
         continue;
       }
@@ -201,39 +213,53 @@ export function deriveMountainRanges(map: GameMap): MountainRangeDecoration[] {
         continue;
       }
 
-      const addSpine = (
-        x: number, contactWidth: 4 | 5 | 6, variant: number,
-      ): void => {
-        const terrainFacing = x === start || x + contactWidth - 1 === end
-          || Array.from({ length: contactWidth }, (_, offset) =>
+      const addSpine = (x: number, variant: number): void => {
+        const terrainFacing = x === start || x + 5 === end
+          || Array.from({ length: 6 }, (_, offset) =>
             !hasSkin(map, { x: x + offset, y: y + 1 }, skin)).some(Boolean);
         const role = terrainFacing ? 'boundary' : 'backbone';
         addPiece(pieces, { x, y },
-          `${skin}-${role}-${variant}` as MountainFamilyVariant, contactWidth);
+          `${skin}-${role}-${variant}` as MountainFamilyVariant, 6);
       };
+
+      const addSmall = (x: number, width: 2 | 3, salt: number): void => {
+        const variant = 1 + coordinateHash(seed, x, y, salt) % 4;
+        addPiece(pieces, { x, y },
+          `${skin}-${width === 2 ? 'knoll' : 'ridge'}-${variant}` as MountainFamilyVariant,
+          width);
+      };
+
+      if (length === 4) {
+        addSmall(start, 2, 67);
+        addSmall(start + 1, 3, 71);
+        start = end + 1;
+        continue;
+      }
+      if (length === 5) {
+        addSmall(start, 3, 73);
+        addSmall(start + 2, 3, 79);
+        start = end + 1;
+        continue;
+      }
 
       let cursor = start;
       let backboneIndex = 0;
       const backboneOffset = coordinateHash(seed, start, y, 47) % 8;
-      while (end - cursor + 1 > 6) {
+      while (end - cursor + 1 > 9) {
         const variant = 1 + (backboneOffset + backboneIndex * 3) % 8;
-        addSpine(cursor, 6, variant);
+        addSpine(cursor, variant);
         cursor += 4; // two contact cells overlap, joining successive six-tile spines
         backboneIndex += 1;
       }
 
       const remaining = end - cursor + 1;
-      if (remaining >= 4) {
-        const variant = 1 + (backboneOffset + backboneIndex * 3) % 8;
-        addSpine(cursor, remaining as 4 | 5 | 6, variant);
-      } else if (remaining === 3) {
-        const variant = 1 + coordinateHash(seed, cursor, y, 59) % 4;
-        addPiece(pieces, { x: cursor, y },
-          `${skin}-ridge-${variant}` as MountainFamilyVariant, 3);
-      } else if (remaining > 0) {
-        const variant = 1 + coordinateHash(seed, cursor, y, 61) % 4;
-        addPiece(pieces, { x: cursor, y },
-          `${skin}-knoll-${variant}` as MountainFamilyVariant, remaining as 1 | 2);
+      const variant = 1 + (backboneOffset + backboneIndex * 3) % 8;
+      addSpine(cursor, variant);
+      if (remaining === 7) addSmall(cursor + 5, 2, 83);
+      if (remaining === 8) addSmall(cursor + 5, 3, 89);
+      if (remaining === 9) {
+        addSmall(cursor + 5, 3, 97);
+        addSmall(cursor + 7, 2, 101);
       }
       start = end + 1;
     }

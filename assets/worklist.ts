@@ -33,7 +33,7 @@ export interface AssetWorkItem {
   /** Obstacle-family geometry audited by doc 33's silhouette checks. */
   obstacleFamily?: {
     family: string;
-    role: 'scatter' | 'knoll' | 'ridge' | 'massif' | 'backbone' | 'boundary';
+    role: 'scatter' | 'column' | 'shoulder' | 'knoll' | 'ridge' | 'massif' | 'backbone' | 'boundary';
     palette: readonly (readonly [number, number, number])[];
     paletteTolerance: number;
   };
@@ -63,10 +63,11 @@ const ROCKY_MOUNTAIN_RAMP = [
 
 function mountainFamilyWorkItem(
   skin: 'rocky' | 'granite' | 'snowcap',
-  role: 'scatter' | 'knoll' | 'ridge' | 'massif' | 'backbone' | 'boundary',
+  role: 'scatter' | 'column' | 'shoulder' | 'knoll' | 'ridge' | 'massif' | 'backbone' | 'boundary',
   index: number,
 ): AssetWorkItem {
-  const footprint = role === 'scatter' ? { w: 32, h: 32 }
+  const footprint = role === 'scatter' || role === 'column' ? { w: 32, h: 32 }
+    : role === 'shoulder' ? { w: 64, h: 32 }
     : role === 'knoll' ? { w: 64, h: 32 }
       : role === 'ridge' ? { w: 96, h: 32 }
         : role === 'backbone' || role === 'boundary' ? { w: 192, h: 32 }
@@ -229,6 +230,8 @@ export function assetWorklist(): AssetWorkItem[] {
   // It intentionally has no scatter role: every impassable cell is covered by a substantial
   // whole landform, including one-cell-wide authored runs.
   for (let index = 1; index <= 4; index += 1) {
+    pushUnique(items, mountainFamilyWorkItem('rocky', 'column', index));
+    pushUnique(items, mountainFamilyWorkItem('rocky', 'shoulder', index));
     pushUnique(items, mountainFamilyWorkItem('rocky', 'knoll', index));
     pushUnique(items, mountainFamilyWorkItem('rocky', 'ridge', index));
   }
