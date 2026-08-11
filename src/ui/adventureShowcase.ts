@@ -10,7 +10,7 @@ import {
   type TerrainDecoration,
 } from '../content/terrain';
 import { ITEMS } from '../content/items';
-import { VANILLA_ARTIFACT_IDS } from '../content/artifacts';
+import { INSTALLED_ARTIFACT_IDS } from '../content/artifacts';
 import type {
   GameMap, MapObject, TerrainId, TerrainSkinId, TerrainTile,
 } from '../core/types';
@@ -189,7 +189,7 @@ export function representativeMapObjects(): Map<string, MapObject> {
       position: { x: 0, y: 0 }, item: { id: item.id }, collected: false };
     representatives.set(mapObjectAssetId(object), object);
   }
-  for (const artifactId of VANILLA_ARTIFACT_IDS) {
+  for (const artifactId of INSTALLED_ARTIFACT_IDS) {
     const object: MapObject = {
       id: `showcase-artifact-${artifactId}`, kind: 'rewardPickup', position: { x: 0, y: 0 },
       reward: { artifacts: [{ id: artifactId }] }, collected: false,

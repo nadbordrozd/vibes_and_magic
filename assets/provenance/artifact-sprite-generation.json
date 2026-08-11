@@ -1314,6 +1314,798 @@
         "chroma_fringe_pixels": 0
       },
       "visual_review": "Literal mendersGorget subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:falconersGlove",
+      "request_id": "collectible:artifact:falconersGlove:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "falconersGlove",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-4f442688-aa5e-4008-be91-2634bb53aa3c.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/falconersGlove-source.png",
+      "final": "public/assets/artifacts/falconersGlove.png",
+      "prompt_sha256": "1ee96e935f0ce25ab3c91f39ff04220797d36208c6c90096c836b8faa6b190ba",
+      "source_sha256": "cc6284f7fff511948b9b87ff2dc41ea314943411578ee15e77b95070b2f32ee9",
+      "final_sha256": "2f087cd67167f14324e7dcfdc7d8d510b8725011289b5213380261cc33acd1ce",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 547,
+        "opaque": 477,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal falconersGlove subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:whetstoneOfTheClans",
+      "request_id": "collectible:artifact:whetstoneOfTheClans:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "whetstoneOfTheClans",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-1252d9fe-d3ed-4a0a-b0a1-c335faa71d2a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/whetstoneOfTheClans-source.png",
+      "final": "public/assets/artifacts/whetstoneOfTheClans.png",
+      "prompt_sha256": "fab2de8b905a55411cdd80e92bd38293d0024dbe388fdae8dbdf34ec713f6769",
+      "source_sha256": "e181548438df038c2d4326afcc0c6723b4d65a9a752f288d7aed76ecfbbd6401",
+      "final_sha256": "2248460db61c6f0769c95a271a7fcfa873ad23e7198f71c3aded470af197f226",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 614,
+        "opaque": 410,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal whetstoneOfTheClans subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:tinkersSpectacles",
+      "request_id": "collectible:artifact:tinkersSpectacles:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "tinkersSpectacles",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-e70011cb-919a-46c3-a718-a7bad24a316e.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/tinkersSpectacles-source.png",
+      "final": "public/assets/artifacts/tinkersSpectacles.png",
+      "prompt_sha256": "1f8eb3585416abd4da94b22ce87f681e59202d2303800319e27d98974ae79366",
+      "source_sha256": "4a6d5ce0e80f80290a27e53e7a0bea32f143971c517b26e91889dd52a5826482",
+      "final_sha256": "7789737803f0813d6ed44479a46990e9bd055c4533bef9a6a7a8394b70818a2d",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 842,
+        "opaque": 182,
+        "partial": 0,
+        "bbox": [
+          2,
+          6,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal tinkersSpectacles subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:quietHorseshoe",
+      "request_id": "collectible:artifact:quietHorseshoe:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "quietHorseshoe",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-45beb9c9-0669-4873-9b28-a2f30e9fb3bf.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/quietHorseshoe-source.png",
+      "final": "public/assets/artifacts/quietHorseshoe.png",
+      "prompt_sha256": "274b8582927bf09e7f88980b636a4dfff27deea5201f075aae1ae331a72d07f2",
+      "source_sha256": "55458df78be3a94f87edb82f19a12919f09237a676dae20b2e14763323dbc07e",
+      "final_sha256": "c8bcc0a49c16b4ce86fbd95567f3188d5c85e0aef1b3dea7a3846aef70f0ec3b",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 627,
+        "opaque": 397,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal quietHorseshoe subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:standardBearersBaldric",
+      "request_id": "collectible:artifact:standardBearersBaldric:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "standardBearersBaldric",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-c3c5bf07-d087-4c61-aacd-2c6d1f6db2b2.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/standardBearersBaldric-source.png",
+      "final": "public/assets/artifacts/standardBearersBaldric.png",
+      "prompt_sha256": "082ddba6f0cf488f8931b7d33b5caa4c3b560ee4af492f47e72eeb2aeaec7fa5",
+      "source_sha256": "d65094aa6786bb13985388e95fb08b5b6c8377f62eed0569b3ea93c87a5673b8",
+      "final_sha256": "60ee0f39b7d861a14af8b6880374e80a4d1045ab27b88f899aed0ecad36e9284",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 732,
+        "opaque": 292,
+        "partial": 0,
+        "bbox": [
+          7,
+          2,
+          25,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the miniature banner socket reduces to fine brass detail at 32x32, while the broad red leather shoulder-loop silhouette remains distinct."
+    },
+    {
+      "id": "map-object:artifact:saltCrustedCompass",
+      "request_id": "collectible:artifact:saltCrustedCompass:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "saltCrustedCompass",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-113eff37-74ac-4a42-8551-363a980cc82a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/saltCrustedCompass-source.png",
+      "final": "public/assets/artifacts/saltCrustedCompass.png",
+      "prompt_sha256": "192c4c259372c5c515e47a13b96fd4f26632e0ab7a7abd3943a65778174c2623",
+      "source_sha256": "011f017ae85207c6dd86fd835c20b8dc37d6d9af186eb5e68a7fd68ee2a4af4c",
+      "final_sha256": "c2d9404c49460131ab1cb94eb29132ab0586133fcab375c82a2c4293366f9abf",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 476,
+        "opaque": 548,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal saltCrustedCompass subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:gravebindersSash",
+      "request_id": "collectible:artifact:gravebindersSash:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "gravebindersSash",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-08a26d66-01c6-43a7-9471-a29e180bc5bf.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/gravebindersSash-source.png",
+      "final": "public/assets/artifacts/gravebindersSash.png",
+      "prompt_sha256": "0c2caef19feb15a625faa633bd3b18e6138954f583d485ee9d9504482e2b6e83",
+      "source_sha256": "b99d76286b6014246f9abc95a58a4bf8e89047d4a90a27a758b9b536985b31f2",
+      "final_sha256": "e7c869f4741a729e32c44862c01530f43ddde1b47264ea2174e90e21fcd4130c",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 647,
+        "opaque": 377,
+        "partial": 0,
+        "bbox": [
+          2,
+          4,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal gravebindersSash subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:forgeAshGauntlets",
+      "request_id": "collectible:artifact:forgeAshGauntlets:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "forgeAshGauntlets",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-3a0b3f16-f960-4d1a-9e91-49cf49ba7f65.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/forgeAshGauntlets-source.png",
+      "final": "public/assets/artifacts/forgeAshGauntlets.png",
+      "prompt_sha256": "35824ab3dd6ecd8ea382a0690fb481bc9c43a2fc27d548dd4b157f9656f1f019",
+      "source_sha256": "e5bfd0c04c3437aad1524b1a7bcd29e64ca49a543b1ae90882dafcc0e195a36c",
+      "final_sha256": "182acf5cb311fdb50632999575dc77a9cb03a82a8a0092608e54e656ecf3c835",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 575,
+        "opaque": 449,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal forgeAshGauntlets subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:beeCharmersVeil",
+      "request_id": "collectible:artifact:beeCharmersVeil:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "beeCharmersVeil",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-77492b44-dc1b-429d-bdc8-6bfb5e4eceac.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/beeCharmersVeil-source.png",
+      "final": "public/assets/artifacts/beeCharmersVeil.png",
+      "prompt_sha256": "efc0acecbda0c6e9fb36eed0de45adc4a35ec02ea03e894dfac32b0a62238ec2",
+      "source_sha256": "9bd52b8dd63f597cb0d102cdd95534b805bddbcbdb44faf12700cb56a3f18934",
+      "final_sha256": "258a148d29bc4014481bca34423992dd731a335010e87b35ba084edd072add64",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 609,
+        "opaque": 415,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal beeCharmersVeil subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:purseOfThePrudentToad",
+      "request_id": "collectible:artifact:purseOfThePrudentToad:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "purseOfThePrudentToad",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-20bc826e-a87f-4bce-8bee-b6c469703951.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/purseOfThePrudentToad-source.png",
+      "final": "public/assets/artifacts/purseOfThePrudentToad.png",
+      "prompt_sha256": "0152c7226d095c4776d5851d4dfe1512fe02ac5159b4b49f422806c348fa360b",
+      "source_sha256": "8240bc27cc5d52818c8f8ea904a711765d3df5834f499ffd64e41c7dc3e14b01",
+      "final_sha256": "580efca8b0dc758c3f4775fe9bacc6ab4118696a06030468aa34c77391b061ed",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 535,
+        "opaque": 489,
+        "partial": 0,
+        "bbox": [
+          2,
+          4,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal purseOfThePrudentToad subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:chalkmastersRing",
+      "request_id": "collectible:artifact:chalkmastersRing:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "chalkmastersRing",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-1ec91f9a-7b27-45e9-ad73-bf022cc28601.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/chalkmastersRing-source.png",
+      "final": "public/assets/artifacts/chalkmastersRing.png",
+      "prompt_sha256": "5dbd45bb7835282063bbebccea14401627be32d2197a474705445deb906751fa",
+      "source_sha256": "edd4f4f3935b7d0c9542658a061c9fe26c3a53078a33386dff72820f0755dbe1",
+      "final_sha256": "69caada1e14c06ddb3b7a3a8f726e1ff6c8afb9ff960e541ad777e23e0bc2ae7",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 513,
+        "opaque": 511,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the crenellated setting reads as a compact circular wall at 32x32, but its central opening and white-stone construction keep it identifiable as the wall-shaped ring subject."
+    },
+    {
+      "id": "map-object:artifact:secondQuiver",
+      "request_id": "collectible:artifact:secondQuiver:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "secondQuiver",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-ceccce58-8fd4-40c4-9237-3cf1cd1a4fc1.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/secondQuiver-source.png",
+      "final": "public/assets/artifacts/secondQuiver.png",
+      "prompt_sha256": "f2f7f1e743cf49444075417bccc7ca3cb371cdbd45282045d57ff29777d6079b",
+      "source_sha256": "08f65468e15eda23a87a12ec524543957d5409beaeed4a115c94ec04e84ce71d",
+      "final_sha256": "3cb2dc34e8ed2216c361b5b1353338482963d451b057e20f6d915ff0abc47037",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 750,
+        "opaque": 274,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 4
+      },
+      "visual_review": "Literal secondQuiver subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:gauntletSecondThrow",
+      "request_id": "collectible:artifact:gauntletSecondThrow:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "gauntletSecondThrow",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-50668362-d377-4f0e-81ad-c5503e5fb930.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/gauntletSecondThrow-source.png",
+      "final": "public/assets/artifacts/gauntletSecondThrow.png",
+      "prompt_sha256": "6f859e1f4b89fb3d9426e7945d2ac71e36feb724b7cc9900d97d5c267023291f",
+      "source_sha256": "7b401fd53cf3491c8bb2f69f9075a661067bf8c363ecb71585f188115d625547",
+      "final_sha256": "3c988c4dae0a73e9eb0354ae2a6fd09541b552888d1ecd5760b0dfe61b03cd4f",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 564,
+        "opaque": 460,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal gauntletSecondThrow subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:candleSnuffersRing",
+      "request_id": "collectible:artifact:candleSnuffersRing:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "candleSnuffersRing",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-e7c601fa-753e-4f59-9383-0401ea8a88f0.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/candleSnuffersRing-source.png",
+      "final": "public/assets/artifacts/candleSnuffersRing.png",
+      "prompt_sha256": "ab13e5c325ae4aa40b8046c369c7273ce2d68c0364f411cab23eea53949f0422",
+      "source_sha256": "8b333474535e983240dc373717849a33107cffc3873114c9a7c7681f73a38b45",
+      "final_sha256": "cbd806ce6cff09a82ed5e433d9d8516ac8fb1fc0d779af496b8827412322f250",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 640,
+        "opaque": 384,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the crossed candle-snuffer setting is tiny at native size, while the blackened silver ring silhouette and paired conical cups remain readable."
+    },
+    {
+      "id": "map-object:artifact:fairScale",
+      "request_id": "collectible:artifact:fairScale:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "fairScale",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-8e9cd14f-42ff-40a5-bb27-93fad85d676d.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/fairScale-source.png",
+      "final": "public/assets/artifacts/fairScale.png",
+      "prompt_sha256": "e638d60d39bf2ad5e4875cc4ac92f816516951800e3d23c7f8ab55861a31d708",
+      "source_sha256": "6d7b0fecb01a50dd764df29bac34fa5dcecdfeff0e8f0dd722d8b01861d64f17",
+      "final_sha256": "03a39b49b60fc72e33b1331ba32e5bd239648b3952e57b564913abb77523f0c9",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 757,
+        "opaque": 267,
+        "partial": 0,
+        "bbox": [
+          3,
+          3,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal fairScale subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:droversCrook",
+      "request_id": "collectible:artifact:droversCrook:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "droversCrook",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-fed7e6a5-7422-450a-9794-57d786761f4e.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/droversCrook-source.png",
+      "final": "public/assets/artifacts/droversCrook.png",
+      "prompt_sha256": "1b5cb54f43ddeaab67409153d3a4f17726d072bdb3f0764c1cd5f20c702fd14b",
+      "source_sha256": "bac2cb48ea1f473446c38d39205d00b3ae0be60c4bd43c73a9f1c1ea51610074",
+      "final_sha256": "5abf28311f240e0ca04e5cac714677d8ee0dd37edab669c7e02fb4d61fd49e9e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 795,
+        "opaque": 229,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal droversCrook subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:hexKeepersLocket",
+      "request_id": "collectible:artifact:hexKeepersLocket:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "hexKeepersLocket",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-f238250d-97e8-4165-a765-acf9a4b13e8a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/hexKeepersLocket-source.png",
+      "final": "public/assets/artifacts/hexKeepersLocket.png",
+      "prompt_sha256": "5b95bbcd4bb40faeba608138c28a0c98da053c3f7fba0907630bc3564992020f",
+      "source_sha256": "5d44951cf39b4593aab596672baa4da9c76d9ad895d2025734edad60c3feaa91",
+      "final_sha256": "ca04a848fb14d388b19766d8363e77abbd965b2c81709915149632212c092925",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 624,
+        "opaque": 400,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the chain under glass becomes a dark linked stripe at 32x32, while the plum enamel locket silhouette stays unmistakable."
+    },
+    {
+      "id": "map-object:artifact:thirdBoot",
+      "request_id": "collectible:artifact:thirdBoot:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "thirdBoot",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-11b4a31c-7fe2-471f-b29c-3c3468abd4fc.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/thirdBoot-source.png",
+      "final": "public/assets/artifacts/thirdBoot.png",
+      "prompt_sha256": "6945d8f259ce7415db33bb5efc01c3ed72acdfac47b018229a72cd1f4afcb0bc",
+      "source_sha256": "05344e91a6c6993fbb79a7df22c122e7a50773837c6d87bcccfe1690d6d8779f",
+      "final_sha256": "460f9de8d9a86ab1af8831f4d84d6542cac9903f471bdfa6f95e28719c87a4e5",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 610,
+        "opaque": 414,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal thirdBoot subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:bellMetalTorque",
+      "request_id": "collectible:artifact:bellMetalTorque:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "bellMetalTorque",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-80322090-ccdd-4abb-8c94-77637d88c767.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/bellMetalTorque-source.png",
+      "final": "public/assets/artifacts/bellMetalTorque.png",
+      "prompt_sha256": "5ac3c0ed7c8733e78ec5510f32311a27ba227d333286e39ddfdfd560bb5de906",
+      "source_sha256": "c50daa6aded935b74a985872245b96902d857873335a7c41565486301c2cf738",
+      "final_sha256": "567c8209fc4ececf645d79e4ca19b133e67b161e1b1bc4ebfe3f2666d86b8372",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 758,
+        "opaque": 266,
+        "partial": 0,
+        "bbox": [
+          2,
+          6,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal bellMetalTorque subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:unsentLetter",
+      "request_id": "collectible:artifact:unsentLetter:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "unsentLetter",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-5c4ca09b-15c2-4571-9eec-30932925910d.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/unsentLetter-source.png",
+      "final": "public/assets/artifacts/unsentLetter.png",
+      "prompt_sha256": "c71228b0090139bb6cedfbffc104e32de3456c4810165fa71a71a1aba55ebba0",
+      "source_sha256": "62893e3cd8b718eaa9a96a6b7080fa3b495d3a87688456b084eb55a1e83810a8",
+      "final_sha256": "e2a74a642c985de45fb9a76b08a03204794ac96d4ef762b4c55d6e5dc2ecc65d",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 625,
+        "opaque": 399,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal unsentLetter subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:artifact:mothEatenMap",
+      "request_id": "collectible:artifact:mothEatenMap:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "mothEatenMap",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-946d6243-87a6-4ef2-aaf9-b0e9d1a6ab6f.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/mothEatenMap-source.png",
+      "final": "public/assets/artifacts/mothEatenMap.png",
+      "prompt_sha256": "a19f193ed2f4f291b260c8e1da2608f3bb6f1f040a53e0adc973883e81e6c2d1",
+      "source_sha256": "7f28390c16d8a9ab37f2515543254596f6464cfb6bab98153a9a7b308e1bdd46",
+      "final_sha256": "7b66494530d8d2391ed76521a09bc1e609f87473ff899f43ca7231a0bb3550f5",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 637,
+        "opaque": 387,
+        "partial": 0,
+        "bbox": [
+          2,
+          4,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Accepted after source and 3x-final review. Borderline: the stitched red route fragment is only a few pixels at native size, while the folded parchment and moth holes remain strongly distinct."
+    },
+    {
+      "id": "map-object:artifact:spareFace",
+      "request_id": "collectible:artifact:spareFace:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "spareFace",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942/exec-f837110a-d7ee-40e2-aa08-729b8dd03fae.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/artifacts/spareFace-source.png",
+      "final": "public/assets/artifacts/spareFace.png",
+      "prompt_sha256": "5d38d29cb776a55bbbc9259c150a0b04bc9685f58b65aa3560dde5109b1194be",
+      "source_sha256": "dd580daef97559b91a3d1cbb21a7e156d76a1b83a3ccbc47f0cf82b62d1aa8f3",
+      "final_sha256": "fa0bf02aaecfbe079c02adad92216de5fb47db905d1706c9b5379131fc72b506",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 479,
+        "opaque": 545,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal spareFace subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
     }
   ]
 }

@@ -14,14 +14,14 @@ import {
 describe('adventure visual showcase', () => {
   it('covers every manifest-backed adventure renderable from the executable worklist', () => {
     const inventory = adventureShowcaseInventory();
-    expect(inventory).toHaveLength(385);
+    expect(inventory).toHaveLength(407);
     expect(new Set(inventory.map(({ id }) => id)).size).toBe(inventory.length);
     expect(new Set(inventory.map(({ category }) => category)))
       .toEqual(new Set(ADVENTURE_SHOWCASE_CATEGORIES));
     expect(Object.fromEntries(ADVENTURE_SHOWCASE_CATEGORIES.map((category) => [
       category, inventory.filter((item) => item.category === category).length,
     ]))).toEqual({
-      terrain: 43, overlay: 13, decoration: 80, 'map-object': 173,
+      terrain: 43, overlay: 13, decoration: 80, 'map-object': 195,
       castle: 10, hero: 48, 'guardian-unit': 18,
     });
   });

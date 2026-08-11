@@ -368,13 +368,21 @@ try {
   }> };
   const vanillaIds = Object.values(ARTIFACTS)
     .filter((artifact) => artifact.class === 'vanilla').map((artifact) => artifact.id).sort();
+  const charmIds = Object.values(ARTIFACTS)
+    .filter((artifact) => artifact.class === 'charm').map((artifact) => artifact.id).sort();
+  const installedIds = [...vanillaIds, ...charmIds].sort();
   const requestKeys = artifactJob.requests.map((request) => request.catalog_key ?? '').sort();
-  if (artifactJob.collectible_family !== 'artifact' || artifactJob.requests.length !== 36
+  const requestGroups = new Map(['vanilla', 'charm'].map((group) => [group,
+    artifactJob.requests.filter((request) => request.catalog_group === group)
+      .map((request) => request.catalog_key ?? '').sort()]));
+  if (artifactJob.collectible_family !== 'artifact' || artifactJob.requests.length !== 58
       || provenance.version !== 1 || provenance.generator !== 'built-in-imagegen'
       || provenance.job !== 'assets/jobs/artifact-sprites-built-in.json'
-      || provenance.selections.length !== 36
-      || JSON.stringify(requestKeys) !== JSON.stringify(vanillaIds)) {
-    errors.push('artifact collectible job/provenance must contain exactly the 36 Vanilla selections');
+      || provenance.selections.length !== 58
+      || JSON.stringify(requestKeys) !== JSON.stringify(installedIds)
+      || JSON.stringify(requestGroups.get('vanilla')) !== JSON.stringify(vanillaIds)
+      || JSON.stringify(requestGroups.get('charm')) !== JSON.stringify(charmIds)) {
+    errors.push('artifact collectible job/provenance must contain exactly 36 Vanilla and 22 Charm selections');
   }
   const byRequest = new Map(provenance.selections.map((entry) => [entry.request_id, entry]));
   const sourcePaths = new Set<string>(); const finalPaths = new Set<string>();
@@ -385,9 +393,10 @@ try {
     const label = `artifact provenance:${request.id}`;
     if (!selection?.accepted || selection.id !== request.assets[0]
         || selection.collectible_family !== 'artifact'
-        || selection.catalog_key !== request.catalog_key || request.catalog_group !== 'vanilla'
+        || selection.catalog_key !== request.catalog_key
+        || !['vanilla', 'charm'].includes(request.catalog_group ?? '')
         || selection.source !== request.output || selection.final !== request.final) {
-      errors.push(`${label}: missing or drifted accepted Vanilla selection`); continue;
+      errors.push(`${label}: missing or drifted accepted installed-class selection`); continue;
     }
     const subject = ARTIFACT_SPRITE_SUBJECTS[selection.catalog_key as keyof typeof ARTIFACT_SPRITE_SUBJECTS];
     const literalPrompt = request.prompt.includes(subject)

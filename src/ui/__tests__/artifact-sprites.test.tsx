@@ -6,7 +6,9 @@ import { describe, expect, it } from 'vitest';
 import { ARTIFACT_SPRITE_SUBJECTS } from '../../../assets/adventureSpriteInventory';
 import { ASSET_MANIFEST, assetId } from '../../../assets/manifest';
 import provenance from '../../../assets/provenance/artifact-sprite-generation.json';
-import { ARTIFACTS, VANILLA_ARTIFACT_IDS } from '../../content/artifacts';
+import {
+  ARTIFACTS, CHARM_ARTIFACT_IDS, INSTALLED_ARTIFACT_IDS, VANILLA_ARTIFACT_IDS,
+} from '../../content/artifacts';
 import type { ArtifactId, MapObject } from '../../core/types';
 import { ArtifactSprite, mapObjectSpriteId } from '../assets';
 
@@ -25,8 +27,10 @@ describe('complete Vanilla artifact sprite batch', () => {
       .update(readFileSync(resolve(process.cwd(), 'public', entry.file))).digest('hex'));
     expect(new Set(hashes)).toHaveLength(36);
 
-    expect(provenance.selections).toHaveLength(36);
-    for (const selection of provenance.selections) {
+    const vanillaSelections = provenance.selections.filter((selection) =>
+      VANILLA_ARTIFACT_IDS.includes(selection.catalog_key as ArtifactId));
+    expect(vanillaSelections).toHaveLength(36);
+    for (const selection of vanillaSelections) {
       expect(selection.accepted).toBe(true);
       expect(selection.alpha.partial).toBe(0);
       expect(selection.alpha.transparent_corners).toBe(4);
@@ -35,8 +39,40 @@ describe('complete Vanilla artifact sprite batch', () => {
     }
   });
 
+  it('adds exactly all 22 Charm definitions and pins cumulative native coverage at 58/90', () => {
+    expect(CHARM_ARTIFACT_IDS).toHaveLength(22);
+    expect(new Set(CHARM_ARTIFACT_IDS)).toHaveLength(22);
+    expect(CHARM_ARTIFACT_IDS.every((id) => ARTIFACTS[id].class === 'charm')).toBe(true);
+    expect(Object.values(ARTIFACTS).filter((artifact) => artifact.class === 'charm')
+      .map((artifact) => artifact.id)).toEqual(CHARM_ARTIFACT_IDS);
+    expect(INSTALLED_ARTIFACT_IDS).toHaveLength(58);
+    expect(new Set(INSTALLED_ARTIFACT_IDS)).toHaveLength(58);
+    expect(Object.keys(ARTIFACTS)).toHaveLength(90);
+
+    const entries = INSTALLED_ARTIFACT_IDS.map((id) =>
+      ASSET_MANIFEST[assetId.mapObject('artifact', id)]);
+    expect(entries.every((entry) => entry?.w === 32 && entry.h === 32)).toBe(true);
+    expect(new Set(entries.map((entry) => entry.file))).toHaveLength(58);
+    const hashes = entries.map((entry) => createHash('sha256')
+      .update(readFileSync(resolve(process.cwd(), 'public', entry.file))).digest('hex'));
+    expect(new Set(hashes)).toHaveLength(58);
+
+    expect(provenance.selections).toHaveLength(58);
+    const charmSelections = provenance.selections.filter((selection) =>
+      CHARM_ARTIFACT_IDS.includes(selection.catalog_key as ArtifactId));
+    expect(charmSelections).toHaveLength(22);
+    for (const selection of charmSelections) {
+      expect(selection.accepted).toBe(true);
+      expect(selection.discarded_outputs).toEqual([]);
+      expect(selection.alpha.partial).toBe(0);
+      expect(selection.alpha.transparent_corners).toBe(4);
+      expect(selection.alpha.transparent + selection.alpha.opaque).toBe(1024);
+      expect(ARTIFACT_SPRITE_SUBJECTS[selection.catalog_key as ArtifactId]).toBeTruthy();
+    }
+  });
+
   it('uses one canonical sprite for reward pickups and HTML surfaces while metadata stays text', () => {
-    for (const id of VANILLA_ARTIFACT_IDS) {
+    for (const id of INSTALLED_ARTIFACT_IDS) {
       const object: MapObject = {
         id: `test-${id}`, kind: 'rewardPickup', position: { x: 0, y: 0 },
         reward: { artifacts: [{ id }], items: [] }, collected: false,
@@ -51,6 +87,20 @@ describe('complete Vanilla artifact sprite batch', () => {
       expect(html).toContain(definition.name.replaceAll('&', '&amp;').replaceAll("'", '&#x27;'));
       expect(html).toContain(`${definition.class} · ${definition.slot}`);
     }
+  });
+
+  it('preserves instance state and semantic metadata while ungenerated classes keep the fallback', () => {
+    const definition = ARTIFACTS.seamstone;
+    const html = renderToStaticMarkup(<button
+      data-class={definition.class} data-slot={definition.slot} data-school="rite">
+      <ArtifactSprite artifact={{ id: 'seamstone', chosenSchool: 'rite' }} />
+      <span>{definition.class} · {definition.slot} · rite</span>
+    </button>);
+    expect(html).toContain('artifact-sprite-fallback');
+    expect(html).toContain('data-class="relic"');
+    expect(html).toContain('data-slot="amulet"');
+    expect(html).toContain('data-school="rite"');
+    expect(html).toContain('relic · amulet · rite');
   });
 
   it('keeps every audited artifact consumer on the shared ArtifactSprite', () => {

@@ -162,6 +162,15 @@ export const VANILLA_ARTIFACT_IDS = (Object.values(ARTIFACTS)
   .filter((artifact) => artifact.class === 'vanilla')
   .map((artifact) => artifact.id)) as readonly ArtifactId[];
 
+export const CHARM_ARTIFACT_IDS = (Object.values(ARTIFACTS)
+  .filter((artifact) => artifact.class === 'charm')
+  .map((artifact) => artifact.id)) as readonly ArtifactId[];
+
+/** Catalog-derived native sprite coverage; later classes append without changing earlier sets. */
+export const INSTALLED_ARTIFACT_IDS = [
+  ...VANILLA_ARTIFACT_IDS, ...CHARM_ARTIFACT_IDS,
+] as readonly ArtifactId[];
+
 export const EQUIPMENT_SLOTS: readonly EquipmentSlotId[] = [
   'head', 'cloak', 'amulet', 'weapon', 'shield', 'armor',
   'ring1', 'ring2', 'boots', 'misc1', 'misc2',

@@ -652,6 +652,402 @@
       "candidates": 1,
       "chroma_key": "#00FF00",
       "prompt": "Use case: stylized-concept\nAsset type: production collectible Vanilla artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A riveted brass neck guard visibly repaired with porcelain and red thread.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:falconersGlove:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "falconersGlove",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:falconersGlove"
+      ],
+      "output": "assets/sources/artifacts/falconersGlove-source.png",
+      "final": "public/assets/artifacts/falconersGlove.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A thick tan leather glove with red cuff, brass jesses, and one small feather.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:whetstoneOfTheClans:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "whetstoneOfTheClans",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:whetstoneOfTheClans"
+      ],
+      "output": "assets/sources/artifacts/whetstoneOfTheClans-source.png",
+      "final": "public/assets/artifacts/whetstoneOfTheClans.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A long grey whetstone in an ochre hide sling marked by two horn beads.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:tinkersSpectacles:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "tinkersSpectacles",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:tinkersSpectacles"
+      ],
+      "output": "assets/sources/artifacts/tinkersSpectacles-source.png",
+      "final": "public/assets/artifacts/tinkersSpectacles.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: Round brass spectacles with one blue lens, one clear lens, and a tiny screwdriver hinge.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:quietHorseshoe:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "quietHorseshoe",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:quietHorseshoe"
+      ],
+      "output": "assets/sources/artifacts/quietHorseshoe-source.png",
+      "final": "public/assets/artifacts/quietHorseshoe.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A small black iron horseshoe wrapped at both ends in muted green cloth.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:standardBearersBaldric:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "standardBearersBaldric",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:standardBearersBaldric"
+      ],
+      "output": "assets/sources/artifacts/standardBearersBaldric-source.png",
+      "final": "public/assets/artifacts/standardBearersBaldric.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A broad red leather shoulder belt with cream piping and a miniature banner socket.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:saltCrustedCompass:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "saltCrustedCompass",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:saltCrustedCompass"
+      ],
+      "output": "assets/sources/artifacts/saltCrustedCompass-source.png",
+      "final": "public/assets/artifacts/saltCrustedCompass.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A green-brass compass crusted with white sea salt, its blue needle plainly visible.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:gravebindersSash:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "gravebindersSash",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:gravebindersSash"
+      ],
+      "output": "assets/sources/artifacts/gravebindersSash-source.png",
+      "final": "public/assets/artifacts/gravebindersSash.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A folded ash-white funeral sash fastened with a plum knot and small bone toggle.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:forgeAshGauntlets:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "forgeAshGauntlets",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:forgeAshGauntlets"
+      ],
+      "output": "assets/sources/artifacts/forgeAshGauntlets-source.png",
+      "final": "public/assets/artifacts/forgeAshGauntlets.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A pair of dark leather work gauntlets dusted with pale forge ash and copper fingertips.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:beeCharmersVeil:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "beeCharmersVeil",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:beeCharmersVeil"
+      ],
+      "output": "assets/sources/artifacts/beeCharmersVeil-source.png",
+      "final": "public/assets/artifacts/beeCharmersVeil.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A cream mesh beekeeper veil with honey-gold rim, black tie, and one small bee brooch.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:purseOfThePrudentToad:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "purseOfThePrudentToad",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:purseOfThePrudentToad"
+      ],
+      "output": "assets/sources/artifacts/purseOfThePrudentToad-source.png",
+      "final": "public/assets/artifacts/purseOfThePrudentToad.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A squat green leather coin purse with brass toad clasp and tightly drawn cord.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:chalkmastersRing:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "chalkmastersRing",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:chalkmastersRing"
+      ],
+      "output": "assets/sources/artifacts/chalkmastersRing-source.png",
+      "final": "public/assets/artifacts/chalkmastersRing.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A chunky white-stone ring shaped like one crenellated wall segment.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:secondQuiver:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "secondQuiver",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:secondQuiver"
+      ],
+      "output": "assets/sources/artifacts/secondQuiver-source.png",
+      "final": "public/assets/artifacts/secondQuiver.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A compact blue leather quiver holding six red-fletched arrows in a neat fan.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:gauntletSecondThrow:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "gauntletSecondThrow",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:gauntletSecondThrow"
+      ],
+      "output": "assets/sources/artifacts/gauntletSecondThrow-source.png",
+      "final": "public/assets/artifacts/gauntletSecondThrow.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A fingerless brown throwing glove with a second small stone tucked beneath its brass cuff.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:candleSnuffersRing:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "candleSnuffersRing",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:candleSnuffersRing"
+      ],
+      "output": "assets/sources/artifacts/candleSnuffersRing-source.png",
+      "final": "public/assets/artifacts/candleSnuffersRing.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A blackened silver ring whose raised setting is a tiny crossed pair of candle snuffers.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:fairScale:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "fairScale",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:fairScale"
+      ],
+      "output": "assets/sources/artifacts/fairScale-source.png",
+      "final": "public/assets/artifacts/fairScale.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A miniature balanced brass merchant scale with equal blue and red pans.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:droversCrook:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "droversCrook",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:droversCrook"
+      ],
+      "output": "assets/sources/artifacts/droversCrook-source.png",
+      "final": "public/assets/artifacts/droversCrook.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A short ashwood shepherd crook wrapped with green cord and capped in horn.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:hexKeepersLocket:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "hexKeepersLocket",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:hexKeepersLocket"
+      ],
+      "output": "assets/sources/artifacts/hexKeepersLocket-source.png",
+      "final": "public/assets/artifacts/hexKeepersLocket.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A plum enamel locket with a tiny black chain pattern trapped beneath clear glass.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; render the glass as opaque stylized pale pixel clusters and crisp highlights, not see-through green; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:thirdBoot:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "thirdBoot",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:thirdBoot"
+      ],
+      "output": "assets/sources/artifacts/thirdBoot-source.png",
+      "final": "public/assets/artifacts/thirdBoot.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: One small mismatched berry-red boot strapped atop a practical brown boot.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:bellMetalTorque:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "bellMetalTorque",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:bellMetalTorque"
+      ],
+      "output": "assets/sources/artifacts/bellMetalTorque-source.png",
+      "final": "public/assets/artifacts/bellMetalTorque.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A thick dull-gold neck torque made from hammered bell metal with squared ends.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:unsentLetter:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "unsentLetter",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:unsentLetter"
+      ],
+      "output": "assets/sources/artifacts/unsentLetter-source.png",
+      "final": "public/assets/artifacts/unsentLetter.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A sealed cream letter with no address, bound by a faded blue ribbon and dry flower stem.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:mothEatenMap:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "mothEatenMap",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:mothEatenMap"
+      ],
+      "output": "assets/sources/artifacts/mothEatenMap-source.png",
+      "final": "public/assets/artifacts/mothEatenMap.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A folded blank-edged map riddled with moth holes, with one stitched red route fragment.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:artifact:spareFace:built-in",
+      "collectible_family": "artifact",
+      "catalog_key": "spareFace",
+      "catalog_group": "charm",
+      "assets": [
+        "map-object:artifact:spareFace"
+      ],
+      "output": "assets/sources/artifacts/spareFace-source.png",
+      "final": "public/assets/artifacts/spareFace.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible Charm artifact sprite for a storybook strategy game\nPrimary request: Create exactly one isolated artifact: A palm-sized blank porcelain mask with rosy cheeks, simple joint holes, and a visible repair seam.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.\nConstraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
     }
   ]
 }

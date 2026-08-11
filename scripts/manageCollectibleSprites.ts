@@ -77,6 +77,28 @@ const artifactCalls: Record<string, string> = {
   marchGlass: 'exec-310b5f7e-5a75-46c5-b625-d189d6593817.png',
   keepersHalfCloak: 'exec-8ba029dd-fceb-4d70-afc7-afa634c967e5.png',
   mendersGorget: 'exec-1d05eadd-1735-4e96-bdeb-07072c712876.png',
+  falconersGlove: 'exec-4f442688-aa5e-4008-be91-2634bb53aa3c.png',
+  whetstoneOfTheClans: 'exec-1252d9fe-d3ed-4a0a-b0a1-c335faa71d2a.png',
+  tinkersSpectacles: 'exec-e70011cb-919a-46c3-a718-a7bad24a316e.png',
+  quietHorseshoe: 'exec-45beb9c9-0669-4873-9b28-a2f30e9fb3bf.png',
+  standardBearersBaldric: 'exec-c3c5bf07-d087-4c61-aacd-2c6d1f6db2b2.png',
+  saltCrustedCompass: 'exec-113eff37-74ac-4a42-8551-363a980cc82a.png',
+  gravebindersSash: 'exec-08a26d66-01c6-43a7-9471-a29e180bc5bf.png',
+  forgeAshGauntlets: 'exec-3a0b3f16-f960-4d1a-9e91-49cf49ba7f65.png',
+  beeCharmersVeil: 'exec-77492b44-dc1b-429d-bdc8-6bfb5e4eceac.png',
+  purseOfThePrudentToad: 'exec-20bc826e-a87f-4bce-8bee-b6c469703951.png',
+  chalkmastersRing: 'exec-1ec91f9a-7b27-45e9-ad73-bf022cc28601.png',
+  secondQuiver: 'exec-ceccce58-8fd4-40c4-9237-3cf1cd1a4fc1.png',
+  gauntletSecondThrow: 'exec-50668362-d377-4f0e-81ad-c5503e5fb930.png',
+  candleSnuffersRing: 'exec-e7c601fa-753e-4f59-9383-0401ea8a88f0.png',
+  fairScale: 'exec-8e9cd14f-42ff-40a5-bb27-93fad85d676d.png',
+  droversCrook: 'exec-fed7e6a5-7422-450a-9794-57d786761f4e.png',
+  hexKeepersLocket: 'exec-f238250d-97e8-4165-a765-acf9a4b13e8a.png',
+  thirdBoot: 'exec-11b4a31c-7fe2-471f-b29c-3c3468abd4fc.png',
+  bellMetalTorque: 'exec-80322090-ccdd-4abb-8c94-77637d88c767.png',
+  unsentLetter: 'exec-5c4ca09b-15c2-4571-9eec-30932925910d.png',
+  mothEatenMap: 'exec-946d6243-87a6-4ef2-aaf9-b0e9d1a6ab6f.png',
+  spareFace: 'exec-f837110a-d7ee-40e2-aa08-729b8dd03fae.png',
 };
 
 const magenta = new Set(['scrollSour', 'haresHeel', 'waybread']);
@@ -121,14 +143,17 @@ Avoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, 
 }
 
 function artifactLiteralPromptFor(input: CollectibleInput): string {
+  const opaqueGlass = input.catalogKey === 'hexKeepersLocket'
+    ? ' render the glass as opaque stylized pale pixel clusters and crisp highlights, not see-through green;'
+    : '';
   return `Use case: stylized-concept
-Asset type: production collectible Vanilla artifact sprite for a storybook strategy game
+Asset type: production collectible ${input.group === 'charm' ? 'Charm' : 'Vanilla'} artifact sprite for a storybook strategy game
 Primary request: Create exactly one isolated artifact: ${input.subject}
 Scene/backdrop: perfectly flat solid ${input.chromaKey} chroma-key background for local background removal.
 Style/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.
 Composition/framing: one complete isolated object or tightly unified described set, centered in a high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.
 Lighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes point screen upper-left/map north-west.
-Constraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject; opaque crisp-edged object suitable for chroma removal.
+Constraints: perfectly uniform flat chroma background with no gradient, texture, floor plane, or lighting variation; do not use the chroma color in the subject;${opaqueGlass} opaque crisp-edged object suitable for chroma removal.
 Avoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, rarity marker, slot marker, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects.`;
 }
 
@@ -262,15 +287,22 @@ const itemInputs = Object.values(ITEMS).map((item): CollectibleInput => ({
   builtInOutput: `${session}/${itemCalls[item.id]}`,
 }));
 const artifactSession = '/home/nadbor/.codex/generated_images/019feeaf-656d-7ea1-8ff8-478ad803e451';
+const charmArtifactSession = '/home/nadbor/.codex/generated_images/019feee5-192d-74e2-a4e3-04f90de86942';
 const artifactMagenta = new Set([
   'hoodOfTheHedgeMage', 'wayfarersMantle', 'bootsOfTheDrover', 'surveyorsBoots',
-  'ashwoodBracer',
+  'ashwoodBracer', 'quietHorseshoe', 'saltCrustedCompass', 'purseOfThePrudentToad',
+  'droversCrook',
 ]);
 const artifactVisualReviews: Record<string, string> = {
   skirmishersBlade: 'Accepted targeted retry after source and 3x-final review: polished steel leaf-shaped outline, crossguard, leather grip, and nick read clearly as a sword; the rejected botanical source remains retained and documented.',
   circletOfSmallRites: 'Accepted after source and 3x-final review. Borderline: the three candle-shaped studs reduce to pale points at 32x32, while the narrow open circlet remains distinct from the two Vanilla crowns.',
   fieldClerksSeal: 'Accepted after source and 3x-final review. Borderline: the sheaf/tally relief becomes fine texture at 32x32, but the paired brass signet and plain red wax impression remain unmistakable and contain no text.',
   keepersHalfCloak: 'Accepted after source and 3x-final review. Borderline: the key clasp is small at native size, but the asymmetric one-shoulder cream cloak silhouette remains unique.',
+  standardBearersBaldric: 'Accepted after source and 3x-final review. Borderline: the miniature banner socket reduces to fine brass detail at 32x32, while the broad red leather shoulder-loop silhouette remains distinct.',
+  chalkmastersRing: 'Accepted after source and 3x-final review. Borderline: the crenellated setting reads as a compact circular wall at 32x32, but its central opening and white-stone construction keep it identifiable as the wall-shaped ring subject.',
+  candleSnuffersRing: 'Accepted after source and 3x-final review. Borderline: the crossed candle-snuffer setting is tiny at native size, while the blackened silver ring silhouette and paired conical cups remain readable.',
+  hexKeepersLocket: 'Accepted after source and 3x-final review. Borderline: the chain under glass becomes a dark linked stripe at 32x32, while the plum enamel locket silhouette stays unmistakable.',
+  mothEatenMap: 'Accepted after source and 3x-final review. Borderline: the stitched red route fragment is only a few pixels at native size, while the folded parchment and moth holes remain strongly distinct.',
 };
 const vanillaArtifactInputs = Object.values(ARTIFACTS)
   .filter((artifact) => artifact.class === 'vanilla')
@@ -281,9 +313,21 @@ const vanillaArtifactInputs = Object.values(ARTIFACTS)
     chromaKey: artifactMagenta.has(artifact.id) ? '#FF00FF' : '#00FF00',
     builtInOutput: `${artifactSession}/${artifactCalls[artifact.id]}`,
   }));
+const charmArtifactInputs = Object.values(ARTIFACTS)
+  .filter((artifact) => artifact.class === 'charm')
+  .map((artifact): CollectibleInput => ({
+    catalogKey: artifact.id,
+    subject: ARTIFACT_SPRITE_SUBJECTS[artifact.id],
+    group: artifact.class,
+    chromaKey: artifactMagenta.has(artifact.id) ? '#FF00FF' : '#00FF00',
+    builtInOutput: `${charmArtifactSession}/${artifactCalls[artifact.id]}`,
+  }));
 const selectionsPath = resolve(root, 'assets/selections.json');
 const family = process.argv.includes('--artifact') ? 'artifact' : 'item';
-const selectedInputs = family === 'artifact' ? vanillaArtifactInputs : itemInputs;
+const artifactClass = process.argv.includes('--charm') ? 'charm' : 'vanilla';
+const selectedInputs = family === 'artifact'
+  ? artifactClass === 'charm' ? charmArtifactInputs : vanillaArtifactInputs
+  : itemInputs;
 writeCollectibleJob(
   family, selectedInputs, family === 'artifact' ? artifactPromptFor : promptFor,
   family === 'artifact',
@@ -295,7 +339,7 @@ const catalogSelectionEntries = selectedInputs.map((input) => ({
 }));
 writeFileSync(selectionsPath, upsertSelectionBatch(
   readFileSync(selectionsPath, 'utf8'),
-  family === 'artifact' ? 'artifact-sprites-vanilla-built-in' : 'item-sprites-built-in',
+  family === 'artifact' ? `artifact-sprites-${artifactClass}-built-in` : 'item-sprites-built-in',
   catalogSelectionEntries,
 ));
 console.log(`Wrote generic collectible job/provenance for ${selectedInputs.length} ${family}s.`);

@@ -405,6 +405,30 @@
       {"id": "map-object:artifact:marchGlass", "candidate": "assets/sources/artifacts/marchGlass-source.png", "target": "public/assets/artifacts/marchGlass.png"},
       {"id": "map-object:artifact:keepersHalfCloak", "candidate": "assets/sources/artifacts/keepersHalfCloak-source.png", "target": "public/assets/artifacts/keepersHalfCloak.png"},
       {"id": "map-object:artifact:mendersGorget", "candidate": "assets/sources/artifacts/mendersGorget-source.png", "target": "public/assets/artifacts/mendersGorget.png"}
+    ],
+    "artifact-sprites-charm-built-in": [
+      {"id": "map-object:artifact:falconersGlove", "candidate": "assets/sources/artifacts/falconersGlove-source.png", "target": "public/assets/artifacts/falconersGlove.png"},
+      {"id": "map-object:artifact:whetstoneOfTheClans", "candidate": "assets/sources/artifacts/whetstoneOfTheClans-source.png", "target": "public/assets/artifacts/whetstoneOfTheClans.png"},
+      {"id": "map-object:artifact:tinkersSpectacles", "candidate": "assets/sources/artifacts/tinkersSpectacles-source.png", "target": "public/assets/artifacts/tinkersSpectacles.png"},
+      {"id": "map-object:artifact:quietHorseshoe", "candidate": "assets/sources/artifacts/quietHorseshoe-source.png", "target": "public/assets/artifacts/quietHorseshoe.png"},
+      {"id": "map-object:artifact:standardBearersBaldric", "candidate": "assets/sources/artifacts/standardBearersBaldric-source.png", "target": "public/assets/artifacts/standardBearersBaldric.png"},
+      {"id": "map-object:artifact:saltCrustedCompass", "candidate": "assets/sources/artifacts/saltCrustedCompass-source.png", "target": "public/assets/artifacts/saltCrustedCompass.png"},
+      {"id": "map-object:artifact:gravebindersSash", "candidate": "assets/sources/artifacts/gravebindersSash-source.png", "target": "public/assets/artifacts/gravebindersSash.png"},
+      {"id": "map-object:artifact:forgeAshGauntlets", "candidate": "assets/sources/artifacts/forgeAshGauntlets-source.png", "target": "public/assets/artifacts/forgeAshGauntlets.png"},
+      {"id": "map-object:artifact:beeCharmersVeil", "candidate": "assets/sources/artifacts/beeCharmersVeil-source.png", "target": "public/assets/artifacts/beeCharmersVeil.png"},
+      {"id": "map-object:artifact:purseOfThePrudentToad", "candidate": "assets/sources/artifacts/purseOfThePrudentToad-source.png", "target": "public/assets/artifacts/purseOfThePrudentToad.png"},
+      {"id": "map-object:artifact:chalkmastersRing", "candidate": "assets/sources/artifacts/chalkmastersRing-source.png", "target": "public/assets/artifacts/chalkmastersRing.png"},
+      {"id": "map-object:artifact:secondQuiver", "candidate": "assets/sources/artifacts/secondQuiver-source.png", "target": "public/assets/artifacts/secondQuiver.png"},
+      {"id": "map-object:artifact:gauntletSecondThrow", "candidate": "assets/sources/artifacts/gauntletSecondThrow-source.png", "target": "public/assets/artifacts/gauntletSecondThrow.png"},
+      {"id": "map-object:artifact:candleSnuffersRing", "candidate": "assets/sources/artifacts/candleSnuffersRing-source.png", "target": "public/assets/artifacts/candleSnuffersRing.png"},
+      {"id": "map-object:artifact:fairScale", "candidate": "assets/sources/artifacts/fairScale-source.png", "target": "public/assets/artifacts/fairScale.png"},
+      {"id": "map-object:artifact:droversCrook", "candidate": "assets/sources/artifacts/droversCrook-source.png", "target": "public/assets/artifacts/droversCrook.png"},
+      {"id": "map-object:artifact:hexKeepersLocket", "candidate": "assets/sources/artifacts/hexKeepersLocket-source.png", "target": "public/assets/artifacts/hexKeepersLocket.png"},
+      {"id": "map-object:artifact:thirdBoot", "candidate": "assets/sources/artifacts/thirdBoot-source.png", "target": "public/assets/artifacts/thirdBoot.png"},
+      {"id": "map-object:artifact:bellMetalTorque", "candidate": "assets/sources/artifacts/bellMetalTorque-source.png", "target": "public/assets/artifacts/bellMetalTorque.png"},
+      {"id": "map-object:artifact:unsentLetter", "candidate": "assets/sources/artifacts/unsentLetter-source.png", "target": "public/assets/artifacts/unsentLetter.png"},
+      {"id": "map-object:artifact:mothEatenMap", "candidate": "assets/sources/artifacts/mothEatenMap-source.png", "target": "public/assets/artifacts/mothEatenMap.png"},
+      {"id": "map-object:artifact:spareFace", "candidate": "assets/sources/artifacts/spareFace-source.png", "target": "public/assets/artifacts/spareFace.png"}
     ]
   }
 }
