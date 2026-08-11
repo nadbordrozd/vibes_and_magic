@@ -18,6 +18,12 @@ The gate still validates their job structure and requires the named replacement 
 cover every superseded ID. City assets additionally require exactly one active production claim
 from `city-sprites-built-in.json`, so reviving an old-size claim fails validation.
 
+Reusable collectible jobs additionally declare `collectible_family` at job and request level plus
+`catalog_key`, `catalog_group`, and `chroma_key` on every request. Their larger request arrays are
+catalog batches, but each row still represents exactly one separate built-in call and one selected
+source—never an `n`-variation sheet. `scripts/buildCollectibleSprites.py` accepts this generic family
+shape so later artifact catalogs use the same bake/provenance contract without an ItemId-only type.
+
 ```json
 {
   "version": 1,

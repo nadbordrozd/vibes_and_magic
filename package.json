@@ -26,6 +26,7 @@
     "review:terrain-showcase": "tsx src/sim/terrain-showcase.ts",
     "review:adventure-showcase": "tsx src/sim/adventure-showcase.ts",
     "review:content-icons": "tsx src/sim/content-icon-review.ts",
+    "review:item-sprites": "tsx src/sim/item-sprite-review.ts",
     "review:spellbook": "tsx src/sim/spellbook-review.ts",
     "review:combat": "tsx src/sim/combat-review.ts",
     "review:combat:unfinished": "tsx src/sim/combat-review.ts unfinished",

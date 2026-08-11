@@ -8,6 +8,7 @@ import {
   EDITOR_SPELL_SCHOOLS, createDefaultEditorArtifactInstance,
   createDefaultEditorItemInstance,
 } from '../mapEditorRewards';
+import { ItemSprite } from '../assets';
 
 export function EditorRewardInspector({
   reward, onUpdate, onDelete, onPolicyMessage,
@@ -75,6 +76,7 @@ export function EditorRewardInspector({
       {reward.bundle.items.map((item, index) => {
         const definition = ITEMS[item.id];
         return <div key={`${index}-${item.id}`}>
+          <ItemSprite item={item} />
           <select aria-label={`Reward item ${index + 1}`} value={item.id}
             onChange={(event) => {
               const items = [...reward.bundle.items];

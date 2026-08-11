@@ -16,6 +16,7 @@ import { mapObjectName } from '../inspection';
 import { campaignOutcome } from '../campaignOutcome';
 import type { BattleResultData } from '../battleResult';
 import { ContentIcon } from './ContentIcon';
+import { ItemSprite } from '../assets';
 
 interface ChoiceProps {
   state: GameState;
@@ -105,7 +106,7 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
                 : 'Take this consumable into an empty inventory slot.'}
               onClick={() => dispatch({ type: 'CHOOSE_CHEST', choice: 'item' })}
             >
-              <i>◇</i><b>{pending.artifact
+              {pending.artifact ? <i>◇</i> : <ItemSprite item={pending.item} />}<b>{pending.artifact
                 ? ARTIFACTS[pending.artifact.id].name : itemName(pending.item)}</b>
               <small>{pending.artifact
                 ? `${rewardDefinition.description} Goes to the unlimited artifact backpack; consumable slots do not matter.`
@@ -353,7 +354,7 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
             .filter(Boolean).join(', ') || 'no resources'}
           {(rocks.reward.items ?? []).map((item, index) => (
             <span key={`item-${index}`} data-inspect-kind="item" data-inspect-id={item.id}>
-              {itemName(item)}
+              <ItemSprite item={item} />{itemName(item)}
             </span>
           ))}
           {(rocks.reward.artifacts ?? []).map((artifact, index) => (

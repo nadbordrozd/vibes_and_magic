@@ -6,6 +6,8 @@ import {
 import { ResourceRichText } from './ResourceToken';
 import { ContentIcon } from './ContentIcon';
 import type { SecondarySkillId, SpellId } from '../../core/types';
+import { ItemSprite } from '../assets';
+import type { ItemId } from '../../core/types';
 
 function targetFrom(element: EventTarget | null): InspectionTarget | null {
   if (!(element instanceof Element)) return null;
@@ -115,6 +117,7 @@ export function InspectionLayer({ state }: { state: GameState }) {
                 && <ContentIcon kind="spell" id={target.id as SpellId} />}
               {target?.kind === 'skill'
                 && <ContentIcon kind="skill" id={target.id as SecondarySkillId} />}
+              {target?.kind === 'item' && <ItemSprite itemId={target.id as ItemId} />}
               {card.name}
             </h2>
             <p className="inspection-flavor">{card.flavor}</p>

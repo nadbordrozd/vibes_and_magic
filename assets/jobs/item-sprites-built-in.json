@@ -1,0 +1,675 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "collectible_family": "item",
+  "contact_sheet": ".pixel-work/review/collectibles/item",
+  "requests": [
+    {
+      "id": "collectible:item:spellScroll:built-in",
+      "collectible_family": "item",
+      "catalog_key": "spellScroll",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:spellScroll"
+      ],
+      "output": "assets/sources/items/spellScroll-source.png",
+      "final": "public/assets/items/spellScroll.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A rolled cream parchment tied with a plain blue cord and one blank wax seal, leaving a clear center for no written glyph.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollRally:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollRally",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollRally"
+      ],
+      "output": "assets/sources/items/scrollRally-source.png",
+      "final": "public/assets/items/scrollRally.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A cream scroll tied red-gold around a tiny brass trumpet-shaped clasp.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollBlessing:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollBlessing",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollBlessing"
+      ],
+      "output": "assets/sources/items/scrollBlessing-source.png",
+      "final": "public/assets/items/scrollBlessing.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A cream scroll tied ivory-gold around a small sunburst seal.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollForgeSpark:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollForgeSpark",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollForgeSpark"
+      ],
+      "output": "assets/sources/items/scrollForgeSpark-source.png",
+      "final": "public/assets/items/scrollForgeSpark.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A soot-edged scroll tied copper-orange around a miniature anvil seal.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollWard:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollWard",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollWard"
+      ],
+      "output": "assets/sources/items/scrollWard-source.png",
+      "final": "public/assets/items/scrollWard.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A cream scroll tied blue-brass around a small upright shield seal.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollWither:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollWither",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollWither"
+      ],
+      "output": "assets/sources/items/scrollWither-source.png",
+      "final": "public/assets/items/scrollWither.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A dry grey scroll tied plum around a single curled dead leaf seal.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollQuiet:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollQuiet",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollQuiet"
+      ],
+      "output": "assets/sources/items/scrollQuiet-source.png",
+      "final": "public/assets/items/scrollQuiet.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A pale parchment scroll tied with a blue-grey cord around a tiny closed bell clasp without a clapper. The rolled parchment must be the dominant silhouette; the bell is only a miniature cord clasp, never a full-size bell.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated scroll, centered high-oblique non-isometric object view with visible rolled upper surfaces, generous padding, and a strong readable parchment silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal; visibly a scroll first and a tiny bell clasp second.\nAvoid: full-size bell, bell-shaped scroll, scarf, text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollDirge:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollDirge",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollDirge"
+      ],
+      "output": "assets/sources/items/scrollDirge-source.png",
+      "final": "public/assets/items/scrollDirge.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A pale mourning scroll tied charcoal-violet around a tiny lyre seal.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollSour:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollSour",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollSour"
+      ],
+      "output": "assets/sources/items/scrollSour-source.png",
+      "final": "public/assets/items/scrollSour.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A dark-edged scroll tied green-violet around a split droplet seal.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollAmplify:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollAmplify",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollAmplify"
+      ],
+      "output": "assets/sources/items/scrollAmplify-source.png",
+      "final": "public/assets/items/scrollAmplify.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A cream scroll tied gold around two nested brass rings.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:scrollReflect:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollReflect",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:scrollReflect"
+      ],
+      "output": "assets/sources/items/scrollReflect-source.png",
+      "final": "public/assets/items/scrollReflect.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A blue-white scroll tied copper around a small angled hand mirror.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:potionOfVigor:built-in",
+      "collectible_family": "item",
+      "catalog_key": "potionOfVigor",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:potionOfVigor"
+      ],
+      "output": "assets/sources/items/potionOfVigor-source.png",
+      "final": "public/assets/items/potionOfVigor.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A squat red glass tonic bottle with a broad cork and a tiny brass heart tag.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal. Render the glass as opaque stylized red pixel clusters and crisp highlights, not see-through green.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:draughtOfIron:built-in",
+      "collectible_family": "item",
+      "catalog_key": "draughtOfIron",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:draughtOfIron"
+      ],
+      "output": "assets/sources/items/draughtOfIron-source.png",
+      "final": "public/assets/items/draughtOfIron.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A square smoke-grey bottle in a simple iron cage, filled with dark metallic tonic.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal. Render the bottle and tonic as opaque stylized grey pixel clusters and crisp highlights, not see-through green.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:smellingSalts:built-in",
+      "collectible_family": "item",
+      "catalog_key": "smellingSalts",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:smellingSalts"
+      ],
+      "output": "assets/sources/items/smellingSalts-source.png",
+      "final": "public/assets/items/smellingSalts.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A tiny white ceramic jar with a blue stopper and a few sharp salt crystals at its lip.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:haresHeel:built-in",
+      "collectible_family": "item",
+      "catalog_key": "haresHeel",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:haresHeel"
+      ],
+      "output": "assets/sources/items/haresHeel-source.png",
+      "final": "public/assets/items/haresHeel.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A clean lucky hare-foot charm bound in green cord with a small brass cap.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:blackfireOil:built-in",
+      "collectible_family": "item",
+      "catalog_key": "blackfireOil",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:blackfireOil"
+      ],
+      "output": "assets/sources/items/blackfireOil-source.png",
+      "final": "public/assets/items/blackfireOil.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A narrow black-glass oil flask wrapped in copper wire, with one orange reflection and no flame.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal. Render the black glass as opaque stylized near-black pixel clusters and one orange highlight, not see-through green.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:graveDust:built-in",
+      "collectible_family": "item",
+      "catalog_key": "graveDust",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:graveDust"
+      ],
+      "output": "assets/sources/items/graveDust-source.png",
+      "final": "public/assets/items/graveDust.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A stitched ash-grey sachet spilling a pinch of pale grave dust.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:hornetJar:built-in",
+      "collectible_family": "item",
+      "catalog_key": "hornetJar",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:hornetJar"
+      ],
+      "output": "assets/sources/items/hornetJar-source.png",
+      "final": "public/assets/items/hornetJar.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A corked amber glass jar containing one bold black-and-gold hornet silhouette.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal. Render the amber glass as opaque stylized amber pixel clusters with the hornet clearly inside, not see-through green.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:milkOfTheMoon:built-in",
+      "collectible_family": "item",
+      "catalog_key": "milkOfTheMoon",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:milkOfTheMoon"
+      ],
+      "output": "assets/sources/items/milkOfTheMoon-source.png",
+      "final": "public/assets/items/milkOfTheMoon.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A round pearl-white bottle with a crescent-shaped silver handle and cool blue liquid.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal. Render the bottle and blue liquid as opaque stylized pixel clusters and crisp highlights, not see-through green.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:chalkOfWalls:built-in",
+      "collectible_family": "item",
+      "catalog_key": "chalkOfWalls",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:chalkOfWalls"
+      ],
+      "output": "assets/sources/items/chalkOfWalls-source.png",
+      "final": "public/assets/items/chalkOfWalls.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: Three thick white masonry chalk sticks bound by a red string.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:waxSeal:built-in",
+      "collectible_family": "item",
+      "catalog_key": "waxSeal",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:waxSeal"
+      ],
+      "output": "assets/sources/items/waxSeal-source.png",
+      "final": "public/assets/items/waxSeal.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A short brass seal stamp beside one unmarked deep-red wax wafer.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:powderOfUnmaking:built-in",
+      "collectible_family": "item",
+      "catalog_key": "powderOfUnmaking",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:powderOfUnmaking"
+      ],
+      "output": "assets/sources/items/powderOfUnmaking-source.png",
+      "final": "public/assets/items/powderOfUnmaking.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A stoppered violet powder vial whose lower glass edge appears neatly missing, with no glow.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal. Render the vial and powder as opaque stylized violet pixel clusters with crisp highlights; preserve the deliberately missing lower edge without any see-through green inside the remaining glass.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:bannerWhistle:built-in",
+      "collectible_family": "item",
+      "catalog_key": "bannerWhistle",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:bannerWhistle"
+      ],
+      "output": "assets/sources/items/bannerWhistle-source.png",
+      "final": "public/assets/items/bannerWhistle.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A small brass whistle on a red-and-cream banner cord.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:secondCandle:built-in",
+      "collectible_family": "item",
+      "catalog_key": "secondCandle",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:secondCandle"
+      ],
+      "output": "assets/sources/items/secondCandle-source.png",
+      "final": "public/assets/items/secondCandle.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: Two short ivory candles sharing one brass holder, one newly relit.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal. Show a tiny ordinary flame only on the newly relit candle, with no aura or glow.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:bottledEcho:built-in",
+      "collectible_family": "item",
+      "catalog_key": "bottledEcho",
+      "catalog_group": "combat",
+      "assets": [
+        "map-object:item:bottledEcho"
+      ],
+      "output": "assets/sources/items/bottledEcho-source.png",
+      "final": "public/assets/items/bottledEcho.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A round blue glass bottle with two concentric cork rings visible through it.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal. Render the blue glass and visible cork rings as opaque stylized blue pixel clusters and crisp highlights, not see-through green.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:cartographersCase:built-in",
+      "collectible_family": "item",
+      "catalog_key": "cartographersCase",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:cartographersCase"
+      ],
+      "output": "assets/sources/items/cartographersCase-source.png",
+      "final": "public/assets/items/cartographersCase.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A compact brown leather map case with brass dividers, compass clasp, and one rolled blank chart.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:waybread:built-in",
+      "collectible_family": "item",
+      "catalog_key": "waybread",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:waybread"
+      ],
+      "output": "assets/sources/items/waybread-source.png",
+      "final": "public/assets/items/waybread.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A round scored travel loaf wrapped halfway in a green cloth.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #FF00FF background with no gradient, texture, floor plane, or lighting variation; do not use #FF00FF in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:saltedMeat:built-in",
+      "collectible_family": "item",
+      "catalog_key": "saltedMeat",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:saltedMeat"
+      ],
+      "output": "assets/sources/items/saltedMeat-source.png",
+      "final": "public/assets/items/saltedMeat.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: Three red-brown cured meat strips tied in butcher paper and twine.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:tavernTales:built-in",
+      "collectible_family": "item",
+      "catalog_key": "tavernTales",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:tavernTales"
+      ],
+      "output": "assets/sources/items/tavernTales-source.png",
+      "final": "public/assets/items/tavernTales.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A dog-eared little chapbook beside a clay drinking cup, with blank cover and pages.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:hearthstone:built-in",
+      "collectible_family": "item",
+      "catalog_key": "hearthstone",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:hearthstone"
+      ],
+      "output": "assets/sources/items/hearthstone-source.png",
+      "final": "public/assets/items/hearthstone.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A smooth warm-grey palm stone carved only with a simple house-shaped groove and ember-red inset.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, magical glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:ferrymansCoin:built-in",
+      "collectible_family": "item",
+      "catalog_key": "ferrymansCoin",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:ferrymansCoin"
+      ],
+      "output": "assets/sources/items/ferrymansCoin-source.png",
+      "final": "public/assets/items/ferrymansCoin.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A large worn dark-silver coin pierced for a black cord, showing a tiny boat silhouette but no letters.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:militiaWrit:built-in",
+      "collectible_family": "item",
+      "catalog_key": "militiaWrit",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:militiaWrit"
+      ],
+      "output": "assets/sources/items/militiaWrit-source.png",
+      "final": "public/assets/items/militiaWrit.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A tightly rolled official parchment crossed by a small wooden practice spear and plain red seal.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:beggarsCoin:built-in",
+      "collectible_family": "item",
+      "catalog_key": "beggarsCoin",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:beggarsCoin"
+      ],
+      "output": "assets/sources/items/beggarsCoin-source.png",
+      "final": "public/assets/items/beggarsCoin.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A thin copper coin sewn into a visibly patched little cloth square.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:foundersTin:built-in",
+      "collectible_family": "item",
+      "catalog_key": "foundersTin",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:foundersTin"
+      ],
+      "output": "assets/sources/items/foundersTin-source.png",
+      "final": "public/assets/items/foundersTin.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A dented blue-and-red toy tin with its lid ajar and one tiny tin helmet visible.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:cronesBundle:built-in",
+      "collectible_family": "item",
+      "catalog_key": "cronesBundle",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:cronesBundle"
+      ],
+      "output": "assets/sources/items/cronesBundle-source.png",
+      "final": "public/assets/items/cronesBundle.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A lumpy birch-bark parcel tied with berry-red thread, crow feather, and one small bone toggle.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:overseersCharter:built-in",
+      "collectible_family": "item",
+      "catalog_key": "overseersCharter",
+      "catalog_group": "adventure",
+      "assets": [
+        "map-object:item:overseersCharter"
+      ],
+      "output": "assets/sources/items/overseersCharter-source.png",
+      "final": "public/assets/items/overseersCharter.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A broad rolled parchment clipped to a small wooden tally board with a brass mine token.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    },
+    {
+      "id": "collectible:item:tradeGoods:built-in",
+      "collectible_family": "item",
+      "catalog_key": "tradeGoods",
+      "catalog_group": "automatic",
+      "assets": [
+        "map-object:item:tradeGoods"
+      ],
+      "output": "assets/sources/items/tradeGoods-source.png",
+      "final": "public/assets/items/tradeGoods.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "prompt": "Use case: stylized-concept\nAsset type: production collectible item sprite for a storybook strategy game\nPrimary request: Create exactly one isolated item: A compact rope-bound bale containing folded cloth, a tiny crock, and one tool handle, with no merchant stall.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local background removal.\nStyle/medium: bright cartoony storybook pixel art, hand-pixelled appearance with crisp selective dark outlines and compact painterly pixel clusters.\nComposition/framing: one complete isolated object or tightly unified described set, centered high-oblique non-isometric object view with visible upper surfaces, generous padding, and a strong readable silhouette when reduced to 32x32.\nLighting/mood: bright warm key light from screen lower-right/map south-east; self-shadowed planes and any tiny object shadow point screen upper-left/map north-west.\nConstraints: perfectly uniform #00FF00 background with no gradient, texture, floor plane, or lighting variation; do not use #00FF00 in the subject; opaque crisp-edged object suitable for chroma removal.\nAvoid: text, letters, writing, glyphs, UI, frame, badge, terrain, ground plate, scenery, flag, glow, aura, watermark, reflection on the background, cast shadow on the background, contact shadow on the background, extra objects."
+    }
+  ]
+}

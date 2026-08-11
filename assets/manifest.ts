@@ -1,3 +1,5 @@
+import { ITEM_SPRITE_SUBJECTS } from './adventureSpriteInventory';
+
 // Adventure-map art is authored and displayed at its native size. Review tools may still enlarge
 // screenshots with nearest-neighbour scaling, but production world coordinates stay 32px per tile.
 export const PIXEL_SCALE = 1 as const;
@@ -88,6 +90,13 @@ function guardianUnitSet(): Record<string, AssetManifestEntry> {
   ]));
 }
 
+function collectibleItemSet(): Record<string, AssetManifestEntry> {
+  return Object.fromEntries(Object.keys(ITEM_SPRITE_SUBJECTS).map((itemId) => [
+    `map-object:item:${itemId}`,
+    { file: `assets/items/${itemId}.png`, w: 32, h: 32, anchor: { x: 0, y: 0 } },
+  ]));
+}
+
 /**
  * Rendering source of truth. Missing keys deliberately keep the procedural SVG glyph.
  * Add assets in small, independently shippable batches.
@@ -98,6 +107,7 @@ function guardianUnitSet(): Record<string, AssetManifestEntry> {
  * id is added to REGENERATED_ASSET_IDS.
  */
 const LEGACY_ASSET_CANDIDATES: Readonly<Record<string, AssetManifestEntry>> = {
+  ...collectibleItemSet(),
   'terrain-field:meadow': {
     file: 'assets/terrain/meadow-landscape-field.png',
     w: 256, h: 256, anchor: { x: 0, y: 0 },
@@ -652,19 +662,19 @@ const LEGACY_ASSET_CANDIDATES: Readonly<Record<string, AssetManifestEntry>> = {
     anchor: { x: 0, y: 0 },
   },
   'map-object:item:overseersCharter': {
-    file: 'assets/map-objects/item-overseers-charter.png', w: 32, h: 32,
+    file: 'assets/items/overseersCharter.png', w: 32, h: 32,
     anchor: { x: 0, y: 0 },
   },
   'map-object:item:spellScroll': {
-    file: 'assets/map-objects/item-spell-scroll.png', w: 32, h: 32,
+    file: 'assets/items/spellScroll.png', w: 32, h: 32,
     anchor: { x: 0, y: 0 },
   },
   'map-object:item:tradeGoods': {
-    file: 'assets/map-objects/item-trade-goods.png', w: 32, h: 32,
+    file: 'assets/items/tradeGoods.png', w: 32, h: 32,
     anchor: { x: 0, y: 0 },
   },
   'map-object:item:waybread': {
-    file: 'assets/map-objects/item-waybread.png', w: 32, h: 32,
+    file: 'assets/items/waybread.png', w: 32, h: 32,
     anchor: { x: 0, y: 0 },
   },
   'map-object:coldCampfire:default': {
@@ -1302,6 +1312,7 @@ const REGENERATED_ASSET_IDS = new Set<string>([
   ...['hagwood', 'hearthguard', 'unfinished', 'vespiary', 'wildergrass', 'woundWrights']
     .flatMap((faction) => HERO_DIRECTIONS.map((direction) => `hero:${faction}:${direction}`)),
   ...AUTHORED_GUARDIAN_UNIT_IDS.map((unitId) => `guardian-unit:${unitId}`),
+  ...Object.keys(ITEM_SPRITE_SUBJECTS).map((itemId) => `map-object:item:${itemId}`),
 ]);
 
 function groundContactHeight(id: string): number | null {

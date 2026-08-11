@@ -1,7 +1,8 @@
 # 51 — Cities, spellbook, and complete collectible sprites
 
-Status: city mechanics, presentation, editor compatibility, built-in-map migration, and shared
-combat/adventure spellbook implemented 2026-08-11; collectible bitmap production remains. This
+Status: city mechanics, presentation, editor compatibility, built-in-map migration, shared
+combat/adventure spellbook, and the complete 37-item collectible bitmap family implemented
+2026-08-11; artifact bitmap production remains. This
 document extends S02, S03, S05, S07, S08, and S09 and
 supersedes the 3×2 castle ground-contact clauses in docs 31, 32, 37, and 50. It also supersedes the
 spell-upgrade presentation wording in docs 34, 44, and 46 and the player-facing settlement word
@@ -188,10 +189,10 @@ Current audited coverage at contract time is:
 | Resource pickups | 4 | 4 | 0 |
 | Resource mines/sites | 4 | 4 | 0 |
 
-The four installed item sprites are generic Spell Scroll, Overseer’s Charter, Waybread, and Trade
-Goods. They count as current native coverage, but promotion into the complete shared family still
-requires style review against this work order. Existing 3×2 city sprites remain useful historical
-visual provenance; the six new 5×2 designs are the installed city family.
+All 37 item sprites are now installed as a distinct native family. The earlier generic Spell Scroll,
+Overseer’s Charter, Waybread, and Trade Goods images were explicitly style-reviewed and regenerated
+because their earlier camera/light contract did not match this work order. Existing 3×2 city sprites
+remain useful historical visual provenance; the six new 5×2 designs are the installed city family.
 
 ## 5. Resource sites and shared art law
 

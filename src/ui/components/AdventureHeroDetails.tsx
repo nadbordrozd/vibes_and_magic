@@ -8,7 +8,7 @@ import { SKILLS } from '../../content/skills';
 import { logisticsRate } from '../../core/heroBehaviors';
 import { objectEntranceTile } from '../../core/map/occupancy';
 import type { Action, GameState, Hero } from '../../core/types';
-import { HeroPortrait } from '../assets';
+import { HeroPortrait, ItemSprite } from '../assets';
 import { ArmySlots } from './ArmySlots';
 import { ArtifactPaperDoll } from './ArtifactPaperDoll';
 import { ContentIcon } from './ContentIcon';
@@ -141,7 +141,8 @@ export function AdventureHeroDetails({
                     data-inspect-kind={definition ? 'item' : undefined}
                     data-inspect-id={definition?.id}
                     onClick={() => { close(); onUseItem(index); }}>
-                    {item ? itemName(item) : '+'}
+                    {item && typeof item !== 'string' && <ItemSprite item={item} />}
+                    <span>{item ? itemName(item) : '+'}</span>
                   </button>;
                 })}
               </div>

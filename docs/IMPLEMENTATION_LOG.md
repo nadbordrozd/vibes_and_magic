@@ -6,6 +6,14 @@ next concrete work moved to Beads on 2026-08-05; use `bd prime`, `bd ready`, and
 New implementation checkpoints may still be recorded here when they preserve useful technical
 provenance, but this file is no longer the task tracker.
 
+## 2026-08-11 — Complete canonical item sprite family
+
+- Added all 37 canonical native item sprites from separate built-in image-generation calls, generic
+  collectible job/bake/provenance support reusable by the artifact family, exhaustive manifest,
+  hash, alpha, and uniqueness gates, grouped contact review, and shared item imagery across map,
+  editor, inventory, combat, exchange, market, choice, inspection, and result surfaces. A targeted
+  Scroll of Quiet retry replaced a rejected bell-dominant source while retaining discarded provenance.
+
 ## 2026-08-11 — Canonical City mechanics and built-in migration
 
 - Replaced the live settlement contact with shared 5×2 geometry and centered `(2,1)` entrance

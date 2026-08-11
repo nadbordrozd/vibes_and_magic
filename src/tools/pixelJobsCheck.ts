@@ -24,6 +24,10 @@ interface PixelRequest {
   review_only?: boolean;
   superseded_by?: string;
   references?: PixelReference[];
+  collectible_family?: string;
+  catalog_key?: string;
+  catalog_group?: string;
+  chroma_key?: string;
 }
 
 interface PixelJob {
@@ -33,6 +37,7 @@ interface PixelJob {
   blocked_by?: string;
   contact_sheet: string;
   requests: PixelRequest[];
+  collectible_family?: string;
 }
 
 const root = process.cwd();
@@ -88,13 +93,15 @@ for (const filename of jobFilenames) {
     staged += 1;
     if (!job.blocked_by) errors.push(`${filename}: staged job must explain blocked_by`);
   } else ready += 1;
-  if (!Array.isArray(job.requests) || !job.requests.length || job.requests.length > 10) {
-    errors.push(`${filename}: requests must contain 1–10 entries`);
+  const requestLimit = builtIn && job.collectible_family ? 200 : 10;
+  if (!Array.isArray(job.requests) || !job.requests.length || job.requests.length > requestLimit) {
+    errors.push(`${filename}: requests must contain 1–${requestLimit} entries`);
     continue;
   }
   requests += job.requests.length;
   const validContactSheet = builtIn
-    ? job.contact_sheet?.startsWith('.pixel-work/review/') && job.contact_sheet.endsWith('.png')
+    ? job.contact_sheet?.startsWith('.pixel-work/review/')
+      && (job.contact_sheet.endsWith('.png') || Boolean(job.collectible_family))
     : job.contact_sheet?.startsWith('assets/jobs/') && job.contact_sheet.endsWith('.html');
   if (!validContactSheet) {
     errors.push(`${filename}: invalid contact_sheet path`);
@@ -150,6 +157,17 @@ for (const filename of jobFilenames) {
       if (!safelyBelow(request.final, 'public/assets')
           || !existsSync(resolve(root, request.final ?? ''))) {
         errors.push(`${label}: missing or invalid promoted built-in final`);
+      }
+      if (job.collectible_family) {
+        const family = job.collectible_family;
+        if (request.collectible_family !== family || !request.catalog_key
+            || !request.catalog_group || !/^#[0-9A-F]{6}$/.test(request.chroma_key ?? '')) {
+          errors.push(`${label}: malformed reusable collectible metadata`);
+        }
+        if (!request.output.startsWith(`assets/sources/${family}s/`)
+            || !request.final?.startsWith(`public/assets/${family}s/`)) {
+          errors.push(`${label}: collectible source/final paths do not match family ${family}`);
+        }
       }
     }
     if (!Array.isArray(request.assets) || !request.assets.length) {
@@ -279,6 +297,54 @@ try {
   }
 } catch (error) {
   errors.push(`city sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+try {
+  const itemJob = JSON.parse(readFileSync(
+    resolve(root, 'assets/jobs/item-sprites-built-in.json'), 'utf8',
+  )) as PixelJob;
+  const provenance = JSON.parse(readFileSync(
+    resolve(root, 'assets/provenance/item-sprite-generation.json'), 'utf8',
+  )) as { version: number; generator: string; job: string; selections: Array<{
+    id: string; request_id: string; collectible_family: string; catalog_key: string;
+    accepted: boolean; source: string; final: string; prompt_sha256: string;
+    source_sha256: string; final_sha256: string; source_dimensions: [number, number];
+    final_dimensions: [number, number];
+  }> };
+  if (itemJob.collectible_family !== 'item' || itemJob.requests.length !== 37
+      || provenance.version !== 1 || provenance.generator !== 'built-in-imagegen'
+      || provenance.job !== 'assets/jobs/item-sprites-built-in.json'
+      || provenance.selections.length !== 37) {
+    errors.push('item collectible job/provenance must contain exactly 37 built-in selections');
+  }
+  const byRequest = new Map(provenance.selections.map((entry) => [entry.request_id, entry]));
+  const finalHashes = new Set<string>();
+  for (const request of itemJob.requests) {
+    const selection = byRequest.get(request.id);
+    const label = `item provenance:${request.id}`;
+    if (!selection?.accepted || selection.id !== request.assets[0]
+        || selection.collectible_family !== 'item' || selection.catalog_key !== request.catalog_key
+        || selection.source !== request.output || selection.final !== request.final) {
+      errors.push(`${label}: missing or drifted accepted selection`); continue;
+    }
+    if (selection.prompt_sha256 !== sha256(request.prompt)) errors.push(`${label}: prompt hash drift`);
+    for (const [kind, file, expected] of [
+      ['source', selection.source, selection.source_sha256],
+      ['final', selection.final, selection.final_sha256],
+    ] as const) {
+      const path = resolve(root, file);
+      if (!existsSync(path) || sha256(readFileSync(path)) !== expected) {
+        errors.push(`${label}: ${kind} content hash drift`);
+      }
+    }
+    if (selection.final_dimensions?.[0] !== 32 || selection.final_dimensions?.[1] !== 32) {
+      errors.push(`${label}: final must be native 32x32`);
+    }
+    if (finalHashes.has(selection.final_sha256)) errors.push(`${label}: duplicate final bitmap content`);
+    finalHashes.add(selection.final_sha256);
+  }
+} catch (error) {
+  errors.push(`item sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
 }
 
 console.log(`Pixel production jobs: ${ready} ready · ${staged} staged · ${requests} requests · ${builtInJobs} built-in provenance job`);

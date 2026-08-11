@@ -4,6 +4,7 @@ import type {
   Action, Hero,
 } from '../../core/types';
 import { ArmyExchange } from './ArmyExchange';
+import { ItemSprite } from '../assets';
 
 interface Props {
   source: Hero;
@@ -71,7 +72,8 @@ export function ExchangeScreen({
             data-inspect-kind={item && typeof item !== 'string' ? 'item' : undefined}
             data-inspect-id={item && typeof item !== 'string' ? item.id : undefined}
             onClick={() => selectItem(side, index)}
-          >{item ? itemName(item) : <span className="empty-mark">+</span>}</button>
+          >{item && typeof item !== 'string' && <ItemSprite item={item} />}
+            {item ? <span>{itemName(item)}</span> : <span className="empty-mark">+</span>}</button>
         ))}
       </div>
     </div>;

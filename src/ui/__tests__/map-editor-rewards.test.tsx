@@ -265,7 +265,7 @@ describe('portable map rewards and remaining palettes', () => {
     expect(html).toContain('Canonical artifacts');
     expect(html).toContain('Canonical consumables and items');
     expect(html).toContain('class="editor-artifact-icon');
-    expect(html).toContain('assets/map-objects/item-waybread.png');
+    expect(html).toContain('assets/items/waybread.png');
     expect(html).toContain('assets/map-objects/pile-gold.png');
     expect(html).toContain('assets/icons/spells/rally.png');
     expect(html).toContain('aria-label="Road overlay"');

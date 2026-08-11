@@ -1,0 +1,1352 @@
+{
+  "version": 1,
+  "generator": "built-in-imagegen",
+  "generated_on": "2026-08-11",
+  "job": "assets/jobs/item-sprites-built-in.json",
+  "workflow": {
+    "source": "one separate built-in image_gen call per catalog key",
+    "bake": "uv run --no-project --with pillow python scripts/buildCollectibleSprites.py --job assets/jobs/item-sprites-built-in.json",
+    "resampling": "nearest-neighbour reduction, adaptive 40-colour palette, hard alpha",
+    "review": ".pixel-work/review/collectibles/item/{combat,adventure,automatic}-contact-sheet.png"
+  },
+  "selections": [
+    {
+      "id": "map-object:item:spellScroll",
+      "request_id": "collectible:item:spellScroll:built-in",
+      "collectible_family": "item",
+      "catalog_key": "spellScroll",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-c0c119f8-0181-467e-85ae-7368e978f219.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/spellScroll-source.png",
+      "final": "public/assets/items/spellScroll.png",
+      "prompt_sha256": "82a0bca5ee6642593f0d4af562d34c7077ee1f64a078623cb52c70e136b7c114",
+      "source_sha256": "aeb346b42276bbfefc81a8ab9317d93c336e08d9ef8d97aed3c51ddceebbe737",
+      "final_sha256": "0e363c7795d1133e2499ee8a52b115b4d6dc6ee06f0dc58c0096366414e3a11d",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 706,
+        "opaque": 318,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 3
+      },
+      "visual_review": "Literal spellScroll subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollRally",
+      "request_id": "collectible:item:scrollRally:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollRally",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-4af99732-c50c-49f2-8f5a-976cc76c472c.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollRally-source.png",
+      "final": "public/assets/items/scrollRally.png",
+      "prompt_sha256": "de50dd761e22445e5c1d0d7fb7a147451d628ee4cc960de2239d01adf4b0d31f",
+      "source_sha256": "8cb6799f9bce23759fa4df11ccef43f0450394eb7037ccdd256024875b1f60a0",
+      "final_sha256": "cc8884e67770a5b5fcb56bc1962f5cdaeaf214cc8b0816714ad033af127e41fa",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 692,
+        "opaque": 332,
+        "partial": 0,
+        "bbox": [
+          2,
+          4,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal scrollRally subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollBlessing",
+      "request_id": "collectible:item:scrollBlessing:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollBlessing",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-d1e5c96b-5f94-4271-ac7b-30dd5af1b10a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollBlessing-source.png",
+      "final": "public/assets/items/scrollBlessing.png",
+      "prompt_sha256": "e6cf721cadd3286550e5fc2ad00c939ed388be9868eff2d28493ee70c2bde6ee",
+      "source_sha256": "e7a51e084b30b0c0b496222bf99e2a8fcf43c3fb90aa4801dabcaaa137085abc",
+      "final_sha256": "895e7f1a433787dbfd3d663aa1b43bd0b13944d35d8fca8e2ac23f1ff583f117",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 705,
+        "opaque": 319,
+        "partial": 0,
+        "bbox": [
+          2,
+          4,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal scrollBlessing subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollForgeSpark",
+      "request_id": "collectible:item:scrollForgeSpark:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollForgeSpark",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-6d0b3998-a0bf-4c03-982a-231d3ad4236a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollForgeSpark-source.png",
+      "final": "public/assets/items/scrollForgeSpark.png",
+      "prompt_sha256": "e148c24e3f981256cbc2f6e014cd2b47f49777c14067d631d3f1d839c3ffd534",
+      "source_sha256": "e252e01ab73b851537e41af2d5070bdc15960c1ff3885111974cce460b2443b5",
+      "final_sha256": "200a9c9c795635395f4d9b6acb55c722335ac7773b1f07524c625bfbdee50557",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 640,
+        "opaque": 384,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal scrollForgeSpark subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollWard",
+      "request_id": "collectible:item:scrollWard:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollWard",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-4b516789-3ed2-4430-b46f-5f636caf65c1.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollWard-source.png",
+      "final": "public/assets/items/scrollWard.png",
+      "prompt_sha256": "e7af6ada22c25af529b9a37c80bb6f733aec4627615ad71ee425fceae7105f1a",
+      "source_sha256": "bdf2209de3b06e86c557d0bc492061671fedfc7cb41eb53b4472c1ee8ac26023",
+      "final_sha256": "c4596f18ff56095ac265169aad041b40e4c154e55d5c3fb97a4089651846a776",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 685,
+        "opaque": 339,
+        "partial": 0,
+        "bbox": [
+          2,
+          4,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal scrollWard subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollWither",
+      "request_id": "collectible:item:scrollWither:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollWither",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-2753e94e-2914-4d09-aa52-2a8561938f49.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollWither-source.png",
+      "final": "public/assets/items/scrollWither.png",
+      "prompt_sha256": "2587c884f74f4eefc1f705b3447855ce79a303e0111cec2fca368c95f8ec8e5b",
+      "source_sha256": "0e23e122fac1b14e114838fb3b35eef532ccafdb1edc138d82c7c35b86a6641e",
+      "final_sha256": "4ff0ae436ce139d7e130b5af6482a2693a1739ce0455018a408f11638354371a",
+      "source_dimensions": [
+        1339,
+        1175
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 698,
+        "opaque": 326,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal scrollWither subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollQuiet",
+      "request_id": "collectible:item:scrollQuiet:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollQuiet",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-e2a26bd7-9091-46b7-a746-2f55730f5121.png",
+      "discarded_outputs": [
+        {
+          "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-52fc5e1d-d2aa-4a35-8815-5780297a4e05.png",
+          "source": "assets/sources/items/discarded/scrollQuiet-full-bell-source.png",
+          "reason": "Rejected in contact review: full-size bell dominated and the parchment scroll was not readable."
+        }
+      ],
+      "source": "assets/sources/items/scrollQuiet-source.png",
+      "final": "public/assets/items/scrollQuiet.png",
+      "prompt_sha256": "cb88da15b4bb3081514f6208976643a90c472a7f850df6f132dce0ec5a986bc9",
+      "source_sha256": "27c4a15c93ab17e86f28f807f6b2523e4f43147cd4fbc391d912ad96f333315e",
+      "final_sha256": "e0ecf7e88bdd8b52c76d62d60c72c63d5f5bb9836d8c1b33593fc1f782a4f0ea",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 722,
+        "opaque": 302,
+        "partial": 0,
+        "bbox": [
+          2,
+          4,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal scrollQuiet subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollDirge",
+      "request_id": "collectible:item:scrollDirge:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollDirge",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-f23a8359-bfcb-4d38-b0fe-4bd438447e24.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollDirge-source.png",
+      "final": "public/assets/items/scrollDirge.png",
+      "prompt_sha256": "737bbd05277bf0f51f36f3330c2903dc1777fca0107db1c223bf7b2a40404391",
+      "source_sha256": "e3b4a0f3c93982f266c2a6e71d6c5d349b8e2fc8b9c27708c668d0b559ff2fb2",
+      "final_sha256": "65322947f0165ec7b44ae3ba3184185eb339963627a04bdb8788ae75a0dc4cff",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 629,
+        "opaque": 395,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal scrollDirge subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollSour",
+      "request_id": "collectible:item:scrollSour:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollSour",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-13912ded-ae06-45b1-9d20-bc7874714bbe.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollSour-source.png",
+      "final": "public/assets/items/scrollSour.png",
+      "prompt_sha256": "70eec963438dc8e1e7cb2577b3760b16b6697636ebf9f17a35236e4a071ff4e2",
+      "source_sha256": "32605b36a2283bcf8689d4375139e89b633345b48241d0c1318e297f98f53c83",
+      "final_sha256": "ec71a18bb845309e9fb600d286a351213fa1fd234ff043ac92d41b0a74a02a4f",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 699,
+        "opaque": 325,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          30,
+          24
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal scrollSour subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollAmplify",
+      "request_id": "collectible:item:scrollAmplify:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollAmplify",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-b24ac50b-c50c-4d8b-93d0-c4a48d53b472.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollAmplify-source.png",
+      "final": "public/assets/items/scrollAmplify.png",
+      "prompt_sha256": "9aa2de6b51ca0d5deaf626340c3ec4496570d302037ba6b0f3522952b4991f87",
+      "source_sha256": "655a4aedcd062c1683e44e7eecd69d8de955a47eafaaec4d3cb2ccdf59308f64",
+      "final_sha256": "83c7de6ca8ee91b2f59ff4022ae1f23ba6799592b732e2b9b1c77c2a7ae01886",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 650,
+        "opaque": 374,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal scrollAmplify subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:scrollReflect",
+      "request_id": "collectible:item:scrollReflect:built-in",
+      "collectible_family": "item",
+      "catalog_key": "scrollReflect",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-76064e13-9152-4b49-825d-bec987d4690b.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/scrollReflect-source.png",
+      "final": "public/assets/items/scrollReflect.png",
+      "prompt_sha256": "7d4cfe644bc726cd05499f1a723ef84166ce01b9b694c1b6add4d039bd338a65",
+      "source_sha256": "2f5314bd7dd2cad21c015c344c6c260d9fe7f7150791a9f57cf715994b35b6f3",
+      "final_sha256": "30dff2f89ba8067f3bc2f9cb8b411599989a0b59e1cc1e4aaedcef9e37ac2f8a",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 679,
+        "opaque": 345,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal scrollReflect subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:potionOfVigor",
+      "request_id": "collectible:item:potionOfVigor:built-in",
+      "collectible_family": "item",
+      "catalog_key": "potionOfVigor",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-d261b2de-ab4c-4853-9cff-1a5ffc9bb916.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/potionOfVigor-source.png",
+      "final": "public/assets/items/potionOfVigor.png",
+      "prompt_sha256": "1236b6f0137b3c60ff8d08806de901a6aba87f0a0e9c32981f8d86b3025f7775",
+      "source_sha256": "e81960c52028c97038a2e56abbe17474afcc53aeeaffa6e969ff6c74e44184ba",
+      "final_sha256": "6702b6bccc956e75ea6893cfc145da46f06b9c1c91b697596e587900d63c1d0e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 572,
+        "opaque": 452,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal potionOfVigor subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:draughtOfIron",
+      "request_id": "collectible:item:draughtOfIron:built-in",
+      "collectible_family": "item",
+      "catalog_key": "draughtOfIron",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-7b1db363-d57d-4aa6-84c0-f35b2b49ba28.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/draughtOfIron-source.png",
+      "final": "public/assets/items/draughtOfIron.png",
+      "prompt_sha256": "2a7003cff6a020b1c66026bfae3855389f586a13adc7f3a172faaf09679ea8ee",
+      "source_sha256": "290814c3722b178346378a5977892776b3dad2db1289d590fd480fda72316a33",
+      "final_sha256": "4cf77bb158ecc28fc5503b13aa3f9a8057ac0a009d9d32d85079a6c731eae292",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 585,
+        "opaque": 439,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal draughtOfIron subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:smellingSalts",
+      "request_id": "collectible:item:smellingSalts:built-in",
+      "collectible_family": "item",
+      "catalog_key": "smellingSalts",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-d28f117c-2410-438d-854e-70442d023f21.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/smellingSalts-source.png",
+      "final": "public/assets/items/smellingSalts.png",
+      "prompt_sha256": "21f231d44d813fb8027bc44604536043775f18983bdb95206d9d9f2e805d6917",
+      "source_sha256": "01ec8608cb21458121e84c86ff51e02636b64d29f9edd804ef5d9c7a867d99ab",
+      "final_sha256": "86ae5a694198493f53d54409d2e145f559b60fc4a0163fe0573434745638cf00",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 548,
+        "opaque": 476,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal smellingSalts subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:haresHeel",
+      "request_id": "collectible:item:haresHeel:built-in",
+      "collectible_family": "item",
+      "catalog_key": "haresHeel",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-e7a647fa-cb03-4582-82f7-96e01e8a20c4.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/haresHeel-source.png",
+      "final": "public/assets/items/haresHeel.png",
+      "prompt_sha256": "567cc339ecedca5ba221ea57cd0a45309cf4e2416edc74067bc4f3b678372d24",
+      "source_sha256": "9832da8deda5b564608a5facfd3eee743f9924ef67689be7d3506001ab4e5aa0",
+      "final_sha256": "d56a76470f4c0076187cb69b5eec3b661b91eeea43ea618177f1aa462a201670",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 790,
+        "opaque": 234,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          26,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal haresHeel subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:blackfireOil",
+      "request_id": "collectible:item:blackfireOil:built-in",
+      "collectible_family": "item",
+      "catalog_key": "blackfireOil",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-cddfe24d-2c6d-4fe6-ae96-0d08bc3f76ca.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/blackfireOil-source.png",
+      "final": "public/assets/items/blackfireOil.png",
+      "prompt_sha256": "2dc741498b9c97c33759d62e585ba85f69884f9219df522fb6db653b9188ce84",
+      "source_sha256": "0b61a45cbb4157dc6b8d353758ce1f66eb32ca3791485692fa0f7479ca6f38d2",
+      "final_sha256": "1d713b562463487b5c343285130e84a27730d23cb6ebe35a04a4675bafc7c41c",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 814,
+        "opaque": 210,
+        "partial": 0,
+        "bbox": [
+          10,
+          2,
+          22,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal blackfireOil subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:graveDust",
+      "request_id": "collectible:item:graveDust:built-in",
+      "collectible_family": "item",
+      "catalog_key": "graveDust",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-c625fd2f-0f12-4738-ac4e-f6ff3164c166.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/graveDust-source.png",
+      "final": "public/assets/items/graveDust.png",
+      "prompt_sha256": "c0cfb10beceb5eb6eb6db20baca2240db36ce01e453aa3f2001d3d21b0f992b5",
+      "source_sha256": "c39b2bec510e6a98ecc5795b330a569f6084291495d79cf002676c1b74fabdae",
+      "final_sha256": "247f862b1bdfeb938b68782b534ab07ee433de8e15c950e21b5cc00ff1f5a138",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 694,
+        "opaque": 330,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal graveDust subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:hornetJar",
+      "request_id": "collectible:item:hornetJar:built-in",
+      "collectible_family": "item",
+      "catalog_key": "hornetJar",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-784402ee-b477-4c75-929d-2a79e04929b7.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/hornetJar-source.png",
+      "final": "public/assets/items/hornetJar.png",
+      "prompt_sha256": "dbeb21749e31bd209a5ca39fae4fb4887ccbc1e691bad58f5423c0afbfa462d5",
+      "source_sha256": "da4972c6d9890dd4699b01fc2b34e1a92b95d860a3c398e7dd813f52b923e09c",
+      "final_sha256": "b2040674dadd31a1b0e05888f8865a046a801bcd03031c4126a08059b02b5ddc",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 583,
+        "opaque": 441,
+        "partial": 0,
+        "bbox": [
+          7,
+          2,
+          25,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 3
+      },
+      "visual_review": "Literal hornetJar subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:milkOfTheMoon",
+      "request_id": "collectible:item:milkOfTheMoon:built-in",
+      "collectible_family": "item",
+      "catalog_key": "milkOfTheMoon",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-55150628-16e6-41a4-8019-456bdc02d495.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/milkOfTheMoon-source.png",
+      "final": "public/assets/items/milkOfTheMoon.png",
+      "prompt_sha256": "27186a44ab29b7b69ef523c39661fcde4e57436e390e3fe8ae1a6432bf8381f7",
+      "source_sha256": "bed2e8d099732da19ea09036af63f205c04d54ca0b1da0af30637ecc85e754a0",
+      "final_sha256": "0237a681a7491bb4d5abff1e26bbe7e8d72e51ed15bd03cebc8d4ac73400d3e6",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 552,
+        "opaque": 472,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal milkOfTheMoon subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:chalkOfWalls",
+      "request_id": "collectible:item:chalkOfWalls:built-in",
+      "collectible_family": "item",
+      "catalog_key": "chalkOfWalls",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-04e81cae-4d30-408c-94ae-bf56ea49c410.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/chalkOfWalls-source.png",
+      "final": "public/assets/items/chalkOfWalls.png",
+      "prompt_sha256": "fa8c88c4634e497d4737b0b4770ea7ead63f89fd62ac51e5231955caa4ede76a",
+      "source_sha256": "b0fcdef5642e519cd198a846a55ae2f69a234c21c6520a47c150f6b2ee242ca8",
+      "final_sha256": "0c105d4dad5439b480d0203671e07098a250097bbc38a5b0774a3e882ac350de",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 628,
+        "opaque": 396,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal chalkOfWalls subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:waxSeal",
+      "request_id": "collectible:item:waxSeal:built-in",
+      "collectible_family": "item",
+      "catalog_key": "waxSeal",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-c1d47bd0-2746-4055-9c81-9af6b872d877.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/waxSeal-source.png",
+      "final": "public/assets/items/waxSeal.png",
+      "prompt_sha256": "23f46d0aab5e08546b401961af3b33f6375b714f4eaa6d0130d21749ab8f5101",
+      "source_sha256": "fdf6f5bd39ab905f4e329124fae49e3f4127ab0d8367eae98e3034aa47c9bce4",
+      "final_sha256": "e64f2852a357b54107f2bd1260653d3040f3e3d404f72befbea2b1b6728aad26",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 772,
+        "opaque": 252,
+        "partial": 0,
+        "bbox": [
+          2,
+          6,
+          30,
+          26
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal waxSeal subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:powderOfUnmaking",
+      "request_id": "collectible:item:powderOfUnmaking:built-in",
+      "collectible_family": "item",
+      "catalog_key": "powderOfUnmaking",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-6699b285-d99b-456a-a1d1-e57aa8ca1d97.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/powderOfUnmaking-source.png",
+      "final": "public/assets/items/powderOfUnmaking.png",
+      "prompt_sha256": "c7b5fb7769c9df4b98aafdad0ba37019922fe0ec93bd6189303eecc29e25895e",
+      "source_sha256": "53fb8f7b4e3474f3239d866ae9a521ff31d0981375b7b1726e7f14975793c43b",
+      "final_sha256": "7b0fedd3dd535754b044a2f5e69bfcc9a58b6eb28c40781d2b7892bbea450db2",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 684,
+        "opaque": 340,
+        "partial": 0,
+        "bbox": [
+          6,
+          2,
+          25,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal powderOfUnmaking subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:bannerWhistle",
+      "request_id": "collectible:item:bannerWhistle:built-in",
+      "collectible_family": "item",
+      "catalog_key": "bannerWhistle",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-29704680-1b68-4ecb-9666-95d37e236399.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/bannerWhistle-source.png",
+      "final": "public/assets/items/bannerWhistle.png",
+      "prompt_sha256": "c63afcfab0a7b4ebbdd9eaa984480499781ec856e75260584a7386b36eb6d8d6",
+      "source_sha256": "c9d528e5f89b387c854a7286d392d707add45ccfe462e751c65465b6e435e000",
+      "final_sha256": "ea549a18166bb7afc23d4dabe991fbbb5f21b4431636d7360cd16bc5f7f92a26",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 677,
+        "opaque": 347,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal bannerWhistle subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:secondCandle",
+      "request_id": "collectible:item:secondCandle:built-in",
+      "collectible_family": "item",
+      "catalog_key": "secondCandle",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-234ee16e-72a8-4b36-8bad-bf0b7feb4241.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/secondCandle-source.png",
+      "final": "public/assets/items/secondCandle.png",
+      "prompt_sha256": "cc3dd6b7b840dadf0588b237e2785217af69cf56febb7bedeae4f908fc92ca2b",
+      "source_sha256": "d99c97c1b512897b9e3292b890901a5002362e827c37521a60ea46246ef5ef8a",
+      "final_sha256": "4dd44ef1e3e5e83d010157be854325927c5804b8712f46134ca301c6b5eddba0",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 539,
+        "opaque": 485,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 5
+      },
+      "visual_review": "Literal secondCandle subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:bottledEcho",
+      "request_id": "collectible:item:bottledEcho:built-in",
+      "collectible_family": "item",
+      "catalog_key": "bottledEcho",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-e3d78a34-7cd3-4c61-9ac1-12102668df72.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/bottledEcho-source.png",
+      "final": "public/assets/items/bottledEcho.png",
+      "prompt_sha256": "31b0f505068a66804bf6de9e5a51f057763e80ef837edcdb5b7bf2e7abf6087e",
+      "source_sha256": "db3d836bce9d1f7c62bcd257eb71d391ddf0c0371da886076f603d25c8633dea",
+      "final_sha256": "6dcc46579163af084b5201c3069af912d1fd1d21168349c8f491c838882cef0e",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 586,
+        "opaque": 438,
+        "partial": 0,
+        "bbox": [
+          5,
+          2,
+          27,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal bottledEcho subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:cartographersCase",
+      "request_id": "collectible:item:cartographersCase:built-in",
+      "collectible_family": "item",
+      "catalog_key": "cartographersCase",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-d007c3c7-cf70-4980-b41c-ea549de69df3.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/cartographersCase-source.png",
+      "final": "public/assets/items/cartographersCase.png",
+      "prompt_sha256": "b84484d83dcbdc46dfd0499d8210a4429f1e46f7ffedd5909ebb4ccbad37a66d",
+      "source_sha256": "27479ec8573d72f8cf1c3d557580caac161344257ebde20a1f999f93c644fc26",
+      "final_sha256": "8e60180b1df2f916e56c180c4eff428f5fae6e68e807534ff0c7f6a6cd598daa",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 610,
+        "opaque": 414,
+        "partial": 0,
+        "bbox": [
+          2,
+          5,
+          30,
+          27
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal cartographersCase subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:waybread",
+      "request_id": "collectible:item:waybread:built-in",
+      "collectible_family": "item",
+      "catalog_key": "waybread",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-17e3e644-fbba-47e4-a378-77b0c9191e2d.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/waybread-source.png",
+      "final": "public/assets/items/waybread.png",
+      "prompt_sha256": "75db38542f911b865d11b6a4ec7bd4d74f5f6366537ed65c9ab76a66dd22f3d7",
+      "source_sha256": "3cc41cd75ca37c196c272aa3a49e607546724d2f762c8f371c691c6e755d91fa",
+      "final_sha256": "ea4faab43c9468e7b6bae1e801bbfb6848998160ee1399f9fcd52e67028c32cf",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 463,
+        "opaque": 561,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal waybread subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:saltedMeat",
+      "request_id": "collectible:item:saltedMeat:built-in",
+      "collectible_family": "item",
+      "catalog_key": "saltedMeat",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-8680fe54-b7e4-4f67-9d08-d30b844df449.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/saltedMeat-source.png",
+      "final": "public/assets/items/saltedMeat.png",
+      "prompt_sha256": "990cc0fd2a498f7d0d165752b190a61512e6a0c071792d5b9f34c01b9cb073ca",
+      "source_sha256": "b33e9931548adc7e0f709e5d94f0d1952f8a6d819b78f1a53adc2fa6d742f8c3",
+      "final_sha256": "878390b3ff12a2cdc1b6d1f571c1200b699fea0f35cd802e7477aaa7a792a7da",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 600,
+        "opaque": 424,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal saltedMeat subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:tavernTales",
+      "request_id": "collectible:item:tavernTales:built-in",
+      "collectible_family": "item",
+      "catalog_key": "tavernTales",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-bcb967c1-a637-4466-836b-ab9c498a2c51.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/tavernTales-source.png",
+      "final": "public/assets/items/tavernTales.png",
+      "prompt_sha256": "a1542327257d1140127aa50130731bdeaff82275f0f4dc53a8010ed6ce2e70c2",
+      "source_sha256": "4fe7f0ce373aad9e72f974152ba49452759e22e9c4431201339002edc30ad93e",
+      "final_sha256": "61ff609d40f8da4d640adb156aa021870714f6057185c220f7f4976d06965634",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 575,
+        "opaque": 449,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal tavernTales subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:hearthstone",
+      "request_id": "collectible:item:hearthstone:built-in",
+      "collectible_family": "item",
+      "catalog_key": "hearthstone",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-69296aaf-ff00-4335-9761-cf3b2934010a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/hearthstone-source.png",
+      "final": "public/assets/items/hearthstone.png",
+      "prompt_sha256": "fe42f5ca7a46cb1af6066ad084e1ab62aa63440bf64cd7edaa31054957b42fa8",
+      "source_sha256": "da21a17ac10af4105951c9b5a5421fddda846a6e34217ec142b7f9007a06d0ba",
+      "final_sha256": "c58b726db293b593e0ea1a9ab2a3833375a302e44b550671c312bde013de79d6",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 419,
+        "opaque": 605,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 0
+      },
+      "visual_review": "Literal hearthstone subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:ferrymansCoin",
+      "request_id": "collectible:item:ferrymansCoin:built-in",
+      "collectible_family": "item",
+      "catalog_key": "ferrymansCoin",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-3098f906-8db8-48de-9e47-a9cfc4695156.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/ferrymansCoin-source.png",
+      "final": "public/assets/items/ferrymansCoin.png",
+      "prompt_sha256": "5af287224ff6bf3c5bb39146dbb47a3dd830efc000992ca66b522043e6ef31cb",
+      "source_sha256": "6efd3219de80a64d550c75506efd327df536b8951e793c0393c1c8c60e6b743f",
+      "final_sha256": "5e84f9ea81174641997fa97698d924f4e548d406d1009c2e271836d4a090c407",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 497,
+        "opaque": 527,
+        "partial": 0,
+        "bbox": [
+          3,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 3
+      },
+      "visual_review": "Literal ferrymansCoin subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:militiaWrit",
+      "request_id": "collectible:item:militiaWrit:built-in",
+      "collectible_family": "item",
+      "catalog_key": "militiaWrit",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-f0aa5533-bf4d-4439-967e-c5121757e6a8.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/militiaWrit-source.png",
+      "final": "public/assets/items/militiaWrit.png",
+      "prompt_sha256": "650f6fb7e2743940a43f4f3bcd776726331fde0d3747a355e0be8a59d1a4fcf6",
+      "source_sha256": "8aa8b328295a381a1e75d23bd61d42a3871ad5ac3926a1f694344409542c9ddc",
+      "final_sha256": "2921d4304c8d268396b0b96644759848b219967e4a56bc52ba83f2119f140e8a",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 621,
+        "opaque": 403,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 3
+      },
+      "visual_review": "Literal militiaWrit subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:beggarsCoin",
+      "request_id": "collectible:item:beggarsCoin:built-in",
+      "collectible_family": "item",
+      "catalog_key": "beggarsCoin",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-cedb05d2-234a-43be-a2d1-8ee87772d7af.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/beggarsCoin-source.png",
+      "final": "public/assets/items/beggarsCoin.png",
+      "prompt_sha256": "bb0736ad5aa187de2f4dcf499c8cfef0174227c8aa741a2cf86eeeea03f408b3",
+      "source_sha256": "4c339ecc8a71758f0c09a80c2c83c56f3b519a38e839bd6da6ab3d2136602d44",
+      "final_sha256": "5b29b99b95327bfbf3e06bff1cc7c055cf53ffdcc7740e2e7386e9f12ec49db3",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 597,
+        "opaque": 427,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 3
+      },
+      "visual_review": "Literal beggarsCoin subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:foundersTin",
+      "request_id": "collectible:item:foundersTin:built-in",
+      "collectible_family": "item",
+      "catalog_key": "foundersTin",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-cc8034b6-9bed-4344-8144-593030f8c863.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/foundersTin-source.png",
+      "final": "public/assets/items/foundersTin.png",
+      "prompt_sha256": "2a8daa6148e0a21dfcda8f65b32777d640c685a9b1d5808563f36d4493ca874e",
+      "source_sha256": "ff5cd3f57743ed904f78b4449036fde167b57974b51c1e0c3a2837c49b23dfe7",
+      "final_sha256": "80552c2c410ad295d752865e8b31f93942184b4fe5cc27c78a966c5e8ce90501",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 453,
+        "opaque": 571,
+        "partial": 0,
+        "bbox": [
+          2,
+          2,
+          29,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal foundersTin subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:cronesBundle",
+      "request_id": "collectible:item:cronesBundle:built-in",
+      "collectible_family": "item",
+      "catalog_key": "cronesBundle",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-6d95bb9e-0d25-419e-8ea6-46bf341ebd1c.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/cronesBundle-source.png",
+      "final": "public/assets/items/cronesBundle.png",
+      "prompt_sha256": "74f8e1c4e1790bf208b7f37742613b5b228ae2d76e5938c40f9cd59557203eb4",
+      "source_sha256": "591473c650e97c0bf3ed23dece5945ee4a9775656941a211bf62d216156f96b1",
+      "final_sha256": "c48bd200d4facbd1d18a70c15e840f4da3b86c1bb5fe62c3e48d9cb3506d3178",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 550,
+        "opaque": 474,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          28
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal cronesBundle subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:overseersCharter",
+      "request_id": "collectible:item:overseersCharter:built-in",
+      "collectible_family": "item",
+      "catalog_key": "overseersCharter",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-94acc4b9-c846-450b-8e9b-37a48dc5a896.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/overseersCharter-source.png",
+      "final": "public/assets/items/overseersCharter.png",
+      "prompt_sha256": "2f5f22d9a17b1a73a723f7e584a805cc8256d4f4eaf551166d3171fcbc47e34e",
+      "source_sha256": "e397af8d9d0615950732578eb4f08408b3ad71651ebaf50fb103f09110362d0b",
+      "final_sha256": "eb0055bfededfe6c97abc9339437458a392ca935c0ee5eff56cc31ac1083ba86",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 569,
+        "opaque": 455,
+        "partial": 0,
+        "bbox": [
+          4,
+          2,
+          28,
+          30
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 1
+      },
+      "visual_review": "Literal overseersCharter subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    },
+    {
+      "id": "map-object:item:tradeGoods",
+      "request_id": "collectible:item:tradeGoods:built-in",
+      "collectible_family": "item",
+      "catalog_key": "tradeGoods",
+      "accepted": true,
+      "built_in_output": "/home/nadbor/.codex/generated_images/019fee78-b5f1-7191-9aa2-6a8e0029a0aa/exec-9a5f821e-6c7b-41cb-8f10-06f5ad757e3a.png",
+      "discarded_outputs": [],
+      "source": "assets/sources/items/tradeGoods-source.png",
+      "final": "public/assets/items/tradeGoods.png",
+      "prompt_sha256": "4ee42fea443e60493b2940657872f2749e5903c33be1cb09d606bd8c8ad62fee",
+      "source_sha256": "c276b6b207fff1f94f3d7672b7014a2ad2bfdf1abefc2b512943ce5b34c75fad",
+      "final_sha256": "f586e644582cb8236a25088fdb08f1d9193289f135970a7b9bb8cd6b9de9579b",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "final_dimensions": [
+        32,
+        32
+      ],
+      "alpha": {
+        "transparent": 505,
+        "opaque": 519,
+        "partial": 0,
+        "bbox": [
+          2,
+          3,
+          30,
+          29
+        ],
+        "transparent_corners": 4,
+        "chroma_fringe_pixels": 2
+      },
+      "visual_review": "Literal tradeGoods subject selected; high-oblique silhouette, south-east light, generous padding, no baked label or terrain."
+    }
+  ]
+}

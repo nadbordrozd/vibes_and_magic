@@ -27,7 +27,7 @@ import { buildingIsActive } from '../../core/game/buildingStatus';
 import {
   RESOURCE_NAMES, ResourceAmount, ResourceCost, ResourceIcon, ResourceRichText,
 } from './ResourceToken';
-import { HeroPortrait, UnitPortrait } from '../assets';
+import { HeroPortrait, ItemSprite, UnitPortrait } from '../assets';
 import { CASTLE_NAMES, FACTION_PASSIVES } from '../../content/factionPresentation';
 import { FACTIONS } from '../../content/factions';
 import { SPELL_SCHOOL_NAMES } from '../../content/spellPresentation';
@@ -364,7 +364,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                   const action = { type: 'BUY_MARKET_SCROLL', castleId: castle.id } as const;
                   const projected = previewAction(state, action);
                   return <article>
-                  <div><b>Weekly scroll</b><small>{castle.marketScroll
+                  <ItemSprite item={castle.marketScroll ?? undefined} /><div><b>Weekly scroll</b><small>{castle.marketScroll
                     ? itemName(castle.marketScroll) : 'Sold out'}</small></div>
                   <button
                     disabled={!projected.legal}
@@ -379,7 +379,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
               {(hero?.skills.peddler ?? 0) >= 2 && hero?.inventory.map((item, index) =>
                 item && typeof item !== 'string' ? (
                   <article key={`sell-item-${index}`} data-inspect-kind="item" data-inspect-id={item.id}>
-                    <div><b>{itemName(item)}</b><small>Inventory slot {index + 1}</small></div>
+                    <ItemSprite item={item} /><div><b>{itemName(item)}</b><small>Inventory slot {index + 1}</small></div>
                     <button onClick={() => stageAction({
                       type: 'SELL_MARKET_ITEM', castleId: castle.id, inventorySlot: index,
                     }, `Sell ${itemName(item)}`, 'Marketplace treasury',

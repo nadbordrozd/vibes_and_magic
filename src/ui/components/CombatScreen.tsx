@@ -23,7 +23,7 @@ import { ABILITY_PRESENTATION } from '../../content/abilityPresentation';
 import { ResourceAmount } from './ResourceToken';
 import { stackHexes, stackContains } from '../../core/combat/footprint';
 import { canUseRanged } from '../../core/combat/damage';
-import { PixelSprite, battleUnitSpriteId } from '../assets';
+import { ItemSprite, PixelSprite, battleUnitSpriteId } from '../assets';
 import { BATTLE_COLS, BATTLE_ROWS, MORALE_THRESHOLD } from '../../content/constants';
 import {
   backCombatTarget, beginAbilityTargeting, beginItemTargeting, beginSpellTargeting,
@@ -830,7 +830,8 @@ export function CombatScreen({
                       setTargeting(beginItemTargeting(battle, index));
                     }}
                   >
-                    {item ? itemName(item) : '+'}
+                    {item && typeof item !== 'string' && <ItemSprite item={item} />}
+                    <span>{item ? itemName(item) : '+'}</span>
                   </button>
                 );
               })}

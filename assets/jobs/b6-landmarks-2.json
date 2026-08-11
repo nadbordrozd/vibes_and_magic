@@ -137,6 +137,7 @@
     },
     {
       "id": "map-object:item:overseersCharter",
+      "superseded_by": "item-sprites-built-in.json",
       "assets": [
         "map-object:item:overseersCharter"
       ],
@@ -159,6 +160,7 @@
     },
     {
       "id": "map-object:item:spellScroll",
+      "superseded_by": "item-sprites-built-in.json",
       "assets": [
         "map-object:item:spellScroll"
       ],
@@ -181,6 +183,7 @@
     },
     {
       "id": "map-object:item:tradeGoods",
+      "superseded_by": "item-sprites-built-in.json",
       "assets": [
         "map-object:item:tradeGoods"
       ],
@@ -203,6 +206,7 @@
     },
     {
       "id": "map-object:item:waybread",
+      "superseded_by": "item-sprites-built-in.json",
       "assets": [
         "map-object:item:waybread"
       ],

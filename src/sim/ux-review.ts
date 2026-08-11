@@ -715,6 +715,20 @@ try {
   await auditVisibleControls(page, 'hero-details');
   await page.screenshot({ path: `${output}/04c2-hero-details.png` });
   await page.$eval('.hero-details-tabs', (tabs) => {
+    const items = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
+      .find((button) => button.textContent?.includes('Items'));
+    if (!items) throw new Error('Items detail tab is missing');
+    items.click();
+  });
+  await page.waitForSelector('.hero-details-items .item-sprite');
+  const itemSpriteCount = await page.$$eval('.hero-details-items .item-sprite', (nodes) => nodes.length);
+  if (itemSpriteCount !== 2) throw new Error(`Expected two fixture item sprites, found ${itemSpriteCount}`);
+  await page.screenshot({ path: `${output}/04c2a-item-inventory-desktop.png` });
+  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+  await auditVisibleControls(page, 'item-inventory-390');
+  await page.screenshot({ path: `${output}/04c2b-item-inventory-390.png`, fullPage: true });
+  await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
+  await page.$eval('.hero-details-tabs', (tabs) => {
     const equipment = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
       .find((button) => button.textContent?.includes('Equipment'));
     if (!equipment) throw new Error('Equipment detail tab is missing');

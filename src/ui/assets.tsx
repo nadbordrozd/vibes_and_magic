@@ -6,7 +6,7 @@ import {
 } from '../../assets/manifest';
 import { TERRAIN, terrainId } from '../content/terrain';
 import type {
-  Castle, GameMap, MapObject, TerrainSkinId, TerrainTile,
+  Castle, GameMap, ItemId, ItemInstance, MapObject, TerrainSkinId, TerrainTile,
 } from '../core/types';
 
 type LoadState = 'loading' | 'loaded' | 'failed';
@@ -204,4 +204,17 @@ export function HeroPortrait({
   const id = heroSpriteId(faction, direction);
   return <ManifestPortrait id={id} className={`hero-sprite-portrait ${className ?? ''}`}
     fallback={<span className={`hero-portrait-fallback ${className ?? ''}`}>?</span>} />;
+}
+
+/** Canonical HTML collectible image shared by map-adjacent and non-map item surfaces. */
+export function ItemSprite({
+  item, itemId, className,
+}: { item?: ItemInstance; itemId?: ItemId; className?: string }) {
+  const id = item?.id ?? itemId;
+  if (!id) return null;
+  return <span className={`item-sprite-wrap ${className ?? ''}`} aria-hidden="true">
+    <ManifestPortrait id={assetId.mapObject('item', id)} className="item-sprite"
+      fallback={<span className="item-sprite-fallback">◇</span>} />
+    {item?.plus && <span className="item-sprite-upgraded">⌃</span>}
+  </span>;
 }

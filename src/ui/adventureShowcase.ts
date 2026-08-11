@@ -9,6 +9,7 @@ import {
   TERRAIN, TERRAIN_DECORATIONS, deriveTerrainDecorations, tile,
   type TerrainDecoration,
 } from '../content/terrain';
+import { ITEMS } from '../content/items';
 import type {
   GameMap, MapObject, TerrainId, TerrainSkinId, TerrainTile,
 } from '../core/types';
@@ -181,6 +182,11 @@ export function representativeMapObjects(): Map<string, MapObject> {
       const completed = { ...object, completed: true };
       representatives.set(mapObjectAssetId(completed), completed);
     }
+  }
+  for (const item of Object.values(ITEMS)) {
+    const object: MapObject = { id: `showcase-item-${item.id}`, kind: 'item',
+      position: { x: 0, y: 0 }, item: { id: item.id }, collected: false };
+    representatives.set(mapObjectAssetId(object), object);
   }
   return representatives;
 }

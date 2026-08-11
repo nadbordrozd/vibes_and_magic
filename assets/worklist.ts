@@ -1,5 +1,6 @@
 import { FACTIONS } from '../src/content/factions';
 import { HEROES } from '../src/content/heroes';
+import { ITEMS } from '../src/content/items';
 import { createBorderMarches } from '../src/content/maps/borderMarches';
 import { createCrosstitch } from '../src/content/maps/crosstitch';
 import { createManywhere } from '../src/content/maps/manywhere';
@@ -261,6 +262,13 @@ export function assetWorklist(): AssetWorkItem[] {
   pushUnique(items, castleWorkItem('woundWrights', 'oldSeat'));
   pushUnique(items, castleWorkItem('unfinished', 'hollowTown'));
   pushUnique(items, castleWorkItem('vespiary', 'coastal'));
+
+  // Collectibles are catalog-owned, not map-occurrence-owned: every canonical definition needs
+  // the same sprite in editor, pickup, inventory, market, choice, and result surfaces.
+  for (const item of Object.values(ITEMS)) pushUnique(items, {
+    id: assetId.mapObject('item', item.id), category: 'map-object', w: 32, h: 32,
+    source: `canonical item catalog:${item.use}`,
+  });
 
   for (const unit of Object.values(UNITS)) {
     // Combat canvases describe visual overhang, not occupied hexes. Wide creatures and mounted

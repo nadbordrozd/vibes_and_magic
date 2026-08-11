@@ -1227,6 +1227,21 @@ contact at `y=96..159`; the only entrance is centered over tile `(2,1)`. The bui
 nearest-neighbour ×3 native-final contact sheet to
 `.pixel-work/review/cities/city-sprites-contact-sheet.png`.
 
+## Complete canonical item family — built-in sources
+
+All 37 canonical items were generated with one separate built-in image-generation call per ItemId.
+Each exact request embeds the literal subject from `assets/adventureSpriteInventory.ts`, the shared
+bright storybook pixel treatment, high-oblique non-isometric camera, south-east key light, generous
+padding, and a removable flat green or magenta key. Sources live in `assets/sources/items/`, native
+hard-alpha finals in `public/assets/items/`, and exact prompts/call paths/hashes/selections in
+`assets/jobs/item-sprites-built-in.json` and `assets/provenance/item-sprite-generation.json`.
+
+`scripts/buildCollectibleSprites.py` is family-generic for later artifact batches. It removes the
+declared chroma locally, crops, nearest-neighbour reduces, applies a compact adaptive palette and
+hard alpha, then emits group contact sheets under `.pixel-work/review/collectibles/item/`. Contact
+review rejected the first Scroll of Quiet because a full bell dominated its parchment; that source
+is retained under `assets/sources/items/discarded/` and the selected targeted retry is parchment-first.
+
 ## Original base and bridge terrain — HoMM2 image retirement
 
 Eighteen native 32×32 opaque terrain cells were generated through PixelLab Pixflux using the

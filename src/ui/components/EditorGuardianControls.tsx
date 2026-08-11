@@ -11,6 +11,7 @@ import {
   EDITOR_GUARDIAN_GROUPS, editorGuardianProtectChoices, editorGuardianUnitChoices,
   nextEditorGuardianUnit, type EditorGuardianUpdate,
 } from '../mapEditorGuardians';
+import { ItemSprite } from '../assets';
 
 function GuardianCreatureOptions({
   guardian, stackIndex,
@@ -75,7 +76,7 @@ export function EditorGuardianInspector({
           {target.id} · {target.kind} · {target.label}
         </option>)}
       </select><small>Compatible portable map objects and existing reward records are offered. Standalone guardians use null.</small></label>
-      <label>Direct item drop<select aria-label="Guardian direct item drop"
+      <label>Direct item drop{guardian.drop && <ItemSprite item={guardian.drop} />}<select aria-label="Guardian direct item drop"
         value={guardian.drop?.id ?? ''} onChange={(event) => onUpdate({
           drop: event.target.value
             ? createDefaultEditorItemInstance(event.target.value as ItemId, guardian.position) : null,
