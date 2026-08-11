@@ -9,7 +9,8 @@ import {
   createDefaultEditorGuardian, validateEditorMapDocument, type EditorMapDocument,
 } from '../../core/mapEditor';
 import { REWARD_SITE_KINDS } from '../../core/mapEditor/validation';
-import { EditorTerrainCanvas } from '../components/EditorTerrainCanvas';
+import { EditorTerrainCanvas, editorRewardSpriteId } from '../components/EditorTerrainCanvas';
+import { assetId } from '../../../assets/manifest';
 import {
   EDITOR_ARTIFACT_CATALOG, EDITOR_ARTIFACT_GROUPS, EDITOR_ITEM_CATALOG,
   EDITOR_ITEM_GROUPS, EDITOR_RESOURCE_IDS, EDITOR_TAUGHT_SPELL_GROUPS,
@@ -144,6 +145,8 @@ describe('portable map rewards and remaining palettes', () => {
       ...createDefaultEditorGuardian('mixed-guard', { x: 9, y: 8 }, 'yeoman'),
       protects: 'mixed-reward',
     }];
+    expect(editorRewardSpriteId(map.rewards[0]))
+      .toBe(assetId.mapObject('artifact', 'seamstone'));
     expect(validateEditorMapDocument(map).filter((diagnostic) =>
       diagnostic.stage !== 'playable')).toEqual([]);
     const runtime = convertEditorMapDocument(map, 41, { requirePlayable: false }).map;

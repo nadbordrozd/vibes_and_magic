@@ -23,7 +23,7 @@ import { ABILITY_PRESENTATION } from '../../content/abilityPresentation';
 import { ResourceAmount } from './ResourceToken';
 import { stackHexes, stackContains } from '../../core/combat/footprint';
 import { canUseRanged } from '../../core/combat/damage';
-import { ItemSprite, PixelSprite, battleUnitSpriteId } from '../assets';
+import { ArtifactSprite, ItemSprite, PixelSprite, battleUnitSpriteId } from '../assets';
 import { BATTLE_COLS, BATTLE_ROWS, MORALE_THRESHOLD } from '../../content/constants';
 import {
   backCombatTarget, beginAbilityTargeting, beginItemTargeting, beginSpellTargeting,
@@ -844,7 +844,7 @@ export function CombatScreen({
                 disabled={!humanControl}
                 title={!humanControl ? 'Wait for a human-controlled company to act.' : 'Use this once-per-battle artifact.'}
                 onClick={() => dispatch(action)}
-              ><span>✦</span> {action.artifactId === 'bellsClapper'
+              ><ArtifactSprite artifactId={action.artifactId} /> {action.artifactId === 'bellsClapper'
                   ? "Ring the Clapper" : 'Sound the Horn'}</button>
             ))}
             {actions.some((action) => action.type === 'BATTLE_OVERWIND') && (

@@ -7,11 +7,13 @@ import { ARTIFACT_SPRITE_SUBJECTS } from '../../../assets/adventureSpriteInvento
 import job from '../../../assets/jobs/artifact-sprites-built-in.json';
 import { ASSET_MANIFEST, assetId } from '../../../assets/manifest';
 import provenance from '../../../assets/provenance/artifact-sprite-generation.json';
+import itemProvenance from '../../../assets/provenance/item-sprite-generation.json';
 import {
   ARTIFACTS, BURDEN_ARTIFACT_IDS, CHARM_ARTIFACT_IDS, INSTALLED_ARTIFACT_IDS,
   KIT_ARTIFACT_IDS, KIT_PIECES, RELIC_ARTIFACT_IDS, TRINKET_ARTIFACT_IDS,
   VANILLA_ARTIFACT_IDS,
 } from '../../content/artifacts';
+import { ITEMS } from '../../content/items';
 import type { ArtifactId, MapObject } from '../../core/types';
 import { ArtifactSprite, mapObjectSpriteId } from '../assets';
 
@@ -154,6 +156,21 @@ describe('complete Vanilla artifact sprite batch', () => {
     expect(finalHashes).toHaveLength(90);
   });
 
+  it('keeps all 127 collectible paths and bitmap bytes distinct across both families', () => {
+    const entries = [
+      ...Object.keys(ITEMS).map((id) => ASSET_MANIFEST[assetId.mapObject('item', id)]),
+      ...INSTALLED_ARTIFACT_IDS.map((id) => ASSET_MANIFEST[assetId.mapObject('artifact', id)]),
+    ];
+    expect(entries).toHaveLength(127);
+    expect(new Set(entries.map((entry) => entry.file))).toHaveLength(127);
+    expect(new Set(entries.map((entry) => createHash('sha256')
+      .update(readFileSync(resolve(process.cwd(), 'public', entry.file))).digest('hex'))))
+      .toHaveLength(127);
+    const selections = [...itemProvenance.selections, ...provenance.selections];
+    expect(new Set(selections.map((selection) => selection.source))).toHaveLength(127);
+    expect(new Set(selections.map((selection) => selection.source_sha256))).toHaveLength(127);
+  });
+
   it('uses one canonical sprite for reward pickups and HTML surfaces while metadata stays text', () => {
     for (const id of INSTALLED_ARTIFACT_IDS) {
       const object: MapObject = {
@@ -208,6 +225,7 @@ describe('complete Vanilla artifact sprite batch', () => {
     const consumers = [
       'ArtifactPaperDoll.tsx', 'CastleScreen.tsx', 'Dialogs.tsx', 'InspectionLayer.tsx',
       'EditorTerrainCanvas.tsx', 'EditorRewardControls.tsx', 'AdventureStructureDialog.tsx',
+      'CombatScreen.tsx',
     ];
     for (const file of consumers) {
       const source = readFileSync(resolve(process.cwd(), 'src/ui/components', file), 'utf8');

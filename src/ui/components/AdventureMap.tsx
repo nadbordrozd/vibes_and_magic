@@ -316,7 +316,7 @@ export function AdventureMap({
   const composedTerrain = useMemo(() => gameMapTerrainGrid(state.map), [state.map.terrain]);
   const [viewport, setViewport] = useState({ x: 0, y: 0, w: 1, h: 1 });
   const [pickupFlight, setPickupFlight] = useState<{
-    key: number; position: Coord; mark: string; resource?: ResourceId;
+    key: number; position: Coord; mark: string; spriteId?: string;
   } | null>(null);
   const [heroFacings, setHeroFacings] = useState<Record<string, string>>({});
   const [meetingTargetId, setMeetingTargetId] = useState<string | null>(null);
@@ -360,7 +360,8 @@ export function AdventureMap({
           : object.kind === 'rewardPickup' && object.reward.items?.length ? '◇' : '✦';
     setPickupFlight({
       key: Date.now(), position: objectEntranceTile(object), mark,
-      resource: object.kind === 'pile' ? object.resource : undefined,
+      spriteId: ['pile', 'item', 'rewardPickup'].includes(object.kind)
+        ? mapObjectSpriteId(object) : undefined,
     });
   };
   useEffect(() => {
@@ -813,8 +814,8 @@ export function AdventureMap({
           <g key={pickupFlight.key}
             transform={`translate(${pickupFlight.position.x * TILE + HALF_TILE} ${pickupFlight.position.y * TILE + HALF_TILE})`}>
             <g className="pickup-flight" onAnimationEnd={() => setPickupFlight(null)}>
-              {pickupFlight.resource ? (() => {
-                const entry = manifestEntry(assetId.mapObject('pile', pickupFlight.resource));
+              {pickupFlight.spriteId ? (() => {
+                const entry = manifestEntry(pickupFlight.spriteId);
                 return entry ? <image href={entry.file} x="-16" y="-16" width="32" height="32"
                   preserveAspectRatio="xMidYMid meet" /> : <text y="4">{pickupFlight.mark}</text>;
               })() : <><circle r="11" /><text y="4">{pickupFlight.mark}</text></>}

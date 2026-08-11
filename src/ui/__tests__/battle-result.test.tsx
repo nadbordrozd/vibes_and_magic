@@ -6,6 +6,7 @@ import { apply, createGame } from '../../core/game';
 import type { Action, GameState, PlayerId } from '../../core/types';
 import { buildBattleResult } from '../battleResult';
 import { BattleResult } from '../components/Dialogs';
+import { ASSET_MANIFEST, assetId } from '../../../assets/manifest';
 
 type Controller = GameState['players'][PlayerId]['controller'];
 
@@ -87,6 +88,9 @@ describe('player-relative battle results', () => {
     expect(html).toContain('Attacker losses');
     expect(html).toContain('Defender losses');
     expect(html).toContain('Salt-Crusted Compass');
+    expect(html).toContain(ASSET_MANIFEST[
+      assetId.mapObject('artifact', 'saltCrustedCompass')
+    ].file);
     expect(html).toContain('Tavern return');
     expect(html).toContain('Re-hire costs');
     expect(html).toContain('Continue to adventure map');
@@ -129,6 +133,8 @@ describe('consequence-complete battle contexts', () => {
       expect.objectContaining({ label: 'Recovery', detail: expect.stringContaining('Oriflamme Wyvern') }),
     ]));
     expect(result.continuation.label).toBe('Continue to level-up choice');
+    const html = renderToStaticMarkup(<BattleResult result={result} onClose={() => undefined} />);
+    expect(html).toContain(ASSET_MANIFEST[assetId.mapObject('item', 'potionOfVigor')].file);
   });
 
   it('reports castle capture and preserved defender ownership on opposite outcomes', () => {

@@ -516,7 +516,17 @@ export function BattleResult({
           <h3>Persistent consequences</h3>
           {result.consequences.length ? result.consequences.map((consequence, index) => (
             <div key={`${consequence.label}-${index}`}>
-              <b>{consequence.label}</b><span><ResourceRichText>{consequence.detail}</ResourceRichText></span>
+              <b>{consequence.label}</b><span>
+                {consequence.collectibles?.map((collectible, collectibleIndex) => (
+                  <span className="battle-loot-collectible"
+                    key={`${collectible.kind}-${collectible.id}-${collectibleIndex}`}>
+                    {collectible.kind === 'item'
+                      ? <ItemSprite itemId={collectible.id} />
+                      : <ArtifactSprite artifactId={collectible.id} />}
+                  </span>
+                ))}
+                <ResourceRichText>{consequence.detail}</ResourceRichText>
+              </span>
             </div>
           )) : <p>No additional campaign state changed.</p>}
         </section>

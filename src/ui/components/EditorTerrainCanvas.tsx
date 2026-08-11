@@ -18,7 +18,7 @@ import type {
   EditorMapReward, EditorRewardBundle, JsonValue,
 } from '../../core/mapEditor';
 import { createDefaultEditorGuardian, EDITOR_GUARDIAN_TIERS } from '../../core/mapEditor';
-import { ArtifactSprite, mapObjectSpriteId } from '../assets';
+import { ArtifactSprite, ItemSprite, mapObjectSpriteId } from '../assets';
 import {
   EMPTY_TERRAIN_HISTORY, appendUniqueEditorCells, canPlaceEditorProp, clampEditorZoom,
   commitTerrainEdit, createPropEraseEdit, createPropMoveEdit, createPropPlacementEdit,
@@ -219,11 +219,11 @@ function editorRoadMask(position: EditorCell, roadKeys: ReadonlySet<string>): st
   return mask || 'isolated';
 }
 
-function rewardSpriteId(reward: EditorMapReward): string | null {
+export function editorRewardSpriteId(reward: EditorMapReward): string | null {
+  if (reward.bundle.artifacts[0]) return assetId.mapObject('artifact', reward.bundle.artifacts[0].id);
   if (reward.bundle.items[0]) return assetId.mapObject('item', reward.bundle.items[0].id);
   const resource = Object.keys(reward.bundle.resources)[0];
   if (resource) return assetId.mapObject('pile', resource);
-  if (reward.bundle.artifacts[0]) return assetId.mapObject('artifact', reward.bundle.artifacts[0].id);
   return null;
 }
 
@@ -655,7 +655,7 @@ export function EditorTerrainCanvas({
       } else {
         const position = item.reward.delivery.kind === 'pickup'
           ? item.reward.delivery.position : { x: 0, y: 0 };
-        const spriteId = rewardSpriteId(item.reward);
+        const spriteId = editorRewardSpriteId(item.reward);
         const entry = spriteId ? manifestEntry(spriteId) : undefined;
         const image = entry ? ensureEditorCanvasImage(images.current, entry.file,
           () => redrawLatest.current()) : null;
@@ -1626,17 +1626,15 @@ export function EditorTerrainCanvas({
             <div className="editor-reward-catalog" role="list" aria-label="Canonical consumables and items">
               {visibleItemGroups.map((group) => <details key={group.id} open>
                 <summary>{group.label} · {group.entries.length}</summary>
-                <div className="editor-icon-grid">{group.entries.map((entry) => {
-                  const sprite = manifestEntry(entry.spriteId);
-                  return <button key={entry.item.id} role="listitem" className="editor-icon-button"
+                <div className="editor-icon-grid">{group.entries.map((entry) => (
+                  <button key={entry.item.id} role="listitem" className="editor-icon-button"
                     aria-label={entry.item.name} title={`${entry.item.name} · ${entry.item.description}`}
                     onClick={() => selectBundleStamp(
                       `${entry.item.name} reward`, itemRewardBundle(entry.item.id, hovered ?? { x: 0, y: 0 }),
                     )}>
-                    {sprite ? <img src={sprite.file} alt="" aria-hidden="true" />
-                      : <span className="editor-reward-fallback" aria-hidden="true">◇</span>}
-                  </button>;
-                })}</div>
+                    <ItemSprite itemId={entry.item.id} />
+                  </button>
+                ))}</div>
               </details>)}
               {!visibleItemGroups.length && <p role="status">No canonical items match this search.</p>}
             </div>

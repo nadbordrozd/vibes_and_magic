@@ -115,7 +115,9 @@ export function ExchangeScreen({
             <section className="choice-dialog transfer-dialog" role="dialog" aria-modal="true"
               aria-labelledby="item-transfer-heading">
               <span className="dialog-kicker">Confirm item {destinationItem ? 'swap' : 'move'}</span>
-              <h2 id="item-transfer-heading">{sourceHero.name} → {destinationHero.name}</h2>
+              <h2 id="item-transfer-heading">{typeof selectedItem !== 'string'
+                && <ItemSprite item={selectedItem} />}
+                {sourceHero.name} → {destinationHero.name}</h2>
               <p>{itemName(selectedItem)} moves from item slot {itemSource.slot + 1} to slot {
                 itemDestination + 1}. {destinationItem
                 ? `${itemName(destinationItem)} returns to ${sourceHero.name}'s source slot.`

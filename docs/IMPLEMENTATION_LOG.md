@@ -656,3 +656,24 @@ Beads epic `vibes_and_magic-6sf`.
   desktop/390 browser journey under `review:spellbook` now checks list/detail bounds, action
   visibility, selection without resource spending, and isolation from the global Help/Inspect
   toggles. Its adventure and combat evidence passed at both widths.
+
+## 2026-08-11 — Complete collectible integration and visual acceptance
+
+- Completed exact native coverage for all 90 artifact and 37 item definitions. Manifest, worklist,
+  production-job, provenance, path, source/final hash, prompt/output uniqueness, native 32×32 hard
+  alpha, and retained-rejection checks now fail closed over the live catalogs. No generated source,
+  final, job, or provenance bytes changed during final acceptance.
+- Routed the remaining editor item palette, adventure item target, pickup-flight result, exchange
+  confirmation, combat artifact action, and battle loot result through the shared collectible
+  renderers. Runtime and editor mixed portable bundles now share artifact → item → resource visual
+  priority while preserving the complete lossless reward record.
+- Kept names, descriptions, class/use, slot, upgrade and stored-spell state, Seamstone school,
+  Burden locks/removal, Kit progression, effects, costs, restrictions, and inspection rules as
+  accessible semantic text and state. Added exhaustive consumer/no-fallback tests and memoized the
+  shared images so the complete editor palette does not tax ordinary canvas edits.
+- Browser acceptance passed native map pickups and pickup result, all 90 artifact management cards,
+  all 127 unique editor palette paths, direct artifact/item editor placement and inspectors, and
+  desktop/390 layouts with zero fallback, broken images, clipping, or horizontal overflow. The final
+  map-editor review had zero diagnostics and measured the 128×128 sample at 2.18 seconds creation and
+  4.33 seconds paint. Focused tests, pretest, production build, diff check, and full-suite results are
+  recorded in the task handoff.

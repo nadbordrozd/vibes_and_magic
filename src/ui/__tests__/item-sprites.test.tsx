@@ -4,7 +4,9 @@ import { resolve } from 'node:path';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { ITEM_SPRITE_SUBJECTS } from '../../../assets/adventureSpriteInventory';
+import job from '../../../assets/jobs/item-sprites-built-in.json';
 import { ASSET_MANIFEST, assetId } from '../../../assets/manifest';
+import provenance from '../../../assets/provenance/item-sprite-generation.json';
 import { ITEMS } from '../../content/items';
 import type { ItemId, MapObject } from '../../core/types';
 import { ItemSprite, mapObjectSpriteId } from '../assets';
@@ -40,6 +42,55 @@ describe('complete canonical item sprite family', () => {
       expect(html).toContain(ASSET_MANIFEST[assetId.mapObject('item', id)].file);
       expect(html).toContain('item-sprite-upgraded');
       expect(html).toContain(`aria-label="${ITEMS[id].name.replaceAll('&', '&amp;').replaceAll("'", '&#x27;')}"`);
+    }
+  });
+
+  it('keeps exact deterministic provenance and removes every installed fallback', () => {
+    expect(job.requests.map((request) => request.catalog_key)).toEqual(ids);
+    expect(provenance.selections.map((selection) => selection.catalog_key)).toEqual(ids);
+    expect(new Set(job.requests.map((request) => request.output))).toHaveLength(37);
+    expect(new Set(job.requests.map((request) => request.final))).toHaveLength(37);
+    expect(new Set(job.requests.map((request) => request.prompt))).toHaveLength(37);
+    expect(new Set(provenance.selections.map((selection) => selection.built_in_output)))
+      .toHaveLength(37);
+    expect(new Set(provenance.selections.map((selection) => selection.source_sha256)))
+      .toHaveLength(37);
+    for (const id of ids) {
+      const sprite = renderToStaticMarkup(<ItemSprite item={{ id }} />);
+      expect(sprite, id).toContain(ASSET_MANIFEST[assetId.mapObject('item', id)].file);
+      expect(sprite, id).not.toContain('item-sprite-fallback');
+      const selection = provenance.selections.find((candidate) => candidate.catalog_key === id)!;
+      expect(selection.accepted).toBe(true);
+      expect(selection.final_dimensions).toEqual([32, 32]);
+      expect(selection.alpha.partial).toBe(0);
+      expect(selection.alpha.transparent_corners).toBe(4);
+      expect(selection.alpha.transparent + selection.alpha.opaque).toBe(1024);
+    }
+  });
+
+  it('pins the sole corrected physical-subject equivalent to Scroll of Quiet', () => {
+    const quietAcceptedSubject = 'A pale parchment scroll tied with a blue-grey cord around a tiny closed bell clasp without a clapper. The rolled parchment must be the dominant silhouette; the bell is only a miniature cord clasp, never a full-size bell.';
+    for (const request of job.requests) {
+      if (request.catalog_key === 'scrollQuiet') {
+        expect(request.prompt).toContain(quietAcceptedSubject);
+      } else {
+        expect(request.prompt, request.catalog_key).toContain(
+          ITEM_SPRITE_SUBJECTS[request.catalog_key as ItemId],
+        );
+      }
+    }
+  });
+
+  it('keeps every audited item consumer on the shared ItemSprite', () => {
+    const consumers = [
+      'AdventureHeroDetails.tsx', 'AdventureItemDialog.tsx', 'AdventureScreen.tsx',
+      'AdventureStructureDialog.tsx', 'CastleScreen.tsx', 'CombatScreen.tsx', 'Dialogs.tsx',
+      'EditorGuardianControls.tsx', 'EditorRewardControls.tsx', 'EditorTerrainCanvas.tsx',
+      'ExchangeScreen.tsx', 'InspectionLayer.tsx',
+    ];
+    for (const file of consumers) {
+      const source = readFileSync(resolve(process.cwd(), 'src/ui/components', file), 'utf8');
+      expect(source, file).toContain('ItemSprite');
     }
   });
 });

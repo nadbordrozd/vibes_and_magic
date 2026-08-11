@@ -1,5 +1,5 @@
 import {
-  useEffect, useState, type ReactNode,
+  memo, useEffect, useState, type ReactNode,
 } from 'react';
 import {
   ASSET_MANIFEST, PIXEL_SCALE, assetId, manifestEntry,
@@ -214,7 +214,7 @@ export function HeroPortrait({
 }
 
 /** Canonical HTML collectible image shared by map-adjacent and non-map item surfaces. */
-export function ItemSprite({
+export const ItemSprite = memo(function ItemSprite({
   item, itemId, className,
 }: { item?: ItemInstance; itemId?: ItemId; className?: string }) {
   const id = item?.id ?? itemId;
@@ -224,10 +224,10 @@ export function ItemSprite({
       fallback={<span className="item-sprite-fallback">◇</span>} />
     {item?.plus && <span className="item-sprite-upgraded">⌃</span>}
   </span>;
-}
+});
 
 /** Canonical HTML artifact image; class, slot, and instance state stay in semantic UI copy. */
-export function ArtifactSprite({
+export const ArtifactSprite = memo(function ArtifactSprite({
   artifact, artifactId, className,
 }: { artifact?: ArtifactInstance; artifactId?: ArtifactId; className?: string }) {
   const id = artifact?.id ?? artifactId;
@@ -236,4 +236,4 @@ export function ArtifactSprite({
     <ManifestPortrait id={assetId.mapObject('artifact', id)} className="artifact-sprite"
       fallback={<span className="artifact-sprite-fallback">◆</span>} />
   </span>;
-}
+});

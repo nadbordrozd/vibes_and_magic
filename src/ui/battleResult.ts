@@ -5,7 +5,8 @@ import { itemName } from '../content/items';
 import { UNITS } from '../content/units';
 import { surrenderCost } from '../core/combat/battle';
 import type {
-  Action, BattleSide, BattleStatistics, GameState, Hero, PlayerId, ResourceId,
+  Action, ArtifactId, BattleSide, BattleStatistics, GameState, Hero, ItemId, ItemInstance, PlayerId,
+  ResourceId,
 } from '../core/types';
 import { PLAYER_IDS } from '../core/types';
 import { inspectTarget } from './inspection';
@@ -22,7 +23,14 @@ export interface BattleResultData {
   casualties: Record<BattleSide, number>;
   xp: { hero: string; amount: number } | null;
   recovered: Array<{ unit: string; count: number }>;
-  consequences: Array<{ label: string; detail: string }>;
+  consequences: Array<{
+    label: string;
+    detail: string;
+    collectibles?: Array<
+      | { kind: 'item'; id: ItemId; name: string }
+      | { kind: 'artifact'; id: ArtifactId; name: string }
+    >;
+  }>;
   continuation: { label: string; detail: string };
   statistics: BattleStatistics | null;
   projection: {
@@ -58,7 +66,7 @@ function countLosses(state: GameState, prior: GameState, playerId: PlayerId | 'n
   return state.metrics.casualties[playerId] - prior.metrics.casualties[playerId];
 }
 
-function multisetGain(before: string[], after: string[]): string[] {
+function multisetGain<T>(before: T[], after: T[]): T[] {
   const remaining = [...before];
   return after.filter((value) => {
     const index = remaining.indexOf(value);
@@ -69,15 +77,22 @@ function multisetGain(before: string[], after: string[]): string[] {
 }
 
 function heroItems(hero: Hero | null): string[] {
-  return hero?.inventory.flatMap((item) => item ? [itemName(item)] : []) ?? [];
+  return hero?.inventory.flatMap((item) => item
+    ? [typeof item === 'string' ? `legacy:${item}` : `instance:${JSON.stringify(item)}`] : []) ?? [];
 }
 
-function heroArtifacts(hero: Hero | null): string[] {
+function gainedItem(key: string): { name: string; item?: ItemInstance } {
+  if (key.startsWith('legacy:')) return { name: key.slice('legacy:'.length) };
+  const item = JSON.parse(key.slice('instance:'.length)) as ItemInstance;
+  return { name: itemName(item), item };
+}
+
+function heroArtifacts(hero: Hero | null): ArtifactId[] {
   if (!hero) return [];
   return [
-    ...hero.artifacts.backpack.map((artifact) => ARTIFACTS[artifact.id].name),
+    ...hero.artifacts.backpack.map((artifact) => artifact.id),
     ...Object.values(hero.artifacts.equipment).flatMap((artifact) =>
-      artifact ? [ARTIFACTS[artifact.id].name] : []),
+      artifact ? [artifact.id] : []),
   ];
 }
 
@@ -241,9 +256,20 @@ export function buildBattleResult(
   if (winningBefore && winningAfter) {
     const gainedItems = multisetGain(heroItems(winningBefore), heroItems(winningAfter));
     const gainedArtifacts = multisetGain(heroArtifacts(winningBefore), heroArtifacts(winningAfter));
+    const itemLoot = gainedItems.map(gainedItem);
     if (gainedItems.length || gainedArtifacts.length) consequences.push({
       label: 'Loot',
-      detail: [...gainedItems, ...gainedArtifacts].join(', '),
+      detail: [
+        ...itemLoot.map((item) => item.name),
+        ...gainedArtifacts.map((id) => ARTIFACTS[id].name),
+      ].join(', '),
+      collectibles: [
+        ...itemLoot.flatMap(({ item, name }) => item
+          ? [{ kind: 'item' as const, id: item.id, name }] : []),
+        ...gainedArtifacts.map((id) => ({
+          kind: 'artifact' as const, id, name: ARTIFACTS[id].name,
+        })),
+      ],
     });
     const learnedSpells = winningAfter.knownSpells.filter((spell) =>
       !winningBefore.knownSpells.includes(spell));

@@ -3,8 +3,11 @@ import { createHash } from 'node:crypto';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { assetWorklist } from '../../assets/worklist';
 import { contentIconWorklist } from '../../assets/iconWorklist';
-import { ARTIFACT_SPRITE_SUBJECTS } from '../../assets/adventureSpriteInventory';
+import {
+  ARTIFACT_SPRITE_SUBJECTS, ITEM_SPRITE_SUBJECTS,
+} from '../../assets/adventureSpriteInventory';
 import { ARTIFACTS } from '../content/artifacts';
+import { ITEMS } from '../content/items';
 
 interface PixelReference {
   file: string;
@@ -309,26 +312,57 @@ try {
     resolve(root, 'assets/provenance/item-sprite-generation.json'), 'utf8',
   )) as { version: number; generator: string; job: string; selections: Array<{
     id: string; request_id: string; collectible_family: string; catalog_key: string;
-    accepted: boolean; source: string; final: string; prompt_sha256: string;
+    accepted: boolean; built_in_output: string; discarded_outputs: Array<{
+      built_in_output: string; source: string; reason: string; prompt?: string;
+      prompt_sha256?: string; source_sha256?: string;
+    }>; source: string; final: string; prompt_sha256: string;
     source_sha256: string; final_sha256: string; source_dimensions: [number, number];
-    final_dimensions: [number, number];
+    final_dimensions: [number, number]; alpha: {
+      transparent: number; opaque: number; partial: number; transparent_corners: number;
+    };
   }> };
+  const installedIds = Object.keys(ITEMS).sort();
+  const requestKeys = itemJob.requests.map((request) => request.catalog_key ?? '').sort();
+  const requestGroups = new Map(['combat', 'adventure', 'automatic'].map((group) => [group,
+    itemJob.requests.filter((request) => request.catalog_group === group)
+      .map((request) => request.catalog_key ?? '').sort()]));
   if (itemJob.collectible_family !== 'item' || itemJob.requests.length !== 37
       || provenance.version !== 1 || provenance.generator !== 'built-in-imagegen'
       || provenance.job !== 'assets/jobs/item-sprites-built-in.json'
-      || provenance.selections.length !== 37) {
-    errors.push('item collectible job/provenance must contain exactly 37 built-in selections');
+      || provenance.selections.length !== 37
+      || JSON.stringify(requestKeys) !== JSON.stringify(installedIds)
+      || JSON.stringify(requestGroups.get('combat')) !== JSON.stringify(Object.values(ITEMS)
+        .filter((item) => item.use === 'combat').map((item) => item.id).sort())
+      || JSON.stringify(requestGroups.get('adventure')) !== JSON.stringify(Object.values(ITEMS)
+        .filter((item) => item.use === 'adventure').map((item) => item.id).sort())
+      || JSON.stringify(requestGroups.get('automatic')) !== JSON.stringify(Object.values(ITEMS)
+        .filter((item) => item.use === 'automatic').map((item) => item.id).sort())) {
+    errors.push('item collectible job/provenance must contain exactly 25 combat, 11 adventure, and 1 automatic catalog selections');
   }
   const byRequest = new Map(provenance.selections.map((entry) => [entry.request_id, entry]));
-  const finalHashes = new Set<string>();
+  const sourcePaths = new Set<string>(); const finalPaths = new Set<string>();
+  const sourceHashes = new Set<string>(); const finalHashes = new Set<string>();
+  const outputs = new Set<string>(); const prompts = new Set<string>();
   for (const request of itemJob.requests) {
     const selection = byRequest.get(request.id);
     const label = `item provenance:${request.id}`;
     if (!selection?.accepted || selection.id !== request.assets[0]
         || selection.collectible_family !== 'item' || selection.catalog_key !== request.catalog_key
+        || !['combat', 'adventure', 'automatic'].includes(request.catalog_group ?? '')
         || selection.source !== request.output || selection.final !== request.final) {
       errors.push(`${label}: missing or drifted accepted selection`); continue;
     }
+    const subject = ITEM_SPRITE_SUBJECTS[
+      selection.catalog_key as keyof typeof ITEM_SPRITE_SUBJECTS
+    ];
+    // Quiet's reviewed retry expands the inventory sentence to correct the clasp's scale and
+    // dominance. This single immutable equivalent is intentionally narrower than a generic
+    // "physical prompt exists" escape hatch so another ItemId cannot pass with the wrong subject.
+    const quietAcceptedSubject = 'A pale parchment scroll tied with a blue-grey cord around a tiny closed bell clasp without a clapper. The rolled parchment must be the dominant silhouette; the bell is only a miniature cord clasp, never a full-size bell.';
+    const literalPrompt = request.prompt.includes(subject)
+      || (selection.catalog_key === 'scrollQuiet' && request.prompt.includes(quietAcceptedSubject))
+      || selection.discarded_outputs.some((discarded) => discarded.prompt?.includes(subject));
+    if (!subject || !literalPrompt) errors.push(`${label}: literal catalog subject drift`);
     if (selection.prompt_sha256 !== sha256(request.prompt)) errors.push(`${label}: prompt hash drift`);
     for (const [kind, file, expected] of [
       ['source', selection.source, selection.source_sha256],
@@ -339,11 +373,32 @@ try {
         errors.push(`${label}: ${kind} content hash drift`);
       }
     }
-    if (selection.final_dimensions?.[0] !== 32 || selection.final_dimensions?.[1] !== 32) {
-      errors.push(`${label}: final must be native 32x32`);
+    if (selection.final_dimensions?.[0] !== 32 || selection.final_dimensions?.[1] !== 32
+        || selection.alpha.partial !== 0 || selection.alpha.transparent_corners !== 4
+        || selection.alpha.transparent + selection.alpha.opaque !== 1024) {
+      errors.push(`${label}: final must be native 32x32 with hard alpha and transparent corners`);
     }
-    if (finalHashes.has(selection.final_sha256)) errors.push(`${label}: duplicate final bitmap content`);
+    if (sourcePaths.has(selection.source) || finalPaths.has(selection.final)
+        || sourceHashes.has(selection.source_sha256) || finalHashes.has(selection.final_sha256)
+        || outputs.has(selection.built_in_output) || prompts.has(selection.prompt_sha256)) {
+      errors.push(`${label}: duplicate source/final path, bytes, prompt, or built-in output`);
+    }
+    sourcePaths.add(selection.source); finalPaths.add(selection.final);
+    sourceHashes.add(selection.source_sha256);
     finalHashes.add(selection.final_sha256);
+    outputs.add(selection.built_in_output); prompts.add(selection.prompt_sha256);
+    for (const discarded of selection.discarded_outputs) {
+      if (!discarded.reason.trim() || !existsSync(resolve(root, discarded.source))) {
+        errors.push(`${label}: rejected source must remain retained with an honest reason`);
+      }
+      if (discarded.prompt && discarded.prompt_sha256 !== sha256(discarded.prompt)) {
+        errors.push(`${label}: rejected prompt hash drift`);
+      }
+      if (discarded.source_sha256
+          && sha256(readFileSync(resolve(root, discarded.source))) !== discarded.source_sha256) {
+        errors.push(`${label}: rejected source content hash drift`);
+      }
+    }
   }
 } catch (error) {
   errors.push(`item sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
@@ -455,6 +510,29 @@ try {
   }
 } catch (error) {
   errors.push(`artifact sprite provenance: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+try {
+  const families = ['item', 'artifact'].flatMap((family) => {
+    const provenance = JSON.parse(readFileSync(resolve(
+      root, `assets/provenance/${family}-sprite-generation.json`,
+    ), 'utf8')) as { selections: Array<{
+      source: string; final: string; source_sha256: string; final_sha256: string;
+      built_in_output: string; prompt_sha256: string;
+    }> };
+    return provenance.selections;
+  });
+  if (families.length !== 127
+      || new Set(families.map((selection) => selection.source)).size !== 127
+      || new Set(families.map((selection) => selection.final)).size !== 127
+      || new Set(families.map((selection) => selection.source_sha256)).size !== 127
+      || new Set(families.map((selection) => selection.final_sha256)).size !== 127
+      || new Set(families.map((selection) => selection.built_in_output)).size !== 127
+      || new Set(families.map((selection) => selection.prompt_sha256)).size !== 127) {
+    errors.push('combined collectible provenance must retain 127 unique source/final paths and bytes, prompts, and built-in outputs');
+  }
+} catch (error) {
+  errors.push(`combined collectible provenance: ${error instanceof Error ? error.message : String(error)}`);
 }
 
 console.log(`Pixel production jobs: ${ready} ready · ${staged} staged · ${requests} requests · ${builtInJobs} built-in provenance job`);

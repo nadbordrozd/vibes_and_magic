@@ -270,6 +270,27 @@ try {
   if (paletteOrder.map((entry) => entry.order).join(',') !== '1,2,3,4,5,6,7,8,9') {
     throw new Error(`Palette order is not canonical: ${JSON.stringify(paletteOrder)}`);
   }
+  await page.waitForFunction(() => {
+    const images = [...document.querySelectorAll<HTMLImageElement>(
+      '.editor-artifact-palette .artifact-sprite, .editor-item-palette .item-sprite',
+    )];
+    return images.length === 127 && images.every((image) => image.complete
+      && image.naturalWidth === 32 && image.naturalHeight === 32);
+  }, { timeout: 30_000 });
+  const collectiblePalette = await page.evaluate(() => ({
+    artifacts: document.querySelectorAll('.editor-artifact-palette .artifact-sprite').length,
+    items: document.querySelectorAll('.editor-item-palette .item-sprite').length,
+    fallbacks: document.querySelectorAll(
+      '.editor-artifact-palette .artifact-sprite-fallback, .editor-item-palette .item-sprite-fallback',
+    ).length,
+    uniquePaths: new Set([...document.querySelectorAll<HTMLImageElement>(
+      '.editor-artifact-palette .artifact-sprite, .editor-item-palette .item-sprite',
+    )].map((image) => image.getAttribute('src'))).size,
+  }));
+  if (collectiblePalette.artifacts !== 90 || collectiblePalette.items !== 37
+      || collectiblePalette.fallbacks || collectiblePalette.uniquePaths !== 127) {
+    throw new Error(`Collectible editor palette is incomplete: ${JSON.stringify(collectiblePalette)}`);
+  }
   await page.$$eval('.editor-player-slots article', (players) => {
     const choices = [
       { controller: 'human', faction: 'woundWrights', name: 'Crimson Cartographer' },
@@ -441,6 +462,8 @@ try {
   }
   await page.$eval('.editor-canvas-panel', (node) => node.scrollIntoView({ block: 'start' }));
   await page.screenshot({ path: join(output, '03-all-categories-desktop.png') });
+  await page.$eval('.editor-artifact-palette', (node) => node.scrollIntoView({ block: 'start' }));
+  await page.screenshot({ path: join(output, '03c-collectible-palettes-desktop.png') });
   await cellPoint(page, 17, 17);
   await (await page.$('.editor-canvas-viewport'))!.screenshot({
     path: join(output, '03b-neutral-city-canvas-desktop.png'),
@@ -464,7 +487,20 @@ try {
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   await page.$eval('.editor-canvas-panel', (node) => node.scrollIntoView({ block: 'start' }));
   await auditLayout(page, '390px workspace');
+  const narrowCollectibles = await page.evaluate(() => ({
+    artifacts: document.querySelectorAll('.editor-artifact-palette .artifact-sprite').length,
+    items: document.querySelectorAll('.editor-item-palette .item-sprite').length,
+    fallbacks: document.querySelectorAll(
+      '.editor-artifact-palette .artifact-sprite-fallback, .editor-item-palette .item-sprite-fallback',
+    ).length,
+  }));
+  if (narrowCollectibles.artifacts !== 90 || narrowCollectibles.items !== 37
+      || narrowCollectibles.fallbacks) {
+    throw new Error(`Narrow collectible editor palette is incomplete: ${JSON.stringify(narrowCollectibles)}`);
+  }
   await page.screenshot({ path: join(output, '04-workspace-390.png') });
+  await page.$eval('.editor-artifact-palette', (node) => node.scrollIntoView({ block: 'start' }));
+  await page.screenshot({ path: join(output, '04c-collectible-palettes-390.png') });
   await cellPoint(page, 17, 17);
   await (await page.$('.editor-canvas-viewport'))!.screenshot({
     path: join(output, '04b-neutral-city-canvas-390.png'),
@@ -557,7 +593,7 @@ try {
     result: 'Map editor review passed', output, palette: paletteOrder.map((entry) => entry.heading),
     mapHash: promotion.hash, exportDiagnostics: promotion.diagnostics,
     largeMap: { dimensions: '128x128', creationMs: Math.round(creationMs), paintMs: Math.round(paintMs) },
-    screenshots: 11,
+    collectibles: collectiblePalette, screenshots: 13,
   }, null, 2));
 } finally {
   await browser.close();

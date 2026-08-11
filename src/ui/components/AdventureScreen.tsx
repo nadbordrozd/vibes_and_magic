@@ -30,7 +30,7 @@ import {
 } from '../adventureSpellTargeting';
 import { objectEntranceTile } from '../../core/map/occupancy';
 import { ResourceIcon, ResourceRichText } from './ResourceToken';
-import { HeroPortrait } from '../assets';
+import { HeroPortrait, ItemSprite } from '../assets';
 import { AdventureItemDialog } from './AdventureItemDialog';
 import {
   adventureItemDraft, legalAdventureItemMapTargets,
@@ -443,7 +443,8 @@ export function AdventureScreen({
             const selectedDefinition = selected && typeof selected !== 'string'
               ? ITEMS[selected.id] : null;
             return <div className="map-item-target-prompt">
-              <b>{selected ? itemName(selected) : 'Adventure item'} · choose a target</b>
+              <b>{selected && typeof selected !== 'string' && <ItemSprite item={selected} />}
+                {selected ? itemName(selected) : 'Adventure item'} · choose a target</b>
               <span>{selectedDefinition?.behavior === 'impassableStep'
                 ? 'Highlighted landings cross one to three impassable tiles.'
                 : 'Highlighted map centers are within three tiles of explored land.'}</span>

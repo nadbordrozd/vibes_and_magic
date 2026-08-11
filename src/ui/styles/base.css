@@ -302,6 +302,7 @@ body:has(.stitched-spellbook) :is(.help-toggle, .inspect-toggle) {
 .battle-consequences div { display: grid; grid-template-columns: 130px 1fr; gap: 10px; padding: 8px 10px; background: #0d120e99; }
 .battle-consequences div > b { color: #ded1a2; font-size: 10px; text-transform: uppercase; letter-spacing: .07em; }
 .battle-consequences div > span, .battle-consequences p { color: #b9c0b4; font-size: 11px; line-height: 1.45; }
+.battle-loot-collectible { display: inline-flex; vertical-align: middle; margin: 0 4px 2px 0; }
 .result-continuation { margin: 20px auto 10px; color: #c6cec0; font-size: 11px; line-height: 1.5; }
 
 .pass-device {

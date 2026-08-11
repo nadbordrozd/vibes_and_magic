@@ -238,10 +238,39 @@ Mines retain their canonical 2×1 contact and bottom-left entrance. Their left c
 hero; machinery, basin, rock, shelter, or stock physically occupies the right cell. City widening
 does not change mine mechanics.
 
-## 6. Acceptance boundary for later implementation
+## 6. Completed collectible integration and acceptance
 
-This contract is complete when later implementation can prove all of the following from catalogs,
-manifests, validation, and browser evidence:
+The collectible family completed final integration and visual acceptance on 2026-08-11. Catalog,
+manifest, worklist, production-job, provenance, and native-file gates now prove exact **90/90 artifact**
+and **37/37 item** coverage. All 127 entries have unique manifest paths and final bitmap bytes; every
+source/final hash and accepted built-in output remains tied to its catalog key, physical prompt, and
+deterministic bake. The final pass preserved every generated source, final, prompt, and provenance
+record byte-for-byte.
+
+One shared `ItemSprite` and `ArtifactSprite` presentation boundary now covers inventory, equipment and
+backpack, choices, markets, inspection, editor palettes and inspectors, structure actions, exchange,
+combat item/artifact actions, and battle loot results. Adventure-map item objects and portable reward
+bundles use the same manifest IDs directly; mixed bundles visibly prioritize the first artifact, then
+the first item, then a resource, matching runtime and editor rendering. The pickup-flight result also
+reuses the collected native sprite. Names, descriptions, class/use, slot, `plus`, stored spell,
+`chosenSchool`, Burden locks/removal, Kit progression, and all mechanics remain semantic state and
+accessible text rather than bitmap variants.
+
+Executable evidence includes:
+
+- `item-sprites.test.tsx`, `artifact-sprites.test.tsx`, `map-editor-rewards.test.tsx`, and
+  `battle-result.test.tsx`: 34 focused assertions over catalog completeness, native paths/bytes,
+  hard alpha, deterministic provenance, shared consumers, no installed fallback, mixed-bundle
+  priority, preserved instance state, and result rendering;
+- `npm run review:item-sprites`: native direct and mixed adventure-map pickups, canonical pickup
+  result, filled item inventory, desktop and 390 px, with no horizontal overflow;
+- `npm run review:artifact-sprites`: all 90 equipped/backpack artifact sprites and semantic inspect
+  cards at desktop and 390 px, with zero fallback, broken images, or overflow;
+- `npm run review:map-editor`: all 127 collectible palette images with 127 unique paths, direct
+  artifact/item placement and inspectors, desktop and 390 px composition, narrow test play, and zero
+  fallback, broken images, diagnostics, clipping, or overflow. Evidence remains under `.pixel-work/`.
+
+The complete work-order boundary is therefore satisfied:
 
 - every city uses exact 5×2 occupancy and `(2,1)` entrance in setup, saves, pathfinding, fog, capture,
   editor, lint, renderer hit targets, and every built-in map;
@@ -259,7 +288,5 @@ manifests, validation, and browser evidence:
   a label or color-only cue;
 - no supplied reference artwork or generated imitation of it ships in the repository.
 
-The city gates above landed on 2026-08-11. Remaining spellbook and collectible gates continue to
-track their own implementation gaps. They do not weaken this specification or authorize silent
-stretching, shared placeholder art, or
-default-garrison inference in UI code.
+The city, spellbook, and collectible gates above all landed on 2026-08-11. This does not authorize
+silent stretching, shared placeholder art, or default-garrison inference in UI code.
