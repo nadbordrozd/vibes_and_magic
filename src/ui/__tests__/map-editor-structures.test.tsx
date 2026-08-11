@@ -9,7 +9,10 @@ import {
 } from '../../core/mapEditor';
 import { REWARD_SITE_KINDS } from '../../core/mapEditor/validation';
 import { mapObjectSpriteId } from '../assets';
-import { EditorTerrainCanvas } from '../components/EditorTerrainCanvas';
+import {
+  EditorTerrainCanvas, EMPTY_EDITOR_CANVAS_SELECTION, editorSelectionAfterObjectMutation,
+} from '../components/EditorTerrainCanvas';
+import { createRewardCarrierPlacementEdit } from '../mapEditorRewards';
 import {
   EMPTY_TERRAIN_HISTORY, commitTerrainEdit, redoTerrainEdit, undoTerrainEdit,
 } from '../mapEditorTerrain';
@@ -102,6 +105,34 @@ describe('registered structure authoring', () => {
         diagnostic.target.kind === 'entity' && diagnostic.target.entityId === result.object?.id), kind)
         .toEqual([]);
     }
+  });
+
+  it('keeps structure, mine, paired, and reward-carrier stamps unselected until inspection', () => {
+    const map = document();
+    const mine = createStructurePlacementEdit(map, 'mine', { x: 2, y: 3 });
+    expect(mine.ok).toBe(true);
+    if (!mine.ok || !mine.object) return;
+    expect(editorSelectionAfterObjectMutation(mine, map, 'leave-unselected'))
+      .toEqual(EMPTY_EDITOR_CANVAS_SELECTION);
+    expect(editorSelectionAfterObjectMutation(mine, map, 'inspect-result')).toMatchObject({
+      objectId: mine.object.id,
+    });
+
+    const pair = createWhirlpoolPairPlacementEdit(map, { x: 7, y: 3 }, { x: 12, y: 3 });
+    expect(pair.ok).toBe(true);
+    if (!pair.ok) return;
+    expect(editorSelectionAfterObjectMutation(pair, map, 'leave-unselected'))
+      .toEqual(EMPTY_EDITOR_CANVAS_SELECTION);
+
+    const carrier = createRewardCarrierPlacementEdit(map, REWARD_SITE_KINDS[0], { x: 5, y: 8 });
+    expect(carrier.ok).toBe(true);
+    if (!carrier.ok) return;
+    expect(editorSelectionAfterObjectMutation(carrier, map, 'leave-unselected'))
+      .toEqual(EMPTY_EDITOR_CANVAS_SELECTION);
+    expect(editorSelectionAfterObjectMutation(carrier, map, 'inspect-result')).toMatchObject({
+      objectId: carrier.object.id,
+      rewardId: carrier.reward.id,
+    });
   });
 
   it('shows reward carriers but rejects unlinked creation without mutation', () => {

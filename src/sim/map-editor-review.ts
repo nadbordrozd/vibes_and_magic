@@ -241,7 +241,8 @@ function verifyPromotionReady(path: string): {
     deepwood: deepwood >= 10, mountains: mountains >= 5,
     pointerCancel: authored.tiles[1][25].terrain === 'meadow',
     obstacle: authored.objects.some((object) => object.kind === 'obstacle'),
-    windmill: authored.objects.some((object) => object.kind === 'windmill'),
+    windmill: authored.objects.some((object) => object.kind === 'windmill'
+      && object.properties.rareResource === 'essence'),
     playerFactions: authored.players[0]?.faction === 'woundWrights'
       && authored.players[1]?.faction === 'hagwood',
     ownedCities: p1Castle?.faction === 'hagwood' && p2Castle?.faction === 'vespiary',
@@ -478,7 +479,7 @@ try {
 
   await clickButton(page, 'Windmill', '.editor-structure-palette');
   await clickCell(page, 14, 8);
-  if (!await page.$('#editor-object-inspector-title')) {
+  if (await page.$('#editor-object-inspector-title')) {
     const structureState = await page.evaluate(() => ({
       message: document.querySelector('.editor-canvas-message')?.textContent ?? '',
       tool: document.querySelector<HTMLElement>('.editor-canvas-viewport')?.dataset.tool,
@@ -486,8 +487,29 @@ try {
         '.editor-structure-palette .editor-icon-button.selected',
       )?.getAttribute('aria-label'),
     }));
-    throw new Error(`Structure stamp did not select an object: ${JSON.stringify(structureState)}`);
+    throw new Error(`Structure stamp opened details without an explicit selection: ${JSON.stringify(structureState)}`);
   }
+  await page.screenshot({ path: join(output, '02a-structure-stamp-unselected-desktop.png') });
+  await canvas.focus();
+  await page.keyboard.down('Control'); await page.keyboard.press('z'); await page.keyboard.up('Control');
+  await page.keyboard.down('Control'); await page.keyboard.press('y'); await page.keyboard.up('Control');
+  await frames(page);
+  if (await page.$('#editor-object-inspector-title')) {
+    throw new Error('Structure undo/redo unexpectedly selected the restored stamp');
+  }
+  await clickButton(page, 'Select / move', '.editor-toolstrip');
+  await clickCell(page, 14, 8);
+  const selectedStructure = await page.$eval('.editor-object-inspector', (inspector) => ({
+    heading: inspector.querySelector('h3')?.textContent?.trim() ?? '',
+    rareResource: [...inspector.querySelectorAll<HTMLLabelElement>('label')]
+      .find((label) => label.textContent?.trim().startsWith('Rare resource'))
+      ?.querySelector<HTMLSelectElement>('select')?.value ?? '',
+  }));
+  if (selectedStructure.heading !== 'Windmill' || selectedStructure.rareResource !== 'iron') {
+    throw new Error(`Explicit structure selection did not open editable details: ${JSON.stringify(selectedStructure)}`);
+  }
+  await setLabelValue(page, '.editor-object-inspector', 'Rare resource', 'essence');
+  await page.screenshot({ path: join(output, '02b-structure-explicit-selection-desktop.png') });
 
   await page.select('select[aria-label="City owner flag"]', 'p1');
   await clickButton(page, 'Hagwood city', '.editor-castle-palette');
@@ -644,6 +666,18 @@ try {
   }
   await page.screenshot({ path: join(output, '04-workspace-390.png') });
   await clickButton(page, 'Select / move', '.editor-toolstrip');
+  await clickCell(page, 14, 8);
+  const narrowStructure = await page.$eval('.editor-object-inspector', (inspector) => ({
+    heading: inspector.querySelector('h3')?.textContent?.trim() ?? '',
+    rareResource: [...inspector.querySelectorAll<HTMLLabelElement>('label')]
+      .find((label) => label.textContent?.trim().startsWith('Rare resource'))
+      ?.querySelector<HTMLSelectElement>('select')?.value ?? '',
+  }));
+  if (narrowStructure.heading !== 'Windmill' || narrowStructure.rareResource !== 'essence') {
+    throw new Error(`390px explicit structure inspector is not usable: ${JSON.stringify(narrowStructure)}`);
+  }
+  await page.screenshot({ path: join(output, '04d-selected-structure-390.png') });
+  await clickButton(page, 'Select / move', '.editor-toolstrip');
   await clickCell(page, 14, 7);
   if (await auditSelectedGuardian(page, '390px') !== 37) {
     throw new Error('390px selected guardian count edit did not remain visible and editable.');
@@ -745,7 +779,7 @@ try {
     result: 'Map editor review passed', output, palette: paletteOrder.map((entry) => entry.heading),
     mapHash: promotion.hash, exportDiagnostics: promotion.diagnostics,
     largeMap: { dimensions: '128x128', creationMs: Math.round(creationMs), paintMs: Math.round(paintMs) },
-    collectibles: collectiblePalette, randomGuardian: promotion.randomGuardian, screenshots: 16,
+    collectibles: collectiblePalette, randomGuardian: promotion.randomGuardian, screenshots: 19,
   }, null, 2));
 } finally {
   await browser.close();

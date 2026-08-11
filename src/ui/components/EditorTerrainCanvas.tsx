@@ -122,6 +122,58 @@ type RewardStamp =
   | { kind: 'bundle'; label: string; bundle: EditorRewardBundle }
   | { kind: 'carrier'; carrierKind: typeof import('../../core/mapEditor/validation').REWARD_SITE_KINDS[number] };
 
+export type EditorMutationSelectionIntent = 'inspect-result' | 'leave-unselected';
+
+export interface EditorCanvasSelection {
+  objectId: string | null;
+  castleId: string | null;
+  heroId: string | null;
+  guardianId: string | null;
+  rewardId: string | null;
+}
+
+export const EMPTY_EDITOR_CANVAS_SELECTION: EditorCanvasSelection = {
+  objectId: null,
+  castleId: null,
+  heroId: null,
+  guardianId: null,
+  rewardId: null,
+};
+
+interface ObjectMutationSelectionResult {
+  object?: EditorMapObject | null;
+  castle?: { id: string } | null;
+  hero?: { id: string } | null;
+  guardian?: { id: string } | null;
+  reward?: EditorMapReward | null;
+}
+
+/** Placement is authoring, not selection. Only an explicit inspect intent may open details. */
+export function editorSelectionAfterObjectMutation(
+  result: ObjectMutationSelectionResult,
+  document: EditorMapDocument,
+  intent: EditorMutationSelectionIntent,
+): EditorCanvasSelection {
+  if (intent === 'leave-unselected') return EMPTY_EDITOR_CANVAS_SELECTION;
+  if (result.guardian !== undefined) return {
+    ...EMPTY_EDITOR_CANVAS_SELECTION, guardianId: result.guardian?.id ?? null,
+  };
+  if (result.hero !== undefined) return {
+    ...EMPTY_EDITOR_CANVAS_SELECTION, heroId: result.hero?.id ?? null,
+  };
+  if (result.castle !== undefined) return {
+    ...EMPTY_EDITOR_CANVAS_SELECTION, castleId: result.castle?.id ?? null,
+  };
+  if (result.object !== undefined) return {
+    ...EMPTY_EDITOR_CANVAS_SELECTION,
+    objectId: result.object?.id ?? null,
+    rewardId: result.reward?.id ?? (result.object ? document.rewards.find((reward) =>
+      reward.delivery.kind === 'site' && reward.delivery.objectId === result.object!.id)?.id ?? null
+      : null),
+  };
+  return EMPTY_EDITOR_CANVAS_SELECTION;
+}
+
 function drawEditorHeroFlag(
   context: CanvasRenderingContext2D, position: EditorCell, owner: PlayerId, alpha = 1,
 ) {
@@ -344,9 +396,18 @@ export function EditorTerrainCanvas({
     setMutationMessage('');
   }, [document, history, onDocumentChange, overlayMode, selectedTile, tool]);
 
+  const applySelection = useCallback((selection: EditorCanvasSelection) => {
+    setSelectedObjectId(selection.objectId);
+    setSelectedCastleId(selection.castleId);
+    setSelectedHeroId(selection.heroId);
+    setSelectedGuardianId(selection.guardianId);
+    setSelectedRewardId(selection.rewardId);
+  }, []);
+
   const commitObjectMutation = useCallback((
     result: ReturnType<typeof createPropPlacementEdit> | CastleMutationResult | HeroMutationResult
       | GuardianMutationResult,
+    selectionIntent: EditorMutationSelectionIntent,
   ) => {
     if (!result.ok) {
       const messages: Record<string, string> = {
@@ -373,35 +434,10 @@ export function EditorTerrainCanvas({
       setHistory(committed.history);
       onDocumentChange(committed.document);
     }
-    if ('guardian' in result) {
-      setSelectedGuardianId(result.guardian?.id ?? null);
-      setSelectedHeroId(null);
-      setSelectedCastleId(null);
-      setSelectedObjectId(null);
-      setSelectedRewardId(null);
-    } else if ('hero' in result) {
-      setSelectedHeroId(result.hero?.id ?? null);
-      setSelectedGuardianId(null);
-      setSelectedCastleId(null);
-      setSelectedObjectId(null);
-      setSelectedRewardId(null);
-    } else if ('castle' in result) {
-      setSelectedCastleId(result.castle?.id ?? null);
-      setSelectedHeroId(null);
-      setSelectedGuardianId(null);
-      setSelectedObjectId(null);
-      setSelectedRewardId(null);
-    } else {
-      setSelectedObjectId(result.object?.id ?? null);
-      setSelectedCastleId(null);
-      setSelectedHeroId(null);
-      setSelectedGuardianId(null);
-      setSelectedRewardId(result.object ? document.rewards.find((reward) =>
-        reward.delivery.kind === 'site' && reward.delivery.objectId === result.object!.id)?.id ?? null : null);
-    }
+    applySelection(editorSelectionAfterObjectMutation(result, document, selectionIntent));
     setMutationMessage('');
     return true;
-  }, [document, history, onDocumentChange]);
+  }, [applySelection, document, history, onDocumentChange]);
 
   const commitRewardMutation = useCallback((result: RewardMutationResult) => {
     if (!result.ok) {
@@ -980,7 +1016,7 @@ export function EditorTerrainCanvas({
       return;
     }
     if (tool === 'prop') {
-      commitObjectMutation(createPropPlacementEdit(document, selectedProp, cell));
+      commitObjectMutation(createPropPlacementEdit(document, selectedProp, cell), 'inspect-result');
       event.currentTarget.releasePointerCapture(event.pointerId);
       return;
     }
@@ -988,37 +1024,46 @@ export function EditorTerrainCanvas({
       if (selectedStructureKind === 'whirlpool') {
         if (!pendingWhirlpool) {
           const legal = canPlaceEditorProp(document, cell, { w: 1, h: 1 });
-          if (!legal.ok) commitObjectMutation(legal as ReturnType<typeof createPropPlacementEdit>);
+          if (!legal.ok) commitObjectMutation(
+            legal as ReturnType<typeof createPropPlacementEdit>, 'leave-unselected',
+          );
           else {
             setPendingWhirlpool(cell);
             setMutationMessage('Whirlpool entrance set. Choose a different free cell for its reciprocal exit.');
           }
         } else {
-          if (commitObjectMutation(createWhirlpoolPairPlacementEdit(document, pendingWhirlpool, cell))) {
+          if (commitObjectMutation(
+            createWhirlpoolPairPlacementEdit(document, pendingWhirlpool, cell),
+            'leave-unselected',
+          )) {
             setPendingWhirlpool(null);
           }
         }
-      } else commitObjectMutation(createStructurePlacementEdit(document, selectedStructureKind, cell));
+      } else commitObjectMutation(
+        createStructurePlacementEdit(document, selectedStructureKind, cell), 'leave-unselected',
+      );
       event.currentTarget.releasePointerCapture(event.pointerId);
       return;
     }
     if (tool === 'castle') {
       commitObjectMutation(createCastlePlacementEdit(
         document, cell, effectiveCastleOwner, castleFaction,
-      ));
+      ), 'inspect-result');
       event.currentTarget.releasePointerCapture(event.pointerId);
       return;
     }
     if (tool === 'hero') {
       if (effectiveHeroOwner) commitObjectMutation(createHeroPlacementEdit(
         document, cell, effectiveHeroOwner, heroFaction, heroDefinitionId,
-      ));
+      ), 'inspect-result');
       else setMutationMessage('Add at least one player slot before placing a starting hero.');
       event.currentTarget.releasePointerCapture(event.pointerId);
       return;
     }
     if (tool === 'guardian') {
-      commitObjectMutation(createGuardianPlacementEdit(document, cell, guardianStamp));
+      commitObjectMutation(
+        createGuardianPlacementEdit(document, cell, guardianStamp), 'inspect-result',
+      );
       event.currentTarget.releasePointerCapture(event.pointerId);
       return;
     }
@@ -1030,8 +1075,10 @@ export function EditorTerrainCanvas({
       } else {
         const result = createRewardCarrierPlacementEdit(document, rewardStamp.carrierKind, cell);
         if (result.ok) {
-          if (commitObjectMutation(result)) setSelectedRewardId(result.reward.id);
-        } else commitObjectMutation(result as ReturnType<typeof createPropPlacementEdit>);
+          commitObjectMutation(result, 'leave-unselected');
+        } else commitObjectMutation(
+          result as ReturnType<typeof createPropPlacementEdit>, 'leave-unselected',
+        );
       }
       event.currentTarget.releasePointerCapture(event.pointerId);
       return;
@@ -1043,11 +1090,16 @@ export function EditorTerrainCanvas({
       const castle = top?.entityKind === 'castle' ? top.entity : undefined;
       const object = top?.entityKind === 'object' ? top.entity : undefined;
       const reward = top?.entityKind === 'reward' ? top.entity : undefined;
-      if (hero) commitObjectMutation(createHeroDeleteEdit(document, hero.id));
-      else if (guardian) commitObjectMutation(createGuardianDeleteEdit(document, guardian.id));
-      else if (castle) commitObjectMutation(createCastleDeleteEdit(document, castle.id));
+      if (hero) commitObjectMutation(createHeroDeleteEdit(document, hero.id), 'inspect-result');
+      else if (guardian) commitObjectMutation(
+        createGuardianDeleteEdit(document, guardian.id), 'inspect-result',
+      );
+      else if (castle) commitObjectMutation(
+        createCastleDeleteEdit(document, castle.id), 'inspect-result',
+      );
       else if (object) commitObjectMutation(object.kind === 'obstacle'
-        ? createPropEraseEdit(document, object.id) : createStructureDeleteEdit(document, object.id));
+        ? createPropEraseEdit(document, object.id) : createStructureDeleteEdit(document, object.id),
+      'inspect-result');
       else if (reward) commitRewardMutation(createRewardDeleteEdit(document, reward.id));
       else setMutationMessage('No authored object, city, hero, guardian, or reward occupies that cell.');
       event.currentTarget.releasePointerCapture(event.pointerId);
@@ -1170,18 +1222,24 @@ export function EditorTerrainCanvas({
     gesture.current = null;
     if (active.kind === 'move' && active.objectId) {
       if (active.entityKind === 'castle') {
-        commitObjectMutation(createCastleMoveEdit(document, active.objectId, active.last));
+        commitObjectMutation(
+          createCastleMoveEdit(document, active.objectId, active.last), 'inspect-result',
+        );
       } else if (active.entityKind === 'hero') {
-        commitObjectMutation(createHeroMoveEdit(document, active.objectId, active.last));
+        commitObjectMutation(
+          createHeroMoveEdit(document, active.objectId, active.last), 'inspect-result',
+        );
       } else if (active.entityKind === 'guardian') {
-        commitObjectMutation(createGuardianMoveEdit(document, active.objectId, active.last));
+        commitObjectMutation(
+          createGuardianMoveEdit(document, active.objectId, active.last), 'inspect-result',
+        );
       } else if (active.entityKind === 'reward') {
         commitRewardMutation(createRewardMoveEdit(document, active.objectId, active.last));
       } else {
         const object = document.objects.find((candidate) => candidate.id === active.objectId);
         commitObjectMutation(object?.kind === 'obstacle'
           ? createPropMoveEdit(document, active.objectId, active.last)
-          : createStructureMoveEdit(document, active.objectId, active.last));
+          : createStructureMoveEdit(document, active.objectId, active.last), 'inspect-result');
       }
       setPreview([]);
     } else if (active.kind !== 'pan') applyCells(active.cells);
@@ -1243,7 +1301,9 @@ export function EditorTerrainCanvas({
 
   const updateSelectedStructure = (properties: EditorMapObject['properties']) => {
     if (!selectedObject || selectedObject.kind === 'obstacle') return;
-    commitObjectMutation(createStructureUpdateEdit(document, selectedObject.id, { properties }));
+    commitObjectMutation(
+      createStructureUpdateEdit(document, selectedObject.id, { properties }), 'inspect-result',
+    );
   };
 
   const updateStructureField = (definition: StructureFieldDefinition, raw: string) => {
@@ -1760,13 +1820,16 @@ export function EditorTerrainCanvas({
             <header><div><span className="kicker">Selected map object</span>
               <h3 id="editor-object-inspector-title">{editorStructureByKind(selectedObject.kind).label}</h3></div>
               <button className="danger" onClick={() => commitObjectMutation(
-                createStructureDeleteEdit(document, selectedObject.id))}>Delete</button></header>
+                createStructureDeleteEdit(document, selectedObject.id), 'inspect-result',
+              )}>Delete</button></header>
             <div className="editor-object-form">
               <label>Stable ID<input defaultValue={selectedObject.id} key={selectedObject.id}
                 onBlur={(event) => {
                   if (event.target.value === selectedObject.id) return;
                   if (!commitObjectMutation(createStructureUpdateEdit(document, selectedObject.id,
-                    { id: event.target.value }))) event.currentTarget.value = selectedObject.id;
+                    { id: event.target.value }), 'inspect-result')) {
+                    event.currentTarget.value = selectedObject.id;
+                  }
                 }} /></label>
               {editorStructureByKind(selectedObject.kind).fields.map((definition) => {
                 const stored = selectedObject.properties[definition.key];
@@ -1815,27 +1878,34 @@ export function EditorTerrainCanvas({
               {' · '}entrance +{editorStructureEntrance(selectedObject).dx},+{editorStructureEntrance(selectedObject).dy}</p>
           </section>}
           {selectedCastle && <EditorCastleInspector castle={selectedCastle} document={document}
-            onDelete={() => commitObjectMutation(createCastleDeleteEdit(document, selectedCastle.id))}
+            onDelete={() => commitObjectMutation(
+              createCastleDeleteEdit(document, selectedCastle.id), 'inspect-result',
+            )}
             onUpdate={(update) => {
               const resetVariant = update.faction !== undefined && selectedCastle.variant !== undefined;
-              if (commitObjectMutation(createCastleUpdateEdit(document, selectedCastle.id, update))
+              if (commitObjectMutation(
+                createCastleUpdateEdit(document, selectedCastle.id, update), 'inspect-result',
+              )
                   && resetVariant) setMutationMessage(
                 'Faction changed. Any incompatible explicit architectural variant was reset to the faction city.',
               );
             }} />}
           {selectedHero && <EditorHeroInspector hero={selectedHero} document={document}
-            onDelete={() => { commitObjectMutation(createHeroDeleteEdit(document, selectedHero.id)); }}
+            onDelete={() => {
+              commitObjectMutation(createHeroDeleteEdit(document, selectedHero.id), 'inspect-result');
+            }}
             onPolicyMessage={setMutationMessage}
             onUpdate={(update) => commitObjectMutation(
-              createHeroUpdateEdit(document, selectedHero.id, update),
+              createHeroUpdateEdit(document, selectedHero.id, update), 'inspect-result',
             )} />}
           {selectedGuardian && <EditorGuardianInspector guardian={selectedGuardian}
             document={document}
             onDelete={() => commitObjectMutation(
-              createGuardianDeleteEdit(document, selectedGuardian.id))}
+              createGuardianDeleteEdit(document, selectedGuardian.id), 'inspect-result',
+            )}
             onPolicyMessage={setMutationMessage}
             onUpdate={(update) => commitObjectMutation(
-              createGuardianUpdateEdit(document, selectedGuardian.id, update),
+              createGuardianUpdateEdit(document, selectedGuardian.id, update), 'inspect-result',
             )} />}
           {selectedReward && <EditorRewardInspector reward={selectedReward}
             onDelete={() => commitRewardMutation(createRewardDeleteEdit(document, selectedReward.id))}
