@@ -17,6 +17,22 @@ and stories are authoritative in
 Specialties are behavioral identities, not ornamental text. Each specialty ID has a generic handler
 or catalog hook. A new specialty must cause an observable rules delta and receive a focused test.
 
+## One-screen hero presentation
+
+Hero Details is one dashboard with no tabs or section modes. Its single reading order exposes
+portrait/identity, all four primary stats, movement/mana/experience/luck, seven army positions, all
+learned secondary skills, eleven equipped-artifact positions, the complete backpack, every actual
+consumable position, specialty, and currently relevant special/status controls. Desktop may compose
+those regions into bands and columns; 390 px uses the same DOM order as one vertical flow. The
+complete hierarchy, dimensions, interaction behavior, asset disposition, and browser gates are in
+[work order 59](../59_HERO_DASHBOARD.md).
+
+Every occupied company, skill, artifact, and consumable and each primary stat/specialty is a
+graphical, keyboard-focusable detail target with a visible semantic name/value. Ordinary click,
+touch tap, Enter, or Space opens details first; a separate labeled action begins split, equip,
+unequip, item use, or another consequential route. Empty states remain compact and do not invent
+catalog entries or hidden capacity.
+
 ## Leveling and drafts
 
 The next-level XP threshold follows `round(1000 × 1.4^(level−2))`. On leveling, deal three seeded
@@ -111,6 +127,13 @@ Unequipped artifacts occupy an unlimited backpack. Equip and unequip freely only
 map. A burden cannot be unequipped until its visible removal condition is satisfied. Defeated heroes
 drop all equipment and backpack artifacts, including Tailor’s Kit pieces; the victor receives them
 without slot collision.
+
+The dashboard presents those slots as one regular grid of identically sized frames rather than a
+helmet/hand/body paper doll. This is presentation only: the cells retain `head`, `cloak`, `amulet`,
+`weapon`, `shield`, `armor`, `ring1`, `ring2`, `boots`, `misc1`, and `misc2`; artifact definitions
+retain their typed slot; `slotAccepts` and the existing reducer continue to own compatibility and
+replacement. Each cell keeps a short visible slot label, and destination review exposes both legal
+and illegal reasons. No save migration or general-purpose slot is introduced.
 
 Artifact classes are Vanilla, Charm, Relic, Burden, Kit, and migrated Trinket. The catalog,
 descriptions, values, slots, classes, and effect tags live in

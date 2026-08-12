@@ -942,3 +942,23 @@
   abbreviation `sp` no longer create glossary controls; canonical names and unambiguous phrases do.
 - The browser acceptance pair must exercise a minimal spell (Bloom) and a complex effect spell
   (Standing Mirror), not only prove that one popover can open.
+
+## 2026-08-12 — Hero management is one dashboard; equipment uniformity is visual (doc 59)
+
+- Hero Details has one DOM reading order and no tabs: individual identity, primary stats and vitals,
+  army, learned skills, equipped artifacts, backpack, consumables, and contextual special/status
+  controls are present together. The supplied Heroes II screen informs the hierarchy and uniform
+  artifact grid; the Heroes III screen informs density and selection/detail only. No external art,
+  ornament, measurement, paper doll, or exact layout is copied.
+- Ordinary click, touch tap, Enter, or Space opens concise details for a graphical entry before any
+  consequential action. Equip, unequip, use, split, resonance, omen choice, Dig, and Unstitch remain
+  separate explicit actions with the existing confirmation/targeting and reducer authority.
+- All eleven artifact positions use identical presentation frames, but retain `head`, `cloak`,
+  `amulet`, `weapon`, `shield`, `armor`, `ring1`, `ring2`, `boots`, `misc1`, and `misc2` under the
+  hood. Typed catalog slots, `slotAccepts`, Burden locks, Seamstone, Kit rules, displacement,
+  unlimited backpack, save schema, and replay are unchanged.
+- Exact reusable native coverage is 21 skills, 90 artifacts, 37 items, 50 battle-unit portraits,
+  and four resources. The true new gap is 79 assets: 36 distinct 96×96 hero portraits and 43 native
+  32×32 icons (36 specialties, Attack/Defense/Knowledge, and Experience/Movement/Mana/Luck). Spell
+  Power reuses the installed lexicon icon; the six faction movement sets do not count as distinct
+  portraits.

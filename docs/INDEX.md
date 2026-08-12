@@ -91,5 +91,6 @@ live in `docs/` until superseded by their implementation.
 | 56 | GRAVE_WILD_SPELL_RULES | Complete resolver-true Standard/Upgraded rules and structured lexicon tokens for all 34 Grave/Wild spells, completing the all-68 projection contract | extends S05/S09 and 53/55; corrects descriptions only, records unresolved mechanics gaps, and defers interactive term help |
 | 57 | INTERACTIVE_SPELL_GLOSSARY | Shared accessible native-icon glossary references across the all-68 Spellbook and player-facing mechanic mentions, with deterministic longest-match legacy tokenization | presentation companion to 53–56 and S05/S07/S09; no mechanics or targeting changes |
 | 58 | SPELL_RULE_ACCEPTANCE | Independent all-136 comprehension/runtime audit, constrained rule and glossary prose, alias false-positive review, and desktop/390 semantic/casting acceptance | final acceptance companion to 53–57; refines copied presentation wording only and preserves mechanics |
+| 59 | HERO_DASHBOARD | One-screen no-tab hero dashboard, presentation-uniform typed equipment grid, click/tap detail grammar, exact responsive hierarchy, and exhaustive asset gap/reuse inventory | presentation/assets companion to 34/44–46/51 and S02/S06–S09; preserves hero, equipment, inventory, action, and save rules |
 
-Next free number: **59**.
+Next free number: **60**.

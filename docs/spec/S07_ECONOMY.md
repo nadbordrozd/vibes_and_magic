@@ -15,6 +15,12 @@ cross that boundary only where an authored behavior benefits from it. Numeric de
 catalogs, and market rates in
 [`../../src/content/marketplace.ts`](../../src/content/marketplace.ts).
 
+Hero-dashboard references to costs, Debt payments, or resource-affecting artifacts reuse the four
+manifest-backed Gold, Timber, Iron, and Essence pickup images through the shared semantic resource
+renderer. The bitmap never owns the resource ID or amount, and opening/selecting a hero detail never
+spends or grants resources. Player totals and explicit economy actions remain authoritative. See
+[work order 59](../59_HERO_DASHBOARD.md).
+
 ## Income and pickups
 
 Owned income sites pay at the documented daily or weekly boundary. Village Hall begins at 500 gold

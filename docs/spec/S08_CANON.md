@@ -102,6 +102,16 @@ Exact faction passives, starting armies, stats, palettes, and magic pairs live i
 [`../../src/content/factions.ts`](../../src/content/factions.ts). Unit and hero rosters are linked in
 [`S09_CONTENT_INDEX.md`](S09_CONTENT_INDEX.md).
 
+Hero-dashboard portraits are individual identities, not six repeated faction locomotion sprites.
+Each of the 36 hero definitions ultimately owns one original native portrait derived from its story,
+class, faction materials, and specialty. Dashboard primary-stat, vital, and specialty icons obey the
+same transparent storybook-pixel hierarchy as the installed skill/effect families: one literal
+subject, selective outline, restrained clusters, screen-lower-right/south-east light, no text,
+frame, scenery, rarity, equipment slot, or player-color badge. Names, ranks, counts, values, and
+rules remain semantic text. The supplied Heroes II/III images inform hierarchy only; no external
+art, measurements, ornament, or imitation enters the assets. See
+[work order 59](../59_HERO_DASHBOARD.md).
+
 ## The hidden seventh: Seamborn
 
 Seamborn are creatures of the stitching itself, native to no contributing world. They have no

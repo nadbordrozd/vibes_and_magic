@@ -125,6 +125,23 @@ misreported as installed coverage. City/resource/item/artifact prompts include t
 from the inventory plus its shared bright cartoony transparent south-east-light style clause, never
 only an opaque ID or name. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
 
+The one-screen hero dashboard derives its presentation inventory from these same catalogs rather
+than a hand-maintained JSX list. Audited reusable coverage is 21/21 secondary-skill icons, 90/90
+artifact sprites, 37/37 item sprites, 50/50 battle-unit portraits, and 4/4 resource-pickup icons.
+The 18 guardian portraits are a map subset and do not replace the complete battle-unit family. The
+48 adventure hero images are six faction/class locomotion sets × eight directions and count as
+0/36 distinct hero portraits.
+
+The remaining dashboard production target is exactly 79 assets: one 96×96 portrait for each of the
+36 hero definitions; one 32×32 icon for each of their 36 distinct specialty IDs; 32×32 Attack,
+Defense, and Knowledge icons; and 32×32 Experience, Movement, Mana, and Luck icons. The installed
+32×32 `spell-power` lexicon icon is the fourth primary-stat image and is reused rather than
+duplicated. A catalog-derived dashboard worklist/manifest and immutable job/selection/provenance
+records must gate missing/extra IDs, unique paths/content, dimensions, alpha, prompt/output hashes,
+and exact consumer coverage before installed coverage can be claimed. Full ID lists, native/display
+sizes, status reuse, and the no-generation baseline are pinned in
+[work order 59](../59_HERO_DASHBOARD.md).
+
 ## Cities, economy, terrain, omens, and flavor
 
 - [`../../src/content/buildings.ts`](../../src/content/buildings.ts): common/faction buildings,

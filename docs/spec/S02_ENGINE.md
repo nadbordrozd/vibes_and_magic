@@ -178,6 +178,14 @@ a single bounded traversal per selected hero, never one point-to-point search pe
 The minimap batches terrain into color paths, and map tiles do not add wrapper elements solely for
 event handling.
 
+Hero management follows the same boundary. The one-screen Hero Details dashboard is a projection of
+the serialized hero, catalogs, and existing legal actions; opening an icon, changing the local
+detail selection, or previewing an equipment destination never mutates state or appends an action.
+Its uniform artifact cells retain the eleven exact equipment-slot IDs and dispatch the existing
+equip/unequip actions only after explicit review. Presentation may add pure selectors for effective
+stats and disabled reasons, but it may not duplicate equipment, inventory, split, item-use, or
+special-skill legality in React state. See [work order 59](../59_HERO_DASHBOARD.md).
+
 ## Verification posture
 
 Every new rule receives deterministic unit or integration coverage at its boundary and interaction

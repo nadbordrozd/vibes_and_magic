@@ -818,3 +818,18 @@ Beads epic `vibes_and_magic-6sf`.
   `mechanics-regression.test.ts:231` AI no-winner assertion. A stale Guardian inspector raw-HTML
   adjacency assertion exposed by glossary markup was corrected to check visible text and its semantic
   term separately; that focused regression passes.
+
+## 2026-08-12 — One-screen hero-dashboard contract and asset audit
+
+- Audited the tabbed `AdventureHeroDetails`, paper-doll equipment flow, army and item slots, shared
+  inspection, responsive CSS/tests, all hero/skill/artifact/item/unit catalogs, manifest/worklists,
+  accepted collectible/icon provenance, and both supplied classic hero-screen references.
+- Added work order 59: one no-tab reading order at desktop and 390 px, click/tap/keyboard detail
+  first, explicit action second, focus/Escape/touch requirements, compact empty states, a regular
+  eleven-position artifact grid, and deterministic no-overflow browser acceptance.
+- Kept uniform artifact cells presentation-only. All typed equipment legality, action IDs, Burden,
+  Seamstone, Kit, backpack, inventory, transfer, save, and replay rules remain unchanged.
+- Pinned complete installed reuse at 21/21 skills, 90/90 artifacts, 37/37 items, 50/50 battle-unit
+  portraits, and 4/4 resource icons. The exact later generation gap is 79 assets: 36 distinct hero
+  portraits, 36 specialty icons, three primary-stat icons, and four vital icons; Spell Power reuses
+  its installed lexicon icon. No bitmap was generated and no UI was implemented in this task.
