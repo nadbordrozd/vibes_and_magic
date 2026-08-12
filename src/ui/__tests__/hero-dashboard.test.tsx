@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { HERO_DASHBOARD_MANIFEST } from '../../../assets/heroDashboardManifest';
+import { ASSET_MANIFEST, assetId } from '../../../assets/manifest';
 import { ARTIFACTS, EQUIPMENT_SLOTS } from '../../content/artifacts';
 import { HEROES } from '../../content/heroes';
 import { ITEMS } from '../../content/items';
@@ -10,9 +11,13 @@ import { UNITS } from '../../content/units';
 import { apply, createGame } from '../../core/game';
 import { effectivePrimaryStat } from '../../core/artifacts';
 import type { EquipmentSlotId, Hero } from '../../core/types';
+import { actionSave, replaySave, stateHash } from '../persistence';
+import { ArtifactSprite, ItemSprite, UnitPortrait } from '../assets';
 import {
   AdventureHeroDetails, compatibleDashboardSlots, dashboardEquipmentPreview,
 } from '../components/AdventureHeroDetails';
+import { ContentIcon } from '../components/ContentIcon';
+import { ResourceIcon } from '../components/ResourceToken';
 
 function fixture(): [ReturnType<typeof createGame>, Hero] {
   const state = createGame({ seed: 5903, mapId: 'grand-muster', p1: 'human', p2: 'dormant' });
@@ -111,6 +116,29 @@ describe('one-screen hero dashboard', () => {
     }
   });
 
+  it('renders every reused skill, artifact, item, unit, and resource family without fallback', () => {
+    const html = renderToStaticMarkup(<>
+      {(Object.keys(SKILLS) as Array<keyof typeof SKILLS>).map((id) =>
+        <ContentIcon key={`skill-${id}`} kind="skill" id={id} decorative />)}
+      {(Object.keys(ARTIFACTS) as Array<keyof typeof ARTIFACTS>).map((id) =>
+        <ArtifactSprite key={`artifact-${id}`} artifactId={id} />)}
+      {(Object.keys(ITEMS) as Array<keyof typeof ITEMS>).map((id) =>
+        <ItemSprite key={`item-${id}`} itemId={id} />)}
+      {(Object.keys(UNITS) as Array<keyof typeof UNITS>).map((id) =>
+        <UnitPortrait key={`unit-${id}`} unitId={id} />)}
+      {(['gold', 'timber', 'iron', 'essence'] as const).map((id) =>
+        <ResourceIcon key={`resource-${id}`} resource={id} />)}
+    </>);
+    expect(Object.keys(SKILLS)).toHaveLength(21);
+    expect(Object.keys(ARTIFACTS)).toHaveLength(90);
+    expect(Object.keys(ITEMS)).toHaveLength(37);
+    expect(Object.keys(UNITS)).toHaveLength(50);
+    for (const resource of ['gold', 'timber', 'iron', 'essence'] as const) {
+      expect(html).toContain(ASSET_MANIFEST[assetId.mapObject('pile', resource)].file);
+    }
+    expect(html).not.toMatch(/(?:artifact|item|unit-portrait|resource-icon)-fallback/);
+  });
+
   it('uses effective primary stats and effective Knowledge for the visible mana maximum', () => {
     const [state, hero] = fixture();
     hero.attack = 4;
@@ -164,6 +192,40 @@ describe('one-screen hero dashboard', () => {
     const nextHero = next.players.p1.heroes.find((candidate) => candidate.id === hero.id)!;
     expect(nextHero.artifacts.equipment.ring1).toEqual({ id: 'queensAmber', chosenSchool: undefined });
     expect(nextHero.artifacts.backpack.at(-1)).toEqual({ id: 'beggarsRing' });
+
+    const unequipped = apply(next, { type: 'UNEQUIP_ARTIFACT', heroId: hero.id,
+      equipmentSlot: 'ring1' });
+    const unequippedHero = unequipped.players.p1.heroes.find((candidate) => candidate.id === hero.id)!;
+    expect(unequippedHero.artifacts.equipment.ring1).toBeNull();
+    expect(unequippedHero.artifacts.backpack.at(-1)).toEqual({ id: 'queensAmber', chosenSchool: undefined });
+    const saveJson = JSON.parse(JSON.stringify(actionSave(unequipped))) as ReturnType<typeof actionSave>;
+    expect(saveJson.actionLog.slice(-2).map((action) => action.type))
+      .toEqual(['EQUIP_ARTIFACT', 'UNEQUIP_ARTIFACT']);
+
+    hero.artifacts.backpack = [{ id: 'seamstone' }];
+    hero.artifacts.equipment.amulet = null;
+    const seamed = apply(state, { type: 'EQUIP_ARTIFACT', heroId: hero.id,
+      backpackIndex: 0, equipmentSlot: 'amulet', chosenSchool: 'wild' });
+    expect(seamed.players.p1.heroes.find((candidate) => candidate.id === hero.id)!
+      .artifacts.equipment.amulet).toEqual({ id: 'seamstone', chosenSchool: 'wild' });
+
+    hero.artifacts.equipment.head = { id: 'leadenCrown' };
+    expect(() => apply(state, { type: 'UNEQUIP_ARTIFACT', heroId: hero.id,
+      equipmentSlot: 'head' })).toThrow('Visit any shrine and pay 5 essence');
+  });
+
+  it('replays a dashboard Split action from its five-field save JSON without state drift', () => {
+    const state = createGame({ seed: 5903, mapId: 'grand-muster', p1: 'human', p2: 'dormant' });
+    const hero = state.players.p1.hero!;
+    expect(hero.army[0]!.count).toBeGreaterThan(1);
+    expect(hero.army[6]).toBeNull();
+    const next = apply(state, { type: 'SPLIT_ARMY', holder: { kind: 'hero', id: hero.id },
+      sourceSlot: 0, destinationSlot: 6, count: 3 });
+    const save = JSON.parse(JSON.stringify(actionSave(next))) as ReturnType<typeof actionSave>;
+    expect(Object.keys(save).sort()).toEqual(['actionLog', 'contentHash', 'difficulty', 'mapId', 'seed']);
+    expect(save.actionLog.at(-1)).toEqual({ type: 'SPLIT_ARMY',
+      holder: { kind: 'hero', id: hero.id }, sourceSlot: 0, destinationSlot: 6, count: 3 });
+    expect(stateHash(replaySave(save))).toBe(stateHash(next));
   });
 
   it('keeps ordinary graphical activation detail-first and every consequence explicitly labeled', () => {
@@ -186,6 +248,7 @@ describe('one-screen hero dashboard', () => {
     const source = readFileSync(new URL('../components/AdventureHeroDetails.tsx', import.meta.url), 'utf8');
     const css = readFileSync(new URL('../styles/game.css', import.meta.url), 'utf8');
     expect(source).toContain('closeRef.current?.focus()');
+    expect(source).toContain('priorFocus.current === null');
     expect(source).toContain("event.key === 'Escape'");
     expect(source).toContain('event.stopImmediatePropagation()');
     expect(source).toContain("document.querySelector('.spell-glossary-popover')");

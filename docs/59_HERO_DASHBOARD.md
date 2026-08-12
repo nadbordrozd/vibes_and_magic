@@ -1,8 +1,7 @@
 # 59 — One-screen hero dashboard
 
 Status: contract, audited inventory, exact 79-asset production catalog, one-screen dashboard UI, and
-deterministic desktop/390 browser evidence complete 2026-08-12; final independent UI acceptance remains
-follow-up work. This is a presentation and
+independent deterministic desktop/390 browser acceptance complete 2026-08-12. This is a presentation and
 asset-pipeline companion to docs 34, 44–46, and 51. It extends S02, S06–S09 without changing hero,
 army, item, artifact, equipment, save, replay, or action rules.
 
@@ -442,11 +441,30 @@ still iterates `EQUIPMENT_SLOTS`, calls `slotAccepts`, keeps incompatible destin
 their exact reason, and dispatches the existing actions; Burden, Seamstone, Kit, save, and replay
 semantics are unchanged.
 
-The dedicated deterministic browser runner captures and audits the ordinary dashboard plus identity
-detail at 1440×1000 and 390×844. Evidence is under
+The dedicated deterministic browser runner captures and audits the ordinary dashboard plus identity,
+primary-stat, company/Split, skill, artifact/equipment, item, special-control, empty-state, and
+90-artifact long-backpack views at 1440×1000 and 390×844. Evidence is under
 `.pixel-work/review/hero-dashboard/dashboard-desktop.png`, `dashboard-390.png`,
-`detail-desktop.png`, `detail-390.png`, and the matching artifact-detail, equipment-review, and
-item-detail pairs. The runner checks region order, absence of tabs, exact
-7/11/8 fixture cells, one body scroller, viewport bounds, horizontal overflow, per-region overflow,
-loaded images/no fallbacks, 44 px visible targets, initial Close focus, nested detail focus, Escape,
-and invoking-cell focus return. Final independent acceptance remains owned by the follow-up task.
+`detail-desktop.png`, `detail-390.png`, and the matching named pairs. The runner checks region order,
+absence of tabs, exact 7/11/8 fixture cells, one body scroller, page lock, viewport/horizontal bounds,
+per-region overflow, intrinsic image dimensions/no transforms/no fallbacks, 44 px visible targets,
+accessible unavailable reasons, initial and nested focus, click/Enter/Space/touch activation,
+topmost Escape/backdrop handling, and exact invoking-cell/map-control focus return.
+
+## 11. Independent acceptance — 2026-08-12
+
+The independent pass expanded the real-browser matrix beyond representative open/close journeys. It
+now executes every occupied graphical family, empty equipment choice, pure preview byte checks,
+confirmed equip displacement and unequip, Burden refusal, Seamstone school choice, Split, adventure
+item handoff, combat/automatic inspect-only behavior, spellbook, Attunement, Ritualist, Cache/Dig,
+Unstitch, empty regions, and the complete 90-artifact backpack. Focused catalog/UI coverage proves
+fallback-free reuse for all 21 skills, 90 artifacts, 37 items, 50 units, and four resources in
+addition to the 36 portrait/specialty pairs and fixed dashboard icons.
+
+That pass found and fixed one presentation-state defect without changing a game rule: React
+development Strict Mode could run the dashboard mount effect twice and replace the saved map invoker
+with the dashboard Close button. Prior focus is now captured only once per mount, so closing the
+topmost detail and then the dashboard restores the exact detail cell and original `Hero details`
+control. Focused tests pass 36/36, pretest and production build pass, and the full serial suite passes
+804/805; the sole failure remains the accepted unrelated seed-1/day-56 no-winner assertion at
+`src/core/__tests__/mechanics-regression.test.ts:231`.

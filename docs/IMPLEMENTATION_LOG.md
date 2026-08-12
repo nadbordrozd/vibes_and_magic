@@ -873,3 +873,23 @@ Beads epic `vibes_and_magic-6sf`.
 - Asset/job/HoMM2/map/spec/UX pretest and production build pass. Focused coverage passes 42/42. The
   full serial suite passes 802/803; its sole failure remains the accepted unrelated seed-1/day-56
   no-winner assertion at `src/core/__tests__/mechanics-regression.test.ts:231`.
+
+## 2026-08-12 — Independent hero-dashboard acceptance
+
+- Expanded the deterministic desktop/390 browser matrix to every occupied graphical family,
+  click/Enter/Space/touch activation, nested/outer focus and backdrop layering, empty equipment,
+  equip displacement, unequip, Burden, Seamstone, Split, all item timings, spellbook, Attunement,
+  Ritualist, Cache/Dig, Unstitch, empty regions, and a 90-artifact backpack. Pure inspection keeps
+  save bytes unchanged; confirmed actions retain reducer and five-field save/replay outcomes.
+- Found one UI-state defect: React development Strict Mode replaced the saved outer invoker during
+  its second mount-effect pass, so the dashboard could close without returning focus to `Hero
+  details`. Prior focus is now captured once per mount; real-browser Escape and backdrop journeys
+  restore the exact nested cell and original map control.
+- Reviewed 26 fresh captures (13 paired 1440×1000/390×844 views). Labels and pixel art remain legible, header
+  and footer actions stay visible, the dashboard and 90-artifact inventory use one vertical body
+  scroller, and no horizontal clipping, image fallback, transform, or inaccessible destination was
+  found. The narrow equipment footer is intentionally sticky while all eleven destinations remain
+  scroll- and focus-reachable.
+- Focused catalog/UI coverage passes 36/36; pretest and production build pass. The full serial suite
+  passes 804/805, with only the accepted unrelated seed-1/day-56 no-winner assertion at
+  `src/core/__tests__/mechanics-regression.test.ts:231`.

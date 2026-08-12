@@ -243,8 +243,9 @@ export function AdventureHeroDetails({
   };
 
   useEffect(() => {
-    priorFocus.current = document.activeElement instanceof HTMLElement
-      ? document.activeElement : null;
+    if (priorFocus.current === null && document.activeElement instanceof HTMLElement) {
+      priorFocus.current = document.activeElement;
+    }
     closeRef.current?.focus();
     const key = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
