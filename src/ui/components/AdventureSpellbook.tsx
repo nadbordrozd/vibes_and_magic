@@ -52,6 +52,6 @@ export function AdventureSpellbook({ state, onClose, onCast }: Props) {
   const entries = adventureSpellbookEntries(state);
   return <Spellbook className="adventure-spellbook" context="Map magic" title="Adventure spellbook"
     heroName={hero.name} mana={hero.mana} maxMana={hero.knowledge * 10}
-    spellPower={hero.spellPower} movement={hero.movement} debts={hero.debts}
+    movement={hero.movement} debts={hero.debts}
     entries={entries} onClose={onClose} onCast={onCast} />;
 }

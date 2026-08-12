@@ -913,3 +913,16 @@
 - Cold Road's unrestricted distance/connectivity, Wild Growth's City-only stacking, Death's
   Ledger's Barrowfield-object reveal, noncontiguous Murmuration, and the other doc-56 findings are
   presentation corrections only. No resolver, target, cost, acquisition, or save behavior changes.
+
+## 2026-08-12 — Spell-mechanic help is semantic, shared, and non-authoritative (doc 57)
+
+- Every reusable player-facing spell term opens one shared accessible glossary detail containing
+  its native effect icon, canonical name, and single lexicon rule. Popovers are body-portaled and
+  viewport-clamped; hover, focus, click/tap, Escape, close, outside input, and focus restoration are
+  one component contract rather than surface-specific title text.
+- The Spellbook consumes the authored Standard and Upgraded token sequences directly. Legacy
+  catalog prose uses deterministic longest-match alias tokenization with word boundaries; ordinary
+  language remains ordinary.
+- Existing action buttons never contain glossary buttons. Their adjacent semantic copy or existing
+  inspection route supplies the same definitions while selection, targeting, and confirmation
+  behavior remains unchanged.

@@ -786,3 +786,15 @@ Beads epic `vibes_and_magic-6sf`.
   Rite/Craft test suite.
 - Final focused resolver/contract coverage passed 146/146 in 7 files. Production build,
   spec-link, UX, and diff gates passed.
+
+## 2026-08-12 — Shared interactive spell glossary
+
+- Added deterministic longest-match lexicon tokenization and one portal-based, viewport-clamped
+  accessible term reference/popover using the complete 30-icon manifest-backed effect family.
+- Rendered both Standard and Upgraded Spellbook rules from the all-68 structured presentation
+  record and removed the generic Power vital from the book without changing selection or casting.
+- Routed help, inspection, combat status/targeting/logs, hero specialties/skills, City Growth and
+  guild rules, adventure targeting, confirmations, items/artifacts/structures, and editor Guardian
+  help through shared semantic presentation while preserving valid non-nested controls.
+- Extended focused tokenizer/render/a11y audits and the desktop/390 Spellbook browser journey with
+  Bloom rule, help-glossary, and live counter/status popover evidence.

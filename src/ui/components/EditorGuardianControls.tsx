@@ -12,6 +12,7 @@ import {
   nextEditorGuardianUnit, type EditorGuardianUpdate,
 } from '../mapEditorGuardians';
 import { ItemSprite } from '../assets';
+import { SemanticSpellText, SpellGlossaryReference } from './SpellGlossary';
 
 function GuardianCreatureOptions({
   guardian, stackIndex,
@@ -53,7 +54,7 @@ export function EditorGuardianInspector({
 
   return <section className="editor-object-inspector editor-guardian-inspector"
     aria-labelledby="editor-guardian-inspector-title">
-    <header><div><span className="kicker">Selected guardian</span>
+    <header><div><span className="kicker">Selected <SpellGlossaryReference termId="guardian" label="guardian" /></span>
       <h3 id="editor-guardian-inspector-title">{
         guardian.army[0] ? 'unitId' in guardian.army[0]
           ? UNITS[guardian.army[0].unitId].name
@@ -110,9 +111,9 @@ export function EditorGuardianInspector({
       <small>Allows this authored company to split across legal battle deployment stacks.</small>
       <label><input type="checkbox" checked={guardian.static}
         onChange={(event) => onUpdate({ static: event.target.checked })} /> Static guardian</label>
-      <small>{guardian.static
+      <small><SemanticSpellText>{guardian.static
         ? 'Static guardians keep their authored counts.'
-        : 'At week start, runtime growth derives from each authored original count (10%, minimum +1, capped at 5×). No duplicate growth field is authored.'}</small>
+        : 'At week start, runtime growth derives from each authored original count (10%, minimum +1, capped at 5×). No duplicate growth field is authored.'}</SemanticSpellText></small>
     </fieldset>
     <fieldset className="editor-army-editor"><legend>Guardian army</legend>
       <p>Every chosen adventure creature has a directly editable positive whole troop count.</p>

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { assetId, manifestEntry } from '../../../assets/manifest';
 import type { ResourceId, Resources } from '../../core/types';
+import { SemanticSpellText } from './SpellGlossary';
 
 export const RESOURCE_NAMES: Record<ResourceId, string> = {
   gold: 'Gold', timber: 'Timber', iron: 'Iron', essence: 'Essence',
@@ -42,12 +43,16 @@ export function ResourceCost({ cost, compact = false }: {
   );
 }
 
-export function ResourceRichText({ children }: { children: string }) {
+export function ResourceRichText({ children, semantic = false }: {
+  children: string; semantic?: boolean;
+}) {
   const expression = /\b(\d[\d,]*)\s+(gold|timber|iron|essence)\b|\b(gold|timber|iron|essence)\b/gi;
   const output: ReactNode[] = [];
   let cursor = 0;
   for (const match of children.matchAll(expression)) {
-    output.push(children.slice(cursor, match.index));
+    const before = children.slice(cursor, match.index);
+    output.push(semantic && before
+      ? <SemanticSpellText key={`text-${cursor}`}>{before}</SemanticSpellText> : before);
     const resource = (match[2] ?? match[3]).toLowerCase() as ResourceId;
     output.push(match[1] ? (
       <ResourceAmount key={match.index} resource={resource}
@@ -59,6 +64,8 @@ export function ResourceRichText({ children }: { children: string }) {
     ));
     cursor = match.index! + match[0].length;
   }
-  output.push(children.slice(cursor));
+  const after = children.slice(cursor);
+  output.push(semantic && after
+    ? <SemanticSpellText key={`text-${cursor}`}>{after}</SemanticSpellText> : after);
   return <>{output}</>;
 }

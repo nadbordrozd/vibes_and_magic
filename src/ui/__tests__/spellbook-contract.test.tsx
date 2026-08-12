@@ -92,7 +92,7 @@ describe('shared stitched spellbook contract', () => {
   it('renders accessible tabs and a name-plus-mana large-icon grid before any Cast control', () => {
     const entries = genericEntries();
     const html = renderToStaticMarkup(<Spellbook context="Map magic" title="Spellbook test"
-      heroName="Aldith" mana={30} maxMana={40} spellPower={3} movement={900}
+      heroName="Aldith" mana={30} maxMana={40} movement={900}
       debts={[]} entries={entries} onClose={() => undefined} onCast={() => {
         throw new Error('Static selection must never cast');
       }} />);

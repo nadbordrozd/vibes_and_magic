@@ -100,6 +100,12 @@ Rules/state computation remains core-side.
 All 36 dwellings use faction-specific in-world names and flavor from the building catalog. “Tier N
 Dwelling” is not player-facing text.
 
+City recruitment and Mage Guild presentation use the shared spell-glossary contract for reusable
+terms such as Growth and for every structured Standard/Upgraded spell rule. This semantic help is a
+presentation projection only: canonical growth, recruitment, inscription costs, and building state
+remain owned by the catalogs and core rules above. See
+[work order 57](../57_INTERACTIVE_SPELL_GLOSSARY.md).
+
 ## Difficulty
 
 Difficulty is one global game setting recorded in save/replay headers. It has only four authorized

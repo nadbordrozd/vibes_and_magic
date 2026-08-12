@@ -8,6 +8,7 @@ import { previewAction } from '../actionPreview';
 import type { ActionDraft } from './ActionConfirmationDialog';
 import { ResourceCost } from './ResourceToken';
 import { ItemSprite } from '../assets';
+import { SemanticSpellText } from './SpellGlossary';
 
 export function AdventureItemDialog({
   state, hero, inventorySlot, onDraft, onCancel,
@@ -33,7 +34,7 @@ export function AdventureItemDialog({
     <section className="choice-dialog item-target-dialog" role="dialog" aria-modal="true">
       <span className="dialog-kicker">Adventure consumable · target choice</span>
       <h2><ItemSprite item={item} />{itemName(item)}</h2>
-      <p>{definition.description} Nothing is consumed until the final confirmation.</p>
+      <p><SemanticSpellText>{definition.description}</SemanticSpellText> Nothing is consumed until the final confirmation.</p>
       <div className="choice-cards item-target-options">
         {definition.behavior === 'remoteMovement' && heroes.map((candidate) => {
           const draft = adventureItemDraft(state, hero, inventorySlot, undefined, candidate);

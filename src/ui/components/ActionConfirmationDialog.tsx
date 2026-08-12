@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import type { Action, GameState, ResourceId } from '../../core/types';
 import { previewAction } from '../actionPreview';
 import { ResourceAmount } from './ResourceToken';
+import { SemanticSpellText } from './SpellGlossary';
 
 export interface ActionDraft {
   action: Action;
@@ -34,7 +35,7 @@ export function ActionConfirmationDialog({
       <dl className="action-preview-facts">
         <div><dt>Actor</dt><dd>{draft.actor}</dd></div>
         <div><dt>Target</dt><dd>{draft.target}</dd></div>
-        <div><dt>Effect</dt><dd>{draft.effect}</dd></div>
+        <div><dt>Effect</dt><dd><SemanticSpellText>{draft.effect}</SemanticSpellText></dd></div>
         <div><dt>Cost</dt><dd>{Object.keys(preview.cost).length
           ? (Object.entries(preview.cost) as Array<[ResourceId, number]>).map(
             ([resource, amount]) => <ResourceAmount key={resource}
@@ -46,8 +47,8 @@ export function ActionConfirmationDialog({
           resource={resource} amount={amount} compact />)}</dd></div>}
       </dl>
       {preview.legal
-        ? <p className="action-preview-result">Expected feedback: {preview.feedback}</p>
-        : <p className="action-preview-error">Unavailable · {preview.reason}</p>}
+        ? <p className="action-preview-result">Expected feedback: <SemanticSpellText>{preview.feedback}</SemanticSpellText></p>
+        : <p className="action-preview-error">Unavailable · <SemanticSpellText>{preview.reason ?? ''}</SemanticSpellText></p>}
       <div className="dialog-actions">
         <button autoFocus onClick={onCancel}>Cancel · change nothing</button>
         <button className="primary" disabled={!preview.legal}

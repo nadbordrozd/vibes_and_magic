@@ -451,7 +451,7 @@ export function App() {
       )}
       {!battleResult && <VictoryDialog state={game} onMenu={returnToMenu} />}
       {error && <button className="error-toast" role="alert" onClick={() => setError('')}>{error} ×</button>}
-      {notice && <div className="notice-toast" role="status" aria-live="polite"><ResourceRichText>{notice}</ResourceRichText></div>}
+      {notice && <div className="notice-toast" role="status" aria-live="polite"><ResourceRichText semantic>{notice}</ResourceRichText></div>}
       {!battleResult && !game.winner && <InspectionLayer state={game} />}
       <ContextHelp state={game} context={helpContext} />
     </>

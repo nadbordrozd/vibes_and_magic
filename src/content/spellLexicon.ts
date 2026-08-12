@@ -187,6 +187,49 @@ export function spellLexiconTermIdsForText(text: string): SpellLexiconId[] {
   })).map((definition) => definition.id);
 }
 
+type LexiconAlias = { termId: SpellLexiconId; alias: string; order: number };
+
+const LEXICON_ALIASES: readonly LexiconAlias[] = Object.values(SPELL_LEXICON)
+  .flatMap((definition, order) => definition.aliases.map((alias) => ({
+    termId: definition.id, alias, order,
+  })))
+  .sort((left, right) => right.alias.length - left.alias.length
+    || left.order - right.order || left.alias.localeCompare(right.alias));
+
+const escapePattern = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const LEXICON_ALIAS_PATTERN = new RegExp(
+  `(?<![A-Za-z0-9])(${LEXICON_ALIASES.map(({ alias }) => escapePattern(alias)
+    .replace(/[\\ -]+/g, '[\\s-]+')).join('|')})(?![A-Za-z0-9])`,
+  'gi',
+);
+
+const NORMALIZED_ALIAS_TO_TERM = new Map(LEXICON_ALIASES.map(({ termId, alias }) => [
+  alias.toLocaleLowerCase().replace(/[\s-]+/g, ' '), termId,
+] as const));
+
+/**
+ * Convert catalog prose to semantic tokens without rewriting it. Matching is left-to-right and
+ * longest-first, so `battle enchantment` wins over `enchantment` and authored punctuation/case is
+ * retained as the visible label.
+ */
+export function tokenizeSpellLexiconText(text: string): SpellRulePresentation {
+  const tokens: SpellRuleToken[] = [];
+  let cursor = 0;
+  for (const match of text.matchAll(LEXICON_ALIAS_PATTERN)) {
+    const index = match.index ?? 0;
+    if (index > cursor) tokens.push(spellRuleText(text.slice(cursor, index)));
+    const label = match[0];
+    const termId = NORMALIZED_ALIAS_TO_TERM.get(label.toLocaleLowerCase()
+      .replace(/[\s-]+/g, ' '));
+    if (termId) tokens.push(spellRuleTerm(termId, label));
+    else tokens.push(spellRuleText(label));
+    cursor = index + label.length;
+  }
+  if (cursor < text.length) tokens.push(spellRuleText(text.slice(cursor)));
+  return tokens.length > 0 ? tokens : [spellRuleText(text)];
+}
+
 export type OrdinarySpellTermId =
   | 'actors' | 'adjacency' | 'amounts' | 'army-transfer' | 'battle-time'
   | 'casting-resources' | 'cities-and-sites' | 'combat-stats' | 'damage-and-hp'

@@ -63,6 +63,7 @@ import {
   editorGuardianCatalogEntry, editorGuardianSpriteEntry, type GuardianMutationResult,
 } from '../mapEditorGuardians';
 import { EditorGuardianInspector } from './EditorGuardianControls';
+import { SpellGlossaryReference } from './SpellGlossary';
 import {
   EDITOR_ARTIFACT_CATALOG, EDITOR_ARTIFACT_GROUPS, EDITOR_ITEM_CATALOG,
   EDITOR_ITEM_GROUPS, EDITOR_RESOURCE_IDS, EDITOR_TAUGHT_SPELL_GROUPS,
@@ -1753,7 +1754,7 @@ export function EditorTerrainCanvas({
           <section className="editor-palette-section editor-guardian-palette"
             data-palette-order="6" aria-labelledby="guardian-palette-title">
             <span className="editor-palette-number">06</span>
-            <h3 id="guardian-palette-title">Guardians</h3>
+            <h3 id="guardian-palette-title"><SpellGlossaryReference termId="guardian" label="Guardians" /></h3>
             <label>Search creatures<input type="search" aria-label="Search guardian creatures"
               value={guardianSearch} placeholder="Name, ID, faction, or tier"
               onChange={(event) => setGuardianSearch(event.target.value)} /></label>

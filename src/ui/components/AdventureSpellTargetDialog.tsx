@@ -12,6 +12,8 @@ import {
   adventureDraftIncompleteReason, type AdventureCastAction, beastGuardianGold,
 } from '../adventureSpellTargeting';
 import { ContentIcon } from './ContentIcon';
+import { spellRuleVersions } from '../../content/spells/rulePresentation';
+import { SemanticSpellText, SpellRuleText } from './SpellGlossary';
 
 interface Props {
   state: GameState;
@@ -140,7 +142,7 @@ export function AdventureSpellTargetDialog({
       <h2 id="adventure-spell-target-heading" className="content-icon-label">
         <ContentIcon kind="spell" id={action.spellId} />{spell.name} · {plus ? 'Upgraded' : 'Standard'}</h2>
       <p className="spell-target-cost"><b>{spell.mana} mana</b> · <b>{adventureSpellMoveCost(hero)} movement</b></p>
-      <p>{plus ? spell.plus : spell.base}</p>
+      <p><SpellRuleText tokens={spellRuleVersions(action.spellId)[plus ? 'upgraded' : 'standard']} /></p>
 
       {action.spellId === 'beacon' && plus && <label>Friendly city
         <select value={action.castleId ?? ''} onChange={(event) => choose({ castleId: event.target.value || undefined })}>
@@ -222,8 +224,9 @@ export function AdventureSpellTargetDialog({
           onClick={() => choose({ omen })}><b>{OMENS[omen].title}</b><small>{omenEffectSummary(OMENS[omen]).join(' ')}</small></button>)}
       </fieldset>}
 
-      <section className="spell-consequence"><b>On confirmation</b><span>{exactConsequence(state, action)}</span></section>
-      {reason && <p className="spell-target-reason">Cannot confirm · {reason}</p>}
+      <section className="spell-consequence"><b>On confirmation</b><span>
+        <SemanticSpellText>{exactConsequence(state, action)}</SemanticSpellText></span></section>
+      {reason && <p className="spell-target-reason">Cannot confirm · <SemanticSpellText>{reason}</SemanticSpellText></p>}
       <div className="dialog-actions">
         <button autoFocus onClick={onCancel}>Cancel · spend nothing</button>
         <button onClick={onBack}>Back to spellbook</button>

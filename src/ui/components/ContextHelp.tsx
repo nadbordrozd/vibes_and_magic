@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { GameState } from '../../core/types';
 import { SPELL_LEXICON } from '../../content/spellLexicon';
+import { SemanticSpellText, SpellGlossaryReference } from './SpellGlossary';
 
 export type HelpContext = 'menu' | 'adventure' | 'castle' | 'combat' | 'choice' | 'result'
   | 'campaign';
@@ -79,17 +80,11 @@ const CONTEXT_HELP: Record<HelpContext, HelpSection> = {
   },
 };
 
-const GLOSSARY = [
+const ORDINARY_GLOSSARY = [
   ['Company', 'One army stack: a number of identical creatures acting together.'],
-  [SPELL_LEXICON.morale.name, SPELL_LEXICON.morale.rule],
-  [SPELL_LEXICON.growth.name, SPELL_LEXICON.growth.rule],
   ['Standard / Upgraded', 'Every spell has Standard and Upgraded rules. Permanent learning says Upgraded; resonance says Upgraded here and names the reason.'],
-  [SPELL_LEXICON.resonance.name, SPELL_LEXICON.resonance.rule],
-  [SPELL_LEXICON.counter.name, SPELL_LEXICON.counter.rule],
-  [SPELL_LEXICON['battle-enchantment'].name, SPELL_LEXICON['battle-enchantment'].rule],
   ['Debt', 'A visible future cost accepted in exchange for an immediate bargain benefit.'],
   ['Burden', 'A powerful artifact with a visible drawback and removal condition.'],
-  [SPELL_LEXICON.guardian.name, SPELL_LEXICON.guardian.rule],
 ] as const;
 
 const CONTEXT_SHORTCUTS: Partial<Record<HelpContext, Array<[string, string]>>> = {
@@ -122,10 +117,11 @@ export function ContextHelp({ state, context }: { state: GameState | null; conte
         <header><div><span>How to play</span><h2>{glossary ? 'Field glossary' : help.title}</h2></div>
           <button aria-label="Close help" onClick={() => setOpen(false)}>×</button></header>
         {!glossary ? <>
-          <p className="help-lead">{help.body}</p>
+          <p className="help-lead"><SemanticSpellText>{help.body}</SemanticSpellText></p>
           {state && context !== 'combat' && context !== 'result' && <section className="help-objective">
             <span>Current objective</span><b>{state.map.victory.mechanics}</b></section>}
-          <ol>{help.steps.map((step) => <li key={step}>{step}</li>)}</ol>
+          <ol>{help.steps.map((step) => <li key={step}>
+            <SemanticSpellText>{step}</SemanticSpellText></li>)}</ol>
           <section className="control-legend"><h3>Controls</h3>
             <p><kbd>Hover</kbd> identify · <kbd>Right-click</kbd> inspect rules · <kbd>Left-click</kbd> select or act</p>
             <p><kbd>?</kbd> this help · <kbd>Esc</kbd> close help
@@ -133,8 +129,15 @@ export function ContextHelp({ state, context }: { state: GameState | null; conte
                 <span key={key}> · <kbd>{key}</kbd> {action}</span>
               ))}</p>
           </section>
-        </> : <dl className="help-glossary">{GLOSSARY.map(([term, definition]) =>
-          <div key={term}><dt>{term}</dt><dd>{definition}</dd></div>)}</dl>}
+        </> : <dl className="help-glossary">
+          {ORDINARY_GLOSSARY.map(([term, definition]) =>
+            <div key={term}><dt>{term}</dt><dd><SemanticSpellText>{definition}</SemanticSpellText></dd></div>)}
+          {(Object.keys(SPELL_LEXICON) as Array<keyof typeof SPELL_LEXICON>).map((termId) =>
+            <div key={termId} data-help-term={termId}>
+              <dt><SpellGlossaryReference termId={termId} /></dt>
+              <dd>{SPELL_LEXICON[termId].rule}</dd>
+            </div>)}
+        </dl>}
         <footer><button className="secondary" onClick={() => setGlossary((value) => !value)}>
           {glossary ? `Back to ${help.title}` : 'Open glossary'}</button>
           <button className="primary" onClick={() => setOpen(false)}>Return to game</button></footer>

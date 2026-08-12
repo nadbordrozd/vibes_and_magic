@@ -139,6 +139,11 @@ only an opaque ID or name. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
   building, terrain, tile, and map-object strings.
 - [`../../src/content/mapObjectRegistry.ts`](../../src/content/mapObjectRegistry.ts): complete
   adventure object-kind registry.
+- [`../../src/content/spellLexicon.ts`](../../src/content/spellLexicon.ts): stable reusable spell
+  terms, authoritative player rules, aliases, deterministic longest-match tokenization, and the
+  all-spell mechanics coverage table.
+- [`../../src/content/spells/rulePresentation.ts`](../../src/content/spells/rulePresentation.ts):
+  complete structured Standard/Upgraded rule presentations for all 68 spells.
 
 Buildings require ID/name/flavor/function/category, legal costs/prerequisites, and valid upgrade links.
 Each faction has six ordered, named, flavored dwellings. Terrain definitions keep gameplay, skin,
@@ -235,3 +240,9 @@ tile matrices, non-finite/out-of-bounds coordinates, invalid slots or independen
 references, empty or oversized hero armies, nonpositive guardian counts, missing reward contents,
 broken links, and any ordinary S02/S03 lint failure. Structurally valid drafts may remain local or be
 exported with diagnostics; test play, campaign start, and built-in promotion require zero errors.
+
+Semantic-presentation tests additionally require every structured term token to resolve to one
+lexicon definition and one manifest-backed native effect icon. The shared UI renderer has no icon or
+definition fallback; legacy catalog text uses deterministic longest-match aliases and word
+boundaries so ordinary-language substrings remain ordinary. See
+[work order 57](../57_INTERACTIVE_SPELL_GLOSSARY.md).

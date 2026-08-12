@@ -10,6 +10,8 @@ import {
   formatFootprint, type AttackPrediction,
 } from '../attackPrediction';
 import { ContentIcon } from './ContentIcon';
+import { SemanticSpellText, SpellGlossaryReference } from './SpellGlossary';
+import type { SpellLexiconId } from '../../content/spellLexicon';
 
 interface Props {
   active: BattleStack | null;
@@ -71,8 +73,8 @@ export function CombatUnitPanel({
             <span>Attack <b>{unit.attack} unit + {shownHero?.attack ?? 0} hero</b></span>
             <span>Defense <b>{unit.defense} unit + {shownHero?.defense ?? 0} hero</b></span>
             <span>Speed <b>{effectiveSpeed(shown)} now · {unit.speed} base</b></span>
-            <span title={`At ${shown.meterThreshold ?? 100}, this company acts again after its current action.`}>
-              Morale <b>{shown.morale}/{shown.meterThreshold ?? 100}</b>
+            <span>
+              <SpellGlossaryReference termId="morale" /> <b>{shown.morale}/{shown.meterThreshold ?? 100}</b>
             </span>
             <span>Shots <b>{unit.abilities.includes('ranged') ? shown.shots : '—'}</b></span>
             <span>Footprint <b>{unit.hexSize} hex{unit.hexSize === 1 ? '' : 'es'}</b></span>
@@ -88,16 +90,18 @@ export function CombatUnitPanel({
           </div>
           {shownHero && <p className="combat-faction-rule">
             <b>{FACTION_PASSIVES[shownHero.faction].name}</b>
-            <span>{FACTION_PASSIVES[shownHero.faction].description}</span>
+            <span><SemanticSpellText>{FACTION_PASSIVES[shownHero.faction].description}</SemanticSpellText></span>
           </p>}
           <div className="ability-list counters">
             {Object.entries(shown.counters).filter(([, count]) => count > 0)
               .map(([counter, count]) => <i key={counter} data-inspect-kind="counter"
-                data-inspect-id={counter}>{counter[0].toUpperCase() + counter.slice(1)} {count}</i>)}
+                data-inspect-id={counter}><SpellGlossaryReference
+                  termId={counter as SpellLexiconId}
+                  label={`${counter[0].toUpperCase() + counter.slice(1)} ${count}`} /></i>)}
             {shown.effects.map((effect) => (
               <i key={effect.id} data-inspect-kind="enchantment"
                 data-inspect-id={effect.spellId}><ContentIcon kind="spell"
-                  id={effect.spellId} />{SPELLS[effect.spellId].name} · {effect.duration} turns</i>
+                  id={effect.spellId} /><SemanticSpellText>{`${SPELLS[effect.spellId].name} · ${effect.duration} turns`}</SemanticSpellText></i>
             ))}
           </div>
           {selected && (

@@ -1,6 +1,7 @@
 import { mkdirSync } from 'node:fs';
 import puppeteer, { type Page } from 'puppeteer-core';
 import { SPELL_IDS } from '../content/spells';
+import { SPELL_LEXICON, type SpellLexiconId } from '../content/spellLexicon';
 import { makeArmy } from '../core/army';
 import { createBattle } from '../core/combat/battle';
 import { createGame } from '../core/game';
@@ -43,6 +44,7 @@ function combatFixture(): GameState {
     }, state.rng,
   );
   battle.currentStackId = 'attacker-0';
+  battle.stacks[0].counters.bloom = 3;
   battle.attackerHero.knownSpells = [...SPELL_IDS];
   battle.attackerHero.upgradedSpells = ['rally'];
   battle.attackerHero.mana = 3;
@@ -188,6 +190,38 @@ async function openAdventureBook(page: Page) {
   }
 }
 
+async function auditGlossary(page: Page, termId: SpellLexiconId, label: string) {
+  await page.waitForSelector(`[data-spell-glossary="${termId}"]`);
+  await page.waitForFunction((id) => {
+    const image = document.querySelector<HTMLImageElement>(`[data-spell-glossary="${id}"] img`);
+    return Boolean(image?.complete && image.naturalWidth > 0);
+  }, {}, termId);
+  const audit = await page.$eval(`[data-spell-glossary="${termId}"]`, (panel) => {
+    const rect = panel.getBoundingClientRect();
+    const image = panel.querySelector<HTMLImageElement>('img');
+    return {
+      left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom,
+      viewportWidth: document.documentElement.clientWidth,
+      viewportHeight: document.documentElement.clientHeight,
+      rule: panel.querySelector('p')?.textContent?.trim(),
+      iconReady: Boolean(image?.complete && image.naturalWidth > 0),
+    };
+  });
+  if (audit.left < 0 || audit.top < 0 || audit.right > audit.viewportWidth
+      || audit.bottom > audit.viewportHeight || !audit.iconReady
+      || audit.rule !== SPELL_LEXICON[termId].rule) {
+    throw new Error(`${label} glossary audit failed: ${JSON.stringify(audit)}`);
+  }
+}
+
+async function closeGlossaryWithEscape(page: Page, termId: SpellLexiconId) {
+  await page.keyboard.press('Escape');
+  await page.waitForSelector(`[data-spell-glossary="${termId}"]`, { hidden: true });
+  const focusRestored = await page.evaluate((id) =>
+    document.activeElement?.getAttribute('data-spell-term') === id, termId);
+  if (!focusRestored) throw new Error(`${termId} glossary Escape did not restore trigger focus`);
+}
+
 const browser = await puppeteer.launch({
   executablePath, headless: true, args: ['--disable-gpu'],
 });
@@ -208,6 +242,18 @@ try {
     assertAudit(`adventure list ${viewport.name}`, await auditBook(page, false));
     await page.screenshot({ path: `${outputDir}/adventure-list-${viewport.name}.png` });
     console.log(`Captured adventure list at ${viewport.name}`);
+    await page.locator('[role="tab"].wild').click();
+    await page.locator('[data-spell-id="bloom"]').click();
+    const bloomRule = page.locator('.spell-version-comparison [data-spell-term="bloom"]');
+    await bloomRule.click();
+    await auditGlossary(page, 'bloom', `spell rule ${viewport.name}`);
+    await page.screenshot({ path: `${outputDir}/glossary-spell-rule-${viewport.name}.png` });
+    await closeGlossaryWithEscape(page, 'bloom');
+    await bloomRule.click();
+    await page.locator('.spell-detail-heading h3').click();
+    await page.waitForSelector('[data-spell-glossary="bloom"]', { hidden: true });
+    await page.$eval('.spellbook-back', (button) => (button as HTMLButtonElement).click());
+    await page.locator('[role="tab"].rite').click();
     const manaBeforeAdventureSelection = await page.$eval('.spellbook-vitals', (node) => node.textContent);
     await page.locator('[data-spell-id="beacon"]').click();
     await page.waitForSelector('[data-cast-spell-id="beacon"]');
@@ -242,8 +288,23 @@ try {
     }
     await page.locator('.spellbook-close').click();
     await page.waitForSelector('.stitched-spellbook', { hidden: true });
+    await page.locator('.help-toggle').click();
+    await page.locator('.help-dialog footer .secondary').click();
+    const helpBloom = page.locator('[data-help-term="bloom"] [data-spell-term="bloom"]');
+    await helpBloom.click();
+    await auditGlossary(page, 'bloom', `help ${viewport.name}`);
+    await page.screenshot({ path: `${outputDir}/glossary-help-${viewport.name}.png` });
+    await page.locator('[data-spell-glossary="bloom"] header button').click();
+    await page.waitForSelector('[data-spell-glossary="bloom"]', { hidden: true });
+    await page.locator('.help-dialog > header button').click();
+    await page.waitForSelector('.help-dialog', { hidden: true });
 
     await install(page, combatFixture(), '.combat-shell');
+    const statusBloom = page.locator('.active-unit [data-spell-term="bloom"]');
+    await statusBloom.click();
+    await auditGlossary(page, 'bloom', `combat counter status ${viewport.name}`);
+    await page.screenshot({ path: `${outputDir}/glossary-counter-status-${viewport.name}.png` });
+    await closeGlossaryWithEscape(page, 'bloom');
     await page.locator('.spellbook-button').click();
     await page.waitForSelector('.stitched-spellbook');
     assertAudit(`combat list ${viewport.name}`, await auditBook(page, false));
@@ -285,7 +346,7 @@ try {
       throw new Error(`Confirmed combat Cast did not spend mana: ${combatManaAfter}`);
     }
   }
-  console.log('Spellbook browser review passed: 12 screenshots; desktop and 390px list/detail/confirmed-Cast audits clean.');
+  console.log('Spellbook browser review passed: desktop and 390px list/detail/confirmed-Cast plus spell-rule, help, and counter glossary audits clean.');
 } finally {
   await browser.close();
 }

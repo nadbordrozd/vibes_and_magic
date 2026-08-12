@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   ORDINARY_SPELL_TERM_DISPOSITIONS, SPELL_LEXICON, SPELL_MECHANICS_COVERAGE,
   spellLexiconTermIdsForText, spellRulePlainText, spellRuleTerm, spellRuleText,
+  tokenizeSpellLexiconText,
   validateSpellLexicon,
 } from '../spellLexicon';
 import { SPELL_IDS, SPELLS } from '../spells';
@@ -66,6 +67,26 @@ describe('spell mechanics lexicon', () => {
     const state = createGame({ seed: 53, p1: 'human', p2: 'ai' });
     expect(inspectTarget(state, { kind: 'counter', id: 'bloom' })?.mechanics)
       .toEqual([SPELL_LEXICON.bloom.rule]);
+  });
+
+  it('tokenizes catalog prose deterministically with longest aliases first', () => {
+    expect(tokenizeSpellLexiconText('A battle enchantment fills an enchantment slot.'))
+      .toEqual([
+        { kind: 'text', text: 'A ' },
+        { kind: 'term', termId: 'battle-enchantment', label: 'battle enchantment' },
+        { kind: 'text', text: ' fills an ' },
+        { kind: 'term', termId: 'battle-enchantment', label: 'enchantment slot' },
+        { kind: 'text', text: '.' },
+      ]);
+    expect(tokenizeSpellLexiconText('BLOOM counters and Bloom counter.'))
+      .toEqual([
+        { kind: 'term', termId: 'bloom', label: 'BLOOM counters' },
+        { kind: 'text', text: ' and ' },
+        { kind: 'term', termId: 'bloom', label: 'Bloom counter' },
+        { kind: 'text', text: '.' },
+      ]);
+    expect(tokenizeSpellLexiconText('The counterweight and growthling remain ordinary.'))
+      .toEqual([{ kind: 'text', text: 'The counterweight and growthling remain ordinary.' }]);
   });
 
   it('pins Bloom application, healing, non-resurrection, cap, and decay to real resolvers', () => {

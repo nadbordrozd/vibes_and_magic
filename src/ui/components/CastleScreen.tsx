@@ -36,6 +36,8 @@ import {
   ActionConfirmationDialog, type ActionDraft,
 } from './ActionConfirmationDialog';
 import { ContentIcon } from './ContentIcon';
+import { spellRuleVersions } from '../../content/spells/rulePresentation';
+import { SemanticSpellText, SpellGlossaryReference, SpellRuleText } from './SpellGlossary';
 
 interface Props {
   state: GameState;
@@ -186,7 +188,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     data-inspect-kind="unit" data-inspect-id={unit.id}>
                     <span className="tier">T{tier}</span>
                     <UnitPortrait unitId={unit.id} className="recruit-unit-portrait" />
-                    <div><b>{dwelling.name}</b><small>Recruits: {unit.name} · Growth: {unit.growth}/week<br />{castle.available[tier - 1]} available · <ResourceCost cost={unit.cost} compact /> each</small></div>
+                    <div><b>{dwelling.name}</b><small>Recruits: {unit.name} · <SpellGlossaryReference termId="growth" />: {unit.growth}/week<br />{castle.available[tier - 1]} available · <ResourceCost cost={unit.cost} compact /> each</small></div>
                     <div className="stepper">
                       <button disabled={count === 0} title={count === 0 ? 'The selected amount is already zero.' : 'Select one fewer.'}
                         onClick={() => setCounts({ ...counts, [tier]: Math.max(0, count - 1) })}>−</button>
@@ -263,7 +265,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     <div className="content-icon-label"><ContentIcon kind="spell" id={spellId} />
                       <b>{SPELLS[spellId].name}{upgraded ? '+' : ''}</b></div>
                     <small>{SPELL_SCHOOL_NAMES[SPELLS[spellId].school]} school · {SPELLS[spellId].mana} mana</small>
-                    <span>{upgraded ? SPELLS[spellId].plus : SPELLS[spellId].base}</span>
+                    <span><SpellRuleText tokens={spellRuleVersions(spellId)[upgraded ? 'upgraded' : 'standard']} /></span>
                     <button
                       disabled={!previewAction(state, {
                         type: 'GUILD_INSCRIBE', castleId: castle.id, spellId,
@@ -459,7 +461,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                 title="Close building details" onClick={() => setSelectedBuilding(null)}>×</button>
               <BuildingPicture category={selectedDefinition.category} large />
               <h2>{selectedDefinition.name}</h2>
-              <p className="building-detail-flavor">{selectedDefinition.flavor}</p>
+              <p className="building-detail-flavor"><SemanticSpellText>{selectedDefinition.flavor}</SemanticSpellText></p>
               <section><h3>Function</h3><p>{selectedDefinition.function}</p></section>
               {(selectedDefinition.upgrades || selectedDefinition.prerequisite) && (
                 <p className="upgrade-line">

@@ -525,7 +525,7 @@ export function BattleResult({
                       : <ArtifactSprite artifactId={collectible.id} />}
                   </span>
                 ))}
-                <ResourceRichText>{consequence.detail}</ResourceRichText>
+                <ResourceRichText semantic>{consequence.detail}</ResourceRichText>
               </span>
             </div>
           )) : <p>No additional campaign state changed.</p>}

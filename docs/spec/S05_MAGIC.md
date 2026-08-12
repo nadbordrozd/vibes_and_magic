@@ -171,3 +171,10 @@ the all-spell coverage table maps every catalog entry to its real resolver branc
 lexicon term or an explicit ordinary-language disposition. Structured rule tokens may reference a
 term ID without copying its definition. The lexicon is explanatory and cannot override a resolver,
 create an effect, or infer mechanics from presentation. See [work order 53](../53_SPELL_EFFECT_LEXICON.md).
+
+Player-facing semantic references use the shared contract in
+[`../../src/ui/components/SpellGlossary.tsx`](../../src/ui/components/SpellGlossary.tsx). The
+Spellbook renders its complete Standard and Upgraded token sequences directly; every term reference
+shows the term's native icon, name, and authoritative lexicon rule without changing casting or
+targeting. Unstructured catalog copy is recognized deterministically by longest alias at a word
+boundary. See [work order 57](../57_INTERACTIVE_SPELL_GLOSSARY.md).

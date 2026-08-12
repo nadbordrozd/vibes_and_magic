@@ -3,11 +3,12 @@ import type { GameState } from '../../core/types';
 import {
   INSPECTION_KIND_NAMES, inspectTarget, type InspectionKind, type InspectionTarget,
 } from '../inspection';
-import { ResourceRichText } from './ResourceToken';
 import { ContentIcon } from './ContentIcon';
 import type { SecondarySkillId, SpellId } from '../../core/types';
 import { ArtifactSprite, ItemSprite } from '../assets';
 import type { ArtifactId, ItemId } from '../../core/types';
+import { SemanticSpellText, SpellGlossaryReference } from './SpellGlossary';
+import type { SpellLexiconId } from '../../content/spellLexicon';
 
 function targetFrom(element: EventTarget | null): InspectionTarget | null {
   if (!(element instanceof Element)) return null;
@@ -119,11 +120,13 @@ export function InspectionLayer({ state }: { state: GameState }) {
                 && <ContentIcon kind="skill" id={target.id as SecondarySkillId} />}
               {target?.kind === 'item' && <ItemSprite itemId={target.id as ItemId} />}
               {target?.kind === 'artifact' && <ArtifactSprite artifactId={target.id as ArtifactId} />}
-              {card.name}
+              {target?.kind === 'counter'
+                ? <SpellGlossaryReference termId={target.id as SpellLexiconId} label={card.name} />
+                : card.name}
             </h2>
-            <p className="inspection-flavor">{card.flavor}</p>
+            <p className="inspection-flavor"><SemanticSpellText>{card.flavor}</SemanticSpellText></p>
             {target?.kind === 'object' && <small className={`journal-state ${card.learned ? 'learned' : ''}`}>{card.learned ? 'Learned' : 'Undiscovered'}</small>}
-            {card.mechanics.length > 0 && <section className="inspection-mechanics"><h3>Mechanics</h3>{card.mechanics.map((line) => <p key={line}><ResourceRichText>{line}</ResourceRichText></p>)}</section>}
+            {card.mechanics.length > 0 && <section className="inspection-mechanics"><h3>Mechanics</h3>{card.mechanics.map((line) => <p key={line}><SemanticSpellText>{line}</SemanticSpellText></p>)}</section>}
           </article>
         </div>
       )}

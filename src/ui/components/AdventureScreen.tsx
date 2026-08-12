@@ -554,7 +554,7 @@ export function AdventureScreen({
           {meetingNotice && <div className="meeting-status" role="status" aria-live="polite">
             {meetingNotice}
           </div>}
-          <div className="message-strip" aria-live="polite"><ResourceRichText>{state.lastMessage}</ResourceRichText></div>
+          <div className="message-strip" aria-live="polite"><ResourceRichText semantic>{state.lastMessage}</ResourceRichText></div>
         </aside>
       </div>
       {objectiveOpen && (
@@ -620,7 +620,7 @@ export function AdventureScreen({
           </div>
           <details className="activity-log"><summary>Activity log · {state.eventLog.length} entries</summary>
             <div>{state.eventLog.slice(-12).reverse().map((entry, index) => <p
-              key={`${entry}-${index}`}><ResourceRichText>{entry}</ResourceRichText></p>)}</div>
+              key={`${entry}-${index}`}><ResourceRichText semantic>{entry}</ResourceRichText></p>)}</div>
           </details>
           <footer className="dialog-actions"><button onClick={() => setCommandMenuOpen(false)}>
             Close · return to map</button></footer>

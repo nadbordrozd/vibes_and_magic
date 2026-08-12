@@ -7,8 +7,8 @@ import { debtCountdown } from '../../core/debts';
 import type {
   Action, EquipmentSlotId, GameState, Hero, SpellSchool,
 } from '../../core/types';
-import { ResourceRichText } from './ResourceToken';
 import { ArtifactSprite } from '../assets';
+import { SemanticSpellText } from './SpellGlossary';
 
 const SLOT_NAMES: Record<EquipmentSlotId, string> = {
   head: 'Head', cloak: 'Cloak', amulet: 'Amulet', weapon: 'Weapon',
@@ -104,9 +104,9 @@ export function ArtifactPaperDoll({
       </div>
       {kit.pieces >= 2 && (
         <p className="kit-bonus">
-          <ResourceRichText>{kit.pieces >= 4 ? 'All stats +2 · all spells Upgraded · all resonances · Unstitch'
+          <SemanticSpellText>{kit.pieces >= 4 ? 'All stats +2 · all spells Upgraded · all resonances · Unstitch'
             : kit.pieces === 3 ? 'All stats +2 · all spells use Upgraded rules'
-              : 'All stats +2 · essence and seams revealed'}</ResourceRichText>
+              : 'All stats +2 · essence and seams revealed'}</SemanticSpellText>
         </p>
       )}
       {kit.canUnstitch && (
@@ -119,7 +119,7 @@ export function ArtifactPaperDoll({
         <h4>Debts · {hero.debts.length}/2</h4>
         {hero.debts.map((debt) => (
           <article key={debt.id}>
-            <b>{debt.name}</b><span>{debt.description}</span>
+            <b>{debt.name}</b><span><SemanticSpellText>{debt.description}</SemanticSpellText></span>
             <small>Triggers in {debtCountdown(debt, state)}</small>
           </article>
         ))}
@@ -132,7 +132,7 @@ export function ArtifactPaperDoll({
             <span className="dialog-kicker">Choose equipment destination</span>
             <h2 id="equip-heading"><ArtifactSprite artifact={equipItem} />Equip {equipDefinition.name}</h2>
             <p>{equipDefinition.class} artifact · fits {equipDefinition.slot} slots. {
-              equipDefinition.description}</p>
+              <SemanticSpellText>{equipDefinition.description}</SemanticSpellText>}</p>
             <div className="equipment-destinations" role="group" aria-label="Equipment slots">
               {EQUIPMENT_SLOTS.map((slot) => {
                 const compatible = slotAccepts(slot, equipDefinition.slot);

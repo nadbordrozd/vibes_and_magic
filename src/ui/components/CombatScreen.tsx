@@ -41,6 +41,7 @@ import {
   attackActionForActivation, type AimedAttack,
 } from '../combatAttackInput';
 import { ContentIcon } from './ContentIcon';
+import { SemanticSpellText, SpellGlossaryReference } from './SpellGlossary';
 
 const SIZE = 42;
 const HEX_W = Math.sqrt(3) * SIZE;
@@ -402,9 +403,9 @@ export function CombatScreen({
                   {targeting.source.kind === 'spell' && <ContentIcon kind="spell"
                     id={targeting.source.spellId!} />}
                   {combatTargetName(battle, targeting.source)} <em>{combatTargetFace(battle, targeting.source)}</em></h3>
-                <p className="targeting-stage"><b>{targetingStage === 'confirm' ? 'Confirm' : `Stage: ${targetingStage.replace(/([A-Z])/g, ' $1')}`}</b>{combatTargetStagePrompt(battle, targeting)}</p>
-                <p className="targeting-cost">Cost · {combatTargetCost(battle, targeting.source)}</p>
-                <p className="targeting-consequence">Prediction · {combatTargetConsequence(battle, targeting)}</p>
+                <p className="targeting-stage"><b>{targetingStage === 'confirm' ? 'Confirm' : `Stage: ${targetingStage.replace(/([A-Z])/g, ' $1')}`}</b><SemanticSpellText>{combatTargetStagePrompt(battle, targeting)}</SemanticSpellText></p>
+                <p className="targeting-cost">Cost · <SemanticSpellText>{combatTargetCost(battle, targeting.source)}</SemanticSpellText></p>
+                <p className="targeting-consequence">Prediction · <SemanticSpellText>{combatTargetConsequence(battle, targeting)}</SemanticSpellText></p>
                 {(targetingStage === 'effectId' || targetingStage === 'replaceEnchantment'
                     || targetingStage === 'skipRound') && (
                   <div className="combat-targeting-choices" role="group"
@@ -458,7 +459,7 @@ export function CombatScreen({
           )}
           {resonances.length > 0 && (
             <div className="resonance-banner">
-              {resonances.join(' + ')} resonance · matching spells are Upgraded here
+              {resonances.join(' + ')} <SpellGlossaryReference termId="resonance" /> · matching spells are Upgraded here
             </div>
           )}
           <div className="enchantment-row">
@@ -897,11 +898,11 @@ export function CombatScreen({
           </div>
           <div className="battle-log">
             <h4>Latest event</h4>
-            <p>{battle.log.at(-1) ?? 'Battle begins.'}</p>
+            <p><SemanticSpellText>{battle.log.at(-1) ?? 'Battle begins.'}</SemanticSpellText></p>
             {battle.log.length > 1 && <details>
               <summary>Earlier events · {battle.log.length - 1}</summary>
               <div>{battle.log.slice(0, -1).slice(-11).reverse().map((entry, index) => (
-                <p key={`${entry}-${index}`}>{entry}</p>
+                <p key={`${entry}-${index}`}><SemanticSpellText>{entry}</SemanticSpellText></p>
               ))}</div>
             </details>}
           </div>

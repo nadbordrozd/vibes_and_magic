@@ -90,6 +90,6 @@ export function SpellbookPanel({
   const entries = combatSpellbookEntries(battle, side);
   return <Spellbook context="Combat magic" title="Battle spellbook"
     heroName={HEROES[hero.definitionId].name} mana={hero.mana}
-    maxMana={maxMana ?? Math.max(hero.mana, 10)} spellPower={hero.spellPower}
+    maxMana={maxMana ?? Math.max(hero.mana, 10)}
     debts={hero.debts} entries={entries} onClose={onClose} onCast={onSelect} />;
 }

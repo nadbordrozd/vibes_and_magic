@@ -89,5 +89,6 @@ live in `docs/` until superseded by their implementation.
 | 54 | SPELL_EFFECT_ICONS | Complete native shared-icon coverage for all 30 spell-lexicon terms, exact built-in generation/provenance, deterministic hard-alpha bake, manifest/worklist gates, and shared renderer | assets/presentation companion to 53; no mechanics or spell-description changes |
 | 55 | RITE_CRAFT_SPELL_RULES | Complete resolver-true Standard/Upgraded rules and structured lexicon tokens for all 34 Rite/Craft spells | extends S05/S09 and 53; corrects descriptions only, records unresolved mechanics gaps, and defers interactive term help |
 | 56 | GRAVE_WILD_SPELL_RULES | Complete resolver-true Standard/Upgraded rules and structured lexicon tokens for all 34 Grave/Wild spells, completing the all-68 projection contract | extends S05/S09 and 53/55; corrects descriptions only, records unresolved mechanics gaps, and defers interactive term help |
+| 57 | INTERACTIVE_SPELL_GLOSSARY | Shared accessible native-icon glossary references across the all-68 Spellbook and player-facing mechanic mentions, with deterministic longest-match legacy tokenization | presentation companion to 53–56 and S05/S07/S09; no mechanics or targeting changes |
 
-Next free number: **57**.
+Next free number: **58**.

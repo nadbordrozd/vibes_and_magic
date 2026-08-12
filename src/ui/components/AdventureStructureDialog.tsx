@@ -17,6 +17,7 @@ import type { ActionDraft } from './ActionConfirmationDialog';
 import { PalimpsestService } from './PalimpsestService';
 import { ResourceAmount, ResourceCost } from './ResourceToken';
 import { ArtifactSprite, ItemSprite } from '../assets';
+import { SemanticSpellText } from './SpellGlossary';
 
 function ContextualDialogFrame({
   title, flavor, inspect, children, onClose,
@@ -77,7 +78,7 @@ function ContextualDialogFrame({
         </span>
         <h2 id="structure-dialog-title">{title}</h2>
         <p id="structure-dialog-flavor" className="structure-dialog-flavor">
-          {flavor}
+          <SemanticSpellText>{flavor}</SemanticSpellText>
         </p>
         <div className="structure-dialog-content">{children}</div>
         <div className="dialog-actions structure-dialog-footer">

@@ -12,6 +12,7 @@ import { HeroPortrait, ItemSprite } from '../assets';
 import { ArmySlots } from './ArmySlots';
 import { ArtifactPaperDoll } from './ArtifactPaperDoll';
 import { ContentIcon } from './ContentIcon';
+import { SemanticSpellText, SpellGlossaryReference } from './SpellGlossary';
 
 type HeroDetailsTab = 'overview' | 'army' | 'equipment' | 'items' | 'skills';
 
@@ -95,9 +96,9 @@ export function AdventureHeroDetails({
           {tab === 'overview' && <section className="hero-details-overview">
             <div className="hero-identity-summary" data-inspect-kind="hero" data-inspect-id={hero.id}>
               <span>{definition.heroClass.replace(/([A-Z])/g, ' $1')} · specialty</span>
-              <b>{definition.specialty.description}</b>
+              <b><SemanticSpellText>{definition.specialty.description}</SemanticSpellText></b>
               <small><strong>{FACTION_PASSIVES[hero.faction].name}:</strong> {
-                FACTION_PASSIVES[hero.faction].description}</small>
+                <SemanticSpellText>{FACTION_PASSIVES[hero.faction].description}</SemanticSpellText>}</small>
               <small>Right-click the portrait for this hero’s story and complete rules.</small>
             </div>
             <div className="stat-grid">
@@ -163,7 +164,7 @@ export function AdventureHeroDetails({
           </section>}
           {tab === 'skills' && <section className="hero-details-skills">
             {hero.skills.attunement === 3 && <div className="resonance-picker">
-              <h4>Declare next battle resonance</h4>
+              <h4>Declare next battle <SpellGlossaryReference termId="resonance" /></h4>
               {(['rite', 'craft', 'grave', 'wild'] as const).map((school) => <button key={school}
                 disabled={hero.attunementResonanceUsedDay === state.day
                   || hero.declaredResonance?.day === state.day}
@@ -191,7 +192,7 @@ export function AdventureHeroDetails({
                   <div className="content-icon-label"><ContentIcon kind="skill"
                     id={skill as keyof typeof SKILLS} />
                     <b>{skillDefinition.name} · Rank {rank}</b></div>
-                  <span>{skillDefinition.ranks[rank as 1 | 2 | 3]}</span>
+                  <span><SemanticSpellText>{skillDefinition.ranks[rank as 1 | 2 | 3]}</SemanticSpellText></span>
                 </article>;
               })}
               {Object.keys(hero.skills).length === 0 && <small>No secondary skills learned.</small>}

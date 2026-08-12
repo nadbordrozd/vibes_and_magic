@@ -5,6 +5,8 @@ import {
 } from '../../content/spellPresentation';
 import type { DebtEntry, SpellId, SpellSchool } from '../../core/types';
 import { ContentIcon } from './ContentIcon';
+import { spellRuleVersions } from '../../content/spells/rulePresentation';
+import { SemanticSpellText, SpellRuleText } from './SpellGlossary';
 
 export type SpellUpgradePresentation = {
   active: 'standard' | 'upgraded';
@@ -30,7 +32,6 @@ interface Props {
   heroName: string;
   mana: number;
   maxMana: number;
-  spellPower: number;
   movement?: number;
   debts: DebtEntry[];
   entries: SpellbookEntry[];
@@ -55,7 +56,7 @@ function debtDue(debt: DebtEntry): string {
 
 /** Shared selection-first spellbook used by both adventure and combat. */
 export function Spellbook({
-  className, context, title, heroName, mana, maxMana, spellPower, movement, debts,
+  className, context, title, heroName, mana, maxMana, movement, debts,
   entries, onClose, onCast,
 }: Props) {
   const id = useId().replace(/:/g, '');
@@ -99,7 +100,6 @@ export function Spellbook({
           <dl className="spellbook-vitals" aria-label={`${heroName} magic status`}>
             <div><dt>Hero</dt><dd>{heroName}</dd></div>
             <div><dt>Mana</dt><dd>{mana}/{maxMana}</dd></div>
-            <div><dt>Power</dt><dd>{spellPower}</dd></div>
             {movement !== undefined && <div><dt>Move</dt><dd>{movement}</dd></div>}
           </dl>
           <button className="spellbook-close" aria-label="Close spellbook"
@@ -164,7 +164,8 @@ export function Spellbook({
             <details className="spellbook-debts">
               <summary>Debts · {debts.length}/2</summary>
               {debts.map((debt) => <article key={debt.id}>
-                <b>{debt.name}</b><span>{debt.description}</span><small>{debtDue(debt)}</small>
+                <b>{debt.name}</b><span><SemanticSpellText>{debt.description}</SemanticSpellText></span>
+                <small>{debtDue(debt)}</small>
               </article>)}
               {debts.length === 0 && <p>No active Debts.</p>}
             </details>
@@ -184,20 +185,21 @@ export function Spellbook({
                 <span><b>Mana</b>{selected.manaCost}</span>
                 {selected.movementCost && <span><b>Movement</b>{selected.movementCost}</span>}
               </div>
-              <p className="spell-detail-flavor">{selectedSpell.flavor}</p>
+              <p className="spell-detail-flavor"><SemanticSpellText>{selectedSpell.flavor}</SemanticSpellText></p>
               <section className="spell-detail-facts">
                 <h4>Spell facts</h4>
-                <p><b>Target</b>{selected.targetSummary}</p>
-                {selected.currentValues?.map((value) => <p key={value}>{value}</p>)}
+                <p><b>Target</b><SemanticSpellText>{selected.targetSummary}</SemanticSpellText></p>
+                {selected.currentValues?.map((value) => <p key={value}>
+                  <SemanticSpellText>{value}</SemanticSpellText></p>)}
               </section>
               <div className="spell-version-comparison">
                 <article className={selected.upgrade.active === 'standard' ? 'active' : ''}>
                   <h4>{selected.upgrade.active === 'standard' && <span aria-hidden="true">◆</span>} Standard</h4>
-                  <p>{selectedSpell.base}</p>
+                  <p><SpellRuleText tokens={spellRuleVersions(selected.id).standard} /></p>
                 </article>
                 <article className={selected.upgrade.active === 'upgraded' ? 'active' : ''}>
                   <h4>{selected.upgrade.active === 'upgraded' && <span aria-hidden="true">◆</span>} Upgraded</h4>
-                  <p>{selectedSpell.plus}</p>
+                  <p><SpellRuleText tokens={spellRuleVersions(selected.id).upgraded} /></p>
                 </article>
               </div>
               <p className={`spell-upgrade-reason ${selected.upgrade.learned ? 'learned' : ''}`}>

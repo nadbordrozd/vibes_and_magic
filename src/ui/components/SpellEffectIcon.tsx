@@ -5,10 +5,11 @@ interface Props {
   id: SpellLexiconId;
   className?: string;
   large?: boolean;
+  decorative?: boolean;
 }
 
 /** One no-fallback manifest renderer shared by later spell-rule and inspection surfaces. */
-export function SpellEffectIcon({ id, className = '', large = false }: Props) {
+export function SpellEffectIcon({ id, className = '', large = false, decorative = false }: Props) {
   const entry = spellEffectIcon(id);
   const size = large ? 64 : 32;
   return <img
@@ -16,7 +17,8 @@ export function SpellEffectIcon({ id, className = '', large = false }: Props) {
     src={`/${entry.file}`}
     width={size}
     height={size}
-    alt={`${SPELL_LEXICON[id].name} effect icon`}
+    alt={decorative ? '' : `${SPELL_LEXICON[id].name} effect icon`}
+    aria-hidden={decorative || undefined}
     draggable={false}
   />;
 }
