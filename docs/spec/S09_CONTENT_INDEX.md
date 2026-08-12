@@ -53,6 +53,9 @@ is invalid.
   base catalog, rarity assignment, source filters, scroll eligibility, and guild pools.
 - [`../../src/content/spells/expansion.ts`](../../src/content/spells/expansion.ts): Wild and expanded
   authored spell definitions.
+- [`../../src/content/spells/rulePresentation.ts`](../../src/content/spells/rulePresentation.ts):
+  canonical structured Standard/Upgraded rules for all Rite and Craft spells and the extensible
+  all-school presentation record.
 - [`../../src/content/spellLexicon.ts`](../../src/content/spellLexicon.ts): typed reusable
   player-mechanic definitions, structured term tokens, literal future-art subjects, explicit
   ordinary-term dispositions, and all-68 runtime/term coverage.
@@ -64,17 +67,21 @@ is invalid.
   topology spell actions.
 
 Every spell has ID, name, flavor, school, mana or X, behavioral kind, rarity, standard rules,
-upgraded rules, AI target/timing hints, and any effect-operation tag. The upgrade changes behavior.
-Internal `base`/`plus` field names remain a compatibility detail and are not player-facing copy. Provenance rares and
-Summon Skiff are excluded from ordinary guild/scroll pools as specified. The catalog count is 16 per
-school plus four provenance rares: 68 total.
+upgraded rules, AI target/timing hints, and any effect-operation tag. Upgrades are designed to change
+behavior, but descriptions state current resolver truth: Standard of Dawn, Unmake, and Standing
+Mirror currently have no additional Upgraded behavior. Internal `base`/`plus` field names remain a
+compatibility detail and are not player-facing copy. Provenance rares and Summon Skiff are excluded
+from ordinary guild/scroll pools as specified. The catalog count is 16 per school plus four
+provenance rares: 68 total.
 
 Every reusable spell term has a stable ID, player name, concise rule, literal visual subject,
 aliases, and search tokens. Every spell is mapped to its actual combat/adventure resolver domain and
 has at least one reusable or explicitly ordinary term disposition; every disposition is used. Rule
 presentation tokens preserve term IDs for semantic UI and have a deterministic plain-text
-projection. The lexicon does not replace the catalog's Standard/Upgraded descriptions and cannot
-change resolver behavior. Its 30 literal subjects have exact distinct native shared-icon coverage
+projection. The lexicon does not generate catalog descriptions and cannot change resolver behavior.
+For all 34 Rite/Craft spells, structured authored rules project exactly to the catalog's
+Standard/Upgraded strings; see [work order 55](../55_RITE_CRAFT_SPELL_RULES.md). Its 30 literal
+subjects have exact distinct native shared-icon coverage
 derived through the manifest/worklist, immutable generation batches, retained selections and
 hash-audited provenance; the renderer has no fallback path. See [work order 53](../53_SPELL_EFFECT_LEXICON.md)
 and [work order 54](../54_SPELL_EFFECT_ICONS.md).

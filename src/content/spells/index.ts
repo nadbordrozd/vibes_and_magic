@@ -1,5 +1,7 @@
 import type { SpellId, SpellSchool } from '../../core/types';
 import { spellFlavor } from '../flavor';
+import { spellRulePlainText, type SpellRuleVersions } from '../spellLexicon';
+import { SPELL_RULE_PRESENTATIONS } from './rulePresentation';
 
 export type EffectOperation = 'amplify' | 'reflect' | 'sour' | 'unmake' | 'overgrow';
 
@@ -14,6 +16,7 @@ export interface SpellDefinition {
   rarity?: 'common' | 'uncommon' | 'rare';
   base: string;
   plus: string;
+  rulePresentation?: SpellRuleVersions;
   aiHints: {
     target: 'strongestEnemy' | 'weakestAlly' | 'strongestAlly'
       | 'self' | 'enchantmentSlot' | 'counterPile';
@@ -35,25 +38,42 @@ const spell = (
   aiHints: { target, castWhen }, effectOperation,
 });
 
+const presentedSpell = (
+  id: SpellId, name: string, school: SpellSchool, mana: number | 'X',
+  kind: SpellDefinition['kind'],
+  target: SpellDefinition['aiHints']['target'] = 'strongestEnemy',
+  castWhen: SpellDefinition['aiHints']['castWhen'] = 'always',
+  effectOperation?: EffectOperation,
+): SpellDefinition => {
+  const rules = SPELL_RULE_PRESENTATIONS[id];
+  if (!rules) throw new Error(`Missing structured spell rules: ${id}`);
+  return {
+    ...spell(id, name, school, mana, kind,
+      spellRulePlainText(rules.standard), spellRulePlainText(rules.upgraded),
+      target, castWhen, effectOperation),
+    rulePresentation: rules,
+  };
+};
+
 export const SPELLS: Record<SpellId, SpellDefinition> = Object.fromEntries([
-  spell('rally', 'Rally', 'rite', 5, 'staple', 'Grant +50 morale to one ally.', 'Grant +50 morale to two allies instead of one.', 'strongestAlly'),
-  spell('blessing', 'Blessing', 'rite', 3, 'staple', 'The ally’s next attack rolls maximum damage.', 'The ally’s next attack rolls maximum damage and it gains +10 morale.', 'strongestAlly'),
-  spell('standardOfDawn', 'Standard of Dawn', 'rite', 5, 'enchantment', 'Allied kills grant +10 morale.', 'Allied kills grant +10 morale, and allied morale cannot be drained.', 'enchantmentSlot', 'round1'),
-  spell('amplify', 'Amplify', 'rite', 4, 'twister', 'Double one active effect.', 'Double one active effect and extend its applicable duration or decay.', 'counterPile', 'always', 'amplify'),
-  spell('sanctuary', 'Sanctuary', 'rite', 4, 'staple', 'One ally cannot be targeted by enemy spells.', 'Remove that ally’s counters, then prevent enemy spells from targeting it.', 'strongestAlly'),
-  spell('oathOfIron', 'Oath of Iron', 'rite', 4, 'staple', 'Incoming attacks against the ally roll minimum damage.', 'Incoming attacks against the ally roll minimum damage, and it gains unlimited retaliations.', 'strongestAlly'),
-  spell('consecrate', 'Consecrate', 'rite', 3, 'staple', 'Cleanse one ally and heal 8% of its maximum HP.', 'Cleanse one ally and heal 15% of its maximum HP; removed counters also grant morale.', 'weakestAlly'),
-  spell('hymnOfTheHost', 'Hymn of the Host', 'rite', 5, 'scaling', 'Allies gain 8 morale per extra action.', 'Allies gain 12 morale per extra action instead of 8.', 'self'),
-  spell('trial', 'Trial', 'rite', 6, 'build-around', 'A larger enemy loses 25% of its current HP.', 'A larger enemy loses 35% of its current HP instead of 25%.'),
-  spell('forgeSpark', 'Forge-Spark', 'craft', 3, 'staple', 'Give one enemy Burn 3.', 'Give the target Burn 4 instead of 3 and each adjacent enemy Burn 1.'),
-  spell('ward', 'Ward', 'craft', 4, 'staple', 'The next enemy attack against the ally deals 0 damage.', 'The next enemy attack against the ally deals 0 damage, and its attacker gains Burn 2.', 'strongestAlly'),
-  spell('reflect', 'Reflect', 'craft', 4, 'twister', 'Copy one active effect to one other legal target.', 'Copy one active effect to two other legal targets instead of one.', 'counterPile', 'always', 'reflect'),
-  spell('forgefire', 'Forgefire', 'craft', 5, 'enchantment', 'Burn damage is doubled.', 'Burn damage is doubled, and Burn on enemies does not decay.', 'enchantmentSlot', 'round1'),
-  spell('clockworkEscort', 'Clockwork Escort', 'craft', 5, 'staple', 'Summon a company of Tin Soldiers.', 'Summon the stronger Marionettes instead of Tin Soldiers.', 'self'),
-  spell('wallOfTheMaker', 'Wall of the Maker', 'craft', 4, 'staple', 'Create three wall hexes.', 'Create three wall hexes that also give adjacent enemies Burn.', 'self'),
-  spell('quicksilver', 'Quicksilver', 'craft', 3, 'staple', 'Give one ally +3 speed and phase for 2 rounds.', 'Give one ally +3 speed and phase for the whole battle instead of 2 rounds.', 'strongestAlly'),
-  spell('unmake', 'Unmake', 'craft', 4, 'staple', 'Destroy either an enchantment or a counter pile.', 'Destroy both the chosen enchantment and its applicable counter pile.', 'counterPile', 'always', 'unmake'),
-  spell('ironclad', 'Ironclad', 'craft', 6, 'enchantment', 'Allies with Defense 12 or higher take half damage.', 'Allies with Defense 10 or higher take half damage instead of requiring 12.', 'enchantmentSlot', 'round1'),
+  presentedSpell('rally', 'Rally', 'rite', 5, 'staple', 'strongestAlly'),
+  presentedSpell('blessing', 'Blessing', 'rite', 3, 'staple', 'strongestAlly'),
+  presentedSpell('standardOfDawn', 'Standard of Dawn', 'rite', 5, 'enchantment', 'enchantmentSlot', 'round1'),
+  presentedSpell('amplify', 'Amplify', 'rite', 4, 'twister', 'counterPile', 'always', 'amplify'),
+  presentedSpell('sanctuary', 'Sanctuary', 'rite', 4, 'staple', 'strongestAlly'),
+  presentedSpell('oathOfIron', 'Oath of Iron', 'rite', 4, 'staple', 'strongestAlly'),
+  presentedSpell('consecrate', 'Consecrate', 'rite', 3, 'staple', 'weakestAlly'),
+  presentedSpell('hymnOfTheHost', 'Hymn of the Host', 'rite', 5, 'scaling', 'self'),
+  presentedSpell('trial', 'Trial', 'rite', 6, 'build-around'),
+  presentedSpell('forgeSpark', 'Forge-Spark', 'craft', 3, 'staple'),
+  presentedSpell('ward', 'Ward', 'craft', 4, 'staple', 'strongestAlly'),
+  presentedSpell('reflect', 'Reflect', 'craft', 4, 'twister', 'counterPile', 'always', 'reflect'),
+  presentedSpell('forgefire', 'Forgefire', 'craft', 5, 'enchantment', 'enchantmentSlot', 'round1'),
+  presentedSpell('clockworkEscort', 'Clockwork Escort', 'craft', 5, 'staple', 'self'),
+  presentedSpell('wallOfTheMaker', 'Wall of the Maker', 'craft', 4, 'staple', 'self'),
+  presentedSpell('quicksilver', 'Quicksilver', 'craft', 3, 'staple', 'strongestAlly'),
+  presentedSpell('unmake', 'Unmake', 'craft', 4, 'staple', 'counterPile', 'always', 'unmake'),
+  presentedSpell('ironclad', 'Ironclad', 'craft', 6, 'enchantment', 'enchantmentSlot', 'round1'),
   spell('wither', 'Wither', 'grave', 3, 'staple', 'Give one enemy Hex 6.', 'Give one enemy Hex 8 instead of 6 and Chill 2.'),
   spell('graveChill', 'Grave-Chill', 'grave', 3, 'staple', 'Give one enemy Chill 3.', 'Give one enemy Chill 3 and drain 20 morale.'),
   spell('mournersVeil', "Mourner's Veil", 'grave', 4, 'staple', 'One ally takes 20% less damage.', 'For 3 rounds, one ally takes 20% less damage and its attackers gain Hex.', 'strongestAlly'),

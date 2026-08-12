@@ -747,3 +747,23 @@ Beads epic `vibes_and_magic-6sf`.
   tooltips or changing the 68 spell descriptions.
 - Added fail-closed catalog/path/hash/prompt/uniqueness/hard-alpha/provider-output/rejection/consumer
   validation and focused manifest/renderer coverage.
+
+## 2026-08-12 — Resolver-true Rite and Craft spell rules
+
+- Rewrote all 34 Rite/Craft Standard and Upgraded rules as complete, concise outcomes verified
+  against combat, adventure, topology, targeting, duration, and scaling behavior.
+- Added one structured presentation source retaining stable spell-lexicon IDs. Catalog `base` and
+  `plus` fields now derive through deterministic plain-text projection; existing spell IDs and
+  executable mechanics are unchanged, and the partial record is ready for later Grave/Wild adoption.
+- Removed generic scaling-formula and cast-confirmation narration from shared spellbook adapters so
+  complete spell-specific rules remain the rules authority.
+- Corrected player copy for the missing Standard of Dawn, Unmake, and Standing Mirror upgrade
+  riders; Census and False Colors' unconsumed records; Salt the Vein's missing reveal; owner-neutral
+  Skiff movement; and the other duration, target, trigger, restriction, and amount findings in doc 55.
+- Added exhaustive 34-spell school/order/version/token/projection/prose gates and resolver fixtures
+  for identical upgrades, Unmake, Oathbind, Gate, Salt the Vein, Census, and Summon Skiff.
+- Focused resolver/contract coverage passed 139/139 after the final copy correction. Production
+  build, asset/job/HoMM2/map pretest, spec-link, UX, and diff gates passed. An earlier broad serial
+  run in the same worktree passed 770/771; its only failure was the accepted unrelated
+  seed-1/day-56 no-winner assertion at
+  `src/core/__tests__/mechanics-regression.test.ts:231`.

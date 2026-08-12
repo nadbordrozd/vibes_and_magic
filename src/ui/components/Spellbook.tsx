@@ -18,8 +18,8 @@ export type SpellbookEntry = {
   movementCost?: string;
   disabledReason?: string;
   targetSummary: string;
-  currentValues: string[];
-  legalConsequences: string;
+  currentValues?: readonly string[];
+  legalConsequences?: string;
   upgrade: SpellUpgradePresentation;
 };
 
@@ -186,10 +186,9 @@ export function Spellbook({
               </div>
               <p className="spell-detail-flavor">{selectedSpell.flavor}</p>
               <section className="spell-detail-facts">
-                <h4>Target and current values</h4>
+                <h4>Spell facts</h4>
                 <p><b>Target</b>{selected.targetSummary}</p>
-                {selected.currentValues.map((value) => <p key={value}><b>Current</b>{value}</p>)}
-                <p><b>After Cast</b>{selected.legalConsequences}</p>
+                {selected.currentValues?.map((value) => <p key={value}>{value}</p>)}
               </section>
               <div className="spell-version-comparison">
                 <article className={selected.upgrade.active === 'standard' ? 'active' : ''}>
@@ -223,7 +222,7 @@ export function Spellbook({
               <span aria-hidden="true">✦</span>
               <h3>Choose a spell</h3>
               <p>Select one stitched icon to see its complete Standard and Upgraded rules,
-                current values, targets, costs, and Cast action.</p>
+                targets, costs, and Cast action.</p>
             </div>}
           </aside>
         </div>

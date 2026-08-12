@@ -25,7 +25,7 @@ function adventureDisabledReason(state: GameState, spellId: SpellId): string | u
   if (hero.movement < moveCost) {
     return `Requires ${moveCost} movement; ${hero.movement} remains.`;
   }
-  return 'No legal map target is currently available.';
+  return 'No legal map target is available.';
 }
 
 export function adventureSpellbookEntries(state: GameState): SpellbookEntry[] {
@@ -37,15 +37,9 @@ export function adventureSpellbookEntries(state: GameState): SpellbookEntry[] {
     return {
       id: spellId,
       manaCost: spell.mana === 'X' ? 'X mana · all remaining' : `${spell.mana} mana`,
-      movementCost: adventure ? `${moveCost} movement` : 'Not applicable on the map',
+      movementCost: adventure ? `${moveCost} movement` : undefined,
       disabledReason: adventureDisabledReason(state, spellId),
       targetSummary: spellTargetSummary(spellId),
-      currentValues: adventure
-        ? [`${hero.movement} movement available; ${Math.max(0, hero.movement - moveCost)} remains after the casting surcharge.`]
-        : [`Spell Power ${hero.spellPower}; combat scaling is shown when this spell is opened in battle.`],
-      legalConsequences: adventure
-        ? 'Cast opens the spell’s explicit map target or confirmation step. No mana or movement is spent by selecting it.'
-        : 'This spell has no legal adventure-map consequence.',
       upgrade: hero.upgradedSpells.includes(spellId)
         ? { active: 'upgraded', learned: true }
         : { active: 'standard', learned: false },

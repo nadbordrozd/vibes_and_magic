@@ -77,12 +77,16 @@ UI assumptions.
 
 ## Standard and upgraded spells
 
-Every spell has one standard version and one upgraded version. An upgrade changes behavior through
-targets, riders, triggers, topology, or interaction; permanent per-hero upgrades record which spell
-upgrade is known. Temporary resonance causes eligible spells to use their upgraded rules without
+Every spell has one standard version and one upgraded version. The design law is that an upgrade
+changes behavior through targets, riders, triggers, topology, or interaction; permanent per-hero
+upgrades record which spell upgrade is known. Presentation must nevertheless state implemented
+behavior rather than invent a missing rider. Standard of Dawn, Unmake, and Standing Mirror currently
+have identical Standard and Upgraded resolver outcomes; their rules say so and work order 55 records
+the mechanics gaps. Temporary resonance causes eligible spells to use their upgraded rules without
 changing learned state. Internal `base`, `plus`, and `upgradedSpells` identifiers may remain stable
 serialization names, but player-facing copy always says Standard, Upgraded, or Upgraded here and
-never describes spell versions as faces. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
+never describes spell versions as faces. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md) and
+[work order 55](../55_RITE_CRAFT_SPELL_RULES.md).
 
 Upgrade channels are:
 
@@ -152,6 +156,12 @@ specialty terms must be printed on the offered card.
 The catalog supplies spell names, school, mana, kind, rarity, standard/upgraded text, AI hints, effect operation,
 and provenance eligibility. Rules code supplies generic operation handlers. See
 [`S09_CONTENT_INDEX.md`](S09_CONTENT_INDEX.md) for validation invariants and data ownership.
+
+Rite and Craft author their Standard and Upgraded rules once as structured presentations in
+[`../../src/content/spells/rulePresentation.ts`](../../src/content/spells/rulePresentation.ts).
+Stable lexicon references remain available to semantic presentation, while existing catalog
+`base`/`plus` strings are exact deterministic plain-text projections. Grave and Wild may join the
+same partial-record contract without changing those first two school records.
 
 Reusable player mechanics are defined once in
 [`../../src/content/spellLexicon.ts`](../../src/content/spellLexicon.ts). Stable term IDs, names,

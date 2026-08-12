@@ -51,8 +51,7 @@ function battleWithEverySpell(): BattleState {
 function genericEntries(): SpellbookEntry[] {
   return SPELL_IDS.map((id) => ({
     id, manaCost: SPELLS[id].mana === 'X' ? 'X mana · all remaining' : `${SPELLS[id].mana} mana`,
-    targetSummary: 'A legal target', currentValues: ['Current fixture values.'],
-    legalConsequences: 'Selection opens targeting.',
+    targetSummary: 'A legal target',
     upgrade: { active: 'standard', learned: false },
   }));
 }
@@ -68,7 +67,11 @@ describe('shared stitched spellbook contract', () => {
       expect(spell.name.trim(), id).not.toBe('');
       expect(spell.base.trim(), `${id} Standard`).not.toBe('');
       expect(spell.plus.trim(), `${id} Upgraded`).not.toBe('');
-      expect(spell.plus, `${id} mechanical delta`).not.toBe(spell.base);
+      if (['standardOfDawn', 'unmake', 'standingMirror'].includes(id)) {
+        expect(spell.plus, `${id} resolver-identical versions`).toBe(spell.base);
+      } else {
+        expect(spell.plus, `${id} mechanical delta`).not.toBe(spell.base);
+      }
       expect(spell.plus, `${id} obsolete wording`).not.toMatch(/(?:\+|base|plus|current) face/i);
       expect(readFileSync(iconFiles[SPELL_IDS.indexOf(id)]).byteLength, `${id} icon`).toBeGreaterThan(0);
     }
@@ -125,6 +128,9 @@ describe('shared stitched spellbook contract', () => {
     expect(combat.find((entry) => entry.id === 'forgeSpark')?.upgrade)
       .toEqual({ active: 'upgraded', learned: false, reason: 'Craft resonance' });
     expect(combat.find((entry) => entry.id === 'wither')?.upgrade.active).toBe('standard');
+    expect(combat.every((entry) => entry.currentValues === undefined)).toBe(true);
+    expect(combat.every((entry) => entry.legalConsequences === undefined)).toBe(true);
+    expect(adventure.every((entry) => entry.legalConsequences === undefined)).toBe(true);
   });
 
   it('renders both adapters through the shared component without mutating or casting', () => {
@@ -166,11 +172,18 @@ describe('shared stitched spellbook contract', () => {
       '../../content/spells/index.ts', '../../content/spells/expansion.ts', '../../content/heroes/index.ts',
       '../../content/skills.ts', '../../content/artifacts.ts', '../inspection.ts', '../combatTargeting.ts',
       '../components/Spellbook.tsx', '../components/CombatScreen.tsx',
+      '../components/SpellbookPanel.tsx', '../components/AdventureSpellbook.tsx',
       '../components/AdventureSpellTargetDialog.tsx', '../components/ContextHelp.tsx',
       '../components/CastleScreen.tsx', '../components/Dialogs.tsx',
     ].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8')).join('\n');
     for (const prefix of ['base', '\\+', 'current', 'compare', 'normal', 'plus']) {
       expect(sources).not.toMatch(new RegExp(`${prefix}\\s+faces?`, 'i'));
     }
+    const spellbookSources = [
+      '../components/Spellbook.tsx', '../components/SpellbookPanel.tsx',
+      '../components/AdventureSpellbook.tsx',
+    ].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8')).join('\n');
+    expect(spellbookSources).not.toMatch(/eligible target.*available|legal cast paths?/i);
+    expect(spellbookSources).not.toMatch(/Spell Power \$\{|rules below|After Cast|currently|grants no additional effect/i);
   });
 });

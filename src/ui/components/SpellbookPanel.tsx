@@ -38,7 +38,7 @@ function combatDisabledReason(
   if (!legalSpellCasts(battle).some((action) => action.spellId === spellId)) {
     return spell.effectOperation
       ? 'No active effect satisfies this spell’s targeting rules.'
-      : 'No legal target is currently available.';
+      : 'No legal target is available.';
   }
   return undefined;
 }
@@ -70,24 +70,14 @@ export function combatSpellbookEntries(
   battle: BattleState, side: BattleSide,
 ): SpellbookEntry[] {
   const hero = side === 'attacker' ? battle.attackerHero : battle.defenderHero!;
-  const legal = legalSpellCasts(battle);
   return [...new Set(hero.knownSpells)].map((spellId) => {
     const spell = SPELLS[spellId];
     const cost = spell.mana === 'X' ? hero.mana : spellManaCost(battle, side, hero, spellId);
-    const choices = legal.filter((action) => action.spellId === spellId);
     return {
       id: spellId,
       manaCost: spell.mana === 'X' ? `${cost} mana · X (all remaining)` : `${cost} mana`,
       disabledReason: combatDisabledReason(battle, side, spellId),
       targetSummary: spellTargetSummary(spellId),
-      currentValues: [
-        `At Spell Power ${hero.spellPower}: durations gain +${Math.floor(hero.spellPower / 6)}, `
-          + `counter magnitudes gain +${Math.floor(hero.spellPower / 5)}, and percentage effects `
-          + `gain +${Math.floor(hero.spellPower / 2)} points where this spell uses that scaling.`,
-      ],
-      legalConsequences: choices.length
-        ? `${choices.length} legal cast ${choices.length === 1 ? 'path' : 'paths'} available. Cast opens explicit targeting or confirmation; mana is spent only after confirmation.`
-        : 'No legal cast path is available; the reason is shown below.',
       upgrade: combatUpgrade(battle, side, spellId),
     };
   });

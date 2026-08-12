@@ -1,6 +1,8 @@
 import type { SpellId, SpellSchool } from '../../core/types';
 import type { EffectOperation, SpellDefinition } from './index';
 import { spellFlavor } from '../flavor';
+import { spellRulePlainText } from '../spellLexicon';
+import { SPELL_RULE_PRESENTATIONS } from './rulePresentation';
 
 const spell = (
   id: SpellId, name: string, school: SpellSchool, mana: number | 'X',
@@ -14,37 +16,41 @@ const spell = (
   aiHints: { target, castWhen },
 });
 
+const presentedSpell = (
+  id: SpellId, name: string, school: SpellSchool, mana: number | 'X',
+  kind: SpellDefinition['kind'],
+  target: SpellDefinition['aiHints']['target'] = 'strongestEnemy',
+  castWhen: SpellDefinition['aiHints']['castWhen'] = 'always',
+  effectOperation?: EffectOperation,
+  rarity: SpellDefinition['rarity'] = 'uncommon',
+): SpellDefinition => {
+  const rules = SPELL_RULE_PRESENTATIONS[id];
+  if (!rules) throw new Error(`Missing structured spell rules: ${id}`);
+  return {
+    ...spell(id, name, school, mana, kind,
+      spellRulePlainText(rules.standard), spellRulePlainText(rules.upgraded),
+      target, castWhen, effectOperation, rarity),
+    rulePresentation: rules,
+  };
+};
+
 /** Completion catalog from docs 15; topology and adventure entries are dealt normally. */
 export const EXPANSION_SPELLS: SpellDefinition[] = [
-  spell('beacon', 'Beacon', 'rite', 5, 'topology',
-    'Travel to the nearest friendly city.', 'Choose any friendly city as the destination instead of using the nearest one.', 'self', 'always', undefined, 'rare'),
-  spell('census', 'Census', 'rite', 4, 'adventure',
-    'Inspect every enemy hero for one day.', 'Inspect every enemy hero for two days instead of one and also reveal their movement.', 'self'),
-  spell('feastDay', 'Feast Day', 'rite', 6, 'adventure',
-    'All cities gain 25% growth this week.', 'All cities gain 25% growth this week, and each city also grants 500 gold.', 'self'),
-  spell('clarion', 'Clarion', 'rite', 4, 'staple',
-    'Set one ally’s morale to 80.', 'Set one ally’s morale to 100 instead of 80.', 'strongestAlly'),
-  spell('vigilOfTheHost', 'Vigil of the Host', 'rite', 5, 'enchantment',
-    'The lowest-morale ally gains 15 morale each round.', 'The two lowest-morale allies each gain 15 morale every round instead of only one ally.', 'enchantmentSlot', 'round1'),
-  spell('oathbind', 'Oathbind', 'rite', 5, 'build-around',
-    'One enemy receives no effects for 2 rounds.', 'One enemy receives no effects for 3 rounds instead of 2 and also loses its abilities.', 'strongestEnemy', 'always', undefined, 'rare'),
-  spell('waysideShrine', 'Wayside Shrine', 'rite', 5, 'adventure',
-    'The next battle here has Rite resonance.', 'Choose which school resonates in the next battle here instead of always using Rite.', 'self', 'always', undefined, 'rare'),
+  presentedSpell('beacon', 'Beacon', 'rite', 5, 'topology', 'self', 'always', undefined, 'rare'),
+  presentedSpell('census', 'Census', 'rite', 4, 'adventure', 'self'),
+  presentedSpell('feastDay', 'Feast Day', 'rite', 6, 'adventure', 'self'),
+  presentedSpell('clarion', 'Clarion', 'rite', 4, 'staple', 'strongestAlly'),
+  presentedSpell('vigilOfTheHost', 'Vigil of the Host', 'rite', 5, 'enchantment', 'enchantmentSlot', 'round1'),
+  presentedSpell('oathbind', 'Oathbind', 'rite', 5, 'build-around', 'strongestEnemy', 'always', undefined, 'rare'),
+  presentedSpell('waysideShrine', 'Wayside Shrine', 'rite', 5, 'adventure', 'self', 'always', undefined, 'rare'),
 
-  spell('gate', 'Gate', 'craft', 5, 'topology',
-    'Open a paired passage between two explored points.', 'Open the same paired passage, but keep it until the end of the week.', 'self', 'always', undefined, 'rare'),
-  spell('saltTheVein', 'Salt the Vein', 'craft', 4, 'adventure',
-    'One visible enemy mine yields nothing for 5 days.', 'One visible enemy mine yields nothing for 8 days instead of 5, and its lost production is revealed.', 'self'),
-  spell('falseColors', 'False Colors', 'craft', 4, 'adventure',
-    'Appear as a neutral guardian band.', 'Appear neutral and choose which guardian band observers see.', 'self'),
-  spell('clockworkCourier', 'Clockwork Courier', 'craft', 4, 'adventure',
-    'Transfer items or one company between heroes.', 'Transfer items or one company between heroes or to and from city garrisons.', 'self'),
-  spell('brittle', 'Brittle', 'craft', 4, 'staple',
-    'Disable one enemy’s abilities for 2 rounds.', 'Disable one enemy’s abilities for 3 rounds instead of 2 and give it Burn 2.'),
-  spell('standingMirror', 'Standing Mirror', 'craft', 7, 'build-around',
-    'Enemy spells are copied using your Spell Power.', 'Enemy spells are copied using your Spell Power, and you choose new legal targets for each copy.', 'self', 'round1', undefined, 'rare'),
-  spell('summonSkiff', 'Summon Skiff', 'craft', 7, 'topology',
-    'Summon a boat to the nearest shore.', 'Move the nearest enemy boat to the nearest shore for your use instead of creating a new boat.', 'self', 'always', undefined, 'rare'),
+  presentedSpell('gate', 'Gate', 'craft', 5, 'topology', 'self', 'always', undefined, 'rare'),
+  presentedSpell('saltTheVein', 'Salt the Vein', 'craft', 4, 'adventure', 'self'),
+  presentedSpell('falseColors', 'False Colors', 'craft', 4, 'adventure', 'self'),
+  presentedSpell('clockworkCourier', 'Clockwork Courier', 'craft', 4, 'adventure', 'self'),
+  presentedSpell('brittle', 'Brittle', 'craft', 4, 'staple'),
+  presentedSpell('standingMirror', 'Standing Mirror', 'craft', 7, 'build-around', 'self', 'round1', undefined, 'rare'),
+  presentedSpell('summonSkiff', 'Summon Skiff', 'craft', 7, 'topology', 'self', 'always', undefined, 'rare'),
 
   spell('coldRoad', 'Cold Road', 'grave', 5, 'topology',
     'Travel between explored barrows.', 'Travel between explored barrows and carry one adjacent allied hero with you.', 'self', 'always', undefined, 'rare'),
@@ -95,12 +101,10 @@ export const EXPANSION_SPELLS: SpellDefinition[] = [
   spell('hedgerowMarch', 'Hedgerow March', 'wild', 5, 'enchantment',
     'Forced movement grants allies 10 morale.', 'Forced movement grants allies 10 morale and Bloom 1.', 'enchantmentSlot', 'round1'),
 
-  spell('hourglassCrack', 'Hourglass Crack', 'craft', 6, 'build-around',
-    'One company acts twice this round and skips the next round.', 'One company acts twice this round, and you choose which of the next three rounds it skips.', 'strongestAlly', 'always', undefined, 'rare'),
+  presentedSpell('hourglassCrack', 'Hourglass Crack', 'craft', 6, 'build-around', 'strongestAlly', 'always', undefined, 'rare'),
   spell('borrowShape', 'Borrow Shape', 'wild', 5, 'build-around',
     'One ally copies abilities from an adjacent enemy.', 'One ally copies abilities from any visible enemy instead of requiring adjacency.', 'strongestAlly', 'always', undefined, 'rare'),
-  spell('echo', 'Echo', 'rite', 4, 'build-around',
-    'Recast the last spell using your Spell Power and its recorded version.', 'Recast the last spell using your Spell Power and force its Upgraded rules, even if the recorded cast was Standard.', 'self', 'always', undefined, 'rare'),
+  presentedSpell('echo', 'Echo', 'rite', 4, 'build-around', 'self', 'always', undefined, 'rare'),
   spell('loyalUntoDeath', 'Loyal Unto Death', 'grave', 4, 'build-around',
     'One ally attacks its killer when destroyed.', 'One ally attacks its killer when destroyed, causes no allied morale drain, and restores 3 mana.', 'strongestAlly', 'always', undefined, 'rare'),
 ];

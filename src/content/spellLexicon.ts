@@ -162,6 +162,11 @@ export type SpellRuleToken =
 
 export type SpellRulePresentation = readonly SpellRuleToken[];
 
+export interface SpellRuleVersions {
+  standard: SpellRulePresentation;
+  upgraded: SpellRulePresentation;
+}
+
 export const spellRuleText = (text: string): SpellRuleToken => ({ kind: 'text', text });
 export const spellRuleTerm = (termId: SpellLexiconId, label?: string): SpellRuleToken => ({
   kind: 'term', termId, ...(label ? { label } : {}),

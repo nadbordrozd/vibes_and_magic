@@ -882,3 +882,18 @@
 - A generated attempt is retried only for a real semantic/style rejection. The first `wall-hex`
   omitted the required enclosing hex and is retained as rejected; its single corrective retry is the
   selected source.
+
+## 2026-08-12 — Player spell rules report resolver truth (doc 55)
+
+- Rite and Craft Standard/Upgraded descriptions are authored as structured lexicon-token sequences;
+  legacy `base`/`plus` strings are exact projections rather than an independent prose source.
+- Existing IDs, costs, kinds, targeting metadata, and mechanics remain unchanged. Description work
+  follows observable resolver behavior when older prose promised more than the game performs.
+- Standard of Dawn, Unmake, and Standing Mirror therefore use the same complete rule for Standard
+  and Upgraded. Developer-facing mismatch detail stays in docs/tests rather than player prose; this
+  does not waive the design law that every upgrade should eventually change behavior.
+- Census and False Colors explicitly disclose that their stored duration/display records currently
+  have no visible gameplay consumer. Salt the Vein omits its nonexistent lost-production reveal;
+  Summon Skiff states its owner-neutral selection and ownership-preserving move.
+- Grave and Wild remain on legacy strings until their own audit. The combined presentation record is
+  intentionally partial so those schools can adopt the same contract without changing Rite/Craft.
