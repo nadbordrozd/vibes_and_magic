@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "contract": "One distinct built-in call per request; never n-variant generation.",
+  "contact_sheet": ".pixel-work/review/hero-dashboard/native-contact-sheet.png",
+  "requests": [
+    {
+      "id": "hero-portrait:tobiah:built-in",
+      "assets": [
+        "hero-portrait:tobiah"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/tobiah-source.png",
+      "final": "public/assets/hero-dashboard/portraits/tobiah.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Tobiah, unfinished chandler; The garrison at Tollhithe was ordered to hold the bridge until relieved. Relief, records suggest, was dispatched; the cataclysm intervened; the order stands. Tobiah has held the bridge, and every post since, with the patience of a man who no longer experiences boredom as separate from duty. He does not discuss the bridge. The watch continues. Specialty: Sentries retaliate with 25% more damage.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Tobiah, unfinished chandler; The garrison at Tollhithe was ordered to hold the bridge until relieved. Relief, records suggest, was dispatched; the cataclysm intervened; the order stands. Tobiah has held the bridge, and every post since, with the patience of a man who no longer experiences boredom as separate from duty. He does not discuss the bridge. The watch continues. Specialty: Sentries retaliate with 25% more damage.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-e51ddcea-a843-4334-96d9-5f6e8b98e759.png"
+    },
+    {
+      "id": "hero-portrait:brotherHollis:built-in",
+      "assets": [
+        "hero-portrait:brotherHollis"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/brotherHollis-source.png",
+      "final": "public/assets/hero-dashboard/portraits/brotherHollis.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Brother Hollis, unfinished chandler; Hollis was a mendicant friar collecting for a chapel roof when the sky changed. The alms-bowl survives; the chapel does not; the collection, therefore, continues. He is gentle, apologetic, and absolutely unstoppable, and the offended dead gather to him because he alone still owes something and admits it. His enemies find that grief, organized, hits like a hammer. Specialty: Unfinished Business deals 20% instead of 15%.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Brother Hollis, unfinished chandler; Hollis was a mendicant friar collecting for a chapel roof when the sky changed. The alms-bowl survives; the chapel does not; the collection, therefore, continues. He is gentle, apologetic, and absolutely unstoppable, and the offended dead gather to him because he alone still owes something and admits it. His enemies find that grief, organized, hits like a hammer. Specialty: Unfinished Business deals 20% instead of 15%.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-1a8a5a71-e235-4a71-a311-2e9b3133633c.png"
+    },
+    {
+      "id": "hero-portrait:vess:built-in",
+      "assets": [
+        "hero-portrait:vess"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/vess-source.png",
+      "final": "public/assets/hero-dashboard/portraits/vess.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Vess, vespiary broodspeaker; Vess was grown, not born, in the first hatching after the Falling, and the Queens speak through her the way wind speaks through a reed — constantly, and with corrections. She loves the larvae with an accountant's totality: each one counted, each one provided for, each one part of the sum. Outsiders find her warmth unsettling. It is entirely sincere. That is what unsettles. Specialty: Larval Tide companies have 5 HP per creature.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Vess, vespiary broodspeaker; Vess was grown, not born, in the first hatching after the Falling, and the Queens speak through her the way wind speaks through a reed — constantly, and with corrections. She loves the larvae with an accountant's totality: each one counted, each one provided for, each one part of the sum. Outsiders find her warmth unsettling. It is entirely sincere. That is what unsettles. Specialty: Larval Tide companies have 5 HP per creature.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-b97ad214-ddf5-4c27-bbd9-59537b2db0e7.png"
+    },
+    {
+      "id": "hero-portrait:oszra:built-in",
+      "assets": [
+        "hero-portrait:oszra"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/oszra-source.png",
+      "final": "public/assets/hero-dashboard/portraits/oszra.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Oszra, vespiary broodspeaker; Oszra oversees the renderies, and considers waste the only true blasphemy. Every fallen thing — friend, foe, unlucky bystander — is grief, and grief is protein, and protein is the future. She conducts funerals and harvests as one ceremony, with impeccable courtesy throughout. The neighboring villages have learned to decline her condolences early. Specialty: Render Down converts 15% of destroyed enemy HP.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Oszra, vespiary broodspeaker; Oszra oversees the renderies, and considers waste the only true blasphemy. Every fallen thing — friend, foe, unlucky bystander — is grief, and grief is protein, and protein is the future. She conducts funerals and harvests as one ceremony, with impeccable courtesy throughout. The neighboring villages have learned to decline her condolences early. Specialty: Render Down converts 15% of destroyed enemy HP.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-d4599a49-977e-4725-b527-69a316733525.png"
+    },
+    {
+      "id": "hero-portrait:kettl:built-in",
+      "assets": [
+        "hero-portrait:kettl"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/kettl-source.png",
+      "final": "public/assets/hero-dashboard/portraits/kettl.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Kettl, vespiary broodspeaker; The lancers hatched restless, and Kettl hatched most restless of all. She has flown the borders of the Hive's memory and holds the record for formal apologies delivered mid-ambush. The Queens find her velocity theologically interesting. Her wing-cases are scarred in patterns the paper-wasps have begun, respectfully, to copy. Specialty: Paper-Wasp Lancers gain +1 speed.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Kettl, vespiary broodspeaker; The lancers hatched restless, and Kettl hatched most restless of all. She has flown the borders of the Hive's memory and holds the record for formal apologies delivered mid-ambush. The Queens find her velocity theologically interesting. Her wing-cases are scarred in patterns the paper-wasps have begun, respectfully, to copy. Specialty: Paper-Wasp Lancers gain +1 speed.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-3add4a9b-ddf9-4ea6-83e0-3e7c57b76eaf.png"
+    },
+    {
+      "id": "hero-portrait:humm:built-in",
+      "assets": [
+        "hero-portrait:humm"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/humm-source.png",
+      "final": "public/assets/hero-dashboard/portraits/humm.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Humm, vespiary broodspeaker; Humm speaks rarely, which in a Broodspeaker is either failure or mastery, and the Queens have ruled it mastery. Where she walks, things grow — brood, blossom, resolve — as if her silence made room for it. She was present when the first Queen woke into words, and is said to be the only one who heard the sentence before the first one. Specialty: Bloom always uses its Upgraded rules.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Humm, vespiary broodspeaker; Humm speaks rarely, which in a Broodspeaker is either failure or mastery, and the Queens have ruled it mastery. Where she walks, things grow — brood, blossom, resolve — as if her silence made room for it. She was present when the first Queen woke into words, and is said to be the only one who heard the sentence before the first one. Specialty: Bloom always uses its Upgraded rules.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-11b527d1-65f3-4fa6-aba0-57024f6a6c50.png"
+    },
+    {
+      "id": "hero-portrait:babaZima:built-in",
+      "assets": [
+        "hero-portrait:babaZima"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/babaZima-source.png",
+      "final": "public/assets/hero-dashboard/portraits/babaZima.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Baba Zima, hagwood crone; Zima is old the way winters are old: recurring. She keeps the wood's oldest contracts in a chest that audibly disapproves of visitors, and her bargains are famously fair, which is the frightening part. She has outlived every debtor who tried cleverness and attended each funeral with flowers. The flowers, too, were on terms. Specialty: Debts trigger one step later or with a lighter payment.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Baba Zima, hagwood crone; Zima is old the way winters are old: recurring. She keeps the wood's oldest contracts in a chest that audibly disapproves of visitors, and her bargains are famously fair, which is the frightening part. She has outlived every debtor who tried cleverness and attended each funeral with flowers. The flowers, too, were on terms. Specialty: Debts trigger one step later or with a lighter payment.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-7bddaac8-6c03-4b97-a10d-3ad19769665e.png"
+    },
+    {
+      "id": "hero-portrait:yagaOlen:built-in",
+      "assets": [
+        "hero-portrait:yagaOlen"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/yagaOlen-source.png",
+      "final": "public/assets/hero-dashboard/portraits/yagaOlen.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Yaga Olen, hagwood crone; Olen tends the wood's grudges the way others tend bees: with gloves, smoke, and genuine affection. Blessings curdle in her vicinity — milk, luck, marriages — and she has made of this a precise instrument. Villages pay her to leave and invite her back within the year. She always knows which it will be. Specialty: Sour always uses its Upgraded rules.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Yaga Olen, hagwood crone; Olen tends the wood's grudges the way others tend bees: with gloves, smoke, and genuine affection. Blessings curdle in her vicinity — milk, luck, marriages — and she has made of this a precise instrument. Villages pay her to leave and invite her back within the year. She always knows which it will be. Specialty: Sour always uses its Upgraded rules.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-175214fb-5800-46c1-b693-aedf63b85d71.png"
+    },
+    {
+      "id": "hero-portrait:oldMarta:built-in",
+      "assets": [
+        "hero-portrait:oldMarta"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/oldMarta-source.png",
+      "final": "public/assets/hero-dashboard/portraits/oldMarta.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Old Marta, hagwood crone; Marta raised crows before she raised the dead question of whose crows they were: the wood's, always the wood's, and Marta speaks for the wood. Her chorus knows every name in three valleys and uses them in sentences their owners regret. She seems kindly. The crows seemed kindly too, to the grain. Specialty: Crow Chorus also applies Hex when retaliating.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Old Marta, hagwood crone; Marta raised crows before she raised the dead question of whose crows they were: the wood's, always the wood's, and Marta speaks for the wood. Her chorus knows every name in three valleys and uses them in sentences their owners regret. She seems kindly. The crows seemed kindly too, to the grain. Specialty: Crow Chorus also applies Hex when retaliating.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-b0693bf1-f6ea-4fc9-8529-9a1f5ccf6ef2.png"
+    },
+    {
+      "id": "hero-portrait:vasilisa:built-in",
+      "assets": [
+        "hero-portrait:vasilisa"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/vasilisa-source.png",
+      "final": "public/assets/hero-dashboard/portraits/vasilisa.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Vasilisa, hagwood crone; The youngest Crone by a century, Vasilisa came to the wood as a girl with a doll, an errand, and impossible tasks, and finished the tasks. The wood, impressed, kept her; the doll, notably, still advises. She rides ahead of her besom-wives laughing, and the laugh arrives places before the wind does. Specialty: Besom Riders push targets 2 hexes.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Vasilisa, hagwood crone; The youngest Crone by a century, Vasilisa came to the wood as a girl with a doll, an errand, and impossible tasks, and finished the tasks. The wood, impressed, kept her; the doll, notably, still advises. She rides ahead of her besom-wives laughing, and the laugh arrives places before the wind does. Specialty: Besom Riders push targets 2 hexes.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-a326f676-9f76-42c6-b609-5d4487043350.png"
+    }
+  ]
+}

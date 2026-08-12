@@ -1,0 +1,319 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "contract": "One distinct built-in call per request; never n-variant generation.",
+  "contact_sheet": ".pixel-work/review/hero-dashboard/native-contact-sheet.png",
+  "requests": [
+    {
+      "id": "hero-specialty:kennelMuster:built-in",
+      "assets": [
+        "hero-specialty:kennelMuster"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/kennelMuster-source.png",
+      "final": "public/assets/hero-dashboard/specialties/kennelMuster.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a blank muster signboard beside a red hound collar and brass counting peg",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a blank muster signboard beside a red hound collar and brass counting peg.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-7b916111-2b58-4da9-aa41-f288ed34d3d3.png"
+    },
+    {
+      "id": "hero-specialty:brightTrial:built-in",
+      "assets": [
+        "hero-specialty:brightTrial"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/brightTrial-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightTrial.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a judge's gavel landing on the bright face of a wooden token",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a judge's gavel landing on the bright face of a wooden token.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-101343a5-03eb-4edf-8cbd-5a5d1d8f5adf.png"
+    },
+    {
+      "id": "hero-specialty:brightEscort:built-in",
+      "assets": [
+        "hero-specialty:brightEscort"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/brightEscort-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightEscort.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a tiny lacquered clockwork escort marching beside a brass tuning fork",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a tiny lacquered clockwork escort marching beside a brass tuning fork.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-83258a64-724e-452a-8ddf-bf728f9b2bad.png"
+    },
+    {
+      "id": "hero-specialty:swiftMarionettes:built-in",
+      "assets": [
+        "hero-specialty:swiftMarionettes"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/swiftMarionettes-source.png",
+      "final": "public/assets/hero-dashboard/specialties/swiftMarionettes.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a marionette control bar pulling two tiny running wooden feet",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a marionette control bar pulling two tiny running wooden feet.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-d39ab1b8-4171-4fb2-bbe6-f291342758c3.png"
+    },
+    {
+      "id": "hero-specialty:doubleFerry:built-in",
+      "assets": [
+        "hero-specialty:doubleFerry"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/doubleFerry-source.png",
+      "final": "public/assets/hero-dashboard/specialties/doubleFerry.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a weathered ferry boat with two oars and two blank punched fare tickets",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a weathered ferry boat with two oars and two blank punched fare tickets.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-39bfb41e-4d48-45d0-95a5-e28ff45cb607.png"
+    },
+    {
+      "id": "hero-specialty:deepDirge:built-in",
+      "assets": [
+        "hero-specialty:deepDirge"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/deepDirge-source.png",
+      "final": "public/assets/hero-dashboard/specialties/deepDirge.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a rolled blank requiem score bound around a bone conductor's baton",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a rolled blank requiem score bound around a bone conductor's baton.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-f304424c-de6b-4867-bb6a-31ed4b030395.png"
+    },
+    {
+      "id": "hero-specialty:lastingResin:built-in",
+      "assets": [
+        "hero-specialty:lastingResin"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/lastingResin-source.png",
+      "final": "public/assets/hero-dashboard/specialties/lastingResin.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "literal_subject": "an amber resin trail tile with two extra hardened round drips",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: an amber resin trail tile with two extra hardened round drips.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #FF00FF background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-987e5fdf-6c24-47c7-96cc-ed1e3c6bb38c.png"
+    },
+    {
+      "id": "hero-specialty:greaterBroodCall:built-in",
+      "assets": [
+        "hero-specialty:greaterBroodCall"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/greaterBroodCall-source.png",
+      "final": "public/assets/hero-dashboard/specialties/greaterBroodCall.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a black-chitin brood horn opening toward three honey-gold larvae",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a black-chitin brood horn opening toward three honey-gold larvae.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-c4813ae0-2add-4848-947f-adbefc4e9e35.png"
+    },
+    {
+      "id": "hero-specialty:diagonalFenceSlow:built-in",
+      "assets": [
+        "hero-specialty:diagonalFenceSlow"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/diagonalFenceSlow-source.png",
+      "final": "public/assets/hero-dashboard/specialties/diagonalFenceSlow.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#FF00FF",
+      "literal_subject": "two crooked birch fence posts placed diagonally with a wicker loop",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: two crooked birch fence posts placed diagonally with a wicker loop.\nScene/backdrop: perfectly flat solid #FF00FF chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #FF00FF background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-703848ce-3342-4d06-8018-a8ee92f1b39b.png"
+    },
+    {
+      "id": "hero-specialty:loopholeBargains:built-in",
+      "assets": [
+        "hero-specialty:loopholeBargains"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/loopholeBargains-source.png",
+      "final": "public/assets/hero-dashboard/specialties/loopholeBargains.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a blank folded contract curling through a loophole in a crooked root clasp",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a blank folded contract curling through a loophole in a crooked root clasp.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-38c5c835-99f1-4db5-aa06-93622df7528c.png"
+    }
+  ]
+}

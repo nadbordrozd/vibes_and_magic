@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "contract": "One distinct built-in call per request; never n-variant generation.",
+  "contact_sheet": ".pixel-work/review/hero-dashboard/native-contact-sheet.png",
+  "requests": [
+    {
+      "id": "hero-portrait:temir:built-in",
+      "assets": [
+        "hero-portrait:temir"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/temir-source.png",
+      "final": "public/assets/hero-dashboard/portraits/temir.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Temir, wildergrass ashrider; Temir carried the drums at Ashfall, where the clans lost half the herds and learned the price could be spent forward. He wears a cord knotted once for every rider he has burned, and charges heaviest when the cord is freshly longer. The clans call him unlucky and follow him anyway. Grief, Temir says, is just fuel that mourns. Specialty: Blood Price grants 25 morale instead of 20.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Temir, wildergrass ashrider; Temir carried the drums at Ashfall, where the clans lost half the herds and learned the price could be spent forward. He wears a cord knotted once for every rider he has burned, and charges heaviest when the cord is freshly longer. The clans call him unlucky and follow him anyway. Grief, Temir says, is just fuel that mourns. Specialty: Blood Price grants 25 morale instead of 20.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-b2de9411-70dc-4788-a10a-669f228c4041.png"
+    },
+    {
+      "id": "hero-portrait:saiga:built-in",
+      "assets": [
+        "hero-portrait:saiga"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/saiga-source.png",
+      "final": "public/assets/hero-dashboard/portraits/saiga.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Saiga, wildergrass ashrider; Saiga ran with the ashmane packs as a child — the clans dispute whether she was lost or lent — and hunts now by their arithmetic: the bleeding first, the tiring first, the certain first. She speaks little and is understood immediately, which the wolves consider the whole point of language. Specialty: Ashmane Wolves' Pack Hunger deals 25% more damage.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Saiga, wildergrass ashrider; Saiga ran with the ashmane packs as a child — the clans dispute whether she was lost or lent — and hunts now by their arithmetic: the bleeding first, the tiring first, the certain first. She speaks little and is understood immediately, which the wolves consider the whole point of language. Specialty: Ashmane Wolves' Pack Hunger deals 25% more damage.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-51cdd881-50f3-4c36-8e3d-cc7294a8dae0.png"
+    },
+    {
+      "id": "hero-portrait:anai:built-in",
+      "assets": [
+        "hero-portrait:anai"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/anai-source.png",
+      "final": "public/assets/hero-dashboard/portraits/anai.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Anai, wildergrass ashrider; Anai was born during the year of long wind, and the clans say the wind never entirely left the tent. She reads the sky's moods like herd-sign and throws gales the way other riders throw ropes: casually, accurately, at things that were feeling secure. Her braids point windward. Always windward. Specialty: Gale always uses its Upgraded rules.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Anai, wildergrass ashrider; Anai was born during the year of long wind, and the clans say the wind never entirely left the tent. She reads the sky's moods like herd-sign and throws gales the way other riders throw ropes: casually, accurately, at things that were feeling secure. Her braids point windward. Always windward. Specialty: Gale always uses its Upgraded rules.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-03a8fed5-336b-453c-8639-859b6674ddbe.png"
+    },
+    {
+      "id": "hero-portrait:bataar:built-in",
+      "assets": [
+        "hero-portrait:bataar"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/bataar-source.png",
+      "final": "public/assets/hero-dashboard/portraits/bataar.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Bataar, wildergrass ashrider; Bataar has been ambushed eleven times and attended none of them. His outriders drill a single doctrine — be missed — and he grades them on the enemy’s frustration, which he collects secondhand from prisoners with genuine scholarly interest. The steppe is large, Bataar says. Be more of it than they are. Specialty: Outrider skirmish movement ignores speed and adjacency slows.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Bataar, wildergrass ashrider; Bataar has been ambushed eleven times and attended none of them. His outriders drill a single doctrine — be missed — and he grades them on the enemy’s frustration, which he collects secondhand from prisoners with genuine scholarly interest. The steppe is large, Bataar says. Be more of it than they are. Specialty: Outrider skirmish movement ignores speed and adjacency slows.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-d66fe238-00cc-46af-b7fa-646d69c8f8db.png"
+    },
+    {
+      "id": "hero-portrait:edwin:built-in",
+      "assets": [
+        "hero-portrait:edwin"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/edwin-source.png",
+      "final": "public/assets/hero-dashboard/portraits/edwin.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Edwin, hearthguard banneret; Edwin kept the royal kennels until he found a stack of old sign-boards behind the feed room. Every board bore a household name, a number, and a place: muster rolls disguised as kennel records, he maintains. His Hearth-Hounds answer the names without training. Commanders have stopped arguing since the first village garrison began keeping time to a chorus of punctual barks. Specialty: Garrisons Edwin installs gain +5 morale each round.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Edwin, hearthguard banneret; Edwin kept the royal kennels until he found a stack of old sign-boards behind the feed room. Every board bore a household name, a number, and a place: muster rolls disguised as kennel records, he maintains. His Hearth-Hounds answer the names without training. Commanders have stopped arguing since the first village garrison began keeping time to a chorus of punctual barks. Specialty: Garrisons Edwin installs gain +5 morale each round.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-434ca832-56d4-41b0-88b8-0e31fe2513aa.png"
+    },
+    {
+      "id": "hero-portrait:maud:built-in",
+      "assets": [
+        "hero-portrait:maud"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/maud-source.png",
+      "final": "public/assets/hero-dashboard/portraits/maud.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Maud, hearthguard banneret; Maud rode circuit with a law book, one clerk, and a gavel heavy enough to settle procedural objections. When the marches went to war, she convened court on the nearest shield and found battle surprisingly responsive to precedent. Her judgments land cleanly, always on the favorable face. Prisoners receive hearings. Ambushes are held in contempt. Nobody has yet appealed successfully. Specialty: Trial always uses its Upgraded rules.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Maud, hearthguard banneret; Maud rode circuit with a law book, one clerk, and a gavel heavy enough to settle procedural objections. When the marches went to war, she convened court on the nearest shield and found battle surprisingly responsive to precedent. Her judgments land cleanly, always on the favorable face. Prisoners receive hearings. Ambushes are held in contempt. Nobody has yet appealed successfully. Specialty: Trial always uses its Upgraded rules.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-8bede223-db80-474c-9aee-87205f34775d.png"
+    },
+    {
+      "id": "hero-portrait:ansel:built-in",
+      "assets": [
+        "hero-portrait:ansel"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/ansel-source.png",
+      "final": "public/assets/hero-dashboard/portraits/ansel.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Ansel, woundWrights guildmaster; Ansel entered the Guild as a mold-scraper and heard music under the cooling racks on his first night. The masters called it settling metal. He hummed back; every unfinished escort in the room stood at attention. Since then he has learned doctrine, tuning, and when not to mention that the Founders seem to prefer a brisk marching song. The molds still answer, exactly on key. Specialty: Clockwork Escort always uses its Upgraded rules.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Ansel, woundWrights guildmaster; Ansel entered the Guild as a mold-scraper and heard music under the cooling racks on his first night. The masters called it settling metal. He hummed back; every unfinished escort in the room stood at attention. Since then he has learned doctrine, tuning, and when not to mention that the Founders seem to prefer a brisk marching song. The molds still answer, exactly on key. Specialty: Clockwork Escort always uses its Upgraded rules.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-c52c303e-3236-4ce3-8765-2444b1f781e4.png"
+    },
+    {
+      "id": "hero-portrait:rivka:built-in",
+      "assets": [
+        "hero-portrait:rivka"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/rivka-source.png",
+      "final": "public/assets/hero-dashboard/portraits/rivka.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Rivka, woundWrights guildmaster; Rivka was a puppeteer before the Guild and retired, she says, from putting words in wooden mouths. Her marionettes move before the cue and finish gestures she did not teach them. She corrects their posture with professional gentleness and refuses all questions about the little stage locked in her wagon. Retirement has given her more time for rehearsals, apparently, and fewer audiences survive the finale. Specialty: Marionettes gain +1 speed.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Rivka, woundWrights guildmaster; Rivka was a puppeteer before the Guild and retired, she says, from putting words in wooden mouths. Her marionettes move before the cue and finish gestures she did not teach them. She corrects their posture with professional gentleness and refuses all questions about the little stage locked in her wagon. Retirement has given her more time for rehearsals, apparently, and fewer audiences survive the finale. Specialty: Marionettes gain +1 speed.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-332d406b-1ce2-42e4-b2ae-cc2feffa4b52.png"
+    },
+    {
+      "id": "hero-portrait:cerys:built-in",
+      "assets": [
+        "hero-portrait:cerys"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/cerys-source.png",
+      "final": "public/assets/hero-dashboard/portraits/cerys.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Cerys, unfinished chandler; Cerys ferried people across a river that no map now admits existed. The boat went first, then the banks, then every passenger except the woman who kept collecting fares. Her Ferry answers twice when she calls, carrying one obligation and returning for another. She punches each fare into a damp paper roll and will not say what happens when the last empty space is filled. Specialty: The Ferry may carry twice per battle.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Cerys, unfinished chandler; Cerys ferried people across a river that no map now admits existed. The boat went first, then the banks, then every passenger except the woman who kept collecting fares. Her Ferry answers twice when she calls, carrying one obligation and returning for another. She punches each fare into a damp paper roll and will not say what happens when the last empty space is filled. Specialty: The Ferry may carry twice per battle.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-36777b55-7dbb-47cc-8731-02bf2c2eadff.png"
+    },
+    {
+      "id": "hero-portrait:dunstan:built-in",
+      "assets": [
+        "hero-portrait:dunstan"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/dunstan-source.png",
+      "final": "public/assets/hero-dashboard/portraits/dunstan.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Dunstan, unfinished chandler; Dunstan was conducting a requiem when the Falling interrupted the third movement. He has resumed from the nearest surviving bar, with a Bone Choir that remembers every entrance and none of the breathing. Each victory supplies another phrase; each loss improves the bass. He insists the work is nearly complete. The score, rolled beneath his arm, has added six pages since yesterday. Specialty: Bone Choir dirge scaling is 25% stronger.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Dunstan, unfinished chandler; Dunstan was conducting a requiem when the Falling interrupted the third movement. He has resumed from the nearest surviving bar, with a Bone Choir that remembers every entrance and none of the breathing. Each victory supplies another phrase; each loss improves the bass. He insists the work is nearly complete. The score, rolled beneath his arm, has added six pages since yesterday. Specialty: Bone Choir dirge scaling is 25% stronger.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-5bc37602-dced-4f5b-bf81-5edfc5f6ef21.png"
+    }
+  ]
+}

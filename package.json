@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "assets-check": "tsx src/tools/assetsCheck.ts && tsx src/tools/contentIconsCheck.ts && tsx src/tools/spellEffectIconsCheck.ts",
+    "assets-check": "tsx src/tools/assetsCheck.ts && tsx src/tools/contentIconsCheck.ts && tsx src/tools/spellEffectIconsCheck.ts && tsx src/tools/heroDashboardAssetsCheck.ts",
+    "build:hero-dashboard-assets": "tsx scripts/runHeroDashboardAssets.ts build",
+    "promote:hero-dashboard-assets": "tsx scripts/runHeroDashboardAssets.ts promote",
+    "records:hero-dashboard-assets": "tsx scripts/manageHeroDashboardAssets.ts records",
+    "provenance:hero-dashboard-assets": "tsx scripts/manageHeroDashboardAssets.ts provenance",
     "pixel-jobs-check": "tsx src/tools/pixelJobsCheck.ts",
     "homm2-assets-check": "tsx src/tools/homm2AssetCheck.ts",
     "map-lint": "tsx src/tools/mapLint.ts",

@@ -1,7 +1,7 @@
 # 59 — One-screen hero dashboard
 
-Status: contract and audited asset inventory complete 2026-08-12; UI implementation, new bitmap
-generation, browser evidence, and final acceptance remain follow-up work. This is a presentation and
+Status: contract, audited inventory, and exact 79-asset production catalog complete 2026-08-12;
+dashboard UI implementation, browser evidence, and final UI acceptance remain follow-up work. This is a presentation and
 asset-pipeline companion to docs 34, 44–46, and 51. It extends S02, S06–S09 without changing hero,
 army, item, artifact, equipment, save, replay, or action rules.
 
@@ -257,10 +257,16 @@ rarity, slot, or faction/player badge. Portraits are original transparent head-a
 compact bust subjects derived from each canonical story, class, faction materials, and specialty;
 they contain no baked frame or player color.
 
-The generation implementation must add a catalog-derived `heroDashboardWorklist` and declarative
-manifest, immutable literal jobs, accepted selection/provenance with prompt and output hashes,
-dimension/alpha/uniqueness gates, native contact sheets, and a no-fallback shared renderer before it
-can claim 79/79. This document does not create those files or authorize provider calls.
+The production pass added the catalog-derived `heroDashboardWorklist` and declarative manifest,
+eight immutable literal built-in jobs, accepted selection/provenance with prompt and source/output
+hashes, dimension/alpha/uniqueness gates, source/native/exact-nearest-3× contact sheets, deterministic
+build/promote tooling, and no-fallback shared renderers. Installed coverage is **79/79**. All 79
+provider sources remain retained; no generated attempt required rejection or retry. Spell Power
+continues to resolve to the pre-existing effect icon and was not duplicated or rewritten.
+
+This completion is asset infrastructure only. It does not claim that `AdventureHeroDetails` has
+adopted the one-screen dashboard, that browser acceptance exists, or that the old faction movement
+portrait consumer has already been replaced.
 
 ### Exhaustive secondary-skill reuse set — 21/21
 

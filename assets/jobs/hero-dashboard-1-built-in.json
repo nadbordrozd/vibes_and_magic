@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "contract": "One distinct built-in call per request; never n-variant generation.",
+  "contact_sheet": ".pixel-work/review/hero-dashboard/native-contact-sheet.png",
+  "requests": [
+    {
+      "id": "hero-portrait:aldith:built-in",
+      "assets": [
+        "hero-portrait:aldith"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/aldith-source.png",
+      "final": "public/assets/hero-dashboard/portraits/aldith.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Aldith, hearthguard banneret; Aldith was a fletcher's daughter who watched the levy break at Corsham Ford because the archers were placed like furniture. She reported this, loudly, to a knight, then to a captain, then to the old king, each of whom promoted her mostly to move the conversation along. Her longbow companies drill until the volley is a single sound. She still fletches her own arrows and considers this the only part of war that's honest. Specialty: Longbowmen ignore the adjacent-enemy ranged penalty.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Aldith, hearthguard banneret; Aldith was a fletcher's daughter who watched the levy break at Corsham Ford because the archers were placed like furniture. She reported this, loudly, to a knight, then to a captain, then to the old king, each of whom promoted her mostly to move the conversation along. Her longbow companies drill until the volley is a single sound. She still fletches her own arrows and considers this the only part of war that's honest. Specialty: Longbowmen ignore the adjacent-enemy ranged penalty.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-04c9d2f7-fd68-4ba0-a933-6b33055c0c4e.png"
+    },
+    {
+      "id": "hero-portrait:corwin:built-in",
+      "assets": [
+        "hero-portrait:corwin"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/corwin-source.png",
+      "final": "public/assets/hero-dashboard/portraits/corwin.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Corwin, hearthguard banneret; A hedge-priest who found that his sermons ran shorter and worked better shouted over a shield-wall. Corwin carries the liturgy in one saddlebag and the collection plate in the other, and has never lost a soldier who could still hear him. The relic banner once dipped as he passed. The church has opinions about this. Corwin, characteristically, has a louder one. Specialty: Rally always uses its Upgraded rules.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Corwin, hearthguard banneret; A hedge-priest who found that his sermons ran shorter and worked better shouted over a shield-wall. Corwin carries the liturgy in one saddlebag and the collection plate in the other, and has never lost a soldier who could still hear him. The relic banner once dipped as he passed. The church has opinions about this. Corwin, characteristically, has a louder one. Specialty: Rally always uses its Upgraded rules.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-9ab0890b-f7e0-4968-8d3f-ad70857f91c4.png"
+    },
+    {
+      "id": "hero-portrait:berta:built-in",
+      "assets": [
+        "hero-portrait:berta"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/berta-source.png",
+      "final": "public/assets/hero-dashboard/portraits/berta.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Berta, hearthguard banneret; Berta ran supply wagons through the worst mud of three campaign seasons and holds the informal record for arriving before the message announcing her. She thinks in fodder, axle-grease, and hours of daylight. Knights bow to her now, having learned that glory travels at the speed of its breakfast. Her maps are annotated in a shorthand no scholar has cracked. It is mostly complaints. Specialty: Logistics grants +15%/+30%/+45%.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Berta, hearthguard banneret; Berta ran supply wagons through the worst mud of three campaign seasons and holds the informal record for arriving before the message announcing her. She thinks in fodder, axle-grease, and hours of daylight. Knights bow to her now, having learned that glory travels at the speed of its breakfast. Her maps are annotated in a shorthand no scholar has cracked. It is mostly complaints. Specialty: Logistics grants +15%/+30%/+45%.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-fb1292a7-cbe3-4ca5-922a-56181864d0c3.png"
+    },
+    {
+      "id": "hero-portrait:osric:built-in",
+      "assets": [
+        "hero-portrait:osric"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/osric-source.png",
+      "final": "public/assets/hero-dashboard/portraits/osric.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Osric, hearthguard banneret; The seventh son of a herald, Osric grew up grinding pigments for coats-of-arms and swears the old blazons are instructions, not decorations. He carries a different pennant for every occasion and reads battlefields the way clerks read ledgers. When his bannermen plant the cloth, soldiers report the strange conviction that the ground itself has taken their side. Osric just nods, as if the ground were on schedule. Specialty: Bannerman auras grant +15 morale.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Osric, hearthguard banneret; The seventh son of a herald, Osric grew up grinding pigments for coats-of-arms and swears the old blazons are instructions, not decorations. He carries a different pennant for every occasion and reads battlefields the way clerks read ledgers. When his bannermen plant the cloth, soldiers report the strange conviction that the ground itself has taken their side. Osric just nods, as if the ground were on schedule. Specialty: Bannerman auras grant +15 morale.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-c05c6f64-dfba-4f69-8947-0db8b88eb13a.png"
+    },
+    {
+      "id": "hero-portrait:petra:built-in",
+      "assets": [
+        "hero-portrait:petra"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/petra-source.png",
+      "final": "public/assets/hero-dashboard/portraits/petra.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Petra, woundWrights guildmaster; Petra apprenticed as a mold-caster and fell in love with the arithmetic of many: many hands, many ranks, many small identical prayers marching in step. She knows every tin soldier's casting flaws by heart and calls them by lot number, affectionately. The Guild considers her promising. The soldiers, if asked, would consider her theirs. Specialty: Tin Soldiers gain +1 Attack and Defense.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Petra, woundWrights guildmaster; Petra apprenticed as a mold-caster and fell in love with the arithmetic of many: many hands, many ranks, many small identical prayers marching in step. She knows every tin soldier's casting flaws by heart and calls them by lot number, affectionately. The Guild considers her promising. The soldiers, if asked, would consider her theirs. Specialty: Tin Soldiers gain +1 Attack and Defense.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-7594601c-58fe-4eb0-b7f3-7a99e6f5da72.png"
+    },
+    {
+      "id": "hero-portrait:silas:built-in",
+      "assets": [
+        "hero-portrait:silas"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/silas-source.png",
+      "final": "public/assets/hero-dashboard/portraits/silas.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Silas, woundWrights guildmaster; Silas keeps the Guild's oldest ledgers, where the Founders' forms are sketched in a child's... in a sacred hand, he corrects, always. Grief brought him to the Guild — a workshop fire, long ago — and doctrine kept him. He speaks the withering words softly, like a man closing a door on a cold night, and his enemies find that things simply stop keeping. Specialty: Wither always uses its Upgraded rules.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Silas, woundWrights guildmaster; Silas keeps the Guild's oldest ledgers, where the Founders' forms are sketched in a child's... in a sacred hand, he corrects, always. Grief brought him to the Guild — a workshop fire, long ago — and doctrine kept him. He speaks the withering words softly, like a man closing a door on a cold night, and his enemies find that things simply stop keeping. Specialty: Wither always uses its Upgraded rules.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-97bfcf8f-ee74-4315-9063-23c0c13bdac1.png"
+    },
+    {
+      "id": "hero-portrait:grigor:built-in",
+      "assets": [
+        "hero-portrait:grigor"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/grigor-source.png",
+      "final": "public/assets/hero-dashboard/portraits/grigor.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Grigor, woundWrights guildmaster; A tinker's orphan who survived a bad winter on what roadsides forget, Grigor sees the world as a floor after a feast: everything dropped, nothing truly lost. He walks slowly, arrives rich, and maintains that the Founders scattered the world's litter deliberately, as a lesson in looking down. The Guild indulges the heresy. His wagons keep arriving full. Specialty: Forager grants +75%/+100%/+125% pile yield.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Grigor, woundWrights guildmaster; A tinker's orphan who survived a bad winter on what roadsides forget, Grigor sees the world as a floor after a feast: everything dropped, nothing truly lost. He walks slowly, arrives rich, and maintains that the Founders scattered the world's litter deliberately, as a lesson in looking down. The Guild indulges the heresy. His wagons keep arriving full. Specialty: Forager grants +75%/+100%/+125% pile yield.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-c1bbb03f-b07e-44b6-95f0-6f0d2addec49.png"
+    },
+    {
+      "id": "hero-portrait:mirele:built-in",
+      "assets": [
+        "hero-portrait:mirele"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/mirele-source.png",
+      "final": "public/assets/hero-dashboard/portraits/mirele.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Mirele, woundWrights guildmaster; Mirele was a seamstress before the Guild found her, and the Guild found her because her mending held where armorers' rivets failed. She works the recovery-yards after every battle, singing the winding-songs, and her count of the returned is always a little higher than doctrine predicts. She refuses promotion out of the yards. Broken things know her voice now. Specialty: Victories recover 10 percentage points more losses.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Mirele, woundWrights guildmaster; Mirele was a seamstress before the Guild found her, and the Guild found her because her mending held where armorers' rivets failed. She works the recovery-yards after every battle, singing the winding-songs, and her count of the returned is always a little higher than doctrine predicts. She refuses promotion out of the yards. Broken things know her voice now. Specialty: Victories recover 10 percentage points more losses.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-485e49fe-1e79-433b-a353-ec5433195be6.png"
+    },
+    {
+      "id": "hero-portrait:maren:built-in",
+      "assets": [
+        "hero-portrait:maren"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/maren-source.png",
+      "final": "public/assets/hero-dashboard/portraits/maren.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Maren, unfinished chandler; Maren tends the smallest lights. In life — she does not dwell on it — she kept a lighthouse, and something, once, was not warned in time. Now she shepherds the wisps the way she wishes that night had gone: everything seen, everything reached, nothing going out alone. Her lantern is always lit. It is not clear what fuels it. Specialty: Candle-Wisps' Last Light applies Hex 3 instead of 2.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Maren, unfinished chandler; Maren tends the smallest lights. In life — she does not dwell on it — she kept a lighthouse, and something, once, was not warned in time. Now she shepherds the wisps the way she wishes that night had gone: everything seen, everything reached, nothing going out alone. Her lantern is always lit. It is not clear what fuels it. Specialty: Candle-Wisps' Last Light applies Hex 3 instead of 2.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-b5fe517c-ee76-441c-b1f2-bc0289a68ac5.png"
+    },
+    {
+      "id": "hero-portrait:elgiva:built-in",
+      "assets": [
+        "hero-portrait:elgiva"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/elgiva-source.png",
+      "final": "public/assets/hero-dashboard/portraits/elgiva.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Elgiva, unfinished chandler; Elgiva was a court scribe who died mid-sentence, and has spent the centuries since finishing other people's. She remembers names with terrible precision — the dead answer to her because being correctly named, after so long, is a mercy. Her writing hand never stops moving, even empty. Those she restores report a feeling of having been footnoted, kindly. Specialty: Remembrance always uses its Upgraded rules.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Elgiva, unfinished chandler; Elgiva was a court scribe who died mid-sentence, and has spent the centuries since finishing other people's. She remembers names with terrible precision — the dead answer to her because being correctly named, after so long, is a mercy. Her writing hand never stops moving, even empty. Those she restores report a feeling of having been footnoted, kindly. Specialty: Remembrance always uses its Upgraded rules.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-7da7bddf-03bb-47b6-9f08-a134bd69f6f3.png"
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "contract": "One distinct built-in call per request; never n-variant generation.",
+  "contact_sheet": ".pixel-work/review/hero-dashboard/native-contact-sheet.png",
+  "requests": [
+    {
+      "id": "hero-portrait:szet:built-in",
+      "assets": [
+        "hero-portrait:szet"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/szet-source.png",
+      "final": "public/assets/hero-dashboard/portraits/szet.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Szet, vespiary broodspeaker; Szet speaks for the carrier castes, who prefer their treaties level, load-bearing, and dry. She lays resin as other envoys lay terms: behind her, ahead of her, and across every route an objection might take. The trails remain after negotiations should have ended. The Queens consider this persistence. Foreign diplomats call it being paved into a corner and sign where she indicates. Specialty: Resin trails last two extra rounds.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Szet, vespiary broodspeaker; Szet speaks for the carrier castes, who prefer their treaties level, load-bearing, and dry. She lays resin as other envoys lay terms: behind her, ahead of her, and across every route an objection might take. The trails remain after negotiations should have ended. The Queens consider this persistence. Foreign diplomats call it being paved into a corner and sign where she indicates. Specialty: Resin trails last two extra rounds.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-aa04bce4-dfcf-466a-b190-c4b20c91347c.png"
+    },
+    {
+      "id": "hero-portrait:ollo:built-in",
+      "assets": [
+        "hero-portrait:ollo"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/ollo-source.png",
+      "final": "public/assets/hero-dashboard/portraits/ollo.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Ollo, vespiary broodspeaker; Ollo keeps the Queens’ census, counting eggs, wings, empty cells, promises, and possible futures with equal confidence. His totals are often wrong at dawn and correct by dusk because the brood appears to meet them. He describes this as responsible forecasting. The nursery castes describe it as an exhausting prophecy and have stopped asking how many are expected tomorrow. Specialty: Brood Call spawns 50% more larvae.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Ollo, vespiary broodspeaker; Ollo keeps the Queens’ census, counting eggs, wings, empty cells, promises, and possible futures with equal confidence. His totals are often wrong at dawn and correct by dusk because the brood appears to meet them. He describes this as responsible forecasting. The nursery castes describe it as an exhausting prophecy and have stopped asking how many are expected tomorrow. Specialty: Brood Call spawns 50% more larvae.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-27a44a20-7fbe-4637-bb16-fbe5615c129a.png"
+    },
+    {
+      "id": "hero-portrait:agata:built-in",
+      "assets": [
+        "hero-portrait:agata"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/agata-source.png",
+      "final": "public/assets/hero-dashboard/portraits/agata.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Agata, hagwood crone; Agata planted her first fence at nine around a boy who enjoyed breaking toys and promises. The posts leaned inward; the gate declined him; the path took the long way home. She has improved the method. Her familiars slow anything beside them, across them, or thinking diagonally about escape. The boy is grown now. His village still leaves supper at the fence. Specialty: Fence-Post Familiars' slow also reaches diagonally.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Agata, hagwood crone; Agata planted her first fence at nine around a boy who enjoyed breaking toys and promises. The posts leaned inward; the gate declined him; the path took the long way home. She has improved the method. Her familiars slow anything beside them, across them, or thinking diagonally about escape. The boy is grown now. His village still leaves supper at the fence. Specialty: Fence-Post Familiars' slow also reaches diagonally.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-0ad402d1-f99a-49db-8574-f22ccf1f8087.png"
+    },
+    {
+      "id": "hero-portrait:bogdan:built-in",
+      "assets": [
+        "hero-portrait:bogdan"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/bogdan-source.png",
+      "final": "public/assets/hero-dashboard/portraits/bogdan.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Bogdan, hagwood crone; Bogdan is the only male Crone because the wood considered the matter irregular, then binding. Every bargain he offers contains a loophole. Every loophole contains a smaller bargain, folded sharp-side inward. Debtors leave delighted to have outwitted him and return later carrying precisely what he wanted. Bogdan never gloats. He merely asks whether they read the footnote beneath the root. Specialty: Bargains expose a loophole whose apparent benefit is part of the price.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Bogdan, hagwood crone; Bogdan is the only male Crone because the wood considered the matter irregular, then binding. Every bargain he offers contains a loophole. Every loophole contains a smaller bargain, folded sharp-side inward. Debtors leave delighted to have outwitted him and return later carrying precisely what he wanted. Bogdan never gloats. He merely asks whether they read the footnote beneath the root. Specialty: Bargains expose a loophole whose apparent benefit is part of the price.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-c3de8abc-15a7-4fd0-b41d-31ca7ebe50ac.png"
+    },
+    {
+      "id": "hero-portrait:qara:built-in",
+      "assets": [
+        "hero-portrait:qara"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/qara-source.png",
+      "final": "public/assets/hero-dashboard/portraits/qara.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Qara, wildergrass ashrider; Qara was born during the loud sky, when thunder walked for three days without finding the horizon. The first Thunderbird landed beside her cradle and left the tent smoking but intact. Storm-wake follows her companies now with a fondness that scorches footprints into glass. She laughs before thunder answers, never after. The sky remembers her at volume and without moderation. Specialty: Thunderbirds' Storm Wake applies Burn 3.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Qara, wildergrass ashrider; Qara was born during the loud sky, when thunder walked for three days without finding the horizon. The first Thunderbird landed beside her cradle and left the tent smoking but intact. Storm-wake follows her companies now with a fondness that scorches footprints into glass. She laughs before thunder answers, never after. The sky remembers her at volume and without moderation. Specialty: Thunderbirds' Storm Wake applies Burn 3.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-bbcb4e6c-3b4d-4afd-9c0e-691c1d95b0ac.png"
+    },
+    {
+      "id": "hero-portrait:erdem:built-in",
+      "assets": [
+        "hero-portrait:erdem"
+      ],
+      "output": "assets/sources/hero-dashboard/portraits/erdem-source.png",
+      "final": "public/assets/hero-dashboard/portraits/erdem.png",
+      "size": [
+        96,
+        96
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "Erdem, wildergrass ashrider; Erdem collected river tolls until the river moved and left his gate facing a field. He continued collecting. To him, surrender is simply another border crossing: the defeated possess baggage, dignity, and an urgent destination, all taxable. His invoices are immaculate and exactly twice what hope estimated. The clans admire consistency. His enemies increasingly choose the less expensive option, which is fighting. Specialty: Surrendering to Erdem costs double.",
+      "prompt": "Use case: stylized-concept\nAsset type: production 96x96 hero portrait for a bright storybook fantasy strategy game\nPrimary request: Create one original isolated head-and-shoulders portrait of this canonical individual: Erdem, wildergrass ashrider; Erdem collected river tolls until the river moved and left his gate facing a field. He continued collecting. To him, surrender is simply another border crossing: the defeated possess baggage, dignity, and an urgent destination, all taxable. His invoices are immaculate and exactly twice what hope estimated. The clans admire consistency. His enemies increasingly choose the less expensive option, which is fighting. Specialty: Surrendering to Erdem costs double.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective outline; restrained coherent pixel clusters; tactile faction materials; characterful face.\nComposition/framing: one compact centered bust in front three-quarter view; face large and expressive; generous padding; no crop; identity legible at native 96x96.\nLighting/mood: warm light from screen lower-right; self-shadowed planes toward screen upper-left.\nConstraints: one person only; distinct canonical identity derived from name, story, class, faction, and specialty; perfectly uniform #00FF00 background; opaque subject suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot or rarity marker, full body, mount, generic faction archetype, photorealism.",
+      "references": [
+        {
+          "file": "assets/references/c-heroes-style-lock.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-1b186173-3096-48e8-b50b-05b50dc72328.png"
+    },
+    {
+      "id": "hero-specialty:steadyAim:built-in",
+      "assets": [
+        "hero-specialty:steadyAim"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/steadyAim-source.png",
+      "final": "public/assets/hero-dashboard/specialties/steadyAim.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "an ashwood longbow with one perfectly straight hand-fletched arrow",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: an ashwood longbow with one perfectly straight hand-fletched arrow.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-4ef73360-b844-42b9-923b-f1bb5da30d5c.png"
+    },
+    {
+      "id": "hero-specialty:brightRally:built-in",
+      "assets": [
+        "hero-specialty:brightRally"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/brightRally-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightRally.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a brass rally trumpet with one warm-red cloth tie",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a brass rally trumpet with one warm-red cloth tie.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-66ac8c07-c17b-487b-b04c-2c5d091bb0c3.png"
+    },
+    {
+      "id": "hero-specialty:roadwise:built-in",
+      "assets": [
+        "hero-specialty:roadwise"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/roadwise-source.png",
+      "final": "public/assets/hero-dashboard/specialties/roadwise.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "a sturdy wagon wheel crossing three fitted road stones with an axle-grease pot",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: a sturdy wagon wheel crossing three fitted road stones with an axle-grease pot.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-0abf91e1-5665-4f7b-a0d4-3bca7c0f9b8a.png"
+    },
+    {
+      "id": "hero-specialty:highBanner:built-in",
+      "assets": [
+        "hero-specialty:highBanner"
+      ],
+      "output": "assets/sources/hero-dashboard/specialties/highBanner-source.png",
+      "final": "public/assets/hero-dashboard/specialties/highBanner.png",
+      "size": [
+        32,
+        32
+      ],
+      "candidates": 1,
+      "chroma_key": "#00FF00",
+      "literal_subject": "one planted cream-and-warm-red heraldic pennant",
+      "prompt": "Use case: stylized-concept\nAsset type: production 32x32 hero-dashboard icon for a bright storybook fantasy strategy game\nPrimary request: Create exactly one isolated tightly unified physical icon subject: one planted cream-and-warm-red heraldic pennant.\nScene/backdrop: perfectly flat solid #00FF00 chroma-key background for local removal.\nStyle/medium: warm bright cartoony storybook fantasy pixel art; hand-pixelled appearance; crisp selective dark outline; restrained clusters; tactile miniature materials; match the accepted spell-effect and collectible families.\nComposition/framing: centered high-oblique non-isometric object view where depth applies; generous padding; no crop; one readable silhouette at native 32x32.\nLighting/mood: warm key light from screen lower-right/map south-east; shadows toward upper-left/north-west.\nConstraints: exact physical subject; uniform #00FF00 background; opaque crisp edges suitable for chroma removal.\nAvoid: text, frame, scenery, player color, faction crest, slot, rarity, amount or upgrade marker, glow, aura, watermark, extra objects.",
+      "references": [
+        {
+          "file": "assets/sources/items/bannerWhistle-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/items/potionOfVigor-source.png",
+          "parameter": "style_reference"
+        },
+        {
+          "file": "assets/sources/artifacts/falconersGlove-source.png",
+          "parameter": "style_reference"
+        }
+      ],
+      "built_in_output": "/home/nadbor/.codex/generated_images/019ff549-5bd2-7f22-b688-c02063f0a729/exec-e405180a-50f8-4ca4-bfbc-9fbff877a8b4.png"
+    }
+  ]
+}

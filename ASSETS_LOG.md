@@ -1022,3 +1022,21 @@ against the superseded overhead terrain camera. It is not the final A2 acceptanc
 - Manifest/worklist/selection/job coverage now owns all eight selected targets. Every selected
   source has transparent margins at both vertical canvas sides, hard alpha, fixed rocky palette,
   exact native dimensions, and a deterministic source/final hash.
+
+## 2026-08-12 — Hero-dashboard portraits, specialties, stats, and vitals
+
+- Added 36 distinct 96×96 canonical hero portraits under
+  `public/assets/hero-dashboard/portraits/`, one per `HEROES` definition, plus 36 unique 32×32
+  specialty icons and seven fixed stat/vital icons. Spell Power reuses
+  `public/assets/icons/effects/spell-power.png` unchanged.
+- Every asset came from one separate built-in image-generation call on a flat green or magenta key.
+  Provider originals remain under `assets/sources/hero-dashboard/`; all 79 initial calls were
+  accepted, so there are no rejected or retry files to retain.
+- `scripts/buildHeroDashboardAssets.py` performs deterministic channel-dominance key removal,
+  content crop/fitting, 64-colour quantization, and hard-alpha native baking; its separate promote
+  command copies only deterministic finals. Top-border sampling handles Temir's bust touching the
+  lower provider canvas without treating the bust as chroma.
+- Review evidence is `.pixel-work/review/hero-dashboard/source-contact-sheet.png`, focused portrait
+  and icon native/3× sheets, and combined native/3× sheets. The manifest, worklist, immutable jobs,
+  selection/provenance, focused tests, asset checker, and no-fallback shared renderers own 79/79
+  coverage. No dashboard UI integration is claimed here.

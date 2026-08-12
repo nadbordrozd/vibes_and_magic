@@ -833,3 +833,19 @@ Beads epic `vibes_and_magic-6sf`.
   portraits, and 4/4 resource icons. The exact later generation gap is 79 assets: 36 distinct hero
   portraits, 36 specialty icons, three primary-stat icons, and four vital icons; Spell Power reuses
   its installed lexicon icon. No bitmap was generated and no UI was implemented in this task.
+
+## 2026-08-12 — Complete hero-dashboard asset catalog
+
+- Generated exactly 79 retained built-in sources through 79 distinct calls: 36 canonical hero
+  portraits, 36 specialty icons, Attack/Defense/Knowledge, and Experience/Movement/Mana/Luck.
+  No attempt was rejected or retried; the selection and provenance formats still require retained
+  rejected-output records whenever future work has any.
+- Added a catalog-derived 79-entry worklist and manifest, exhaustive literal specialty/stat/vital
+  subjects, eight immutable job batches, selection and source/final provenance ledgers, and exact
+  prompt/source/output hashes. Spell Power remains the existing shared effect icon.
+- Added deterministic chroma removal, native 96/32 fitting, restrained 64-colour quantization,
+  hard-alpha baking, promotion, source/native/exact-nearest-3× contact sheets, and a fail-closed
+  checker covering paths, content uniqueness, dimensions, alpha, catalog coupling, one-call jobs,
+  retained rejections, provider paths, and no-fallback renderer consumption.
+- Added shared portrait/specialty/stat/vital renderers without wiring them into the still-tabbed hero
+  screen. Dashboard UI/browser acceptance remains the next work item.

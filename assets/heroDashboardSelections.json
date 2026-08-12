@@ -1,0 +1,638 @@
+{
+  "version": 1,
+  "contract": "One accepted provider source and deterministic native hard-alpha final per contracted dashboard asset; rejected attempts remain retained.",
+  "entries": [
+    {
+      "id": "hero-portrait:aldith",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/aldith-source.png",
+      "final": "public/assets/hero-dashboard/portraits/aldith.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:corwin",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/corwin-source.png",
+      "final": "public/assets/hero-dashboard/portraits/corwin.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:berta",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/berta-source.png",
+      "final": "public/assets/hero-dashboard/portraits/berta.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:osric",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/osric-source.png",
+      "final": "public/assets/hero-dashboard/portraits/osric.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:petra",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/petra-source.png",
+      "final": "public/assets/hero-dashboard/portraits/petra.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:silas",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/silas-source.png",
+      "final": "public/assets/hero-dashboard/portraits/silas.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:grigor",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/grigor-source.png",
+      "final": "public/assets/hero-dashboard/portraits/grigor.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:mirele",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/mirele-source.png",
+      "final": "public/assets/hero-dashboard/portraits/mirele.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:maren",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/maren-source.png",
+      "final": "public/assets/hero-dashboard/portraits/maren.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:elgiva",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/elgiva-source.png",
+      "final": "public/assets/hero-dashboard/portraits/elgiva.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:tobiah",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/tobiah-source.png",
+      "final": "public/assets/hero-dashboard/portraits/tobiah.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:brotherHollis",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/brotherHollis-source.png",
+      "final": "public/assets/hero-dashboard/portraits/brotherHollis.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:vess",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/vess-source.png",
+      "final": "public/assets/hero-dashboard/portraits/vess.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:oszra",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/oszra-source.png",
+      "final": "public/assets/hero-dashboard/portraits/oszra.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:kettl",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/kettl-source.png",
+      "final": "public/assets/hero-dashboard/portraits/kettl.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:humm",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/humm-source.png",
+      "final": "public/assets/hero-dashboard/portraits/humm.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:babaZima",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/babaZima-source.png",
+      "final": "public/assets/hero-dashboard/portraits/babaZima.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:yagaOlen",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/yagaOlen-source.png",
+      "final": "public/assets/hero-dashboard/portraits/yagaOlen.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:oldMarta",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/oldMarta-source.png",
+      "final": "public/assets/hero-dashboard/portraits/oldMarta.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:vasilisa",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/vasilisa-source.png",
+      "final": "public/assets/hero-dashboard/portraits/vasilisa.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:temir",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/temir-source.png",
+      "final": "public/assets/hero-dashboard/portraits/temir.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:saiga",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/saiga-source.png",
+      "final": "public/assets/hero-dashboard/portraits/saiga.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:anai",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/anai-source.png",
+      "final": "public/assets/hero-dashboard/portraits/anai.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:bataar",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/bataar-source.png",
+      "final": "public/assets/hero-dashboard/portraits/bataar.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:edwin",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/edwin-source.png",
+      "final": "public/assets/hero-dashboard/portraits/edwin.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:maud",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/maud-source.png",
+      "final": "public/assets/hero-dashboard/portraits/maud.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:ansel",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/ansel-source.png",
+      "final": "public/assets/hero-dashboard/portraits/ansel.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:rivka",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/rivka-source.png",
+      "final": "public/assets/hero-dashboard/portraits/rivka.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:cerys",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/cerys-source.png",
+      "final": "public/assets/hero-dashboard/portraits/cerys.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:dunstan",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/dunstan-source.png",
+      "final": "public/assets/hero-dashboard/portraits/dunstan.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:szet",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/szet-source.png",
+      "final": "public/assets/hero-dashboard/portraits/szet.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:ollo",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/ollo-source.png",
+      "final": "public/assets/hero-dashboard/portraits/ollo.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:agata",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/agata-source.png",
+      "final": "public/assets/hero-dashboard/portraits/agata.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:bogdan",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/bogdan-source.png",
+      "final": "public/assets/hero-dashboard/portraits/bogdan.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:qara",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/qara-source.png",
+      "final": "public/assets/hero-dashboard/portraits/qara.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-portrait:erdem",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/portraits/erdem-source.png",
+      "final": "public/assets/hero-dashboard/portraits/erdem.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:steadyAim",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/steadyAim-source.png",
+      "final": "public/assets/hero-dashboard/specialties/steadyAim.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:brightRally",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/brightRally-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightRally.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:roadwise",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/roadwise-source.png",
+      "final": "public/assets/hero-dashboard/specialties/roadwise.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:highBanner",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/highBanner-source.png",
+      "final": "public/assets/hero-dashboard/specialties/highBanner.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:tinCaptain",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/tinCaptain-source.png",
+      "final": "public/assets/hero-dashboard/specialties/tinCaptain.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:brightWither",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/brightWither-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightWither.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:masterForager",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/masterForager-source.png",
+      "final": "public/assets/hero-dashboard/specialties/masterForager.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:masterMender",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/masterMender-source.png",
+      "final": "public/assets/hero-dashboard/specialties/masterMender.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:deepLastLight",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/deepLastLight-source.png",
+      "final": "public/assets/hero-dashboard/specialties/deepLastLight.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:brightRemembrance",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/brightRemembrance-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightRemembrance.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:watchfulRetaliation",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/watchfulRetaliation-source.png",
+      "final": "public/assets/hero-dashboard/specialties/watchfulRetaliation.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:heavyUnfinishedBusiness",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/heavyUnfinishedBusiness-source.png",
+      "final": "public/assets/hero-dashboard/specialties/heavyUnfinishedBusiness.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:nurturingBrood",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/nurturingBrood-source.png",
+      "final": "public/assets/hero-dashboard/specialties/nurturingBrood.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:masterRenderer",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/masterRenderer-source.png",
+      "final": "public/assets/hero-dashboard/specialties/masterRenderer.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:swiftPaperWasps",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/swiftPaperWasps-source.png",
+      "final": "public/assets/hero-dashboard/specialties/swiftPaperWasps.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:brightBloom",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/brightBloom-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightBloom.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:gentleDebts",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/gentleDebts-source.png",
+      "final": "public/assets/hero-dashboard/specialties/gentleDebts.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:brightSour",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/brightSour-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightSour.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:vengefulCrows",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/vengefulCrows-source.png",
+      "final": "public/assets/hero-dashboard/specialties/vengefulCrows.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:farSweep",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/farSweep-source.png",
+      "final": "public/assets/hero-dashboard/specialties/farSweep.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:dearerBloodPrice",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/dearerBloodPrice-source.png",
+      "final": "public/assets/hero-dashboard/specialties/dearerBloodPrice.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:hungryPack",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/hungryPack-source.png",
+      "final": "public/assets/hero-dashboard/specialties/hungryPack.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:brightGale",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/brightGale-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightGale.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:unhinderedSkirmish",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/unhinderedSkirmish-source.png",
+      "final": "public/assets/hero-dashboard/specialties/unhinderedSkirmish.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:kennelMuster",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/kennelMuster-source.png",
+      "final": "public/assets/hero-dashboard/specialties/kennelMuster.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:brightTrial",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/brightTrial-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightTrial.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:brightEscort",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/brightEscort-source.png",
+      "final": "public/assets/hero-dashboard/specialties/brightEscort.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:swiftMarionettes",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/swiftMarionettes-source.png",
+      "final": "public/assets/hero-dashboard/specialties/swiftMarionettes.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:doubleFerry",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/doubleFerry-source.png",
+      "final": "public/assets/hero-dashboard/specialties/doubleFerry.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:deepDirge",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/deepDirge-source.png",
+      "final": "public/assets/hero-dashboard/specialties/deepDirge.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:lastingResin",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/lastingResin-source.png",
+      "final": "public/assets/hero-dashboard/specialties/lastingResin.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:greaterBroodCall",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/greaterBroodCall-source.png",
+      "final": "public/assets/hero-dashboard/specialties/greaterBroodCall.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:diagonalFenceSlow",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/diagonalFenceSlow-source.png",
+      "final": "public/assets/hero-dashboard/specialties/diagonalFenceSlow.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:loopholeBargains",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/loopholeBargains-source.png",
+      "final": "public/assets/hero-dashboard/specialties/loopholeBargains.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:burningStormWake",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/burningStormWake-source.png",
+      "final": "public/assets/hero-dashboard/specialties/burningStormWake.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-specialty:costlySurrender",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/specialties/costlySurrender-source.png",
+      "final": "public/assets/hero-dashboard/specialties/costlySurrender.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-primary-stat:attack",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/primary-stats/attack-source.png",
+      "final": "public/assets/hero-dashboard/primary-stats/attack.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-primary-stat:defense",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/primary-stats/defense-source.png",
+      "final": "public/assets/hero-dashboard/primary-stats/defense.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-primary-stat:knowledge",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/primary-stats/knowledge-source.png",
+      "final": "public/assets/hero-dashboard/primary-stats/knowledge.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-vital:experience",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/vitals/experience-source.png",
+      "final": "public/assets/hero-dashboard/vitals/experience.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-vital:movement",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/vitals/movement-source.png",
+      "final": "public/assets/hero-dashboard/vitals/movement.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-vital:mana",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/vitals/mana-source.png",
+      "final": "public/assets/hero-dashboard/vitals/mana.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    },
+    {
+      "id": "hero-vital:luck",
+      "accepted": true,
+      "source": "assets/sources/hero-dashboard/vitals/luck-source.png",
+      "final": "public/assets/hero-dashboard/vitals/luck.png",
+      "review": "Accepted after source, native, and exact-nearest 3x contact-sheet inspection on 2026-08-12.",
+      "discarded_outputs": []
+    }
+  ]
+}

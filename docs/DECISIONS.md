@@ -962,3 +962,18 @@
   32×32 icons (36 specialties, Attack/Defense/Knowledge, and Experience/Movement/Mana/Luck). Spell
   Power reuses the installed lexicon icon; the six faction movement sets do not count as distinct
   portraits.
+
+## 2026-08-12 — Hero-dashboard identity art is catalog-owned and exact (doc 59)
+
+- Each of the 36 canonical hero definitions owns one distinct 96×96 portrait whose generation
+  brief includes its name, full story, class, faction, and specialty. The six faction movement
+  sprites remain adventure locomotion art and are never a portrait fallback.
+- Each of the 36 distinct specialty IDs owns one literal 32×32 physical-subject icon. Attack,
+  Defense, Knowledge, Experience, Movement, Mana, and Luck own seven more; Spell Power deliberately
+  resolves through the byte-stable installed spell-effect icon.
+- Exactly one built-in generation call produced each of the 79 new sources. All were accepted after
+  source, native, and exact-nearest 3× contact-sheet inspection; there were no rejected attempts or
+  retries. The rejection ledger remains mandatory and fail-closed for any future regeneration.
+- Deterministic local chroma removal, content fitting, restrained palette, and hard-alpha baking own
+  production bytes. Manifest-backed shared renderers expose no fallback. This installs the asset
+  family only and does not claim one-screen dashboard UI integration.

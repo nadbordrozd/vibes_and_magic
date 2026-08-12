@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { assetWorklist } from '../../assets/worklist';
 import { contentIconWorklist, spellEffectIconWorklist } from '../../assets/iconWorklist';
+import { heroDashboardWorklist } from '../../assets/heroDashboardWorklist';
 import {
   ARTIFACT_SPRITE_SUBJECTS, ITEM_SPRITE_SUBJECTS, RESOURCE_MINE_SUBJECTS,
 } from '../../assets/adventureSpriteInventory';
@@ -49,7 +50,8 @@ interface PixelJob {
 
 const root = process.cwd();
 const jobsDir = resolve(root, 'assets/jobs');
-const worklist = [...assetWorklist(), ...contentIconWorklist(), ...spellEffectIconWorklist()];
+const worklist = [...assetWorklist(), ...contentIconWorklist(), ...spellEffectIconWorklist(),
+  ...heroDashboardWorklist()];
 const byId = new Map(worklist.map((item) => [item.id, item]));
 const errors: string[] = [];
 const covered = new Map<string, string[]>();
