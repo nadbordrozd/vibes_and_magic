@@ -33,6 +33,7 @@
     "review:item-sprites": "tsx src/sim/item-sprite-review.ts",
     "review:artifact-sprites": "tsx src/sim/artifact-sprite-review.ts",
     "review:spellbook": "tsx src/sim/spellbook-review.ts",
+    "review:hero-dashboard": "tsx src/sim/hero-dashboard-review.ts",
     "review:combat": "tsx src/sim/combat-review.ts",
     "review:combat:unfinished": "tsx src/sim/combat-review.ts unfinished",
     "review:combat:wound-wrights": "tsx src/sim/combat-review.ts woundWrights",

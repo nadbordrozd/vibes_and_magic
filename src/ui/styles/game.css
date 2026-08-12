@@ -720,7 +720,7 @@ kbd { color: #48412c; border: 1px solid #76663c; padding: 2px 5px; font: inherit
 
 .hero-details-backdrop { z-index: 82; }
 .hero-details-dialog, .command-menu-dialog {
-  position: relative; width: min(920px, calc(100vw - 40px)); max-height: calc(100dvh - 40px);
+  position: relative; width: min(1180px, calc(100vw - 32px)); max-height: calc(100dvh - 32px);
   display: flex; flex-direction: column; overflow: hidden; color: #e8e0c9;
   background: linear-gradient(150deg, #202821, #111612); border: 1px solid #8f7b4c;
   box-shadow: 0 24px 80px #000e;
@@ -731,28 +731,149 @@ kbd { color: #48412c; border: 1px solid #76663c; padding: 2px 5px; font: inherit
 }
 .hero-details-dialog h2, .command-menu-dialog h2 { margin: 2px 0; font: 700 25px Georgia, serif; }
 .hero-details-dialog header small { color: #8d978a; }
-.hero-details-portrait {
-  width: 48px; height: 54px; display: grid; place-items: center; overflow: hidden;
-  border: 1px solid #786c49; background: #121713;
-}
-.hero-details-tabs {
-  flex: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px;
-  padding: 7px; background: #0d120e;
-}
-.hero-details-tabs button { padding: 9px 6px; color: #aeb6a9; background: #171d18; border: 1px solid #3b443a; }
-.hero-details-tabs button.active { color: #181b14; border-color: #d7a846; background: #d7a846; }
 .hero-details-body { min-height: 0; flex: 1; overflow: auto; padding: 18px; }
 .hero-details-dialog > footer { flex: none; margin: 0; padding: 10px 18px; border-top: 1px solid #3b443a; }
-.hero-details-overview { display: grid; gap: 12px; }
-.hero-details-overview .hero-identity-summary { margin: 0; }
-.hero-details-resource-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-.hero-details-resource-grid div { display: flex; justify-content: space-between; padding: 10px; background: #0d120e; }
-.hero-details-resource-grid span { color: #929c8f; }
-.hero-details-items .item-inventory .army-slots { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-.hero-details-skills .skill-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.hero-details-skills .skill-summary h4 { grid-column: 1 / -1; }
-.hero-details-dialog .artifact-paper-doll { margin: 0; padding-top: 0; border-top: 0; }
-.hero-details-dialog .artifact-backpack { max-height: none; overflow: visible; }
+.hero-dashboard-dialog > header { min-height: 74px; background: linear-gradient(90deg, #283227, #161c17); }
+.hero-dashboard-dialog > header .structure-dialog-close { width: 44px; height: 44px; }
+.hero-dashboard-body {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 10px;
+  align-content: start; overscroll-behavior: contain; scrollbar-gutter: stable;
+}
+.hero-dashboard-region {
+  min-width: 0; align-self: start; padding: 10px; border: 1px solid #465043;
+  background: linear-gradient(145deg, #192019, #0e130f); box-shadow: inset 0 0 24px #82916709;
+}
+.hero-dashboard-region > h3 {
+  margin: 0 0 9px; color: #dcc878; font: 700 11px Georgia, serif;
+  letter-spacing: .11em; text-transform: uppercase;
+}
+.hero-dashboard-identity { grid-column: span 3; }
+.hero-dashboard-primary { grid-column: span 5; }
+.hero-dashboard-vitals { grid-column: span 4; }
+.hero-dashboard-army { grid-column: 1 / -1; }
+.hero-dashboard-skills { grid-column: span 3; }
+.hero-dashboard-equipment { grid-column: span 6; }
+.hero-dashboard-backpack { grid-column: 4 / span 6; }
+.hero-dashboard-items { grid-column: 10 / span 3; grid-row: 3; }
+.hero-dashboard-special { grid-column: 10 / span 3; grid-row: 4; }
+.hero-dashboard-identity-layout { display: grid; gap: 7px; }
+.hero-dashboard-portrait-button, .hero-dashboard-specialty-button,
+.hero-dashboard-stat-grid button, .hero-dashboard-vital-grid button,
+.hero-dashboard-skill-grid button, .hero-dashboard-backpack-grid button,
+.hero-dashboard-item-grid button {
+  min-width: 0; min-height: 52px; color: #e9e2ce; border: 1px solid #566050;
+  background: linear-gradient(145deg, #242d23, #131914); text-align: left;
+}
+.hero-dashboard-portrait-button {
+  min-height: 108px; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 9px;
+  align-items: center; padding: 5px;
+}
+.hero-dashboard-bitmap { flex: none; image-rendering: pixelated; object-fit: contain; }
+.hero-dashboard-portrait-button > .hero-dashboard-bitmap { width: 96px; height: 96px; }
+.hero-dashboard-portrait-button span, .hero-dashboard-specialty-button span,
+.hero-dashboard-stat-grid button span, .hero-dashboard-vital-grid button span,
+.hero-dashboard-skill-grid button span { min-width: 0; display: grid; gap: 2px; }
+.hero-dashboard-portrait-button b { font: 700 17px Georgia, serif; }
+.hero-dashboard-portrait-button small, .hero-dashboard-specialty-button small,
+.hero-dashboard-stat-grid small, .hero-dashboard-vital-grid small,
+.hero-dashboard-skill-grid small, .hero-dashboard-army-grid small,
+.hero-dashboard-item-grid small, .hero-dashboard-empty-cell small {
+  color: #929c90; font-size: 8px; line-height: 1.25; text-transform: uppercase; letter-spacing: .06em;
+}
+.hero-dashboard-specialty-button {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 8px; align-items: center; padding: 7px;
+}
+.hero-dashboard-stat-grid, .hero-dashboard-vital-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.hero-dashboard-stat-grid button, .hero-dashboard-vital-grid button {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr); align-items: center; gap: 6px; padding: 7px;
+}
+.hero-dashboard-stat-grid b, .hero-dashboard-vital-grid b { font: 700 18px Georgia, serif; }
+.hero-dashboard-status-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+.hero-dashboard-status-list button {
+  min-height: 44px; display: inline-flex; align-items: center; gap: 5px; padding: 6px 8px;
+  color: #ddcfaa; border: 1px solid #796448; background: #251f16; font-size: 9px;
+}
+.hero-dashboard-status-list :is(.content-icon, .hero-dashboard-bitmap) { width: 24px; height: 24px; }
+.hero-dashboard-status-list .unit-portrait { width: 32px; height: 28px; }
+.hero-dashboard-army-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.hero-dashboard-army-grid button, .hero-dashboard-army-grid .hero-dashboard-empty-cell {
+  position: relative; min-width: 0; min-height: 96px; padding: 4px; border: 1px solid #4d574a;
+  background: #0b100c; color: #eee9d9; text-align: center;
+}
+.hero-dashboard-army-grid button { display: grid; grid-template-rows: 58px auto auto; justify-items: center; }
+.hero-dashboard-army-grid .unit-portrait { width: 100%; height: 58px; object-fit: contain; image-rendering: pixelated; }
+.hero-dashboard-army-grid button > span { min-width: 0; max-width: 100%; overflow-wrap: anywhere; font-size: 9px; }
+.hero-dashboard-army-grid button > small { position: absolute; right: 3px; top: 3px; }
+.hero-dashboard-empty-cell { display: grid; place-content: center; gap: 3px; color: #616b61; }
+.hero-dashboard-skill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.hero-dashboard-skill-grid button { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 6px; align-items: center; padding: 5px; }
+.hero-dashboard-skill-grid b { overflow-wrap: anywhere; font-size: 9px; }
+.hero-dashboard-equipment-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px; }
+.hero-dashboard-equipment-grid button {
+  min-width: 0; min-height: 88px; display: grid; grid-template-rows: auto 32px 1fr auto;
+  justify-items: center; align-content: start; gap: 3px; padding: 5px 3px;
+  color: #e8e0ca; border: 1px solid #5b604d; background: #121712; text-align: center;
+}
+.hero-dashboard-equipment-grid button.occupied { border-color: #917846; background: #1b1b13; }
+.hero-dashboard-equipment-grid button > small { color: #a79b70; font-size: 8px; text-transform: uppercase; }
+.hero-dashboard-equipment-grid button > b { max-width: 100%; overflow-wrap: anywhere; font-size: 8px; line-height: 1.2; }
+.hero-dashboard-empty-artifact { display: grid; place-items: center; width: 32px; height: 32px; color: #566054; font-size: 24px; }
+.hero-dashboard-equipment-grid .burden-mark { color: #de8d82; font-size: 7px; text-transform: uppercase; }
+.hero-dashboard-backpack-grid, .hero-dashboard-item-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+.hero-dashboard-backpack-grid button, .hero-dashboard-item-grid button,
+.hero-dashboard-item-grid .hero-dashboard-empty-cell {
+  min-height: 72px; display: grid; justify-items: center; align-content: center; gap: 3px; padding: 5px 3px;
+  text-align: center; overflow-wrap: anywhere; font-size: 8px; line-height: 1.15;
+}
+.hero-dashboard-item-grid .hero-dashboard-empty-cell { border: 1px solid #394239; background: #0b100c; }
+.hero-dashboard-empty-line { margin: 0; color: #778176; font-size: 10px; }
+.hero-dashboard-special-grid { display: grid; gap: 7px; }
+.hero-dashboard-special-grid article {
+  min-width: 0; display: grid; gap: 6px; padding: 8px; border: 1px solid #4f584a; background: #131914;
+}
+.hero-dashboard-special-grid h4 { margin: 0; color: #d3bd73; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+.hero-dashboard-special-grid p, .hero-dashboard-special-grid small { margin: 0; color: #abb3a8; font-size: 9px; line-height: 1.4; }
+.hero-dashboard-special-grid article > button, .hero-dashboard-special-grid article > div > button {
+  min-height: 44px; padding: 6px 8px; border: 1px solid #626751; background: #22291f; color: #e6ddc6;
+}
+.hero-dashboard-special-grid .primary { color: #151911; border-color: #d7a846; background: #d7a846; }
+.hero-dashboard-special-grid .spell-glossary-reference { min-height: 44px; padding: 4px 7px; }
+.hero-dashboard-debt { border-left: 3px solid #85607e !important; background: #211b21 !important; }
+.hero-dashboard-nested-backdrop { z-index: 2; position: absolute; padding: 14px; }
+.hero-dashboard-detail { position: relative; width: min(680px, 100%); max-height: calc(100dvh - 64px); overflow: auto; padding: 28px; text-align: left; }
+.hero-dashboard-detail > .dialog-kicker { display: block; padding-right: 40px; }
+.hero-dashboard-detail h2 { display: flex; align-items: center; gap: 12px; margin: 6px 42px 12px 0; text-transform: none; font-size: 27px; }
+.hero-dashboard-detail-close { position: absolute; right: 10px; top: 9px; width: 44px; height: 44px; color: #eee4ca; border: 1px solid #596457; background: #111612; font-size: 23px; }
+.hero-dashboard-detail > .dialog-actions {
+  position: sticky; z-index: 2; bottom: -28px; margin: 18px -10px -18px; padding: 10px;
+  background: #141915f2; border-top: 1px solid #4d564a;
+}
+.hero-dashboard-detail-body { color: #c7cabc; line-height: 1.5; }
+.hero-dashboard-detail .detail-portrait { width: 96px; height: 96px; }
+.hero-dashboard-detail .detail-icon { width: 64px; height: 64px; }
+.hero-dashboard-detail h2 .artifact-sprite-wrap,
+.hero-dashboard-detail h2 .item-sprite-wrap,
+.hero-dashboard-detail .detail-collectible { width: 64px; height: 64px; }
+.hero-dashboard-detail h2 :is(.artifact-sprite, .item-sprite),
+.hero-dashboard-detail .detail-collectible :is(.artifact-sprite, .item-sprite) { width: 64px; height: 64px; }
+.hero-dashboard-detail .detail-unit-portrait { width: 96px; height: 72px; }
+.hero-dashboard-detail .detail-flavor { color: #dfd2ac; font: italic 14px/1.5 Georgia, serif; }
+.hero-dashboard-detail .detail-value { color: #ead58d; font: 700 18px Georgia, serif; }
+.hero-detail-facts { display: grid; gap: 4px; }
+.hero-detail-facts div { display: grid; grid-template-columns: 150px 1fr; gap: 9px; padding: 5px 7px; background: #0d120e; }
+.hero-detail-facts dt { color: #a89558; font-weight: 700; }.hero-detail-facts dd { margin: 0; }
+.hero-skill-ranks { display: grid; gap: 6px; }
+.hero-skill-ranks p { display: grid; gap: 3px; margin: 0; padding: 9px; border-left: 3px solid #4b554a; background: #111612; }
+.hero-skill-ranks p.current { border-color: #d7a846; background: #292515; }
+.detail-choice-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.detail-choice-list button { min-height: 52px; display: flex; align-items: center; gap: 7px; color: #e8e0ca; background: #171d18; border: 1px solid #596457; text-align: left; }
+.hero-dashboard-detail .equipment-destinations button {
+  min-height: 52px; padding: 6px 8px; color: #e6dfca; border: 1px solid #596457;
+  background: #171d18;
+}
+.hero-dashboard-detail .equipment-destinations button[aria-disabled="true"] {
+  opacity: .62; cursor: help; border-style: dashed; background: #111411;
+}
 
 .command-menu-backdrop { z-index: 82; }
 .command-menu-dialog { width: min(760px, calc(100vw - 40px)); }
@@ -802,12 +923,26 @@ kbd { color: #48412c; border: 1px solid #76663c; padding: 2px 5px; font: inherit
 
 @media (max-width: 560px) {
   .adventure-status-strip .resource-bar b { font-size: 9px; }
-  .hero-details-dialog, .command-menu-dialog { width: calc(100vw - 16px); max-height: calc(100dvh - 78px); }
-  .hero-details-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .hero-details-tabs button { padding: 7px 3px; font-size: 8px; }
-  .hero-details-body { padding: 11px; }
-  .hero-details-skills .skill-summary, .command-menu-grid { grid-template-columns: 1fr; }
-  .hero-details-items .item-inventory .army-slots { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hero-details-backdrop { padding: 8px; }
+  .hero-details-dialog, .command-menu-dialog { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
+  .hero-dashboard-dialog > header { min-height: 68px; padding: 10px 54px 9px 12px; }
+  .hero-dashboard-dialog > header h2 { font-size: 21px; }
+  .hero-dashboard-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 8px; }
+  .hero-dashboard-body > .hero-dashboard-region { grid-column: 1; grid-row: auto; width: 100%; }
+  .hero-dashboard-portrait-button { grid-template-columns: 96px minmax(0, 1fr); }
+  .hero-dashboard-army-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .hero-dashboard-army-grid button, .hero-dashboard-army-grid .hero-dashboard-empty-cell { min-height: 82px; }
+  .hero-dashboard-army-grid button { grid-template-rows: 48px auto auto; }
+  .hero-dashboard-army-grid .unit-portrait { height: 48px; }
+  .hero-dashboard-skill-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hero-dashboard-skill-grid button { min-height: 76px; grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .hero-dashboard-equipment-grid, .hero-dashboard-backpack-grid, .hero-dashboard-item-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .hero-dashboard-equipment-grid button { min-height: 94px; }
+  .hero-dashboard-detail { max-height: calc(100dvh - 32px); padding: 22px 13px 16px; }
+  .hero-dashboard-detail > .dialog-actions { bottom: -16px; margin: 16px 0 0; }
+  .hero-dashboard-detail h2 { font-size: 23px; }
+  .hero-detail-facts div { grid-template-columns: 1fr; gap: 2px; }
+  .detail-choice-list, .equipment-destinations { grid-template-columns: 1fr; }
   .command-menu-grid { min-height: 0; overflow: auto; padding: 11px; }
   .command-menu-dialog > .activity-log { margin-inline: 11px; }
 }

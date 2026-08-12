@@ -1,7 +1,8 @@
 # 59 — One-screen hero dashboard
 
-Status: contract, audited inventory, and exact 79-asset production catalog complete 2026-08-12;
-dashboard UI implementation, browser evidence, and final UI acceptance remain follow-up work. This is a presentation and
+Status: contract, audited inventory, exact 79-asset production catalog, one-screen dashboard UI, and
+deterministic desktop/390 browser evidence complete 2026-08-12; final independent UI acceptance remains
+follow-up work. This is a presentation and
 asset-pipeline companion to docs 34, 44–46, and 51. It extends S02, S06–S09 without changing hero,
 army, item, artifact, equipment, save, replay, or action rules.
 
@@ -425,3 +426,27 @@ The feature is complete only when:
   provenance-audited coverage;
 - desktop and 390 px deterministic browser evidence passes without clipping, overflow, inaccessible
   content, hover-only rules, or state drift.
+
+## 10. Implementation status — 2026-08-12
+
+`AdventureHeroDetails` now renders the numbered contract as one DOM tree and one body scroller. The
+five tabs and category replacement state are gone. Identity uses the distinct portrait and specialty
+families; primary stats use `effectivePrimaryStat`; maximum mana uses effective Knowledge; vitals,
+status, army, skills, all eleven canonical equipment positions, the entire backpack, and the
+core-derived six-to-eight consumable positions use their shared graphical renderers.
+
+One local nested detail dialog is the ordinary activation result for each graphical family. It traps
+focus, closes before the dashboard on Escape, and restores the invoking cell. Split, Equip, Unequip,
+Use, spellbook, resonance, omen, Dig, and Unstitch remain separate labeled routes. Equipment review
+still iterates `EQUIPMENT_SLOTS`, calls `slotAccepts`, keeps incompatible destinations focusable with
+their exact reason, and dispatches the existing actions; Burden, Seamstone, Kit, save, and replay
+semantics are unchanged.
+
+The dedicated deterministic browser runner captures and audits the ordinary dashboard plus identity
+detail at 1440×1000 and 390×844. Evidence is under
+`.pixel-work/review/hero-dashboard/dashboard-desktop.png`, `dashboard-390.png`,
+`detail-desktop.png`, `detail-390.png`, and the matching artifact-detail, equipment-review, and
+item-detail pairs. The runner checks region order, absence of tabs, exact
+7/11/8 fixture cells, one body scroller, viewport bounds, horizontal overflow, per-region overflow,
+loaded images/no fallbacks, 44 px visible targets, initial Close focus, nested detail focus, Escape,
+and invoking-cell focus return. Final independent acceptance remains owned by the follow-up task.

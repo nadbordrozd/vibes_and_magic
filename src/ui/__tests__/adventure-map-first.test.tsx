@@ -46,14 +46,18 @@ describe('map-first adventure information architecture', () => {
     const html = renderToStaticMarkup(<AdventureHeroDetails state={state} hero={hero}
       dispatch={() => undefined} onClose={() => undefined} onOpenSpellbook={() => undefined}
       onUseItem={() => undefined} onUnstitch={() => undefined} />);
-    for (const tab of ['Overview', 'Army', 'Equipment', 'Items', 'Special skills']) {
-      expect(html).toContain(tab);
+    for (const region of [
+      'Identity', 'Primary stats', 'Vitals and current status', 'Army', 'Learned skills',
+      'Equipped artifacts', 'Artifact backpack', 'Consumables', 'Special controls and obligations',
+    ]) {
+      expect(html).toContain(region);
     }
+    expect(html).not.toContain('hero-details-tabs');
     expect(html).toContain('role="dialog"');
-    expect(html).toContain('dedicated management');
+    expect(html).toContain('one-screen management');
     const source = readFileSync(new URL('../components/AdventureHeroDetails.tsx', import.meta.url), 'utf8');
     for (const route of [
-      'ArtifactPaperDoll', 'SPLIT_ARMY', 'DIG_CACHE', 'DECLARE_RESONANCE',
+      'EQUIPMENT_SLOTS', 'slotAccepts', 'SPLIT_ARMY', 'DIG_CACHE', 'DECLARE_RESONANCE',
       'CHOOSE_NEXT_OMEN', 'onUseItem', 'Open adventure spellbook',
     ]) expect(source).toContain(route);
     expect(JSON.stringify(state)).toBe(before);

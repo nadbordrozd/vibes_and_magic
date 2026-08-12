@@ -849,3 +849,27 @@ Beads epic `vibes_and_magic-6sf`.
   retained rejections, provider paths, and no-fallback renderer consumption.
 - Added shared portrait/specialty/stat/vital renderers without wiring them into the still-tabbed hero
   screen. Dashboard UI/browser acceptance remains the next work item.
+
+## 2026-08-12 — One-screen visual hero dashboard
+
+- Replaced the five-tab Hero Details surface with one DOM-ordered dashboard: identity, effective
+  primary stats, vitals/current status, seven army positions, learned skills, eleven uniform
+  equipment positions, unlimited backpack, the actual six-to-eight consumable positions, special
+  controls/obligations, and the footer remain present together in one body scroller.
+- Wired all 36 distinct portraits and specialties through the new manifest-backed renderers and
+  retained shared skill, artifact, item, unit, spell/effect, and vital renderers. Empty equipment
+  slots remain focusable detail targets; empty army/item positions are compact and nonfocusable.
+- Added one detail-first interaction contract with nested focus containment, Escape layering, and
+  exact invoking-cell focus return. Consequential Split, Equip, Unequip, Use, spellbook, resonance,
+  omen, Dig, and Unstitch routes remain separate. Canonical `EQUIPMENT_SLOTS`, `slotAccepts`, reducer
+  actions, Burden locks, Seamstone school choice, Kit bonuses, save, and replay behavior remain the
+  authority.
+- Added focused contract coverage for no tabs, DOM order, graphical assets, all 36 identity consumer
+  pairs, effective stats/mana, 6/8 item capacity, detail-first source routing, canonical equipment
+  outcomes, focus semantics, and desktop/390 CSS. Added a deterministic real-browser runner and
+  reviewed its 1440×1000 and 390×844 dashboard/detail captures; its bounds, overflow, image,
+  fallback, target-size, focus, and Escape audits pass. Final independent acceptance remains a
+  separate follow-up.
+- Asset/job/HoMM2/map/spec/UX pretest and production build pass. Focused coverage passes 42/42. The
+  full serial suite passes 802/803; its sole failure remains the accepted unrelated seed-1/day-56
+  no-winner assertion at `src/core/__tests__/mechanics-regression.test.ts:231`.

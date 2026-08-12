@@ -6,6 +6,7 @@ import type { SecondarySkillId, SpellId } from '../../core/types';
 type Props = {
   className?: string;
   large?: boolean;
+  decorative?: boolean;
 } & ({ kind: 'spell'; id: SpellId } | { kind: 'skill'; id: SecondarySkillId });
 
 /** One manifest-backed bitmap component shared by every spell and secondary-skill surface. */
@@ -18,7 +19,8 @@ export function ContentIcon(props: Props) {
     src={`/${entry.file}`}
     width={displaySize}
     height={displaySize}
-    alt={`${name} ${props.kind} icon`}
+    alt={props.decorative ? '' : `${name} ${props.kind} icon`}
+    aria-hidden={props.decorative || undefined}
     draggable={false}
   />;
 }
