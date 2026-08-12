@@ -289,7 +289,10 @@ describe('editor guardian transactions and structured inspector', () => {
       protects: null, drop: { id: 'waybread' as const } };
     const html = renderToStaticMarkup(<EditorGuardianInspector guardian={guardian} document={map}
       onUpdate={() => true} onDelete={() => undefined} onPolicyMessage={() => undefined} />);
-    for (const label of ['Selected guardian', 'Stable ID', 'Protects', 'Standalone',
+    const visibleText = html.replace(/<[^>]+>/g, '');
+    expect(visibleText).toContain('Selected guardian');
+    expect(html).toContain('data-spell-term="guardian"');
+    for (const label of ['Stable ID', 'Protects', 'Standalone',
       'Direct item drop', 'Split deployment', 'Static guardian', 'Guardian army',
       'positive whole troop count', 'Add guardian stack', '1 / 7 stacks']) {
       expect(html).toContain(label);

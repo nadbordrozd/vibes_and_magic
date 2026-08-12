@@ -926,3 +926,19 @@
 - Existing action buttons never contain glossary buttons. Their adjacent semantic copy or existing
   inspection route supplies the same definitions while selection, targeting, and confirmation
   behavior remains unchanged.
+
+## 2026-08-12 — Spell rules pass a bounded independent player-readability gate (doc 58)
+
+- A complete spell version is normally limited to 45 words, four sentences, and two strong clause
+  separators. Only five named multi-effect records may reach 50 words, with the reason kept beside
+  the executable exception rather than allowing an unbounded “complex spell” category.
+- Resolver-identical upgrades repeat the same clean rule. The accepted equality set is exactly
+  Standard of Dawn, Unmake, Standing Mirror, Shed Skin, and Hedgerow March; every other Upgraded
+  projection must differ.
+- Runtime truth includes material limitations even when they are subtle: split-stack reward
+  proportionality, surviving-top-unit healing, all-or-nothing Guardian recruitment, copied-spell
+  exclusions, and ownership-preserving boat movement all belong in concise player rules.
+- Inline aliasing favors precision over maximal linking. Ordinary `barrow`, `forest`, `status`, and
+  abbreviation `sp` no longer create glossary controls; canonical names and unambiguous phrases do.
+- The browser acceptance pair must exercise a minimal spell (Bloom) and a complex effect spell
+  (Standing Mirror), not only prove that one popover can open.

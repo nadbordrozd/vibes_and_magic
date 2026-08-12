@@ -245,13 +245,31 @@ try {
     await page.locator('[role="tab"].wild').click();
     await page.locator('[data-spell-id="bloom"]').click();
     const bloomRule = page.locator('.spell-version-comparison [data-spell-term="bloom"]');
-    await bloomRule.click();
+    const bloomPage = await page.$eval('.spell-version-comparison', (node) => node.textContent ?? '');
+    if (!bloomPage.includes('Give one allied company Bloom 3.')
+        || !bloomPage.includes('Give one allied company Bloom 4 and every adjacent allied company Bloom 1.')
+        || /Spell Power|legal cast|eligible target|confirm/i.test(bloomPage)) {
+      throw new Error(`Bloom page contains non-concrete rule copy: ${bloomPage}`);
+    }
+    if (viewport.name === '390') {
+      await page.$eval('.spell-version-comparison [data-spell-term="bloom"]', (element) => {
+        element.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch' }));
+        element.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerType: 'touch' }));
+        (element as HTMLElement).click();
+      });
+    } else await bloomRule.click();
     await auditGlossary(page, 'bloom', `spell rule ${viewport.name}`);
     await page.screenshot({ path: `${outputDir}/glossary-spell-rule-${viewport.name}.png` });
     await closeGlossaryWithEscape(page, 'bloom');
     await bloomRule.click();
     await page.locator('.spell-detail-heading h3').click();
     await page.waitForSelector('[data-spell-glossary="bloom"]', { hidden: true });
+    await page.locator('[role="tab"].craft').click();
+    await page.locator('[data-spell-id="standingMirror"]').click();
+    await page.focus('.spell-version-comparison [data-spell-term="twister"]');
+    await auditGlossary(page, 'twister', `complex spell rule ${viewport.name}`);
+    await page.screenshot({ path: `${outputDir}/glossary-complex-spell-${viewport.name}.png` });
+    await closeGlossaryWithEscape(page, 'twister');
     await page.$eval('.spellbook-back', (button) => (button as HTMLButtonElement).click());
     await page.locator('[role="tab"].rite').click();
     const manaBeforeAdventureSelection = await page.$eval('.spellbook-vitals', (node) => node.textContent);

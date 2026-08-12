@@ -90,5 +90,6 @@ live in `docs/` until superseded by their implementation.
 | 55 | RITE_CRAFT_SPELL_RULES | Complete resolver-true Standard/Upgraded rules and structured lexicon tokens for all 34 Rite/Craft spells | extends S05/S09 and 53; corrects descriptions only, records unresolved mechanics gaps, and defers interactive term help |
 | 56 | GRAVE_WILD_SPELL_RULES | Complete resolver-true Standard/Upgraded rules and structured lexicon tokens for all 34 Grave/Wild spells, completing the all-68 projection contract | extends S05/S09 and 53/55; corrects descriptions only, records unresolved mechanics gaps, and defers interactive term help |
 | 57 | INTERACTIVE_SPELL_GLOSSARY | Shared accessible native-icon glossary references across the all-68 Spellbook and player-facing mechanic mentions, with deterministic longest-match legacy tokenization | presentation companion to 53–56 and S05/S07/S09; no mechanics or targeting changes |
+| 58 | SPELL_RULE_ACCEPTANCE | Independent all-136 comprehension/runtime audit, constrained rule and glossary prose, alias false-positive review, and desktop/390 semantic/casting acceptance | final acceptance companion to 53–57; refines copied presentation wording only and preserves mechanics |
 
-Next free number: **58**.
+Next free number: **59**.

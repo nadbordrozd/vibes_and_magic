@@ -87,6 +87,8 @@ describe('spell mechanics lexicon', () => {
       ]);
     expect(tokenizeSpellLexiconText('The counterweight and growthling remain ordinary.'))
       .toEqual([{ kind: 'text', text: 'The counterweight and growthling remain ordinary.' }]);
+    expect(tokenizeSpellLexiconText('A barrow stands in a forest. Its status is quiet.'))
+      .toEqual([{ kind: 'text', text: 'A barrow stands in a forest. Its status is quiet.' }]);
   });
 
   it('pins Bloom application, healing, non-resurrection, cap, and decay to real resolvers', () => {

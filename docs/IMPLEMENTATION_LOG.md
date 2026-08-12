@@ -798,3 +798,23 @@ Beads epic `vibes_and_magic-6sf`.
   help through shared semantic presentation while preserving valid non-nested controls.
 - Extended focused tokenizer/render/a11y audits and the desktop/390 Spellbook browser journey with
   Bloom rule, help-glossary, and live counter/status popover evidence.
+
+## 2026-08-12 — Independent all-spell rules and glossary acceptance
+
+- Audited all 68 spells/136 versions against runtime and for player comprehension, then corrected
+  Standard of Dawn proportionality, Consecrate's top-unit healing bound, Standing Mirror exclusions,
+  Skiff ownership, Last Candle scaling, Remembrance survival, Beast Tongue all-or-nothing fit,
+  Overgrow presentation, and several storage/card/slot phrases without changing mechanics.
+- Corrected Deepwood, Extra action, Summon, and Undergrowth glossary overgeneralizations and removed
+  four false-positive ordinary aliases while retaining deterministic longest-match behavior.
+- Added exhaustive bounded prose, exact projection, five-spell identical-upgrade, Bloom lifecycle,
+  30-definition/icon/alias, and semantic-surface acceptance tests.
+- Strengthened the desktop/390 real-game journey with exact Bloom junk rejection, a touch-like
+  glossary interaction, keyboard-focused Standing Mirror/Twister help, help and live counter status,
+  viewport/icon audits, resource-safe selection, and confirmed Beacon/Forge-Spark spending. Reviewed
+  all four new Bloom/complex screenshots; no clipping, overflow, fallback, or missing icon was found.
+- Focused resolver/presentation/UI coverage passed 159/159, pretest/build/spec-link/diff gates passed,
+  and the complete serial suite passed 788/789. Its sole failure is the accepted unrelated
+  `mechanics-regression.test.ts:231` AI no-winner assertion. A stale Guardian inspector raw-HTML
+  adjacency assertion exposed by glossary markup was corrected to check visible text and its semantic
+  term separately; that focused regression passes.
