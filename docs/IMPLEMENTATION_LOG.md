@@ -767,3 +767,22 @@ Beads epic `vibes_and_magic-6sf`.
   run in the same worktree passed 770/771; its only failure was the accepted unrelated
   seed-1/day-56 no-winner assertion at
   `src/core/__tests__/mechanics-regression.test.ts:231`.
+
+## 2026-08-12 — Resolver-true Grave and Wild spell rules
+
+- Rewrote all 34 Grave/Wild Standard and Upgraded rules as complete outcomes audited against combat,
+  adventure, topology, targeting, scaling, twister, trigger, and effect-pipeline behavior.
+- Added a 34-entry Grave/Wild structured record beside the byte-stable Rite/Craft records and made
+  `SPELL_RULE_PRESENTATIONS` a complete typed 68-spell map. Every catalog `base`/`plus` value is now
+  an exact deterministic projection retaining its lexicon IDs for later interactive presentation.
+- Corrected the player contract for fixed Bloom, Sour eligibility, Overgrow self/mutation behavior,
+  distant Cold Road, Barrowfield-object Ledger reveal, City-only stacking Wild Growth,
+  noncontiguous Murmuration, ally-only identical Shed Skin, inert identical Hedgerow March, and the
+  remaining amount/duration/target/trigger restrictions recorded in doc 56. Matching mechanics
+  coverage no longer attributes death-trigger semantics to counters such as Dirge/The Toll/Loyal or
+  nonexistent movement/Morale/Bloom hooks to Hedgerow March. Mechanics are unchanged.
+- Added exhaustive Grave/Wild school/order/version/token/projection/prose coverage, final 68/68 map
+  coverage, and resolver fixtures for the riskiest catalog mismatches while retaining the accepted
+  Rite/Craft test suite.
+- Final focused resolver/contract coverage passed 146/146 in 7 files. Production build,
+  spec-link, UX, and diff gates passed.

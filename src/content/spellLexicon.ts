@@ -266,7 +266,7 @@ export const SPELL_MECHANICS_COVERAGE: Record<SpellId, SpellMechanicsCoverage> =
   wither: coverage('combat:castGrave.wither', ['hex', 'chill', 'counter'], ['actors', 'amounts']),
   graveChill: coverage('combat:castGrave.graveChill', ['chill', 'counter', 'morale'], ['actors', 'amounts']),
   mournersVeil: coverage('combat:castGrave.mournersVeil', ['timed-effect', 'hex'], ['actors', 'battle-time', 'combat-stats']),
-  dirge: coverage('combat:castGrave.dirge', ['death-trigger'], ['actors', 'damage-and-hp', 'amounts']),
+  dirge: coverage('combat:castGrave.dirge', [], ['actors', 'damage-and-hp', 'amounts']),
   lastCandle: coverage('combat:castGrave.lastCandle', ['battle-enchantment', 'death-trigger', 'hex', 'morale'], ['actors', 'casting-resources']),
   sour: coverage('combat:twister.sour', ['twister', 'active-effect', 'beneficial-effect', 'bloom', 'hex', 'timed-effect', 'battle-enchantment'], ['replacement', 'targets']),
   remembrance: coverage('combat:castGrave.remembrance', [], ['actors', 'damage-and-hp', 'amounts']),
@@ -290,7 +290,7 @@ export const SPELL_MECHANICS_COVERAGE: Record<SpellId, SpellMechanicsCoverage> =
   borrowedTime: coverage('adventure:resolveGrave.borrowedTime', [], ['movement', 'map-time', 'amounts']),
   paleProcession: coverage('adventure:resolveGrave.paleProcession', ['summon'], ['actors', 'damage-and-hp', 'destinations', 'map-time']),
   silenceThePassing: coverage('combat:expansion.silenceThePassing', ['battle-enchantment', 'death-trigger'], ['actors', 'battle-time', 'amounts']),
-  theToll: coverage('combat:expansion.theToll', ['death-trigger'], ['casting-resources', 'amounts']),
+  theToll: coverage('combat:expansion.theToll', [], ['casting-resources', 'amounts']),
   deathsLedger: coverage('adventure:resolveGrave.deathsLedger', ['barrowfield', 'guardian'], ['exploration', 'map-time']),
   graveSpeech: coverage('adventure:resolveGrave.graveSpeech', [], ['destinations', 'learning', 'battle-time']),
   gale: coverage('combat:expansion.gale', ['forced-movement', 'chill'], ['actors', 'amounts', 'damage-and-hp', 'destinations']),
@@ -307,12 +307,12 @@ export const SPELL_MECHANICS_COVERAGE: Record<SpellId, SpellMechanicsCoverage> =
   greenTide: coverage('adventure:resolveWild.greenTide', ['deepwood'], ['movement', 'map-time', 'exploration']),
   rootAndRuin: coverage('adventure:resolveWild.rootAndRuin', ['undergrowth'], ['amounts', 'destinations', 'map-time']),
   fickleWeather: coverage('adventure:resolveWild.fickleWeather', ['omen'], ['amounts', 'replacement', 'map-time']),
-  shedSkin: coverage('combat:expansion.shedSkin', ['active-effect', 'counter', 'timed-effect', 'bloom'], ['actors', 'adjacency', 'replacement']),
-  hedgerowMarch: coverage('combat:expansion.hedgerowMarch', ['battle-enchantment', 'forced-movement', 'morale', 'bloom'], ['actors']),
+  shedSkin: coverage('combat:expansion.shedSkin', ['counter', 'timed-effect', 'bloom'], ['actors', 'replacement']),
+  hedgerowMarch: coverage('combat:expansion.hedgerowMarch', ['battle-enchantment'], []),
   hourglassCrack: coverage('combat:expansion.hourglassCrack', ['extra-action'], ['actors', 'battle-time', 'amounts']),
   borrowShape: coverage('combat:expansion.borrowShape', ['ability'], ['actors', 'adjacency', 'exploration', 'battle-time']),
   echo: coverage('combat:resolveSpellFace.echo', ['spell-power'], ['learning', 'targets', 'casting-resources']),
-  loyalUntoDeath: coverage('combat:expansion.loyalUntoDeath', ['death-trigger', 'morale'], ['actors', 'battle-time', 'casting-resources']),
+  loyalUntoDeath: coverage('combat:expansion.loyalUntoDeath', ['morale'], ['actors', 'battle-time', 'casting-resources']),
 };
 
 export function validateSpellLexicon(): void {

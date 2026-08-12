@@ -261,11 +261,264 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
   },
 };
 
-/** Single extension point consumed by catalogs and future semantic rule surfaces. */
-export const SPELL_RULE_PRESENTATIONS: Partial<Record<SpellId, SpellRuleVersions>> = {
-  ...RITE_CRAFT_SPELL_RULES,
+export const GRAVE_WILD_SPELL_IDS = [
+  'wither', 'graveChill', 'mournersVeil', 'dirge', 'lastCandle', 'sour',
+  'remembrance', 'reckoning', 'quiet', 'coldRoad', 'borrowedTime', 'paleProcession',
+  'silenceThePassing', 'theToll', 'deathsLedger', 'graveSpeech', 'loyalUntoDeath',
+  'gale', 'bloom', 'overgrow', 'thicket', 'rains', 'beastTongue', 'stampedeCall',
+  'storm', 'greenway', 'wildGrowth', 'murmuration', 'greenTide', 'rootAndRuin',
+  'fickleWeather', 'shedSkin', 'hedgerowMarch', 'borrowShape',
+] as const satisfies readonly SpellId[];
+
+export type GraveWildSpellId = typeof GRAVE_WILD_SPELL_IDS[number];
+
+/** Canonical structured rules for Grave and Wild, derived from their runtime branches. */
+export const GRAVE_WILD_SPELL_RULES: Record<GraveWildSpellId, SpellRuleVersions> = {
+  wither: {
+    standard: rule(text('Give one enemy '), term('hex', 'Hex 6'), text(', increased by '),
+      term('spell-power'), text(' and other '), term('hex', 'Hex'), text(' bonuses.')),
+    upgraded: rule(text('Give one enemy '), term('hex', 'Hex 8'), text(', increased by '),
+      term('spell-power'), text(' and other '), term('hex', 'Hex'),
+      text(' bonuses, and give it '), term('chill', 'Chill 2'), text('.')),
+  },
+  graveChill: {
+    standard: rule(text('Give one enemy '), term('chill', 'Chill 3'), text(', increased by '),
+      term('spell-power'), text('.')),
+    upgraded: rule(text('Give one enemy '), term('chill', 'Chill 3'), text(', increased by '),
+      term('spell-power'), text(', and reduce its '), term('morale'), text(' by 20, to a minimum of 0.')),
+  },
+  mournersVeil: {
+    standard: rule(text('Give one allied company a '), term('beneficial-effect', 'beneficial'),
+      text(' '), term('timed-effect'),
+      text(' that makes it take 20% less damage for at least 2 rounds; '),
+      term('spell-power'), text(' can extend the duration.')),
+    upgraded: rule(text('Give one allied company a '), term('beneficial-effect', 'beneficial'),
+      text(' '), term('timed-effect'),
+      text(' that makes it take 20% less damage for at least 3 rounds; '),
+      term('spell-power'), text(' can extend the duration. After a company attacks it, that attacker gains '),
+      term('hex', 'Hex 1'), text('.')),
+  },
+  dirge: {
+    standard: rule(text('One enemy loses 3% of its current HP for every company already destroyed in this battle. '),
+      term('spell-power'), text(' can increase the percentage per destroyed company; the loss is at least 1 HP and can destroy the company.')),
+    upgraded: rule(text('One enemy loses 5% of its current HP for every company already destroyed in this battle. '),
+      term('spell-power'), text(' can increase the percentage per destroyed company; the loss is at least 1 HP and can destroy the company.')),
+  },
+  lastCandle: {
+    standard: rule(text('Create a '), term('battle-enchantment'), text('. Its '),
+      term('death-trigger'), text(' fires when an allied company is destroyed by an attack: every surviving ally gains 20 '),
+      term('morale'), text(' and every surviving enemy gains '), term('hex', 'Hex 2'),
+      text('. Amounts are reduced if the destroyed company was less than 10% of its starting army.')),
+    upgraded: rule(text('Create a '), term('battle-enchantment'), text('. Its '),
+      term('death-trigger'), text(' fires when an allied company is destroyed by an attack: every surviving ally gains 20 '),
+      term('morale'), text(', every surviving enemy gains '), term('hex', 'Hex 2'),
+      text(', and your hero gains 2 mana. Amounts are reduced if the destroyed company was less than 10% of its starting army.')),
+  },
+  sour: {
+    standard: rule(text('Choose one '), term('bloom', 'Bloom'), text(' pile, '),
+      term('beneficial-effect', 'beneficial'), text(' '), term('timed-effect'),
+      text(', or unprotected '), term('battle-enchantment'), text(' on either side'),
+      text('. Remove it; a removed '), term('bloom', 'Bloom'), text(' pile gives the company equal '),
+      term('hex', 'Hex'), text(', while a removed '), term('timed-effect'),
+      text(' gives that company '), term('hex', 'Hex 2'), text('.')),
+    upgraded: rule(text('Choose one '), term('bloom', 'Bloom'), text(' pile, '),
+      term('beneficial-effect', 'beneficial'), text(' '), term('timed-effect'),
+      text(', or unprotected '), term('battle-enchantment'), text(' on either side'),
+      text('. Remove it; a removed '), term('bloom', 'Bloom'), text(' pile gives the company equal '),
+      term('hex', 'Hex'), text(', a removed '), term('timed-effect'),
+      text(' gives that company '), term('hex', 'Hex 2'), text(', and a removed '),
+      term('battle-enchantment'), text(' gives every surviving enemy '), term('hex', 'Hex 3'), text('.')),
+  },
+  remembrance: {
+    standard: rule(text('Revive 20% of the units one allied, non-'), term('summon', 'summoned'),
+      text(' company has lost in this battle, rounded up and limited by its starting count. '),
+      term('spell-power'), text(' can increase the percentage.')),
+    upgraded: rule(text('Revive 35% of the units one allied, non-'), term('summon', 'summoned'),
+      text(' company has lost in this battle, rounded up and limited by its starting count. '),
+      term('spell-power'), text(' can increase the percentage.')),
+  },
+  reckoning: {
+    standard: rule(text('Spend all remaining mana. Every living company loses 2% of its current HP per mana spent, up to 60%; '),
+      term('spell-power'), text(' can increase the percentage per mana. Each loss is at least 1 HP and can destroy the company.')),
+    upgraded: rule(text('Spend all remaining mana. Every living enemy loses 2% of its current HP per mana spent, up to 60%, and every living ally loses half that amount, up to 30%; '),
+      term('spell-power'), text(' can increase the percentage per mana. Each loss is at least 1 HP and can destroy the company.')),
+  },
+  quiet: {
+    standard: rule(text('Give one enemy a '), term('harmful-effect', 'harmful'),
+      text(' '), term('timed-effect'),
+      text(' that prevents retaliation for at least 2 rounds; '), term('spell-power'),
+      text(' can extend the duration.')),
+    upgraded: rule(text('Give one enemy a '), term('harmful-effect', 'harmful'),
+      text(' '), term('timed-effect'),
+      text(' that prevents retaliation for at least 2 rounds, and give it '),
+      term('chill', 'Chill 2'), text('; '), term('spell-power'), text(' can extend the duration.')),
+  },
+  coldRoad: {
+    standard: rule(text('Move the casting hero from one '), term('barrowfield'),
+      text(' tile to any different explored '), term('barrowfield'),
+      text(' tile, regardless of distance or connection.')),
+    upgraded: rule(text('Move the casting hero from one '), term('barrowfield'),
+      text(' tile to any different explored '), term('barrowfield'),
+      text(' tile, regardless of distance or connection, and optionally carry one adjacent owned hero to the same destination.')),
+  },
+  borrowedTime: {
+    standard: rule(text('Double the casting hero’s remaining movement before paying this spell’s movement cost. At the start of tomorrow, set their normal movement to 0.')),
+    upgraded: rule(text('Double the casting hero’s remaining movement before paying this spell’s movement cost. At the start of tomorrow, set their normal movement to half its usual value.')),
+  },
+  paleProcession: {
+    standard: rule(term('summon', 'Summon'), text(' 5 Candle-Wisps per point of '),
+      term('spell-power'), text(' at the site of a battle with at least 100 casualties. The resulting Candle-Wisp company departs at the start of the third day after casting.')),
+    upgraded: rule(term('summon', 'Summon'), text(' 8 Candle-Wisps per point of '),
+      term('spell-power'), text(' at the site of a battle with at least 100 casualties. The resulting Candle-Wisp company departs at the start of the seventh day after casting.')),
+  },
+  silenceThePassing: {
+    standard: rule(text('Create a '), term('battle-enchantment'), text(' that suppresses enemy '),
+      term('death-trigger', 'death triggers'), text(' for at least 3 rounds; '),
+      term('spell-power'), text(' can extend the duration.')),
+    upgraded: rule(text('Create a '), term('battle-enchantment'), text(' that suppresses enemy '),
+      term('death-trigger', 'death triggers'), text(' and makes allied '),
+      term('death-trigger', 'death triggers'), text(' fire twice for at least 3 rounds; '),
+      term('spell-power'), text(' can extend the duration.')),
+  },
+  theToll: {
+    standard: rule(text('Your hero gains 2 mana for every company already destroyed in this battle.')),
+    upgraded: rule(text('Your hero gains 3 mana for every company already destroyed in this battle.')),
+  },
+  deathsLedger: {
+    standard: rule(text('Reveal the exact positions of every map object standing on '),
+      term('barrowfield'), text('.')),
+    upgraded: rule(text('Reveal the exact positions of every map object standing on '),
+      term('barrowfield'), text(', and reveal '), term('guardian'), text(' army counts through the end of today.')),
+  },
+  graveSpeech: {
+    standard: rule(text('At a tile with a recorded battle, show the latest battle’s stored summary.')),
+    upgraded: rule(text('At a tile with a recorded battle, show the latest battle’s stored summary and optionally learn one recorded spell not already known.')),
+  },
+  loyalUntoDeath: {
+    standard: rule(text('Give one allied company a '), term('timed-effect'),
+      text(' for this battle. When an attack destroys it, deal its pre-attack unit count multiplied by its unit’s average base damage to the surviving killer.')),
+    upgraded: rule(text('Give one allied company a '), term('timed-effect'),
+      text(' for this battle. When an attack destroys it, deal its pre-attack unit count multiplied by its unit’s average base damage to the surviving killer, prevent the normal allied '),
+      term('morale'), text(' loss, and give your hero 3 mana.')),
+  },
+  gale: {
+    standard: rule(term('forced-movement', 'Push'), text(' one enemy up to 2 spaces away from the acting company. If blocked early, it loses 3% of its current HP, with a minimum loss of 1 HP; this can destroy it.')),
+    upgraded: rule(term('forced-movement', 'Push'), text(' one enemy up to 3 spaces away from the acting company. If blocked early, it loses 6% of its current HP, with a minimum loss of 1 HP, and, if it survives, gains '),
+      term('chill', 'Chill 1'), text('.')),
+  },
+  bloom: {
+    standard: rule(text('Give one allied company '), term('bloom', 'Bloom 3'), text('.')),
+    upgraded: rule(text('Give one allied company '), term('bloom', 'Bloom 4'),
+      text(' and every adjacent allied company '), term('bloom', 'Bloom 1'), text('.')),
+  },
+  overgrow: {
+    standard: rule(text('Choose one '), term('counter'), text(' or '), term('timed-effect'),
+      text(' on a company. Reapply it to that company and every adjacent living company. A '),
+      term('counter'), text(' copy reads the chosen company’s magnitude when applied, so copies made after its own reapplication use the increased amount.')),
+    upgraded: rule(text('Choose one '), term('counter'), text(' or '), term('timed-effect'),
+      text(' on a company. Reapply it to that company and every adjacent living company except one chosen adjacent company. A '),
+      term('counter'), text(' copy reads the chosen company’s magnitude when applied, so copies made after its own reapplication use the increased amount.')),
+  },
+  thicket: {
+    standard: rule(text('Create persistent '), term('undergrowth'),
+      text(' on three different empty battlefield spaces. Entering one costs 2 extra movement.')),
+    upgraded: rule(text('Create persistent '), term('undergrowth'),
+      text(' on three different empty battlefield spaces. Entering one costs 2 extra movement, and an enemy that ends there gains '),
+      term('chill', 'Chill 1'), text('.')),
+  },
+  rains: {
+    standard: rule(text('Remove all '), term('burn', 'Burn'),
+      text(' from every living company, then give every living ally '), term('bloom', 'Bloom 1'), text('.')),
+    upgraded: rule(text('Remove all '), term('burn', 'Burn'),
+      text(' from every living company, then give every living ally '), term('bloom', 'Bloom 1'),
+      text(' and every living enemy '), term('chill', 'Chill 1'), text('.')),
+  },
+  beastTongue: {
+    standard: rule(text('Choose a '), term('guardian'), text(' army made entirely of '), term('beast', 'Beasts'),
+      text(', pay twice its base gold value to disperse it.')),
+    upgraded: rule(text('Choose a '), term('guardian'), text(' army made entirely of '), term('beast', 'Beasts'),
+      text(', either pay twice its base gold value to disperse it or pay three times its base gold value to recruit every company that fits in your army.')),
+  },
+  stampedeCall: {
+    standard: rule(text('Every living allied '), term('beast'), text(' uses '),
+      term('forced-movement', 'forced movement'), text(' to move as close as it can to its nearest living enemy within its base speed.')),
+    upgraded: rule(text('Every living allied '), term('beast'), text(' uses '),
+      term('forced-movement', 'forced movement'), text(' to move as close as it can to its nearest living enemy within its base speed, then gains +2 speed for this round.')),
+  },
+  storm: {
+    standard: rule(text('Every living company loses 6% of its current HP; a company with the Flying '),
+      term('ability', 'ability'), text(' loses 12% instead. Each loss is at least 1 HP and can destroy the company.')),
+    upgraded: rule(text('Every living company loses 6% of its current HP; a company with the Flying '),
+      term('ability', 'ability'), text(' loses 18% instead. Each loss is at least 1 HP and can destroy the company.')),
+  },
+  greenway: {
+    standard: rule(text('Move the casting hero between two explored, connected '),
+      term('deepwood'), text(' tiles no more than 15 tiles apart.')),
+    upgraded: rule(text('Move the casting hero between two explored, connected '),
+      term('deepwood'), text(' tiles no more than 25 tiles apart.')),
+  },
+  wildGrowth: {
+    standard: rule(text('One owned City gains 50% '), term('growth'),
+      text(' for the current week. Each repeated cast multiplies its '), term('growth', 'Growth'), text(' again.')),
+    upgraded: rule(text('One owned City gains 75% '), term('growth'),
+      text(' for the current week. Each repeated cast multiplies its '), term('growth', 'Growth'), text(' again.')),
+  },
+  murmuration: {
+    standard: rule(text('Reveal every chosen in-bounds map tile; the chosen tiles do not need to connect.')),
+    upgraded: rule(text('Reveal every chosen in-bounds map tile and every tile within 1 tile of it; the chosen tiles do not need to connect.')),
+  },
+  greenTide: {
+    standard: rule(text('Your heroes pay no movement to enter '), term('deepwood'),
+      text(' tiles for the current week.')),
+    upgraded: rule(text('Your heroes pay no movement to enter '), term('deepwood'),
+      text(' tiles for the current week, and reveal every '), term('deepwood'), text(' tile on the map.')),
+  },
+  rootAndRuin: {
+    standard: rule(text('Create three map tiles of impassable '), term('undergrowth'),
+      text(' where no City or map object stands. They remain for 3 days, including today.')),
+    upgraded: rule(text('Create five map tiles of impassable '), term('undergrowth'),
+      text(' where no City or map object stands. They remain for 5 days, including today.')),
+  },
+  fickleWeather: {
+    standard: rule(text('Replace the current '), term('omen'), text(' with one chosen from 2 dealt alternatives; the existing '),
+      term('omen'), text(' is not dealt. A Weathercock of Ill '), term('omen', 'Omen'),
+      text(' instead offers every other '), term('omen'), text('.')),
+    upgraded: rule(text('Replace the current '), term('omen'), text(' with one chosen from 3 dealt alternatives; the existing '),
+      term('omen'), text(' is not dealt. A Weathercock of Ill '), term('omen', 'Omen'),
+      text(' instead offers every other '), term('omen'), text('.')),
+  },
+  shedSkin: {
+    standard: rule(text('Remove the oldest '), term('timed-effect'),
+      text(' from one ally. If none exists, remove its first nonzero '), term('counter'),
+      text(' pile in '), term('burn', 'Burn'), text(', '), term('chill', 'Chill'), text(', '),
+      term('hex', 'Hex'), text(', then '), term('bloom', 'Bloom'),
+      text(' order. Give the ally '), term('bloom', 'Bloom'),
+      text(' equal to the removed magnitude, with a minimum of 1.')),
+    upgraded: rule(text('Remove the oldest '), term('timed-effect'),
+      text(' from one ally. If none exists, remove its first nonzero '), term('counter'),
+      text(' pile in '), term('burn', 'Burn'), text(', '), term('chill', 'Chill'), text(', '),
+      term('hex', 'Hex'), text(', then '), term('bloom', 'Bloom'),
+      text(' order. Give the ally '), term('bloom', 'Bloom'),
+      text(' equal to the removed magnitude, with a minimum of 1.')),
+  },
+  hedgerowMarch: {
+    standard: rule(text('Create a '), term('battle-enchantment'), text('. It has no gameplay effect.')),
+    upgraded: rule(text('Create a '), term('battle-enchantment'), text('. It has no gameplay effect.')),
+  },
+  borrowShape: {
+    standard: rule(text('One allied company copies every '), term('ability'),
+      text(' from one adjacent living enemy for the rest of the battle, while retaining its own.')),
+    upgraded: rule(text('One allied company copies every '), term('ability'),
+      text(' from any living enemy for the rest of the battle, while retaining its own.')),
+  },
 };
 
-export function spellRuleVersions(spellId: RiteCraftSpellId): SpellRuleVersions {
-  return RITE_CRAFT_SPELL_RULES[spellId];
+/** Single extension point consumed by catalogs and semantic rule surfaces. */
+export const SPELL_RULE_PRESENTATIONS: Record<SpellId, SpellRuleVersions> = {
+  ...RITE_CRAFT_SPELL_RULES,
+  ...GRAVE_WILD_SPELL_RULES,
+};
+
+export function spellRuleVersions(spellId: SpellId): SpellRuleVersions {
+  return SPELL_RULE_PRESENTATIONS[spellId];
 }

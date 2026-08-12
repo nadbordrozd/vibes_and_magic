@@ -67,7 +67,7 @@ describe('shared stitched spellbook contract', () => {
       expect(spell.name.trim(), id).not.toBe('');
       expect(spell.base.trim(), `${id} Standard`).not.toBe('');
       expect(spell.plus.trim(), `${id} Upgraded`).not.toBe('');
-      if (['standardOfDawn', 'unmake', 'standingMirror'].includes(id)) {
+      if (['standardOfDawn', 'unmake', 'standingMirror', 'shedSkin', 'hedgerowMarch'].includes(id)) {
         expect(spell.plus, `${id} resolver-identical versions`).toBe(spell.base);
       } else {
         expect(spell.plus, `${id} mechanical delta`).not.toBe(spell.base);

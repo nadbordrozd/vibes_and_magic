@@ -88,5 +88,6 @@ live in `docs/` until superseded by their implementation.
 | 53 | SPELL_EFFECT_LEXICON | Typed reusable player-rule lexicon, structured term tokens, all-68 runtime/term coverage, exhaustive ordinary-term disposition, and resolver-backed Bloom semantics | extends S05/S09 and spellbook/inspection presentation foundations; no mechanics, description, or art changes |
 | 54 | SPELL_EFFECT_ICONS | Complete native shared-icon coverage for all 30 spell-lexicon terms, exact built-in generation/provenance, deterministic hard-alpha bake, manifest/worklist gates, and shared renderer | assets/presentation companion to 53; no mechanics or spell-description changes |
 | 55 | RITE_CRAFT_SPELL_RULES | Complete resolver-true Standard/Upgraded rules and structured lexicon tokens for all 34 Rite/Craft spells | extends S05/S09 and 53; corrects descriptions only, records unresolved mechanics gaps, and defers interactive term help |
+| 56 | GRAVE_WILD_SPELL_RULES | Complete resolver-true Standard/Upgraded rules and structured lexicon tokens for all 34 Grave/Wild spells, completing the all-68 projection contract | extends S05/S09 and 53/55; corrects descriptions only, records unresolved mechanics gaps, and defers interactive term help |
 
-Next free number: **56**.
+Next free number: **57**.

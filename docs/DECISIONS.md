@@ -897,3 +897,19 @@
   Summon Skiff states its owner-neutral selection and ownership-preserving move.
 - Grave and Wild remain on legacy strings until their own audit. The combined presentation record is
   intentionally partial so those schools can adopt the same contract without changing Rite/Craft.
+
+## 2026-08-12 — Every spell rule is a resolver-true structured projection (doc 56)
+
+- Grave and Wild now use the same structured term-token contract as Rite and Craft. The combined
+  presentation map is a complete typed 68-spell record, while the accepted Rite/Craft data remains
+  unchanged.
+- Bloom states its implemented fixed 3/4 application and delegates healing, cap, decay, and
+  no-resurrection semantics to its glossary token. Overgrow states that it includes the selected
+  company and that counter mutation can affect later copies; Sour states its actual eligible effect
+  kinds and either-side enchantment behavior.
+- Runtime-identical Shed Skin and Hedgerow March versions repeat the same complete player rule.
+  Shed Skin remains ally-only with priority removal and no spread; Hedgerow March discloses its inert
+  enchantment. Missing mechanics stay documented rather than being invented in player copy.
+- Cold Road's unrestricted distance/connectivity, Wild Growth's City-only stacking, Death's
+  Ledger's Barrowfield-object reveal, noncontiguous Murmuration, and the other doc-56 findings are
+  presentation corrections only. No resolver, target, cost, acquisition, or save behavior changes.
