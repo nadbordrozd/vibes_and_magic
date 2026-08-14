@@ -107,6 +107,17 @@ async function clickSelector(page: Page, selector: string): Promise<void> {
   })));
 }
 
+async function beginCombatSpell(
+  page: Page, spellId: string, school: string,
+): Promise<void> {
+  if (!await page.$('.spellbook')) await clickSelector(page, '.spellbook-button');
+  await clickSelector(page, `.spell-school-tab.${school}`);
+  await page.waitForSelector(`.spell-grid-cell[data-spell-id="${spellId}"]`);
+  await clickSelector(page, `.spell-grid-cell[data-spell-id="${spellId}"]`);
+  await page.waitForSelector(`[data-cast-spell-id="${spellId}"]:not(:disabled)`);
+  await clickSelector(page, `[data-cast-spell-id="${spellId}"]`);
+}
+
 async function inspect(
   page: Page, selector: string, subject: string, captureStem?: string,
 ): Promise<void> {
@@ -131,6 +142,21 @@ async function inspect(
   if (captureStem) await capturePair(page, captureStem);
   await clickSelector(page, '.inspection-close');
   await page.waitForSelector('.inspection-card', { hidden: true });
+}
+
+async function inspectDashboardDetail(
+  page: Page, selector: string, subject: string, captureStem?: string,
+): Promise<void> {
+  await clickSelector(page, selector);
+  await page.waitForSelector('.hero-dashboard-detail');
+  const card = await page.$eval('.hero-dashboard-detail', (node) => node.textContent ?? '');
+  if (!card.trim() || /muster-|p1-|_[a-z]/.test(card)) {
+    throw new Error(`${subject} dashboard detail is empty or exposes an internal id: ${card}`);
+  }
+  inspectionSubjects.add(subject);
+  if (captureStem) await capturePair(page, captureStem);
+  await clickSelector(page, '.hero-dashboard-detail-close');
+  await page.waitForSelector('.hero-dashboard-detail', { hidden: true });
 }
 
 async function inspectCombatEnemy(page: Page): Promise<void> {
@@ -427,8 +453,9 @@ try {
   console.log('walkthrough · Berta selected for the binding inspection set');
   await inspect(page, '.hero-portrait', 'hero');
   await clickText(page, '.rail-commands button', 'Hero details');
-  await clickText(page, '.hero-details-tabs button', 'Special skills');
-  await inspect(page, '.hero-details-dialog .skill-summary article', 'secondary skill');
+  await page.$eval('[data-dashboard-region="secondary-skills"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  await inspectDashboardDetail(page, '.hero-dashboard-skill-grid > button', 'secondary skill');
   await clickSelector(page, '.hero-details-dialog .structure-dialog-close');
   await inspect(page, '.army-block .army-slot[data-inspect-kind="unit"]', 'unit');
   await hoverMapTile(page, 7, 7);
@@ -525,8 +552,9 @@ try {
   observed.add('CHOOSE_CHEST');
   await page.waitForSelector('.chest-choice', { hidden: true });
   await clickText(page, '.rail-commands button', 'Hero details');
-  await clickText(page, '.hero-details-tabs button', 'Equipment');
-  await inspect(page, '.hero-details-dialog .artifact-backpack [data-inspect-kind="artifact"]',
+  await page.$eval('[data-dashboard-region="artifact-backpack"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  await inspectDashboardDetail(page, '.hero-dashboard-backpack-grid > button',
     'artifact', 'step-03-inspections');
   await clickSelector(page, '.hero-details-dialog .structure-dialog-close');
 
@@ -554,8 +582,9 @@ try {
   observed.add('BUY_WAGON_ITEM');
   await page.waitForSelector('.action-confirm-dialog', { hidden: true });
   await clickText(page, '.rail-commands button', 'Hero details');
-  await clickText(page, '.hero-details-tabs button', 'Items');
-  const inventory = await page.$eval('.hero-details-dialog .item-inventory',
+  await page.$eval('[data-dashboard-region="consumables"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  const inventory = await page.$eval('.hero-dashboard-item-grid',
     (node) => node.textContent ?? '');
   if (!inventory.includes('Bottled Echo')) throw new Error('Authored Wagon item was not acquired');
   await clickSelector(page, '.hero-details-dialog .structure-dialog-close');
@@ -584,7 +613,7 @@ try {
   await clickSelector(page, '.spellbook-button');
   await page.waitForSelector('.spellbook');
   await capturePair(page, 'matrix-08-spellbooks');
-  await clickSelector(page, '.spell-card[data-inspect-id="forgeSpark"] > button:not(:disabled)');
+  await beginCombatSpell(page, 'shrapnel', 'craft');
   await page.waitForSelector('.combat-targeting-banner');
   const manaBeforeCancel = await page.$eval('.spellbook-button', (node) => node.textContent ?? '');
   const logBeforeCancel = await page.$$eval('.battle-log p', (nodes) =>
@@ -596,11 +625,10 @@ try {
     nodes.map((node) => node.textContent ?? ''));
   if (manaBeforeCancel !== manaAfterCancel
       || JSON.stringify(logBeforeCancel) !== JSON.stringify(logAfterCancel)) {
-    throw new Error('Canceling Forge Spark targeting mutated battle state');
+    throw new Error('Canceling Shrapnel targeting mutated battle state');
   }
   observed.add('CANCEL_TARGETING');
-  await clickSelector(page, '.spellbook-button');
-  await clickSelector(page, '.spell-card[data-inspect-id="forgeSpark"] > button:not(:disabled)');
+  await beginCombatSpell(page, 'shrapnel', 'craft');
   await completeTargeting(page);
   observed.add('BATTLE_CAST');
   await waitForHumanCombat(page);
@@ -696,16 +724,20 @@ try {
   const school = replayed.map.objects.find((object) => object.id === 'muster-hedge-school');
   const stone = replayed.map.objects.find((object) => object.id === 'muster-sparring-vespiary');
   const guardian = replayed.map.objects.find((object) => object.id === 'muster-guardian-vespiary');
-  if (replayed.map.id !== 'grand-muster' || replayed.seed !== seed
-      || !castle.buildings.includes('marketplace') || !castle.garrison.some(Boolean)
-      || !vess.artifacts.backpack.some((artifact) => artifact.id === 'skirmishersBlade')
-      || chest?.kind !== 'chest' || !chest.collected
-      || pile?.kind !== 'pile' || !pile.collected
-      || school?.kind !== 'hedgeSchool' || !school.visitedBy.includes(vess.id)
-      || stone?.kind !== 'sparringStone' || !stone.visitedBy.includes(vess.id)
-      || guardian
-      || vess.inventory.some((entry) => typeof entry !== 'string' && entry?.id === 'bottledEcho')) {
-    throw new Error('Replayed final state omitted a persistent walkthrough result');
+  const replayAudit = {
+    map: replayed.map.id === 'grand-muster', seed: replayed.seed === seed,
+    marketplace: castle.buildings.includes('marketplace'), garrison: castle.garrison.some(Boolean),
+    artifact: vess.artifacts.backpack.length > 0,
+    chest: chest?.kind === 'chest' && chest.collected,
+    pile: pile?.kind === 'pile' && pile.collected,
+    school: school?.kind === 'hedgeSchool' && school.visitedBy.includes(vess.id),
+    stone: stone?.kind === 'sparringStone' && stone.visitedBy.includes(vess.id),
+    guardian: !guardian,
+    itemUsed: !vess.inventory.some((entry) =>
+      typeof entry !== 'string' && entry?.id === 'bottledEcho'),
+  };
+  if (Object.values(replayAudit).some((passed) => !passed)) {
+    throw new Error(`Replayed final state omitted a persistent walkthrough result: ${JSON.stringify(replayAudit)}`);
   }
 
   await clickText(page, 'button', 'Retire · end expedition');

@@ -11,6 +11,19 @@ export their values; do not mine old prose tables after a data source is listed 
 - [`../../src/core/types.ts`](../../src/core/types.ts): serialized state/action/content shapes.
 - [`../../src/core/combat/pipeline.ts`](../../src/core/combat/pipeline.ts): named stage order and
   cross-content combat hook execution.
+- [`../../src/core/combat/primitives.ts`](../../src/core/combat/primitives.ts): the eighteen live
+  combat primitive handlers, stable blocked-reason vocabulary, mass targeting, copy/control/
+  resurrection/action bounds, delayed state, and deterministic hazard operations.
+- [`../../src/core/combat/damageRouting.ts`](../../src/core/combat/damageRouting.ts): the shared
+  deterministic combat-damage application and non-recursive, duration-bound link router.
+- [`../../src/content/v2/schema.ts`](../../src/content/v2/schema.ts): shared docs 60–67 typed
+  contracts for spell tiers/scaling/targeting/time gates/primitives, creature casting/resistance/
+  patterns, skill offer gates, Knacks, artifact sets/effects, new item/site kinds, and asset needs.
+- [`../../src/content/v2/registries.ts`](../../src/content/v2/registries.ts): hash-authoritative
+  primitive identities/stages, artifact/Knack/site handler IDs, and their separate live executable
+  registration boundaries.
+- [`../../src/content/v2/validation.ts`](../../src/content/v2/validation.ts): transition and final
+  validation profiles plus handler, rationing, count, pool, and reference gates.
 
 Changing a pinned rule constant requires a numbered document, an S-file update, and a decision entry
 when implementation interpretation is involved. Pure content tuning changes data and logs evidence;
@@ -24,8 +37,12 @@ it does not require rewriting mechanics prose unless behavior changes.
   including initial factions and neutrals.
 - [`../../src/content/unitsExpansion.ts`](../../src/content/unitsExpansion.ts): four-faction, tier-6,
   and sea-unit authored definitions merged by the registry.
+- [`../../src/content/neutralCreatures.ts`](../../src/content/neutralCreatures.ts): exact thirteen
+  docs 63–64 neutral/showcase rows, culture/acquisition/dwelling metadata, and typed battle/map art
+  requirements.
 - [`../../src/core/army.ts`](../../src/core/army.ts): centralized, pure unit/army strategic-strength
-  derivation from the unit catalog and stack counts.
+  derivation plus the single per-hero army-capacity selector, capacity assertions, and safe array
+  synchronization boundary.
 - [`../../src/core/combat/abilities.ts`](../../src/core/combat/abilities.ts): passive ability registry.
 - [`../../src/core/combat/activatedAbilities.ts`](../../src/core/combat/activatedAbilities.ts):
   choice-driven unit ability handlers and legal actions.
@@ -33,6 +50,10 @@ it does not require rewriting mechanics prose unless behavior changes.
   faction membership, specialties, starting skills/spells, and weights.
 - [`../../src/content/heroStories.ts`](../../src/content/heroStories.ts): hero stories.
 - [`../../src/core/heroBehaviors.ts`](../../src/core/heroBehaviors.ts): specialty behavior registry.
+- [`../../src/content/knacks.ts`](../../src/content/knacks.ts): exactly six faction-derived combat
+  Knacks, three level ranks, registered handler identities, flavor, and typed icon needs.
+- [`../../src/core/combat/knacks.ts`](../../src/core/combat/knacks.ts): legal target/placement
+  enumeration and the six deterministic non-spell resolvers.
 
 Every unit has unique ID/name, faction/culture, tier, HP, damage range, Attack, Defense, speed,
 `hexSize`, growth, cost, nonempty flavor, and ability IDs. Every ability declares behavior at a named
@@ -47,58 +68,112 @@ Every hero has nonempty 50–90-word story, faction/class, starting state, and o
 specialty. Six heroes belong to each playable faction. A specialty with only prose and no rule hook
 is invalid.
 
+Hero army capacity is derived rather than catalog-authored: seven base, +1 for Quartermaster R1+,
++1 for each equipped `army_slot_bonus` amount, capped at nine. Runtime hero armies have exactly that
+many positions. Portable-map validation applies the same derivation to authored starting skills;
+guardians and city garrisons remain limited to seven.
+
+Knack validation requires exactly one entry for every playable faction, three nonempty ranked
+effects, six distinct registered handlers, nonempty flavor, and one unique
+`knack:<faction>` asset identity with a literal physical subject and accessible name. All six own
+distinct accepted native 32×32 icons and provenance; development placeholder support remains a
+schema capability rather than the shipped disposition. Deterministic AI heuristic coverage lives in the combat AI and its
+all-faction tests; it is keyed by the same closed handler union, not duplicated as ornamental data.
+
 ## Magic
 
-- [`../../src/content/spells/index.ts`](../../src/content/spells/index.ts): merged 68-spell registry,
+- [`../../src/content/spells/index.ts`](../../src/content/spells/index.ts): complete 124-spell registry,
   base catalog, rarity assignment, source filters, scroll eligibility, and guild pools.
 - [`../../src/content/spells/expansion.ts`](../../src/content/spells/expansion.ts): Wild and expanded
   authored spell definitions.
 - [`../../src/content/spells/rulePresentation.ts`](../../src/content/spells/rulePresentation.ts):
-  canonical structured Standard/Upgraded rules and complete presentation records for all 68 spells.
+  canonical structured Standard/Upgraded rules and complete presentation records for all 124 spells.
+- [`../../src/content/spells/p1RiteCraft.ts`](../../src/content/spells/p1RiteCraft.ts): exact
+  24-row doc-61 P1 audit set, eighteen new-spell IDs, and typed development asset requirements.
+- [`../../src/content/spells/p1GraveWild.ts`](../../src/content/spells/p1GraveWild.ts): exact
+  16-row Grave/Wild audit set, thirteen new-spell IDs, and typed development asset requirements.
+- [`../../src/content/spells/p2.ts`](../../src/content/spells/p2.ts): exact 27-row P2 audit set,
+  25 new-spell IDs, and typed literal development asset requirements.
 - [`../../src/content/spellLexicon.ts`](../../src/content/spellLexicon.ts): typed reusable
   player-mechanic definitions, structured term tokens, literal future-art subjects, explicit
-  ordinary-term dispositions, and all-68 runtime/term coverage.
+  ordinary-term dispositions, and all-124 runtime/term coverage.
 - [`../../src/content/bargains.ts`](../../src/content/bargains.ts): eight benefits and visible Debts.
 - [`../../src/core/combat/spells.ts`](../../src/core/combat/spells.ts) and
   [`../../src/core/combat/expansionSpellEffects.ts`](../../src/core/combat/expansionSpellEffects.ts):
   generic combat spell handlers.
+- [`../../src/core/combat/p1RiteCraftSpellEffects.ts`](../../src/core/combat/p1RiteCraftSpellEffects.ts):
+  doc-61 P1 Rite/Craft composition of registered combat primitives and typed combat modifiers.
 - [`../../src/core/game/adventureSpells.ts`](../../src/core/game/adventureSpells.ts): adventure and
   topology spell actions.
 
 Every spell has ID, name, flavor, school, mana or X, behavioral kind, rarity, standard rules,
 upgraded rules, AI target/timing hints, and any effect-operation tag. Upgrades are designed to change
-behavior, but descriptions state current resolver truth: Standard of Dawn, Unmake, Standing Mirror,
-Shed Skin, and Hedgerow March currently have no additional Upgraded gameplay behavior. Internal `base`/`plus` field names remain a
+behavior. No equal-face entry remains; Standing Mirror now chooses its Upgraded copy target and
+copies enemy Twisters. Shed Skin now transfers its
+removed state and Hedgerow March adds phasing and a larger speed bonus when Upgraded. Standard of
+Dawn and Unmake also have distinct upgraded behavior. Internal `base`/`plus` field names remain a
 compatibility detail and are not player-facing copy. Provenance rares and Summon Skiff are excluded
-from ordinary guild/scroll pools as specified. The catalog count is 16 per school plus four
-provenance rares: 68 total.
+from ordinary guild/scroll pools as specified. All 124 entries also carry tier 1–5,
+fixed/capped/open scaling, explicit targeting, primitive references, acquisition eligibility, and
+applicable day/week gates; their numeric mana lies within the authoritative tier band. The catalog
+count is 31 per school: 124 total, with 8/8/7/5/3 tiers in each school. The final P2 subset is
+exactly 27 doc-61 rows: 25 additions plus executable False Colors and Standing Mirror retunes.
+
+The v2 spell shape provides tier 1–5, fixed/capped/open scaling, explicit targeting
+including `mass-enemy`/`mass-ally`/`mass-all`, optional day/week gates, cantrip identity, and one or
+more registered primitive IDs. During the migration, a shipped v1 definition may omit all v2
+fields. Migration validation requires that metadata and acquisition core on every shipped spell and
+checks the tier mana band, cantrip, high-tier adventure-gate, and primitive-handler rules;
+transition mode remains available only for later catalogs outside their owning phase. Final-mode
+validation requires the fields on every spell and enforces 124 total, 31 per school, per-school
+8/8/7/5/3 tiers, one cantrip per school, and distinct Standard/Upgraded rules. Final validation is
+now the shipped mode; there is no remaining catalog transition batch.
+
+All eighteen combat primitive IDs and all seven adventure primitive IDs have exactly one executable
+handler at the stage declared by the v2 contract table. Handler identity/stage coverage is tested
+independently of catalog population; adventure handlers register at `adventure-apply`. Primitive
+blocked results use the stable reason-code/text registry and every stateful result is JSON-safe.
+Wellspring maps to `remote-mana`; Dimension Door maps to `hero-teleport-radius` and uses a per-day
+count ledger for its upgraded second cast; both have explicit legal UI drafts. The P1 combat
+resolver maps impact, resurrection,
+counter-detonation, clone, teleport, extra-action, ammunition, and mid-battle resonance declarations
+to those shared handlers; fully fallen resurrection checks the original footprint, clone/teleport
+destinations use bounded staged UI validation, and immediate/round-end/pre-order actions remain
+serialized battle state. Hold the Line's lethal interception and attack modifiers remain in shared
+damage/attack pipeline stages rather than UI or spellbook branches.
 
 Every reusable spell term has a stable ID, player name, concise rule, literal visual subject,
 aliases, and search tokens. Every spell is mapped to its actual combat/adventure resolver domain and
 has at least one reusable or explicitly ordinary term disposition; every disposition is used. Rule
 presentation tokens preserve term IDs for semantic UI and have a deterministic plain-text
-projection. The lexicon does not change resolver behavior. For all 68 spells, structured authored
+projection. The lexicon does not change resolver behavior. For all 124 spells, structured authored
 rules project exactly to the catalog's Standard/Upgraded strings; see
 [work order 55](../55_RITE_CRAFT_SPELL_RULES.md) and
 [work order 56](../56_GRAVE_WILD_SPELL_RULES.md). Its 30 literal
 subjects have exact distinct native shared-icon coverage
 derived through the manifest/worklist, immutable generation batches, retained selections and
 hash-audited provenance; the renderer has no fallback path. See [work order 53](../53_SPELL_EFFECT_LEXICON.md)
-and [work order 54](../54_SPELL_EFFECT_ICONS.md).
+and [work order 54](../54_SPELL_EFFECT_ICONS.md). The eight docs-60–67 terms have complete semantic
+subjects plus distinct accepted native production and provenance.
 
 Every bargain has nonempty flavor, immediate benefit, exact Debt, handler, and visible altered terms
 where applicable. Debt effects obey the law in [`S01_RATIONALE.md`](S01_RATIONALE.md).
 
 ## Skills, items, and artifacts
 
-- [`../../src/content/skills.ts`](../../src/content/skills.ts): 21 skills × three ranks, class
+- [`../../src/content/skills.ts`](../../src/content/skills.ts): exactly 30 skills × three ranks,
+  six explicit positive class
   weights, descriptions, and handler values.
 - [`../../src/content/items/index.ts`](../../src/content/items/index.ts): consumables, adventure
   items, scroll instances/rules, rarity, targeting, and descriptions.
-- [`../../src/content/artifacts.ts`](../../src/content/artifacts.ts): slots, 80 ordinary artifacts,
+- [`../../src/content/artifacts.ts`](../../src/content/artifacts.ts): slots, 138 ordinary artifacts,
   four Kit pieces, six trinkets, effect tags, values, and Burden removal text.
 - [`../../src/core/artifacts.ts`](../../src/core/artifacts.ts): generic equipment, slot, Kit, pricing,
   and effect-query rules.
+- [`../../src/content/knacks.ts`](../../src/content/knacks.ts): complete executable six-entry
+  faction Knack catalog and derived rank boundary.
+- [`../../src/content/acquisitionSites.ts`](../../src/content/acquisitionSites.ts): the complete
+  three-site v2 catalog, live handler identities, and typed development asset requirements.
 - [`../../assets/adventureSpriteInventory.ts`](../../assets/adventureSpriteInventory.ts): exhaustive
   literal physical subjects for all artifact/item sprites, six faction cities, and four resource
   pickups/mines; inventory presence does not claim a generated or installed bitmap.
@@ -106,31 +181,82 @@ where applicable. Debt effects obey the law in [`S01_RATIONALE.md`](S01_RATIONAL
 Every skill has three nonempty ranks and positive draft weight; every rank changes behavior or an
 economy/tempo decision. Every item/artifact has nonempty flavor and mechanics description, legal
 rarity/class, and a registered handler for each effect tag. Items with stored spell version, position, spend,
-or other per-instance state use instances. Artifact count validation distinguishes 80 ordinary from
+or other per-instance state use instances. Artifact count validation distinguishes 138 ordinary from
 the ten special definitions. Burdens always include an inspectable removal condition.
 
-Every canonical spell and secondary-skill ID also derives exactly one 32×32 transparent PixelLab
-presentation from [`../../assets/iconWorklist.ts`](../../assets/iconWorklist.ts), mapped through
-[`../../assets/iconManifest.ts`](../../assets/iconManifest.ts). The bitmap is presentation only:
+The v2 extensions add a positive integer minimum-hero-level offer gate to skills; explicit
+`consumable`, `scroll`, and `spell-tome` item kinds; and typed definitions for The Stacks, Wild
+Shrine, and Reliquary of Pages. Artifact definitions may carry effect-handler metadata and a set ID;
+metadata must resolve to a live registered function at the declared stage, while set registries
+require reciprocal distinct membership and increasing legal bonus thresholds. Nonempty Knack and
+site catalogs likewise require live registered functions; the final Knack catalog contains the six
+exact playable faction IDs rather than merely six distinct strings. The authored profile requires
+30 skills, 50 items including the named Spell Tome kind and the twelve doc-63 consumables, and the
+doc-65 final 148 artifacts. The three v2 acquisition sites are runtime map objects with explicit actions and
+live registered handlers. Final profiles enforce later work orders' remaining catalog totals only
+after those definitions and behaviors land.
+
+Creature definitions may declare a per-company `caster` repertoire of one to three spells, positive
+whole battle charges and fixed nonnegative cast power; resistance metadata; and at most one typed
+attack pattern. Validation rejects missing spell references and illegal line ranges, limits
+resistance-bearing creatures to 20% of the catalog, permits at most two low-tier/school immunities
+per faction, and permits at most three `spellbound` creatures globally. Charges and cast power have
+no unit-count field, preserving their per-company contract structurally.
+
+Every resistance, pattern, and drawback is also a printed inspection ability. The twelve explicit
+doc-64 pattern rows are authoritative, including three Wildergrass rows: that narrow named-table
+exception supersedes the stale nearby prose saying no faction gets more than two. One pattern per
+unit remains absolute. Recruitment cards expose the complete printed trait list before purchase.
+
+Doc-63 support registers twenty executable ability hooks. Sixteen existing retunes are authoritative:
+Yeoman/Phalanx, Tin Soldier/Counter-Eater, Larval Tide/Altar, Wax Servitor/Ward Bearer,
+Longbowman/Sniper, Silk-Spinners/Chain Shot, Sentries/First Strike,
+Fence-Post Familiars/Echoing, Candle-Wisps/Unstable, Crow Chorus/Hex Feeder,
+Marionette/Blink Step, Drum-Callers/Soul Tithe, Amber-Carriers/Bloomshare, Rusalka/Siphon, and
+Grass-Serpent/Burn Conduit. Spell Battery remains registered support with no current catalog
+assignment. Mana Leech, Spell Shrug, and Spellbound now occur on the exact doc-63 neutral rows. The
+eight doc-63 neutrals and five doc-64 showcases bring the catalog to 63 definitions, with complete
+authored stats, cultures, growth/costs, printed traits, named field dwellings, acquisition metadata,
+and flavor. Doc 63 adds only Sniper +0.08, First Strike +0.10, Phalanx +0.06, and Spell Shrug
++0.05 to strategic strength. Doc 64 additionally adds All Adjacent +0.20, Breath +0.12, Line
+Strike +0.10, Cleave +0.08, Blast Shot +0.12, Arc Shot +0.10, Warded Hide +0.06, Low-Magic
+Immune +0.08, Spellbound +0.05, Caster +0.10, Spell Frail −0.06, Slow Witted −0.10, Hungry −0.05,
+Mindless −0.04, and Brittle Bones −0.06. Matchup- and choice-dependent hooks remain outside the
+scalar, and the combined multiplier remains clamped to `[0.85,1.35]`.
+
+Doc 64 assigns the existing caster rows exactly: Fence-Post Familiars (Pinch of Ash/Grudge,
+3@SP1), Leshy (Bramblelash/Thicket, 2@SP5), Bone Choir (Wither/Grave-Chill, 2@SP3), The Brides
+(Second Wind/Mourner's Veil, 2@SP4), and Half-Woken Queen (Bloom/Sap and Sinew, 2@SP5).
+Fence-Post Familiars also receive the explicitly named Ley-Touched carrying choice; other §4
+traits remain generic support until a later creature assignment names them.
+
+Every accepted pre-doc-60 spell and secondary-skill ID derives exactly one 32×32 transparent
+PixelLab presentation from [`../../assets/iconWorklist.ts`](../../assets/iconWorklist.ts), mapped
+through [`../../assets/iconManifest.ts`](../../assets/iconManifest.ts). All 56 added spells, nine
+added skills, and six Knacks likewise resolve through their own distinct accepted native 32×32
+assets and docs-60–67 provenance. The bitmap is presentation only:
 names, schools, mana, ranks, and complete mechanics remain catalog and semantic-UI text. Asset,
 generation-job, accepted-provenance, uniqueness, dimension, alpha, and prompt-drift gates are part
 of the validation contract; see [work order 46](../46_SPELL_SKILL_ICONS.md).
 
-There are exactly 90 artifact definitions and 37 item definitions. Each owns one distinct 32×32
-transparent sprite subject and ultimately one unique native PNG/manifest path; specific scroll IDs
+There are exactly 148 artifact definitions and 50 item definitions at the docs-60–67 final gate.
+All 148 artifacts and all 50 items own accepted distinct 32×32 transparent native PNG/manifest
+paths; specific scroll IDs
 remain visually distinct even though they share a parchment family. Catalog-keyed names, class/use,
-rules, quantities, stored spell/version state, and accessibility remain semantic text. Asset coverage
-is zero artifacts and four items at the work-order-51 baseline; literal subject inventory is not
-misreported as installed coverage. City/resource/item/artifact prompts include the physical subject
+rules, quantities, stored spell/version state, and accessibility remain semantic text. The current
+installed coverage is 148 artifacts and 50 items. City/resource/item/artifact prompts include the physical subject
 from the inventory plus its shared bright cartoony transparent south-east-light style clause, never
-only an opaque ID or name. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
+only an opaque ID or name. The 58 docs-63/65 artifacts and thirteen added items own literal authored
+subjects plus unique native PNGs and accepted provenance. See [work order 51](../51_CITY_SPELLBOOK_SPRITES.md).
 
 The one-screen hero dashboard derives its presentation inventory from these same catalogs rather
-than a hand-maintained JSX list. Audited reusable coverage is 21/21 secondary-skill icons, 90/90
-artifact sprites, 37/37 item sprites, 50/50 battle-unit portraits, and 4/4 resource-pickup icons.
-The 18 guardian portraits are a map subset and do not replace the complete battle-unit family. The
-48 adventure hero images are six faction/class locomotion sets × eight directions and count as
-0/36 distinct hero portraits.
+than a hand-maintained JSX list. Audited reusable native coverage is 30/30 secondary-skill
+identities, 148/148 artifacts, 50/50 items, 63/63 battle-unit portraits, and 4/4 resource-pickup
+icons.
+The 31 accepted guardian portraits, including all thirteen docs 63–64 additions, are a map subset
+and do not replace the complete battle-unit family. The
+48 adventure hero images remain six faction/class locomotion sets × eight directions, separate
+from the 36/36 distinct native dashboard hero portraits.
 
 The dashboard production catalog now installs exactly 79 new assets: one distinct 96×96 portrait for
 each of the 36 hero definitions; one 32×32 icon for each of their 36 distinct specialty IDs; 32×32
@@ -161,7 +287,7 @@ claim that the one-screen dashboard UI is integrated; see [work order 59](../59_
   terms, authoritative player rules, aliases, deterministic longest-match tokenization, and the
   all-spell mechanics coverage table.
 - [`../../src/content/spells/rulePresentation.ts`](../../src/content/spells/rulePresentation.ts):
-  complete structured Standard/Upgraded rule presentations for all 68 spells.
+  complete structured Standard/Upgraded rule presentations for all 124 spells.
 
 Buildings require ID/name/flavor/function/category, legal costs/prerequisites, and valid upgrade links.
 Each faction has six ordered, named, flavored dwellings. Terrain definitions keep gameplay, skin,
@@ -201,18 +327,22 @@ contains the only copy of a rule.
 Maps are committed authored data: dimensions, normalized terrain tiles/skins, overlays, objects,
 guardians, cities/starts, victory/defeat, routes, Cache links, and optional bans. Generated
 decorations are not map data. Every map passes map lint. Manywhere additionally contains every
-registered object type, its four neutral-town variants/slots, all faction dwellings, the full water
+registered object type, its four neutral-town variants/slots, all faction dwellings, all thirteen
+guarded docs 63–64 neutral/showcase dwellings, the full water
 kit, puzzle locks, Cache sketch, Kit pieces, and required unique sites.
 
 The Crooked Crown additionally pins its 72×72 dimensions, four starts, two regional routes and two
 opening pickups per start, reward guardian coverage, named gate guardians, object/decor/road density,
 and maximum open-square size. Its guardian counts are derived at authoring time from the centralized
-`unitStrength` rating in `src/core/army.ts`.
+`unitStrength` rating in `src/core/army.ts`. The docs-63–64 recalibration pins 20 exact derived
+counts with a 90.79–350.79 strength range and 181.57 median.
 
 The Sixfold Trial additionally pins six configurable player slots, distinct default factions,
 complete developed cities, level/stat/skill packages, two-week faction armies derived from unit
 growth, complete configured-school spellbooks derived from `SCHOOL_SPELLS`, start exits, chest and
 ordinary-artifact totals, and at least four guardians in each of four named strength bands.
+The docs-63–64 recalibration pins all 18 derived counts and populates the skirmish/field/elite/ordeal
+bands with 4/4/5/4 guardians respectively, without changing the published band thresholds.
 
 Local maps, built-in clones, and newly promoted built-ins share the work-order-50 portable JSON
 contract. The document owns metadata, rectangular terrain/skin tiles, overlays, one-to-six player
@@ -227,7 +357,8 @@ nonempty legal army wholly replaces the default.
 
 The editor palette keeps the canonical nine-section order but uses compact accessible icon stamps.
 Six city faction sprites are direct choices; structures use their map sprites, guardians use all
-50 battle portraits, and artifact/item/resource/spell/overlay choices use native art or declared
+63 catalog portraits as native battle-unit images, while the 31 map-guardian subset includes all
+thirteen docs 63–64 native guardian compositions; artifact/item/resource/spell/overlay choices use native art or declared
 compact emblems. New guardian counts use tier bases 48/30/20/12/6/5 with stable ±20% variation;
 catalog-average `unitStrength × count` increases across tiers.
 
@@ -244,7 +375,11 @@ directory and registers it in the built-in manifest; no TypeScript map reconstru
 - Artifacts are never bought in ordinary shops; Peddler may sell carried ones.
 - Rare spells are places, never scroll litter.
 - Puzzle-lock rewards and Kit guards are authored and static.
-- A playthrough should encounter roughly 30–40% of each relevant pool.
+- A playthrough should encounter roughly 30–40% of each relevant pool. For Mage Guild acceptance,
+  two same-faction complete cities share the faction's two-school pool: 62 spells, not the global
+  124. Across seeds 0–199, two Hearthguard guilds expose a mean 20.125 distinct Rite/Craft spells
+  (32.46%); changing the authoritative 4/3/3/2/2 deal is neither necessary nor permitted by this
+  measurement.
 
 ## Validation contract
 
@@ -264,3 +399,18 @@ lexicon definition and one manifest-backed native effect icon. The shared UI ren
 definition fallback; legacy catalog text uses deterministic longest-match aliases and word
 boundaries so ordinary-language substrings remain ordinary. See
 [work order 57](../57_INTERACTIVE_SPELL_GLOSSARY.md).
+
+Docs 60–67 art uses two explicit modes through
+[`../../src/content/v2/assets.ts`](../../src/content/v2/assets.ts). Development/test/playtest may
+resolve a missing asset only for content marked as introduced by docs 60–67, using a deterministic
+placeholder key derived from typed semantics (artifact class and slot; the corresponding declared
+family/type for other content). Existing accepted content remains strict in development. Release
+mode rejects every unresolved canonical ID, and native IDs must remain one-to-one; placeholder
+selection cannot supply identity, a literal worklist subject, rules, values, references, prose, or
+accessibility text.
+
+The doc-65 closeout is 148 artifact definitions: 36 Vanilla, 44 Charm, 45 Relic, 13 Burden,
+4 Kit, and 6 Trinket. All 58 docs-63/65 additions have literal typed artifact requirements, distinct
+accepted 32×32 native PNGs, and provenance records. Development placeholder resolution remains
+covered for future migration work; the shipped release profile resolves every canonical docs-60–67
+asset ID natively and remains fail-closed.

@@ -27,7 +27,7 @@ The experience has three connected loops:
 2. **Development:** recruit weekly growth, build one city improvement per day, hire and develop
    heroes through offer-shaped drafts, and assemble a spellbook and equipment loadout from what the
    seed exposes.
-3. **Combat:** command up to seven stacks on a deterministic 13×9 hex field, using movement,
+3. **Combat:** command a hero's derived seven-to-nine-stack army on a deterministic 13×9 hex field, using movement,
    attacks, one hero act per round, counters, enchantments, terrain, and deterministic morale that converts
    battlefield events into occasional extra actions.
 

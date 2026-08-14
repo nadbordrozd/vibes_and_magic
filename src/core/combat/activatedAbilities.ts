@@ -6,12 +6,15 @@ import type { Action, BattleStack, BattleState, Coord } from '../types';
 import { sameCoord } from '../map/pathfinding';
 import { stackHasAbility, stackIgnoresMovementBlockers } from './abilities';
 import { hexNeighbors, nearestReachableToTarget, reachableHexes } from './hex';
-import { totalStackHp } from './magicEffects';
-import { applyDamage } from './damage';
+import { addSpellCounter, totalStackHp } from './magicEffects';
+import { applyRoutedCombatDamage } from './damageRouting';
 import {
   footprintFits, occupiedByStacks, stackHexes, stacksAdjacent,
 } from './footprint';
 import { coordKey } from '../map/pathfinding';
+import { addManaClamped, forcedMovementDistance, teleportCompany } from './primitives';
+import { runExternalDeathPipeline } from './pipeline';
+import { castCreatureSpell, legalCreatureSpellActions } from './spells';
 
 type AbilityAction = Extract<Action, { type: 'BATTLE_USE_ABILITY' }>;
 
@@ -140,6 +143,35 @@ export function legalActivatedAbilityActions(
       targetId: route.targets[0].id, destination: route.destination,
     }));
   }
+  if (stackHasAbility(actor, 'blink_step')
+      && (actor.abilityUses?.blink_step ?? 0) === 0) {
+    allFreeHexes(battle, actor).filter((destination) => !sameCoord(destination, actor.position)
+      && !stackHexes(actor, destination).some((hex) => battle.tiles.some((tile) =>
+        sameCoord(tile.position, hex)))).forEach((destination) => actions.push({
+      type: 'BATTLE_USE_ABILITY', abilityId: 'blink_step', destination,
+    }));
+  }
+  if (stackHasAbility(actor, 'burrow') && !actor.burrowReturnRound) {
+    actions.push({ type: 'BATTLE_USE_ABILITY', abilityId: 'burrow' });
+  }
+  if (stackHasAbility(actor, 'altar')) {
+    battle.stacks.filter((target) => target.count > 0 && target.side === actor.side
+      && target.id !== actor.id && target.summoned && stacksAdjacent(actor, target))
+      .sort((a, b) => a.slot - b.slot || a.id.localeCompare(b.id))
+      .forEach((target) => actions.push({
+        type: 'BATTLE_USE_ABILITY', abilityId: 'altar', targetId: target.id,
+      }));
+  }
+  const caster = UNITS[actor.unitId].caster;
+  const casterAbility = stackHasAbility(actor, 'caster') ? 'caster' as const
+    : stackHasAbility(actor, 'hedge_caster') ? 'hedge_caster' as const : null;
+  if (casterAbility && caster
+      && (actor.abilityUses?.[casterAbility] ?? 0) < caster.charges) {
+    caster.repertoire.forEach((spellId) => legalCreatureSpellActions(battle, actor, spellId)
+      .forEach((choice) => actions.push({
+        type: 'BATTLE_USE_ABILITY', abilityId: casterAbility, ...choice,
+      })));
+  }
   return actions;
 }
 
@@ -206,7 +238,9 @@ function beckon(
     false, () => 0, UNITS[target.unitId].hexSize,
   );
   const destination = nearestReachableToTarget(destinations, actor.position);
-  if (destination) target.position = { ...destination };
+  if (destination && forcedMovementDistance(battle, target, actor.side, 1) > 0) {
+    target.position = { ...destination };
+  }
   actor.abilityUses = { ...actor.abilityUses, [abilityId]: 1 };
   battle.log.push(`${UNITS[actor.unitId].name} beckons ${UNITS[target.unitId].name}.`);
 }
@@ -241,12 +275,55 @@ export function applyActivatedAbility(
     let damageTotal = 0;
     for (const target of route.targets) {
       const damage = Math.max(1, Math.ceil(totalStackHp(target) * 0.05));
-      const kills = applyDamage(target, damage);
-      battle.casualties[target.side][target.unitId] =
-        (battle.casualties[target.side][target.unitId] ?? 0) + kills;
+      applyRoutedCombatDamage(battle, target, damage, {
+        sourceStack: actor,
+        onUpgradedWard: (source, ward) => addSpellCounter(
+          battle, source, 'burn', 2, ward.sourceSide,
+        ),
+      });
       damageTotal += damage;
     }
     actor.position = { ...route.destination };
     battle.log.push(`${UNITS[actor.unitId].name} tramples for ${damageTotal} damage.`);
+  } else if (action.abilityId === 'blink_step') {
+    if (!action.destination || (actor.abilityUses?.blink_step ?? 0) > 0) {
+      throw new Error('Blink Step is unavailable');
+    }
+    const result = teleportCompany(battle, actor.id, action.destination);
+    if (!result.ok) throw new Error(result.reason.text);
+    actor.abilityUses = { ...actor.abilityUses, blink_step: 1 };
+    battle.log.push(`${UNITS[actor.unitId].name} blinks across the field.`);
+  } else if (action.abilityId === 'burrow') {
+    actor.burrowReturnRound = battle.round + 1;
+    actor.position = { x: -20, y: -20 };
+    battle.log.push(`${UNITS[actor.unitId].name} burrows out of the field until its next turn.`);
+  } else if (action.abilityId === 'altar') {
+    const target = battle.stacks.find((stack) => stack.id === action.targetId
+      && stack.count > 0 && stack.side === actor.side && stack.summoned
+      && stacksAdjacent(actor, stack));
+    if (!target) throw new Error('Altar requires an adjacent allied summoned company');
+    const hpBefore = totalStackHp(target); const countBefore = target.count;
+    target.count = 0; target.topHp = 0; target.destroyedRound = battle.round;
+    runExternalDeathPipeline(battle, target, hpBefore, countBefore, 'sacrifice', actor.side);
+    if (actor.count > 0) {
+      const maximum = (battle.initialCounts[actor.id] ?? actor.count) * stackUnitHp(actor);
+      actor.count = Math.ceil(maximum / stackUnitHp(actor));
+      actor.topHp = ((maximum - 1) % stackUnitHp(actor)) + 1;
+    }
+    const hero = actor.side === 'attacker' ? battle.attackerHero : battle.defenderHero;
+    if (hero) addManaClamped(hero, 2);
+    battle.log.push(`${UNITS[actor.unitId].name} consumes a summoned company at its altar.`);
+  } else if (action.abilityId === 'hedge_caster' || action.abilityId === 'caster') {
+    const caster = UNITS[actor.unitId].caster;
+    const abilityId = action.abilityId;
+    if (!caster || !action.spellId || !caster.repertoire.includes(action.spellId)
+        || (actor.abilityUses?.[abilityId] ?? 0) >= caster.charges) {
+      throw new Error('Creature casting is unavailable');
+    }
+    const { type: _type, abilityId: _abilityId, destination: _destination, ...castAction } = action;
+    castCreatureSpell(battle, actor, castAction as Parameters<typeof castCreatureSpell>[2]);
+    actor.abilityUses = {
+      ...actor.abilityUses, [abilityId]: (actor.abilityUses?.[abilityId] ?? 0) + 1,
+    };
   } else throw new Error(`Unsupported activated ability: ${action.abilityId}`);
 }

@@ -3,15 +3,21 @@ import type {
 } from '../../core/types';
 import { SPELLS } from '../spells';
 import { itemFlavor } from '../flavor';
+import type { ItemContentKind } from '../v2/schema';
+import type { ContentAssetRequirement } from '../v2/schema';
+import { validateContentAssets } from '../v2/assets';
 
 export type ItemUse = 'combat' | 'adventure' | 'automatic';
 export type ItemBehavior =
-  | 'scroll' | 'vigor' | 'iron' | 'cleanse' | 'echo'
+  | 'scroll' | 'tome' | 'vigor' | 'iron' | 'cleanse' | 'echo'
   | 'speed' | 'burnWeapon' | 'enemyHex' | 'hornet' | 'disable'
   | 'walls' | 'seal' | 'unmakeEnchantment' | 'banner' | 'revive'
   | 'reveal' | 'movement' | 'remoteMovement' | 'rumour' | 'recall'
   | 'impassableStep' | 'militiaWrit' | 'draftBoost' | 'foundersTin'
-  | 'cronesBundle' | 'charter' | 'tradeGoods';
+  | 'cronesBundle' | 'charter' | 'tradeGoods'
+  | 'extraAction' | 'wildfire' | 'counterfeit' | 'graveDustResurrection'
+  | 'upgradeSchool' | 'protectEnchantment' | 'countersToBurn' | 'teleportAlly'
+  | 'destructionMana' | 'ignoreAggroDay' | 'survey' | 'learnRandomSpell';
 
 export interface ItemDefinition {
   id: ItemId;
@@ -25,7 +31,12 @@ export interface ItemDefinition {
   duration?: number;
   radius?: number;
   baseGold?: number;
-  target?: 'ally' | 'enemy' | 'enchantment' | 'global' | 'positions';
+  target?: 'ally' | 'enemy' | 'enchantment' | 'global' | 'positions' | 'school';
+  /** Explicit for v2 content; legacy entries are inferred by validation during the transition. */
+  kind?: ItemContentKind;
+  teachesSpellId?: SpellId;
+  /** Literal worklist subject for docs-60-67 typed item placeholder validation. */
+  visualSubject?: string;
 }
 
 const scroll = (
@@ -40,6 +51,12 @@ const RAW_ITEMS = {
   spellScroll: {
     id: 'spellScroll', name: 'Spell Scroll', use: 'combat', behavior: 'scroll',
     description: 'Cast the spell stored on this scroll without spending mana.',
+  },
+  spellTome: {
+    id: 'spellTome', name: 'Spell Tome', use: 'automatic', behavior: 'tome',
+    kind: 'spell-tome',
+    description: 'On pickup, permanently learn the named setup-seeded spell.',
+    visualSubject: 'A compact closed indigo spell tome with four colored page tabs, one plain brass clasp, and no readable writing.',
   },
   scrollRally: scroll('scrollRally', 'Rally', 'rally'),
   scrollBlessing: scroll('scrollBlessing', 'Blessing', 'blessing'),
@@ -165,6 +182,78 @@ const RAW_ITEMS = {
     behavior: 'tradeGoods', amount: 25, baseGold: 300,
     description: 'Sold at a friendly city for 300 gold plus 25 per straight-line tile.',
   },
+  vialBorrowedHours: {
+    id: 'vialBorrowedHours', name: 'Vial of Borrowed Hours', use: 'combat',
+    behavior: 'extraAction', target: 'ally', kind: 'consumable',
+    description: 'One allied company immediately takes one granted extra action.',
+    visualSubject: 'A narrow blue-violet glass vial holding two tiny brass clock hands suspended in clear liquid.',
+  },
+  wildfireFlask: {
+    id: 'wildfireFlask', name: 'Wildfire Flask', use: 'combat',
+    behavior: 'wildfire', target: 'enemy', kind: 'consumable',
+    description: 'Apply Burn 5 to one enemy and Burn 2 to every adjacent company.',
+    visualSubject: 'A round soot-dark flask wrapped in thorny copper wire and filled with vivid orange-red oil, tightly corked.',
+  },
+  counterfeitCoin: {
+    id: 'counterfeitCoin', name: 'Counterfeit Coin', use: 'combat',
+    behavior: 'counterfeit', kind: 'consumable',
+    description: 'Cast a free copy of the last spell the enemy hero cast, using this hero’s Spell Power.',
+    visualSubject: 'A bright false gold coin whose two stamped faces visibly disagree, with a thin flaking edge.',
+  },
+  graveDustSachet: {
+    id: 'graveDustSachet', name: 'Grave-Dust Sachet', use: 'combat',
+    behavior: 'graveDustResurrection', target: 'global', kind: 'consumable',
+    description: 'The next company destroyed on either side returns on your side at 25% of its starting count.',
+    visualSubject: 'A charcoal funeral-cloth sachet tied with bone-white thread and leaking one restrained pinch of pale dust.',
+  },
+  tuningFork: {
+    id: 'tuningFork', name: 'Tuning Fork', use: 'combat', behavior: 'upgradeSchool',
+    target: 'school', kind: 'consumable',
+    description: 'Choose a school; your spells of that school use Upgraded rules for this battle.',
+    visualSubject: 'A clean silver tuning fork with four small colored thread knots around its handle.',
+  },
+  sealingWaxCord: {
+    id: 'sealingWaxCord', name: 'Sealing Wax Cord', use: 'combat',
+    behavior: 'protectEnchantment', target: 'enchantment', kind: 'consumable',
+    description: 'Protect one of your battle enchantments for the rest of this battle.',
+    visualSubject: 'A coiled cream cord threaded through three plain deep-red sealing-wax wafers.',
+  },
+  ironFilings: {
+    id: 'ironFilings', name: 'Iron Filings', use: 'combat', behavior: 'countersToBurn',
+    target: 'enemy', kind: 'consumable',
+    description: 'Convert every counter on one enemy company to Burn, one for one.',
+    visualSubject: 'A folded white paper packet spilling a compact fan of dark magnetic iron filings.',
+  },
+  looseThread: {
+    id: 'looseThread', name: 'Loose Thread', use: 'combat', behavior: 'teleportAlly',
+    target: 'ally', kind: 'consumable',
+    description: 'Teleport one allied company to any legal empty hex its footprint fits.',
+    visualSubject: 'One long red thread looped impossibly through a small brass needle without a knot.',
+  },
+  ledgerPage: {
+    id: 'ledgerPage', name: 'Ledger Page', use: 'combat', behavior: 'destructionMana',
+    target: 'global', kind: 'consumable',
+    description: 'Gain 3 mana for every company destroyed this battle, up to maximum mana.',
+    visualSubject: 'A single cream ledger leaf ruled in charcoal lines with three blank red tally boxes and no writing.',
+  },
+  nightjarFeather: {
+    id: 'nightjarFeather', name: 'Nightjar Feather', use: 'adventure',
+    behavior: 'ignoreAggroDay', kind: 'consumable',
+    description: 'This hero ignores all guardian aggro for the rest of today.',
+    visualSubject: 'A broad mottled brown nightjar feather bound at the quill with one dark-blue thread.',
+  },
+  surveyorsTwine: {
+    id: 'surveyorsTwine', name: "Surveyor's Twine", use: 'adventure', behavior: 'survey',
+    radius: 8, kind: 'consumable',
+    description: 'Reveal a radius-8 circle anywhere and show exact guardian counts inside it today.',
+    visualSubject: 'A compact wooden survey reel wound with cream twine beside one small brass plumb bob.',
+  },
+  spellbookPage: {
+    id: 'spellbookPage', name: 'Spellbook Page', use: 'adventure',
+    behavior: 'learnRandomSpell', kind: 'consumable',
+    description: 'Learn one seeded random unknown tier-1–3 spell from a school already in this spellbook.',
+    visualSubject: 'A loose vellum spellbook leaf with four colored edge tabs and blank diagram circles, no readable writing.',
+  },
 } satisfies Record<ItemId, Omit<ItemDefinition, 'flavor'> | ItemDefinition>;
 
 export const ITEMS = Object.fromEntries(Object.entries(RAW_ITEMS).map(([id, item]) => [
@@ -183,15 +272,46 @@ export const CHEST_ITEM_POOL = [
   'waxSeal', 'powderOfUnmaking', 'bannerWhistle', 'secondCandle', 'bottledEcho',
   'cartographersCase', 'waybread', 'saltedMeat', 'tavernTales', 'hearthstone',
   'ferrymansCoin', 'militiaWrit', 'beggarsCoin', 'foundersTin', 'cronesBundle',
-  'spellScroll',
+  'spellScroll', 'vialBorrowedHours', 'wildfireFlask', 'counterfeitCoin',
+  'graveDustSachet', 'tuningFork', 'sealingWaxCord', 'ironFilings', 'looseThread',
+  'ledgerPage', 'nightjarFeather', 'surveyorsTwine', 'spellbookPage',
 ] as const satisfies readonly ItemId[];
+
+export const V2_ITEM_ASSET_REQUIREMENTS: readonly ContentAssetRequirement[] =
+  Object.values(ITEMS).filter((item) => item.visualSubject).map((item) => ({
+    canonicalId: `item:${item.id}`, nativeAssetId: `map-object:item:${item.id}`,
+    introducedBy: 'docs-60-67', accessibleName: item.name,
+    visualSubject: item.visualSubject!,
+    semantics: { family: 'item', itemKind: item.kind ?? 'consumable' },
+  }));
 
 export function itemName(item: ItemInstance | string | null): string {
   if (!item) return '';
   if (typeof item === 'string') return item;
   const stored = item.id === 'spellScroll' && item.storedSpellId
-    ? ` of ${SPELLS[item.storedSpellId as SpellId]?.name ?? item.storedSpellId}` : '';
+    ? ` of ${SPELLS[item.storedSpellId as SpellId]?.name ?? item.storedSpellId}`
+    : item.id === 'spellTome' && item.storedSpellId
+      ? `: ${SPELLS[item.storedSpellId as SpellId]?.name ?? item.storedSpellId}` : '';
   return `${ITEMS[item.id].name}${stored}${item.plus ? ' · Upgraded' : ''}`;
+}
+
+export function validateSpellTomeInstance(item: ItemInstance): void {
+  if (item.id !== 'spellTome') return;
+  const spell = item.storedSpellId ? SPELLS[item.storedSpellId as SpellId] : undefined;
+  if (!spell || !item.tomeSource) throw new Error('Spell Tome needs a named spell and source');
+  if (spell.acquisition?.provenance || item.storedSpellId === 'summonSkiff') {
+    throw new Error('Generic Spell Tomes cannot contain provenance-only spells');
+  }
+  const tier = spell.tier ?? 1;
+  if ((item.tomeSource === 'chest' || item.tomeSource === 'reliquary-cairn') && tier > 3) {
+    throw new Error(`${item.tomeSource} Spell Tomes are limited to tiers 1–3`);
+  }
+  if (item.tomeSource === 'reliquary-pages' && tier !== 4) {
+    throw new Error('Reliquary of Pages Spell Tomes must contain exactly tier 4');
+  }
+  if (tier >= 4 && !['lock', 'barrow', 'reliquary-pages'].includes(item.tomeSource)) {
+    throw new Error('Tier-4/5 Spell Tomes are limited to locks and barrow rewards');
+  }
 }
 
 export function validateItems(): void {
@@ -203,5 +323,14 @@ export function validateItems(): void {
         && definition.id !== 'spellScroll') {
       throw new Error(`Scroll has no spell: ${definition.id}`);
     }
+    if (definition.kind === 'spell-tome' && !definition.teachesSpellId
+        && definition.id !== 'spellTome') {
+      throw new Error(`Spell Tome has no spell: ${definition.id}`);
+    }
+    if (definition.teachesSpellId && !SPELLS[definition.teachesSpellId]) {
+      throw new Error(`Item references unknown spell: ${definition.id}`);
+    }
   }
+  validateContentAssets(V2_ITEM_ASSET_REQUIREMENTS,
+    new Set(V2_ITEM_ASSET_REQUIREMENTS.map((row) => row.nativeAssetId)), 'release');
 }

@@ -1,7 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { SPELL_LEXICON } from '../../content/spellLexicon';
+import {
+  DOCS_60_67_SPELL_LEXICON_IDS, SPELL_LEXICON,
+} from '../../content/spellLexicon';
 import { SPELL_IDS } from '../../content/spells';
 import { SPELL_RULE_PRESENTATIONS } from '../../content/spells/rulePresentation';
 import {
@@ -21,7 +23,7 @@ describe('shared spell glossary presentation', () => {
     expect(html).not.toMatch(/<button[^>]*>[^]*<button/);
   });
 
-  it('renders every authored Standard and Upgraded token and all 30 term consumers', () => {
+  it('renders every authored Standard and Upgraded token and all lexicon term consumers', () => {
     const rules = SPELL_IDS.flatMap((id) => [
       SPELL_RULE_PRESENTATIONS[id].standard, SPELL_RULE_PRESENTATIONS[id].upgraded,
     ]);

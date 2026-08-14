@@ -35,6 +35,11 @@ action surface as a human player.
 - A pending choice blocks unrelated actions until resolved.
 - A hero’s roster representation is authoritative; compatibility views must stay synchronized and
   cannot invent data for obsolete save formats.
+- A living hero's army array has exactly that hero's derived capacity: seven base, +1 with
+  Quartermaster R1+, +1 per equipped `army_slot_bonus`, capped at nine. The capacity is recomputed
+  from serialized skills and equipment rather than stored as a second authority. Fixed garrisons
+  and heroless armies retain seven slots. Any action that would reduce capacity below an occupied
+  slot rejects before changing skills, equipment, companies, resources, choices, or the action log.
 - Animations never decide timing. Adventure movement commits after its legal path animation and
   combat queues actions until feedback completes; motion-off commits immediately.
 - Rules that need durable topology—paired gates, thickets, resonance sites, boats, debts—are stored
@@ -56,6 +61,15 @@ Portable map-editor random-tier guardian placeholders follow the same rule: conv
 explicit campaign seed with stable guardian ID, stack index, and tier to select a concrete canonical
 creature. Placeholder resolution never consumes ambient randomness and the runtime/save contains the
 resolved creature stack.
+
+Content schema contracts that can change legal actions or resolution are replay authority even
+before their corresponding catalog batch is populated. The stable v2 schema/version and primitive
+contract registry therefore participate in `contentHash`; presentation-only development placeholder
+selection does not. Registering a primitive name is not executable coverage: its handler must be
+registered separately at the contract's named pipeline stage before any catalog entry may reference
+it. Artifact-effect metadata, nonempty Knack catalogs, and nonempty acquisition-site catalogs obey
+the same rule through their own typed live registries. Duplicate handlers, unknown IDs, missing
+functions, and stage mismatches are validation errors.
 
 ## Replay is save
 
@@ -83,6 +97,11 @@ Warn above roughly 50 KB compressed and offer file export. Local saves with a mi
 hash may load with a visible warning; URL replays must refuse a mismatch. Golden replay fixtures in
 CI must reach identical final-state hashes.
 
+The docs 60–67 schema foundation deliberately changes the built-in content hash without changing
+the canonical five-field save payload or local schema envelope. Saves at the immediately preceding
+`06c84a97` hash follow the ordinary mismatch policy above; no state migration is guessed because
+the action log remains the authority and later content phases may change its outcomes.
+
 The configurable player pipeline supports up to six real player IDs. Maps with at most four slots
 retain their historical four-player serialized shape; a six-player map serializes all six
 controller, faction, turn-order, metric, objective, and exploration records. Extra faction cities
@@ -106,6 +125,21 @@ Every attack and ability hook belongs to one of these ordered stages:
 New behavior registers a hook at a named stage; it does not add a one-off branch to an unrelated
 consumer. Ordering within a stage is stable and covered by focused tests. Spells and items that
 modify an effect use the same staged model.
+
+The eighteen combat effect-primitive contracts declared by the docs-60 schema each resolve to
+exactly one live handler at their declared stage. Their shared dispatch and typed implementations
+live in [`../../src/core/combat/primitives.ts`](../../src/core/combat/primitives.ts); content names
+the primitive rather than adding a spell-ID branch. A blocked primitive returns a stable reason code
+and matching player-readable sentence. Control history, links, clone provenance, stun/action counts,
+delayed triggers, mid-battle resonance, hazards, destruction-save claims, and round-limit outcomes
+are ordinary JSON state and therefore survive cloning, replay reconstruction, and inspection.
+For controlled companies, `side` is temporary tactical allegiance while `originalSide ?? side` is
+the stable ownership key used by elimination, casualties, owner-bound saves, metrics, surrender,
+and campaign army reconstruction.
+All combat damage applications use the one-hop router in
+[`../../src/core/combat/damageRouting.ts`](../../src/core/combat/damageRouting.ts), so attacks,
+impact and percentage spells, turn effects, hazards, abilities, reflection, and backlash share the
+same non-recursive damage-link and casualty semantics.
 
 The pinned damage-position precedence is: determine the base luck position, then apply attacker
 overrides such as “roll maximum,” then defender overrides such as “incoming roll minimum” **last**.
@@ -181,7 +215,8 @@ event handling.
 Hero management follows the same boundary. The one-screen Hero Details dashboard is a projection of
 the serialized hero, catalogs, and existing legal actions; opening an icon, changing the local
 detail selection, or previewing an equipment destination never mutates state or appends an action.
-Its uniform artifact cells retain the eleven exact equipment-slot IDs and dispatch the existing
+Its uniform artifact cells retain the eleven ordinary equipment-slot IDs; serialized hero state
+also contains `misc3`, which is visible and equip-legal only with Reliquarian R1. They dispatch the existing
 equip/unequip actions only after explicit review. Presentation may add pure selectors for effective
 stats and disabled reasons, but it may not duplicate equipment, inventory, split, item-use, or
 special-skill legality in React state. See [work order 59](../59_HERO_DASHBOARD.md).
@@ -192,3 +227,13 @@ Every new rule receives deterministic unit or integration coverage at its bounda
 points. Map changes run map lint. Production compilation and a browser smoke path cover integration.
 Balance and exposure simulations are separate evidence: they never silently rewrite values and are
 run only when the work order permits them.
+
+## Artifact v2 action state
+
+Doc-65 rule changes are ordinary serialized actions and fields, never UI-only shortcuts. Hero state
+records day-start position, daily/weekly effect-use ledgers, marker position, carried movement,
+consecutive water and city days, and authored instance choices. Player state records weekly gold
+refund and prior battles by faction. Battle state records generic effect-use credits, deployment and
+deflection choices, pending inherited stats, and seed-derived spell identity. Forged destinations,
+targets, choices, costs, and timing are rejected before mutation. Save/replay reconstructs the same
+state from the campaign seed and action stream without consuming ambient RNG.

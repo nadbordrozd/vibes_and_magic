@@ -49,10 +49,13 @@ export function movementCost(
   freeForest = false,
 ): number {
   const terrain = terrainIdAt(map, to);
+  const pathfinder = hero?.army.some((stack) => stack
+    && UNITS[stack.unitId].abilities.includes('pathfinder'));
   const toKey = coordKey(to);
   if (coordinateKeys(roadCache, map, map.roads).has(toKey)) return ROAD_MOVE_COST;
   if (coordinateKeys(seamCache, map, map.seams).has(toKey)) return 100;
   if (freeForest && terrain === 'deepwood') return 0;
+  if (pathfinder && ['deepwood', 'mosswold', 'hush'].includes(terrain)) return 100;
   const native = hero && heroIsNative(hero, terrain);
   const aquaticMire = terrain === 'mire' && hero?.army.some((stack) =>
     stack && UNITS[stack.unitId].abilities.includes('aquatic'));

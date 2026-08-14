@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Doc 63 permits deterministic typed development placeholders until twelve distinct final bitmaps pass review and provenance.",
+  "contact_sheet": "assets/jobs/e3-doc63-item-placeholders-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:item:vialBorrowedHours", "assets": ["map-object:item:vialBorrowedHours"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/vial-borrowed-hours",
+      "prompt": "Native 32x32 transparent item pickup of a narrow blue-violet glass vial holding two tiny brass clock hands suspended in clear liquid. High-oblique warm storybook strategy-game pixel art; no text, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836849
+    },
+    {
+      "id": "map-object:item:wildfireFlask", "assets": ["map-object:item:wildfireFlask"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/wildfire-flask",
+      "prompt": "Native 32x32 transparent item pickup of a round soot-dark flask wrapped in thorny copper wire and filled with vivid orange-red oil, tightly corked. High-oblique warm storybook strategy-game pixel art; no text, flame backdrop, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836867
+    },
+    {
+      "id": "map-object:item:counterfeitCoin", "assets": ["map-object:item:counterfeitCoin"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/counterfeit-coin",
+      "prompt": "Native 32x32 transparent item pickup of a bright false gold coin whose two stamped faces visibly disagree, with a thin flaking edge. High-oblique warm storybook strategy-game pixel art; no readable text, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836885
+    },
+    {
+      "id": "map-object:item:graveDustSachet", "assets": ["map-object:item:graveDustSachet"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/grave-dust-sachet",
+      "prompt": "Native 32x32 transparent item pickup of a charcoal funeral-cloth sachet tied with bone-white thread and leaking one restrained pinch of pale dust. High-oblique warm storybook strategy-game pixel art; no skull, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836903
+    },
+    {
+      "id": "map-object:item:tuningFork", "assets": ["map-object:item:tuningFork"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/tuning-fork",
+      "prompt": "Native 32x32 transparent item pickup of a clean silver tuning fork with four small colored thread knots around its handle. High-oblique warm storybook strategy-game pixel art; no musical notes, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836921
+    },
+    {
+      "id": "map-object:item:sealingWaxCord", "assets": ["map-object:item:sealingWaxCord"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/sealing-wax-cord",
+      "prompt": "Native 32x32 transparent item pickup of a coiled cream cord threaded through three plain deep-red sealing-wax wafers. High-oblique warm storybook strategy-game pixel art; no readable seal, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836939
+    },
+    {
+      "id": "map-object:item:ironFilings", "assets": ["map-object:item:ironFilings"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/iron-filings",
+      "prompt": "Native 32x32 transparent item pickup of a folded white paper packet spilling a compact fan of dark magnetic iron filings. High-oblique warm storybook strategy-game pixel art; no text, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836957
+    },
+    {
+      "id": "map-object:item:looseThread", "assets": ["map-object:item:looseThread"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/loose-thread",
+      "prompt": "Native 32x32 transparent item pickup of one long red thread looped impossibly through a small brass needle without a knot. High-oblique warm storybook strategy-game pixel art; no cloth, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836975
+    },
+    {
+      "id": "map-object:item:ledgerPage", "assets": ["map-object:item:ledgerPage"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/ledger-page",
+      "prompt": "Native 32x32 transparent item pickup of a single cream ledger leaf ruled in charcoal lines with three blank red tally boxes and no writing. High-oblique warm storybook strategy-game pixel art; no readable text, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 836993
+    },
+    {
+      "id": "map-object:item:nightjarFeather", "assets": ["map-object:item:nightjarFeather"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/nightjar-feather",
+      "prompt": "Native 32x32 transparent item pickup of a broad mottled brown nightjar feather bound at the quill with one dark-blue thread. High-oblique warm storybook strategy-game pixel art; no bird, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 837011
+    }
+  ]
+}

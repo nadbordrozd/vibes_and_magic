@@ -32,6 +32,9 @@ const GROUPS: ReadonlyArray<readonly [EditorGuardianCatalogGroupId, string]> = [
   ['gloamingCourt', 'Neutral · Gloaming Court'],
   ['seamborn', 'Neutral · Seamborn'],
   ['driftfolk', 'Neutral · Driftfolk'],
+  ['neutralBeast', 'Neutral · Beasts'],
+  ['unstruckBell', 'Neutral · Unstruck Bell'],
+  ['hagwoodNeutral', 'Neutral · Hagwood'],
 ];
 const GROUP_ORDER = new Map(GROUPS.map(([id], index) => [id, index]));
 const GROUP_LABEL = new Map(GROUPS);

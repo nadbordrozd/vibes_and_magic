@@ -8,6 +8,7 @@ import { validateMap } from './borderMarches';
 import {
   materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
 } from './occupancyAuthoring';
+import { seededSpellTome } from '../../core/game/chests';
 
 export const CROSSTITCH_WIDTH = 36;
 export const CROSSTITCH_HEIGHT = 28;
@@ -135,7 +136,9 @@ function objects(seed: number): MapObject[] {
       completed: false, opens: [{ x: 17, y: 12 }, { x: 18, y: 12 }],
     },
     { id: 'hedge-school', kind: 'hedgeSchool', position: { x: 13, y: 18 }, visitedBy: [] },
-    { id: 'reliquary-cairn', kind: 'reliquaryCairn', position: { x: 22, y: 9 } },
+    { id: 'reliquary-cairn', kind: 'reliquaryCairn', position: { x: 22, y: 9 },
+      tomeSpellId: seededSpellTome(seed, 'crosstitch-reliquary-cairn', 'reliquary-cairn').storedSpellId,
+      tomeClaimed: false },
     {
       id: 'toll-gate', kind: 'tollGate', position: { x: 18, y: 14 },
       paidBy: [], cleared: false,
@@ -144,7 +147,7 @@ function objects(seed: number): MapObject[] {
     { id: 'wayward-crone', kind: 'crone', position: { x: 27, y: 19 }, visitedWeek: {} },
     {
       id: 'barrow-field', kind: 'barrowField', position: { x: 25, y: 12 },
-      scroll: scroll(seed, 911, true), collected: false,
+      scroll: seededSpellTome(seed, 'crosstitch-barrow-field', 'barrow'), collected: false,
     },
     {
       id: 'seam-echo-lock', kind: 'lock', position: { x: 18, y: 21 },

@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { apply, createGame } from '../../core/game';
 import { legalBattleActions } from '../../core/combat/battle';
 import {
-  actionSave, autoSaveGame, CONTENT_HASH, loadGame, replayBattleSave, replaySave,
+  actionSave, autoSaveGame, CONTENT_HASH, loadGame, PRE_V2_CONTENT_HASH,
+  replayBattleSave, replaySave,
   saveGame, savedGameSummary, stateHash,
   type StorageLike,
 } from '../persistence';
@@ -24,12 +25,48 @@ class MemoryStorage implements StorageLike {
 }
 
 describe('local game persistence', () => {
+  it('makes the v2 schema part of replay authority while preserving mismatch policy', () => {
+    expect(CONTENT_HASH).not.toBe(PRE_V2_CONTENT_HASH);
+    const state = createGame({ seed: 82, p1: 'human', p2: 'ai' });
+    const old = { ...actionSave(state), contentHash: PRE_V2_CONTENT_HASH };
+    expect(replaySave(old).eventLog.at(-1)).toContain('different content data');
+    expect(() => replaySave(old, true)).toThrow(/different content data/);
+  });
+
   it('round-trips a complete serializable game state', () => {
     const storage = new MemoryStorage();
     const state = createGame({ seed: 83, p1: 'human', p2: 'ai' });
     state.players.p1.discoveredObjectKinds.push('mine', 'shrine');
+    state.players.p1.hero!.spellUses.daily.beacon = 1;
+    state.players.p1.spellUses.weekly.fickleWeather = 1;
     expect(saveGame(state, storage)).not.toBeNull();
     expect(loadGame(storage)).toEqual(state);
+  });
+
+  it('replays canonical setup with serialized hero and player spell-use ledgers', () => {
+    let state = createGame({ seed: 8301, p1: 'human', p2: 'human' });
+    state = apply(state, { type: 'END_TURN' });
+    state = apply(state, { type: 'END_TURN' });
+    const replayed = replaySave(actionSave(state), true);
+    expect(replayed.players.p1.hero!.spellUses).toEqual({ daily: {}, weekly: {} });
+    expect(replayed.players.p1.spellUses).toEqual({ daily: {}, weekly: {} });
+    expect(replayed).toEqual(state);
+  });
+
+  it('round-trips doc-65 authored artifact choices and timing ledgers through a full save', () => {
+    let state = createGame({ seed: 8302, p1: 'human', p2: 'human' });
+    const hero = state.players.p1.hero!;
+    hero.artifacts.backpack.push({ id: 'patientCompass' });
+    state = apply(state, { type: 'EQUIP_ARTIFACT', heroId: hero.id,
+      backpackIndex: 0, equipmentSlot: 'amulet', chosenObjectKind: 'mine' });
+    state.players.p1.hero!.artifactState.marker = { ...state.players.p1.hero!.position };
+    state.replay = state.replay.filter((action) => action.type === 'CAMPAIGN_SETUP');
+    const storage = new MemoryStorage();
+    saveGame(state, storage);
+    const replayed = loadGame(storage)!;
+    expect(replayed.players.p1.hero!.artifacts.equipment.amulet?.chosenObjectKind).toBe('mine');
+    expect(replayed.players.p1.hero!.artifactState).toEqual(state.players.p1.hero!.artifactState);
+    expect(replayed).toEqual(state);
   });
 
   it('round-trips a four-player Crosstitch state', () => {
@@ -130,6 +167,6 @@ describe('local game persistence', () => {
         { type: 'END_TURN' as const }, { type: 'END_TURN' as const },
       ],
     };
-    expect(stateHash(replaySave(golden))).toBe('871503f6');
+    expect(stateHash(replaySave(golden))).toBe('97dc3c06');
   });
 });

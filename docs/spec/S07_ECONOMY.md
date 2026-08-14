@@ -44,8 +44,13 @@ catalog percentages and adds one seeded scroll to weekly stock. Kit pieces canno
 
 Dwellings accumulate weekly growth and do not discard unbought recruits. City recruitment pays
 the unit’s resource cost and adds to a visiting hero first, otherwise to the garrison. Compatible
-stacks merge, and seven-slot capacity is enforced. Neutral/faction map dwellings replenish at their
+stacks merge, and the destination's capacity is enforced: a visiting hero uses the derived S06
+seven-to-nine limit and a garrison remains fixed at seven. Neutral/faction map dwellings replenish at their
 authored rate and allow cross-faction recruitment; mixed armies retain their combat morale penalty.
+
+The thirteen docs 63–64 field dwellings are named per creature, use that creature's authored growth
+and full resource cost, and expose complete culture, footprint, casting, resistance, pattern, and
+drawback inspection before payment. Beastmaster's discount applies only to rows printing `beast`.
 
 Difficulty and Week of Plenty modify growth at the weekly boundary, rounded down. Faction buildings
 and artifacts hook the same generic calculation. Dormant buildings produce no growth; a Dormant AI
@@ -64,7 +69,9 @@ links, categories, and flavor are authoritative in
 - Village Hall → Town Hall → City Hall (one upgrade line). Treasury is retired and never stacks.
 - Marketplace and prebuilt Tavern.
 - Walls → Keep (one upgrade line).
-- Mage Guild 1 → 2 → 3 (one upgrade line).
+- Mage Guild 1 → 2 → 3 → 4 → 5 (one upgrade line). Levels 4 and 5 cost respectively
+  4,500 gold/4 iron/9 essence and 8,000 gold/8 iron/16 essence; level 4 also requires Town Hall,
+  and level 5 also requires City Hall. Their cumulative reveals are 4/7/10/12/14 spells.
 - Six separately slotted, sequential dwellings, each recruiting a different tier.
 - Two faction-special buildings.
 - Coastal-only Shipyard where the map geometry qualifies.
@@ -134,3 +141,14 @@ AI builds and recruits through ordinary legal actions and pays ordinary costs. I
 hidden state for evaluation where already logged, but cannot create resources, bypass prerequisites,
 or ignore one-build-per-day. It hires a second hero above the configured gold threshold and a third
 above the higher threshold, never exceeding three. Dormant AI is the explicit no-economy exception.
+
+## Artifact economy exceptions
+
+Direct Marketplace exchange is a serialized 2:1 resource action. Founder permits one second build
+on week day 1; Borrowed Purse exposes a player-wide -2000 gold floor at every affordability/payment
+boundary and charges 25% on negative gold at week start before new income. Tithe accumulates gross
+gold paid by the actual payer, floors the aggregate once, and never infers spend from net action deltas. Growing
+Ledger stores one tier on its instance. Lost-mine production redirects for three days, and Tallystick
+uses a stable resource-ID tie break. Open Purse doubles scheduled daily city, mine/retained-mine,
+mill, and artifact income, but not one-off grants, Tally balancing, or Tithe refunds, and blocks building on odd days;
+its 10,000-gold Marketplace removal is an informed explicit action keyed by removal trigger.

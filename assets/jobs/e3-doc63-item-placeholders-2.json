@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Doc 63 permits deterministic typed development placeholders until twelve distinct final bitmaps pass review and provenance.",
+  "contact_sheet": "assets/jobs/e3-doc63-item-placeholders-2-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:item:surveyorsTwine", "assets": ["map-object:item:surveyorsTwine"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/surveyors-twine",
+      "prompt": "Native 32x32 transparent item pickup of a compact wooden survey reel wound with cream twine beside one small brass plumb bob. High-oblique warm storybook strategy-game pixel art; no map, text, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 837029
+    },
+    {
+      "id": "map-object:item:spellbookPage", "assets": ["map-object:item:spellbookPage"],
+      "output": ".pixel-work/pixelgen/e3-doc63-items/spellbook-page",
+      "prompt": "Native 32x32 transparent item pickup of a loose vellum spellbook leaf with four colored edge tabs and blank diagram circles, no readable writing. High-oblique warm storybook strategy-game pixel art; no book, terrain, frame, UI, logo or watermark.",
+      "endpoint": "map-objects", "size": [32, 32], "candidates": 2, "seed": 837047
+    }
+  ]
+}

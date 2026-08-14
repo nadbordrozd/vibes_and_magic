@@ -10,7 +10,14 @@ import type {
   Action, Coord, GameState, Hero, MapObject, OmenId, SpellId, SpellSchool,
 } from '../types';
 import { terrainId, terrainIdAt } from '../../content/terrain';
-import { hasEquippedArtifact } from '../artifacts';
+import {
+  canPlayerAfford, effectivePlayerPrimaryStat, hasArtifactEffect, hasEquippedArtifact, payPlayer,
+} from '../artifacts';
+import {
+  canUseTimeGatedSpell, recordTimeGatedSpellUse, spellUseOwner,
+} from './spellUsage';
+import { applyAdventurePrimitive } from './adventurePrimitives';
+import { learnSpell } from './spellLearning';
 
 type AdventureCast = Extract<Action, { type: 'CAST_ADVENTURE_SPELL' }>;
 type GuardedObject = Extract<MapObject, { kind: 'guardian' }>;
@@ -26,15 +33,33 @@ export function isAdventureSpell(spellId: SpellId): boolean {
   return ['adventure', 'topology'].includes(SPELLS[spellId].kind);
 }
 
+export function adventureSpellManaCost(hero: Hero, spellId: SpellId): number {
+  const mana = SPELLS[spellId].mana;
+  if (typeof mana !== 'number') return Number.POSITIVE_INFINITY;
+  if (hasArtifactEffect(hero, 'low_tier_free_casting')) return 0;
+  return Math.max(1, mana - (hero.spellManaReductions[spellId] ?? 0)
+    - (skillRank(hero, 'attunement') >= 2 ? 1 : 0));
+}
+
+export function adventureSpellPower(state: GameState, hero: Hero): number {
+  return effectivePlayerPrimaryStat(state.players[hero.owner], hero, 'spellPower');
+}
+
 export function canCastAdventureSpell(state: GameState, spellId: SpellId): boolean {
   if (state.phase !== 'adventure' || state.pendingChoice || state.magicDisabled
       || !isAdventureSpell(spellId)) return false;
   const hero = activeHero(state);
   const mana = SPELLS[spellId].mana;
+  const pauperBlocked = hasArtifactEffect(hero, 'low_tier_free_casting')
+    && (SPELLS[spellId].tier ?? Number.POSITIVE_INFINITY) > 2;
   const freeFace = spellId === 'falseColors' && hasEquippedArtifact(hero, 'spareFace')
     && hero.adventureEffects.spareFaceUsedWeek !== state.week;
-  return hero.knownSpells.includes(spellId) && typeof mana === 'number'
-    && (freeFace || (hero.mana >= mana && hero.movement >= adventureSpellMoveCost(hero)));
+  const useOwner = spellUseOwner(state, hero, SPELLS[spellId].timeGateScope === 'player');
+  return hero.knownSpells.includes(spellId) && typeof mana === 'number' && !pauperBlocked
+    && canUseTimeGatedSpell(useOwner, spellId, state.day, state.week,
+      spellId === 'dimensionDoor' && upgraded(hero, spellId) ? 2 : 1)
+    && (freeFace || (hero.mana >= adventureSpellManaCost(hero, spellId)
+      && hero.movement >= adventureSpellMoveCost(hero)));
 }
 
 function upgraded(hero: Hero, spellId: SpellId): boolean {
@@ -217,7 +242,7 @@ function transferCourier(
 function resolveRite(state: GameState, hero: Hero, action: AdventureCast, plus: boolean): boolean {
   const player = state.players[hero.owner];
   if (action.spellId === 'census') {
-    player.adventureEffects.censusUntilDay = state.day + (plus ? 2 : 1) - 1;
+    player.adventureEffects.censusUntilDay = state.day;
     player.adventureEffects.censusShowsMovement = plus;
   } else if (action.spellId === 'feastDay') {
     const owned = state.castles.filter((castle) => castle.owner === hero.owner);
@@ -234,12 +259,48 @@ function resolveRite(state: GameState, hero: Hero, action: AdventureCast, plus: 
       kind: 'resonance', position: { ...hero.position }, school,
       owner: hero.owner, expiresAfterBattle: true,
     });
+  } else if (action.spellId === 'scrying') {
+    const ownedHero = action.targetHeroId
+      ? findOwnedHero(state, hero.owner, action.targetHeroId) : null;
+    const ownedCastle = action.castleId ? state.castles.find((castle) =>
+      castle.id === action.castleId && castle.owner === hero.owner) : null;
+    const object = action.targetId ? state.map.objects.find((candidate) =>
+      candidate.id === action.targetId && explored(state, hero, candidate.position)) : null;
+    const center = ownedHero?.position ?? ownedCastle?.position ?? object?.position;
+    if (!center) throw new Error('Choose an owned hero, owned City, or explored map object');
+    const radius = plus ? 9 : 6;
+    reveal(state, hero, [center], radius);
+    player.adventureEffects.guardianIntel ??= {};
+    if (plus) player.adventureEffects.guardianRewardIntel ??= {};
+    state.map.objects.filter((candidate) => candidate.kind === 'guardian'
+      && distance(center, candidate.position) <= radius).forEach((guardian) => {
+        player.adventureEffects.guardianIntel![guardian.id] = state.day;
+        if (plus) player.adventureEffects.guardianRewardIntel![guardian.id] = state.day;
+      });
+  } else if (action.spellId === 'processionOfLamps') {
+    hero.movement = hero.dailyMovementMaximum;
+    if (plus) {
+      const companion = action.secondaryHeroId
+        ? findOwnedHero(state, hero.owner, action.secondaryHeroId) : null;
+      if (!companion || companion.id === hero.id || distance(companion.position, hero.position) > 1) {
+        throw new Error('Choose one adjacent owned hero');
+      }
+      companion.movement = Math.min(companion.dailyMovementMaximum,
+        companion.movement + Math.floor(companion.dailyMovementMaximum / 2));
+    }
   } else return false;
   return true;
 }
 
 function resolveCraft(state: GameState, hero: Hero, action: AdventureCast, plus: boolean): boolean {
-  if (action.spellId === 'saltTheVein') {
+  if (action.spellId === 'wellspring') return false;
+  if (action.spellId === 'dimensionDoor') {
+    if (!action.target) throw new Error('Dimension Door requires a destination');
+    const result = applyAdventurePrimitive(state, hero.id, 'hero-teleport-radius', {
+      destination: action.target, radius: (plus ? 10 : 6) + adventureSpellPower(state, hero),
+    }) as { ok: boolean; reason?: { code: string; text: string } };
+    if (!result.ok) throw new Error(`${result.reason?.code}: ${result.reason?.text}`);
+  } else if (action.spellId === 'saltTheVein') {
     const mine = state.map.objects.find((object): object is Extract<MapObject, { kind: 'mine' }> =>
       object.id === action.targetId && object.kind === 'mine');
     if (!mine || mine.owner === null || mine.owner === hero.owner
@@ -247,10 +308,21 @@ function resolveCraft(state: GameState, hero: Hero, action: AdventureCast, plus:
     mine.suppressedUntilDay = state.day + (plus ? 8 : 5) - 1;
     mine.suppressionCaster = hero.owner;
   } else if (action.spellId === 'falseColors') {
+    if (!action.displayedBand) throw new Error('Choose a displayed guardian band');
     hero.adventureEffects.falseColors = {
-      band: plus ? (action.displayedBand ?? 'great host') : 'neutral band',
-      castDay: state.day,
+      band: action.displayedBand, castDay: state.day, detersAttack: plus,
     };
+  } else if (action.spellId === 'prospect') {
+    const radius = plus ? 18 : 12;
+    const positions = state.map.objects.filter((object) =>
+      distance(hero.position, object.position) <= radius
+      && (object.kind === 'mine' || object.kind === 'pile'
+        || (plus && object.kind === 'richVein')))
+      .map((object) => object.position);
+    if (plus) positions.push(...(state.map.seams ?? []).filter((position) =>
+      distance(hero.position, position) <= radius));
+    reveal(state, hero, positions);
+    hero.adventureEffects.prospectDoublePileWeek = state.week;
   } else if (action.spellId === 'clockworkCourier') {
     transferCourier(state, hero, action, plus);
   } else return false;
@@ -258,7 +330,6 @@ function resolveCraft(state: GameState, hero: Hero, action: AdventureCast, plus:
 }
 
 function resolveGrave(state: GameState, hero: Hero, action: AdventureCast, plus: boolean): boolean {
-  const player = state.players[hero.owner];
   if (action.spellId === 'borrowedTime') {
     hero.movement *= 2;
     hero.adventureEffects.borrowedTimePenaltyDay = state.day + 1;
@@ -267,7 +338,7 @@ function resolveGrave(state: GameState, hero: Hero, action: AdventureCast, plus:
     const record = [...state.battleRecords].reverse().find((entry) =>
       sameCoord(entry.position, hero.position) && entry.casualties >= 100);
     if (!record) throw new Error('At least 100 units must have died on this tile');
-    const count = (plus ? 8 : 5) * hero.spellPower;
+    const count = (plus ? 8 : 5) * adventureSpellPower(state, hero);
     const army = addUnits(hero.army, 'candleWisps', count);
     if (!army) throw new Error('No free army slot for the Procession');
     hero.army = army;
@@ -280,7 +351,9 @@ function resolveGrave(state: GameState, hero: Hero, action: AdventureCast, plus:
     const barrows = state.map.objects.filter((object) =>
       terrainIdAt(state.map, object.position) === 'barrowfield');
     reveal(state, hero, barrows.map((object) => object.position));
-    if (plus) player.adventureEffects.guardianIntelUntilDay = state.day;
+    if (plus) applyAdventurePrimitive(state, hero.id, 'guardian-intel', {
+      radius: Math.max(state.map.width, state.map.height), throughDay: state.day,
+    });
   } else if (action.spellId === 'graveSpeech') {
     const record = [...state.battleRecords].reverse().find((entry) =>
       sameCoord(entry.position, hero.position));
@@ -289,22 +362,38 @@ function resolveGrave(state: GameState, hero: Hero, action: AdventureCast, plus:
     if (plus && record.spells.length && !action.skipLearnSpell) {
       const spell = action.learnSpellId && record.spells.includes(action.learnSpellId)
         ? action.learnSpellId : record.spells.find((id) => !hero.knownSpells.includes(id));
-      if (spell && !hero.knownSpells.includes(spell)) hero.knownSpells.push(spell);
+      if (spell) learnSpell(hero, spell);
     }
+  } else if (action.spellId === 'stealAway') {
+    const result = applyAdventurePrimitive(state, hero.id, 'production-steal', {
+      mineId: action.targetId, days: plus ? 5 : 3, hidden: plus,
+    }) as { ok: boolean; reason?: { code: string; text: string } };
+    if (!result.ok) throw new Error(`${result.reason?.code}: ${result.reason?.text}`);
+  } else if (action.spellId === 'theDebtCalled') {
+    const result = applyAdventurePrimitive(state, hero.id, 'enemy-movement-denial', {
+      targetHeroId: action.targetHeroId, days: plus ? 2 : 1,
+      denyManaRegeneration: plus,
+    }) as { ok: boolean; reason?: { code: string; text: string } };
+    if (!result.ok) throw new Error(`${result.reason?.code}: ${result.reason?.text}`);
   } else return false;
   return true;
 }
 
 function resolveWild(state: GameState, hero: Hero, action: AdventureCast, plus: boolean): boolean {
   const player = state.players[hero.owner];
-  if (action.spellId === 'beastTongue') {
+  if (action.spellId === 'fly') {
+    const result = applyAdventurePrimitive(state, hero.id, 'terrain-ignore-day', {
+      movementCost: 65, domains: ['mountain', 'water'], ignoreGuardianAggro: plus,
+    }) as { ok: boolean; reason?: { code: string; text: string } };
+    if (!result.ok) throw new Error(`${result.reason?.code}: ${result.reason?.text}`);
+  } else if (action.spellId === 'beastTongue') {
     const object = guardianObject(state, action.targetId);
     if (!object.army.every((stack) => UNITS[stack.unitId].abilities.includes('beast'))) {
       throw new Error('Beast Tongue only affects beast guardians');
     }
     const multiplier = plus && action.recruit ? 3 : 2;
     const cost = guardianGoldValue(object) * multiplier;
-    if (player.resources.gold < cost) throw new Error('Cannot afford the parley');
+    if (!canPlayerAfford(player, { gold: cost })) throw new Error('Cannot afford the parley');
     if (plus && action.recruit) {
       let army = hero.army;
       for (const stack of object.army) {
@@ -314,7 +403,7 @@ function resolveWild(state: GameState, hero: Hero, action: AdventureCast, plus: 
       }
       hero.army = army;
     }
-    player.resources.gold -= cost;
+    payPlayer(player, { gold: cost });
     state.map.objects = state.map.objects.filter((candidate) => candidate.id !== object.id);
   } else if (action.spellId === 'wildGrowth') {
     const castle = state.castles.find((candidate) => candidate.id === action.castleId
@@ -354,6 +443,35 @@ function resolveWild(state: GameState, hero: Hero, action: AdventureCast, plus: 
     const offers = fickleWeatherOffers(state, plus);
     if (!action.omen || !offers.includes(action.omen)) throw new Error('Choose a dealt omen');
     state.omen = action.omen;
+  } else if (action.spellId === 'beastSense') {
+    const radius = plus ? 16 : 10;
+    const guardians = state.map.objects.filter((object) => object.kind === 'guardian'
+      && distance(hero.position, object.position) <= radius);
+    player.adventureEffects.guardianIntel ??= {};
+    guardians.forEach((guardian) => { player.adventureEffects.guardianIntel![guardian.id] = state.day; });
+    reveal(state, hero, guardians.map((guardian) => guardian.position));
+    const beastIds = guardians.filter((guardian) => guardian.kind === 'guardian'
+      && guardian.army.every((stack) => UNITS[stack.unitId].abilities.includes('beast')))
+      .map((guardian) => guardian.id).sort();
+    if (plus) player.adventureEffects.beastGuardianIgnore = {
+      throughDay: state.day, guardianIds: beastIds,
+    };
+    else hero.adventureEffects.beastGuardianIgnore = {
+      throughDay: state.day, guardianIds: beastIds,
+    };
+  } else if (action.spellId === 'illWind') {
+    Object.values(state.players).filter((candidate) => candidate.id !== hero.owner && candidate.active)
+      .flatMap((candidate) => candidate.heroes.filter((target) => target.alive))
+      .forEach((target) => {
+        const result = applyAdventurePrimitive(state, hero.id, 'prebattle-condition', {
+          target: { heroId: target.id }, condition: {
+            expiresWeek: state.week, remainingBattles: 1,
+            counters: { chill: plus ? 3 : 2 },
+            ...(plus ? { rangedShotsMultiplier: 0.5 } : {}),
+          },
+        }) as { ok: boolean; reason?: { code: string; text: string } };
+        if (!result.ok) throw new Error(`${result.reason?.code}: ${result.reason?.text}`);
+      });
   } else return false;
   return true;
 }
@@ -381,16 +499,32 @@ export function castAdventureSpell(state: GameState, action: AdventureCast): voi
   const definition = SPELLS[action.spellId];
   const plus = upgraded(hero, action.spellId);
   const handled = castTopology(state, hero, action, plus)
+    || (action.spellId === 'wellspring' && (() => {
+      if (!action.targetHeroId) throw new Error('Wellspring requires an explicit owned hero');
+      const targetHeroId = action.targetHeroId;
+      const result = applyAdventurePrimitive(state, hero.id, 'remote-mana', {
+        targetHeroId,
+        amount: (plus ? 16 + 3 * adventureSpellPower(state, hero)
+          : 10 + 2 * adventureSpellPower(state, hero)),
+        movement: plus ? 150 : 0,
+      }) as { ok: boolean; reason?: { code: string; text: string } };
+      if (!result.ok) throw new Error(`${result.reason?.code}: ${result.reason?.text}`);
+      return true;
+    })())
     || resolveRite(state, hero, action, plus)
     || resolveCraft(state, hero, action, plus)
     || resolveGrave(state, hero, action, plus)
     || resolveWild(state, hero, action, plus);
   if (!handled) throw new Error('Adventure spell has no resolver');
+  recordTimeGatedSpellUse(
+    spellUseOwner(state, hero, definition.timeGateScope === 'player'),
+    action.spellId, state.day, state.week,
+  );
   const freeFace = action.spellId === 'falseColors' && hasEquippedArtifact(hero, 'spareFace')
     && hero.adventureEffects.spareFaceUsedWeek !== state.week;
   if (freeFace) hero.adventureEffects.spareFaceUsedWeek = state.week;
   else {
-    hero.mana -= definition.mana as number;
+    hero.mana -= adventureSpellManaCost(hero, action.spellId);
     hero.movement -= adventureSpellMoveCost(hero);
   }
   state.lastMessage = freeFace

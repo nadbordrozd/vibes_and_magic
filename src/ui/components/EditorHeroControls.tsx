@@ -8,6 +8,7 @@ import {
   editorHeroDefinitions, editorHeroUnitChoices, nextEditorHeroUnit,
   type EditorHeroUpdate,
 } from '../mapEditorHeroes';
+import { heroArmyCapacity } from '../../core/army';
 
 export function EditorHeroInspector({
   hero, document, onUpdate, onDelete, onPolicyMessage,
@@ -19,6 +20,7 @@ export function EditorHeroInspector({
   onPolicyMessage: (message: string) => void;
 }) {
   const updateArmy = (army: EditorMapHero['army']) => onUpdate({ army });
+  const armyCapacity = heroArmyCapacity(hero);
   return <section className="editor-object-inspector editor-hero-inspector"
     aria-labelledby="editor-hero-inspector-title">
     <header><div><span className="kicker">Selected hero</span>
@@ -52,7 +54,7 @@ export function EditorHeroInspector({
       </select><small>Only definitions from the selected faction are offered.</small></label>
     </div>
     <fieldset className="editor-hero-army">
-      <legend>Starting army <em>{hero.army.length} / 7 stacks</em></legend>
+      <legend>Starting army <em>{hero.army.length} / {armyCapacity} stacks</em></legend>
       <p>Every stack is explicit portable setup data with a positive whole count. Duplicate creature choices are combined by the editor.</p>
       <div>{hero.army.map((stack, index) => <div key={`${stack.unitId}-${index}`}>
         <select aria-label={`Hero army stack ${index + 1} creature`} value={stack.unitId}
@@ -76,9 +78,9 @@ export function EditorHeroInspector({
             ? 'A starting hero must keep at least one positive stack.' : 'Remove this stack.'}
           onClick={() => updateArmy(hero.army.filter((_, candidate) => candidate !== index))}>−</button>
       </div>)}</div>
-      <button disabled={hero.army.length >= 7 || !nextEditorHeroUnit(hero)}
-        title={hero.army.length >= 7
-          ? 'A hero supports at most seven stacks.'
+      <button disabled={hero.army.length >= armyCapacity || !nextEditorHeroUnit(hero)}
+        title={hero.army.length >= armyCapacity
+          ? `This hero supports at most ${armyCapacity} stacks.`
           : !nextEditorHeroUnit(hero) ? 'No unused canonical creature remains.'
             : 'Add a different canonical creature with count 1.'}
         onClick={() => { const unitId = nextEditorHeroUnit(hero); if (unitId) updateArmy([

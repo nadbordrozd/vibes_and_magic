@@ -40,8 +40,10 @@ describe('Phase B six-faction content', () => {
   it('loads six factions with six tiers and registered unit data', () => {
     expect(Object.keys(FACTIONS)).toHaveLength(6);
     for (const ids of Object.values(FACTION_UNITS)) expect(ids).toHaveLength(6);
-    expect(Object.values(UNITS).filter((unit) =>
-      Object.hasOwn(FACTIONS, unit.faction))).toHaveLength(36);
+    const factionUnitIds = Object.values(FACTION_UNITS).flat();
+    expect(factionUnitIds).toHaveLength(36);
+    expect(new Set(factionUnitIds)).toHaveLength(36);
+    expect(factionUnitIds.every((unitId) => Object.hasOwn(UNITS, unitId))).toBe(true);
     expect(() => validateUnits()).not.toThrow();
   });
 
@@ -67,7 +69,7 @@ describe('Phase B six-faction content', () => {
     const before = attacker.topHp;
     runAttackPipeline(state, attacker.id, defender.id);
     expect(defender.count).toBe(0);
-    expect(attacker.topHp).toBe(before - 1);
+    expect(attacker.topHp).toBe(before - 2);
     expect(attacker.counters.hex).toBe(2);
   });
 

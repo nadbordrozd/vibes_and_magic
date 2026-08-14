@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  BUILDINGS, buildingPresentation, type BuildingCategory,
+  BUILDINGS, buildingPrerequisites, buildingPresentation, type BuildingCategory,
 } from '../../content/buildings';
 import { FACTION_UNITS, UNITS } from '../../content/units';
 import { SPELLS } from '../../content/spells';
@@ -23,6 +23,7 @@ import {
   MARKET_SCROLL_PRICE, artifactMarketValue, itemMarketValue,
 } from '../../core/game/marketplace';
 import { ARTIFACTS } from '../../content/artifacts';
+import { hasArtifactEffect } from '../../core/artifacts';
 import { buildingIsActive } from '../../core/game/buildingStatus';
 import {
   RESOURCE_NAMES, ResourceAmount, ResourceCost, ResourceIcon, ResourceRichText,
@@ -38,6 +39,7 @@ import {
 import { ContentIcon } from './ContentIcon';
 import { spellRuleVersions } from '../../content/spells/rulePresentation';
 import { SemanticSpellText, SpellGlossaryReference, SpellRuleText } from './SpellGlossary';
+import { ABILITY_PRESENTATION } from '../../content/abilityPresentation';
 
 interface Props {
   state: GameState;
@@ -80,6 +82,7 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
   const heroIsVisiting = visitingCastle(state)?.id === castle.id;
   const buildable = castleBuildingSlots(castle);
   const guildSpells = castle.guildDeck.slice(0, guildSpellCount(castle));
+  const guildReveal = state.guildReveal?.castleId === castle.id ? state.guildReveal : null;
   const tavernHeroes = state.players[state.activePlayer].tavernOffers
     .map((id) => state.players[state.activePlayer].tavernPool.find(
       (candidate) => candidate.id === id,
@@ -105,6 +108,14 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
     window.addEventListener('castle-building-inspect', inspectBuilding);
     return () => window.removeEventListener('castle-building-inspect', inspectBuilding);
   }, [buildable]);
+  useEffect(() => {
+    if (!guildReveal) return undefined;
+    const dismiss = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') dispatch({ type: 'DISMISS_GUILD_REVEAL' });
+    };
+    window.addEventListener('keydown', dismiss);
+    return () => window.removeEventListener('keydown', dismiss);
+  }, [guildReveal, dispatch]);
 
   const selectedDefinition = selectedBuilding
     ? buildingPresentation(selectedBuilding, castle.faction) : null;
@@ -117,7 +128,8 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
 
   return (
     <div className="modal-backdrop">
-      <section className={`castle-screen ${castle.faction}`}>
+      <section className={`castle-screen ${castle.faction}`} aria-hidden={guildReveal ? true : undefined}
+        inert={guildReveal ? true : undefined}>
         <BuildingSymbols />
         <header>
           <div>
@@ -188,7 +200,9 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     data-inspect-kind="unit" data-inspect-id={unit.id}>
                     <span className="tier">T{tier}</span>
                     <UnitPortrait unitId={unit.id} className="recruit-unit-portrait" />
-                    <div><b>{dwelling.name}</b><small>Recruits: {unit.name} · <SpellGlossaryReference termId="growth" />: {unit.growth}/week<br />{castle.available[tier - 1]} available · <ResourceCost cost={unit.cost} compact /> each</small></div>
+                    <div><b>{dwelling.name}</b><small>Recruits: {unit.name} · <SpellGlossaryReference termId="growth" />: {unit.growth}/week<br />{castle.available[tier - 1]} available · <ResourceCost cost={unit.cost} compact /> each
+                      {unit.abilities.length > 0 && <><br />Traits: {unit.abilities.map((id) => ABILITY_PRESENTATION[id].name).join(', ')}</>}
+                    </small></div>
                     <div className="stepper">
                       <button disabled={count === 0} title={count === 0 ? 'The selected amount is already zero.' : 'Select one fewer.'}
                         onClick={() => setCounts({ ...counts, [tier]: Math.max(0, count - 1) })}>−</button>
@@ -361,6 +375,32 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                     resource={resource} amount={1} compact /></button>
                 </article>;
               })}
+              {hero && hasArtifactEffect(hero, 'direct_exchange')
+                && (['timber', 'iron', 'essence'] as const).flatMap((from) =>
+                  (['timber', 'iron', 'essence'] as const).filter((to) => to !== from)
+                    .map((to) => {
+                      const action = { type: 'MARKET_DIRECT_EXCHANGE', castleId: castle.id,
+                        from, to, amount: 1 } as const;
+                      const projected = previewAction(state, action);
+                      return <article key={`direct-${from}-${to}`}><b>Direct exchange</b>
+                        <button disabled={!projected.legal} title={projected.reason
+                          ?? `Exchange ${from} directly for ${to}.`}
+                          onClick={() => stageAction(action, `Exchange ${from} → ${to}`,
+                            'Marketplace treasury', 'Spend the visible direct-exchange rate.')}>1 {to} · pay {
+                            projected.cost[from] ?? 2} {from}</button></article>;
+                    }))}
+              {hero && Object.values(hero.artifacts.equipment).flatMap((item) => item
+                && ARTIFACTS[item.id].burdenRemovalTrigger === 'marketplace-payment'
+                ? [<article key={`remove-${item.id}`}><b>{ARTIFACTS[item.id].name} removal</b>
+                  <button disabled={state.players[hero.owner].resources.gold < 10_000}
+                    title={state.players[hero.owner].resources.gold < 10_000
+                      ? 'Burden removal requires 10,000 gold.' : 'Pay the visible Burden removal cost.'}
+                    data-disabled-reason={state.players[hero.owner].resources.gold < 10_000
+                      ? 'Burden removal requires 10,000 gold.' : undefined}
+                    onClick={() => stageAction({ type: 'ARTIFACT_PAY_REMOVAL', heroId: hero.id,
+                      artifactId: item.id }, `Pay to release ${ARTIFACTS[item.id].name}`,
+                    'Marketplace treasury', 'Spend 10,000 gold; the Burden becomes removable.')}>Pay 10,000 gold</button>
+                </article>] : [])}
               {(hero?.skills.peddler ?? 0) >= 2 && (
                 (() => {
                   const action = { type: 'BUY_MARKET_SCROLL', castleId: castle.id } as const;
@@ -484,12 +524,12 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
                   })}
               </div></section>
               <section><h3>Requires</h3>
-                {selectedDefinition.prerequisite ? (
-                  <p className={castle.buildings.includes(selectedDefinition.prerequisite)
-                    ? '' : 'missing'}>
-                    {buildingPresentation(selectedDefinition.prerequisite, castle.faction).name}
-                  </p>
-                ) : <p>None</p>}
+                {buildingPrerequisites(selectedBuilding).length ? buildingPrerequisites(selectedBuilding)
+                  .map((required) => (
+                    <p key={required} className={castle.buildings.includes(required) ? '' : 'missing'}>
+                      {buildingPresentation(required, castle.faction).name}
+                    </p>
+                  )) : <p>None</p>}
               </section>
               <p className={`building-state-line ${selectedStatus.state}`}>
                 <ResourceRichText>{selectedStatus.reason}</ResourceRichText>
@@ -512,6 +552,26 @@ export function CastleScreen({ state, castle, dispatch, onClose }: Props) {
       {actionDraft && <ActionConfirmationDialog state={state} draft={actionDraft}
         onCancel={() => setActionDraft(null)}
         onConfirm={() => { dispatch(actionDraft.action); setActionDraft(null); }} />}
+      {guildReveal && <div className="modal-backdrop guild-reveal-backdrop" role="presentation">
+        <section className="dialog guild-reveal-dialog" role="dialog" aria-modal="true"
+          aria-labelledby="guild-reveal-title">
+          <header><span>Mage Guild reveal</span><h2 id="guild-reveal-title">{
+            buildingPresentation(guildReveal.buildingId, castle.faction).name
+          } at {CASTLE_NAMES[castle.faction]}</h2></header>
+          <p>The new deal is face-up. These named spells are now taught to visiting heroes.</p>
+          <div className="guild-reveal-spells">
+            {guildReveal.spellIds.map((spellId) => <article key={spellId}
+              data-inspect-kind="spell" data-inspect-id={spellId}>
+              <ContentIcon large kind="spell" id={spellId} />
+              <b>{SPELLS[spellId].name}</b>
+              <small>Tier {SPELLS[spellId].tier} · {SPELL_SCHOOL_NAMES[SPELLS[spellId].school]}</small>
+              <SpellRuleText tokens={spellRuleVersions(spellId).standard} />
+            </article>)}
+          </div>
+          <footer className="dialog-actions"><button autoFocus
+            onClick={() => dispatch({ type: 'DISMISS_GUILD_REVEAL' })}>Continue</button></footer>
+        </section>
+      </div>}
     </div>
   );
 }

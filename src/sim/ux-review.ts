@@ -424,7 +424,10 @@ async function captureCombatAbilityMatrix(page: Page): Promise<void> {
       if (stage === 'confirm') break;
       const choiceSelector = stage === 'targetId' || stage === 'secondaryTargetId'
         ? '.battle-hex.target-choice' : stage === 'destination'
-          ? '.battle-hex.destination-choice' : null;
+          ? '.battle-hex.destination-choice'
+          : ['spellId', 'effectId', 'actImmediately', 'replaceEnchantment', 'skipRound',
+              'counterId', 'school'].includes(stage ?? '')
+            ? '.combat-targeting-choices button' : null;
       if (!choiceSelector) throw new Error(`${name} exposes unsupported targeting stage ${stage}`);
       await page.locator(choiceSelector).click();
     }
@@ -438,7 +441,7 @@ async function captureCombatAbilityMatrix(page: Page): Promise<void> {
     const destinationHexes = await page.$$eval('.battle-hex.destination-selected', (nodes) =>
       nodes.length);
     const expectedDestinationHexes = abilityId === 'trample' ? 2
-      : abilityId === 'crossing' ? 1 : 0;
+      : abilityId === 'crossing' || abilityId === 'blink_step' ? 1 : 0;
     if (destinationHexes !== expectedDestinationHexes) {
       throw new Error(`${name} destination footprint is incomplete: ${destinationHexes}/${expectedDestinationHexes}`);
     }
@@ -509,7 +512,7 @@ async function captureResultMatrix(page: Page): Promise<void> {
   await captureResultFixture(page, 'guardian', guardianResultFixture(), 'auto',
     ['Guardian encounter', 'Guardian removed']);
   await captureResultFixture(page, 'castle', castleResultFixture(), 'auto',
-    ['Castle assault', 'Castle ownership', 'captured']);
+    ['City assault', 'City ownership', 'captured']);
   await captureResultFixture(page, 'retreat', withdrawalResultFixture(), 'retreat',
     ['Retreat', 'Tavern return', 'army was lost']);
   await captureResultFixture(page, 'surrender', withdrawalResultFixture(), 'surrender',
@@ -615,7 +618,10 @@ try {
   await page.waitForFunction(() => document.querySelector('.destination-intent')
     ?.getAttribute('data-preview-kind') === 'safe');
   await page.screenshot({ path: `${output}/04e-safe-destination.png` });
-  await movePointerTo('.terrain-cell.terrain-unseen[data-map-x="11"][data-map-y="10"]');
+  await page.mouse.move(1, 1);
+  await page.$eval('.terrain-cell.terrain-unseen', (node) => node.dispatchEvent(
+    new MouseEvent('mouseover', { bubbles: true, cancelable: true }),
+  ));
   await page.waitForFunction(() => document.querySelector('.destination-intent')
     ?.textContent?.includes('Explore unexplored terrain'));
   if (await page.$('.inspect-label')) {
@@ -714,27 +720,21 @@ try {
   await page.waitForSelector('.hero-details-dialog');
   await auditVisibleControls(page, 'hero-details');
   await page.screenshot({ path: `${output}/04c2-hero-details.png` });
-  await page.$eval('.hero-details-tabs', (tabs) => {
-    const items = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
-      .find((button) => button.textContent?.includes('Items'));
-    if (!items) throw new Error('Items detail tab is missing');
-    items.click();
-  });
-  await page.waitForSelector('.hero-details-items .item-sprite');
-  const itemSpriteCount = await page.$$eval('.hero-details-items .item-sprite', (nodes) => nodes.length);
+  await page.$eval('[data-dashboard-region="consumables"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  await page.waitForSelector('.hero-dashboard-item-grid .item-sprite');
+  const itemSpriteCount = await page.$$eval('.hero-dashboard-item-grid .item-sprite', (nodes) => nodes.length);
   if (itemSpriteCount !== 2) throw new Error(`Expected two fixture item sprites, found ${itemSpriteCount}`);
   await page.screenshot({ path: `${output}/04c2a-item-inventory-desktop.png` });
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   await auditVisibleControls(page, 'item-inventory-390');
   await page.screenshot({ path: `${output}/04c2b-item-inventory-390.png`, fullPage: true });
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-  await page.$eval('.hero-details-tabs', (tabs) => {
-    const equipment = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
-      .find((button) => button.textContent?.includes('Equipment'));
-    if (!equipment) throw new Error('Equipment detail tab is missing');
-    equipment.click();
-  });
-  await page.locator('.artifact-backpack > button').click();
+  await page.$eval('[data-dashboard-region="artifact-backpack"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  await page.locator('.hero-dashboard-backpack-grid > button').click();
+  await page.waitForSelector('.hero-dashboard-detail');
+  await page.locator('.hero-dashboard-detail .primary').click();
   await page.waitForSelector('.equipment-dialog');
   await auditVisibleControls(page, 'equipment-destination');
   await page.screenshot({ path: `${output}/04d4-equipment-destination.png` });
@@ -767,22 +767,18 @@ try {
       .find((button) => button.textContent?.includes('Hero details'))!;
     details.click();
   });
-  await page.$eval('.hero-details-tabs', (tabs) => {
-    const skills = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
-      .find((button) => button.textContent?.includes('Special skills'))!;
-    skills.click();
-  });
-  await inspect(page, '.hero-details-dialog .skill-summary article');
+  await page.$eval('[data-dashboard-region="secondary-skills"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  await page.locator('.hero-dashboard-skill-grid > button').click();
+  await page.waitForSelector('.hero-dashboard-detail');
   await page.screenshot({ path: `${output}/06-skill-inspection.png` });
-  await page.locator('.inspection-close').click();
-  await page.$eval('.hero-details-tabs', (tabs) => {
-    const equipment = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
-      .find((button) => button.textContent?.includes('Equipment'))!;
-    equipment.click();
-  });
-  await inspect(page, '.hero-details-dialog .artifact-backpack [data-inspect-kind="artifact"]');
+  await page.locator('.hero-dashboard-detail-close').click();
+  await page.$eval('[data-dashboard-region="artifact-backpack"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  await page.locator('.hero-dashboard-backpack-grid > button').click();
+  await page.waitForSelector('.hero-dashboard-detail');
   await page.screenshot({ path: `${output}/07-artifact-inspection.png` });
-  await page.locator('.inspection-close').click();
+  await page.locator('.hero-dashboard-detail-close').click();
   await page.locator('.hero-details-dialog .structure-dialog-close').click();
   await inspect(page, '.castle-map-object .castle-hitbox');
   await page.screenshot({ path: `${output}/08-castle-inspection.png` });
@@ -843,10 +839,16 @@ try {
   await auditVisibleControls(page, 'combat-spellbook-390');
   await page.screenshot({ path: `${output}/13b1-combat-spellbook-390.png` });
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-  await inspect(page, '.spellbook .spell-card');
+  await page.$eval('.spellbook .spell-icon-grid', (grid) => {
+    const button = [...grid.querySelectorAll<HTMLButtonElement>('.spell-grid-cell')]
+      .find((candidate) => !candidate.querySelector('.spell-grid-disabled'));
+    if (!button) throw new Error('Combat spellbook has no executable spell');
+    button.click();
+  });
+  await page.waitForSelector('.spellbook-detail-page .spell-detail-heading');
   await page.screenshot({ path: `${output}/13c-spell-inspection.png` });
-  await page.locator('.inspection-close').click();
-  await page.locator('.spellbook .spell-card button:not(:disabled)').click();
+  await page.$eval('.spellbook-detail-actions .primary:not(:disabled)', (button) =>
+    (button as HTMLButtonElement).click());
   await page.waitForSelector('.combat-targeting-banner');
   await auditVisibleControls(page, 'combat-spell-targeting');
   await page.screenshot({ path: `${output}/13d-combat-targeting.png` });

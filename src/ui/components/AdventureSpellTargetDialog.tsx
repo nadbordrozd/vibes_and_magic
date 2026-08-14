@@ -5,7 +5,9 @@ import { OMENS, omenEffectSummary } from '../../content/omens';
 import { SPELLS } from '../../content/spells';
 import { SPELL_SCHOOL_NAMES } from '../../content/spellPresentation';
 import { UNITS } from '../../content/units';
-import { adventureSpellMoveCost, fickleWeatherOffers } from '../../core/game/adventureSpells';
+import {
+  adventureSpellManaCost, adventureSpellMoveCost, adventureSpellPower, fickleWeatherOffers,
+} from '../../core/game/adventureSpells';
 import { sameCoord } from '../../core/map/pathfinding';
 import type { GameState, SpellSchool } from '../../core/types';
 import {
@@ -52,6 +54,7 @@ function destinationValue(action: AdventureCastAction): string {
 
 function exactConsequence(state: GameState, action: AdventureCastAction): string {
   const hero = state.players[state.activePlayer].hero!;
+  const player = state.players[hero.owner];
   const plus = hero.upgradedSpells.includes(action.spellId);
   const spell = SPELLS[action.spellId];
   if (action.spellId === 'saltTheVein') return action.targetId
@@ -79,6 +82,20 @@ function exactConsequence(state: GameState, action: AdventureCastAction): string
       ? `${state.players[hero.owner].heroes.find((candidate) => candidate.id === action.targetHeroId)?.name} ${action.courierKind} slot ${action.destinationSlot + 1}`
       : action.castleId ? `${castleLabel(state, action.castleId)} garrison slot ${action.destinationSlot + 1}` : 'unselected destination';
     return `Swap ${source} from ${hero.name} with ${destination}.`;
+  }
+  if (action.spellId === 'wellspring' && action.targetHeroId) {
+    const target = player.heroes.find((candidate) => candidate.id === action.targetHeroId);
+    return target
+      ? `Restore ${plus ? 16 + 3 * adventureSpellPower(state, hero)
+        : 10 + 2 * adventureSpellPower(state, hero)} mana to ${target.name}${
+        plus ? ' and grant 150 movement' : ''}.`
+      : spell[plus ? 'plus' : 'base'];
+  }
+  if (action.spellId === 'dimensionDoor' && action.target) {
+    const used = hero.spellUses.dailyCounts?.dimensionDoor?.day === state.day
+      ? hero.spellUses.dailyCounts.dimensionDoor.count : 0;
+    return `Teleport ${hero.name} to ${action.target.x}, ${action.target.y}; this is ${
+      plus ? `daily cast ${used + 1} of 2` : 'the once-daily cast'} and ignores intervening terrain.`;
   }
   if (action.spellId === 'fickleWeather' && action.omen) {
     return `Replace ${OMENS[state.omen].title} with ${OMENS[action.omen].title}: ${
@@ -141,7 +158,8 @@ export function AdventureSpellTargetDialog({
       <span className="dialog-kicker">Adventure spell · stage 2 of 2</span>
       <h2 id="adventure-spell-target-heading" className="content-icon-label">
         <ContentIcon kind="spell" id={action.spellId} />{spell.name} · {plus ? 'Upgraded' : 'Standard'}</h2>
-      <p className="spell-target-cost"><b>{spell.mana} mana</b> · <b>{adventureSpellMoveCost(hero)} movement</b></p>
+      <p className="spell-target-cost"><b>{adventureSpellManaCost(hero, action.spellId)} mana</b>
+        {' · '}<b>{adventureSpellMoveCost(hero)} movement</b></p>
       <p><SpellRuleText tokens={spellRuleVersions(action.spellId)[plus ? 'upgraded' : 'standard']} /></p>
 
       {action.spellId === 'beacon' && plus && <label>Friendly city
@@ -162,9 +180,43 @@ export function AdventureSpellTargetDialog({
             {mine.resource[0].toUpperCase() + mine.resource.slice(1)} mine · {mine.income}/day · owner {state.players[mine.owner!].name} · {mine.position.x}, {mine.position.y}
           </button>)}
       </fieldset>}
-      {action.spellId === 'falseColors' && plus && <fieldset><legend>Displayed guardian band</legend>
+      {action.spellId === 'falseColors' && <fieldset><legend>Displayed guardian band</legend>
         {BANDS.map((band) => <button key={band} className={action.displayedBand === band ? 'selected' : ''}
           onClick={() => choose({ displayedBand: band })}>{band[0].toUpperCase() + band.slice(1)}</button>)}
+      </fieldset>}
+      {action.spellId === 'scrying' && <fieldset><legend>Scrying centre</legend>
+        {player.heroes.filter((candidate) => candidate.alive).map((candidate) => <button
+          key={candidate.id} className={action.targetHeroId === candidate.id ? 'selected' : ''}
+          onClick={() => choose({ targetHeroId: candidate.id, castleId: undefined, targetId: undefined })}>
+          Hero · {candidate.name} · {candidate.position.x}, {candidate.position.y}</button>)}
+        {ownedCastles.map((castle) => <button key={castle.id}
+          className={action.castleId === castle.id ? 'selected' : ''}
+          onClick={() => choose({ castleId: castle.id, targetHeroId: undefined, targetId: undefined })}>
+          City · {castleLabel(state, castle.id)}</button>)}
+        {state.map.objects.filter((object) => player.explored.includes(`${object.position.x},${object.position.y}`))
+          .map((object) => <button key={object.id} className={action.targetId === object.id ? 'selected' : ''}
+            onClick={() => choose({ targetId: object.id, targetHeroId: undefined, castleId: undefined })}>
+            Object · {object.kind} · {object.position.x}, {object.position.y}</button>)}
+      </fieldset>}
+      {action.spellId === 'processionOfLamps' && plus && <fieldset><legend>Adjacent companion</legend>
+        {otherHeroes.filter((candidate) => Math.max(Math.abs(candidate.position.x - hero.position.x),
+          Math.abs(candidate.position.y - hero.position.y)) <= 1).map((candidate) => <button
+          key={candidate.id} className={action.secondaryHeroId === candidate.id ? 'selected' : ''}
+          onClick={() => choose({ secondaryHeroId: candidate.id })}>{candidate.name}</button>)}
+      </fieldset>}
+      {action.spellId === 'stealAway' && <fieldset><legend>Explored enemy mine</legend>
+        {state.map.objects.filter((object) => object.kind === 'mine' && object.owner
+          && object.owner !== hero.owner && player.explored.includes(`${object.position.x},${object.position.y}`))
+          .map((mine) => mine.kind === 'mine' && <button key={mine.id}
+            className={action.targetId === mine.id ? 'selected' : ''}
+            onClick={() => choose({ targetId: mine.id })}>{mine.resource} mine · {mine.income}/day</button>)}
+      </fieldset>}
+      {action.spellId === 'theDebtCalled' && <fieldset><legend>Enemy hero</legend>
+        {Object.values(state.players).filter((candidate) => candidate.id !== hero.owner)
+          .flatMap((candidate) => candidate.heroes.filter((target) => target.alive))
+          .map((target) => <button key={target.id}
+            className={action.targetHeroId === target.id ? 'selected' : ''}
+            onClick={() => choose({ targetHeroId: target.id })}>{target.name} · {target.movement} movement</button>)}
       </fieldset>}
       {action.spellId === 'clockworkCourier' && <div className="spell-target-form">
         <label>1. Send from {hero.name}
@@ -186,6 +238,13 @@ export function AdventureSpellTargetDialog({
             <option key={destination.value} value={destination.value}>{destination.label}</option>)}</select>
         </label>
       </div>}
+      {action.spellId === 'wellspring' && <fieldset><legend>Owned hero anywhere</legend>
+        {player.heroes.filter((candidate) => candidate.alive).map((candidate) => <button
+          key={candidate.id} className={action.targetHeroId === candidate.id ? 'selected' : ''}
+          onClick={() => choose({ targetHeroId: candidate.id })}>
+          {candidate.name} · {candidate.mana} mana · {candidate.movement} movement
+        </button>)}
+      </fieldset>}
       {action.spellId === 'coldRoad' && plus && <fieldset><legend>Who travels?</legend>
         <button className={!action.targetHeroId ? 'selected' : ''}
           onClick={() => choose({ targetHeroId: undefined })}>Travel alone</button>

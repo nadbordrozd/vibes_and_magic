@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { runStrategyTurn } from '../../ai/strategy';
 import { ARTIFACTS } from '../../content/artifacts';
 import { FACTION_BUILDING_SLOTS } from '../../content/buildings';
 import { FACTIONS } from '../../content/factions';
@@ -13,7 +14,7 @@ import {
   actionSave, createGameLink, loadGameLink, replaySave, stateHash,
 } from '../../ui/persistence';
 import { createBattle, legalBattleActions } from '../combat/battle';
-import { createGame } from '../game';
+import { apply, createGame } from '../game';
 import { moveHero } from '../game/exploration';
 import { castleEntrance } from '../map/occupancy';
 import { PLAYER_IDS } from '../types';
@@ -42,6 +43,30 @@ describe('The Sixfold Trial advanced combat showcase', () => {
       expect(strengths.filter((strength) =>
         strength >= band.minimum && strength <= band.maximum).length).toBeGreaterThanOrEqual(4);
     }
+    expect(SIXFOLD_GUARDIAN_BANDS.map((band) => strengths.filter((strength) =>
+      strength >= band.minimum && strength <= band.maximum).length)).toEqual([4, 4, 5, 4]);
+    expect(map.objects.filter((object) => object.kind === 'guardian').map((guardian) =>
+      guardian.kind === 'guardian'
+        ? [guardian.id, guardian.army[0].unitId, guardian.army[0].count] : null)).toEqual([
+      ['sixfold-guardian-1', 'maskedDuelist', 7],
+      ['sixfold-guardian-2', 'waxServitor', 10],
+      ['sixfold-guardian-3', 'hearthHound', 17],
+      ['sixfold-guardian-4', 'sirens', 24],
+      ['sixfold-guardian-5', 'mirrorBound', 2],
+      ['sixfold-guardian-6', 'sleeper', 2],
+      ['sixfold-guardian-7', 'lanternAngler', 10],
+      ['sixfold-guardian-8', 'drownedCrew', 46],
+      ['sixfold-guardian-9', 'hullTurtle', 12],
+      ['sixfold-guardian-10', 'marionette', 64],
+      ['sixfold-guardian-11', 'boneChoir', 33],
+      ['sixfold-guardian-12', 'silkSpinners', 105],
+      ['sixfold-guardian-13', 'woodenColossus', 2],
+      ['sixfold-guardian-14', 'oriflammeWarden', 3],
+      ['sixfold-guardian-15', 'bannerman', 37],
+      ['sixfold-guardian-16', 'ashmaneWolves', 78],
+      ['sixfold-guardian-17', 'tinSoldier', 202],
+      ['sixfold-guardian-18', 'yeoman', 98],
+    ]);
     expect(map.objects.filter((object) => object.id.startsWith('sixfold-reward-')).every((object) =>
       object.guardedBy?.length === 1)).toBe(true);
   });
@@ -68,7 +93,7 @@ describe('The Sixfold Trial advanced combat showcase', () => {
       expect(hero.position).toEqual(slot.entrance);
       expect(hero.level).toBe(slot.level);
       expect(Object.values(hero.skills)).toEqual(Array(6).fill(3));
-      expect(hero.mana).toBe(hero.knowledge * 10);
+      expect(hero.mana).toBe(hero.knowledge * (hero.skills.attunement === 3 ? 12 : 10));
       expect(hero.movement).toBeGreaterThan(2_000);
       expect(hero.army).toHaveLength(7);
       expect(hero.army.filter(Boolean)).toHaveLength(6);
@@ -99,7 +124,7 @@ describe('The Sixfold Trial advanced combat showcase', () => {
     moveHero(state, { x: 4, y: 19 });
     expect(state.phase).toBe('combat');
     expect(state.battle?.context.targetId).toBe('sixfold-guardian-1');
-    expect(state.battle?.attackerHero?.knownSpells.length).toBe(34);
+    expect(state.battle?.attackerHero?.knownSpells.length).toBe(62);
     expect(legalBattleActions(state.battle!).some((action) => action.type === 'BATTLE_CAST')).toBe(true);
 
     const attacker = state.players.p1.hero!;
@@ -133,4 +158,21 @@ describe('The Sixfold Trial advanced combat showcase', () => {
     const link = await createGameLink(state);
     expect(stateHash(await loadGameLink(link.fragment))).toBe(stateHash(state));
   });
+
+  it('returns from the first strategy turn after its Mage Guild reveal', () => {
+    const options = {
+      seed: 4900, mapId: 'sixfold-trial' as const, playerCount: 6 as const,
+      p1: 'human' as const, p2: 'ai' as const, p3: 'ai' as const,
+      p4: 'ai' as const, p5: 'ai' as const, p6: 'ai' as const,
+    };
+    const state = runStrategyTurn(apply(createGame(options), { type: 'END_TURN' }));
+    expect(state).toMatchObject({
+      phase: 'adventure', day: 1, activePlayer: 'p3',
+      guildReveal: null, pendingChoice: null,
+    });
+    expect(state.replay.filter((action) => action.type === 'DISMISS_GUILD_REVEAL'))
+      .toHaveLength(1);
+    expect(state.replay.filter((action) => action.type === 'END_TURN')).toHaveLength(2);
+    expect(stateHash(replaySave(actionSave(state), true))).toBe(stateHash(state));
+  }, 10_000);
 });

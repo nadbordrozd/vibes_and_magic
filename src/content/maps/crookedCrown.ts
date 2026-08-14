@@ -247,7 +247,7 @@ function authoredObjects(seed: number): MapObject[] {
         id: `crooked-crown-shrine-${index + 1}`, kind: 'shrine',
         position: { x: center.x - 3, y: center.y },
         school: (['rite', 'craft', 'grave', 'wild'] as const)[index % 4],
-        teaches: (['trial', 'forgeSpark', 'graveSpeech', 'bloom'] as const)[index % 4],
+        teaches: (['rally', 'forgeSpark', 'graveSpeech', 'bloom'] as const)[index % 4],
         cleared: false, visitedBy: [],
       },
       rewardSite(index, { x: center.x + 3, y: center.y - 1 }),

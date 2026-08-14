@@ -47,7 +47,7 @@ function combatFixture(): GameState {
   battle.stacks[0].counters.bloom = 3;
   battle.attackerHero.knownSpells = [...SPELL_IDS];
   battle.attackerHero.upgradedSpells = ['rally'];
-  battle.attackerHero.mana = 3;
+  battle.attackerHero.mana = 30;
   battle.resonance = 'craft';
   state.battle = battle;
   state.phase = 'combat';
@@ -264,7 +264,7 @@ try {
     await bloomRule.click();
     await page.locator('.spell-detail-heading h3').click();
     await page.waitForSelector('[data-spell-glossary="bloom"]', { hidden: true });
-    await page.locator('[role="tab"].craft').click();
+    await page.$eval('[role="tab"].craft', (tab) => (tab as HTMLButtonElement).click());
     await page.locator('[data-spell-id="standingMirror"]').click();
     await page.focus('.spell-version-comparison [data-spell-term="twister"]');
     await auditGlossary(page, 'twister', `complex spell rule ${viewport.name}`);
@@ -337,7 +337,8 @@ try {
     }
     assertAudit(`combat detail ${viewport.name}`, await auditBook(page, true));
     await page.screenshot({ path: `${outputDir}/combat-temporary-detail-${viewport.name}.png` });
-    await page.locator('[data-cast-spell-id="forgeSpark"]').click();
+    await page.$eval('[data-cast-spell-id="forgeSpark"]',
+      (button) => (button as HTMLButtonElement).click());
     await page.waitForSelector('.combat-targeting-banner');
     if (await page.$('.stitched-spellbook')) {
       throw new Error('Combat Cast did not leave selection for explicit targeting');

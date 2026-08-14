@@ -48,6 +48,8 @@ const groups: Record<EditorStructureKind, EditorStructureDefinition['group']> = 
   waystation: 'Visits & services', tinkersCart: 'Visits & services', monastery: 'Visits & services',
   gloamingRing: 'Visits & services', storyteller: 'Visits & services', bridge: 'Visits & services',
   reliquaryCairn: 'Visits & services', tollGate: 'Visits & services', crone: 'Visits & services',
+  stacks: 'Learning & recruiting', wildShrine: 'Learning & recruiting',
+  reliquaryOfPages: 'Guarded sites',
   manaSpring: 'Visits & services', sparringStone: 'Visits & services', listeningStones: 'Visits & services',
   longDraught: 'Visits & services', grinningIdol: 'Visits & services', treeSecondThoughts: 'Visits & services',
   warmTable: 'Visits & services', coldSpring: 'Visits & services', idolOfSomebody: 'Visits & services',
@@ -79,6 +81,7 @@ function fieldsFor(kind: EditorStructureKind): readonly StructureFieldDefinition
     case 'tinkersCart': return [field('route', 'Moving route', 'route'), field('stock', 'Initial stock', 'item')];
     case 'bridge': return [field('opens', 'Opened cells', 'route')];
     case 'barrowField': return [field('scroll', 'Scroll', 'item')];
+    case 'reliquaryOfPages': return [field('tomeSpellId', 'Tier-4 Spell', 'spell')];
     case 'boat': case 'lighthouse': return [field('owner', 'Owner', 'owner')];
     case 'flotsam': return [field('timber', 'Timber', 'number', 0), field('gold', 'Gold', 'number', 0)];
     case 'castaway': return [field('story', 'Story', 'text'), field('item', 'Carried item', 'item')];
@@ -158,6 +161,10 @@ export function defaultEditorStructureProperties(
     case 'tinkersCart': return { route: [{ ...position }], stock: editorItemInstance('smellingSalts', position) };
     case 'bridge': return { opens: [{ ...position }] };
     case 'barrowField': return { scroll: editorItemInstance('spellScroll', position) };
+    case 'stacks': case 'wildShrine': return {};
+    case 'reliquaryOfPages': return {
+      tomeSpellId: EDITOR_SPELL_CHOICES.find((spell) => spell.tier === 4)?.id ?? firstSpell('rite'),
+    };
     case 'boat': case 'lighthouse': return { owner: null };
     case 'flotsam': return { timber: 4, gold: 300 };
     case 'castaway': return { item: editorItemInstance('waybread', position), story: 'A survivor waits for a road home.' };

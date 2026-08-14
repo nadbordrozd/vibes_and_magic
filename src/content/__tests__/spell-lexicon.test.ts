@@ -14,8 +14,8 @@ import { createGame } from '../../core/game';
 import { inspectTarget } from '../../ui/inspection';
 
 describe('spell mechanics lexicon', () => {
-  it('covers all 68 catalog entries and maps each to the correct runtime domain', () => {
-    expect(SPELL_IDS).toHaveLength(68);
+  it('covers every current catalog entry and maps each to the correct runtime domain', () => {
+    expect(SPELL_IDS).toHaveLength(124);
     expect(Object.keys(SPELL_MECHANICS_COVERAGE).sort()).toEqual([...SPELL_IDS].sort());
     for (const spellId of SPELL_IDS) {
       const expectedDomain = ['adventure', 'topology'].includes(SPELLS[spellId].kind)
@@ -110,8 +110,8 @@ describe('spell mechanics lexicon', () => {
     castStoredSpell(battle, 'attacker', {
       type: 'BATTLE_CAST', spellId: 'bloom', targetId: target.id,
     }, false);
-    // Bloom currently applies its printed fixed amount; it does not call scaledCounter.
-    expect(target.counters.bloom).toBe(3);
+    // Spell-created counters universally gain +1 magnitude per five Spell Power.
+    expect(target.counters.bloom).toBe(9);
     expect(adjacent.counters.bloom).toBe(0);
 
     target.counters.bloom = 8;
@@ -119,7 +119,7 @@ describe('spell mechanics lexicon', () => {
       type: 'BATTLE_CAST', spellId: 'bloom', targetId: target.id,
     }, true);
     expect(target.counters.bloom).toBe(9);
-    expect(adjacent.counters.bloom).toBe(1);
+    expect(adjacent.counters.bloom).toBe(7);
 
     const countBefore = target.count;
     target.topHp = 1;

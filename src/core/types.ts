@@ -1,5 +1,5 @@
 import type {
-  AbilityId, ArtifactInstance, HeroArtifacts, ItemInstance, ItemSlot,
+  AbilityId, ArtifactId, ArtifactInstance, HeroArtifacts, ItemId, ItemInstance, ItemSlot,
 } from './contentTypes';
 import type { PortableBuiltInMapId } from '../content/maps/authored';
 import type { Action } from './actionTypes';
@@ -37,6 +37,9 @@ export type UnitId =
   | 'outriders' | 'drumCallers' | 'ashmaneWolves' | 'aurochsHerd'
   | 'grassSerpent' | 'thunderbird'
   | 'sleeper' | 'mirrorBound' | 'maskedDuelist' | 'hearthHound' | 'waxServitor'
+  | 'seamMoth' | 'chalkWight' | 'emberToad' | 'glassHound' | 'tallyman'
+  | 'lanternBearer' | 'boneOrchard' | 'stitchOx' | 'nineMouthedWell'
+  | 'kilnDrake' | 'whistlingNan' | 'unbaptized' | 'bellfounder'
   | 'sirens' | 'drownedCrew' | 'hullTurtle' | 'lanternAngler'
   | 'siegeWall' | 'siegeRam' | 'watchtower' | 'standingMirror' | 'makerWall';
 export type ResourceId = 'gold' | 'timber' | 'iron' | 'essence';
@@ -56,7 +59,8 @@ export type BuildingId =
   | 'walls' | 'keep' | 'chapelOfTheBanner' | 'musterField' | 'guildWorkshop'
   | 'foundersVault' | 'chapelOfCandles' | 'lychgate' | 'rendery' | 'deepTunnels'
   | 'bargainPost' | 'henLeggedFence' | 'greatKraal' | 'pyreOfTheFallen'
-  | 'mageGuild1' | 'mageGuild2' | 'mageGuild3' | 'tavern' | 'marketplace' | 'shipyard';
+  | 'mageGuild1' | 'mageGuild2' | 'mageGuild3' | 'mageGuild4' | 'mageGuild5'
+  | 'tavern' | 'marketplace' | 'shipyard';
 export type UnitTier = 1 | 2 | 3 | 4 | 5 | 6;
 export type PrimaryStat = 'attack' | 'defense' | 'spellPower' | 'knowledge';
 export type SecondarySkillId =
@@ -64,7 +68,9 @@ export type SecondarySkillId =
   | 'attunement' | 'command' | 'forager' | 'spellthief'
   | 'alchemist' | 'chronicler' | 'palimpsest' | 'twicetold'
   | 'curseEater' | 'ritualist' | 'peddler' | 'warden' | 'ransomer'
-  | 'beastmaster' | 'vanguard' | 'provisioner' | 'siegewright';
+  | 'beastmaster' | 'vanguard' | 'provisioner' | 'siegewright'
+  | 'evoker' | 'tallykeeper' | 'reliquarian' | 'tactician' | 'reaper'
+  | 'quartermaster' | 'beguiler' | 'loremaster' | 'duelist';
 export type SkillRank = 1 | 2 | 3;
 export type HeroDefinitionId =
   | 'aldith' | 'corwin' | 'berta' | 'osric'
@@ -111,7 +117,20 @@ export type SpellId =
   | 'beastTongue' | 'stampedeCall' | 'storm' | 'greenway' | 'wildGrowth'
   | 'murmuration' | 'greenTide' | 'rootAndRuin' | 'fickleWeather'
   | 'shedSkin' | 'hedgerowMarch'
-  | 'hourglassCrack' | 'borrowShape' | 'echo' | 'loyalUntoDeath';
+  | 'hourglassCrack' | 'borrowShape' | 'echo' | 'loyalUntoDeath'
+  | 'kindle' | 'sunlance' | 'steadyHands' | 'wellspring' | 'secondWind'
+  | 'litanyOfDawn' | 'holdTheLine' | 'consecratedGround' | 'reprise'
+  | 'rivet' | 'whetstone' | 'shrapnel' | 'ammunitionCart' | 'detonate'
+  | 'clockworkDouble' | 'blink' | 'overclock' | 'dimensionDoor'
+  | 'pinchOfAsh' | 'tithe' | 'grudge' | 'yoke' | 'graveBargain' | 'puppetStrings'
+  | 'nettle' | 'bramblelash' | 'wildcall' | 'sapAndSinew' | 'verdantSurge'
+  | 'theTurningYear' | 'fly'
+  | 'scrying' | 'bellBookAndCandle' | 'processionOfLamps' | 'dayspring' | 'theLongOath'
+  | 'prospect' | 'counterweight' | 'bulwark' | 'theUnmakingEngine' | 'mirrorHall'
+  | 'secondGrave' | 'ashenPall' | 'theLedgerBalanced' | 'ossuary' | 'stealAway'
+  | 'theLongSilence' | 'harvest' | 'theDebtCalled'
+  | 'beastSense' | 'illWind' | 'rootTheSky' | 'beastSovereign' | 'windShear'
+  | 'theLongGreen' | 'theWeatherItself';
 
 export interface Coord { x: number; y: number }
 export interface Resources { gold: number; timber: number; iron: number; essence: number }
@@ -135,12 +154,14 @@ export interface Hero {
   moraleBonus: number;
   mana: number;
   movement: number;
+  dailyMovementMaximum: number;
   level: number;
   xp: number;
   army: Army;
   alive: boolean;
   knownSpells: SpellId[];
   upgradedSpells: SpellId[];
+  spellManaReductions: Partial<Record<SpellId, number>>;
   visitedShrines: string[];
   shrineChoices: Record<string, number>;
   skills: Partial<Record<SecondarySkillId, SkillRank>>;
@@ -148,6 +169,8 @@ export interface Hero {
   defeated: boolean;
   inventory: ItemSlot[];
   artifacts: HeroArtifacts;
+  removableBurdens?: ArtifactId[];
+  artifactState: HeroArtifactState;
   debts: DebtEntry[];
   logisticsCarry: number;
   declaredResonance: { day: number; school: SpellSchool } | null;
@@ -159,13 +182,43 @@ export interface Hero {
   beastClaimedWeek: number | null;
   embarkedBoatId: string | null;
   tavernArmyRetained: boolean;
+  spellUses: SpellUseLedger;
   adventureEffects: HeroAdventureEffects;
+  tacticianSlot: number | null;
+  skillUses: {
+    daily: Partial<Record<SecondarySkillId, number>>;
+    weekly: Partial<Record<SecondarySkillId, number>>;
+    game: Partial<Record<SecondarySkillId, boolean>>;
+  };
+  rehireBlockedUntilDay: number;
+}
+
+export interface HeroArtifactState {
+  dayStartPosition: Coord;
+  dailyUses: Partial<Record<import('../content/v2/schema').V2ArtifactEffectTag, number>>;
+  weeklyUses: Partial<Record<import('../content/v2/schema').V2ArtifactEffectTag, number>>;
+  marker: Coord | null;
+  movementCarry: number;
+  waterStraitSteps: number;
+  consecutiveCityDays: number;
+  consecutiveCityId: string | null;
+  compassTargetId: string | null;
+  compassVisitedIds: string[];
+  goldSpentThisWeek: number;
+}
+
+export interface SpellUseLedger {
+  /** Last day/week used by spell ID; absence means never used. */
+  daily: Partial<Record<SpellId, number>>;
+  weekly: Partial<Record<SpellId, number>>;
+  /** Per-day counts exist only for printed multi-use daily gates such as Upgraded Dimension Door. */
+  dailyCounts?: Partial<Record<SpellId, { day: number; count: number }>>;
 }
 
 export interface HeroAdventureEffects {
   borrowedTimePenaltyDay: number | null;
   borrowedTimeMultiplier: number;
-  falseColors: { band: string; castDay: number } | null;
+  falseColors: { band: string; castDay: number; detersAttack?: boolean } | null;
   noRetaliationBattles: number;
   sleepEvery: number | null;
   temporaryStacks: Array<{ unitId: UnitId; slot: number; departDay: number; takesSmallest: boolean }>;
@@ -173,7 +226,27 @@ export interface HeroAdventureEffects {
   nextBattleLuckBonus: number;
   timingBlessingUntilDay: number;
   ignoredAggroDay: number | null;
+  /** Printed all-aggro exemption from Nightjar Feather, bounded to one campaign day. */
+  ignoreGuardianAggroThroughDay?: number;
   spareFaceUsedWeek: number;
+  hungryUnpaid?: boolean;
+  terrainIgnore?: {
+    day: number; movementCost: number;
+    domains: Array<'mountain' | 'water'>; ignoreGuardianAggro: boolean;
+  };
+  movementDeniedThroughDay?: number;
+  manaRegenDeniedThroughDay?: number;
+  prebattleConditions?: AdventurePrebattleCondition[];
+  prospectDoublePileWeek?: number;
+  beastGuardianIgnore?: { throughDay: number; guardianIds: string[] };
+}
+
+export interface AdventurePrebattleCondition {
+  id: string;
+  expiresWeek: number;
+  remainingBattles: number;
+  counters?: Partial<Record<CounterId, number>>;
+  rangedShotsMultiplier?: number;
 }
 
 export interface Player {
@@ -193,7 +266,14 @@ export interface Player {
   explored: string[];
   discoveredObjectKinds: MapObject['kind'][];
   adventureEffects: PlayerAdventureEffects;
+  spellUses: SpellUseLedger;
   active: boolean;
+  artifactState: {
+    weeklyRefundGold: number;
+    goldSpentThisWeek: number;
+    weeklyRefundPercent: number;
+    priorBattlesByFaction: Partial<Record<string, number>>;
+  };
 }
 
 export interface PlayerAdventureEffects {
@@ -205,6 +285,11 @@ export interface PlayerAdventureEffects {
   ironSuppressedUntilDay: number;
   exposedHeroOwner: PlayerId | null;
   spiedCastles: string[];
+  /** Guardian ID to last day of exact-count-and-ability visibility. */
+  guardianIntel?: Record<string, number>;
+  guardianRewardIntel?: Record<string, number>;
+  beastGuardianIgnore?: { throughDay: number; guardianIds: string[] };
+  prebattleConditions?: AdventurePrebattleCondition[];
 }
 
 export interface Castle {
@@ -264,6 +349,10 @@ export type MapObject = {
     id: string; kind: 'mine'; position: Coord; resource: ResourceId; income: number;
     owner: PlayerId | null; cleared: boolean; chartered: boolean;
     suppressedUntilDay?: number; suppressionCaster?: PlayerId;
+    productionRedirect?: {
+      recipient: PlayerId; originalOwner: PlayerId; startsDay?: number;
+      throughDay: number; hidden: boolean;
+    };
   }
   | { id: string; kind: 'pile'; position: Coord; resource: ResourceId; amount: number; collected: boolean }
   | { id: string; kind: 'chest'; position: Coord; cleared: boolean; collected: boolean }
@@ -318,7 +407,18 @@ export type MapObject = {
   }
   | { id: string; kind: 'bridge'; position: Coord; completed: boolean; opens?: Coord[] }
   | { id: string; kind: 'hedgeSchool'; position: Coord; visitedBy: string[] }
-  | { id: string; kind: 'reliquaryCairn'; position: Coord }
+  | {
+    id: string; kind: 'reliquaryCairn'; position: Coord;
+    tomeSpellId?: SpellId; tomeClaimed?: boolean;
+  }
+  | {
+    id: string; kind: 'stacks' | 'wildShrine'; position: Coord;
+    visitedBy: string[];
+  }
+  | {
+    id: string; kind: 'reliquaryOfPages'; position: Coord;
+    claimed: boolean; tomeSpellId: SpellId;
+  }
   | {
     id: string; kind: 'tollGate'; position: Coord;
     paidBy: string[]; cleared: boolean;
@@ -446,9 +546,16 @@ export interface BattleStack {
   skipRound: number | null;
   summoned: boolean;
   counters: Record<CounterId, number>;
+  counterSources?: Partial<Record<CounterId, BattleSide>>;
+  counterDecayDelayed?: Partial<Record<CounterId, boolean>>;
   effects: TimedEffect[];
   roundSpeedBonus?: number;
+  /** Battle-duration summon modifier; unlike roundSpeedBonus this is not reset by round setup. */
+  summonSpeedBonus?: number;
   artifactSpeedBonus?: number;
+  /** Battle-long company stats inherited through a generic artifact death trigger. */
+  artifactAttackBonus?: number;
+  artifactDefenseBonus?: number;
   specialtySpeedBonus?: number;
   terrainSpeedBonus?: number;
   actsFirst?: boolean;
@@ -463,6 +570,34 @@ export interface BattleStack {
   damageDealt?: number;
   damageTaken?: number;
   extraActionsTaken?: number;
+  /** Generic docs-60 control/copy/action state. All fields are replay/save data. */
+  originalSide?: BattleSide;
+  controlExpiresRound?: number;
+  controlledOnce?: boolean;
+  damageLink?: { targetId: string; share: number; expiresRound: number; protected?: boolean };
+  controlRetainsEffects?: boolean;
+  controlSnapshot?: {
+    counters: Record<CounterId, number>;
+    counterSources: Partial<Record<CounterId, BattleSide>>;
+    counterDecayDelayed: Partial<Record<CounterId, boolean>>;
+    /** IDs present before control; Standard keeps surviving originals and drops later additions. */
+    effects: TimedEffect[];
+    damageLinkTargetId?: string;
+  };
+  stunnedActions?: number;
+  grantedActionsThisRound?: number;
+  lastNormalActionRound?: number;
+  /** Spell-specific combat modifiers remain explicit replay state, never hidden closures. */
+  destroyedCompanyForSides?: BattleSide[];
+  cloneOf?: string;
+  copiedAbilityIds?: AbilityId[];
+  destructionEvents?: number;
+  claimedDestructionSaveEvent?: number;
+  /** The most recent round this original company reached zero, for bounded same-round recursion. */
+  destroyedRound?: number;
+  /** Knack-only round-scoped Attack rider; reset with the other round modifiers. */
+  knackAttackBonus?: number;
+  burrowReturnRound?: number;
 }
 
 export interface TimedEffect {
@@ -472,6 +607,8 @@ export interface TimedEffect {
   magnitude: number;
   beneficial: boolean;
   sourceSide: BattleSide;
+  /** Optional absolute round expiry for effects whose printed timing is battlefield-wide. */
+  expiresRound?: number;
 }
 
 export interface BattleEnchantment {
@@ -496,12 +633,20 @@ export interface BattleHero {
   moraleBonus: number;
   spellPower: number;
   mana: number;
+  /** Effective cap captured at battle setup so every combat mana gain can clamp deterministically. */
+  manaMaximum?: number;
   knownSpells: SpellId[];
+  /** Nearby-hero spell loans fixed at the serialized battle boundary. */
+  borrowedSpellIds?: SpellId[];
   upgradedSpells: SpellId[];
+  spellManaReductions: Partial<Record<SpellId, number>>;
   skills: Partial<Record<SecondarySkillId, SkillRank>>;
+  tacticianSlot: number | null;
   inventory: ItemSlot[];
   artifacts: HeroArtifacts;
   debts: DebtEntry[];
+  /** False only for a remote Warden outside the printed rank-3 casting/Knack range. */
+  knackEnabled?: boolean;
 }
 
 export interface BattleContext {
@@ -517,9 +662,20 @@ export interface BattleContext {
   battlefield?: 'land' | 'sea' | 'mire';
   terrain?: TerrainId;
   onSeam?: boolean;
+  /** Serialized campaign inputs used by conditional artifact rules at battle setup. */
+  attackerOwnedHeroCount?: number;
+  defenderOwnedHeroCount?: number;
+  attackerRosterHasHeroCountStats?: boolean;
+  defenderRosterHasHeroCountStats?: boolean;
+  attackerPriorFactionBattles?: number;
+  defenderPriorFactionBattles?: number;
+  attackerOpponentFaction?: string;
+  defenderOpponentFaction?: string;
 }
 
 export interface BattleState {
+  /** Setup RNG at battle creation; deterministic summon/weather choices derive from this. */
+  seed?: number;
   round: number;
   stacks: BattleStack[];
   obstacles: Coord[];
@@ -536,6 +692,8 @@ export interface BattleState {
   recovered: Record<BattleSide, Partial<Record<UnitId, number>>>;
   enchantments: Record<BattleSide, BattleEnchantment[]>;
   castRound: Record<BattleSide, number>;
+  /** Knacks remain once per round even when another printed source grants a hero act. */
+  knackUseRound: Record<BattleSide, number>;
   sideAbilities: Record<BattleSide, AbilityId[]>;
   resonance: SpellSchool | null;
   terrainResonances: SpellSchool[];
@@ -577,13 +735,80 @@ export interface BattleState {
   lastToyUsed: Record<BattleSide, boolean>;
   clapperUsed: Record<BattleSide, boolean>;
   hornUsed: Record<BattleSide, boolean>;
+  /** Per-side, per-effect bounded artifact credits; behavior dispatch keys are effect tags. */
+  artifactEffectUses: Record<BattleSide, Partial<Record<import('../content/artifacts').ArtifactEffectTag, number>>>;
+  /** Attack/Defense waiting for the next living allied company to begin an action. */
+  inheritedArtifactStats: Record<BattleSide, { attack: number; defense: number } | null>;
+  artifactStoredSpell: Record<BattleSide, {
+    action: Extract<Action, { type: 'BATTLE_CAST' }>; plus: boolean; manaSpent: number;
+  } | null>;
+  lastHeroSpellAction: Record<BattleSide, {
+    action: Extract<Action, { type: 'BATTLE_CAST' }>; plus: boolean; manaSpent: number;
+  } | null>;
   defenderKeep: boolean;
   spellCastsBySide: Record<BattleSide, number>;
   withdrawal: { side: BattleSide; kind: 'retreat' | 'surrender'; cost: number } | null;
   winner: BattleSide | null;
+  delayedTriggers?: BattleDelayedTrigger[];
+  midBattleResonance?: Record<BattleSide, SpellSchool[]>;
+  /** Consumable-granted upgraded rules, scoped to this battle and side. */
+  itemUpgradedSchools: Record<BattleSide, SpellSchool[]>;
+  /** The next destruction event claims this single Grave-Dust resurrection. */
+  pendingGraveDust: { side: BattleSide } | null;
+  terminationReason?: 'elimination' | 'round-limit';
+  holdLineUsedRound?: Partial<Record<BattleSide, number>>;
+  standardDawnKillRound?: Partial<Record<BattleSide, number>>;
+  pendingGrantedActions?: BattleGrantedAction[];
+  activeGrantedAction?: (BattleGrantedAction & { resumeStackId: string | null }) | null;
+  roundOrderPending?: boolean;
+  beguilerOpeningResolved: Record<BattleSide, boolean>;
+  beguilerControlUsed: Record<BattleSide, boolean>;
+  evokerActUsed: Record<BattleSide, boolean>;
+  duelistTrophyResolved: boolean;
+  /** Active spell provenance is serialized so nested copy/creature resolution cannot infer source. */
+  spellResolutionSource?: {
+    kind: 'hero' | 'creature' | 'copy'; spellPower: number; spellId: SpellId;
+    magnitudeMultiplier?: number;
+    /** A cast logs each immune company at most once, even when several primitives touch it. */
+    skippedRecipientIds: string[];
+  };
+  pendingSpellDeflection?: {
+    defenderSide: BattleSide; sourceSide: BattleSide; sourceKind: 'hero' | 'creature' | 'copy';
+    spellPower: number; action: Extract<Action, { type: 'BATTLE_CAST' }>;
+    plus: boolean; manaSpent: number; legalTargetIds: string[];
+    casterStackId?: string;
+  };
+  pendingMirrorCopy?: {
+    chooserSide: BattleSide; sourceSide: BattleSide; spellPower: number;
+    action: Extract<Action, { type: 'BATTLE_CAST' }>;
+    plus: boolean; manaSpent: number; legalTargetIds: string[];
+  };
+  /** Deterministic P2 spell state; optional for backwards-compatible saves and fixtures. */
+  p2Weather?: { round: number; kind: 'hail' | 'fog' | 'squall' | 'sun' | 'frost' };
+  p2LedgerHalfTriggers?: string[];
+  p2LongOathUseRound?: Partial<Record<BattleSide, number>>;
+  p2ExtraActionUses?: Partial<Record<BattleSide, { round: number; count: number }>>;
+  pendingAmbushStackId?: string;
+  pendingArtifactDeploymentSide?: BattleSide;
 }
 
-export type BattleTileTypeId = 'wall' | 'resin' | 'thicket' | 'undergrowth' | 'mirror' | 'test';
+export interface BattleGrantedAction {
+  id: string;
+  targetId: string;
+  /** Spell or consumable which reserved the granted action. */
+  sourceSpellId: SpellId | ItemId;
+  timing: 'immediate' | 'round-end' | 'pre-order';
+  round: number;
+}
+
+export type HazardHexTrigger = 'on-enter' | 'on-turn-start';
+export type HazardHexEffect =
+  | { kind: 'damage'; amount: number; trigger?: HazardHexTrigger }
+  | { kind: 'heal'; amount: number; trigger?: HazardHexTrigger }
+  | { kind: 'chill'; amount: number; trigger?: HazardHexTrigger }
+  | { kind: 'teleport'; destination: Coord; trigger?: HazardHexTrigger };
+export type BattleTileTypeId =
+  | 'wall' | 'resin' | 'thicket' | 'undergrowth' | 'mirror' | 'hazard' | 'test';
 export type BattleTileHookStage =
   | 'movement-query' | 'on-enter' | 'on-turn-start' | 'on-turn-end' | 'turn-advance';
 export interface BattleTile {
@@ -594,6 +819,21 @@ export interface BattleTile {
   sourceSide: BattleSide;
   upgraded: boolean;
   createdRound: number;
+  hp?: number;
+  hazard?: HazardHexEffect;
+}
+
+export type BattleDelayedEffect =
+  | { kind: 'counter'; targetId: string; counter: CounterId; amount: number }
+  | { kind: 'heal'; targetId: string; hp: number }
+  | { kind: 'impact-damage'; targetId: string; amount: number }
+  | { kind: 'extra-action'; targetId: string; amount: number };
+export interface BattleDelayedTrigger {
+  id: string;
+  sourceSide: BattleSide;
+  trigger: { kind: 'round-start'; round: number }
+    | { kind: 'company-destroyed'; stackId: string };
+  effect: BattleDelayedEffect;
 }
 
 export type DebtTrigger =
@@ -619,7 +859,8 @@ export interface OmenAnnouncement {
   flavor: string;
 }
 
-export type LevelChoice = PrimaryStat | SecondarySkillId | 'inscribe' | 'bargain';
+export type LevelChoice = PrimaryStat | SecondarySkillId
+  | 'inscribe' | 'adept' | 'grimoire' | 'bargain';
 export type PendingChoice =
   | {
     kind: 'siteStat'; objectId: string; playerId: PlayerId; heroId: string;
@@ -639,6 +880,7 @@ export type PendingChoice =
     options: SpellId[]; choicesRemaining: number;
   }
   | { kind: 'inscribe'; playerId: PlayerId; heroId: string; options: SpellId[] }
+  | { kind: 'adept'; playerId: PlayerId; heroId: string; options: SpellId[] }
   | {
     kind: 'diplomacy'; objectId: string; playerId: PlayerId; heroId: string;
     disbandCost: number; recruitCost: number | null; canStandAside: boolean;
@@ -650,6 +892,15 @@ export type PendingChoice =
   }
   | {
     kind: 'palimpsest'; playerId: PlayerId; heroId: string; options: SpellId[];
+  }
+  | {
+    kind: 'acquisitionSite'; objectId: string; playerId: PlayerId; heroId: string;
+    options: SpellId[];
+  }
+  | {
+    kind: 'duelistArtifact'; playerId: PlayerId; heroId: string; loserHeroId: string;
+    options: ArtifactId[]; transferOnChoice: boolean;
+    spellthiefOptions?: SpellId[]; spellthiefUpgradeOptions?: SpellId[];
   }
   | {
     kind: 'bargain'; playerId: PlayerId; heroId: string; options: BargainId[];
@@ -700,6 +951,8 @@ export interface GameState {
   omenAnnouncement: OmenAnnouncement;
   eventLog: string[];
   lastMessage: string;
+  /** One-shot, serializable face-up spell reveal for newly built Mage Guild 4/5. */
+  guildReveal: { castleId: string; buildingId: 'mageGuild4' | 'mageGuild5'; spellIds: SpellId[] } | null;
   lastBattleRecovered: Partial<Record<UnitId, number>>;
   mapEffects: MapEffect[];
   battleRecords: BattleRecord[];

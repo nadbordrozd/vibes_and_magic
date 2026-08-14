@@ -45,8 +45,8 @@ describe('editor guardian canonical catalog and rendering disposition', () => {
     expect(EDITOR_AUTHORABLE_GUARDIAN_CATALOG.map((entry) => entry.unit.id).sort())
       .toEqual(canonical);
     expect(EDITOR_EXCLUDED_GUARDIAN_CATALOG).toEqual([]);
-    expect(EDITOR_GUARDIAN_CATALOG).toHaveLength(50);
-    expect(new Set(EDITOR_GUARDIAN_CATALOG.map((entry) => entry.unit.id)).size).toBe(50);
+    expect(EDITOR_GUARDIAN_CATALOG).toHaveLength(63);
+    expect(new Set(EDITOR_GUARDIAN_CATALOG.map((entry) => entry.unit.id)).size).toBe(63);
   });
 
   it('explicitly marks all five special constructs while keeping them selectable and static by default', () => {
@@ -62,10 +62,10 @@ describe('editor guardian canonical catalog and rendering disposition', () => {
     }
   });
 
-  it('derives an exhaustive 18-native/32-fallback disposition from the installed manifest', () => {
+  it('derives an exhaustive 31-native/32-fallback disposition from the installed manifest', () => {
     const native = EDITOR_GUARDIAN_CATALOG.filter((entry) => entry.rendering === 'native');
     const fallback = EDITOR_GUARDIAN_CATALOG.filter((entry) => entry.rendering === 'fallback');
-    expect(native).toHaveLength(18);
+    expect(native).toHaveLength(31);
     expect(fallback).toHaveLength(32);
     for (const entry of EDITOR_GUARDIAN_CATALOG) {
       expect(Boolean(manifestEntry(entry.spriteId))).toBe(entry.rendering === 'native');
@@ -366,8 +366,9 @@ describe('guardian validation, portability, and palette accessibility', () => {
     for (const tier of EDITOR_GUARDIAN_TIERS) {
       expect(html).toContain(`aria-label="Random tier ${tier} creature"`);
     }
-    expect((html.match(/class="editor-guardian-choice/g) ?? [])).toHaveLength(50);
-    expect((html.match(/<img src="assets\/battle-units\//g) ?? [])).toHaveLength(50);
+    expect((html.match(/class="editor-guardian-choice/g) ?? [])).toHaveLength(63);
+    expect((html.match(/<img src="assets\/battle-units\//g) ?? [])).toHaveLength(63);
+    expect((html.match(/class="editor-guardian-fallback/g) ?? [])).toHaveLength(0);
     expect(html).not.toContain('default count 1');
     expect(html).not.toContain('explicit fallbacks');
     const source = readFileSync(resolve('src/ui/components/EditorTerrainCanvas.tsx'), 'utf8');

@@ -29,10 +29,17 @@ It must not display destination or future-route vision early, and this projectio
 state. Other heroes, owned cities, skill/artifact effects, explicit reveal effects, and per-player
 hot-seat isolation remain additive contributors. See work order 48.
 
+Printed adventure creature traits query the hero's live army. Daily movement, mana, and gold
+benefits apply once at the ordinary player day-start boundary; removing their company stops later
+benefits. Pathfinder, reveal, guarded-reward sense, and shore costs query live presence. Hungry
+debits 100 gold per carried company each day when affordable. An unpaid company remains until week
+start, when unpaid Hungry companies leave in stable hero/slot order before that day's benefits.
+
 The adventure map uses eight-direction movement and adjacency except guardian aggro, which is the
 explicit orthogonal exception. A hero may occupy only a legal entrance/empty tile. Heroes meet in
 battle; friendly heroes may exchange army stacks and items only while adjacent or co-located by a
-legal service. A hero has seven army slots, and same-unit stacks merge when a destination permits.
+legal service. A hero has seven base army slots and may derive up to nine as specified in S06;
+same-unit stacks merge when a destination permits.
 
 Activating a visible friendly hero previews the least-cost legal route to a free adjacent tile; equal-
 cost destinations resolve north-to-south and then west-to-east. Already-adjacent heroes open exchange
@@ -100,7 +107,8 @@ and heroes each store `owner` and `faction` independently, so a flag color never
 nearby placement never implies ownership. An owned city defaults through the canonical basic-city
 construction path. A newly placed starting hero receives a small nonempty army derived from the
 selected hero faction's catalog `hireArmy`; the normalized authored army is then explicit, positive,
-and limited to seven slots. Runtime setup creates exactly the declared slots and entities rather
+and limited to that hero's derived capacity from authored skills, between seven and nine. Runtime
+setup pads the army to exactly the derived capacity and creates exactly the declared entities rather
 than recovering them from array order or a map-specific UI path.
 
 ## Occupancy, footprints, and entrances
@@ -137,6 +145,11 @@ playtest option and must remain a one-line switch; it is not the current rule.
 - Aggro and footprints work identically on water.
 - Pathfinding treats aggro as blocked unless its current objective is that guardian and the power
   check accepts the fight.
+
+Wayfaring R3 exposes an explicit opt-in `MOVE_HERO` route once per day. The chosen route may enter
+one non-guardian aggro tile without starting combat; that entry spends the daily use, while an
+ordinary move or a route that reaches no aggro tile preserves it. A direct guardian entry and any
+second aggro entry resolve normally.
 
 Hover/inspection shades a guardian’s zone. A path segment crossing it is marked as a fight at the
 trigger tile before confirmation. Ordinary destination selection always chooses the shortest legal
@@ -193,6 +206,7 @@ is the source of object kinds. Behavior falls into these stable shapes:
 - recurring captures: mines, Watermill, Windmill, Trading Camp, Lighthouse;
 - pickups: resources, items, chests, sea Flotsam/Casks/Castaways/Bottles;
 - learning and improvement: shrines, Hedge School, permanent-stat sites, Hut on the Hill;
+- spell acquisition: The Stacks, Wild Shrine, and the guarded Reliquary of Pages;
 - recruiting: faction/neutral dwellings, Mercenary Camp, Chrysalis Pool;
 - weekly visits: Storyteller’s Fire, Warm Table, Cold Spring, idols, Wishing Well;
 - guarded reward sites and locks: barrows, shipwrecks, creature sites, Sleeper, Mirror-Bound;
@@ -213,10 +227,51 @@ tithe services open the shared contextual adventure dialog; canonical pending ch
 focused choice dialogs; automatic no-choice visits report through the transient notice and activity
 log. This routing changes no visit rule or action authority. See work order 41.
 
+Hero-screen skill verbs are ordinary serialized adventure actions. Logistics R3 restores the
+current day's full movement pool once per week, including that day's penalties and denial.
+Tactician R2 persists an occupied army-slot designation for later silent battle setup.
+Quartermaster R3 recruits a player-selected legal count from any owned city's available stock once
+per week, bounded by affordability and army capacity. Peddler R3 similarly buys one owned
+Marketplace's stocked scroll remotely once per week. These actions are illegal outside the
+adventure phase.
+
 The Cache system authors one hidden Cache and 3–6 linked Patient Stones. Each visited stone reveals
 one sketch fragment to that hero; equipped Moth-Eaten Map contributes a virtual fragment. Digging
 at any tile spends the hero’s full remaining movement. A wrong tile yields nothing and a log line;
 the exact Cache tile yields its authored reward.
+
+The three v2 spell-acquisition sites use explicit replay actions and registered handlers. The
+Stacks costs 3 essence once per hero and deals three setup-seeded unknown guild-eligible spells no
+higher than the best Mage Guild that player owns; the follow-up choice keeps exactly one. A Wild
+Shrine teaches one setup-seeded unknown ordinary spell once per hero, with higher tiers carrying
+more selection weight and no preview. The guarded Reliquary of Pages is globally claimed and
+teaches its setup-seeded tier-4 spell. All three appear on Manywhere and Border Marches.
+
+The thirteen docs 63–64 neutral/showcase creatures use ordinary guarded field dwellings rather than
+a hidden city roster. Manywhere contains one uniquely named dwelling and a same-creature guardian
+for every row. Defeating or diplomatically resolving the guard exposes normal accumulated-growth
+recruitment; the Beast rows additionally qualify for Beast Tongue and Beastmaster through their
+printed `beast` tag. Human and strategy-AI recruitment use the same explicit `RECRUIT_DWELLING`
+action, affordability, capacity, and stable maximum-count choice.
+
+Spell Tomes are named, setup-seeded automatic pickups which permanently teach their stored spell.
+Chest and Reliquary Cairn Tomes fail validation above tier 3; tier-4/5 generic Tomes are lock- or
+barrow-only, while the dedicated Reliquary of Pages validates exactly tier 4. Provenance-only spells
+and Summon Skiff never enter a generic Tome pool. A Reliquary Cairn's seeded Tome is a globally
+single-claim pickup; consuming it does not disable the Cairn's separately repeatable artifact trade.
+
+Nightjar Feather records guardian-aggro immunity through the current day only. Surveyor's Twine may
+center on any in-bounds map tile, reveals the radius-8 circle, and records exact guardian-army intel
+inside it through that day. Spellbook Page consumes one deterministic gameplay-RNG draw to learn an
+unknown ordinary tier-1–3 spell from any school already represented in that hero's spellbook; it is
+illegal, unconsumed, and RNG-neutral when no such spell exists. These item actions, their map target,
+intel, day scope, RNG, and learned spell all use the ordinary save/replay state.
+
+Same-day terrain-ignore travel is executed by the ordinary `MOVE_HERO` reducer at its printed fixed
+per-tile cost. It needs no boat while crossing declared Mountain/Water domains and may not end on
+either domain. If the hero was embarked, the boat is deterministically left unoccupied at the
+departure tile before travel. Radius teleport likewise moves only the hero and leaves any boat at
+the origin.
 
 ## Weekly omens
 
@@ -284,3 +339,17 @@ minimum one unit, deterministically. Siren Rocks prompt listen/fight or row past
 domain pathfinding models embark state and transfer costs, remembers reusable boats, and may price
 the known Whirlpool loss. A city assault from water requires disembarkation; cross-shore hero
 battles otherwise use the standard land battlefield.
+
+## Artifact topology exceptions
+
+Printed artifact effects may cross one adjacent Mountain daily, cross no more than three consecutive
+Water tiles, return to the serialized day-start tile daily, or teleport weekly to a planted marker.
+Each is an explicit action with normal bounds and occupancy checks. A guarded reward bypass claims
+only the reward and leaves its guardian. Remote transfers conserve artifact instances and company
+counts while applying the destination hero's derived army capacity. Object Compass and dwelling-tier
+choices are authored on the artifact instance; Empty Frame resolves its sorted backpack pool from
+campaign seed, week, and hero ID. Compass reveal is not a visit: its serialized pointer stays on the
+same object until the hero reaches that object, then advances to the nearest unvisited matching
+object. Hollow Key targets the explicit guarded `rewardPickup` representation, not a guarded site
+encounter, and saved-position teleports revalidate hero, active-object, and city-footprint occupancy
+before consuming their use.

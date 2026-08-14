@@ -1,12 +1,17 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { legalBattleActions } from '../../core/combat/battle';
+import { createBattle } from '../../core/combat/battle';
+import { makeArmy } from '../../core/army';
+import { createGame } from '../../core/game';
+import { isP1PlacementCastLegal, legalSpellCasts } from '../../core/combat/spells';
 import type { Action } from '../../core/types';
 import { combatAbilityFixtures } from '../../sim/combat-action-fixtures';
 import {
-  beginAbilityTargeting, chooseCombatTarget, combatTargetChoices,
+  beginAbilityTargeting, beginSpellTargeting, chooseCombatTarget, combatTargetChoices,
   combatTargetStage, confirmedCombatTargetAction, type CombatTargetDraft,
-  type CombatTargetField, unsupportedCombatTargetFields,
+  legalCombatPlacements, toggleCombatPosition, type CombatTargetField,
+  unsupportedCombatTargetFields,
 } from '../combatTargeting';
 import { CombatScreen } from '../components/CombatScreen';
 
@@ -59,6 +64,45 @@ describe('human combat action parity', () => {
       />);
       expect(html, name).toContain(`data-ability-control="${abilityId}"`);
       expect(html, name).toContain(`data-inspect-kind="ability" data-inspect-id="${abilityId}"`);
+    }
+  });
+
+  it('keeps lazy Clockwork Double and both Blink branch drafts executable without a cross-product', () => {
+    const game = createGame({ seed: 7441, p1: 'human', p2: 'human' });
+    const [battle] = createBattle(
+      makeArmy([{ unitId: 'yeoman', count: 8 }, { unitId: 'longbowman', count: 5 }]),
+      makeArmy([{ unitId: 'tinSoldier', count: 8 }, { unitId: 'hobbyKnight', count: 5 }]),
+      game.players.p1.hero!, game.players.p2.hero!, {
+        kind: 'hero', targetId: game.players.p2.hero!.id, destination: { x: 5, y: 5 },
+        attackerHeroId: game.players.p1.hero!.id, defenderHeroId: game.players.p2.hero!.id,
+        defenderPlayerId: 'p2',
+      }, 7441,
+    );
+    battle.obstacles = [];
+    battle.currentStackId = battle.stacks[0].id;
+    battle.attackerHero.knownSpells = ['clockworkDouble', 'blink'];
+    battle.attackerHero.upgradedSpells = ['blink'];
+    battle.attackerHero.mana = 100;
+    const options = legalSpellCasts(battle);
+    expect(options.length).toBeGreaterThan(0);
+    expect(options.length).toBeLessThan(500);
+    for (const option of [
+      options.find((action) => action.spellId === 'clockworkDouble')!,
+      options.find((action) => action.spellId === 'blink' && action.actImmediately === true)!,
+      options.find((action) => action.spellId === 'blink' && action.actImmediately === false)!,
+    ]) {
+      let draft = beginSpellTargeting(battle, option.spellId)!;
+      for (const field of ['actImmediately', 'targetId', 'secondaryTargetId'] as const) {
+        if (Object.hasOwn(option, field)) {
+          draft = chooseCombatTarget(draft, field, option[field]!);
+        }
+      }
+      while (combatTargetStage(battle, draft) === 'positions') {
+        draft = toggleCombatPosition(battle, draft, legalCombatPlacements(battle, draft)[0]);
+      }
+      const action = confirmedCombatTargetAction(battle, draft);
+      expect(action).toMatchObject(option);
+      expect(isP1PlacementCastLegal(battle, action as never)).toBe(true);
     }
   });
 });

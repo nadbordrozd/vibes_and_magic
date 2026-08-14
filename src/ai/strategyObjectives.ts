@@ -11,6 +11,7 @@ import { castleEntrance, objectEntranceTile } from '../core/map/occupancy';
 import type {
   Coord, GameState, Hero, MapObject, PlayerId,
 } from '../core/types';
+import { UNITS } from '../content/units';
 
 export interface StrategyObjective {
   id: string;
@@ -67,6 +68,13 @@ function playerPower(state: GameState, playerId: PlayerId): number {
     .reduce((sum, castle) => sum + armyPower(castle.garrison), 0);
 }
 
+function perceivedHeroPower(hero: Hero): number {
+  const band = hero.adventureEffects.falseColors?.band;
+  if (!band) return armyPower(hero.army);
+  return ({ few: 150, band: 750, many: 2500, 'great host': 10000 } as Record<string, number>)[band]
+    ?? armyPower(hero.army);
+}
+
 function objectValue(object: MapObject): number {
   if (object.kind === 'pile') {
     const multiplier = object.resource === 'gold' ? 1
@@ -95,7 +103,7 @@ function gathererThreat(state: GameState, hero: Hero): StrategyObjective | null 
     .filter((player) => player.id !== hero.owner)
     .flatMap((player) => player.heroes)
     .filter((enemy) => enemy.alive
-      && armyPower(enemy.army) >= armyPower(hero.army) * AI_GATHERER_THREAT_RATIO);
+      && perceivedHeroPower(enemy) >= armyPower(hero.army) * AI_GATHERER_THREAT_RATIO);
   const threatened = enemyHeroes.some((enemy) => Math.max(
     Math.abs(enemy.position.x - hero.position.x),
     Math.abs(enemy.position.y - hero.position.y),
@@ -152,12 +160,14 @@ function addEnemyObjectives(
   }
   for (const enemy of Object.values(state.players)
     .filter((player) => player.id !== hero.owner).flatMap((player) => player.heroes)) {
-    if (!enemy.alive || state.castles.some((castle) =>
+    if (!enemy.alive || (enemy.adventureEffects.falseColors?.detersAttack
+      && perceivedHeroPower(enemy) * AI_ASSAULT_STRENGTH_RATIO > armyPower(hero.army))
+      || state.castles.some((castle) =>
       castle.owner === enemy.owner && sameCoord(castleEntrance(castle), enemy.position))) continue;
     objectives.push({
       id: enemy.id, position: enemy.position,
       priority: state.day >= 15 ? -1 : 3,
-      power: armyPower(enemy.army), value: 4000,
+      power: perceivedHeroPower(enemy), value: 4000,
     });
   }
 }
@@ -221,6 +231,14 @@ function collectObjectives(
       objectives.push({
         id: targetId, position: targetPosition, priority: 0,
         power: guard, value: 1000, guardianId: guardian?.id,
+      });
+    } else if (object.kind === 'dwelling' && object.available > 0
+        && guard <= power * AI_GUARDIAN_SAFETY_RATIO) {
+      objectives.push({
+        id: targetId, position: targetPosition, priority: guard ? 2 : 1,
+        power: guard,
+        value: object.available * Math.max(1, UNITS[object.unitId].cost.gold ?? 0),
+        guardianId: guardian?.id,
       });
     } else if (object.kind === 'lock' && !object.cleared
         && guard <= power * AI_GUARDIAN_SAFETY_RATIO) {

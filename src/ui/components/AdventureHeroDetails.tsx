@@ -8,12 +8,13 @@ import { HEROES } from '../../content/heroes';
 import { ITEMS, itemName } from '../../content/items';
 import { OMENS } from '../../content/omens';
 import { SKILLS } from '../../content/skills';
-import { UNITS } from '../../content/units';
+import { FACTION_UNITS, UNITS } from '../../content/units';
 import {
-  artifactEffectTotal, artifactStatBonus, effectivePrimaryStat, kitBonuses,
+  artifactEffectTotal, artifactStatBonus, canUnequipArtifact, effectivePlayerPrimaryStat,
+  hasArtifactEffect, kitBonuses,
 } from '../../core/artifacts';
 import { debtCountdown } from '../../core/debts';
-import { consumableSlotCount, logisticsRate } from '../../core/heroBehaviors';
+import { consumableSlotCount, logisticsRate, maximumMana } from '../../core/heroBehaviors';
 import type {
   Action, EquipmentSlotId, GameState, Hero, PrimaryStat, SpellSchool,
 } from '../../core/types';
@@ -23,12 +24,14 @@ import {
   HeroIdentityPortrait, HeroPrimaryStatIcon, HeroSpecialtyIcon, HeroVitalIcon,
 } from './HeroDashboardAssets';
 import { SemanticSpellText, SpellGlossaryReference } from './SpellGlossary';
+import { canAfford, heroArmyCapacity } from '../../core/army';
 import { SpellEffectIcon } from './SpellEffectIcon';
+import { terrainIdAt } from '../../content/terrain';
 
 export const HERO_DASHBOARD_SLOT_NAMES: Record<EquipmentSlotId, string> = {
   head: 'Head', cloak: 'Cloak', amulet: 'Amulet', weapon: 'Weapon',
   shield: 'Shield', armor: 'Armor', ring1: 'Ring 1', ring2: 'Ring 2',
-  boots: 'Boots', misc1: 'Misc 1', misc2: 'Misc 2',
+  boots: 'Boots', misc1: 'Misc 1', misc2: 'Misc 2', misc3: 'Misc 3',
 };
 
 type Detail =
@@ -45,7 +48,8 @@ type Detail =
 
 type EquipmentDraft =
   | { kind: 'equip'; backpackIndex: number; equipmentSlot: EquipmentSlotId | null;
-    chosenSchool?: SpellSchool }
+    chosenSchool?: SpellSchool; chosenObjectKind?: string;
+    chosenDwellingTier?: 1 | 2 | 3 | 4 | 5 | 6 }
   | { kind: 'unequip'; equipmentSlot: EquipmentSlotId };
 
 interface SplitDraft { sourceSlot: number; destinationSlot: number | null; count: number }
@@ -112,7 +116,8 @@ function DashboardNestedDialog({
 export function compatibleDashboardSlots(hero: Hero, backpackIndex: number): EquipmentSlotId[] {
   const item = hero.artifacts.backpack[backpackIndex];
   if (!item) return [];
-  return EQUIPMENT_SLOTS.filter((slot) => slotAccepts(slot, ARTIFACTS[item.id].slot));
+  return EQUIPMENT_SLOTS.filter((slot) => (slot !== 'misc3' || (hero.skills.reliquarian ?? 0) >= 1)
+    && slotAccepts(slot, ARTIFACTS[item.id].slot));
 }
 
 export function dashboardEquipmentPreview(
@@ -121,9 +126,11 @@ export function dashboardEquipmentPreview(
   const item = hero.artifacts.backpack[backpackIndex];
   if (!item) return 'The backpack artifact is no longer available.';
   const displaced = hero.artifacts.equipment[equipmentSlot];
-  return `${ARTIFACTS[item.id].name} equips to ${HERO_DASHBOARD_SLOT_NAMES[equipmentSlot]}. ${displaced
+  const definition = ARTIFACTS[item.id];
+  return `${definition.name} equips to ${HERO_DASHBOARD_SLOT_NAMES[equipmentSlot]}. ${displaced
     ? `${ARTIFACTS[displaced.id].name} is displaced to the backpack.`
-    : 'The slot is currently empty; nothing is displaced.'}`;
+    : 'The slot is currently empty; nothing is displaced.'}${definition.class === 'burden'
+    ? ` Burden cost: ${definition.description} Removal: ${definition.burdenRemoval}` : ''}`;
 }
 
 export function AdventureHeroDetails({
@@ -140,6 +147,7 @@ export function AdventureHeroDetails({
   const [detail, setDetail] = useState<Detail | null>(null);
   const [equipmentDraft, setEquipmentDraft] = useState<EquipmentDraft | null>(null);
   const [splitDraft, setSplitDraft] = useState<SplitDraft | null>(null);
+  const [remoteRecruitCounts, setRemoteRecruitCounts] = useState<Record<string, number>>({});
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLElement>(null);
   const priorFocus = useRef<HTMLElement | null>(null);
@@ -147,7 +155,7 @@ export function AdventureHeroDetails({
   const definition = HEROES[hero.definitionId];
   const kit = kitBonuses(hero);
   const maxMovement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero)));
-  const maxMana = effectivePrimaryStat(hero, 'knowledge') * 10;
+  const maxMana = maximumMana(hero, state.players[hero.owner]);
   const effectiveLuck = hero.luck + artifactEffectTotal(hero, 'luck');
   const expectedInventorySlots = consumableSlotCount(hero);
   const inventory = Array.from({ length: expectedInventorySlots }, (_, index) => hero.inventory[index] ?? null);
@@ -160,6 +168,17 @@ export function AdventureHeroDetails({
     .some((artifact) => artifact?.id === 'mothEatenMap') ? 1 : 0;
   const cacheFragments = Math.min(patientStones.length, stoneFragments + mapBonusFragment);
   const emptyArmySlots = hero.army.flatMap((stack, slot) => stack ? [] : [slot]);
+  const remoteRecruitLimit = (castle: GameState['castles'][number], index: number) => {
+    const unitId = FACTION_UNITS[castle.faction][index];
+    const hasCapacity = hero.army.some((stack) => stack?.unitId === unitId)
+      || hero.army.some((stack) => stack === null);
+    if (!hasCapacity) return 0;
+    let count = castle.available[index];
+    while (count > 0 && !canAfford(state.players[hero.owner].resources, UNITS[unitId].cost, count)) {
+      count -= 1;
+    }
+    return count;
+  };
 
   const statusEntries = [
     hero.declaredResonance?.day === state.day ? {
@@ -202,6 +221,10 @@ export function AdventureHeroDetails({
       id: 'ignored-aggro', name: 'First guardian ignored today',
       detail: 'This hero has already used the effect that ignores the first guardian engagement today.',
     } : null,
+    (hero.adventureEffects.ignoreGuardianAggroThroughDay ?? 0) >= state.day ? {
+      id: 'nightjar-aggro', name: 'Nightjar passage · today',
+      detail: 'This hero ignores every guardian aggro trigger through the end of today.',
+    } : null,
     hero.adventureEffects.spareFaceUsedWeek === state.week ? {
       id: 'spare-face', name: 'Spare Face used this week',
       detail: 'The equipped Spare Face granted its free False Colors cast and cannot do so again this week.',
@@ -235,7 +258,8 @@ export function AdventureHeroDetails({
     if (!item) return;
     setDetail(null);
     setEquipmentDraft({ kind: 'equip', backpackIndex, equipmentSlot: null,
-      chosenSchool: item.chosenSchool });
+      chosenSchool: item.chosenSchool, chosenObjectKind: item.chosenObjectKind,
+      chosenDwellingTier: item.chosenDwellingTier });
   };
   const beginUnequip = (equipmentSlot: EquipmentSlotId) => {
     setDetail(null);
@@ -294,7 +318,7 @@ export function AdventureHeroDetails({
       kicker = 'Primary stat'; title = entry.label;
       image = <HeroPrimaryStatIcon stat={detail.stat} className="detail-icon" />;
       body = <><p className="detail-value">Current effective value · {
-        effectivePrimaryStat(hero, detail.stat)}</p><dl className="hero-detail-facts">
+        effectivePlayerPrimaryStat(state.players[hero.owner], hero, detail.stat)}</p><dl className="hero-detail-facts">
         <div><dt>Stored base</dt><dd>{hero[detail.stat]}</dd></div>
         <div><dt>Equipment and Kit</dt><dd>{bonus >= 0 ? '+' : ''}{bonus}</dd></div>
         {detail.stat === 'knowledge' && <div><dt>Maximum mana</dt><dd>{maxMana}</dd></div>}
@@ -302,7 +326,8 @@ export function AdventureHeroDetails({
     } else if (detail.kind === 'vital') {
       const values = {
         movement: [`${hero.movement} / ${maxMovement}`, 'Current movement and ordinary daily maximum after Logistics.'],
-        mana: [`${hero.mana} / ${maxMana}`, 'Current mana and the authoritative maximum: ten times effective Knowledge.'],
+        mana: [`${hero.mana} / ${maxMana}`, `Current mana and the authoritative maximum: ${
+          (hero.skills.attunement ?? 0) === 3 ? 'twelve' : 'ten'} times effective Knowledge.`],
         experience: [`${hero.xp} / ${LEVEL_THRESHOLD(hero.level + 1)}`, `Level ${hero.level}; progress toward level ${hero.level + 1}.`],
         luck: [`${effectiveLuck}`, `${hero.luck} stored luck${effectiveLuck !== hero.luck ? ` plus ${effectiveLuck - hero.luck} from equipped artifacts` : ''}.`],
       } as const;
@@ -350,15 +375,18 @@ export function AdventureHeroDetails({
             </button>)}</div> : <p>No compatible artifact is currently in the backpack.</p>}</>;
       } else {
         const artifact = ARTIFACTS[item.id]; title = artifact.name;
+        const burdenReady = artifact.class === 'burden' && canUnequipArtifact(hero, item.id);
         image = <ArtifactSprite artifact={item} className="detail-collectible" />;
         body = <><p className="detail-flavor">{artifact.flavor}</p><p>{artifact.class} · fits {
           artifact.slot}. <SemanticSpellText>{artifact.description}</SemanticSpellText></p>
           {item.chosenSchool && <p>Chosen school · {titleCase(item.chosenSchool)}</p>}
           {artifact.class === 'burden' && <p className="disabled-reason">Removal condition · {
             artifact.burdenRemoval}</p>}</>;
-        actions = <button className="primary" disabled={artifact.class === 'burden'}
-          data-disabled-reason={artifact.class === 'burden' ? artifact.burdenRemoval : undefined}
-          title={artifact.class === 'burden'
+        actions = <button className="primary"
+          disabled={artifact.class === 'burden' && !burdenReady}
+          data-disabled-reason={artifact.class === 'burden' && !burdenReady
+            ? artifact.burdenRemoval : undefined}
+          title={artifact.class === 'burden' && !burdenReady
             ? `Cannot unequip: ${artifact.burdenRemoval}` : 'Review unequipping to the backpack.'}
           onClick={() => beginUnequip(detail.slot)}>Unequip to backpack…</button>;
       }
@@ -411,8 +439,12 @@ export function AdventureHeroDetails({
         <span className="dialog-kicker">Choose equipment destination</span>
         <h2 id="hero-dashboard-equip-heading"><ArtifactSprite artifact={item} />Equip {artifact.name}</h2>
         <p>Review all eleven canonical destinations. No equipment changes until confirmation.</p>
+        {artifact.class === 'burden' && <p className="burden-mark" role="alert">
+          Burden — equipping accepts this locked cost. {artifact.description} Removal: {artifact.burdenRemoval}
+        </p>}
         <div className="equipment-destinations" role="group" aria-label="Equipment destinations">
-          {EQUIPMENT_SLOTS.map((slot, index) => {
+          {EQUIPMENT_SLOTS.filter((slot) => slot !== 'misc3'
+            || (hero.skills.reliquarian ?? 0) >= 1).map((slot, index) => {
             const compatible = slotAccepts(slot, artifact.slot);
             const current = hero.artifacts.equipment[slot];
             const reason = `${HERO_DASHBOARD_SLOT_NAMES[slot]} accepts ${slot.replace(/[12]$/, '')}, not ${artifact.slot}.`;
@@ -434,12 +466,32 @@ export function AdventureHeroDetails({
             className={equipmentDraft.chosenSchool === school ? 'selected' : ''}
             onClick={() => setEquipmentDraft({ ...equipmentDraft, chosenSchool: school })}>{school}</button>)}
         </fieldset>}
+        {artifact.effects.includes('object_compass') && <fieldset>
+          <legend>Required object kind</legend>
+          <select aria-label="Patient Compass object kind"
+            value={equipmentDraft.chosenObjectKind ?? ''}
+            onChange={(event) => setEquipmentDraft({ ...equipmentDraft,
+              chosenObjectKind: event.target.value })}>
+            <option value="">Choose…</option>
+            {[...new Set(state.map.objects.map((object) => object.kind))].sort().map((kind) =>
+              <option key={kind} value={kind}>{kind}</option>)}
+          </select>
+        </fieldset>}
+        {artifact.effects.includes('dwelling_growth_choice') && <fieldset>
+          <legend>Required dwelling tier</legend>
+          {[1, 2, 3, 4, 5, 6].map((tier) => <button key={tier}
+            className={equipmentDraft.chosenDwellingTier === tier ? 'selected' : ''}
+            onClick={() => setEquipmentDraft({ ...equipmentDraft,
+              chosenDwellingTier: tier as 1 | 2 | 3 | 4 | 5 | 6 })}>Tier {tier}</button>)}
+        </fieldset>}
         <p className="transfer-preview">{equipmentDraft.equipmentSlot
           ? dashboardEquipmentPreview(hero, equipmentDraft.backpackIndex, equipmentDraft.equipmentSlot)
           : 'Choose one compatible destination. No slot is selected automatically.'}</p>
         <div className="dialog-actions"><button onClick={cancel}>Cancel · keep current loadout</button>
           <button className="primary" disabled={!equipmentDraft.equipmentSlot
-            || (item.id === 'seamstone' && !equipmentDraft.chosenSchool)}
+            || (item.id === 'seamstone' && !equipmentDraft.chosenSchool)
+            || (artifact.effects.includes('object_compass') && !equipmentDraft.chosenObjectKind)
+            || (artifact.effects.includes('dwelling_growth_choice') && !equipmentDraft.chosenDwellingTier)}
             title={!equipmentDraft.equipmentSlot ? 'Choose a compatible equipment slot.'
               : item.id === 'seamstone' && !equipmentDraft.chosenSchool
                 ? 'Choose the Seamstone resonance school.' : 'Confirm this loadout change.'}
@@ -448,7 +500,9 @@ export function AdventureHeroDetails({
               dispatch({ type: 'EQUIP_ARTIFACT', heroId: hero.id,
                 backpackIndex: equipmentDraft.backpackIndex,
                 equipmentSlot: equipmentDraft.equipmentSlot,
-                chosenSchool: equipmentDraft.chosenSchool });
+                chosenSchool: equipmentDraft.chosenSchool,
+                chosenObjectKind: equipmentDraft.chosenObjectKind,
+                chosenDwellingTier: equipmentDraft.chosenDwellingTier });
               setEquipmentDraft(null); restoreDetailFocus();
             }}>Confirm equip</button></div>
       </DashboardNestedDialog>;
@@ -456,17 +510,21 @@ export function AdventureHeroDetails({
     const item = hero.artifacts.equipment[equipmentDraft.equipmentSlot];
     if (!item) return null;
     const artifact = ARTIFACTS[item.id];
+    const burdenReady = artifact.class === 'burden' && canUnequipArtifact(hero, item.id);
     return <DashboardNestedDialog key="unequip" labelId="hero-dashboard-unequip-heading" onClose={cancel}>
       <span className="dialog-kicker">Unequip to backpack</span>
       <h2 id="hero-dashboard-unequip-heading"><ArtifactSprite artifact={item} />{artifact.name} · {
         HERO_DASHBOARD_SLOT_NAMES[equipmentDraft.equipmentSlot]}</h2>
-      {artifact.class === 'burden' ? <p className="disabled-reason"><b>Burden cannot be unequipped.</b> {
+      {artifact.class === 'burden' && !burdenReady
+        ? <p className="disabled-reason"><b>Burden cannot be unequipped.</b> {
         `Removal condition: ${artifact.burdenRemoval}`}</p>
         : <p className="transfer-preview">Result · {HERO_DASHBOARD_SLOT_NAMES[equipmentDraft.equipmentSlot]} becomes empty; {
-          artifact.name} moves to backpack position {hero.artifacts.backpack.length + 1}.</p>}
+          artifact.name} moves to backpack position {hero.artifacts.backpack.length + 1}. {
+            artifact.class === 'burden' ? 'Its removal permission is consumed.' : ''}</p>}
       <div className="dialog-actions"><button data-dialog-initial-focus onClick={cancel}>Cancel · keep equipped</button>
-        <button className="primary" disabled={artifact.class === 'burden'}
-          title={artifact.class === 'burden' ? `Cannot unequip: ${artifact.burdenRemoval}` : 'Confirm unequip to backpack.'}
+        <button className="primary" disabled={artifact.class === 'burden' && !burdenReady}
+          title={artifact.class === 'burden' && !burdenReady
+            ? `Cannot unequip: ${artifact.burdenRemoval}` : 'Confirm unequip to backpack.'}
           onClick={() => {
             dispatch({ type: 'UNEQUIP_ARTIFACT', heroId: hero.id,
               equipmentSlot: equipmentDraft.equipmentSlot });
@@ -547,7 +605,7 @@ export function AdventureHeroDetails({
 
         <section className="hero-dashboard-region hero-dashboard-primary" data-dashboard-region="primary-stats">
           <h3>Primary stats</h3><div className="hero-dashboard-stat-grid">{PRIMARY_STATS.map((stat) => {
-            const value = effectivePrimaryStat(hero, stat.id);
+            const value = effectivePlayerPrimaryStat(state.players[hero.owner], hero, stat.id);
             return <button key={stat.id} aria-label={`${stat.label}, ${value}: open stat details`}
               onClick={(event) => openDetail({ kind: 'primary', stat: stat.id }, event.currentTarget)}>
               <HeroPrimaryStatIcon stat={stat.id} /><span><small>{stat.label}</small><b>{value}</b></span>
@@ -584,8 +642,9 @@ export function AdventureHeroDetails({
         </section>
 
         <section className="hero-dashboard-region hero-dashboard-army" data-dashboard-region="army">
-          <h3>Army · seven company slots</h3>
-          <div className="hero-dashboard-army-grid">{hero.army.map((stack, slot) => stack
+          <h3>Army · {heroArmyCapacity(hero)} company slots</h3>
+          <div className="hero-dashboard-army-grid" data-army-capacity={heroArmyCapacity(hero)}>{
+            hero.army.map((stack, slot) => stack
             ? <button key={slot} aria-label={`Army slot ${slot + 1}, ${stack.count} ${UNITS[stack.unitId].name}, occupied: open company details`}
               onClick={(event) => openDetail({ kind: 'company', slot }, event.currentTarget)}>
               <UnitPortrait unitId={stack.unitId} /><b>{stack.count}</b><span>{UNITS[stack.unitId].name}</span>
@@ -593,6 +652,12 @@ export function AdventureHeroDetails({
             </button>
             : <div key={slot} className="hero-dashboard-empty-cell" aria-label={`Army slot ${slot + 1}, empty`}>
               <span>Empty</span><small>Slot {slot + 1}</small></div>)}</div>
+          {(hero.skills.tactician ?? 0) >= 2 && <div className="hero-dashboard-special-grid">
+            {hero.army.map((stack, slot) => stack && <button key={`tactician-${slot}`}
+              className={hero.tacticianSlot === slot ? 'selected' : ''}
+              onClick={() => dispatch({ type: 'DESIGNATE_TACTICIAN', heroId: hero.id, armySlot: slot })}>
+              {hero.tacticianSlot === slot ? 'Designated' : 'Designate'} slot {slot + 1} · {UNITS[stack.unitId].name}
+            </button>)}</div>}
         </section>
 
         <section className="hero-dashboard-region hero-dashboard-skills" data-dashboard-region="secondary-skills">
@@ -609,16 +674,21 @@ export function AdventureHeroDetails({
 
         <section className="hero-dashboard-region hero-dashboard-equipment" data-dashboard-region="equipped-artifacts">
           <h3>Equipped artifacts · {kit.pieces}/4 Tailor&apos;s Kit</h3>
-          <div className="hero-dashboard-equipment-grid">{EQUIPMENT_SLOTS.map((slot) => {
+          <div className="hero-dashboard-equipment-grid">{EQUIPMENT_SLOTS.filter((slot) =>
+            slot !== 'misc3' || (hero.skills.reliquarian ?? 0) >= 1).map((slot) => {
             const item = hero.artifacts.equipment[slot]; const artifact = item ? ARTIFACTS[item.id] : null;
+            const burdenReady = Boolean(item && artifact?.class === 'burden'
+              && canUnequipArtifact(hero, item.id));
             return <button key={slot} className={item ? 'occupied' : 'empty'}
-              aria-label={item ? `Equipped ${HERO_DASHBOARD_SLOT_NAMES[slot]}, ${artifact!.name}${artifact!.class === 'burden' ? ', Burden locked' : ''}: open artifact details`
+              aria-label={item ? `Equipped ${HERO_DASHBOARD_SLOT_NAMES[slot]}, ${artifact!.name}${artifact!.class === 'burden'
+                ? burdenReady ? ', Burden removal ready' : ', Burden locked' : ''}: open artifact details`
                 : `Empty equipment slot ${HERO_DASHBOARD_SLOT_NAMES[slot]}, accepts ${slot.replace(/[12]$/, '')}: open slot details`}
               onClick={(event) => openDetail({ kind: 'equipment', slot }, event.currentTarget)}>
               <small>{HERO_DASHBOARD_SLOT_NAMES[slot]}</small>{item
                 ? <ArtifactSprite artifact={item} /> : <span className="hero-dashboard-empty-artifact" aria-hidden="true">◇</span>}
               <b>{artifact?.name ?? 'Empty'}</b>{artifact?.class === 'burden'
-                && <span className="burden-mark">Burden · locked</span>}
+                && <span className="burden-mark">Burden · {
+                  burdenReady ? 'removal ready' : 'locked'}</span>}
             </button>;
           })}</div>
         </section>
@@ -631,6 +701,102 @@ export function AdventureHeroDetails({
               onClick={(event) => openDetail({ kind: 'backpack', index }, event.currentTarget)}>
               <ArtifactSprite artifact={item} /><span>{ARTIFACTS[item.id].name}</span>
             </button>)}</div> : <p className="hero-dashboard-empty-line">No carried artifacts.</p>}
+        </section>
+        <section className="hero-dashboard-region" data-dashboard-region="artifact-actions">
+          <h3>Artifact actions</h3>
+          <div className="hero-dashboard-actions">
+            {hasArtifactEffect(hero, 'return_to_day_start') && <button
+              disabled={hero.artifactState.dailyUses.return_to_day_start === state.day}
+              title={hero.artifactState.dailyUses.return_to_day_start === state.day
+                ? 'Return to day start has already been used today.' : 'Return freely to this morning’s tile.'}
+              data-disabled-reason={hero.artifactState.dailyUses.return_to_day_start === state.day
+                ? 'Return to day start has already been used today.' : undefined}
+              onClick={() => dispatch({ type: 'ARTIFACT_RETURN_TO_START', heroId: hero.id })}>
+              Return to day start
+            </button>}
+            {hasArtifactEffect(hero, 'weekly_marker_teleport') && <>
+              <button onClick={() => dispatch({ type: 'ARTIFACT_MARKER', heroId: hero.id,
+                mode: 'plant' })}>Plant marker here</button>
+              <button disabled={!hero.artifactState.marker
+                  || hero.artifactState.weeklyUses.weekly_marker_teleport === state.week}
+                title={!hero.artifactState.marker ? 'Plant a marker before teleporting.'
+                  : hero.artifactState.weeklyUses.weekly_marker_teleport === state.week
+                    ? 'Marker teleport has already been used this week.' : 'Teleport to the planted marker.'}
+                data-disabled-reason={!hero.artifactState.marker ? 'Plant a marker before teleporting.'
+                  : hero.artifactState.weeklyUses.weekly_marker_teleport === state.week
+                    ? 'Marker teleport has already been used this week.' : undefined}
+                onClick={() => dispatch({ type: 'ARTIFACT_MARKER', heroId: hero.id,
+                  mode: 'teleport' })}>Teleport to marker</button>
+            </>}
+            {(['attack', 'defense', 'spellPower', 'knowledge'] as const).flatMap((from) =>
+              (['attack', 'defense', 'spellPower', 'knowledge'] as const)
+                .filter((to) => to !== from).map((to) => hasArtifactEffect(hero, 'primary_stat_move')
+                  ? <button key={`${from}-${to}`}
+                    disabled={hero.artifactState.weeklyUses.primary_stat_move === state.week
+                      || hero[from] <= 0}
+                    title={hero.artifactState.weeklyUses.primary_stat_move === state.week
+                      ? 'The Second Face has already moved a stat this week.'
+                      : hero[from] <= 0 ? `${from} cannot fall below zero.` : `Move one ${from} to ${to}.`}
+                    data-disabled-reason={hero.artifactState.weeklyUses.primary_stat_move === state.week
+                      ? 'The Second Face has already moved a stat this week.'
+                      : hero[from] <= 0 ? `${from} cannot fall below zero.` : undefined}
+                    onClick={() => dispatch({ type: 'ARTIFACT_MOVE_STAT', heroId: hero.id,
+                      from, to })}>Move 1 {from} → {to}</button> : null))}
+            {Array.from({ length: 3 }, (_, dy) => Array.from({ length: 3 }, (_, dx) => ({
+              x: hero.position.x + dx - 1, y: hero.position.y + dy - 1,
+            }))).flat().filter((destination) => (destination.x !== hero.position.x
+              || destination.y !== hero.position.y) && destination.x >= 0 && destination.y >= 0
+              && destination.x < state.map.width && destination.y < state.map.height)
+              .flatMap((destination) => {
+                const terrain = terrainIdAt(state.map, destination);
+                const mode = terrain === 'mountain' && hasArtifactEffect(hero, 'mountain_step')
+                  ? 'mountain-step' as const
+                  : terrain === 'water' && hasArtifactEffect(hero, 'water_strait')
+                    ? 'water-strait' as const : null;
+                return mode ? [<button key={`${mode}-${destination.x}-${destination.y}`}
+                  onClick={() => dispatch({ type: 'ARTIFACT_CROSS_TERRAIN', heroId: hero.id,
+                    destination, mode })}>Cross {terrain} · {destination.x},{destination.y}</button>] : [];
+              })}
+            {hasArtifactEffect(hero, 'remote_transfer') && state.players[hero.owner].heroes
+              .filter((candidate) => candidate.alive && candidate.id !== hero.id)
+              .flatMap((destination) => [
+                ...hero.artifacts.backpack.map((item, sourceSlot) =>
+                <button key={`${destination.id}-artifact-${sourceSlot}`}
+                  disabled={hero.artifactState.dailyUses.remote_transfer === state.day}
+                  title={hero.artifactState.dailyUses.remote_transfer === state.day
+                    ? "Crow's Errand has already been used today." : `Send this artifact to ${destination.name}.`}
+                  data-disabled-reason={hero.artifactState.dailyUses.remote_transfer === state.day
+                    ? "Crow's Errand has already been used today." : undefined}
+                  onClick={() => dispatch({ type: 'ARTIFACT_REMOTE_TRANSFER',
+                    sourceHeroId: hero.id, destinationHeroId: destination.id,
+                    kind: 'artifact', sourceSlot })}>Send {ARTIFACTS[item.id].name} to {destination.name}</button>),
+                ...hero.army.flatMap((stack, sourceSlot) => stack ? [<button
+                  key={`${destination.id}-army-${sourceSlot}`}
+                  disabled={hero.artifactState.dailyUses.remote_transfer === state.day}
+                  title={hero.artifactState.dailyUses.remote_transfer === state.day
+                    ? "Crow's Errand has already been used today." : `Send this company to ${destination.name}.`}
+                  data-disabled-reason={hero.artifactState.dailyUses.remote_transfer === state.day
+                    ? "Crow's Errand has already been used today." : undefined}
+                  onClick={() => dispatch({ type: 'ARTIFACT_REMOTE_TRANSFER',
+                    sourceHeroId: hero.id, destinationHeroId: destination.id,
+                    kind: 'army', sourceSlot, count: stack.count })}>Send {stack.count} {
+                    UNITS[stack.unitId].name} to {destination.name}</button>] : []),
+              ])}
+            {hasArtifactEffect(hero, 'guarded_reward_skip') && state.map.objects
+              .filter((object) => object.kind === 'rewardPickup' && !object.collected
+                && Boolean(object.guardedBy?.length)).map((object) => <button key={object.id}
+                disabled={hero.artifactState.weeklyUses.guarded_reward_skip === state.week}
+                title={hero.artifactState.weeklyUses.guarded_reward_skip === state.week
+                  ? 'The Hollow Key has already been used this week.' : 'Claim this reward and leave its guardian.'}
+                data-disabled-reason={hero.artifactState.weeklyUses.guarded_reward_skip === state.week
+                  ? 'The Hollow Key has already been used this week.' : undefined}
+                onClick={() => dispatch({ type: 'ARTIFACT_SKIP_GUARD', heroId: hero.id,
+                  objectId: object.id })}>Open guarded reward · {object.id}</button>)}
+            {!['return_to_day_start', 'weekly_marker_teleport', 'primary_stat_move',
+              'mountain_step', 'water_strait', 'remote_transfer', 'guarded_reward_skip'].some((effect) =>
+              hasArtifactEffect(hero, effect as Parameters<typeof hasArtifactEffect>[1]))
+              && <p className="hero-dashboard-empty-line">No activated artifact actions available here.</p>}
+          </div>
         </section>
 
         <section className="hero-dashboard-region hero-dashboard-items" data-dashboard-region="consumables">
@@ -660,6 +826,57 @@ export function AdventureHeroDetails({
                   data-disabled-reason={unavailable ? reason : undefined}
                   onClick={() => dispatch({ type: 'DECLARE_RESONANCE', heroId: hero.id, school })}>{school}</button>;
               })}</div></article>}
+            {hero.skills.logistics === 3 && <article><h4>Logistics refresh</h4>
+              <p>Refresh this hero&apos;s movement in full once per week.</p>
+              <button disabled={hero.skillUses.weekly.logistics === state.week}
+                title={hero.skillUses.weekly.logistics === state.week
+                  ? 'The weekly Logistics refresh has already been used.' : 'Restore today’s full movement pool.'}
+                data-disabled-reason={hero.skillUses.weekly.logistics === state.week
+                  ? 'The weekly Logistics refresh has already been used.' : undefined}
+                onClick={() => dispatch({ type: 'REFRESH_LOGISTICS', heroId: hero.id })}>
+                {hero.skillUses.weekly.logistics === state.week ? 'Used this week' : 'Refresh movement'}
+              </button></article>}
+            {hero.skills.quartermaster === 3 && <article><h4>Quartermaster remote recruitment</h4>
+              <p>Recruit company units from any owned city once per week.</p>
+              {state.castles.filter((castle) => castle.owner === hero.owner).flatMap((castle) =>
+                castle.available.map((available, index) => {
+                  if (available <= 0) return null;
+                  const key = `${castle.id}-${index}`;
+                  const limit = remoteRecruitLimit(castle, index);
+                  const count = Math.min(limit, Math.max(1, remoteRecruitCounts[key] ?? 1));
+                  return <div key={key}><label>{UNITS[FACTION_UNITS[castle.faction][index]].name}
+                    <input type="number" min="1" max={Math.max(1, limit)} value={count}
+                      disabled={limit <= 0 || hero.skillUses.weekly.quartermaster === state.week}
+                      onChange={(event) => setRemoteRecruitCounts((current) => ({ ...current,
+                        [key]: Math.min(limit, Math.max(1, Number(event.target.value) || 1)),
+                      }))} /></label><button
+                    disabled={limit <= 0 || hero.skillUses.weekly.quartermaster === state.week}
+                    title={hero.skillUses.weekly.quartermaster === state.week
+                      ? 'The weekly remote recruitment has already been used.'
+                      : limit <= 0 ? 'No affordable amount fits this hero’s army.'
+                      : `Recruit between 1 and ${limit} from this city.`}
+                    data-disabled-reason={hero.skillUses.weekly.quartermaster === state.week
+                      ? 'The weekly remote recruitment has already been used.'
+                      : limit <= 0 ? 'No affordable amount fits this hero’s army.' : undefined}
+                    onClick={() => dispatch({ type: 'REMOTE_RECRUIT', heroId: hero.id,
+                      castleId: castle.id, tier: (index + 1) as 1 | 2 | 3 | 4 | 5 | 6, count })}>
+                    Recruit {count} remotely
+                  </button></div>;
+                }))}</article>}
+            {hero.skills.peddler === 3 && <article><h4>Peddler remote scroll</h4>
+              <p>Buy one stocked scroll from any owned Marketplace once per week.</p>
+              {state.castles.filter((castle) => castle.owner === hero.owner && castle.marketScroll)
+                .map((castle) => <button key={`peddler-${castle.id}`}
+                  disabled={hero.skillUses.weekly.peddler === state.week}
+                  title={hero.skillUses.weekly.peddler === state.week
+                    ? 'The weekly remote scroll purchase has already been used.'
+                    : 'Buy this city’s stocked scroll remotely.'}
+                  data-disabled-reason={hero.skillUses.weekly.peddler === state.week
+                    ? 'The weekly remote scroll purchase has already been used.' : undefined}
+                  onClick={() => dispatch({ type: 'BUY_MARKET_SCROLL', castleId: castle.id,
+                    heroId: hero.id })}>
+                  Buy {castle.marketScroll?.storedSpellId ?? 'scroll'} · {castle.id}
+                </button>)}</article>}
             {(hero.skills.ritualist ?? 0) >= 2 && <article className="omen-preview"><h4>Ritualist&apos;s forecast</h4>
               <p><b>{OMENS[state.nextOmen].title}</b></p>{hero.skills.ritualist === 3
                 && <div>{(Object.keys(OMENS) as Array<keyof typeof OMENS>).map((omen) => {

@@ -39,8 +39,13 @@ describe('castle building cards milestone', () => {
     expect(visibleUpgradeStage(castle, 'mageGuild1')).toBe('mageGuild3');
     castle.builtOnDay = null;
     build(state, castle.id, 'mageGuild3');
-    expect(visibleUpgradeStage(castle, 'mageGuild1')).toBe('mageGuild3');
+    expect(visibleUpgradeStage(castle, 'mageGuild1')).toBe('mageGuild4');
     expect(buildingStatus(state, castle, 'mageGuild3').state).toBe('built');
+    castle.builtOnDay = null;
+    build(state, castle.id, 'townHall');
+    castle.builtOnDay = null;
+    build(state, castle.id, 'mageGuild4');
+    expect(visibleUpgradeStage(castle, 'mageGuild1')).toBe('mageGuild5');
   });
 
   it('computes gold, green, red, and grey states with distinct red reasons', () => {

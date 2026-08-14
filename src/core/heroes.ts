@@ -1,6 +1,7 @@
 import type {
   Army, GameState, Hero, Player, PlayerId,
 } from './types';
+import { heroArmyCapacity, makeArmy, synchronizeHeroArmyCapacity } from './army';
 
 export function selectedHero(player: Player): Hero | null {
   return player.heroes.find((hero) => hero.id === player.activeHeroId && hero.alive)
@@ -78,9 +79,12 @@ export function defeatHero(state: GameState, heroId: string, retainedArmy?: Army
     const [hero] = player.heroes.splice(index, 1);
     hero.alive = false;
     hero.defeated = true;
-    hero.army = retainedArmy ?? (hero.tavernArmyRetained ? hero.army : Array(7).fill(null));
+    hero.army = retainedArmy ?? (hero.tavernArmyRetained ? hero.army
+      : makeArmy([], heroArmyCapacity(hero)));
+    synchronizeHeroArmyCapacity(hero);
     hero.tavernArmyRetained = Boolean(retainedArmy) || hero.tavernArmyRetained;
     hero.movement = 0;
+    hero.dailyMovementMaximum = 0;
     hero.pathMemory = [];
     player.tavernPool.push(hero);
     player.tavernOffers = [

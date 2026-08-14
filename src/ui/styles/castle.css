@@ -141,6 +141,10 @@
   .direct-exchange .transfer-arrow { line-height: 18px; }
 }
 @media (max-width: 520px) {
+  .castle-exchange .army-slots[data-army-capacity="8"],
+  .castle-exchange .army-slots[data-army-capacity="9"] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
   .castle-screen { padding: 15px; }
   .castle-screen > header { padding-bottom: 10px; }
   .castle-screen h2 { font-size: 26px; }
@@ -176,3 +180,12 @@
 .guild-spells article.known { border-color: #d2bd69; }
 .guild-spells small, .guild-spells span { color: #9fa99c; font-size: 11px; }
 .guild-spells button { font-size: 10px; padding: 5px; }
+.guild-reveal-dialog { width: min(680px, calc(100vw - 24px)); max-height: min(760px, calc(100dvh - 24px)); overflow: auto; }
+.guild-reveal-spells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.guild-reveal-spells article { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 4px 12px; align-items: center; background: #101712; border: 1px solid #d2bd69; padding: 12px; }
+.guild-reveal-spells article .content-icon { grid-row: 1 / span 3; }
+.guild-reveal-spells article small { color: #9fa99c; }
+@media (max-width: 430px) {
+  .guild-reveal-spells { grid-template-columns: 1fr; }
+  .guild-reveal-dialog { width: calc(100vw - 12px); max-height: calc(100dvh - 12px); }
+}

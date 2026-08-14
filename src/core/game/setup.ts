@@ -11,7 +11,7 @@ import { FACTION_BUILDING_SLOTS, validateBuildings } from '../../content/buildin
 import { FACTION_HEROES, HEROES, validateHeroes } from '../../content/heroes';
 import { validateSkills } from '../../content/skills';
 import { ITEMS, validateItems } from '../../content/items';
-import { validateArtifacts } from '../../content/artifacts';
+import { ARTIFACTS, validateArtifacts } from '../../content/artifacts';
 import { validateOmens } from '../../content/omens';
 import { SKILLS } from '../../content/skills';
 import {
@@ -38,14 +38,20 @@ import { FACTION_UNITS, UNITS, validateUnits } from '../../content/units';
 import { validateSpells } from '../../content/spells';
 import { validateBargains } from '../../content/bargains';
 import { validateBattleTiles } from '../../content/battleTiles';
-import { ACQUIRABLE_SCHOOL_SPELLS, SCHOOL_SPELLS } from '../../content/spells';
-import { emptyArmy, makeArmy } from '../army';
+import { SCHOOL_SPELLS, SPELLS } from '../../content/spells';
+import {
+  emptyArmy, heroArmyCapacity, makeArmy, synchronizeHeroArmyCapacity,
+} from '../army';
 import {
   consumableSlotCount, dailyGoldArtifactBonus, dailyManaArtifactBonus,
-  dailyMoveArtifactBonus, logisticsRate, skillRank,
+  dailyMoveArtifactBonus, logisticsRate, maximumMana, skillRank,
 } from '../heroBehaviors';
-import { effectivePrimaryStat, emptyArtifacts, hasEquippedArtifact } from '../artifacts';
-import { artifactEffectTotal } from '../artifacts';
+import {
+  artifactEffectTotal, canPlayerAfford, effectivePrimaryStat, emptyArtifacts,
+  equippedArtifactWithEffect, hasArtifactEffect, hasArtifactSetBonus, hasEquippedArtifact,
+  markBurdenRemovalReady, payPlayer,
+  resolveWeeklyArtifactInstances,
+} from '../artifacts';
 import { beginWeekOmen, growthWithOmen, omenAnnouncement, rollOmen } from '../omens';
 import { resolveDebtEvent } from '../debts';
 import { syncHeroView } from '../heroes';
@@ -66,21 +72,21 @@ import { addItem } from './items';
 import { refreshMarketScrolls } from './marketplace';
 import { advanceCreativeObjects } from './mapObjects';
 import { buildingIsActive } from './buildingStatus';
+import { dealCurrentMageGuild } from './guildDeals';
+import { ensureAdventurePrimitiveHandlersRegistered } from './adventurePrimitives';
+import { ensureCombatPrimitiveHandlersRegistered } from '../combat/primitives';
 
 function makeHero(
   playerId: PlayerId,
   factionId: FactionId,
   definitionId: Hero['definitionId'],
   position: { x: number; y: number },
+  campaignSeed = 0,
 ): Hero {
   const faction = FACTIONS[factionId];
   const definition = HEROES[definitionId];
-  const factionStaple: SpellId = faction.id === 'woundWrights'
-    || faction.id === 'hagwood' ? 'wither'
-    : faction.id === 'vespiary' ? 'forgeSpark' : 'rally';
-  const knownSpells: SpellId[] = [factionStaple, ...definition.startingSpells]
-    .filter((spell, index, spells) => spells.indexOf(spell) === index);
-  return {
+  const knownSpells = startingSpellbook(definitionId, campaignSeed);
+  const hero: Hero = {
     id: `${playerId}-${definition.id}`, definitionId, name: definition.name,
     specialtyId: definition.specialty.id, owner: playerId,
     faction: faction.id,
@@ -88,27 +94,43 @@ function makeHero(
     ...faction.heroStats,
     luck: faction.luck, moraleBonus: faction.moraleBonus,
     mana: faction.heroStats.knowledge * 10, movement: HERO_MOVE_POINTS,
+    dailyMovementMaximum: HERO_MOVE_POINTS,
     level: 1, xp: 0, alive: true, defeated: false,
     knownSpells,
-    upgradedSpells: [], visitedShrines: [],
+    upgradedSpells: [], spellManaReductions: {}, visitedShrines: [],
     shrineChoices: {}, skills: { ...definition.startingSkills }, pathMemory: [],
     inventory: Array(6).fill(null),
     artifacts: emptyArtifacts(), debts: [], logisticsCarry: 0,
+    artifactState: {
+      dayStartPosition: { ...position }, dailyUses: {}, weeklyUses: {}, marker: null,
+      movementCarry: 0, waterStraitSteps: 0, consecutiveCityDays: 0,
+      consecutiveCityId: null, compassTargetId: null, compassVisitedIds: [], goldSpentThisWeek: 0,
+    },
     declaredResonance: null, attunementResonanceUsedDay: null,
     rehireMultiplier: 1,
     ritualistOmenChosen: false,
     draftBonusCards: 0, unstitchUsedWeek: 0, beastClaimedWeek: null,
     embarkedBoatId: null, tavernArmyRetained: false,
+    spellUses: { daily: {}, weekly: {} },
+    tacticianSlot: null,
+    skillUses: { daily: {}, weekly: {}, game: {} },
+    rehireBlockedUntilDay: 0,
     adventureEffects: {
       borrowedTimePenaltyDay: null, borrowedTimeMultiplier: 0,
       falseColors: null, noRetaliationBattles: 0, sleepEvery: null,
       temporaryStacks: [],
       nextBattleMeterBonus: 0, nextBattleLuckBonus: 0, timingBlessingUntilDay: 0,
       ignoredAggroDay: null,
+      ignoreGuardianAggroThroughDay: 0,
       spareFaceUsedWeek: 0,
+      terrainIgnore: undefined,
+      movementDeniedThroughDay: 0, manaRegenDeniedThroughDay: 0,
+      prebattleConditions: [],
     },
     army: emptyArmy(),
   };
+  synchronizeHeroArmyCapacity(hero);
+  return hero;
 }
 
 function makePlayer(
@@ -117,16 +139,18 @@ function makePlayer(
   factionId: FactionId,
   rngState: number,
   position: { x: number; y: number },
+  campaignSeed: number,
 ): [Player, number] {
   let startIndex: number;
   let rng: number;
   [startIndex, rng] = randomInt(rngState, FACTION_HEROES[factionId].length);
   const definitions = FACTION_HEROES[factionId];
-  const starting = makeHero(id, factionId, definitions[startIndex], position);
-  starting.army = makeArmy(FACTIONS[factionId].startingArmy);
+  const starting = makeHero(id, factionId, definitions[startIndex], position, campaignSeed);
+  starting.army = makeArmy(FACTIONS[factionId].startingArmy, heroArmyCapacity(starting));
   starting.movement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(starting)));
+  starting.dailyMovementMaximum = starting.movement;
   let pool = definitions.filter((_, index) => index !== startIndex)
-    .map((definitionId) => makeHero(id, factionId, definitionId, position));
+    .map((definitionId) => makeHero(id, factionId, definitionId, position, campaignSeed));
   for (const candidate of pool) {
     candidate.alive = false;
     candidate.movement = 0;
@@ -146,26 +170,46 @@ function makePlayer(
       guardianIntelUntilDay: 0, greenTideUntilWeek: 0,
       tierOneGrowth: [], ironSuppressedUntilDay: 0,
       exposedHeroOwner: null, spiedCastles: [],
+      guardianIntel: {}, prebattleConditions: [],
     },
+    spellUses: { daily: {}, weekly: {} },
     active: true,
+    artifactState: { weeklyRefundGold: 0, goldSpentThisWeek: 0,
+      weeklyRefundPercent: 0, priorBattlesByFaction: {} },
   };
   return [player, rng];
 }
 
-function guildDeck(owner: PlayerId | 'neutral', factionId: FactionId, seed: number): Castle['guildDeck'] {
-  const schools = FACTIONS[factionId].schools;
-  const primary = schools.flatMap((school) => ACQUIRABLE_SCHOOL_SPELLS(school));
-  const offPair = (['rite', 'craft', 'wild', 'grave'] as const)
-    .filter((school) => !schools.includes(school))
-    .flatMap((school) => ACQUIRABLE_SCHOOL_SPELLS(school));
-  const order = (ids: typeof primary, salt: number) => [...ids].sort((a, b) => {
-    const hash = (value: string) => [...value].reduce(
-      (total, char) => Math.imul(total ^ char.charCodeAt(0), 16777619), seed ^ salt,
-    ) >>> 0;
-    return hash(a) - hash(b) || a.localeCompare(b);
-  });
-  return [...order(primary, owner === 'p1' ? 11 : 17).slice(0, 6),
-    ...order(offPair, owner === 'p1' ? 23 : 29).slice(0, 2)];
+export function startingSpellbook(
+  definitionId: Hero['definitionId'], campaignSeed: number,
+): SpellId[] {
+  const definition = HEROES[definitionId];
+  const authored = [...definition.startingSpells];
+  const required: SpellId[] = [];
+  for (const school of FACTIONS[definition.faction].schools) {
+    const authoredTierOne = authored.find((id) =>
+      SPELLS[id].school === school && SPELLS[id].tier === 1);
+    if (authoredTierOne) {
+      required.push(authoredTierOne);
+      continue;
+    }
+    const pool = SCHOOL_SPELLS(school).filter((id) => SPELLS[id].tier === 1)
+      .sort((a, b) => a.localeCompare(b));
+    if (!pool.length) throw new Error(`No tier-1 ${school} spell exists for ${definition.name}`);
+    const hash = [...`${definition.id}:${school}`].reduce(
+      (value, character) => Math.imul(value ^ character.charCodeAt(0), 16777619) >>> 0,
+      campaignSeed >>> 0,
+    );
+    required.push(pool[hash % pool.length]);
+  }
+  return [...authored, ...required].filter((spell, index, spells) =>
+    spells.indexOf(spell) === index);
+}
+
+function guildDeck(
+  owner: PlayerId | 'neutral', factionId: FactionId, seed: number, castleId: string,
+): Castle['guildDeck'] {
+  return [...dealCurrentMageGuild(factionId, seed, `${owner}:${castleId}`).flat];
 }
 
 export function neutralCityDefaultGarrison(factionId: FactionId) {
@@ -192,7 +236,7 @@ function makeCastle(
     garrison: owner === 'neutral' ? neutralCityDefaultGarrison(factionId) : emptyArmy(),
     garrisonSource: owner === 'neutral' ? 'inherited' : 'explicit',
     builtOnDay: null,
-    guildDeck: guildDeck(owner, factionId, seed),
+    guildDeck: guildDeck(owner, factionId, seed, id),
     growthEffects: [], dormantBuildings: {},
     marketScroll: null, marketScrollWeek: 0,
     accruedCandleWisps: 0, returningDefenders: emptyArmy(),
@@ -213,7 +257,11 @@ function inactivePlayer(id: PlayerId, faction: FactionId): Player {
       censusUntilDay: 0, censusShowsMovement: false, guardianIntelUntilDay: 0,
       greenTideUntilWeek: 0, tierOneGrowth: [], ironSuppressedUntilDay: 0,
       exposedHeroOwner: null, spiedCastles: [],
+      guardianIntel: {}, prebattleConditions: [],
     },
+    spellUses: { daily: {}, weekly: {} },
+    artifactState: { weeklyRefundGold: 0, goldSpentThisWeek: 0,
+      weeklyRefundPercent: 0, priorBattlesByFaction: {} },
   };
 }
 
@@ -239,6 +287,10 @@ export function createGame(
   options: NewGameOptions,
   mapRepository: GameMapRepository = builtInMapRepository,
 ): GameState {
+  // The registry is intentionally clearable in tests and tooling. Re-establish the canonical
+  // singleton handlers at each game boundary so module-cache order cannot change validation.
+  ensureAdventurePrimitiveHandlersRegistered();
+  ensureCombatPrimitiveHandlersRegistered();
   validateUnits();
   validateBuildings();
   validateFactions();
@@ -338,7 +390,7 @@ export function createGame(
     const startPosition = authoredHeroes[0]?.position ?? (playerCastle
       ? castleEntrance(playerCastle) : { x: 0, y: 0 });
     [players[id], rng] = makePlayer(
-      id, controllers[id], factions[id], rng, startPosition,
+      id, controllers[id], factions[id], rng, startPosition, options.seed,
     );
     if (portableSetup) {
       players[id].name = portablePlayers.get(id)?.name ?? `Player ${id.slice(1)}`;
@@ -356,7 +408,8 @@ export function createGame(
     for (const castle of castles.slice(1, GRAND_MUSTER_CASTLES.length)) {
       const definitionId = FACTION_HEROES[castle.faction][0];
       const entrance = castleEntrance(castle);
-      const hero = makeHero('p1', castle.faction, definitionId, { x: entrance.x, y: entrance.y + 1 });
+      const hero = makeHero('p1', castle.faction, definitionId,
+        { x: entrance.x, y: entrance.y + 1 }, options.seed);
       hero.army = grandMusterArmy(castle.faction);
       p1.heroes.push(hero);
     }
@@ -373,7 +426,9 @@ export function createGame(
         candidate.faction === player.faction)?.heroDefinitionId ?? FACTION_HEROES[player.faction][0];
       const template = SIXFOLD_PLAYER_SETUP.find((candidate) =>
         candidate.faction === player.faction) ?? slot;
-      const hero = makeHero(slot.id, player.faction, definitionId, castleEntrance(castle));
+      const hero = makeHero(
+        slot.id, player.faction, definitionId, castleEntrance(castle), options.seed,
+      );
       hero.level = template.level;
       hero.xp = LEVEL_THRESHOLD(template.level + 1) - CHEST_XP;
       hero.attack += template.statBonus;
@@ -383,7 +438,8 @@ export function createGame(
       hero.skills = { ...template.skills };
       hero.knownSpells = [...new Set(FACTIONS[player.faction].schools.flatMap(SCHOOL_SPELLS))];
       hero.upgradedSpells = [...hero.knownSpells];
-      hero.mana = hero.knowledge * 10;
+      hero.mana = effectivePrimaryStat(hero, 'knowledge')
+        * (skillRank(hero, 'attunement') === 3 ? 12 : 10);
       hero.movement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero)));
       hero.army = sixfoldArmy(player.faction);
       player.heroes = [hero];
@@ -460,6 +516,7 @@ export function createGame(
     objectiveLastDay: Object.fromEntries(stateIds.map((id) => [id, 0])) as Record<PlayerId, number>,
     lastBattleStats: null,
     lastMessage: 'Day 1 — Player 1 begins.',
+    guildReveal: null,
   };
 }
 
@@ -472,7 +529,12 @@ export function incomeForPlayer(state: GameState, playerId: PlayerId): Resources
       + (buildingIsActive(castle, 'cityHall') ? 1000 : 0);
   }
   for (const object of state.map.objects) {
-    if (object.kind === 'mine' && object.owner === playerId) {
+    if (object.kind === 'mine' && object.owner) {
+      const redirect = object.productionRedirect;
+      const recipient = redirect && (redirect.startsDay ?? state.day) <= state.day
+        && redirect.throughDay >= state.day
+        && redirect.originalOwner === object.owner ? redirect.recipient : object.owner;
+      if (recipient !== playerId) continue;
       if ((object.suppressedUntilDay ?? 0) >= state.day) continue;
       const charterBonus = (ITEMS.overseersCharter.amount ?? 0) / 100;
       income[object.resource] += object.income * (object.chartered ? 1 + charterBonus : 1);
@@ -489,6 +551,10 @@ export function incomeForPlayer(state: GameState, playerId: PlayerId): Resources
   }
   for (const hero of state.players[playerId].heroes.filter((candidate) => candidate.alive)) {
     income.gold += dailyGoldArtifactBonus(hero);
+  }
+  if (state.players[playerId].heroes.some((hero) => hero.alive
+      && hasArtifactEffect(hero, 'income_multiplier'))) {
+    for (const resource of Object.keys(income) as Array<keyof Resources>) income[resource] *= 2;
   }
   if (state.players[playerId].adventureEffects.ironSuppressedUntilDay >= state.day) {
     income.iron = 0;
@@ -514,20 +580,30 @@ function startTurn(state: GameState, playerId: PlayerId): void {
     player.resources[resource] += income[resource];
   }
   for (const hero of player.heroes.filter((candidate) => candidate.alive)) {
+    const hasArmyTrait = (ability: import('../types').AbilityId) => hero.army.some((stack) =>
+      stack && UNITS[stack.unitId].abilities.includes(ability));
     const borrowedTime = hero.adventureEffects.borrowedTimePenaltyDay === state.day
       ? hero.adventureEffects.borrowedTimeMultiplier : 1;
     const sleeping = hero.adventureEffects.sleepEvery
       && state.day % hero.adventureEffects.sleepEvery === 0;
-    const burdenMove = hasEquippedArtifact(hero, 'leadenCrown') ? 0.75 : 1;
+    const burdenMove = hasArtifactEffect(hero, 'daily_move')
+      ? Math.max(0, 1 + artifactEffectTotal(hero, 'daily_move', 'percent') / 100) : 1;
     hero.movement = sleeping ? 0 : Math.round((HERO_MOVE_POINTS * (1 + logisticsRate(hero))
-      + dailyMoveArtifactBonus(hero) + hero.logisticsCarry) * borrowedTime * burdenMove);
-    if (player.controller === 'dormant') hero.movement = 0;
+      + dailyMoveArtifactBonus(hero) + hero.logisticsCarry + hero.artifactState.movementCarry
+      + (hasArtifactSetBonus(hero, 'droversKit', 2) ? 200 : 0)) * borrowedTime * burdenMove);
+    if (hasArmyTrait('beast_of_burden')) hero.movement += 150;
     if (state.map.objects.some((object) => object.kind === 'lighthouse'
         && object.owner === playerId)) hero.movement += 500;
+    if ((hero.adventureEffects.movementDeniedThroughDay ?? 0) >= state.day) hero.movement = 0;
+    if (player.controller === 'dormant') hero.movement = 0;
+    hero.dailyMovementMaximum = hero.movement;
+    hero.artifactState.dayStartPosition = { ...hero.position };
+    hero.artifactState.waterStraitSteps = 0;
     if (hero.adventureEffects.borrowedTimePenaltyDay === state.day) {
       hero.adventureEffects.borrowedTimePenaltyDay = null;
     }
     hero.logisticsCarry = 0;
+    hero.artifactState.movementCarry = 0;
     const inCastle = state.castles.some(
       (castle) => castle.owner === playerId
         && sameCoord(castleEntrance(castle), hero.position),
@@ -536,20 +612,40 @@ function startTurn(state: GameState, playerId: PlayerId): void {
     const bonus = attunement === 1 ? SKILLS.attunement.values.rank1Regen
       : attunement === 2 ? SKILLS.attunement.values.rank2Regen
         : attunement === 3 ? SKILLS.attunement.values.rank3Regen : 0;
-    const maxMana = effectivePrimaryStat(hero, 'knowledge') * 10;
-    hero.mana = inCastle
+    const maxMana = maximumMana(hero, player);
+    const manaDenied = (hero.adventureEffects.manaRegenDeniedThroughDay ?? 0) >= state.day;
+    hero.mana = inCastle && !manaDenied
       ? maxMana
-      : Math.min(maxMana, hero.mana + FIELD_MANA_REGEN + bonus
-        + dailyManaArtifactBonus(hero));
+      : manaDenied ? hero.mana : Math.min(maxMana, hero.mana + FIELD_MANA_REGEN + bonus
+        + dailyManaArtifactBonus(hero) + (hasArmyTrait('ley_touched') ? 1 : 0));
+    if (hasArmyTrait('tithe_bearer')) player.resources.gold += 50;
+    if (hasArtifactEffect(hero, 'least_resource_income')) {
+      const resource = [...(['gold', 'timber', 'iron', 'essence'] as const)]
+        .sort((a, b) => player.resources[a] - player.resources[b] || a.localeCompare(b))[0];
+      player.resources[resource] += Math.max(1, artifactEffectTotal(hero, 'least_resource_income'));
+    }
     const desiredSlots = consumableSlotCount(hero);
     while (hero.inventory.length < desiredSlots) hero.inventory.push(null);
   }
   syncHeroView(player);
+  for (const hero of player.heroes.filter((candidate) => candidate.alive
+    && candidate.army.some((stack) => stack
+      && UNITS[stack.unitId].abilities.includes('carrion_sense')))) {
+    const guardedRewards = carrionSenseRewards(state, hero);
+    player.explored = [...new Set([...player.explored,
+      ...guardedRewards.map((object) => `${object.position.x},${object.position.y}`)])].sort();
+  }
   player.explored = revealForPlayer(
     player.explored, state.map, player.heroes,
     state.castles.filter((castle) => castle.owner === playerId),
   );
   state.lastMessage = `Day ${state.day} — ${player.name}'s turn.`;
+}
+
+export function carrionSenseRewards(state: GameState, hero: Hero) {
+  return state.map.objects.filter((object) => (object.guardedBy?.length ?? 0) > 0
+    && Math.max(Math.abs(object.position.x - hero.position.x),
+      Math.abs(object.position.y - hero.position.y)) <= 5);
 }
 
 function replenishDwellings(state: GameState): void {
@@ -569,17 +665,21 @@ function replenishDwellings(state: GameState): void {
     const playerMultiplier = state.players[castle.owner].adventureEffects.tierOneGrowth
       .filter((effect) => effect.startWeek <= state.week && effect.endWeek >= state.week)
       .reduce((total, effect) => total * effect.multiplier, 1);
+    const artifactTierMultiplier = (tier: number) => ownerHeroes.some((hero) =>
+      hero.alive && equippedArtifactWithEffect(hero, 'dwelling_growth_choice')
+        ?.chosenDwellingTier === tier) ? 1.5 : 1;
     if (buildingIsActive(castle, 'dwelling1')) {
       castle.available[0] += Math.floor(growthWithOmen(
         UNITS[units[0]].growth, state.omen,
-      ) * tierOneBonus * muster * castleMultiplier(1) * playerMultiplier)
+      ) * tierOneBonus * muster * castleMultiplier(1) * playerMultiplier * artifactTierMultiplier(1))
         + (buildingIsActive(castle, 'foundersVault') ? 6 : 0)
         + (buildingIsActive(castle, 'greatKraal')
           && UNITS[units[0]].abilities.includes('beast') ? 2 : 0);
     }
     if (buildingIsActive(castle, 'dwelling2')) {
       castle.available[1] += Math.floor(
-        growthWithOmen(UNITS[units[1]].growth, state.omen) * castleMultiplier(2) * muster,
+        growthWithOmen(UNITS[units[1]].growth, state.omen) * castleMultiplier(2) * muster
+          * artifactTierMultiplier(2),
       );
       if (buildingIsActive(castle, 'greatKraal')
           && UNITS[units[1]].abilities.includes('beast')) castle.available[1] += 2;
@@ -588,7 +688,7 @@ function replenishDwellings(state: GameState): void {
       if (buildingIsActive(castle, `dwelling${tier}` as BuildingId)) {
         castle.available[tier - 1] += Math.floor(growthWithOmen(
           UNITS[units[tier - 1]].growth, state.omen,
-        ) * castleMultiplier(tier));
+        ) * castleMultiplier(tier) * artifactTierMultiplier(tier));
         if (buildingIsActive(castle, 'greatKraal')
             && UNITS[units[tier - 1]].abilities.includes('beast')) {
           castle.available[tier - 1] += 2;
@@ -656,6 +756,8 @@ export function endTurn(state: GameState): void {
   for (const hero of state.players[state.activePlayer].heroes) {
     hero.logisticsCarry = skillRank(hero, 'logistics') === 3
       ? Math.min(SKILLS.logistics.values.carry, hero.movement) : 0;
+    hero.artifactState.movementCarry = hasArtifactEffect(hero, 'movement_carry')
+      ? Math.min(hero.dailyMovementMaximum, hero.movement) : 0;
   }
   const activeIds = ([...PLAYER_IDS] as PlayerId[])
     .filter((id) => state.players[id]?.active);
@@ -683,8 +785,31 @@ export function endTurn(state: GameState): void {
   }
   state.week = Math.floor((state.day - 1) / DAYS_PER_WEEK) + 1;
   const newWeek = (state.day - 1) % DAYS_PER_WEEK === 0;
+  for (const player of Object.values(state.players)) {
+    if (newWeek) {
+      player.resources.gold += player.artifactState.weeklyRefundGold;
+      player.artifactState.weeklyRefundGold = 0;
+      player.artifactState.goldSpentThisWeek = 0;
+      player.artifactState.weeklyRefundPercent = 0;
+      if (player.resources.gold < 0) player.resources.gold -= Math.ceil(-player.resources.gold * 0.25);
+    }
+  }
+  updateBurdenCityStreaks(state);
+  for (const player of Object.values(state.players)) for (const hero of player.heroes) {
+    let hungrySlots = hero.army.flatMap((stack, slot) => stack
+      && UNITS[stack.unitId].abilities.includes('hungry') ? [slot] : []);
+    if (newWeek && hero.adventureEffects.hungryUnpaid) {
+      hungrySlots.forEach((slot) => { hero.army[slot] = null; });
+      hero.adventureEffects.hungryUnpaid = false;
+      hungrySlots = [];
+    }
+    const upkeep = hungrySlots.length * 100;
+    if (upkeep && canPlayerAfford(player, { gold: upkeep })) payPlayer(player, { gold: upkeep });
+    else if (upkeep) hero.adventureEffects.hungryUnpaid = true;
+  }
   advanceCreativeObjects(state, newWeek);
   if (newWeek) {
+    resolveWeeklyArtifactInstances(state);
     beginWeekOmen(state);
     resolveDebtEvent(state, { kind: 'week-start', week: state.week });
     replenishDwellings(state);
@@ -699,4 +824,26 @@ export function endTurn(state: GameState): void {
   checkVictory(state);
   if (state.phase === 'gameOver') return;
   startTurn(state, nextPlayer);
+}
+
+export function updateBurdenCityStreaks(state: GameState): void {
+  for (const player of Object.values(state.players)) for (const hero of player.heroes) {
+    const city = state.castles.find((castle) => castle.owner === hero.owner
+      && sameCoord(castleEntrance(castle), hero.position));
+    const movementBurden = equippedArtifactWithEffect(hero, 'daily_move');
+    const contractActive = Boolean(movementBurden
+      && ARTIFACTS[movementBurden.id].burdenRemovalTrigger === 'seven-city-days');
+    if (!city || !contractActive) {
+      hero.artifactState.consecutiveCityDays = 0;
+      hero.artifactState.consecutiveCityId = null;
+    } else if (hero.artifactState.consecutiveCityId === city.id) {
+      hero.artifactState.consecutiveCityDays += 1;
+    } else {
+      hero.artifactState.consecutiveCityId = city.id;
+      hero.artifactState.consecutiveCityDays = 1;
+    }
+    if (hero.artifactState.consecutiveCityDays >= 7) {
+      markBurdenRemovalReady(hero, 'seven-city-days');
+    }
+  }
 }

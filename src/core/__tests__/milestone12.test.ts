@@ -115,13 +115,20 @@ describe('Milestone 12 tricks', () => {
     });
   });
 
-  it('sources all authored barrow scroll pickups as Upgraded', () => {
+  it('sources one authored Barrow Tome and keeps the remaining scroll pickups Upgraded', () => {
     const map = createBorderMarches(12);
     const barrowItems = map.objects.filter((object) =>
       object.kind === 'item'
       && terrainIdAt(map, object.position) === 'barrowfield');
     expect(barrowItems).toHaveLength(4);
-    expect(barrowItems.every((object) =>
+    expect(barrowItems.filter((object) => object.kind === 'item'
+      && object.item.id === 'spellTome')).toHaveLength(1);
+    expect(barrowItems.filter((object) => object.kind === 'item'
+      && object.item.id === 'spellTome')[0]).toMatchObject({
+      kind: 'item', item: { tomeSource: 'barrow', storedSpellId: expect.any(String) },
+    });
+    expect(barrowItems.filter((object) => object.kind === 'item'
+      && object.item.id !== 'spellTome').every((object) =>
       object.kind === 'item' && object.item.plus === true)).toBe(true);
     const centralDrops = ['north-gap-gold', 'south-gap-gold'].map((id) =>
       map.objects.find((object) => object.kind === 'guardian'
@@ -143,7 +150,10 @@ describe('Milestone 12 tricks', () => {
       ? state.pendingChoice.item : null;
     expect(offered).not.toBeNull();
     state = apply(state, { type: 'CHOOSE_CHEST', choice: 'item' });
-    expect(activeHero(state).inventory).toContainEqual(offered);
+    if (offered?.id === 'spellTome') {
+      expect(activeHero(state).knownSpells).toContain(offered.storedSpellId);
+      expect(activeHero(state).inventory).not.toContainEqual(offered);
+    } else expect(activeHero(state).inventory).toContainEqual(offered);
   });
 
   it('persists an Overseer Charter through JSON save and action replay', () => {

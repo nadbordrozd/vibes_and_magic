@@ -3,13 +3,15 @@ import {
   AI_SECOND_HERO_GOLD, AI_THIRD_HERO_GOLD, RANGED_PICKUP_MOVE_COST,
 } from '../content/constants';
 import { FACTION_UNITS, UNITS } from '../content/units';
-import { AI_BUILD_ORDER, BUILDINGS, buildingBelongsToFaction } from '../content/buildings';
+import {
+  AI_BUILD_ORDER, BUILDINGS, buildingBelongsToFaction, buildingPrerequisites,
+} from '../content/buildings';
 import { terrainId } from '../content/terrain';
 import {
   MARKET_AI_MAX_SHORTFALL, MARKET_BUY_GOLD, MARKET_SELL_GOLD,
   MARKET_SURPLUS_RESERVE,
 } from '../content/marketplace';
-import { armyPower, canAfford } from '../core/army';
+import { addUnits, armyPower, canAfford } from '../core/army';
 import {
   apply, applyAutomaticChoice, firstAffordableBuilding,
 } from '../core/game';
@@ -25,6 +27,51 @@ import { castleEntrance, castleFootprintTiles } from '../core/map/occupancy';
 import { skillRank } from '../core/heroBehaviors';
 import { SKILLS } from '../content/skills';
 import { castleSupportsBuilding } from '../core/game/economy';
+import { canCastAdventureSpell } from '../core/game/adventureSpells';
+
+function p2AdventureCast(
+  state: GameState, hero: Hero, used: Set<string>, onlyMovement = false,
+): Action | null {
+  const candidate = (spellId: Parameters<typeof canCastAdventureSpell>[1], fields: Partial<Action>) => {
+    const key = `${hero.id}:${spellId}`;
+    return !used.has(`${hero.id}:p2`) && !used.has(key) && canCastAdventureSpell(state, spellId)
+      ? ({ type: 'CAST_ADVENTURE_SPELL', spellId, ...fields } as Action) : null;
+  };
+  const plus = (spellId: Parameters<typeof canCastAdventureSpell>[1]) =>
+    hero.upgradedSpells.includes(spellId);
+  if (hero.movement < hero.dailyMovementMaximum / 2) {
+    const companion = state.players[hero.owner].heroes.find((other) => other.alive
+      && other.id !== hero.id && Math.max(Math.abs(other.position.x - hero.position.x),
+        Math.abs(other.position.y - hero.position.y)) <= 1);
+    const action = candidate('processionOfLamps', plus('processionOfLamps')
+      ? { secondaryHeroId: companion?.id } : {});
+    if (action && (!plus('processionOfLamps') || companion)) return action;
+  }
+  if (onlyMovement) return null;
+  const enemyMine = state.map.objects.find((object) => object.kind === 'mine' && object.owner
+    && object.owner !== hero.owner
+    && state.players[hero.owner].explored.includes(`${object.position.x},${object.position.y}`));
+  const enemyHero = Object.values(state.players).filter((player) => player.id !== hero.owner)
+    .flatMap((player) => player.heroes).filter((other) => other.alive)
+    .sort((a, b) => armyPower(b.army) - armyPower(a.army) || a.id.localeCompare(b.id))[0];
+  const enemyDistance = enemyHero ? Math.max(Math.abs(enemyHero.position.x - hero.position.x),
+    Math.abs(enemyHero.position.y - hero.position.y)) : Number.POSITIVE_INFINITY;
+  const nearbyPile = state.map.objects.some((object) => object.kind === 'pile'
+    && Math.max(Math.abs(object.position.x - hero.position.x),
+      Math.abs(object.position.y - hero.position.y)) <= 12);
+  const nearbyGuardian = state.map.objects.some((object) => object.kind === 'guardian'
+    && Math.max(Math.abs(object.position.x - hero.position.x),
+      Math.abs(object.position.y - hero.position.y)) <= 10);
+  return (enemyHero && enemyDistance <= 8
+      && candidate('theDebtCalled', { targetHeroId: enemyHero.id }))
+    || (enemyMine && candidate('stealAway', { targetId: enemyMine.id }))
+    || (enemyDistance <= 12 && candidate('illWind', {}))
+    || (nearbyPile && candidate('prospect', {}))
+    || (nearbyGuardian && candidate('beastSense', {}))
+    || (enemyHero && enemyDistance <= 6 && armyPower(enemyHero.army) > armyPower(hero.army)
+      && candidate('falseColors', { displayedBand: 'great host' }))
+    || null;
+}
 
 function recruitAtCastle(state: GameState, hero: Hero): GameState {
   const castle = state.castles.find((item) => item.owner === hero.owner
@@ -43,6 +90,23 @@ function recruitAtCastle(state: GameState, hero: Hero): GameState {
     }
   }
   return next;
+}
+
+function recruitAtFieldDwelling(state: GameState, hero: Hero): GameState {
+  const dwelling = state.map.objects.find((object) => object.kind === 'dwelling'
+    && object.available > 0 && sameCoord(object.position, hero.position));
+  if (!dwelling || dwelling.kind !== 'dwelling') return state;
+  const unit = UNITS[dwelling.unitId];
+  const discount = unit.abilities.includes('beast') && skillRank(hero, 'beastmaster') >= 1
+    ? 0.75 : 1;
+  const cost = Object.fromEntries(Object.entries(unit.cost).map(([resource, amount]) =>
+    [resource, Math.ceil((amount ?? 0) * discount)]));
+  let count = dwelling.available;
+  while (count > 0 && (!canAfford(state.players[hero.owner].resources, cost, count)
+      || !addUnits(hero.army, dwelling.unitId, count))) count -= 1;
+  return count > 0 ? apply(state, {
+    type: 'RECRUIT_DWELLING', objectId: dwelling.id, count,
+  }) : state;
 }
 
 function buildAtCastle(state: GameState): GameState {
@@ -79,8 +143,7 @@ function nextPlannedBuilding(state: GameState, castleId: string): BuildingId | n
     if (castle.buildings.includes(id)) return false;
     if (!buildingBelongsToFaction(id, castle.faction)
         || !castleSupportsBuilding(state, castle, id)) return false;
-    const prerequisite = BUILDINGS[id].prerequisite;
-    return !prerequisite || castle.buildings.includes(prerequisite);
+    return buildingPrerequisites(id).every((required) => castle.buildings.includes(required));
   }) ?? null;
 }
 
@@ -191,8 +254,13 @@ export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
   const finished = new Set<string>();
   let economyDone = false;
   let deliveryDone = false;
+  const adventureSpellsUsed = new Set<string>();
   for (let step = 0; step < maxSteps; step += 1) {
     if (state.phase === 'gameOver' || state.activePlayer !== playerId) return state;
+    if (state.guildReveal) {
+      state = apply(state, { type: 'DISMISS_GUILD_REVEAL' });
+      continue;
+    }
     if (state.pendingChoice) {
       state = applyAutomaticChoice(state);
       continue;
@@ -205,6 +273,9 @@ export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
     }
     if (!economyDone) {
       state = buildAtCastle(state);
+      // A Mage Guild 4/5 build exposes a serialized face-up reveal. Resolve that
+      // explicit action before attempting another economy action in this turn.
+      if (state.guildReveal) continue;
       state = hireAtTavern(state);
       economyDone = true;
     }
@@ -226,8 +297,17 @@ export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
       continue;
     }
     state = recruitAtCastle(state, hero);
+    state = recruitAtFieldDwelling(state, hero);
     if (hero.id !== main.id) state = deliverSurplus(state, hero, main);
     const current = state.players[playerId].heroes.find((candidate) => candidate.id === hero.id)!;
+    const spellAction = current.movement < current.dailyMovementMaximum / 2
+      ? p2AdventureCast(state, current, adventureSpellsUsed, true) : null;
+    if (spellAction && spellAction.type === 'CAST_ADVENTURE_SPELL') {
+      adventureSpellsUsed.add(`${current.id}:${spellAction.spellId}`);
+      adventureSpellsUsed.add(`${current.id}:p2`);
+      state = apply(state, spellAction);
+      continue;
+    }
     if (current.movement <= 0) {
       finished.add(current.id);
       continue;
@@ -235,6 +315,15 @@ export function runStrategyTurn(initial: GameState, maxSteps = 200): GameState {
     const objective = chooseStrategyObjective(
       state, current, current.id === main.id ? 'main' : 'gatherer', claims,
     );
+    if (!objective) {
+      const fallbackSpell = p2AdventureCast(state, current, adventureSpellsUsed);
+      if (fallbackSpell && fallbackSpell.type === 'CAST_ADVENTURE_SPELL') {
+        adventureSpellsUsed.add(`${current.id}:${fallbackSpell.spellId}`);
+        adventureSpellsUsed.add(`${current.id}:p2`);
+        state = apply(state, fallbackSpell);
+        continue;
+      }
+    }
     const pickup = objective && state.map.objects.find((object) => object.id === objective.id
       && ['pile', 'item', 'chest', 'flotsam', 'sealedCask', 'castaway',
         'messageBottle'].includes(object.kind));

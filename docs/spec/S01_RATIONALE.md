@@ -45,9 +45,12 @@ except where a tempo or economy number is itself the behavior. Unit abilities st
 stage they hook. Spell upgrades change behavior, targeting, topology, or interaction—not merely
 numbers unless the number creates a different decision.
 
-During a single playthrough, roughly **30–40% of the total content pool should surface**. Tune
+During a single playthrough, roughly **30–40% of each relevant content pool should surface**. Tune
 dealing and placement weights toward that exposure budget and measure distinct encountered entries,
-not merely acquired entries. A player should still meet unfamiliar content on a fifth run.
+not merely acquired entries. A relevant spell pool is the two-school pool available to the run's
+faction pair, not all four schools: across 200 deterministic seeds, two complete Hearthguard guilds
+surface a mean 20.125 distinct Rite/Craft spells, or 32.46% of that 62-spell pool. A player should
+still meet unfamiliar content on a fifth run.
 
 ## Balance posture
 
@@ -55,18 +58,20 @@ Balance is deferred until content is complete. During content development, simul
 that games terminate, do not crash, and retain thesis metrics such as spell decisiveness and lock
 resistance. Broad win-rate bands are degeneracy alarms, not parity targets.
 
-The only early balance change permitted is the minimum change that removes a degenerate line: an
-infinite loop, a strictly correct opening, a fight-stalling combination, or another strategy that
+High but finite draw and combo variance is intentional: acquisition asks the player to build around
+what appeared. The only early balance change permitted is the minimum change that removes a
+degenerate line: an infinite loop, a strictly correct opening, a fight-stalling combination, or another strategy that
 trivializes decisions. Log the intervention. Do not sand off memorable outliers merely to make
 factions numerically equal. Catalog values remain penciled defaults until a dedicated balance pass.
 
-## Target-scaling law
+## Target-scaling and impact-damage law
 
-Effects that remove a percentage of HP, disable a target, copy a target, revive a target, or derive
-value from a target must scale primarily with the target, not the caster’s permanent stats. Spell
-Power may affect duration, counter magnitude, secondary rider, or a constrained modifier; it must
-not turn one effect into an unbounded delete button. This keeps utility useful at all army sizes and
-prevents spell scaling from becoming the dominant economy.
+Toll effects that remove a percentage of HP, disable a target, copy a target, revive a target, or
+derive value from a target scale primarily with that target. Spell Power may affect duration,
+counter magnitude, a secondary rider, or a constrained modifier. The distinct impact-damage family
+is flat caster-scaled HP damage routed through registered damage modifiers: tier-1 impact is hard
+capped, tier 2 has a diminishing high-SP rate, and tiers 3–5 are linear but bounded by the army
+curve rather than a target percentage. Neither family may become an unbounded delete button.
 
 ## Bargain and Debt law
 

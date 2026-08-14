@@ -30,8 +30,8 @@ describe('new-player acceptance evidence manifest', () => {
 
   it('pins every choice-driven combat ability and the modal/targeting family inventory', () => {
     expect(combatAbilityFixtures().map((fixture) => fixture.abilityId).sort()).toEqual([
-      'beckoning_song', 'brood_call', 'crossing', 'procession_of_repair', 'the_lure',
-      'trample',
+      'altar', 'beckoning_song', 'blink_step', 'brood_call', 'caster', 'crossing',
+      'procession_of_repair', 'the_lure', 'trample',
     ]);
     expect(SYNTHETIC_MODAL_TARGETING_COVERAGE.map((entry) => entry.id)).toEqual([
       'setup-save-load-import', 'objective-help-inspection',

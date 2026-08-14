@@ -11,6 +11,7 @@ export interface BuildingDefinition {
   function: string;
   cost: ResourceCost;
   prerequisite?: BuildingId;
+  additionalPrerequisites?: readonly BuildingId[];
   upgrades?: BuildingId;
   category: BuildingCategory;
 }
@@ -112,7 +113,17 @@ const RAW_BUILDINGS = {
   },
   mageGuild3: {
     id: 'mageGuild3', name: 'Mage Guild 3',
-    cost: { gold: 2500, essence: 5 }, prerequisite: 'mageGuild2',
+    cost: { gold: 2500, essence: 5 }, prerequisite: 'mageGuild2', upgrades: 'mageGuild4',
+  },
+  mageGuild4: {
+    id: 'mageGuild4', name: 'Mage Guild 4',
+    cost: { gold: 4500, iron: 4, essence: 9 }, prerequisite: 'mageGuild3',
+    additionalPrerequisites: ['townHall'], upgrades: 'mageGuild5',
+  },
+  mageGuild5: {
+    id: 'mageGuild5', name: 'Mage Guild 5',
+    cost: { gold: 8000, iron: 8, essence: 16 }, prerequisite: 'mageGuild4',
+    additionalPrerequisites: ['cityHall'],
   },
   tavern: {
     id: 'tavern', name: 'Tavern', cost: { gold: 800, timber: 2 },
@@ -139,9 +150,12 @@ const BUILDING_FUNCTION: Record<BuildingId, string> = {
   deepTunnels: 'Allows Vespiary heroes to travel between owned cities.', bargainPost: 'Offers additional Hagwood bargains.',
   henLeggedFence: 'Can relocate the Hagwood city.', greatKraal: 'Increases Wildergrass creature growth.',
   pyreOfTheFallen: 'Returns half of fallen defenders after a city battle.',
-  mageGuild1: 'Teaches 3 spells from Mage Guild level 1.',
-  mageGuild2: 'Teaches 6 spells through Mage Guild level 2.',
-  mageGuild3: 'Teaches 8 spells through Mage Guild level 3.', tavern: 'Offers named heroes for hire.',
+  mageGuild1: 'Reveals and teaches 4 spells from Mage Guild level 1.',
+  mageGuild2: 'Reveals and teaches 7 spells through Mage Guild level 2.',
+  mageGuild3: 'Reveals and teaches 10 spells through Mage Guild level 3.',
+  mageGuild4: 'Reveals and teaches 12 spells through Mage Guild level 4.',
+  mageGuild5: 'Reveals and teaches 14 spells through Mage Guild level 5.',
+  tavern: 'Offers named heroes for hire.',
   marketplace: 'Sells a weekly spell scroll and enables market services.',
   shipyard: 'Builds boats in an adjacent water tile.',
 };
@@ -233,10 +247,11 @@ export function buildingPresentation(id: BuildingId, faction: FactionId): Buildi
 
 export const AI_BUILD_ORDER: readonly BuildingId[] = [
   'townHall', 'marketplace', 'mageGuild1', 'dwelling2', 'walls', 'dwelling3',
-  'cityHall', 'chapelOfTheBanner', 'musterField', 'guildWorkshop', 'foundersVault',
+  'mageGuild2', 'cityHall', 'mageGuild3', 'chapelOfTheBanner', 'musterField',
+  'guildWorkshop', 'foundersVault',
   'chapelOfCandles', 'lychgate', 'rendery', 'deepTunnels', 'bargainPost',
   'henLeggedFence', 'greatKraal', 'pyreOfTheFallen', 'keep',
-  'dwelling4', 'dwelling5', 'dwelling6',
+  'dwelling4', 'mageGuild4', 'dwelling5', 'mageGuild5', 'dwelling6',
 ];
 
 export const COMMON_BUILDING_SLOT_ROOTS: readonly BuildingId[] = [
@@ -260,6 +275,12 @@ export function buildingBelongsToFaction(id: BuildingId, faction: FactionId): bo
   return !owner || owner === faction;
 }
 
+export function buildingPrerequisites(id: BuildingId): readonly BuildingId[] {
+  const definition = BUILDINGS[id];
+  return [definition.prerequisite, ...(definition.additionalPrerequisites ?? [])]
+    .filter((entry): entry is BuildingId => entry !== undefined);
+}
+
 export function validateBuildings(): void {
   for (const building of Object.values(BUILDINGS)) {
     if (!building.name || !building.flavor.trim() || !building.function.trim()
@@ -268,6 +289,9 @@ export function validateBuildings(): void {
     }
     if (building.prerequisite && !BUILDINGS[building.prerequisite]) {
       throw new Error(`Unknown prerequisite: ${building.id}`);
+    }
+    if (building.additionalPrerequisites?.some((id) => !BUILDINGS[id])) {
+      throw new Error(`Unknown additional prerequisite: ${building.id}`);
     }
     if (building.upgrades && (!BUILDINGS[building.upgrades]
         || BUILDINGS[building.upgrades].prerequisite !== building.id)) {

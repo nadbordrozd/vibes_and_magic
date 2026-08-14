@@ -26,7 +26,7 @@ export function ArmySlots({
   return (
     <div className="army-block">
       <h4>{title}</h4>
-      <div className="army-slots">
+      <div className="army-slots" data-army-capacity={army.length}>
         {army.map((stack, index) => (
           <span className="army-slot-wrap" key={index}>
           <button

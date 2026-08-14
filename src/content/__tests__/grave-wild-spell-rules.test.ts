@@ -11,7 +11,7 @@ import {
 } from '../spellLexicon';
 import { SPELL_IDS, SPELLS } from '../spells';
 import {
-  GRAVE_WILD_SPELL_IDS, GRAVE_WILD_SPELL_RULES, RITE_CRAFT_SPELL_RULES,
+  GRAVE_WILD_SPELL_IDS, GRAVE_WILD_SPELL_RULES, RITE_CRAFT_SPELL_IDS,
   SPELL_RULE_PRESENTATIONS,
 } from '../spells/rulePresentation';
 
@@ -48,22 +48,22 @@ function adventure(...spellIds: SpellId[]): [GameState, Hero] {
 }
 
 describe('Grave and Wild structured spell rules', () => {
-  it('covers all 34 spells in canonical school and catalog order', () => {
-    expect(GRAVE_WILD_SPELL_IDS).toHaveLength(34);
-    expect(new Set(GRAVE_WILD_SPELL_IDS).size).toBe(34);
+  it('covers all 62 Grave/Wild spells in canonical school and catalog order', () => {
+    expect(GRAVE_WILD_SPELL_IDS).toHaveLength(62);
+    expect(new Set(GRAVE_WILD_SPELL_IDS).size).toBe(62);
     const grave = SPELL_IDS.filter((id) => SPELLS[id].school === 'grave');
     const wild = SPELL_IDS.filter((id) => SPELLS[id].school === 'wild');
-    expect(grave).toHaveLength(17);
-    expect(wild).toHaveLength(17);
+    expect(grave).toHaveLength(31);
+    expect(wild).toHaveLength(31);
     expect(GRAVE_WILD_SPELL_IDS).toEqual([...grave, ...wild]);
-    expect(Object.keys(GRAVE_WILD_SPELL_RULES)).toEqual([...GRAVE_WILD_SPELL_IDS]);
+    expect(new Set(Object.keys(GRAVE_WILD_SPELL_RULES))).toEqual(new Set(GRAVE_WILD_SPELL_IDS));
   });
 
-  it('completes all 68 projections without changing the accepted Rite and Craft records', () => {
-    expect(SPELL_IDS).toHaveLength(68);
-    expect(Object.keys(SPELL_RULE_PRESENTATIONS)).toHaveLength(68);
+  it('completes all 124 catalog projections', () => {
+    expect(SPELL_IDS).toHaveLength(124);
+    expect(Object.keys(SPELL_RULE_PRESENTATIONS)).toHaveLength(124);
     expect(Object.keys(SPELL_RULE_PRESENTATIONS)).toEqual([
-      ...Object.keys(RITE_CRAFT_SPELL_RULES), ...GRAVE_WILD_SPELL_IDS,
+      ...RITE_CRAFT_SPELL_IDS, ...GRAVE_WILD_SPELL_IDS,
     ]);
     for (const id of SPELL_IDS) {
       const rules = SPELL_RULE_PRESENTATIONS[id];
@@ -96,7 +96,7 @@ describe('Grave and Wild structured spell rules', () => {
     }
   });
 
-  it('pins Bloom to fixed 3/4 application and Shed Skin to its identical ally-only rule', () => {
+  it('pins Bloom scaling and Shed Skin explicit transfer targeting', () => {
     const standard = battle();
     const upgraded = battle();
     standard.attackerHero.spellPower = 99;
@@ -105,26 +105,38 @@ describe('Grave and Wild structured spell rules', () => {
     const upgradedTarget = upgraded.stacks[0];
     cast(standard, 'attacker', 'bloom', false, { targetId: standardTarget.id });
     cast(upgraded, 'attacker', 'bloom', true, { targetId: upgradedTarget.id });
-    expect(standardTarget.counters.bloom).toBe(3);
-    expect(upgradedTarget.counters.bloom).toBe(4);
+    expect(standardTarget.counters.bloom).toBe(9);
+    expect(upgradedTarget.counters.bloom).toBe(9);
 
     expect(spellRulePlainText(GRAVE_WILD_SPELL_RULES.shedSkin.standard))
-      .toBe(spellRulePlainText(GRAVE_WILD_SPELL_RULES.shedSkin.upgraded));
+      .not.toBe(spellRulePlainText(GRAVE_WILD_SPELL_RULES.shedSkin.upgraded));
     for (const plus of [false, true]) {
       const state = battle();
+      state.attackerHero.spellPower = 50;
       const target = state.stacks[0];
       addTimedEffect(target, 'blessing', 2, 4, true, 'attacker');
       addTimedEffect(target, 'quicksilver', 2, 2, true, 'attacker');
-      cast(state, 'attacker', 'shedSkin', plus, { targetId: target.id });
+      const enemy = state.stacks.find((stack) => stack.side === 'defender')!;
+      enemy.position = { x: target.position.x + 1, y: target.position.y };
+      cast(state, 'attacker', 'shedSkin', plus, {
+        targetId: target.id, effectId: `timed:${target.id}:${target.effects[0].id}`,
+        ...(plus ? { secondaryTargetId: enemy.id } : {}),
+      });
       expect(target.effects.map((effect) => effect.spellId)).toEqual(['quicksilver']);
       expect(target.counters.bloom).toBe(4);
+      if (plus) expect(enemy.effects.some((effect) => effect.spellId === 'blessing')).toBe(true);
     }
 
     const priority = battle();
     const target = priority.stacks[0];
     addBattleCounter(priority, target, 'burn', 2, 'attacker');
     addBattleCounter(priority, target, 'hex', 5, 'attacker');
-    cast(priority, 'attacker', 'shedSkin', true, { targetId: target.id });
+    const adjacent = priority.stacks.find((stack) => stack.side === 'defender')!;
+    adjacent.position = { x: target.position.x + 1, y: target.position.y };
+    cast(priority, 'attacker', 'shedSkin', true, {
+      targetId: target.id, secondaryTargetId: adjacent.id,
+      effectId: `counter:${target.id}:burn`,
+    });
     expect(target.counters).toMatchObject({ burn: 0, hex: 5, bloom: 2 });
     const enemyTarget = battle();
     expect(() => cast(enemyTarget, 'attacker', 'shedSkin', true, {
@@ -142,7 +154,7 @@ describe('Grave and Wild structured spell rules', () => {
       effectId: `counter:${source.id}:hex`,
     });
     expect(source.counters.hex).toBe(4);
-    expect(adjacent.counters.hex).toBe(4);
+    expect(adjacent.counters.hex).toBe(2);
 
     const sour = battle();
     cast(sour, 'defender', 'standardOfDawn', false);
@@ -182,9 +194,9 @@ describe('Grave and Wild structured spell rules', () => {
     expect(roadHero.position).toEqual(destination);
   });
 
-  it('pins runtime-identical Hedgerow March to an inert enchantment record', () => {
+  it('pins distinct executable Hedgerow March versions', () => {
     expect(spellRulePlainText(GRAVE_WILD_SPELL_RULES.hedgerowMarch.standard))
-      .toBe(spellRulePlainText(GRAVE_WILD_SPELL_RULES.hedgerowMarch.upgraded));
+      .not.toBe(spellRulePlainText(GRAVE_WILD_SPELL_RULES.hedgerowMarch.upgraded));
     const standard = battle();
     const upgraded = battle();
     cast(standard, 'attacker', 'hedgerowMarch', false);
@@ -196,8 +208,8 @@ describe('Grave and Wild structured spell rules', () => {
       spellId: 'hedgerowMarch', upgraded: true, multiplier: 1,
     });
     expect(SPELL_MECHANICS_COVERAGE.hedgerowMarch.lexicon)
-      .toEqual(['battle-enchantment']);
+      .toEqual(['battle-enchantment', 'phase']);
     expect(SPELL_MECHANICS_COVERAGE.shedSkin.lexicon)
-      .toEqual(['counter', 'timed-effect', 'bloom']);
+      .toEqual(['counter', 'timed-effect', 'bloom', 'damage-link']);
   });
 });

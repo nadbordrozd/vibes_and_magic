@@ -1,7 +1,9 @@
 import { FACTIONS } from '../src/content/factions';
 import { HEROES } from '../src/content/heroes';
 import { ITEMS } from '../src/content/items';
-import { ARTIFACTS, INSTALLED_ARTIFACT_IDS } from '../src/content/artifacts';
+import {
+  ARTIFACTS, DOC65_ARTIFACT_IDS, NATIVE_ARTIFACT_IDS,
+} from '../src/content/artifacts';
 import { createBorderMarches } from '../src/content/maps/borderMarches';
 import { createCrosstitch } from '../src/content/maps/crosstitch';
 import { createManywhere } from '../src/content/maps/manywhere';
@@ -281,7 +283,7 @@ export function assetWorklist(): AssetWorkItem[] {
     id: assetId.mapObject('item', item.id), category: 'map-object', w: 32, h: 32,
     source: `canonical item catalog:${item.use}`,
   });
-  for (const artifactId of INSTALLED_ARTIFACT_IDS) pushUnique(items, {
+  for (const artifactId of [...NATIVE_ARTIFACT_IDS, ...DOC65_ARTIFACT_IDS]) pushUnique(items, {
     id: assetId.mapObject('artifact', artifactId), category: 'map-object', w: 32, h: 32,
     source: `canonical artifact catalog:${ARTIFACTS[artifactId].class}`,
   });

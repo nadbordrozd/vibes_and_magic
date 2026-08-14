@@ -2,11 +2,13 @@ import type {
   Coord, FactionId, GameMap, MapObject, PlayerId, TerrainTile,
 } from '../../core/types';
 import { FACTION_UNITS, UNITS } from '../units';
+import { NEUTRAL_CREATURE_ACQUISITION } from '../neutralCreatures';
 import { tile } from '../terrain';
 import {
   materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
 } from './occupancyAuthoring';
 import { validateMap } from './borderMarches';
+import { seededSpellTome } from '../../core/game/chests';
 
 export const MANYWHERE_WIDTH = 48;
 export const MANYWHERE_HEIGHT = 40;
@@ -97,18 +99,31 @@ function authoredObjects(seed: number): MapObject[] {
     name: id === 'the-sleeper' ? 'The Sleeper' : id === 'the-mirror-bound'
       ? 'The Mirror-Bound' : `Pattern Lock ${index - 1}`, tell: tell as string,
     reward: index >= 2 ? { artifacts: [{ id: ['tailorsNeedle', 'goldenThread', 'tailorsThimble', 'patternbook'][index - 2] as 'tailorsNeedle' }] }
-      : reward(2_000, 2),
+      : index === 0 ? { ...reward(2_000, 2), items: [seededSpellTome(seed, `${id}`, 'lock')] }
+        : reward(2_000, 2),
     cleared: false,
+  }));
+  const neutralPositions: Coord[] = [
+    { x: 2, y: 10 }, { x: 5, y: 10 }, { x: 11, y: 10 }, { x: 17, y: 10 },
+    { x: 23, y: 10 }, { x: 29, y: 10 }, { x: 35, y: 10 }, { x: 41, y: 10 },
+    { x: 44, y: 10 }, { x: 2, y: 14 }, { x: 8, y: 14 }, { x: 14, y: 14 },
+    { x: 20, y: 14 },
+  ];
+  const neutralDwellings: MapObject[] = NEUTRAL_CREATURE_ACQUISITION.map((row, index) => ({
+    id: `manywhere-neutral-${row.unitId}`, kind: 'dwelling' as const,
+    position: neutralPositions[index], unitId: row.unitId,
+    available: UNITS[row.unitId].growth, lastGrowthWeek: 1,
+    flavorHint: `${row.dwellingName}. ${row.dwellingFlavor}`,
   }));
   return [
     { id: 'manywhere-mine', kind: 'mine', position: { x: 3, y: 13 }, footprint: { w: 2, h: 1 }, entrance: { dx: 0, dy: 0 }, resource: 'gold', income: 1000, owner: null, cleared: false, chartered: false },
     { id: 'manywhere-pile', kind: 'pile', position: { x: 7, y: 12 }, resource: 'timber', amount: 5, collected: false },
     { id: 'manywhere-chest', kind: 'chest', position: { x: 10, y: 12 }, cleared: false, collected: false },
-    { id: 'manywhere-shrine', kind: 'shrine', position: { x: 13, y: 12 }, school: 'rite', teaches: 'trial', cleared: false, visitedBy: [] },
+    { id: 'manywhere-shrine', kind: 'shrine', position: { x: 13, y: 12 }, school: 'rite', teaches: 'rally', cleared: false, visitedBy: [] },
     { id: 'manywhere-item', kind: 'item', position: { x: 16, y: 12 }, item: { id: 'waybread' }, collected: false },
     { id: 'manywhere-rich-vein', kind: 'richVein', position: { x: 5, y: 16 }, owner: null, flaggedOnDay: null, depleted: false, income: 2, days: 7 },
     { id: 'manywhere-waystation', kind: 'waystation', position: { x: 7, y: 16 }, visitedOnDay: {} },
-    ...locks, ...dwellings,
+    ...locks, ...dwellings, ...neutralDwellings,
     { id: 'manywhere-tinker', kind: 'tinkersCart', position: { x: 10, y: 27 }, route: [{ x: 10, y: 27 }, { x: 11, y: 27 }, { x: 11, y: 28 }, { x: 10, y: 28 }], routeIndex: 0, stock: { id: 'smellingSalts' }, stockWeek: 1 },
     { id: 'manywhere-monastery', kind: 'monastery', position: { x: 13, y: 27 }, firstVisitorId: null, blessings: {} },
     { id: 'manywhere-ring', kind: 'gloamingRing', position: { x: 16, y: 26 }, deposit: null },
@@ -116,11 +131,18 @@ function authoredObjects(seed: number): MapObject[] {
     { id: 'manywhere-chrysalis', kind: 'chrysalis', position: { x: 23, y: 30 }, visitedWeek: {} },
     { id: 'manywhere-bridge', kind: 'bridge', position: { x: 30, y: 34 }, completed: false, opens: [{ x: 30, y: 34 }] },
     { id: 'manywhere-hedge-school', kind: 'hedgeSchool', position: { x: 26, y: 30 }, visitedBy: [] },
-    { id: 'manywhere-cairn', kind: 'reliquaryCairn', position: { x: 29, y: 29 } },
+    { id: 'manywhere-cairn', kind: 'reliquaryCairn', position: { x: 29, y: 29 },
+      tomeSpellId: seededSpellTome(seed, 'manywhere-cairn', 'reliquary-cairn').storedSpellId,
+      tomeClaimed: false },
+    { id: 'manywhere-stacks', kind: 'stacks', position: { x: 40, y: 12 }, visitedBy: [] },
+    { id: 'manywhere-wild-shrine', kind: 'wildShrine', position: { x: 43, y: 12 }, visitedBy: [] },
+    { id: 'manywhere-pages', kind: 'reliquaryOfPages', position: { x: 46, y: 12 }, claimed: false,
+      tomeSpellId: seededSpellTome(seed, 'manywhere-pages', 'reliquary-pages').storedSpellId! },
     { id: 'manywhere-toll', kind: 'tollGate', position: { x: 32, y: 29 }, paidBy: [], cleared: false },
     { id: 'manywhere-omen', kind: 'omenStone', position: { x: 35, y: 27 }, visitedBy: [] },
     { id: 'manywhere-crone', kind: 'crone', position: { x: 38, y: 26 }, visitedWeek: {} },
-    { id: 'manywhere-barrow', kind: 'barrowField', position: { x: 6, y: 19 }, scroll: { id: 'spellScroll', storedSpellId: 'graveSpeech', plus: true }, collected: false },
+    { id: 'manywhere-barrow', kind: 'barrowField', position: { x: 6, y: 19 },
+      scroll: seededSpellTome(seed, 'manywhere-barrow', 'barrow'), collected: false },
     { id: 'manywhere-boat', kind: 'boat', position: { x: 12, y: 35 }, owner: null, occupiedBy: null },
     { id: 'manywhere-mana', kind: 'manaSpring', position: { x: 15, y: 36 }, visitedWeek: {} },
     { id: 'manywhere-flotsam', kind: 'flotsam', position: { x: 18, y: 36 }, timber: 4, gold: 300, collected: false },
@@ -182,8 +204,13 @@ function guardians(): AuthoredGuardian[] {
     { targetId: 'manywhere-yard', army: [{ unitId: 'boneChoir', count: 12 }] },
     { targetId: 'manywhere-court', army: [{ unitId: 'silkSpinners', count: 18 }] },
     { targetId: 'manywhere-hoard', army: [{ unitId: 'woodenColossus', count: 8 }] },
+    { targetId: 'manywhere-pages', army: [{ unitId: 'boneChoir', count: 18 }] },
     { targetId: 'manywhere-wreck', army: [{ unitId: 'drownedCrew', count: 24 }] },
     { targetId: 'manywhere-sirens', army: [{ unitId: 'sirens', count: 20 }] },
+    ...NEUTRAL_CREATURE_ACQUISITION.map((row): AuthoredGuardian => ({
+      targetId: `manywhere-neutral-${row.unitId}`,
+      army: [{ unitId: row.unitId, count: Math.max(2, UNITS[row.unitId].growth * 2) }],
+    })),
   ];
 }
 

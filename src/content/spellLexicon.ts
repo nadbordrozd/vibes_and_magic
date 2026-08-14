@@ -1,4 +1,5 @@
 import type { SpellId } from '../core/types';
+import type { ContentAssetRequirement } from './v2/schema';
 
 /** Stable semantic IDs used by spell rules, help, inspection, and later icon work. */
 export type SpellLexiconId =
@@ -7,7 +8,15 @@ export type SpellLexiconId =
   | 'death-trigger' | 'deepwood' | 'extra-action' | 'forced-movement' | 'company-status'
   | 'growth' | 'guardian' | 'harmful-effect' | 'hex' | 'morale' | 'omen' | 'phase'
   | 'resonance' | 'spell-power' | 'summon' | 'timed-effect' | 'twister'
-  | 'undergrowth' | 'wall-hex';
+  | 'undergrowth' | 'wall-hex'
+  | 'impact-damage' | 'resurrection' | 'stun' | 'clone' | 'mass'
+  | 'mind-control' | 'damage-link' | 'detonate';
+
+/** Docs 60–67 terms whose final bitmaps are intentionally still pending. */
+export const DOCS_60_67_SPELL_LEXICON_IDS = [
+  'impact-damage', 'resurrection', 'stun', 'clone', 'mass',
+  'mind-control', 'damage-link', 'detonate',
+] as const satisfies readonly SpellLexiconId[];
 
 export interface SpellLexiconEntry {
   id: SpellLexiconId;
@@ -111,6 +120,38 @@ export const SPELL_LEXICON: Record<SpellLexiconId, SpellLexiconEntry> = {
     'Hex N makes the company take 5% more damage per point. Like every counter, it is capped at 9 and normally falls by 1 at turn end.',
     'a cracked violet wax charm beside nine purple counting pips',
     ['hex', 'hexes', 'hex counter', 'hex counters'], ['hex', 'hexes', 'damage']),
+  'impact-damage': entry('impact-damage', 'Impact damage',
+    'Flat spell damage scaled from the caster’s Spell Power. It ignores Attack, Defense, luck positioning, and retaliation, but obeys Hex and registered damage reducers.',
+    'a bright spell impact striking a wooden company marker beside a spell-power measuring rod',
+    ['impact damage'], ['impact', 'damage', 'spell', 'power']),
+  resurrection: entry('resurrection', 'Resurrection',
+    'Restore lost HP and revive units only up to that company’s starting count. Summoned and cloned companies cannot be resurrected.',
+    'a fallen wooden figure returning to an incomplete company row beneath a sunrise',
+    ['resurrection', 'resurrect', 'resurrected'], ['resurrection', 'resurrect', 'revive', 'restore']),
+  stun: entry('stun', 'Stun',
+    'A stunned company forfeits its next stated number of actions. This is distinct from skipping a named round.',
+    'a wooden company marker beneath a stopped gear and one crossed-out action arrow',
+    ['stun', 'stunned'], ['stun', 'stunned', 'action', 'forfeit']),
+  clone: entry('clone', 'Clone',
+    'A summoned copy of a non-summoned company. A clone cannot be cloned or resurrected and never joins the permanent army.',
+    'two matching wooden company markers, the second translucent and newly assembled',
+    ['clone', 'cloned'], ['clone', 'cloned', 'copy', 'summon']),
+  mass: entry('mass', 'Mass',
+    'A mass spell affects every living company on the side or sides named by the spell, in stable side, slot, and ID order.',
+    'one spell ribbon branching cleanly to four wooden company markers',
+    ['mass spell', 'mass-ally', 'mass-enemy', 'mass-all'], ['mass', 'spell', 'allies', 'enemies']),
+  'mind-control': entry('mind-control', 'Mind control',
+    'A controlled enemy company acts on the controller’s side until the printed expiry, then returns to its original side. A company can be controlled only once each battle.',
+    'one company marker crossing a center line beneath a short-lived puppet ribbon',
+    ['mind control', 'mind-controlled'], ['mind', 'control', 'company', 'side']),
+  'damage-link': entry('damage-link', 'Damage link',
+    'A bounded share of damage to either linked company is also dealt once to the other. A company can have only one link and links never bounce recursively.',
+    'two company markers joined by one taut red cord carrying a single damage spark',
+    ['damage link', 'damage-linked'], ['damage', 'link', 'share', 'company']),
+  detonate: entry('detonate', 'Detonate',
+    'Remove the named counter pile before converting its removed amount into the spell’s immediate payoff.',
+    'a row of ember pips vanishing into one contained impact burst',
+    ['detonate', 'detonation'], ['detonate', 'detonation', 'counter', 'remove']),
   morale: entry('morale', 'Morale',
     'A company meter. Reaching its threshold spends that meter and grants one extra action; excess morale carries toward another extra action.',
     'a company pennant rising beside a filled segmented meter and a second action arrow',
@@ -155,6 +196,16 @@ export const SPELL_LEXICON: Record<SpellLexiconId, SpellLexiconEntry> = {
     'one short timber-and-stone barricade fitted entirely inside a battlefield hex',
     ['wall hex', 'wall hexes', 'wall tile', 'wall tiles'], ['wall', 'walls', 'hex', 'hexes', 'tile', 'tiles']),
 };
+
+export const DOCS_60_67_SPELL_LEXICON_ASSET_REQUIREMENTS:
+readonly ContentAssetRequirement[] = DOCS_60_67_SPELL_LEXICON_IDS.map((id) => ({
+  canonicalId: `spell-effect-icon:${id}`,
+  semantics: { family: 'lexicon', category: id },
+  introducedBy: 'docs-60-67',
+  nativeAssetId: `spell-effect-icon:${id}`,
+  visualSubject: SPELL_LEXICON[id].visualSubject,
+  accessibleName: `${SPELL_LEXICON[id].name} effect icon`,
+}));
 
 export type SpellRuleToken =
   | { kind: 'text'; text: string }
@@ -306,7 +357,9 @@ export const SPELL_MECHANICS_COVERAGE: Record<SpellId, SpellMechanicsCoverage> =
   quicksilver: coverage('combat:castCraft.quicksilver', ['phase', 'timed-effect'], ['actors', 'battle-time', 'combat-stats']),
   unmake: coverage('combat:twister.unmake', ['twister', 'active-effect', 'counter', 'battle-enchantment'], ['replacement', 'targets']),
   ironclad: coverage('combat:castCraft.ironclad', ['battle-enchantment'], ['actors', 'combat-stats']),
-  wither: coverage('combat:castGrave.wither', ['hex', 'chill', 'counter'], ['actors', 'amounts']),
+  wither: coverage('combat:p1GraveWild.wither',
+    ['impact-damage', 'hex', 'chill', 'counter', 'spell-power'],
+    ['actors', 'amounts', 'damage-and-hp']),
   graveChill: coverage('combat:castGrave.graveChill', ['chill', 'counter', 'morale'], ['actors', 'amounts']),
   mournersVeil: coverage('combat:castGrave.mournersVeil', ['timed-effect', 'hex'], ['actors', 'battle-time', 'combat-stats']),
   dirge: coverage('combat:castGrave.dirge', [], ['actors', 'damage-and-hp', 'amounts']),
@@ -350,12 +403,74 @@ export const SPELL_MECHANICS_COVERAGE: Record<SpellId, SpellMechanicsCoverage> =
   greenTide: coverage('adventure:resolveWild.greenTide', ['deepwood'], ['movement', 'map-time', 'exploration']),
   rootAndRuin: coverage('adventure:resolveWild.rootAndRuin', ['undergrowth'], ['amounts', 'destinations', 'map-time']),
   fickleWeather: coverage('adventure:resolveWild.fickleWeather', ['omen'], ['amounts', 'replacement', 'map-time']),
-  shedSkin: coverage('combat:expansion.shedSkin', ['counter', 'timed-effect', 'bloom'], ['actors', 'replacement']),
-  hedgerowMarch: coverage('combat:expansion.hedgerowMarch', ['battle-enchantment'], []),
+  shedSkin: coverage('combat:p1GraveWild.shedSkin',
+    ['counter', 'timed-effect', 'bloom', 'damage-link'], ['actors', 'replacement', 'adjacency']),
+  hedgerowMarch: coverage('combat:p1GraveWild.hedgerowMarch',
+    ['battle-enchantment', 'phase'], ['actors', 'combat-stats']),
   hourglassCrack: coverage('combat:expansion.hourglassCrack', ['extra-action'], ['actors', 'battle-time', 'amounts']),
   borrowShape: coverage('combat:expansion.borrowShape', ['ability'], ['actors', 'adjacency', 'exploration', 'battle-time']),
   echo: coverage('combat:resolveSpellFace.echo', ['spell-power'], ['learning', 'targets', 'casting-resources']),
   loyalUntoDeath: coverage('combat:expansion.loyalUntoDeath', ['morale'], ['actors', 'battle-time', 'casting-resources']),
+  kindle: coverage('combat:p1RiteCraft.kindle', ['impact-damage', 'spell-power', 'morale'], ['actors', 'damage-and-hp']),
+  sunlance: coverage('combat:p1RiteCraft.sunlance', ['impact-damage', 'spell-power', 'morale'], ['actors', 'damage-and-hp']),
+  steadyHands: coverage('combat:p1RiteCraft.steadyHands', ['timed-effect'], ['actors', 'battle-time', 'combat-stats']),
+  wellspring: coverage('adventure:p1RiteCraft.wellspring', ['spell-power'], ['actors', 'casting-resources', 'movement', 'map-time']),
+  secondWind: coverage('combat:p1RiteCraft.secondWind', ['resurrection', 'spell-power'], ['actors', 'damage-and-hp']),
+  litanyOfDawn: coverage('combat:p1RiteCraft.litanyOfDawn', ['mass', 'morale', 'timed-effect'], ['actors', 'combat-stats', 'battle-time']),
+  holdTheLine: coverage('combat:p1RiteCraft.holdTheLine', ['battle-enchantment', 'bloom'], ['actors', 'battle-time', 'damage-and-hp']),
+  consecratedGround: coverage('combat:p1RiteCraft.consecratedGround', ['resonance'], ['actors', 'battle-time']),
+  reprise: coverage('combat:p1RiteCraft.reprise', ['extra-action'], ['actors', 'battle-time']),
+  rivet: coverage('combat:p1RiteCraft.rivet', ['timed-effect'], ['actors', 'combat-stats', 'battle-time']),
+  whetstone: coverage('combat:p1RiteCraft.whetstone', ['timed-effect'], ['actors', 'combat-stats', 'battle-time']),
+  shrapnel: coverage('combat:p1RiteCraft.shrapnel', ['timed-effect'], ['actors', 'adjacency', 'damage-and-hp']),
+  ammunitionCart: coverage('combat:p1RiteCraft.ammunitionCart', ['mass'], ['actors', 'combat-stats']),
+  detonate: coverage('combat:p1RiteCraft.detonate', ['detonate', 'burn', 'impact-damage', 'spell-power'], ['actors', 'adjacency', 'damage-and-hp']),
+  clockworkDouble: coverage('combat:p1RiteCraft.clockworkDouble', ['clone', 'counter', 'timed-effect', 'spell-power'], ['actors', 'damage-and-hp']),
+  blink: coverage('combat:p1RiteCraft.blink', ['extra-action'], ['actors', 'destinations']),
+  overclock: coverage('combat:p1RiteCraft.overclock', ['extra-action', 'stun'], ['actors', 'battle-time']),
+  dimensionDoor: coverage('adventure:p1RiteCraft.dimensionDoor', ['spell-power'], ['exploration', 'travel', 'destinations', 'map-time']),
+  pinchOfAsh: coverage('combat:p1GraveWild.pinchOfAsh', ['hex', 'morale', 'spell-power'], ['actors', 'amounts']),
+  tithe: coverage('combat:p1GraveWild.tithe', ['bloom'], ['actors', 'casting-resources', 'damage-and-hp']),
+  grudge: coverage('combat:p1GraveWild.grudge', ['hex', 'timed-effect'], ['actors', 'battle-time']),
+  yoke: coverage('combat:p1GraveWild.yoke', ['timed-effect', 'damage-link', 'spell-power'],
+    ['actors', 'battle-time', 'damage-and-hp']),
+  graveBargain: coverage('combat:p1GraveWild.graveBargain', ['bloom', 'hex', 'morale'], ['actors', 'casting-resources', 'damage-and-hp']),
+  puppetStrings: coverage('combat:p1GraveWild.puppetStrings',
+    ['hex', 'timed-effect', 'spell-power', 'mind-control'],
+    ['actors', 'ownership', 'battle-time']),
+  nettle: coverage('combat:p1GraveWild.nettle', ['impact-damage', 'chill', 'spell-power'], ['actors', 'combat-stats']),
+  bramblelash: coverage('combat:p1GraveWild.bramblelash', ['impact-damage', 'undergrowth', 'spell-power'], ['actors', 'destinations']),
+  wildcall: coverage('combat:p1GraveWild.wildcall', ['summon', 'beast', 'spell-power'], ['actors', 'destinations']),
+  sapAndSinew: coverage('combat:p1GraveWild.sapAndSinew', ['beast', 'timed-effect', 'bloom'], ['actors', 'combat-stats', 'battle-time']),
+  verdantSurge: coverage('combat:p1GraveWild.verdantSurge', ['mass', 'bloom', 'chill'], ['actors', 'battle-time']),
+  theTurningYear: coverage('combat:p1GraveWild.theTurningYear', ['mass', 'counter'], ['actors', 'replacement']),
+  fly: coverage('adventure:p1GraveWild.fly', ['guardian'],
+    ['travel', 'movement', 'map-time']),
+  scrying: coverage('adventure:p2.scrying', ['guardian'], ['exploration', 'actors', 'map-time']),
+  bellBookAndCandle: coverage('combat:p2.bellBookAndCandle', ['battle-enchantment', 'extra-action'], ['actors', 'casting-resources', 'battle-time']),
+  processionOfLamps: coverage('adventure:p2.processionOfLamps', [], ['actors', 'movement', 'map-time']),
+  dayspring: coverage('combat:p2.dayspring', ['counter', 'morale', 'resurrection'], ['actors', 'damage-and-hp']),
+  theLongOath: coverage('combat:p2.theLongOath', ['battle-enchantment', 'morale'], ['actors', 'casting-resources', 'battle-time']),
+  prospect: coverage('adventure:p2.prospect', [], ['exploration', 'cities-and-sites', 'map-time']),
+  counterweight: coverage('combat:p2.counterweight', ['timed-effect', 'forced-movement'], ['actors', 'battle-time', 'combat-stats']),
+  bulwark: coverage('combat:p2.bulwark', ['wall-hex', 'spell-power'], ['destinations', 'actors']),
+  theUnmakingEngine: coverage('combat:p2.theUnmakingEngine', ['impact-damage', 'timed-effect', 'battle-enchantment'], ['actors', 'damage-and-hp']),
+  mirrorHall: coverage('combat:p2.mirrorHall', ['battle-enchantment', 'extra-action'], ['actors', 'targets', 'battle-time']),
+  secondGrave: coverage('combat:p2.secondGrave', ['resurrection', 'bloom'], ['actors', 'damage-and-hp']),
+  ashenPall: coverage('combat:p2.ashenPall', ['hex', 'chill', 'counter'], ['actors', 'battle-time']),
+  theLedgerBalanced: coverage('combat:p2.theLedgerBalanced', ['timed-effect'], ['actors', 'damage-and-hp', 'battle-time']),
+  ossuary: coverage('combat:p2.ossuary', ['battle-enchantment', 'summon'], ['actors', 'damage-and-hp']),
+  stealAway: coverage('adventure:p2.stealAway', [], ['cities-and-sites', 'ownership', 'map-time']),
+  theLongSilence: coverage('combat:p2.theLongSilence', ['battle-enchantment'], ['actors', 'casting-resources', 'battle-time']),
+  harvest: coverage('combat:p2.harvest', ['resurrection'], ['actors', 'damage-and-hp']),
+  theDebtCalled: coverage('adventure:p2.theDebtCalled', [], ['actors', 'movement', 'map-time']),
+  beastSense: coverage('adventure:p2.beastSense', ['beast', 'guardian'], ['exploration', 'actors', 'map-time']),
+  illWind: coverage('adventure:p2.illWind', ['chill'], ['actors', 'battle-time', 'map-time']),
+  rootTheSky: coverage('combat:p2.rootTheSky', ['impact-damage', 'chill', 'ability'], ['actors', 'combat-stats', 'battle-time']),
+  beastSovereign: coverage('combat:p2.beastSovereign', ['battle-enchantment', 'beast', 'bloom'], ['actors', 'combat-stats', 'battle-time']),
+  windShear: coverage('combat:p2.windShear', ['forced-movement', 'chill'], ['actors', 'destinations', 'damage-and-hp']),
+  theLongGreen: coverage('combat:p2.theLongGreen', ['resurrection', 'bloom', 'chill', 'hex'], ['actors', 'damage-and-hp']),
+  theWeatherItself: coverage('combat:p2.theWeatherItself', ['battle-enchantment', 'chill', 'morale'], ['actors', 'battle-time']),
 };
 
 export function validateSpellLexicon(): void {

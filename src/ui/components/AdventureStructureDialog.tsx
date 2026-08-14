@@ -245,6 +245,13 @@ export function AdventureStructureDialog({
         <p>Permanently exchange one carried artifact for a seeded artifact of the same class.
           The equipped Patternless Coat may instead be removed for no return.</p>
         <div className="structure-options">
+          {object.tomeSpellId && !object.tomeClaimed && (
+            <StructureAction state={state}
+              action={{ type: 'USE_RELIQUARY_CAIRN', objectId: object.id, backpackIndex: -2 }}
+              label="Claim the sealed Spell Tome" title="Claim the Cairn’s Spell Tome" actor={actor}
+              target="The Reliquary Cairn" effect="Globally consume this pickup and permanently learn its hidden seeded tier-1–3 spell."
+              onDraft={onDraft} />
+          )}
           {Object.values(hero.artifacts.equipment).some((artifact) => artifact?.id === 'patternlessCoat') && (
             <StructureAction state={state}
               action={{ type: 'USE_RELIQUARY_CAIRN', objectId: object.id, backpackIndex: -1 }}
@@ -264,6 +271,36 @@ export function AdventureStructureDialog({
         {!Object.values(hero.artifacts.equipment).some((artifact) => artifact?.id === 'patternlessCoat')
           && hero.artifacts.backpack.length === 0
           && <EmptyOffer>{actor} carries no eligible artifact.</EmptyOffer>}
+      </>}
+      {object.kind === 'stacks' && <>
+        <p>Pay <ResourceAmount resource="essence" amount={3} compact /> once for this hero.
+          The Stacks show three setup-seeded unknown spells no higher than your best owned Mage Guild;
+          you must keep exactly one.</p>
+        <StructureAction state={state} action={{ type: 'USE_ACQUISITION_SITE', objectId: object.id }}
+          label="Pay and draw three" title="Consult The Stacks" actor={actor}
+          target="The Stacks" effect="Spend 3 essence, mark this hero as visited, then keep one legal spell."
+          onDraft={onDraft} />
+        {(hero.skills.palimpsest ?? 0) >= 3
+          && <PalimpsestService state={state} hero={hero}
+            site={object as Extract<MapObject, { kind: 'stacks' | 'wildShrine' }> & { kind: 'stacks' }}
+            onDraft={onDraft} />}
+      </>}
+      {object.kind === 'wildShrine' && <>
+        <p>Once for this hero, receive one setup-seeded unknown ordinary spell.
+          Higher tiers carry more weight; the result is not previewed.</p>
+        <StructureAction state={state} action={{ type: 'USE_ACQUISITION_SITE', objectId: object.id }}
+          label="Accept the shrine’s spell" title="Visit the Wild Shrine" actor={actor}
+          target="Wild Shrine" effect="Permanently learn the hidden seeded spell and mark this hero as visited."
+          onDraft={onDraft} />
+      </>}
+      {object.kind === 'reliquaryOfPages' && <>
+        <p>This globally unique site contains one setup-seeded tier-4 Spell Tome.
+          Its named spell is hidden until claimed.</p>
+        <StructureAction state={state} action={{ type: 'USE_ACQUISITION_SITE', objectId: object.id }}
+          label={object.claimed ? 'Already claimed' : 'Claim the sealed page'}
+          title="Claim the Reliquary of Pages" actor={actor} target="Reliquary of Pages"
+          effect="Permanently learn its tier-4 spell; no other hero may claim this site."
+          onDraft={onDraft} />
       </>}
       {object.kind === 'mercenaryCamp' && <>
         <p>Hire one displayed company at 150% of its normal gold cost. It must merge with

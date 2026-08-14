@@ -3,6 +3,18 @@ import { SKILLS } from '../../content/skills';
 import type { Castle, Coord, GameMap, Hero } from '../types';
 import { coordKey } from './pathfinding';
 import { castleFootprintTiles } from './occupancy';
+import { UNITS } from '../../content/units';
+import { hasArtifactEffect } from '../artifacts';
+
+export function heroVisibleToPlayer(
+  viewer: Hero['owner'], target: Hero, explored: ReadonlySet<string>,
+): boolean {
+  return target.alive && (explored.has(coordKey(target.position))
+    || (target.owner !== viewer && hasArtifactEffect(target, 'visible_position')));
+}
+
+export const creatureRevealBonus = (hero: Hero) => hero.army.some((stack) => stack
+  && UNITS[stack.unitId].abilities.includes('far_sighted')) ? 2 : 0;
 
 function revealCircle(
   explored: Set<string>,
@@ -41,7 +53,7 @@ export function revealForPlayer(
     ? heroOrHeroes : heroOrHeroes ? [heroOrHeroes] : [];
   for (const hero of heroes.filter((candidate) => candidate.alive)) {
     const radius = HERO_REVEAL_RADIUS + ((hero.skills.scouting ?? 0) >= 2
-      ? SKILLS.scouting.values.revealBonus : 0);
+      ? SKILLS.scouting.values.revealBonus : 0) + creatureRevealBonus(hero);
     revealCircle(explored, map, hero.position, radius);
   }
   for (const castle of castles) castleFootprintTiles(castle).forEach((edge) =>
@@ -66,7 +78,7 @@ export function revealForMovementPath(
 ): string[] {
   const explored = new Set(revealForPlayer(current, map, heroes, castles));
   const radius = HERO_REVEAL_RADIUS + ((movingHero.skills.scouting ?? 0) >= 2
-    ? SKILLS.scouting.values.revealBonus : 0);
+    ? SKILLS.scouting.values.revealBonus : 0) + creatureRevealBonus(movingHero);
   for (const position of enteredPositions) revealCircle(explored, map, position, radius);
   return [...explored].sort();
 }

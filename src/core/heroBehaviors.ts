@@ -1,6 +1,6 @@
 import { HEROES } from '../content/heroes';
 import { SKILLS } from '../content/skills';
-import { artifactEffectTotal } from './artifacts';
+import { artifactEffectTotal, effectivePrimaryStat, rosterArtifactStatBonus } from './artifacts';
 import type {
   BattleHero, Hero, SecondarySkillId, SkillRank, SpecialtyId,
 } from './types';
@@ -140,4 +140,19 @@ export function consumableSlotCount(hero: Pick<Hero, 'skills'>): number {
   const rank = skillRank(hero, 'provisioner');
   return 6 + (rank === 1 ? SKILLS.provisioner.values.rank1Slots
     : rank >= 2 ? SKILLS.provisioner.values.rank2Slots : 0);
+}
+
+export function maximumMana(hero: Hero, player?: Pick<import('./types').Player, 'heroes'>): number {
+  const multiplier = skillRank(hero, 'attunement') === 3 ? 12 : 10;
+  const ordinary = (effectivePrimaryStat(hero, 'knowledge')
+    + (player ? rosterArtifactStatBonus(player) : 0)) * multiplier;
+  const penalty = artifactEffectTotal(hero, 'max_mana_penalty', 'percent');
+  return Math.max(0, Math.floor(ordinary * (1 - penalty / 100)));
+}
+
+export function gainExperience(hero: Hero, baseAmount: number): number {
+  const gained = Math.floor(baseAmount * (1
+    + (skillRank(hero, 'loremaster') >= 1 ? SKILLS.loremaster.values.experience : 0)));
+  hero.xp += gained;
+  return gained;
 }

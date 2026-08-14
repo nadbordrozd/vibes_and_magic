@@ -80,14 +80,14 @@ describe('Phase A persistent battlefield tiles', () => {
 });
 
 describe('Phase A artifacts and equipment', () => {
-  it('contains the complete catalog and eleven paper-doll slots', () => {
+  it('contains the complete catalog and twelve serialized paper-doll slots', () => {
     expect(() => validateArtifacts()).not.toThrow();
-    expect(Object.keys(ARTIFACTS)).toHaveLength(90);
+    expect(Object.keys(ARTIFACTS)).toHaveLength(148);
     expect(Object.values(ARTIFACTS).filter((item) =>
       item.class === 'trinket' && item.slot === 'misc')).toHaveLength(6);
     expect(Object.keys(hero(createGame({
       seed: 302, p1: 'human', p2: 'human',
-    })).artifacts.equipment)).toHaveLength(11);
+    })).artifacts.equipment)).toHaveLength(12);
   });
 
   it('equips and unequips only on the adventure layer', () => {
@@ -133,8 +133,8 @@ describe('Phase A artifacts and equipment', () => {
 });
 
 describe('Phase A three-rank skills', () => {
-  it('defines three behavioral ranks for all twenty-one skills', () => {
-    expect(SKILL_IDS).toHaveLength(21);
+  it('defines three behavioral ranks for all thirty skills', () => {
+    expect(SKILL_IDS).toHaveLength(30);
     for (const id of SKILL_IDS) {
       expect([SKILLS[id].ranks[1], SKILLS[id].ranks[2], SKILLS[id].ranks[3]]
         .every(Boolean)).toBe(true);
@@ -250,7 +250,7 @@ describe('Phase A Debt entries', () => {
     expect(() => scheduleDebt(owner, {
       id: 'debt-3', name: 'Debt 3', description: 'Too many.',
       trigger: { kind: 'day-start', dueDay: 9 }, handlerTag: 'announce',
-    })).toThrow('at most two');
+    })).toThrow('at most 2');
   });
 
   it('triggers on schedule and is never effect-manipulable', () => {

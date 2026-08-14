@@ -9,6 +9,7 @@ import type {
 } from '../types';
 import { guildSpellCount } from './magic';
 import { skillRank } from '../heroBehaviors';
+import { learnSpell } from './spellLearning';
 
 function sitePool(state: GameState, hero: Hero, siteId: string): SpellId[] {
   const castle = state.castles.find((candidate) => candidate.id === siteId);
@@ -19,6 +20,21 @@ function sitePool(state: GameState, hero: Hero, siteId: string): SpellId[] {
     }
     return castle.guildDeck.slice(0, guildSpellCount(castle));
   }
+  const stacks = state.map.objects.find((object) =>
+    object.id === siteId && object.kind === 'stacks');
+  if (stacks?.kind === 'stacks') {
+    if (skillRank(hero, 'palimpsest') < 3
+        || !sameCoord(objectEntranceTile(stacks), hero.position)) {
+      throw new Error('Palimpsest cannot be used at The Stacks');
+    }
+    const levels = ['mageGuild1', 'mageGuild2', 'mageGuild3', 'mageGuild4', 'mageGuild5'] as const;
+    const highest = state.castles.filter((candidate) => candidate.owner === hero.owner)
+      .reduce((best, candidate) => Math.max(best, levels.reduce((level, building, index) =>
+        candidate.buildings.includes(building) ? Math.max(level, index + 1) : level, 0)), 0);
+    if (!highest) throw new Error('The Stacks require an owned Mage Guild');
+    return (Object.keys(SPELLS) as SpellId[]).filter((spellId) =>
+      SPELLS[spellId].acquisition?.guild && (SPELLS[spellId].tier ?? 1) <= highest);
+  }
   const shrine = state.map.objects.find((object) =>
     object.id === siteId && object.kind === 'shrine');
   if (!shrine || shrine.kind !== 'shrine' || !shrine.cleared
@@ -26,7 +42,8 @@ function sitePool(state: GameState, hero: Hero, siteId: string): SpellId[] {
       || skillRank(hero, 'palimpsest') < 3) {
     throw new Error('Palimpsest cannot be used at this site');
   }
-  return ACQUIRABLE_SCHOOL_SPELLS(shrine.school);
+  return ACQUIRABLE_SCHOOL_SPELLS(shrine.school)
+    .filter((spellId) => (SPELLS[spellId].tier ?? 5) <= 2);
 }
 
 export function palimpsestForget(
@@ -47,8 +64,11 @@ export function palimpsestForget(
   hero.upgradedSpells = hero.upgradedSpells.filter((candidate) => candidate !== spellId);
   let shuffled: SpellId[];
   [shuffled, state.rng] = shuffle(pool, state.rng);
-  const count = rank === 1
-    ? SKILLS.palimpsest.values.rank1Draw : SKILLS.palimpsest.values.rank2Draw;
+  const site = state.map.objects.find((object) => object.id === siteId);
+  const extended = rank >= 3 && (site?.kind === 'shrine' || site?.kind === 'stacks');
+  const count = (rank === 1 ? SKILLS.palimpsest.values.rank1Draw
+    : extended ? 4 : SKILLS.palimpsest.values.rank2Draw)
+    + (skillRank(hero, 'loremaster') >= 2 ? SKILLS.loremaster.values.choices : 0);
   state.pendingChoice = {
     kind: 'palimpsest', playerId: hero.owner, heroId: hero.id,
     options: shuffled.slice(0, count),
@@ -63,7 +83,7 @@ export function choosePalimpsest(state: GameState, spellId: SpellId): void {
   }
   const hero = findOwnedHero(state, pending.playerId, pending.heroId);
   if (!hero) throw new Error('Palimpsest hero missing');
-  hero.knownSpells.push(spellId);
+  learnSpell(hero, spellId);
   state.pendingChoice = null;
   state.lastMessage = `${SPELLS[spellId].name} retained from the Palimpsest offer.`;
 }

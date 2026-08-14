@@ -49,15 +49,15 @@ function adventure(...spellIds: SpellId[]): [GameState, Hero] {
 }
 
 describe('Rite and Craft structured spell rules', () => {
-  it('covers all 34 spells in canonical school and catalog order', () => {
-    expect(RITE_CRAFT_SPELL_IDS).toHaveLength(34);
-    expect(new Set(RITE_CRAFT_SPELL_IDS).size).toBe(34);
+  it('covers every current Rite/Craft spell in canonical school and catalog order', () => {
+    expect(RITE_CRAFT_SPELL_IDS).toHaveLength(62);
+    expect(new Set(RITE_CRAFT_SPELL_IDS).size).toBe(62);
     const rite = SPELL_IDS.filter((id) => SPELLS[id].school === 'rite');
     const craft = SPELL_IDS.filter((id) => SPELLS[id].school === 'craft');
-    expect(rite).toHaveLength(17);
-    expect(craft).toHaveLength(17);
+    expect(rite).toHaveLength(31);
+    expect(craft).toHaveLength(31);
     expect(RITE_CRAFT_SPELL_IDS).toEqual([...rite, ...craft]);
-    expect(Object.keys(RITE_CRAFT_SPELL_RULES)).toEqual([...RITE_CRAFT_SPELL_IDS]);
+    expect(new Set(Object.keys(RITE_CRAFT_SPELL_RULES))).toEqual(new Set(RITE_CRAFT_SPELL_IDS));
   });
 
   it('keeps Standard and Upgraded catalog strings as exact deterministic projections', () => {
@@ -98,15 +98,15 @@ describe('Rite and Craft structured spell rules', () => {
     }
   });
 
-  it('describes the actual identical Upgraded outcomes for Standard of Dawn and Standing Mirror', () => {
-    for (const id of ['standardOfDawn', 'unmake', 'standingMirror'] as const) {
+  it('retunes Standing Mirror and executes Standard of Dawn distinctly', () => {
+    for (const id of ['standingMirror'] as const) {
       expect(spellRulePlainText(RITE_CRAFT_SPELL_RULES[id].upgraded), id)
-        .toBe(spellRulePlainText(RITE_CRAFT_SPELL_RULES[id].standard));
+        .not.toBe(spellRulePlainText(RITE_CRAFT_SPELL_RULES[id].standard));
     }
     const standard = battle();
     const upgraded = battle();
-    cast(standard, 'attacker', 'standardOfDawn', false);
-    cast(upgraded, 'attacker', 'standardOfDawn', true);
+    cast(standard, 'defender', 'standardOfDawn', false);
+    cast(upgraded, 'defender', 'standardOfDawn', true);
     standard.stacks[0].count = 1;
     upgraded.stacks[0].count = 1;
     standard.stacks[1].morale = 50;
@@ -117,6 +117,7 @@ describe('Rite and Craft structured spell rules', () => {
     runAttackPipeline(upgraded, upgraded.stacks[2].id, upgraded.stacks[0].id);
     expect(upgraded.stacks[1].morale).toBe(standard.stacks[1].morale);
     expect(upgraded.stacks[1].morale).toBeLessThan(50);
+    expect(upgraded.stacks[2].bonusActions).toBeGreaterThan(standard.stacks[2].bonusActions);
 
     const standardMirror = battle();
     const upgradedMirror = battle();
@@ -129,7 +130,7 @@ describe('Rite and Craft structured spell rules', () => {
         position: mirror.position, effects: mirror.effects, temporaryAbilities: mirror.temporaryAbilities,
       };
     };
-    expect(mirrorShape(upgradedMirror)).toEqual(mirrorShape(standardMirror));
+    expect(mirrorShape(upgradedMirror)).not.toEqual(mirrorShape(standardMirror));
   });
 
   it('pins Unmake to one selected effect and Oathbind to blocking only new company effects', () => {

@@ -10,8 +10,8 @@ interface Props {
 
 /** One no-fallback manifest renderer shared by later spell-rule and inspection surfaces. */
 export function SpellEffectIcon({ id, className = '', large = false, decorative = false }: Props) {
-  const entry = spellEffectIcon(id);
   const size = large ? 64 : 32;
+  const entry = spellEffectIcon(id);
   return <img
     className={`content-icon spell-effect-icon ${className}`}
     src={`/${entry.file}`}

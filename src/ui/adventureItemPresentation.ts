@@ -27,6 +27,7 @@ export function adventureItemDraft(
   let effect = definition.description;
   if (definition.behavior === 'remoteMovement' && targetHero) targetName = targetHero.name;
   if (definition.behavior === 'reveal' && target) targetName = `map center ${target.x}, ${target.y}`;
+  if (definition.behavior === 'survey' && target) targetName = `map center ${target.x}, ${target.y}`;
   if (definition.behavior === 'impassableStep' && target) {
     targetName = `landing tile ${target.x}, ${target.y}`;
     effect = `${hero.name} crosses the intervening impassable tiles and lands there.`;
@@ -45,6 +46,13 @@ export function legalAdventureItemMapTargets(
   const item = hero.inventory[inventorySlot];
   if (!item || typeof item === 'string') return new Set();
   const definition = ITEMS[item.id];
+  if (definition.behavior === 'survey') {
+    const targets = new Set<string>();
+    for (let y = 0; y < state.map.height; y += 1) for (let x = 0; x < state.map.width; x += 1) {
+      targets.add(`${x},${y}`);
+    }
+    return targets;
+  }
   if (definition.behavior === 'reveal') {
     const allowance = definition.amount ?? 0;
     const targets = new Set<string>();

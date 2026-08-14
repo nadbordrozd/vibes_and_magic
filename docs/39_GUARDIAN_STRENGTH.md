@@ -35,6 +35,25 @@ adjustments are additive and their combined multiplier is clamped to 0.85–1.35
 | full heal | +0.25 |
 | melee reflection | +0.25 |
 | immobile | −0.15 |
+| sniper | +0.08 |
+| first strike | +0.10 |
+| phalanx | +0.06 |
+| spell shrug | +0.05 |
+| all adjacent | +0.20 |
+| breath | +0.12 |
+| line strike | +0.10 |
+| cleave | +0.08 |
+| blast shot | +0.12 |
+| arc shot | +0.10 |
+| warded hide | +0.06 |
+| low-magic immune | +0.08 |
+| spellbound | +0.05 |
+| caster | +0.10 |
+| spell frail | −0.06 |
+| slow witted | −0.10 |
+| hungry | −0.05 |
+| mindless | −0.04 |
+| brittle bones | −0.06 |
 
 Abilities with matchup-, terrain-, casualty-, or choice-dependent value remain outside the scalar.
 The one-point damage floor gives non-attacking but legal pseudo-units a finite positive rating.
@@ -53,10 +72,13 @@ attacker/defender seatings for seeds 11, 29, and 47 on open meadow. It covers id
 cross-tier melee/ranged/fast/defensive/ability-bearing pairs, and six mixed armies. The committed
 report is [`reports/GUARDIAN_STRENGTH_CALIBRATION.md`](reports/GUARDIAN_STRENGTH_CALIBRATION.md).
 `npm run calibrate:guardian-strength` fails when that report differs from fresh deterministic output.
+The same report records the exact stable-direction adjustment catalog and the re-derived Crooked
+Crown and Sixfold Trial guardian rosters, so trait or authored-count drift fails the same gate.
 
 Acceptance targets are median absolute break-even count error at most 20%, and correct ordering for
-at least 80% of decisive mixed matchups. The selected formula reaches 14.5% median error versus
-26.6% for the old estimator, and 5/5 decisive mixed orderings. Equal identical stacks split 50/50
+at least 80% of decisive mixed matchups. After the docs 63–64 stable-direction additions, the
+selected formula reaches 13.6% median error versus 24.6% for the old estimator, and 6/6 decisive
+mixed orderings. Equal identical stacks split 50/50
 after seating reversal; doubled identical stacks win all paired battles.
 
 ## Consumer and threshold audit

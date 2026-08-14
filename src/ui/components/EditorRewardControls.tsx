@@ -6,7 +6,7 @@ import type { EditorMapReward, EditorRewardBundle } from '../../core/mapEditor';
 import {
   EDITOR_ARTIFACT_CATALOG, EDITOR_ITEM_CATALOG, EDITOR_RESOURCE_IDS,
   EDITOR_SPELL_SCHOOLS, createDefaultEditorArtifactInstance,
-  createDefaultEditorItemInstance,
+  createDefaultEditorItemInstance, EDITOR_TOME_SOURCES, editorTomeSpellChoices,
 } from '../mapEditorRewards';
 import { ArtifactSprite, ItemSprite } from '../assets';
 
@@ -99,6 +99,28 @@ export function EditorRewardInspector({
             }}>{Object.values(SPELLS).map((spell) => <option key={spell.id} value={spell.id}>
               {spell.name}
             </option>)}</select>}
+          {item.id === 'spellTome' && <>
+            <select aria-label={`Reward item ${index + 1} Tome source`}
+              value={item.tomeSource} onChange={(event) => {
+                const tomeSource = event.target.value as NonNullable<typeof item.tomeSource>;
+                const choices = editorTomeSpellChoices(tomeSource);
+                const items = reward.bundle.items.map((candidate, candidateIndex) =>
+                  candidateIndex === index ? { ...candidate, tomeSource,
+                    storedSpellId: choices.includes(candidate.storedSpellId as SpellId)
+                      ? candidate.storedSpellId : choices[0] } : candidate);
+                updateBundle({ ...reward.bundle, items });
+              }}>{EDITOR_TOME_SOURCES.map((source) => <option key={source} value={source}>
+                {source}
+              </option>)}</select>
+            <select aria-label={`Reward item ${index + 1} Tome spell`}
+              value={item.storedSpellId} onChange={(event) => {
+                const items = reward.bundle.items.map((candidate, candidateIndex) =>
+                  candidateIndex === index ? { ...candidate, storedSpellId: event.target.value }
+                    : candidate);
+                updateBundle({ ...reward.bundle, items });
+              }}>{editorTomeSpellChoices(item.tomeSource!).map((spellId) =>
+                <option key={spellId} value={spellId}>{SPELLS[spellId].name}</option>)}</select>
+          </>}
           {item.id === 'tradeGoods' && <span>Origin {item.origin?.x ?? origin.x},{item.origin?.y ?? origin.y}</span>}
           <button onClick={() => updateBundle({ ...reward.bundle,
             items: reward.bundle.items.filter((_item, candidate) => candidate !== index) })}>

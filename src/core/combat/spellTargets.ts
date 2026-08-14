@@ -11,6 +11,8 @@ interface EffectCandidate {
   kind: EffectKind;
   counter?: CounterId;
   beneficial?: boolean;
+  spellId?: SpellId;
+  protected?: boolean;
 }
 
 function activeEffects(battle: BattleState): EffectCandidate[] {
@@ -28,6 +30,8 @@ function activeEffects(battle: BattleState): EffectCandidate[] {
         id: `timed:${stack.id}:${effect.id}`,
         kind: 'timed',
         beneficial: effect.beneficial,
+        spellId: effect.spellId,
+        protected: effect.spellId === 'yoke' && Boolean(stack.damageLink?.protected),
       });
     }
   }
@@ -44,6 +48,8 @@ function activeEffects(battle: BattleState): EffectCandidate[] {
 function accepts(operation: EffectOperation, effect: EffectCandidate): boolean {
   if (operation === 'amplify') return true;
   if (operation === 'reflect') return effect.kind !== 'enchantment';
+  if (effect.spellId === 'yoke') return !effect.protected
+    && (operation === 'unmake' || operation === 'sour');
   if (operation === 'unmake') return effect.kind !== 'timed';
   if (operation === 'overgrow') return effect.kind !== 'enchantment';
   return effect.kind === 'enchantment'

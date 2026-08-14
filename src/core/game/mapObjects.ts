@@ -1,9 +1,10 @@
 import { ARTIFACTS } from '../../content/artifacts';
 import { CHEST_ITEM_POOL, ITEMS } from '../../content/items';
 import { FACTION_UNITS, UNITS } from '../../content/units';
-import { addUnits, canAfford, pay } from '../army';
+import { addUnits } from '../army';
 import {
   addArtifact, consumeEquippedArtifact, hasEquippedArtifact, priceMultiplier,
+  canPlayerAfford, maximumDebtSlots, payPlayer,
 } from '../artifacts';
 import { skillRank } from '../heroBehaviors';
 import { activeHero, findOwnedHero } from '../heroes';
@@ -13,11 +14,13 @@ import { randomInt } from '../rng';
 import type {
   ArtifactId, FactionId, GameState, GuardianReward, Hero, ItemId, ItemInstance, MapObject,
 } from '../types';
-import { addItem } from './items';
+import { addItem, claimSpellTome } from './items';
 import { dealBargains } from './bargains';
 import { tile } from '../../content/terrain';
 import { checkLevel } from './levelUps';
 import { levelThreshold } from '../progression';
+import { SPELLS } from '../../content/spells';
+import { learnSpell } from './spellLearning';
 
 const TINKER_ITEMS = CHEST_ITEM_POOL.filter((id) => ![
   'secondCandle', 'bottledEcho', 'foundersTin', 'cronesBundle',
@@ -52,11 +55,11 @@ export function recruitDwelling(state: GameState, objectId: string, count: numbe
   const cost = Object.fromEntries(Object.entries(unit.cost).map(([resource, amount]) =>
     [resource, Math.ceil((amount ?? 0) * beastDiscount)]));
   const player = state.players[hero.owner];
-  if (!canAfford(player.resources, cost, count)) throw new Error('Cannot afford recruits');
+  if (!canPlayerAfford(player, cost, count)) throw new Error('Cannot afford recruits');
   const army = addUnits(hero.army, dwelling.unitId, count);
   if (!army) throw new Error('No free army slot');
   hero.army = army;
-  player.resources = pay(player.resources, cost, count);
+  payPlayer(player, cost, count);
   dwelling.available -= count;
   state.lastMessage = `${count} ${unit.name} recruited in the field.`;
 }
@@ -70,10 +73,10 @@ export function buyTinkerItem(state: GameState, objectId: string): void {
   const price = Math.floor((rare ? 2_000 : common ? 500 : 1_000) * 1.5
     * priceMultiplier(hero));
   const player = state.players[hero.owner];
-  if (player.resources.gold < price || !addItem(hero, cart.stock)) {
+  if (!canPlayerAfford(player, { gold: price }) || !addItem(hero, cart.stock)) {
     throw new Error('Cannot buy this item');
   }
-  player.resources.gold -= price;
+  payPlayer(player, { gold: price });
   state.lastMessage = `${ITEMS[cart.stock.id].name} bought for ${price} gold.`;
   cart.stock = null;
 }
@@ -149,8 +152,8 @@ export function useChrysalis(state: GameState, objectId: string, armySlot: numbe
   const oldValue = (unit.cost.gold ?? 0) * stack.count;
   const newValue = (UNITS[nextUnitId].cost.gold ?? 0) * nextCount;
   const cost = Math.max(0, Math.ceil((newValue - oldValue) * 1.5));
-  if (state.players[hero.owner].resources.gold < cost) throw new Error('Cannot afford molting');
-  state.players[hero.owner].resources.gold -= cost;
+  if (!canPlayerAfford(state.players[hero.owner], { gold: cost })) throw new Error('Cannot afford molting');
+  payPlayer(state.players[hero.owner], { gold: cost });
   hero.army[armySlot] = { unitId: nextUnitId, count: nextCount };
   pool.visitedWeek[hero.id] = state.week;
   state.lastMessage = `${unit.name} emerge as ${UNITS[nextUnitId].name}.`;
@@ -172,10 +175,11 @@ export function completeBridge(state: GameState, objectId: string): void {
 
 export function attendHedgeSchool(state: GameState, objectId: string): void {
   const [school, hero] = requireStanding(state, objectId, 'hedgeSchool');
-  if (school.visitedBy.includes(hero.id) || state.players[hero.owner].resources.gold < 1_500) {
+  if (school.visitedBy.includes(hero.id)
+      || !canPlayerAfford(state.players[hero.owner], { gold: 1_500 })) {
     throw new Error('Hedge School is unavailable');
   }
-  state.players[hero.owner].resources.gold -= 1_500;
+  payPlayer(state.players[hero.owner], { gold: 1_500 });
   let options; [options, state.rng] = drawLevelOptions(hero, state.rng);
   options = options.filter((option) => option !== 'inscribe' && option !== 'bargain').slice(0, 3);
   const fallback = ['attack', 'defense', 'spellPower', 'knowledge'] as const;
@@ -193,7 +197,18 @@ export function attendHedgeSchool(state: GameState, objectId: string): void {
 export function useReliquaryCairn(
   state: GameState, objectId: string, backpackIndex: number,
 ): void {
-  const [, hero] = requireStanding(state, objectId, 'reliquaryCairn');
+  const [cairn, hero] = requireStanding(state, objectId, 'reliquaryCairn');
+  if (backpackIndex === -2) {
+    if (!cairn.tomeSpellId || cairn.tomeClaimed) {
+      throw new Error("The Cairn's Spell Tome has already been claimed");
+    }
+    const spellId = claimSpellTome(hero, {
+      id: 'spellTome', storedSpellId: cairn.tomeSpellId, tomeSource: 'reliquary-cairn',
+    });
+    cairn.tomeClaimed = true;
+    state.lastMessage = `${hero.name} learns ${SPELLS[spellId].name} from the Cairn's Spell Tome.`;
+    return;
+  }
   if (backpackIndex < 0 && consumeEquippedArtifact(hero, 'patternlessCoat')) {
     state.lastMessage = 'The Cairn accepts the Patternless Coat, smugly.';
     return;
@@ -215,11 +230,12 @@ export function claimGuardianReward(state: GameState, hero: Hero, reward: Guardi
   state.players[hero.owner].resources.timber += reward.timber ?? 0;
   state.players[hero.owner].resources.iron += reward.iron ?? 0;
   state.players[hero.owner].resources.essence += reward.essence ?? 0;
-  for (const item of reward.items ?? []) addItem(hero, item);
-  for (const artifact of reward.artifacts ?? []) addArtifact(hero, artifact);
-  if (reward.teachesSpell && !hero.knownSpells.includes(reward.teachesSpell as never)) {
-    hero.knownSpells.push(reward.teachesSpell as never);
+  for (const item of reward.items ?? []) {
+    if (item.id === 'spellTome') claimSpellTome(hero, item);
+    else addItem(hero, item);
   }
+  for (const artifact of reward.artifacts ?? []) addArtifact(hero, artifact);
+  if (reward.teachesSpell) learnSpell(hero, reward.teachesSpell as never);
 }
 
 export function chooseSiteStat(state: GameState, choice: 'attack' | 'defense'): void {
@@ -260,18 +276,19 @@ export function buyMercenary(state: GameState, objectId: string, rosterIndex: nu
     * priceMultiplier(hero));
   const player = state.players[hero.owner];
   const army = addUnits(hero.army, stack.unitId, stack.count);
-  if (!army || player.resources.gold < price) throw new Error('Cannot hire this company');
-  player.resources.gold -= price; hero.army = army; camp.roster.splice(rosterIndex, 1);
+  if (!army || !canPlayerAfford(player, { gold: price })) throw new Error('Cannot hire this company');
+  payPlayer(player, { gold: price }); hero.army = army; camp.roster.splice(rosterIndex, 1);
   state.lastMessage = `${stack.count} ${UNITS[stack.unitId].name} hired for ${price} gold.`;
 }
 
 export function buyWagonItem(state: GameState, objectId: string): void {
   const [camp, hero] = requireStanding(state, objectId, 'wagonCamp');
   const price = Math.ceil(1_000 * priceMultiplier(hero));
-  if (!camp.stock || state.players[hero.owner].resources.gold < price || !addItem(hero, camp.stock)) {
+  if (!camp.stock || !canPlayerAfford(state.players[hero.owner], { gold: price })
+      || !addItem(hero, camp.stock)) {
     throw new Error('Cannot buy this wagon item');
   }
-  state.players[hero.owner].resources.gold -= price;
+  payPlayer(state.players[hero.owner], { gold: price });
   state.lastMessage = `${ITEMS[camp.stock.id].name} bought for ${price} gold.`;
   camp.stock = null;
 }
@@ -280,10 +297,10 @@ export function payTithe(state: GameState, objectId: string): void {
   const [barn, hero] = requireStanding(state, objectId, 'titheBarn');
   const player = state.players[hero.owner];
   const price = Math.ceil(1_000 * priceMultiplier(hero));
-  if (barn.usedWeek[hero.owner] === state.week || player.resources.gold < price) {
+  if (barn.usedWeek[hero.owner] === state.week || !canPlayerAfford(player, { gold: price })) {
     throw new Error('The Tithe Barn is unavailable');
   }
-  player.resources.gold -= price; barn.usedWeek[hero.owner] = state.week;
+  payPlayer(player, { gold: price }); barn.usedWeek[hero.owner] = state.week;
   state.castles.filter((castle) => castle.owner === hero.owner).forEach((castle) =>
     castle.growthEffects.push({
       id: `tithe-${hero.owner}-${state.week}`, multiplier: 1.1, expiresWeek: state.week,
@@ -295,7 +312,7 @@ export function visitCreativeObject(state: GameState, object: MapObject, hero: H
   if (object.kind === 'monastery') {
     if (!object.firstVisitorId) {
       object.firstVisitorId = hero.id;
-      if (!hero.knownSpells.includes('hourglassCrack')) hero.knownSpells.push('hourglassCrack');
+      learnSpell(hero, 'hourglassCrack');
       state.lastMessage = 'The Unstruck Bell teaches Hourglass Crack.';
     }
   } else if (object.kind === 'storyteller') {
@@ -311,11 +328,12 @@ export function visitCreativeObject(state: GameState, object: MapObject, hero: H
     if (!object.visitedBy.includes(hero.id)) object.visitedBy.push(hero.id);
     state.lastMessage = `The stone foretells ${state.nextOmen}.`;
   } else if (object.kind === 'crone') {
-    if (object.visitedWeek[hero.id] !== state.week && hero.debts.length < 2) {
+    if (object.visitedWeek[hero.id] !== state.week
+        && hero.debts.length < maximumDebtSlots(hero)) {
       object.visitedWeek[hero.id] = state.week;
       dealBargains(state, hero, 1, 'crone');
     } else {
-      state.lastMessage = hero.debts.length >= 2
+      state.lastMessage = hero.debts.length >= maximumDebtSlots(hero)
         ? 'The Crone finds both hands already full of promises.'
         : 'The Crone has said all she will this week.';
     }
@@ -341,8 +359,9 @@ export function visitCreativeObject(state: GameState, object: MapObject, hero: H
     }
   } else if (object.kind === 'treeSecondThoughts') {
     const price = Math.ceil(1_500 * hero.level * priceMultiplier(hero));
-    if (!object.visitedBy.includes(hero.id) && state.players[hero.owner].resources.gold >= price) {
-      state.players[hero.owner].resources.gold -= price; object.visitedBy.push(hero.id);
+    if (!object.visitedBy.includes(hero.id)
+        && canPlayerAfford(state.players[hero.owner], { gold: price })) {
+      payPlayer(state.players[hero.owner], { gold: price }); object.visitedBy.push(hero.id);
       hero.xp = Math.max(hero.xp, levelThreshold(hero.level + 1));
       checkLevel(state, hero.owner, hero.id);
     }
@@ -354,14 +373,15 @@ export function visitCreativeObject(state: GameState, object: MapObject, hero: H
     if (object.kind === 'idolOfSomebody') hero.adventureEffects.nextBattleLuckBonus = 1;
     if (object.kind === 'wishingWell') {
       const player = state.players[hero.owner];
-      if (hasEquippedArtifact(hero, 'beggarsRing') && player.resources.gold >= 5_000) {
-        player.resources.gold -= 5_000;
+      if (hasEquippedArtifact(hero, 'beggarsRing')
+          && canPlayerAfford(player, { gold: 5_000 })) {
+        payPlayer(player, { gold: 5_000 });
         consumeEquippedArtifact(hero, 'beggarsRing');
         state.lastMessage = "Five thousand gold answers the Beggar's Ring at last.";
         return;
       }
-      if (player.resources.gold < 1) throw new Error('The well insists on one gold');
-      player.resources.gold -= 1;
+      if (!canPlayerAfford(player, { gold: 1 })) throw new Error('The well insists on one gold');
+      payPlayer(player, { gold: 1 });
       let boon; [boon, state.rng] = randomInt(state.rng, 4);
       if (boon === 0) hero.movement += 100;
       else if (boon === 1) hero.adventureEffects.nextBattleMeterBonus += 5;
@@ -384,7 +404,7 @@ export function visitCreativeObject(state: GameState, object: MapObject, hero: H
       });
     }
   } else if (object.kind === 'dwelling' && object.id === 'masque-ring') {
-    if (!hero.knownSpells.includes('borrowShape')) hero.knownSpells.push('borrowShape');
+    learnSpell(hero, 'borrowShape');
   } else if (object.kind === 'gloamingRing' && object.deposit
       && object.deposit.heroId === hero.id && object.deposit.dueWeek <= state.week) {
     if (object.deposit.kind === 'item') {

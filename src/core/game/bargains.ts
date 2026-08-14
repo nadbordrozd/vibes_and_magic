@@ -1,8 +1,11 @@
 import { BARGAIN_IDS, BARGAINS } from '../../content/bargains';
-import { AI_BUILD_ORDER, BUILDINGS, buildingBelongsToFaction } from '../../content/buildings';
+import {
+  AI_BUILD_ORDER, BUILDINGS, buildingBelongsToFaction, buildingPrerequisites,
+} from '../../content/buildings';
 import { UNITS } from '../../content/units';
 import { addUnits, armyPower, unitStrength } from '../army';
-import { MAX_ACTIVE_DEBTS, scheduleDebt } from '../debts';
+import { scheduleDebt } from '../debts';
+import { maximumDebtSlots } from '../artifacts';
 import { findOwnedHero } from '../heroes';
 import { specialtyHandler } from '../heroBehaviors';
 import { castleEntrance } from '../map/occupancy';
@@ -30,7 +33,7 @@ function hash(seed: number, value: string): number {
 export function dealBargains(
   state: GameState, hero: Hero, count: 1 | 2, source: 'level' | 'post' | 'crone',
 ): void {
-  if (hero.debts.length >= MAX_ACTIVE_DEBTS) return;
+  if (hero.debts.length >= maximumDebtSlots(hero)) return;
   const options = [...BARGAIN_IDS].sort((a, b) =>
     hash(state.seed ^ state.day ^ hero.level, a)
     - hash(state.seed ^ state.day ^ hero.level, b) || a.localeCompare(b)).slice(0, count);
@@ -82,8 +85,7 @@ function nextPromisedBuilding(state: GameState, hero: Hero, requested?: string) 
   const buildingId = AI_BUILD_ORDER.find((id) => !castle.buildings.includes(id)
     && buildingBelongsToFaction(id, castle.faction)
     && castleSupportsBuilding(state, castle, id)
-    && (!BUILDINGS[id].prerequisite
-      || castle.buildings.includes(BUILDINGS[id].prerequisite!)));
+    && buildingPrerequisites(id).every((required) => castle.buildings.includes(required)));
   if (!buildingId) throw new Error('No building remains in this city queue');
   return { castle, buildingId };
 }
@@ -91,8 +93,9 @@ function nextPromisedBuilding(state: GameState, hero: Hero, requested?: string) 
 export function bargainChoiceAvailability(
   state: GameState, hero: Hero, bargainId: BargainId,
 ): BargainChoiceAvailability {
-  if (hero.debts.length >= MAX_ACTIVE_DEBTS) {
-    return { available: false, reason: 'This hero already carries the maximum of two Debts.' };
+  if (hero.debts.length >= maximumDebtSlots(hero)) {
+    return { available: false,
+      reason: `This hero already carries the maximum of ${maximumDebtSlots(hero)} Debts.` };
   }
   if (bargainId === 'borrowedLegion' && !addUnits(hero.army, 'candleWisps', 1)) {
     return {
@@ -147,7 +150,7 @@ export function chooseBargain(state: GameState, action: BargainAction): void {
     throw new Error('This bargain was not offered');
   }
   const hero = findOwnedHero(state, pending.playerId, pending.heroId);
-  if (!hero || hero.debts.length >= MAX_ACTIVE_DEBTS) throw new Error('Debt limit reached');
+  if (!hero || hero.debts.length >= maximumDebtSlots(hero)) throw new Error('Debt limit reached');
   const player = state.players[hero.owner];
   const id = action.bargainId;
   if (id === 'firstHarvest') {

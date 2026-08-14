@@ -100,21 +100,15 @@ try {
     button.click();
   });
   await page.waitForSelector('.hero-details-dialog');
-  await page.$eval('.hero-details-tabs', (tabs) => {
-    const button = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
-      .find((candidate) => candidate.textContent?.includes('Items'));
-    if (!button) throw new Error('Items tab missing');
-    button.click();
-  });
-  await page.waitForSelector('.hero-details-items .item-sprite');
+  await page.waitForSelector('.hero-dashboard-items .item-sprite');
   const audit = await page.evaluate(() => ({
-    sprites: document.querySelectorAll('.hero-details-items .item-sprite').length,
-    labels: [...document.querySelectorAll('.hero-details-items .army-slot')]
+    sprites: document.querySelectorAll('.hero-dashboard-items .item-sprite').length,
+    labels: [...document.querySelectorAll('.hero-dashboard-items button')]
       .map((node) => node.textContent?.trim()).filter(Boolean),
     rootOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
   }));
   if (audit.sprites !== 6 || audit.labels.length !== 6
-      || !audit.labels.includes('Waybread') || audit.rootOverflow > 2) {
+      || !audit.labels.some((label) => label.startsWith('Waybread')) || audit.rootOverflow > 2) {
     throw new Error(`Item desktop audit failed: ${JSON.stringify(audit)}`);
   }
   await page.screenshot({ path: `${output}/item-inventory-desktop.png`, fullPage: true });

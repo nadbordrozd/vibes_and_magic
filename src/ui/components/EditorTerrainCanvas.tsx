@@ -1,5 +1,6 @@
 import {
-  useCallback, useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent,
+  Fragment, useCallback, useEffect, useMemo, useRef, useState,
+  type PointerEvent as ReactPointerEvent,
 } from 'react';
 import { assetId, manifestEntry } from '../../../assets/manifest';
 import { ADVENTURE_PROP_CATALOG, adventurePropById, adventurePropByName,
@@ -55,6 +56,7 @@ import {
   editorHeroDefinitions, editorHeroFlagAnchor, editorHeroSpriteId, type HeroMutationResult,
 } from '../mapEditorHeroes';
 import { EditorHeroInspector } from './EditorHeroControls';
+import { EDITOR_TOME_SOURCES, editorTomeSpellChoices } from '../mapEditorInstances';
 import {
   EDITOR_AUTHORABLE_GUARDIAN_CATALOG,
   EDITOR_GUARDIAN_FOOTPRINT, EDITOR_GUARDIAN_GROUPS, canPlaceEditorGuardian,
@@ -463,7 +465,7 @@ export function EditorTerrainCanvas({
         'no-player': 'Add at least one player slot before placing a starting hero.',
         'invalid-owner': 'Choose an existing player slot for this hero owner.',
         'invalid-definition': 'Choose a named hero from the selected faction.',
-        'invalid-army': 'An army needs 1–7 unique canonical creatures with positive whole counts.',
+        'invalid-army': 'An army needs unique canonical creatures with positive whole counts within its rules-owned capacity.',
         'invalid-unit': 'Choose a canonical creature for this guardian encounter.',
         'invalid-protects': 'Choose an existing compatible map object, or leave this guardian standalone.',
         'invalid-drop': 'Choose a supported canonical direct item drop.',
@@ -1439,8 +1441,14 @@ export function EditorTerrainCanvas({
     let value: JsonValue;
     if (definition.kind === 'number') value = Number(raw);
     else if (definition.kind === 'owner') value = raw || null;
-    else if (definition.kind === 'item') value = raw
-      ? editorItemInstance(raw as ItemId, selectedObject.position) : null;
+    else if (definition.kind === 'item') {
+      value = raw ? editorItemInstance(raw as ItemId, selectedObject.position) : null;
+      if (raw === 'spellTome' && selectedObject.kind === 'barrowField'
+          && value && typeof value === 'object' && !Array.isArray(value)) {
+        value = { ...value, tomeSource: 'barrow',
+          storedSpellId: editorTomeSpellChoices('barrow')[0] };
+      }
+    }
     else if (definition.kind === 'unit' && definition.key === 'roster') value = [{ unitId: raw, count: 1 }];
     else value = raw;
     const next = { ...selectedObject.properties, [definition.key]: value };
@@ -2006,14 +2014,37 @@ export function EditorTerrainCanvas({
                           : definition.kind === 'skill' ? EDITOR_SKILL_CHOICES
                             : definition.kind === 'cache' ? document.objects.filter((object) => object.kind === 'cache')
                               .map((object) => ({ id: object.id, name: object.id })) : null;
-                return <label key={definition.key}>{definition.label}
+                const tome = definition.kind === 'item' && stored && typeof stored === 'object'
+                  && !Array.isArray(stored) && stored.id === 'spellTome' ? stored : null;
+                return <Fragment key={definition.key}><label>{definition.label}
                   {choices ? <select value={value} onChange={(event) => updateStructureField(definition, event.target.value)}>
                     {choices.map((choice) => <option key={choice.id} value={choice.id}>{choice.name}</option>)}
                   </select> : <input type={definition.kind === 'number' ? 'number' : 'text'}
                     min={definition.min} value={value}
                     onChange={(event) => updateStructureField(definition, event.target.value)} />}
                   {definition.help && <small>{definition.help}</small>}
-                </label>;
+                </label>{tome && <>
+                  <label>Spell Tome source<select aria-label={`${definition.label} Tome source`}
+                    value={String(tome.tomeSource)} onChange={(event) => {
+                      const tomeSource = event.target.value as typeof EDITOR_TOME_SOURCES[number];
+                      const choices = editorTomeSpellChoices(tomeSource);
+                      updateSelectedStructure({ ...selectedObject.properties,
+                        [definition.key]: { ...tome, tomeSource,
+                          storedSpellId: choices.includes(tome.storedSpellId as SpellId)
+                            ? tome.storedSpellId : choices[0] } });
+                    }}>{EDITOR_TOME_SOURCES.map((source) => <option key={source} value={source}>
+                      {source}
+                    </option>)}</select></label>
+                  <label>Spell Tome spell<select aria-label={`${definition.label} Tome spell`}
+                    value={String(tome.storedSpellId)} onChange={(event) => updateSelectedStructure({
+                      ...selectedObject.properties,
+                      [definition.key]: { ...tome, storedSpellId: event.target.value },
+                    })}>{editorTomeSpellChoices(
+                      tome.tomeSource as typeof EDITOR_TOME_SOURCES[number],
+                    ).map((spellId) => <option key={spellId} value={spellId}>
+                      {EDITOR_SPELL_CHOICES.find((spell) => spell.id === spellId)?.name ?? spellId}
+                    </option>)}</select></label>
+                </>}</Fragment>;
               })}
             </div>
             <p className="editor-footprint-summary">Footprint {editorStructureFootprint(selectedObject).w}×{editorStructureFootprint(selectedObject).h}

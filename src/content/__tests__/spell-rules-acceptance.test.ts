@@ -2,18 +2,47 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { SPELL_EFFECT_ICON_MANIFEST } from '../../../assets/iconManifest';
 import {
-  SPELL_LEXICON, spellRulePlainText, tokenizeSpellLexiconText,
+  SPELL_LEXICON, spellRulePlainText,
+  tokenizeSpellLexiconText,
   type SpellLexiconId,
 } from '../spellLexicon';
 import { SPELL_IDS, SPELLS } from '../spells';
+import { P2_SPELL_AUDIT_IDS } from '../spells/p2';
 import {
   GRAVE_WILD_SPELL_IDS, RITE_CRAFT_SPELL_IDS, SPELL_RULE_PRESENTATIONS,
 } from '../spells/rulePresentation';
 
 const VERSIONS = ['standard', 'upgraded'] as const;
-const RUNTIME_IDENTICAL = new Set([
-  'standardOfDawn', 'unmake', 'standingMirror', 'shedSkin', 'hedgerowMarch',
-]);
+const RUNTIME_IDENTICAL = new Set<string>();
+const P2_VERSION_MARKERS: Record<typeof P2_SPELL_AUDIT_IDS[number], readonly [string, string]> = {
+  scrying: ['radius-6', 'radius-9'],
+  bellBookAndCandle: ['first allied', 'first two allied'],
+  processionOfLamps: ['full daily maximum.', 'one adjacent owned hero'],
+  dayspring: ['20 ×', '30 ×'],
+  theLongOath: ['at most 5 mana', 'at most 9 mana'],
+  prospect: ['within 12 tiles', 'within 18 tiles'],
+  falseColors: ['true army', 'will not attack'],
+  counterweight: ['double damage.', 'without limit'],
+  bulwark: ['five wall hexes', 'six wall hexes'],
+  standingMirror: ['opposing target', 'you choose'],
+  theUnmakingEngine: ['every enemy company', 'destroy both enemy'],
+  mirrorHall: ['cannot grant mana', 'tier-5'],
+  secondGrave: ['30%', '50%'],
+  ashenPall: ['Hex 3', 'Hex 4'],
+  theLedgerBalanced: ['is destroyed', 'below half'],
+  ossuary: ['Candle-Wisps', 'Bone Choir'],
+  stealAway: ['next 3 days', 'next 5 days'],
+  theLongSilence: ['pay 3 mana', 'pay 2 mana'],
+  harvest: ['20%', '30%'],
+  theDebtCalled: ['tomorrow.', 'next 2 days'],
+  beastSense: ['within 10 tiles', 'within 16 tiles'],
+  illWind: ['Chill 2.', 'Chill 3'],
+  rootTheSky: ['for 3 rounds', 'for 4 rounds'],
+  beastSovereign: ['each round start.', 'unlimited retaliations'],
+  windShear: ['2 positions', '3 positions'],
+  theLongGreen: ['18 ×', '26 ×'],
+  theWeatherItself: ['for both sides', 'only allies'],
+};
 const COMPLEX_RULE_WORD_LIMITS: Record<string, number> = {
   // Each must state a triggered multi-company reward plus the split-stack proportionality guard.
   'lastCandle:upgraded': 50,
@@ -30,18 +59,18 @@ const words = (value: string) => value.trim().split(/\s+/).filter(Boolean).lengt
 const sentences = (value: string) => value.match(/[.!?](?=\s|$)/g)?.length ?? 0;
 
 describe('all-spell player-rule final acceptance', () => {
-  it('covers 68 spells and 136 complete versions in canonical four-school order', () => {
-    expect(SPELL_IDS).toHaveLength(68);
+  it('covers the complete 124-spell catalog in canonical four-school order', () => {
+    expect(SPELL_IDS).toHaveLength(124);
     const presentationOrder = [...RITE_CRAFT_SPELL_IDS, ...GRAVE_WILD_SPELL_IDS];
     expect(Object.keys(SPELL_RULE_PRESENTATIONS)).toEqual(presentationOrder);
     expect(new Set(presentationOrder)).toEqual(new Set(SPELL_IDS));
     expect(presentationOrder.map((id) => SPELLS[id].school)).toEqual([
-      ...Array(17).fill('rite'), ...Array(17).fill('craft'),
-      ...Array(17).fill('grave'), ...Array(17).fill('wild'),
+      ...Array(31).fill('rite'), ...Array(31).fill('craft'),
+      ...Array(31).fill('grave'), ...Array(31).fill('wild'),
     ]);
     const rules = SPELL_IDS.flatMap((id) => VERSIONS.map((version) =>
       SPELL_RULE_PRESENTATIONS[id][version]));
-    expect(rules).toHaveLength(136);
+    expect(rules).toHaveLength(248);
   });
 
   it('keeps every structured rule projected exactly and free of developer narration', () => {
@@ -81,6 +110,13 @@ describe('all-spell player-rule final acceptance', () => {
     }
   });
 
+  it.each(P2_SPELL_AUDIT_IDS)('%s explicitly pins its P2 Standard and Upgraded delta', (id) => {
+    const [standardMarker, upgradedMarker] = P2_VERSION_MARKERS[id];
+    expect(SPELLS[id].base, `${id} Standard marker`).toContain(standardMarker);
+    expect(SPELLS[id].plus, `${id} Upgraded marker`).toContain(upgradedMarker);
+    expect(SPELLS[id].plus, `${id} distinct versions`).not.toBe(SPELLS[id].base);
+  });
+
   it('pins Bloom to concrete application and the complete reusable lifecycle rule', () => {
     const standard = spellRulePlainText(SPELL_RULE_PRESENTATIONS.bloom.standard);
     const upgraded = spellRulePlainText(SPELL_RULE_PRESENTATIONS.bloom.upgraded);
@@ -96,10 +132,10 @@ describe('all-spell player-rule final acceptance', () => {
     expect(SPELL_LEXICON.bloom.rule).toMatch(/falls by 1 at turn end/i);
   });
 
-  it('audits all 30 concise definitions, icons, and deterministic aliases', () => {
+  it('audits all concise definitions, complete native icons, and deterministic aliases', () => {
     const ids = Object.keys(SPELL_LEXICON) as SpellLexiconId[];
-    expect(ids).toHaveLength(30);
-    expect(Object.keys(SPELL_EFFECT_ICON_MANIFEST)).toEqual(ids);
+    expect(ids).toHaveLength(38);
+    expect(Object.keys(SPELL_EFFECT_ICON_MANIFEST)).toHaveLength(38);
     for (const id of ids) {
       const definition = SPELL_LEXICON[id];
       expect(words(definition.rule), `${id} definition length`).toBeGreaterThanOrEqual(6);
@@ -108,6 +144,8 @@ describe('all-spell player-rule final acceptance', () => {
       expect(definition.rule, `${id} definition prose`)
         .not.toMatch(/resolver|implementation|state field|source function|click|tooltip/i);
       const icon = SPELL_EFFECT_ICON_MANIFEST[id];
+      expect(icon, id).toBeDefined();
+      if (!icon) throw new Error(`Missing native lexicon icon: ${id}`);
       expect(icon.file, id).toBe(`assets/icons/effects/${id}.png`);
       expect(readFileSync(`public/${icon.file}`).byteLength, `${id} icon`).toBeGreaterThan(0);
       for (const alias of definition.aliases) {

@@ -1,8 +1,15 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { autoResolveBattle } from '../ai/combat';
+import { createCrookedCrown, crookedCrownMetrics } from '../content/maps/crookedCrown';
+import {
+  createSixfoldTrial, SIXFOLD_GUARDIAN_BANDS, sixfoldMetrics,
+} from '../content/maps/sixfoldTrial';
 import { UNITS } from '../content/units';
-import { armyPower, makeArmy, unitStrength } from '../core/army';
+import {
+  armyPower, makeArmy, STRENGTH_ABILITY_ADJUSTMENTS,
+  STRENGTH_ABILITY_MULTIPLIER_MAX, STRENGTH_ABILITY_MULTIPLIER_MIN, unitStrength,
+} from '../core/army';
 import { createBattle } from '../core/combat/setup';
 import { createGame } from '../core/game';
 import type {
@@ -200,11 +207,32 @@ export function guardianStrengthCalibrationMarkdown(): string {
     (ratio > 1 && observed === 'left') || (ratio < 1 && observed === 'right');
   const chosenOrdering = decisive.filter((row) => agrees(row.chosenRatio, row.observed)).length;
   const legacyOrdering = decisive.filter((row) => agrees(row.legacyRatio, row.observed)).length;
+  const crookedCrown = createCrookedCrown(4040);
+  const crookedMetrics = crookedCrownMetrics(crookedCrown);
+  const sixfoldTrial = createSixfoldTrial(4901);
+  const sixfold = sixfoldMetrics(sixfoldTrial);
+  const guardianRows = (map: typeof crookedCrown) => map.objects.flatMap((object) =>
+    object.kind === 'guardian' ? [{
+      id: object.id,
+      unitId: object.army[0].unitId,
+      count: object.army[0].count,
+      strength: armyPower(makeArmy(object.army)),
+    }] : []);
 
   const lines = [
     '# Guardian strength calibration report',
     '',
     `Generated deterministically with seeds ${SEEDS.join(', ')}. Each result combines both attacker/defender seatings on open meadow.`,
+    '',
+    '## Stable-direction ability adjustments',
+    '',
+    `Adjustments are additive and the combined multiplier is clamped to ${STRENGTH_ABILITY_MULTIPLIER_MIN.toFixed(2)}–${STRENGTH_ABILITY_MULTIPLIER_MAX.toFixed(2)}. Matchup- and choice-dependent traits are deliberately absent.`,
+    '',
+    '| Ability | Adjustment |',
+    '|---|---:|',
+    ...Object.entries(STRENGTH_ABILITY_ADJUSTMENTS).sort(([left], [right]) =>
+      left.localeCompare(right)).map(([ability, adjustment]) =>
+      `| \`${ability}\` | ${adjustment! >= 0 ? '+' : ''}${adjustment!.toFixed(2)} |`),
     '',
     '## Count invariance',
     '',
@@ -242,6 +270,28 @@ export function guardianStrengthCalibrationMarkdown(): string {
     ...mixed.map((row) => `| ${row.name} | ${(row.rate * 100).toFixed(0)}% | ${row.observed} | ${row.chosenRatio.toFixed(2)} | ${row.legacyRatio.toFixed(2)} |`),
     '',
     `Chosen ordering agreement: **${chosenOrdering}/${decisive.length}** decisive matchups; legacy: **${legacyOrdering}/${decisive.length}**.`,
+    '',
+    '## Authored guardian recalibration',
+    '',
+    'Counts below are re-derived through the same `unitStrength` authority. Map seeds affect ordinary seeded content but not these authored guardian rows.',
+    '',
+    '### The Crooked Crown (seed 4040)',
+    '',
+    `Strength range ${crookedMetrics.guardianStrength.minimum.toFixed(2)}–${crookedMetrics.guardianStrength.maximum.toFixed(2)}; median ${crookedMetrics.guardianStrength.median.toFixed(2)}.`,
+    '',
+    '| Guardian | Unit | Count | Strength |',
+    '|---|---|---:|---:|',
+    ...guardianRows(crookedCrown).map((row) =>
+      `| \`${row.id}\` | ${UNITS[row.unitId].name} | ${row.count} | ${row.strength.toFixed(2)} |`),
+    '',
+    '### The Sixfold Trial (seed 4901)',
+    '',
+    `Band populations: ${SIXFOLD_GUARDIAN_BANDS.map((band) => `${band.id} ${sixfold.guardianStrengths.filter((strength) => strength >= band.minimum && strength <= band.maximum).length}`).join(', ')}.`,
+    '',
+    '| Guardian | Unit | Count | Strength |',
+    '|---|---|---:|---:|',
+    ...guardianRows(sixfoldTrial).map((row) =>
+      `| \`${row.id}\` | ${UNITS[row.unitId].name} | ${row.count} | ${row.strength.toFixed(2)} |`),
     '',
   ];
   return lines.join('\n');

@@ -5,8 +5,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { ITEM_SPRITE_SUBJECTS } from '../../../assets/adventureSpriteInventory';
 import job from '../../../assets/jobs/item-sprites-built-in.json';
-import { ASSET_MANIFEST, assetId } from '../../../assets/manifest';
+import { ASSET_MANIFEST, NON_SPRITE_REPRESENTATIONS, assetId } from '../../../assets/manifest';
 import provenance from '../../../assets/provenance/item-sprite-generation.json';
+import v2Provenance from '../../../assets/provenance/docs-60-67-native-generation.json';
 import { ITEMS } from '../../content/items';
 import type { ItemId, MapObject } from '../../core/types';
 import { ItemSprite, mapObjectSpriteId } from '../assets';
@@ -14,19 +15,23 @@ import { ItemSprite, mapObjectSpriteId } from '../assets';
 const ids = Object.keys(ITEMS) as ItemId[];
 
 describe('complete canonical item sprite family', () => {
-  it('covers all 37 catalog definitions with literal subjects and distinct native paths/bytes', () => {
-    expect(ids).toHaveLength(37);
+  it('covers promoted items and all typed v2 placeholders', () => {
+    expect(ids).toHaveLength(50);
     expect(Object.keys(ITEM_SPRITE_SUBJECTS)).toEqual(expect.arrayContaining(ids));
-    expect(Object.values(ITEMS).filter((item) => item.use === 'combat')).toHaveLength(25);
-    expect(Object.values(ITEMS).filter((item) => item.use === 'adventure')).toHaveLength(11);
-    expect(Object.values(ITEMS).filter((item) => item.use === 'automatic')).toHaveLength(1);
+    expect(Object.values(ITEMS).filter((item) => item.use === 'combat')).toHaveLength(34);
+    expect(Object.values(ITEMS).filter((item) => item.use === 'adventure')).toHaveLength(14);
+    expect(Object.values(ITEMS).filter((item) => item.use === 'automatic')).toHaveLength(2);
 
-    const entries = ids.map((id) => ASSET_MANIFEST[assetId.mapObject('item', id)]);
+    const promotedIds = ids.filter((id) =>
+      ASSET_MANIFEST[assetId.mapObject('item', id)] !== undefined);
+    const entries = promotedIds.map((id) => ASSET_MANIFEST[assetId.mapObject('item', id)]);
     expect(entries.every((entry) => entry?.w === 32 && entry.h === 32)).toBe(true);
-    expect(new Set(entries.map((entry) => entry.file))).toHaveLength(37);
+    expect(new Set(entries.map((entry) => entry.file))).toHaveLength(50);
     const hashes = entries.map((entry) => createHash('sha256')
       .update(readFileSync(resolve(process.cwd(), 'public', entry.file))).digest('hex'));
-    expect(new Set(hashes)).toHaveLength(37);
+    expect(new Set(hashes)).toHaveLength(50);
+    const stagedIds = ids.filter((id) => !promotedIds.includes(id));
+    expect(stagedIds).toHaveLength(0);
   });
 
   it('uses one manifest lookup for map pickups and HTML item surfaces while keeping state semantic', () => {
@@ -39,15 +44,24 @@ describe('complete canonical item sprite family', () => {
       const html = renderToStaticMarkup(<button aria-label={ITEMS[id].name}>
         <ItemSprite item={{ id, plus: true }} /><span>{ITEMS[id].name}</span>
       </button>);
-      expect(html).toContain(ASSET_MANIFEST[assetId.mapObject('item', id)].file);
+      if (NON_SPRITE_REPRESENTATIONS[assetId.mapObject('item', id)]) {
+        expect(html).toContain('item-sprite-fallback');
+      }
+      else expect(html).toContain(ASSET_MANIFEST[assetId.mapObject('item', id)].file);
       expect(html).toContain('item-sprite-upgraded');
       expect(html).toContain(`aria-label="${ITEMS[id].name.replaceAll('&', '&amp;').replaceAll("'", '&#x27;')}"`);
     }
   });
 
   it('keeps exact deterministic provenance and removes every installed fallback', () => {
-    expect(job.requests.map((request) => request.catalog_key)).toEqual(ids);
-    expect(provenance.selections.map((selection) => selection.catalog_key)).toEqual(ids);
+    const promotedIds = ids.filter((id) =>
+      ASSET_MANIFEST[assetId.mapObject('item', id)] !== undefined);
+    const originalIds = promotedIds.filter((id) => provenance.selections
+      .some((selection) => selection.catalog_key === id));
+    expect(job.requests.map((request) => request.catalog_key)).toEqual(originalIds);
+    expect(provenance.selections.map((selection) => selection.catalog_key)).toEqual(originalIds);
+    expect(v2Provenance.selections.filter((selection) => selection.family === 'item'))
+      .toHaveLength(13);
     expect(new Set(job.requests.map((request) => request.output))).toHaveLength(37);
     expect(new Set(job.requests.map((request) => request.final))).toHaveLength(37);
     expect(new Set(job.requests.map((request) => request.prompt))).toHaveLength(37);
@@ -55,16 +69,24 @@ describe('complete canonical item sprite family', () => {
       .toHaveLength(37);
     expect(new Set(provenance.selections.map((selection) => selection.source_sha256)))
       .toHaveLength(37);
-    for (const id of ids) {
+    for (const id of promotedIds) {
       const sprite = renderToStaticMarkup(<ItemSprite item={{ id }} />);
       expect(sprite, id).toContain(ASSET_MANIFEST[assetId.mapObject('item', id)].file);
       expect(sprite, id).not.toContain('item-sprite-fallback');
-      const selection = provenance.selections.find((candidate) => candidate.catalog_key === id)!;
-      expect(selection.accepted).toBe(true);
-      expect(selection.final_dimensions).toEqual([32, 32]);
-      expect(selection.alpha.partial).toBe(0);
-      expect(selection.alpha.transparent_corners).toBe(4);
-      expect(selection.alpha.transparent + selection.alpha.opaque).toBe(1024);
+      const selection = provenance.selections.find((candidate) => candidate.catalog_key === id);
+      const v2Selection = v2Provenance.selections.find((candidate) =>
+        candidate.canonical_id === `item:${id}`);
+      if (v2Selection) {
+        expect(v2Selection.accepted).toBe(true);
+        expect(v2Selection.final_dimensions).toEqual([32, 32]);
+        continue;
+      }
+      expect(selection).toBeTruthy();
+      expect(selection!.accepted).toBe(true);
+      expect(selection!.final_dimensions).toEqual([32, 32]);
+      expect(selection!.alpha.partial).toBe(0);
+      expect(selection!.alpha.transparent_corners).toBe(4);
+      expect(selection!.alpha.transparent + selection!.alpha.opaque).toBe(1024);
     }
   });
 

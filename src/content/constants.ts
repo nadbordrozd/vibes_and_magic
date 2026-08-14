@@ -25,7 +25,7 @@ export const AI_SECOND_HERO_GOLD = 3500;
 export const AI_THIRD_HERO_GOLD = 8000;
 export const AI_GATHERER_THREAT_RATIO = 1.5;
 export const AI_GATHERER_THREAT_TURNS = 1.5;
-/** Chosen from the guardian-strength calibration's 14.5% median break-even error. */
+/** Retained after the docs 63–64 calibration's 13.6% median break-even error. */
 export const AI_GUARDIAN_SAFETY_RATIO = 0.8;
 export const AI_ASSAULT_STRENGTH_RATIO = 1.25;
 export const SIREN_LISTEN_STRENGTH_RATIO = 1.25;
@@ -33,11 +33,14 @@ export const HERO_REVEAL_RADIUS = 5;
 export const CASTLE_REVEAL_RADIUS = 7;
 export const BATTLE_COLS = 13;
 export const BATTLE_ROWS = 9;
+/** Base capacity for heroes and fixed capacity for heroless armies and garrisons. */
 export const MAX_ARMY_SLOTS = 7;
+/** Printed bonuses may expand a commanded hero army, but never beyond this ceiling. */
+export const MAX_HERO_ARMY_SLOTS = 9;
 export const DAYS_PER_WEEK = 7;
 export const BASE_CASTLE_GOLD_INCOME = 500;
 export const TREASURY_GOLD_INCOME = 1000;
-export const FIELD_MANA_REGEN = 1;
+export const FIELD_MANA_REGEN = 2;
 export const ATTACK_DAMAGE_PER_POINT = 0.05;
 export const MAX_ATTACK_DAMAGE_BONUS = 3;
 export const DEFENSE_REDUCTION_PER_POINT = 0.025;

@@ -1,11 +1,10 @@
 import {
-  AI_BUILD_ORDER, BUILDINGS, buildingBelongsToFaction, buildingPresentation,
+  AI_BUILD_ORDER, BUILDINGS, buildingBelongsToFaction, buildingPrerequisites,
+  buildingPresentation,
 } from '../../content/buildings';
 import { BOAT_COST } from '../../content/constants';
 import { FACTION_UNITS, UNITS } from '../../content/units';
-import {
-  addUnits, canAfford, compactArmy, pay,
-} from '../army';
+import { addUnits, compactArmy } from '../army';
 import { findOwnedHero, selectedHero } from '../heroes';
 import { sameCoord } from '../map/pathfinding';
 import { castleEntrance, castleFootprintTiles } from '../map/occupancy';
@@ -17,6 +16,11 @@ import { learnGuildSpells } from './magic';
 import { buildingIsActive } from './buildingStatus';
 import { terrainId } from '../../content/terrain';
 import { CASTLE_NAMES } from '../../content/factionPresentation';
+import { guildDealAtLevel } from './magic';
+import { SPELLS } from '../../content/spells';
+import {
+  canPlayerAfford, hasArtifactEffect, hasArtifactSetBonus, markBurdenRemovalReady, payPlayer,
+} from '../artifacts';
 
 export function build(
   state: GameState,
@@ -32,20 +36,33 @@ export function build(
   if (!buildingBelongsToFaction(buildingId, castle.faction)) {
     throw new Error('Wrong faction building');
   }
+  if (state.day % 2 === 1 && state.players[state.activePlayer].heroes.some((hero) =>
+    hero.alive && hasArtifactEffect(hero, 'odd_day_build_block'))) {
+    throw new Error('The Open Purse forbids building on odd-numbered days');
+  }
   if (castle.buildings.includes(buildingId)) throw new Error('Already built');
   if (!castleSupportsBuilding(state, castle, buildingId)) {
     throw new Error('Building is unavailable in this city');
   }
-  if (castle.builtOnDay === state.day) throw new Error('Already built today');
-  if (definition.prerequisite && !castle.buildings.includes(definition.prerequisite)) {
+  const doubleBuilder = state.players[state.activePlayer].heroes
+    .filter((hero) => hero.alive && hasArtifactEffect(hero, 'weekly_double_build'))
+    .sort((a, b) => a.id.localeCompare(b.id))[0];
+  const canDoubleBuild = Boolean(castle.builtOnDay === state.day && doubleBuilder
+    && (state.day - 1) % 7 === 0
+    && doubleBuilder.artifactState.weeklyUses.weekly_double_build !== state.week);
+  if (castle.builtOnDay === state.day && !canDoubleBuild) throw new Error('Already built today');
+  if (buildingPrerequisites(buildingId).some((id) => !castle.buildings.includes(id))) {
     throw new Error('Missing prerequisite');
+  }
+  if (buildingId === 'mageGuild5' && guildDealAtLevel(castle, 5).length !== 2) {
+    throw new Error('Mage Guild 5 has no eligible tier-5 spell deal in the current catalog');
   }
   if (buildingId === 'shipyard' && !coastalWater(state, castle, 3).length) {
     throw new Error('Shipyard requires a coastal city');
   }
   const player = state.players[state.activePlayer];
-  if (!canAfford(player.resources, definition.cost)) throw new Error('Cannot afford');
-  player.resources = pay(player.resources, definition.cost);
+  if (!canPlayerAfford(player, definition.cost)) throw new Error('Cannot afford');
+  payPlayer(player, definition.cost);
   castle.buildings.push(buildingId);
   if (buildingId === 'chapelOfTheBanner' && buildingIsActive(castle, buildingId)
       && player.hero) {
@@ -56,9 +73,26 @@ export function build(
       sameCoord(candidate.position, castleEntrance(castle)))) {
       learnGuildSpells(hero, castle);
     }
+    if (buildingId === 'mageGuild5') {
+      for (const hero of player.heroes) markBurdenRemovalReady(hero, 'mage-guild-5');
+    }
   }
   castle.builtOnDay = state.day;
-  state.lastMessage = `${buildingPresentation(buildingId, castle.faction).name} constructed.`;
+  if (canDoubleBuild && doubleBuilder) {
+    doubleBuilder.artifactState.weeklyUses.weekly_double_build = state.week;
+  }
+  const buildingName = buildingPresentation(buildingId, castle.faction).name;
+  state.lastMessage = `${buildingName} constructed.`;
+  if (buildingId.startsWith('mageGuild')) {
+    const level = Number(buildingId.slice(-1)) as 1 | 2 | 3 | 4 | 5;
+    const deal = guildDealAtLevel(castle, level);
+    const reveal = `${buildingName} reveals: ${deal.map((id) => SPELLS[id].name).join(', ')}.`;
+    state.eventLog.push(reveal);
+    if (buildingId === 'mageGuild4' || buildingId === 'mageGuild5') {
+      state.guildReveal = { castleId: castle.id, buildingId, spellIds: [...deal] };
+      state.lastMessage = reveal;
+    }
+  }
 }
 
 function coastalWater(state: GameState, castle: Castle, range: number) {
@@ -86,8 +120,8 @@ export function buildBoat(state: GameState, castleId: string): void {
     .sort((a, b) => a.y - b.y || a.x - b.x)[0];
   if (!water) throw new Error('No adjacent water tile for a boat');
   const player = state.players[state.activePlayer];
-  if (!canAfford(player.resources, BOAT_COST)) throw new Error('Cannot afford boat');
-  player.resources = pay(player.resources, BOAT_COST);
+  if (!canPlayerAfford(player, BOAT_COST)) throw new Error('Cannot afford boat');
+  payPlayer(player, BOAT_COST);
   state.map.objects.push({
     id: `boat-${state.day}-${state.activePlayer}-${state.map.objects.length}`,
     kind: 'boat', position: water, owner: state.activePlayer, occupiedBy: null,
@@ -115,7 +149,7 @@ export function recruit(
   const unitId = FACTION_UNITS[castle.faction][tier - 1];
   const unit = UNITS[unitId];
   const player = state.players[state.activePlayer];
-  if (!canAfford(player.resources, unit.cost, count)) throw new Error('Cannot afford');
+  if (!canPlayerAfford(player, unit.cost, count)) throw new Error('Cannot afford');
   const selected = selectedHero(player);
   const visiting = selected?.alive && sameCoord(selected.position, castleEntrance(castle))
     ? selected : null;
@@ -123,7 +157,7 @@ export function recruit(
   if (!nextArmy) throw new Error('No army slot available');
   if (visiting) visiting.army = nextArmy;
   else castle.garrison = nextArmy;
-  player.resources = pay(player.resources, unit.cost, count);
+  payPlayer(player, unit.cost, count);
   castle.available[tier - 1] -= count;
   state.lastMessage = `${count} ${unit.name} recruited.`;
 }
@@ -140,7 +174,8 @@ export function swapArmy(
       || !sameCoord(hero.position, castleEntrance(castle))) {
     throw new Error('Hero is not visiting this city');
   }
-  if (heroSlot < 0 || heroSlot >= 7 || garrisonSlot < 0 || garrisonSlot >= 7) {
+  if (heroSlot < 0 || heroSlot >= hero.army.length
+      || garrisonSlot < 0 || garrisonSlot >= castle.garrison.length) {
     throw new Error('Invalid army slot');
   }
   const heroStack = hero.army[heroSlot];
@@ -173,8 +208,8 @@ export function transferArmy(
   };
   const source = resolve(action.source);
   const destination = resolve(action.destination);
-  if (action.sourceSlot < 0 || action.sourceSlot >= 7
-      || action.destinationSlot < 0 || action.destinationSlot >= 7
+  if (action.sourceSlot < 0 || action.sourceSlot >= source.army.length
+      || action.destinationSlot < 0 || action.destinationSlot >= destination.army.length
       || !Number.isInteger(action.count) || action.count <= 0) {
     throw new Error('Invalid transfer');
   }
@@ -213,8 +248,8 @@ export function splitArmy(
       && castle.owner === state.activePlayer);
   if (!holder) throw new Error('Army holder not owned');
   const army = 'army' in holder ? holder.army : holder.garrison;
-  if (action.sourceSlot < 0 || action.sourceSlot >= 7
-      || action.destinationSlot < 0 || action.destinationSlot >= 7
+  if (action.sourceSlot < 0 || action.sourceSlot >= army.length
+      || action.destinationSlot < 0 || action.destinationSlot >= army.length
       || action.sourceSlot === action.destinationSlot
       || !Number.isInteger(action.count) || action.count <= 0) {
     throw new Error('Invalid split');
@@ -260,7 +295,7 @@ export function firstAffordableBuilding(
     return !castle.buildings.includes(id)
       && castleSupportsBuilding(state, castle, id)
       && castle.builtOnDay !== state.day
-      && (!building.prerequisite || castle.buildings.includes(building.prerequisite))
-      && canAfford(player.resources, building.cost);
+      && buildingPrerequisites(id).every((required) => castle.buildings.includes(required))
+      && canPlayerAfford(player, building.cost);
   }) ?? null;
 }

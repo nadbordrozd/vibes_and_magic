@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "assets-check": "tsx src/tools/assetsCheck.ts && tsx src/tools/contentIconsCheck.ts && tsx src/tools/spellEffectIconsCheck.ts && tsx src/tools/heroDashboardAssetsCheck.ts",
+    "assets-check": "tsx src/tools/assetsCheck.ts && tsx src/tools/contentIconsCheck.ts && tsx src/tools/spellEffectIconsCheck.ts && tsx src/tools/heroDashboardAssetsCheck.ts && tsx scripts/manageV2NativeAssets.ts release",
     "build:hero-dashboard-assets": "tsx scripts/runHeroDashboardAssets.ts build",
     "promote:hero-dashboard-assets": "tsx scripts/runHeroDashboardAssets.ts promote",
     "records:hero-dashboard-assets": "tsx scripts/manageHeroDashboardAssets.ts records",
@@ -33,6 +33,7 @@
     "review:item-sprites": "tsx src/sim/item-sprite-review.ts",
     "review:artifact-sprites": "tsx src/sim/artifact-sprite-review.ts",
     "review:spellbook": "tsx src/sim/spellbook-review.ts",
+    "review:mage-guild-reveal": "tsx src/sim/mage-guild-reveal-review.ts",
     "review:hero-dashboard": "tsx src/sim/hero-dashboard-review.ts",
     "review:combat": "tsx src/sim/combat-review.ts",
     "review:combat:unfinished": "tsx src/sim/combat-review.ts unfinished",

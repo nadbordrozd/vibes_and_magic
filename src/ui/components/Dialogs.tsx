@@ -1,7 +1,7 @@
 import type {
   Action, BattleStatistics, GameState, Player, PrimaryStat,
 } from '../../core/types';
-import { CHEST_GOLD, CHEST_XP } from '../../content/constants';
+import { CHEST_GOLD, CHEST_XP, MAX_ARMY_SLOTS } from '../../content/constants';
 import { SPELLS } from '../../content/spells';
 import { SKILLS } from '../../content/skills';
 import { ITEMS, itemName } from '../../content/items';
@@ -17,6 +17,7 @@ import { campaignOutcome } from '../campaignOutcome';
 import type { BattleResultData } from '../battleResult';
 import { ContentIcon } from './ContentIcon';
 import { ArtifactSprite, ItemSprite } from '../assets';
+import { heroArmyCapacity } from '../../core/army';
 
 interface ChoiceProps {
   state: GameState;
@@ -57,6 +58,30 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
   const player = state.players[pending.playerId];
   if (player.controller !== 'human') return null;
   const hero = player.heroes.find((candidate) => candidate.id === pending.heroId);
+  if (pending.kind === 'adept') return (
+    <div className="modal-backdrop choice-backdrop"><section className="choice-dialog level-choice">
+      <ChoiceSource state={state} label="Adept · permanent spell refinement" />
+      <h2>Choose a spell to cost two less mana</h2>
+      <div className="choice-cards three">{pending.options.map((spellId) =>
+        <button key={spellId} data-inspect-kind="spell" data-inspect-id={spellId}
+          onClick={() => dispatch({ type: 'CHOOSE_ADEPT_SPELL', spellId })}>
+          <ContentIcon large kind="spell" id={spellId} /><b>{SPELLS[spellId].name}</b>
+          <small>Permanent reduction, minimum one mana.</small>
+        </button>)}</div><ChoiceCommitment />
+    </section></div>
+  );
+  if (pending.kind === 'duelistArtifact') return (
+    <div className="modal-backdrop choice-backdrop"><section className="choice-dialog level-choice">
+      <ChoiceSource state={state} label="Duelist · claimed trophy" />
+      <h2>Choose one enemy artifact</h2>
+      <div className="choice-cards three">{pending.options.map((artifactId) =>
+        <button key={artifactId} data-inspect-kind="artifact" data-inspect-id={artifactId}
+          onClick={() => dispatch({ type: 'CHOOSE_DUELIST_ARTIFACT', artifactId })}>
+          <ArtifactSprite artifactId={artifactId} /><b>{ARTIFACTS[artifactId].name}</b>
+          <small>Transfer this trophy before resolving the remaining battle outcome.</small>
+        </button>)}</div><ChoiceCommitment />
+    </section></div>
+  );
   if (pending.kind === 'siteStat') {
     const source = state.map.objects.find((object) => object.id === pending.objectId);
     return (
@@ -126,7 +151,8 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
     const recruitReason = pending.recruitCost === null
       ? diplomacyRank < 2
         ? 'Recruit requires Diplomacy rank 2 or 3.'
-        : 'Every guardian company must fit or merge into this hero’s seven army slots.'
+        : `Every guardian company must fit or merge into this hero’s ${
+          hero ? heroArmyCapacity(hero) : MAX_ARMY_SLOTS} army slots.`
       : player.resources.gold < pending.recruitCost
         ? `Recruit costs ${pending.recruitCost.toLocaleString()} gold; you have ${player.resources.gold.toLocaleString()}.`
         : 'Recruit every displayed guardian company.';
@@ -378,6 +404,30 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
       </section></div>
     );
   }
+  if (pending.kind === 'acquisitionSite') {
+    const site = state.map.objects.find((object) => object.id === pending.objectId);
+    return (
+      <div className="modal-backdrop choice-backdrop">
+        <section className="choice-dialog spell-choice">
+          <ChoiceSource state={state} objectId={pending.objectId}
+            label={site ? mapObjectName(site) : 'The Stacks'} />
+          <h2>{hero?.name ?? 'This hero'} keeps one spell</h2>
+          <p>The 3 essence has already been paid. Choose one named spell to learn permanently.</p>
+          <div className="choice-cards three">
+            {pending.options.map((spellId) => (
+              <button key={spellId} data-inspect-kind="spell" data-inspect-id={spellId}
+                onClick={() => dispatch({ type: 'CHOOSE_ACQUISITION_SPELL', spellId })}>
+                <ContentIcon large kind="spell" id={spellId} />
+                <b>{SPELLS[spellId].name}</b>
+                <small>Tier {SPELLS[spellId].tier ?? 1} · {SPELLS[spellId].base}</small>
+              </button>
+            ))}
+          </div>
+          <ChoiceCommitment detail="keep one displayed spell. The payment and visit cannot be cancelled." />
+        </section>
+      </div>
+    );
+  }
   if (pending.kind === 'shrine' || pending.kind === 'inscribe') {
     const shrine = pending.kind === 'shrine'
       ? state.map.objects.find((object) => object.id === pending.objectId) : undefined;
@@ -424,8 +474,11 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
               data-inspect-id={stat in SKILLS ? stat : undefined}>
               {stat in SKILLS
                 ? <ContentIcon large kind="skill" id={stat as keyof typeof SKILLS} />
-                : <i>{stat === 'inscribe' ? '✦' : stat === 'bargain' ? '☾' : stat.slice(0, 1).toUpperCase()}</i>}
+                : <i>{stat === 'inscribe' ? '✦' : stat === 'adept' ? '◇'
+                  : stat === 'grimoire' ? '▤' : stat === 'bargain' ? '☾' : stat.slice(0, 1).toUpperCase()}</i>}
               <b>{stat === 'inscribe' ? 'Inscribe a spell'
+                : stat === 'adept' ? 'Adept'
+                : stat === 'grimoire' ? 'Grimoire'
                 : stat === 'bargain' ? 'Take a bargain'
                 : stat in SKILLS
                   ? `${SKILLS[stat as keyof typeof SKILLS].name} · Rank ${
@@ -435,6 +488,8 @@ export function ChoiceDialog({ state, dispatch }: ChoiceProps) {
                   : `+1 ${stat.replace(/([A-Z])/g, ' $1')}`}</b>
               <small>{stat === 'inscribe'
                 ? `Advance to level ${(hero?.level ?? 0) + 1}, then choose one known spell to upgrade permanently; no resources are spent.`
+                : stat === 'adept' ? 'Advance, then explicitly choose one known spell to cost two less mana, minimum one.'
+                : stat === 'grimoire' ? 'Advance, then deterministically learn an unknown spell from a school already in your book within the level tier cap.'
                 : stat === 'bargain'
                   ? `Advance to level ${(hero?.level ?? 0) + 1}, then inspect and choose one immediate benefit with its visible Debt.`
                   : stat in SKILLS

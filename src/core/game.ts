@@ -10,10 +10,10 @@ import {
 } from './game/economy';
 import { chooseDiplomacy, chooseSiren, chooseToll, moveHero, pickupObject } from './game/exploration';
 import {
-  chooseChest, chooseStolenSpell, finalizeBattle,
+  chooseChest, chooseDuelistArtifact, chooseStolenSpell, finalizeBattle,
 } from './game/outcomes';
 import {
-  chooseLevel, rerollLevel, skipLevel,
+  chooseAdeptSpell, chooseLevel, rerollLevel, skipLevel,
 } from './game/levelUps';
 import { chooseSpellUpgrade, guildInscribe } from './game/magic';
 import {
@@ -22,13 +22,20 @@ import {
 import { hireHero } from './game/tavern';
 import { useAdventureItem } from './game/items';
 import {
-  buyMarketScroll, marketTrade, sellMarketArtifact, sellMarketItem,
+  buyMarketScroll, marketDirectExchange, marketTrade, sellMarketArtifact, sellMarketItem,
 } from './game/marketplace';
 import { choosePalimpsest, palimpsestForget } from './game/palimpsest';
 import {
   findOwnedHero, nextHero, selectHero, syncAllHeroViews, syncLegacyHeroIntoRoster,
 } from './heroes';
-import { equipArtifact, unequipArtifact, unstitchHero } from './artifacts';
+import {
+  canPlayerAfford, equipArtifact, hasArtifactEffect, payPlayer,
+  refreshArtifactPointers, unequipArtifact, unstitchHero,
+} from './artifacts';
+import {
+  artifactCrossTerrain, artifactMarker, artifactMoveStat, artifactPayRemoval,
+  artifactRemoteTransfer, artifactReturnToStart, artifactSkipGuard, resetWaterStraitOnLand,
+} from './game/artifactActions';
 import { castAdventureSpell } from './game/adventureSpells';
 import { chooseBargain } from './game/bargains';
 import { relocateCastle, tunnelTravel } from './game/castleAbilities';
@@ -40,6 +47,9 @@ import {
 } from './game/mapObjects';
 import { armyPower, makeArmy } from './army';
 import { SIREN_LISTEN_STRENGTH_RATIO } from '../content/constants';
+import { chooseAcquisitionSpell, useAcquisitionSite } from './game/acquisitionSites';
+import { designateTactician, refreshLogistics, remoteRecruit } from './game/skillActions';
+import { maximumMana } from './heroBehaviors';
 
 export { createGame, firstAffordableBuilding, incomeForPlayer };
 
@@ -49,6 +59,7 @@ function cloneState(state: GameState): GameState {
 
 export function legalActions(state: GameState): Action[] {
   if (state.phase === 'gameOver') return [];
+  if (state.guildReveal) return [{ type: 'DISMISS_GUILD_REVEAL' }];
   if (state.pendingChoice?.kind === 'chest') {
     const hero = findOwnedHero(
       state, state.pendingChoice.playerId, state.pendingChoice.heroId,
@@ -69,6 +80,14 @@ export function legalActions(state: GameState): Action[] {
       ...(state.pendingChoice.canSkip ? [{ type: 'SKIP_LEVEL' } as const] : []),
       ...(state.pendingChoice.canReroll ? [{ type: 'REROLL_LEVEL' } as const] : []),
     ];
+  }
+  if (state.pendingChoice?.kind === 'adept') {
+    return state.pendingChoice.options.map((spellId) => ({ type: 'CHOOSE_ADEPT_SPELL', spellId }));
+  }
+  if (state.pendingChoice?.kind === 'duelistArtifact') {
+    return state.pendingChoice.options.map((artifactId) => ({
+      type: 'CHOOSE_DUELIST_ARTIFACT', artifactId,
+    }));
   }
   if (state.pendingChoice?.kind === 'shrine' || state.pendingChoice?.kind === 'inscribe') {
     return state.pendingChoice.options.map((spellId) => ({
@@ -95,6 +114,11 @@ export function legalActions(state: GameState): Action[] {
       type: 'CHOOSE_PALIMPSEST', spellId,
     }));
   }
+  if (state.pendingChoice?.kind === 'acquisitionSite') {
+    return state.pendingChoice.options.map((spellId) => ({
+      type: 'CHOOSE_ACQUISITION_SPELL', spellId,
+    }));
+  }
   if (state.pendingChoice?.kind === 'bargain') {
     return state.pendingChoice.options.map((bargainId) => ({
       type: 'CHOOSE_BARGAIN', bargainId,
@@ -112,6 +136,9 @@ export function legalActions(state: GameState): Action[] {
 
 export function apply(state: GameState, action: Action): GameState {
   if (action.type === 'CAMPAIGN_SETUP') throw new Error('Campaign setup is replay-header only');
+  if (state.guildReveal && action.type !== 'DISMISS_GUILD_REVEAL') {
+    throw new Error('Dismiss the face-up Mage Guild reveal before taking another action');
+  }
   if (action.type === 'SELECT_HERO' || action.type === 'NEXT_HERO') {
     if (state.pendingChoice) throw new Error('A choice is pending');
     const player = state.players[state.activePlayer];
@@ -125,6 +152,9 @@ export function apply(state: GameState, action: Action): GameState {
     };
     if (action.type === 'SELECT_HERO') selectHero(next, action.heroId);
     else nextHero(next);
+    for (const owner of Object.values(next.players)) for (const hero of owner.heroes) {
+      hero.mana = Math.min(hero.mana, maximumMana(hero, owner));
+    }
     return next;
   }
   const next = cloneState(state);
@@ -133,8 +163,10 @@ export function apply(state: GameState, action: Action): GameState {
   if (next.pendingChoice
       && ![
         'CHOOSE_CHEST', 'CHOOSE_SITE_STAT', 'CHOOSE_LEVEL', 'SKIP_LEVEL', 'REROLL_LEVEL',
+        'CHOOSE_ADEPT_SPELL', 'CHOOSE_DUELIST_ARTIFACT',
         'CHOOSE_SPELL_UPGRADE',
         'CHOOSE_DIPLOMACY', 'CHOOSE_STOLEN_SPELL', 'CHOOSE_PALIMPSEST',
+        'CHOOSE_ACQUISITION_SPELL',
         'CHOOSE_BARGAIN',
         'CHOOSE_TOLL',
         'CHOOSE_SIREN',
@@ -143,11 +175,19 @@ export function apply(state: GameState, action: Action): GameState {
   }
   if (action.type === 'MOVE_HERO') {
     if (action.heroId) selectHero(next, action.heroId);
-    moveHero(next, action.destination, action.avoidAggro);
+    moveHero(next, action.destination, action.avoidAggro, action.useWayfaring);
   }
+  else if (action.type === 'ARTIFACT_CROSS_TERRAIN') artifactCrossTerrain(next, action);
+  else if (action.type === 'ARTIFACT_RETURN_TO_START') artifactReturnToStart(next, action.heroId);
+  else if (action.type === 'ARTIFACT_MARKER') artifactMarker(next, action);
+  else if (action.type === 'ARTIFACT_SKIP_GUARD') artifactSkipGuard(next, action);
+  else if (action.type === 'ARTIFACT_REMOTE_TRANSFER') artifactRemoteTransfer(next, action);
+  else if (action.type === 'ARTIFACT_MOVE_STAT') artifactMoveStat(next, action);
+  else if (action.type === 'ARTIFACT_PAY_REMOVAL') artifactPayRemoval(next, action);
   else if (action.type === 'PICKUP_OBJECT') pickupObject(next, action.objectId);
   else if (action.type === 'END_TURN') endTurn(next);
   else if (action.type === 'BUILD') build(next, action.castleId, action.buildingId);
+  else if (action.type === 'DISMISS_GUILD_REVEAL') next.guildReveal = null;
   else if (action.type === 'BUILD_BOAT') buildBoat(next, action.castleId);
   else if (action.type === 'RECRUIT') recruit(next, action.castleId, action.tier, action.count);
   else if (action.type === 'SWAP_ARMY') {
@@ -163,8 +203,19 @@ export function apply(state: GameState, action: Action): GameState {
     next.lastMessage = `${next.players[next.activePlayer].name} retires from Manywhere.`;
   }
   else if (action.type === 'CHOOSE_LEVEL') chooseLevel(next, action.stat);
+  else if (action.type === 'CHOOSE_ADEPT_SPELL') chooseAdeptSpell(next, action.spellId);
+  else if (action.type === 'CHOOSE_DUELIST_ARTIFACT') {
+    chooseDuelistArtifact(next, action.artifactId);
+  }
   else if (action.type === 'SKIP_LEVEL') skipLevel(next);
   else if (action.type === 'REROLL_LEVEL') rerollLevel(next);
+  else if (action.type === 'REFRESH_LOGISTICS') refreshLogistics(next, action.heroId);
+  else if (action.type === 'DESIGNATE_TACTICIAN') {
+    designateTactician(next, action.heroId, action.armySlot);
+  }
+  else if (action.type === 'REMOTE_RECRUIT') {
+    remoteRecruit(next, action.heroId, action.castleId, action.tier, action.count);
+  }
   else if (action.type === 'CHOOSE_DIPLOMACY') chooseDiplomacy(next, action.choice);
   else if (action.type === 'CHOOSE_STOLEN_SPELL') {
     chooseStolenSpell(next, action.spellId);
@@ -179,7 +230,8 @@ export function apply(state: GameState, action: Action): GameState {
   else if (action.type === 'EQUIP_ARTIFACT') {
     equipArtifact(
       next, action.heroId, action.backpackIndex,
-      action.equipmentSlot, action.chosenSchool,
+      action.equipmentSlot, action.chosenSchool, action.chosenObjectKind,
+      action.chosenDwellingTier,
     );
   }
   else if (action.type === 'UNEQUIP_ARTIFACT') {
@@ -195,6 +247,12 @@ export function apply(state: GameState, action: Action): GameState {
   }
   else if (action.type === 'CHOOSE_PALIMPSEST') {
     choosePalimpsest(next, action.spellId);
+  }
+  else if (action.type === 'USE_ACQUISITION_SITE') {
+    useAcquisitionSite(next, action.objectId);
+  }
+  else if (action.type === 'CHOOSE_ACQUISITION_SPELL') {
+    chooseAcquisitionSpell(next, action.spellId);
   }
   else if (action.type === 'CHOOSE_BARGAIN') chooseBargain(next, action);
   else if (action.type === 'CAST_ADVENTURE_SPELL') {
@@ -231,7 +289,10 @@ export function apply(state: GameState, action: Action): GameState {
       next, action.castleId, action.direction, action.resource, action.amount,
     );
   }
-  else if (action.type === 'BUY_MARKET_SCROLL') buyMarketScroll(next, action.castleId);
+  else if (action.type === 'MARKET_DIRECT_EXCHANGE') marketDirectExchange(next, action);
+  else if (action.type === 'BUY_MARKET_SCROLL') {
+    buyMarketScroll(next, action.castleId, action.heroId);
+  }
   else if (action.type === 'SELL_MARKET_ITEM') {
     sellMarketItem(next, action.castleId, action.inventorySlot);
   }
@@ -275,7 +336,7 @@ export function apply(state: GameState, action: Action): GameState {
       const winner = winnerId ? Object.values(next.players).flatMap((player) => player.heroes)
         .find((hero) => hero.id === winnerId) : undefined;
       if (loser && winner) {
-        next.players[loser.owner].resources.gold -= next.battle.withdrawal.cost;
+        payPlayer(next.players[loser.owner], { gold: next.battle.withdrawal.cost });
         next.players[winner.owner].resources.gold += next.battle.withdrawal.cost;
       }
     }
@@ -291,10 +352,10 @@ export function apply(state: GameState, action: Action): GameState {
         active.side === 'attacker' ? next.activePlayer : next.battle.context.defenderPlayerId!,
         heroId) : null;
       const cost = surrenderCost(next.battle, active.side);
-      if (!hero || next.players[hero.owner].resources.gold < cost) {
+      if (!hero || !canPlayerAfford(next.players[hero.owner], { gold: cost })) {
         throw new Error('Cannot afford surrender');
       }
-      next.players[hero.owner].resources.gold -= cost;
+      payPlayer(next.players[hero.owner], { gold: cost });
       const opposingHeroId = active.side === 'attacker'
         ? next.battle.context.defenderHeroId : next.battle.context.attackerHeroId;
       const opposingHero = opposingHeroId ? Object.values(next.players)
@@ -304,6 +365,11 @@ export function apply(state: GameState, action: Action): GameState {
     }
     next.battle = applyBattleAction(next.battle, action);
     if (next.battle.winner) finalizeBattle(next);
+  }
+  resetWaterStraitOnLand(next);
+  refreshArtifactPointers(next);
+  for (const player of Object.values(next.players)) for (const hero of player.heroes) {
+    hero.mana = Math.min(hero.mana, maximumMana(hero, player));
   }
   syncAllHeroViews(next);
   return next;
@@ -325,6 +391,16 @@ export function applyAutomaticChoice(state: GameState): GameState {
       stat: bestLevelOption(hero, state.pendingChoice.options),
     });
   }
+  if (state.pendingChoice?.kind === 'adept') {
+    return apply(state, {
+      type: 'CHOOSE_ADEPT_SPELL', spellId: [...state.pendingChoice.options].sort()[0],
+    });
+  }
+  if (state.pendingChoice?.kind === 'duelistArtifact') {
+    return apply(state, {
+      type: 'CHOOSE_DUELIST_ARTIFACT', artifactId: [...state.pendingChoice.options].sort()[0],
+    });
+  }
   if (state.pendingChoice?.kind === 'shrine' || state.pendingChoice?.kind === 'inscribe') {
     return apply(state, {
       type: 'CHOOSE_SPELL_UPGRADE', spellId: state.pendingChoice.options[0],
@@ -333,12 +409,12 @@ export function applyAutomaticChoice(state: GameState): GameState {
   if (state.pendingChoice?.kind === 'diplomacy') {
     const player = state.players[state.pendingChoice.playerId];
     const choice = state.pendingChoice.canStandAside
-      && player.resources.gold >= state.pendingChoice.disbandCost
+      && canPlayerAfford(player, { gold: state.pendingChoice.disbandCost })
       ? 'standAside'
       : state.pendingChoice.recruitCost !== null
-      && player.resources.gold >= state.pendingChoice.recruitCost
+      && canPlayerAfford(player, { gold: state.pendingChoice.recruitCost })
       ? 'recruit'
-      : player.resources.gold >= state.pendingChoice.disbandCost ? 'disband' : 'fight';
+      : canPlayerAfford(player, { gold: state.pendingChoice.disbandCost }) ? 'disband' : 'fight';
     return apply(state, { type: 'CHOOSE_DIPLOMACY', choice });
   }
   if (state.pendingChoice?.kind === 'spellthief') {
@@ -349,6 +425,11 @@ export function applyAutomaticChoice(state: GameState): GameState {
   if (state.pendingChoice?.kind === 'palimpsest') {
     return apply(state, {
       type: 'CHOOSE_PALIMPSEST', spellId: state.pendingChoice.options[0],
+    });
+  }
+  if (state.pendingChoice?.kind === 'acquisitionSite') {
+    return apply(state, {
+      type: 'CHOOSE_ACQUISITION_SPELL', spellId: state.pendingChoice.options[0],
     });
   }
   if (state.pendingChoice?.kind === 'bargain') {
@@ -366,7 +447,7 @@ export function applyAutomaticChoice(state: GameState): GameState {
   if (state.pendingChoice?.kind === 'toll') {
     const player = state.players[state.pendingChoice.playerId];
     return apply(state, {
-      type: 'CHOOSE_TOLL', choice: player.resources.gold >= state.pendingChoice.cost
+      type: 'CHOOSE_TOLL', choice: canPlayerAfford(player, { gold: state.pendingChoice.cost })
         ? 'pay' : 'fight',
     });
   }

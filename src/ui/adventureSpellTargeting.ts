@@ -4,11 +4,13 @@ import { terrainIdAt } from '../content/terrain';
 import { coordKey, inBounds, sameCoord } from '../core/map/pathfinding';
 import { castleFootprintTiles, objectFootprintTiles } from '../core/map/occupancy';
 import type { Action, Coord, GameState, Hero, SpellId } from '../core/types';
+import { heroTeleportInRadiusReason } from '../core/game/adventurePrimitives';
+import { adventureSpellPower } from '../core/game/adventureSpells';
 
 export type AdventureCastAction = Extract<Action, { type: 'CAST_ADVENTURE_SPELL' }>;
 
 export const MAP_TARGET_SPELLS: SpellId[] = [
-  'gate', 'coldRoad', 'greenway', 'murmuration', 'rootAndRuin',
+  'gate', 'coldRoad', 'greenway', 'murmuration', 'rootAndRuin', 'dimensionDoor',
 ];
 
 export function isMapTargetSpell(spellId: SpellId): boolean {
@@ -46,6 +48,12 @@ export function mapTargetReason(
   if (chosen.some((position) => sameCoord(position, target))) return 'Choose a different tile.';
   const explored = state.players[hero.owner].explored.includes(coordKey(target));
   if (spellId === 'gate') return explored ? null : 'Gate entrances must be explored.';
+  if (spellId === 'dimensionDoor') {
+    const radius = (hero.upgradedSpells.includes(spellId) ? 10 : 6)
+      + adventureSpellPower(state, hero);
+    const result = heroTeleportInRadiusReason(state, hero.id, target, radius);
+    return result.ok ? null : result.reason.text;
+  }
   if (spellId === 'coldRoad') {
     if (terrainIdAt(state.map, hero.position) !== 'barrowfield') {
       return 'The caster must stand on Barrow-field.';
@@ -136,7 +144,20 @@ export function adventureDraftIncompleteReason(
       && state.players[hero.owner].explored.includes(coordKey(object.position)))
       ? 'Choose a visible enemy mine.' : 'No visible enemy mine is currently eligible.';
   }
-  if (action.spellId === 'falseColors' && plus && !action.displayedBand) return 'Choose a displayed army band.';
+  if (action.spellId === 'falseColors' && !action.displayedBand) return 'Choose a displayed army band.';
+  if (action.spellId === 'scrying'
+      && !action.targetHeroId && !action.castleId && !action.targetId) {
+    return 'Choose an owned hero, owned City, or explored map object.';
+  }
+  if (action.spellId === 'processionOfLamps' && plus && !action.secondaryHeroId) {
+    return 'Choose one adjacent owned hero.';
+  }
+  if ((action.spellId === 'stealAway') && !action.targetId) {
+    return 'Choose an explored enemy-owned mine.';
+  }
+  if (action.spellId === 'theDebtCalled' && !action.targetHeroId) {
+    return 'Choose any living enemy hero.';
+  }
   if (action.spellId === 'clockworkCourier') {
     if (!action.courierKind || action.sourceSlot === undefined) {
       return hero.inventory.some(Boolean) || hero.army.some(Boolean)
@@ -145,6 +166,15 @@ export function adventureDraftIncompleteReason(
     if (action.destinationSlot === undefined || (!action.targetHeroId && !action.castleId)) {
       return 'Choose an exact hero or garrison destination slot.';
     }
+  }
+  if (action.spellId === 'wellspring') {
+    if (!action.targetHeroId) return 'Choose one living hero you own.';
+    const target = state.players[hero.owner].heroes.find((candidate) =>
+      candidate.id === action.targetHeroId && candidate.alive);
+    if (!target) return 'Choose one living hero you own.';
+  }
+  if (action.spellId === 'dimensionDoor' && !action.target) {
+    return 'Choose an explored, unoccupied destination within the spell radius.';
   }
   if (action.spellId === 'coldRoad' && !action.target) return 'Choose an explored Barrow-field destination.';
   if (action.spellId === 'greenway' && !action.target) return 'Choose a connected Deepwood destination.';

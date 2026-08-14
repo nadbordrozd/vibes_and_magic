@@ -1,9 +1,12 @@
 import { SPELLS } from '../../content/spells';
 import { spellTargetSummary } from '../../content/spellPresentation';
 import {
-  adventureSpellMoveCost, canCastAdventureSpell, isAdventureSpell,
+  adventureSpellManaCost, adventureSpellMoveCost, canCastAdventureSpell, isAdventureSpell,
 } from '../../core/game/adventureSpells';
+import { hasArtifactEffect } from '../../core/artifacts';
 import type { GameState, SpellId } from '../../core/types';
+import { maximumMana } from '../../core/heroBehaviors';
+import { canUseTimeGatedSpell, spellUseOwner } from '../../core/game/spellUsage';
 import { Spellbook, type SpellbookEntry } from './Spellbook';
 
 interface Props {
@@ -19,8 +22,19 @@ function adventureDisabledReason(state: GameState, spellId: SpellId): string | u
   if (canCastAdventureSpell(state, spellId)) return undefined;
   if (state.magicDisabled) return 'Magic is disabled by the current scenario or effect.';
   if (state.pendingChoice) return 'Resolve the current choice first.';
+  const useOwner = spellUseOwner(state, hero, spell.timeGateScope === 'player');
+  if (!canUseTimeGatedSpell(useOwner, spellId, state.day, state.week)) {
+    return spell.timeGate === 'once-per-week'
+      ? 'Already cast by this time-gate owner this week.'
+      : 'Already cast by this time-gate owner today.';
+  }
   if (typeof spell.mana !== 'number') return 'This X-cost spell is not available on the adventure map.';
-  if (hero.mana < spell.mana) return `Requires ${spell.mana} mana; ${hero.mana} remains.`;
+  if (hasArtifactEffect(hero, 'low_tier_free_casting')
+      && (spell.tier ?? Number.POSITIVE_INFINITY) > 2) {
+    return "The Pauper's Grimoire permits only tier 1 and tier 2 spells.";
+  }
+  const manaCost = adventureSpellManaCost(hero, spellId);
+  if (hero.mana < manaCost) return `Requires ${manaCost} mana; ${hero.mana} remains.`;
   const moveCost = adventureSpellMoveCost(hero);
   if (hero.movement < moveCost) {
     return `Requires ${moveCost} movement; ${hero.movement} remains.`;
@@ -36,7 +50,8 @@ export function adventureSpellbookEntries(state: GameState): SpellbookEntry[] {
     const adventure = isAdventureSpell(spellId);
     return {
       id: spellId,
-      manaCost: spell.mana === 'X' ? 'X mana · all remaining' : `${spell.mana} mana`,
+      manaCost: spell.mana === 'X' ? 'X mana · all remaining'
+        : `${adventureSpellManaCost(hero, spellId)} mana`,
       movementCost: adventure ? `${moveCost} movement` : undefined,
       disabledReason: adventureDisabledReason(state, spellId),
       targetSummary: spellTargetSummary(spellId),
@@ -51,7 +66,7 @@ export function AdventureSpellbook({ state, onClose, onCast }: Props) {
   const hero = state.players[state.activePlayer].hero!;
   const entries = adventureSpellbookEntries(state);
   return <Spellbook className="adventure-spellbook" context="Map magic" title="Adventure spellbook"
-    heroName={hero.name} mana={hero.mana} maxMana={hero.knowledge * 10}
+    heroName={hero.name} mana={hero.mana} maxMana={maximumMana(hero, state.players[hero.owner])}
     movement={hero.movement} debts={hero.debts}
     entries={entries} onClose={onClose} onCast={onCast} />;
 }

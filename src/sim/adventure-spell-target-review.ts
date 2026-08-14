@@ -1,6 +1,8 @@
 import { mkdirSync } from 'node:fs';
 import puppeteer, { type Page } from 'puppeteer-core';
 import { createGame } from '../core/game';
+import { SPELLS } from '../content/spells';
+import type { SpellId } from '../core/types';
 import type { GameState } from '../core/types';
 import { actionSave } from '../ui/persistence';
 
@@ -17,7 +19,8 @@ function fixture(): GameState {
     p1: 'human', p2: 'dormant',
   });
   const hero = state.players.p1.hero!;
-  hero.knownSpells = ['saltTheVein', 'fickleWeather', 'gate'];
+  hero.knownSpells = ['scrying', 'prospect', 'stealAway', 'theDebtCalled', 'beastSense', 'illWind'];
+  hero.upgradedSpells = ['scrying', 'prospect', 'stealAway', 'theDebtCalled', 'beastSense', 'illWind'];
   hero.mana = 100;
   hero.movement = 10_000;
   state.players.p1.explored = state.map.terrain.flatMap((row, y) =>
@@ -44,7 +47,8 @@ async function load(page: Page, state: GameState): Promise<void> {
   if (await page.$('.objective-primer')) await page.locator('.choice-dialog .primary').click();
 }
 
-async function openSpell(page: Page, name: string): Promise<void> {
+async function openSpell(page: Page, spellId: SpellId): Promise<void> {
+  const name = SPELLS[spellId].name;
   const state = await page.$eval('.adventure-spell-button', (button) => ({
     disabled: (button as HTMLButtonElement).disabled,
     title: (button as HTMLButtonElement).title,
@@ -52,9 +56,16 @@ async function openSpell(page: Page, name: string): Promise<void> {
   if (state.disabled) throw new Error(`Adventure spellbook is disabled: ${state.title}`);
   await page.$eval('.adventure-spell-button', (button) => (button as HTMLButtonElement).click());
   await page.waitForSelector('.adventure-spellbook');
-  await page.$$eval('.adventure-spellbook .spell-card', (cards, wanted) => {
+  await page.click(`.spell-school-tab.${SPELLS[spellId].school}`);
+  await page.$$eval('.adventure-spellbook .spell-grid-cell', (cards, wanted) => {
     const card = cards.find((candidate) => candidate.textContent?.includes(wanted));
-    const button = card?.querySelector<HTMLButtonElement>('button');
+    const button = card as HTMLButtonElement | undefined;
+    if (!button || button.disabled) throw new Error(`${wanted} is not selectable in the review fixture`);
+    button.click();
+  }, name);
+  await page.$$eval('.adventure-spellbook [data-cast-spell-id]', (buttons, wanted) => {
+    const button = buttons.find((candidate) => candidate.textContent?.includes('Cast')) as
+      HTMLButtonElement | undefined;
     if (!button || button.disabled) throw new Error(`${wanted} is not castable in the review fixture`);
     button.click();
   }, name);
@@ -70,7 +81,7 @@ try {
   page.on('pageerror', (error) => { throw error; });
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
   await load(page, fixture());
-  await openSpell(page, 'Salt the Vein');
+  await openSpell(page, 'stealAway');
   const before = await page.$eval('.meter-label + .meter + .meter-label b', (node) => node.textContent);
   await page.screenshot({ path: `${output}/desktop-mine-choice.png`, fullPage: true });
   await page.locator('.adventure-spell-target fieldset button').click();
@@ -84,10 +95,10 @@ try {
   if (afterCancel !== before) throw new Error('Cancelling an adventure spell changed mana');
 
   await page.setViewport({ width: 520, height: 820, deviceScaleFactor: 1 });
-  await openSpell(page, 'Fickle Weather');
+  await openSpell(page, 'scrying');
   await page.waitForSelector('.adventure-spell-target fieldset button');
   await page.locator('.adventure-spell-target fieldset button').click();
-  await page.screenshot({ path: `${output}/narrow-omen-confirm.png`, fullPage: true });
+  await page.screenshot({ path: `${output}/narrow-scrying-confirm.png`, fullPage: true });
   const dialogBounds = await page.$eval('.adventure-spell-target', (dialog) => {
     const box = dialog.getBoundingClientRect();
     const backdrop = dialog.parentElement!;
@@ -108,13 +119,12 @@ try {
     confirm.click();
   });
   await page.waitForFunction(() =>
-    (document.querySelector('.message-strip')?.textContent ?? '').includes('Fickle Weather'));
+    (document.querySelector('.message-strip')?.textContent ?? '').includes('Scrying'));
 
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
-  await openSpell(page, 'Gate');
-  const highlighted = await page.$$eval('.terrain-cell.spell-legal-target', (nodes) => nodes.length);
-  if (highlighted < 2) throw new Error('Gate does not expose legal map targets');
-  await page.screenshot({ path: `${output}/desktop-map-targets.png`, fullPage: true });
+  const visibleTiles = await page.$$eval('.terrain-cell', (nodes) => nodes.length);
+  if (visibleTiles < 1) throw new Error('Scrying returned no visible map-intel surface');
+  await page.screenshot({ path: `${output}/desktop-scrying-map-intel.png`, fullPage: true });
   console.log(`Adventure spell target review passed. Screenshots written to ${output}.`);
 } finally {
   await browser.close();

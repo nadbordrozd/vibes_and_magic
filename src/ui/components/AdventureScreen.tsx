@@ -15,12 +15,12 @@ import {
 } from '../animation';
 import { ExchangeScreen } from './ExchangeScreen';
 import { AdventureMap } from './AdventureMap';
-import { logisticsRate } from '../../core/heroBehaviors';
+import { logisticsRate, maximumMana } from '../../core/heroBehaviors';
 import { ITEMS, itemName } from '../../content/items';
 import { OMENS, omenEffectSummary } from '../../content/omens';
 import { SPELLS } from '../../content/spells';
 import { CASTLE_NAMES } from '../../content/factionPresentation';
-import { adventureSpellMoveCost } from '../../core/game/adventureSpells';
+import { adventureSpellManaCost, adventureSpellMoveCost } from '../../core/game/adventureSpells';
 import type { SpellId } from '../../core/types';
 import { AdventureSpellbook } from './AdventureSpellbook';
 import { AdventureSpellTargetDialog } from './AdventureSpellTargetDialog';
@@ -97,6 +97,7 @@ export function AdventureScreen({
   const [castingError, setCastingError] = useState<string | null>(null);
   const [unstitching, setUnstitching] = useState(false);
   const [worldView, setWorldView] = useState(false);
+  const [wayfaringMode, setWayfaringMode] = useState(false);
   const [heroDetailsOpen, setHeroDetailsOpen] = useState(false);
   const [commandMenuOpen, setCommandMenuOpen] = useState(false);
   const [minimapHost, setMinimapHost] = useState<HTMLDivElement | null>(null);
@@ -111,8 +112,8 @@ export function AdventureScreen({
   [state, previewMeetingHeroId]);
   const path = useMemo(
     () => meetingPreview ? meetingPreview.ok ? meetingPreview.plan.path : []
-      : preview ? previewPath(state, preview) : hero?.pathMemory ?? [],
-    [state, preview, hero, meetingPreview],
+      : preview ? previewPath(state, preview, wayfaringMode) : hero?.pathMemory ?? [],
+    [state, preview, hero, meetingPreview, wayfaringMode],
   );
   const castleHere = visitingCastle(state);
   const ownedCastles = state.castles.filter((castle) => castle.owner === state.activePlayer);
@@ -175,10 +176,12 @@ export function AdventureScreen({
       setMovement(null);
       onMovementStateChange(false);
       setMeetingIntent((current) => current ? { ...current, status: 'resolving' } : current);
-      dispatch({ type: 'MOVE_HERO', destination });
+      dispatch({ type: 'MOVE_HERO', destination,
+        avoidAggro: wayfaringMode ? false : undefined, useWayfaring: wayfaringMode });
+      setWayfaringMode(false);
     }, timing.mapStep);
     return () => clearTimeout(timer);
-  }, [movement, timing.mapStep, dispatch, onMovementStateChange]);
+  }, [movement, timing.mapStep, dispatch, onMovementStateChange, wayfaringMode]);
 
   useEffect(() => {
     if (!meetingIntent || meetingIntent.status !== 'resolving'
@@ -279,9 +282,11 @@ export function AdventureScreen({
       return;
     }
     setPreviewMeetingHeroId(null);
-    const movingPath = animatedAdventurePath(state, destination);
+    const movingPath = animatedAdventurePath(state, destination, wayfaringMode);
     if (timing.mapStep === 0 || movingPath.length < 2) {
-      dispatch({ type: 'MOVE_HERO', destination });
+      dispatch({ type: 'MOVE_HERO', destination,
+        avoidAggro: wayfaringMode ? false : undefined, useWayfaring: wayfaringMode });
+      setWayfaringMode(false);
     } else {
       onMovementStateChange(true);
       setMovement({ path: movingPath, index: 0, destination });
@@ -412,7 +417,7 @@ export function AdventureScreen({
                 hero.upgradedSpells.includes(castingSpell.spellId) ? 'Upgraded' : 'Standard'} · choose targets</b>
             <span>{SPELLS[castingSpell.spellId][hero.upgradedSpells.includes(castingSpell.spellId)
               ? 'plus' : 'base']}</span>
-            <span>{SPELLS[castingSpell.spellId].mana} mana · {adventureSpellMoveCost(hero)} movement
+            <span>{adventureSpellManaCost(hero, castingSpell.spellId)} mana · {adventureSpellMoveCost(hero)} movement
               · nothing is spent until confirmation.</span>
             <span>Chosen {castingSpell.positions.length}{requiredMapTargets(hero, castingSpell.spellId)
               !== null ? ` of ${requiredMapTargets(hero, castingSpell.spellId)}` : ''}</span>
@@ -447,7 +452,9 @@ export function AdventureScreen({
                 {selected ? itemName(selected) : 'Adventure item'} · choose a target</b>
               <span>{selectedDefinition?.behavior === 'impassableStep'
                 ? 'Highlighted landings cross one to three impassable tiles.'
-                : 'Highlighted map centers are within three tiles of explored land.'}</span>
+                : selectedDefinition?.behavior === 'survey'
+                  ? 'Every map tile is a legal center; the radius-8 circle reveals exact guardian counts.'
+                  : 'Highlighted map centers are within three tiles of explored land.'}</span>
               <span>Nothing is consumed until review and confirmation.</span>
               {legalItemTargets?.size === 0 && <small>Unavailable · no legal target is visible.</small>}
               <button onClick={() => setUsingItemSlot(null)}>Cancel · keep item</button>
@@ -504,9 +511,10 @@ export function AdventureScreen({
               <div className="meter-label"><span>Move</span><b>{hero.movement}/{maxMovement}</b></div>
               <div className="meter"><i style={{ width: `${Math.min(100,
                 hero.movement / maxMovement * 100)}%` }} /></div>
-              <div className="meter-label"><span>Mana</span><b>{hero.mana}/{hero.knowledge * 10}</b></div>
+              <div className="meter-label"><span>Mana</span><b>{hero.mana}/{maximumMana(hero,
+                state.players[hero.owner])}</b></div>
               <div className="meter mana"><i style={{ width: `${Math.min(100, hero.mana / Math.max(1,
-                hero.knowledge * 10) * 100)}%` }} /></div>
+                maximumMana(hero, state.players[hero.owner])) * 100)}%` }} /></div>
               <ArmySlots army={hero.army} title="Army" />
             </section>
           )}
@@ -522,6 +530,15 @@ export function AdventureScreen({
               onClick={() => setSpellbookOpen(true)}>Spellbook</button>
             <button onClick={() => setWorldView((value) => !value)}>
               {worldView ? 'Close world view' : 'World view'}</button>
+            {hero?.skills.wayfaring === 3 && <button
+              className={wayfaringMode ? 'selected' : ''}
+              disabled={hero.skillUses.daily.wayfaring === state.day}
+              title={hero.skillUses.daily.wayfaring === state.day
+                ? 'The once-per-day guardian passage has already been used.'
+                : 'Opt in, then choose a destination whose route crosses one guardian aggro tile.'}
+              onClick={() => setWayfaringMode((value) => !value)}>
+              {wayfaringMode ? 'Cancel Wayfaring passage' : 'Use Wayfaring passage'}
+            </button>}
             <button onClick={() => setObjectiveOpen(true)}>Objective</button>
             <button onClick={() => setCommandMenuOpen(true)}>Menu &amp; saves</button>
             {hero && player.heroes.filter((candidate) => candidate.id !== hero.id && candidate.alive
@@ -578,7 +595,7 @@ export function AdventureScreen({
           const item = hero.inventory[index];
           const definition = item && typeof item !== 'string' ? ITEMS[item.id] : null;
           if (!definition) return;
-          if (['reveal', 'impassableStep'].includes(definition.behavior)) setUsingItemSlot(index);
+          if (['reveal', 'survey', 'impassableStep'].includes(definition.behavior)) setUsingItemSlot(index);
           else if (['remoteMovement', 'militiaWrit'].includes(definition.behavior)) {
             setChoosingItemSlot(index);
           } else setActionDraft(adventureItemDraft(state, hero, index));

@@ -95,9 +95,9 @@ describe('terrain and discovery expansions', () => {
         !RUNTIME_ONLY_MAP_OBJECT_KINDS.includes(kind as never))));
   });
 
-  it('ships 80 regular artifacts, 36 heroes, four neutral towns, and sandbox retirement', () => {
+  it('ships 138 regular artifacts, 36 heroes, four neutral towns, and sandbox retirement', () => {
     expect(Object.values(ARTIFACTS).filter((artifact) =>
-      artifact.class !== 'kit' && artifact.class !== 'trinket')).toHaveLength(80);
+      artifact.class !== 'kit' && artifact.class !== 'trinket')).toHaveLength(138);
     expect(Object.keys(HEROES)).toHaveLength(36);
     const game = createGame({ seed: 29, mapId: 'manywhere', p1: 'human', p2: 'dormant', playerCount: 2 });
     expect(game.map.victory.type).toBe('none');

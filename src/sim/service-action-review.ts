@@ -84,7 +84,14 @@ async function clickText(page: Page, selector: string, text: string): Promise<vo
 async function openItems(page: Page): Promise<void> {
   await clickText(page, '.rail-commands button', 'Hero details');
   await page.waitForSelector('.hero-details-dialog');
-  await clickText(page, '.hero-details-tabs button', 'Items');
+  await page.$eval('[data-dashboard-region="consumables"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+}
+
+async function beginUseItem(page: Page, name: string): Promise<void> {
+  await clickText(page, '.hero-dashboard-item-grid button', name);
+  await page.waitForSelector('.hero-dashboard-detail');
+  await clickText(page, '.hero-dashboard-detail button', 'Use item');
 }
 
 async function audit(page: Page, name: string): Promise<void> {
@@ -109,7 +116,7 @@ try {
   await load(page, fixture());
 
   await openItems(page);
-  await clickText(page, '.item-inventory button', 'Salted Meat');
+  await beginUseItem(page, 'Salted Meat');
   await page.waitForSelector('.item-target-dialog');
   const heroChoices = await page.$$('.item-target-options button');
   if (heroChoices.length !== fixture().players.p1.heroes.length) {
@@ -123,7 +130,7 @@ try {
   await page.locator('.action-confirm-dialog .dialog-actions button').click();
 
   await openItems(page);
-  await clickText(page, '.item-inventory button', "Ferryman's Coin");
+  await beginUseItem(page, "Ferryman's Coin");
   await page.waitForSelector('.map-item-target-prompt');
   const mapPrompt = await page.$eval('.map-item-target-prompt', (node) => node.textContent ?? '');
   if (!mapPrompt.includes('Nothing is consumed until')) throw new Error('Map item lacks safe targeting copy');
@@ -132,7 +139,7 @@ try {
 
   await page.setViewport({ width: 700, height: 860, deviceScaleFactor: 1 });
   await openItems(page);
-  await clickText(page, '.item-inventory button', 'Militia Writ');
+  await beginUseItem(page, 'Militia Writ');
   await page.waitForSelector('.item-target-dialog');
   await audit(page, 'Militia Writ narrow target choice');
   await page.screenshot({ path: `${output}/04-item-castle-targets-narrow.png`, fullPage: true });

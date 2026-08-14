@@ -1,6 +1,7 @@
 import type {
   BuildingId, DebtEntry, DebtTrigger, GameState, Hero, UnitTier,
 } from './types';
+import { maximumDebtSlots } from './artifacts';
 import { FACTION_UNITS, UNITS } from '../content/units';
 
 export const MAX_ACTIVE_DEBTS = 2;
@@ -114,8 +115,8 @@ export function scheduleDebt(
   hero: Hero,
   debt: Omit<DebtEntry, 'remainingTriggers'> & { remainingTriggers?: number },
 ): void {
-  if (hero.debts.length >= MAX_ACTIVE_DEBTS) {
-    throw new Error('A hero may carry at most two Debts');
+  if (hero.debts.length >= maximumDebtSlots(hero)) {
+    throw new Error(`A hero may carry at most ${maximumDebtSlots(hero)} Debts`);
   }
   if (hero.debts.some((entry) => entry.id === debt.id)) {
     throw new Error('Debt ids must be unique per hero');

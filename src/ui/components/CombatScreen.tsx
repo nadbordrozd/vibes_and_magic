@@ -17,16 +17,20 @@ import { SpellbookPanel } from './SpellbookPanel';
 import {
   effectiveResonances, legalSpellCasts,
 } from '../../core/combat/spells';
+import { maximumMana } from '../../core/heroBehaviors';
 import { legalCombatItemUses } from '../../core/combat/items';
 import { ITEMS, itemName } from '../../content/items';
 import { ABILITY_PRESENTATION } from '../../content/abilityPresentation';
 import { ResourceAmount } from './ResourceToken';
 import { stackHexes, stackContains } from '../../core/combat/footprint';
 import { canUseRanged } from '../../core/combat/damage';
+import { p2WeatherForecastForSide } from '../../core/combat/p2SpellEffects';
 import { ArtifactSprite, ItemSprite, PixelSprite, battleUnitSpriteId } from '../assets';
+import { ARTIFACTS } from '../../content/artifacts';
 import { BATTLE_COLS, BATTLE_ROWS, MORALE_THRESHOLD } from '../../content/constants';
 import {
-  backCombatTarget, beginAbilityTargeting, beginItemTargeting, beginSpellTargeting,
+  backCombatTarget, beginAbilityTargeting, beginItemTargeting, beginKnackTargeting,
+  beginSpellTargeting,
   chooseCombatTarget, combatTargetChoices, combatTargetConsequence,
   combatTargetCost, combatTargetDestinations, combatTargetFace, combatTargetName,
   combatTargetStackIds,
@@ -41,7 +45,9 @@ import {
   attackActionForActivation, type AimedAttack,
 } from '../combatAttackInput';
 import { ContentIcon } from './ContentIcon';
+import { knackIcon } from '../../../assets/iconManifest';
 import { SemanticSpellText, SpellGlossaryReference } from './SpellGlossary';
+import { currentKnack, knackDisabledReason } from '../../core/combat/knacks';
 
 const SIZE = 42;
 const HEX_W = Math.sqrt(3) * SIZE;
@@ -166,6 +172,21 @@ interface AttackCursorState extends AimedAttack {
   angle: number;
 }
 
+function WeatherStatus({ battle, viewerSide }: {
+  battle: NonNullable<GameState['battle']>;
+  viewerSide: BattleStack['side'] | null;
+}) {
+  const forecast = viewerSide ? p2WeatherForecastForSide(battle, viewerSide) : null;
+  return <>
+    {battle.p2Weather && <div className="round-counter" role="status" aria-label="Current weather">
+      <span>Weather</span><b>{battle.p2Weather.kind}</b>
+    </div>}
+    {forecast && <div className="round-counter" role="status" aria-label="Next weather forecast">
+      <span>Next weather</span><b>{forecast}</b>
+    </div>}
+  </>;
+}
+
 export function CombatScreen({
   state, dispatch, humanControl, onSave, onShare, animation,
   animationSpeed, onAnimationSpeedChange, replay,
@@ -183,6 +204,8 @@ export function CombatScreen({
   const { actions, reachable } = activeBattleOptions(state);
   const spellCasts = legalSpellCasts(battle);
   const itemUses = legalCombatItemUses(battle);
+  const knack = currentKnack(battle);
+  const knackReason = knackDisabledReason(battle);
   const reachableSet = new Set(reachable.map((coord) => `${coord.x},${coord.y}`));
   const movePreviewSet = new Set(active && movePreview
     ? stackHexes(active, movePreview).map((coord) => `${coord.x},${coord.y}`) : []);
@@ -197,7 +220,7 @@ export function CombatScreen({
   const targetingStage = targeting ? combatTargetStage(battle, targeting) : null;
   const targetStackIds = new Set(targeting ? combatTargetStackIds(targeting) : []);
   const placementKeys = new Set(targeting && targetingStage === 'positions'
-    ? legalCombatPlacements(battle).map((coord) => `${coord.x},${coord.y}`) : []);
+    ? legalCombatPlacements(battle, targeting).map((coord) => `${coord.x},${coord.y}`) : []);
   const selectedPositionKeys = new Set(targeting?.positions
     .map((coord) => `${coord.x},${coord.y}`) ?? []);
   const destinationKeys = new Set(targeting
@@ -325,7 +348,9 @@ export function CombatScreen({
 
   const clickStack = (stack: BattleStack) => {
     if (targeting && (targetingStage === 'targetId'
-        || targetingStage === 'secondaryTargetId') && isTargetChoice(stack)) {
+        || targetingStage === 'secondaryTargetId' || targetingStage === 'artifactSecondTargetId'
+        || targetingStage === 'mirrorTargetId' || targetingStage === 'mirrorSecondaryTargetId')
+        && isTargetChoice(stack)) {
       setTargeting(chooseCombatTarget(
         targeting, targetingStage, stack.id,
       ));
@@ -339,6 +364,7 @@ export function CombatScreen({
       <header className="combat-header">
         <div><span>Battlefield</span><h2>{battle.battlefieldTemplate.replace(/([A-Z])/g, ' $1')}</h2></div>
         <div className="round-counter"><span>Round</span><b>{battle.round}</b></div>
+        <WeatherStatus battle={battle} viewerSide={active?.side ?? null} />
         <div className="versus">
           <b className="crimson"><small>Attacker</small>{HEROES[battle.attackerHero.definitionId].name}</b>
           <i>vs</i>
@@ -390,6 +416,18 @@ export function CombatScreen({
           onClick={() => setSpellbookOpen(true)}
         >Spellbook · {active?.side === 'defender'
             ? battle.defenderHero?.mana ?? 0 : battle.attackerHero.mana}</button>
+        <button className="knack-button"
+          disabled={!humanControl || Boolean(knackReason) || !knack}
+          data-knack-control={knack?.definition.id}
+          data-inspect-kind="knack" data-inspect-id={knack?.definition.id}
+          title={!humanControl ? 'Wait for your stack.' : knackReason
+            ?? knack?.definition.ranks[knack.rank].effectText}
+          onClick={() => setTargeting(beginKnackTargeting(battle))}>
+          {knack && <img className="content-icon knack-icon"
+            src={`/${knackIcon(knack.definition.faction).file}`} width={32} height={32}
+            alt="" aria-hidden="true" draggable={false} />}
+          {knack ? `${knack.definition.name} · Rank ${knack.rank}` : 'No Knack'}
+        </button>
       </header>
       <div className="combat-layout">
         <section className="battle-board">
@@ -402,15 +440,24 @@ export function CombatScreen({
                 <h3 className="content-icon-label">
                   {targeting.source.kind === 'spell' && <ContentIcon kind="spell"
                     id={targeting.source.spellId!} />}
+                  {targeting.source.kind === 'knack' && knack && <img
+                    className="content-icon knack-icon"
+                    src={`/${knackIcon(knack.definition.faction).file}`} width={32} height={32}
+                    alt="" aria-hidden="true" draggable={false} />}
                   {combatTargetName(battle, targeting.source)} <em>{combatTargetFace(battle, targeting.source)}</em></h3>
                 <p className="targeting-stage"><b>{targetingStage === 'confirm' ? 'Confirm' : `Stage: ${targetingStage.replace(/([A-Z])/g, ' $1')}`}</b><SemanticSpellText>{combatTargetStagePrompt(battle, targeting)}</SemanticSpellText></p>
                 <p className="targeting-cost">Cost · <SemanticSpellText>{combatTargetCost(battle, targeting.source)}</SemanticSpellText></p>
                 <p className="targeting-consequence">Prediction · <SemanticSpellText>{combatTargetConsequence(battle, targeting)}</SemanticSpellText></p>
-                {(targetingStage === 'effectId' || targetingStage === 'replaceEnchantment'
-                    || targetingStage === 'skipRound') && (
+                {(targetingStage === 'spellId' || targetingStage === 'effectId'
+                    || targetingStage === 'actImmediately'
+                    || targetingStage === 'replaceEnchantment'
+                    || targetingStage === 'skipRound' || targetingStage === 'counterId'
+                    || targetingStage === 'school') && (
                   <div className="combat-targeting-choices" role="group"
                     aria-label={combatTargetStagePrompt(battle, targeting)}>
                     {combatTargetChoices(targeting, targetingStage).map((value) => {
+                      const spellChoice = targetingStage === 'spellId'
+                        ? SPELLS[value as SpellId] : null;
                       const effect = targetingStage === 'effectId'
                         ? effectTargetLabel(battle, String(value)) : null;
                       const replacement = targetingStage === 'replaceEnchantment' && active
@@ -418,12 +465,22 @@ export function CombatScreen({
                       return (
                         <button key={String(value)}
                           data-choice-value={String(value)}
-                          data-inspect-kind={effect ? 'enchantment' : undefined}
-                          data-inspect-id={replacement?.spellId}
+                          data-inspect-kind={spellChoice ? 'spell'
+                            : effect ? 'enchantment' : undefined}
+                          data-inspect-id={spellChoice ? String(value) : replacement?.spellId}
                           onClick={() => setTargeting(chooseCombatTarget(
                             targeting, targetingStage, value,
                           ))}>
-                          {effect ?? (replacement
+                          {spellChoice
+                            ? <span className="content-icon-label"><ContentIcon kind="spell"
+                              id={value as SpellId} />{spellChoice.name}</span>
+                            : targetingStage === 'actImmediately'
+                            ? value ? 'Teleport one · then act immediately' : 'Teleport two companies'
+                            : targetingStage === 'counterId'
+                              ? String(value).replace(/^./, (letter) => letter.toUpperCase())
+                            : targetingStage === 'school'
+                              ? String(value).replace(/^./, (letter) => letter.toUpperCase())
+                            : effect ?? (replacement
                             ? `Slot ${Number(value) + 1} · ${SPELLS[replacement.spellId].name}`
                             : `Round ${value}`)}
                         </button>
@@ -433,7 +490,7 @@ export function CombatScreen({
                 )}
                 {targetingStage === 'positions' && (
                   <small className="targeting-position-count">
-                    {targeting.positions.length}/{requiredCombatPositions(battle, targeting.source)} hexes chosen · click again to remove
+                    {targeting.positions.length}/{requiredCombatPositions(battle, targeting.source, targeting)} hexes chosen · click again to remove
                   </small>
                 )}
               </div>
@@ -839,14 +896,57 @@ export function CombatScreen({
             </div>
           </div>
           <div className="combat-actions">
+            {actions.filter((action): action is Extract<Action, { type: 'BATTLE_DEPLOY_AMBUSH' }> =>
+              action.type === 'BATTLE_DEPLOY_AMBUSH').map((action) =>
+              <button key={`ambush:${action.destination.x}:${action.destination.y}`}
+                disabled={!humanControl}
+                title={!humanControl ? 'The controlling player must choose this deployment.' : undefined}
+                onClick={() => dispatch(action)}>
+                Ambush · deploy at {action.destination.x},{action.destination.y}
+              </button>)}
+            {actions.filter((action): action is Extract<Action, { type: 'BATTLE_USE_SKILL' }> =>
+              action.type === 'BATTLE_USE_SKILL').map((action) => {
+              const target = battle.stacks.find((stack) => stack.id === action.targetId)!;
+              return <button key={`${action.mode}:${action.targetId}`} disabled={!humanControl}
+                title={action.mode === 'chill'
+                  ? 'Choose this enemy company to begin at Chill 2.'
+                  : 'Control this eligible enemy company for one round without consuming the hero act.'}
+                onClick={() => dispatch(action)}>Beguiler · {action.mode === 'chill' ? 'Chill' : 'Control'} {UNITS[target.unitId].name}</button>;
+            })}
+            {actions.filter((action): action is Extract<Action, { type: 'BATTLE_CHOOSE_COUNTER_REDIRECT' }> =>
+              action.type === 'BATTLE_CHOOSE_COUNTER_REDIRECT').map((action) => {
+              const target = battle.stacks.find((stack) => stack.id === action.targetId)!;
+              return <button key={`redirect:${action.targetId}`} disabled={!humanControl}
+                title="Choose the enemy company that receives your first redirected Hex or Burn."
+                onClick={() => dispatch(action)}>Curse-Eater · redirect to {UNITS[target.unitId].name}</button>;
+            })}
+            {actions.filter((action): action is Extract<Action, { type: 'BATTLE_CHOOSE_SPELL_DEFLECT' }> =>
+              action.type === 'BATTLE_CHOOSE_SPELL_DEFLECT').map((action) => {
+              const target = battle.stacks.find((stack) => stack.id === action.targetId)!;
+              return <button key={`spell-deflect:${action.targetId}`} disabled={!humanControl}
+                title="Deflect the paid spell to this company on the caster’s side; no extra action is spent."
+                onClick={() => dispatch(action)}>Spell Deflect · {UNITS[target.unitId].name}</button>;
+            })}
+            {actions.filter((action): action is Extract<Action, { type: 'BATTLE_CHOOSE_MIRROR_COPY' }> =>
+              action.type === 'BATTLE_CHOOSE_MIRROR_COPY').map((action) => {
+              const target = battle.stacks.find((stack) => stack.id === action.targetId)!;
+              return <button key={`mirror-copy:${action.targetId}`} disabled={!humanControl}
+                title="Choose the Upgraded Standing Mirror copy target."
+                onClick={() => dispatch(action)}>Standing Mirror · copy to {UNITS[target.unitId].name}</button>;
+            })}
             {actions.filter((action) => action.type === 'BATTLE_USE_ARTIFACT').map((action) => (
               <button
                 key={action.artifactId}
                 disabled={!humanControl}
                 title={!humanControl ? 'Wait for a human-controlled company to act.' : 'Use this once-per-battle artifact.'}
                 onClick={() => dispatch(action)}
-              ><ArtifactSprite artifactId={action.artifactId} /> {action.artifactId === 'bellsClapper'
-                  ? "Ring the Clapper" : 'Sound the Horn'}</button>
+              ><ArtifactSprite artifactId={action.artifactId} /> {
+                ARTIFACTS[action.artifactId].effects.includes('reset_meters') ? 'Reset morale'
+                  : ARTIFACTS[action.artifactId].effects.includes('eat_counter')
+                    ? `Consume ${action.counterId}`
+                    : ARTIFACTS[action.artifactId].effects.includes('store_spell')
+                      ? action.mode === 'store' ? 'Store last spell' : 'Release stored spell'
+                      : 'Double next attack'}</button>
             ))}
             {actions.some((action) => action.type === 'BATTLE_OVERWIND') && (
               <button
@@ -916,7 +1016,7 @@ export function CombatScreen({
       {spellbookOpen && active && (
         <SpellbookPanel
           battle={battle} side={active.side}
-          maxMana={activeCampaignHero ? activeCampaignHero.knowledge * 10 : undefined}
+          maxMana={activeCampaignHero ? maximumMana(activeCampaignHero) : undefined}
           onClose={() => setSpellbookOpen(false)}
           onSelect={chooseSpell}
         />

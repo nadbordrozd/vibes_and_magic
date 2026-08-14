@@ -61,7 +61,7 @@ export function heroSpecialtyAsset(id: SpecialtyId): HeroDashboardManifestEntry 
 export function heroPrimaryStatAsset(id: HeroPrimaryStatIconId):
 HeroDashboardManifestEntry | ContentIconManifestEntry {
   return id === 'spellPower'
-    ? SPELL_EFFECT_ICON_MANIFEST['spell-power']
+    ? SPELL_EFFECT_ICON_MANIFEST['spell-power']!
     : HERO_DASHBOARD_MANIFEST[`hero-primary-stat:${id}`];
 }
 

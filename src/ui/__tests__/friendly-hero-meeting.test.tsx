@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
+import { setQuartermasterRank } from '../../core/army';
 import { apply, createGame } from '../../core/game';
 import { friendlyHeroMeetingPlan } from '../../core/game/navigation';
 import { reachableAdventureTiles } from '../../core/selectors';
@@ -53,16 +54,17 @@ describe('friendly hero meeting map presentation', () => {
     const { state: fixtureState, source, target } = fixture();
     let state = fixtureState;
     source.army[0] = { unitId: 'yeoman', count: 9 };
-    target.army[6] = null;
+    setQuartermasterRank(target, 1);
+    target.army[7] = null;
     source.inventory[0] = { id: 'waybread' };
     target.inventory[1] = { id: 'saltedMeat' };
     const meeting = friendlyHeroMeetingPlan(fixtureState, target.id);
     if (!meeting.ok) throw new Error(meeting.reason);
     const actions = [{ type: 'MOVE_HERO', destination: meeting.plan.destination }, {
       type: 'TRANSFER_ARMY', source: { kind: 'hero', id: source.id }, sourceSlot: 0,
-      destination: { kind: 'hero', id: target.id }, destinationSlot: 6, count: 3,
+      destination: { kind: 'hero', id: target.id }, destinationSlot: 7, count: 3,
     }, {
-      type: 'TRANSFER_ARMY', source: { kind: 'hero', id: target.id }, sourceSlot: 6,
+      type: 'TRANSFER_ARMY', source: { kind: 'hero', id: target.id }, sourceSlot: 7,
       destination: { kind: 'hero', id: source.id }, destinationSlot: 0, count: 1,
     }, {
       type: 'TRANSFER_ITEM', sourceHeroId: target.id, destinationHeroId: source.id,
@@ -75,7 +77,8 @@ describe('friendly hero meeting map presentation', () => {
     const replaySource = replayed.players.p1.heroes.find((hero) => hero.id === source.id)!;
     const replayTarget = replayed.players.p1.heroes.find((hero) => hero.id === target.id)!;
     expect(replaySource.army[0]).toEqual({ unitId: 'yeoman', count: 7 });
-    expect(replayTarget.army[6]).toEqual({ unitId: 'yeoman', count: 2 });
+    expect(replayTarget.army).toHaveLength(8);
+    expect(replayTarget.army[7]).toEqual({ unitId: 'yeoman', count: 2 });
     expect(replaySource.inventory[0]).toEqual({ id: 'saltedMeat' });
     expect(replayTarget.inventory[1]).toEqual({ id: 'waybread' });
   });

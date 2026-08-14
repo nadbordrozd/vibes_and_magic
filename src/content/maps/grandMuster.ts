@@ -93,7 +93,7 @@ function structures(seed: number): MapObject[] {
     resource, income, owner: null, cleared: true, chartered: false,
   }));
   const shrines: MapObject[] = ([
-    ['rite', 'trial'], ['craft', 'forgeSpark'], ['grave', 'graveSpeech'], ['wild', 'bloom'],
+    ['rite', 'rally'], ['craft', 'forgeSpark'], ['grave', 'graveSpeech'], ['wild', 'bloom'],
   ] as const).map(([school, teaches], index) => ({
     id: `muster-${school}-shrine`, kind: 'shrine', position: { x: 28 + index * 6, y: 14 },
     school, teaches, cleared: false, visitedBy: [],

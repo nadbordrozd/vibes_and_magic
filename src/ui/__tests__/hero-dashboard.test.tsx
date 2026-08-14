@@ -33,7 +33,7 @@ function fixture(): [ReturnType<typeof createGame>, Hero] {
     head: 'circletOfSmallRites', cloak: 'travelersCloak', amulet: 'seamstone',
     weapon: 'skirmishersBlade', shield: 'yeomansBuckler', armor: 'quiltedCoat',
     ring1: 'ringOfSmallMendings', ring2: 'ringOfTheSteadyHand', boots: 'cobblersPride',
-    misc1: 'tailorsNeedle', misc2: 'mirrorMask',
+    misc1: 'tailorsNeedle', misc2: 'mirrorMask', misc3: 'knucklebonesOfTheSaint',
   };
   for (const slot of EQUIPMENT_SLOTS) hero.artifacts.equipment[slot] = {
     id: equipped[slot], ...(equipped[slot] === 'seamstone' ? { chosenSchool: 'rite' as const } : {}),
@@ -94,7 +94,7 @@ describe('one-screen hero dashboard', () => {
       expect(html).toContain(`Rank ${rank}`);
     }
     for (let slot = 1; slot <= 7; slot += 1) expect(html).toContain(`Army slot ${slot},`);
-    for (const slot of EQUIPMENT_SLOTS) {
+    for (const slot of EQUIPMENT_SLOTS.filter((slot) => slot !== 'misc3')) {
       expect(html).toContain(`Equipped ${slot.startsWith('ring') ? `Ring ${slot.at(-1)}`
         : slot.startsWith('misc') ? `Misc ${slot.at(-1)}`
           : `${slot[0].toUpperCase()}${slot.slice(1)}`}`);
@@ -102,6 +102,32 @@ describe('one-screen hero dashboard', () => {
     for (let slot = 1; slot <= 8; slot += 1) expect(html).toContain(`Consumable position ${slot},`);
     expect((html.match(/class="unit-portrait/g) ?? [])).toHaveLength(7);
     expect((html.match(/Backpack position \d,/g) ?? [])).toHaveLength(3);
+  });
+
+  it('renders all nine derived army positions and the responsive four-column flow', () => {
+    const [state, hero] = fixture();
+    const original = ARTIFACTS.mirrorMask;
+    ARTIFACTS.mirrorMask = {
+      ...original, effects: [...original.effects, 'army_slot_bonus'],
+      values: { ...original.values, amount: 1 },
+    };
+    try {
+      hero.skills.quartermaster = 1;
+      hero.artifacts.equipment.misc1 = { id: 'mirrorMask' };
+      const units = Object.keys(UNITS) as Array<keyof typeof UNITS>;
+      hero.army = Array.from({ length: 9 }, (_, index) => ({
+        unitId: units[index], count: index + 1,
+      }));
+      const html = renderDashboard(state, hero);
+      expect(html).toContain('Army · 9 company slots');
+      expect(html).toContain('data-army-capacity="9"');
+      expect(html).toContain('Army slot 9, 9');
+      const css = readFileSync(new URL('../styles/game.css', import.meta.url), 'utf8');
+      expect(css).toContain('.hero-dashboard-army-grid[data-army-capacity="9"]');
+      expect(css).toContain('grid-template-columns: repeat(4, minmax(0, 1fr))');
+    } finally {
+      ARTIFACTS.mirrorMask = original;
+    }
   });
 
   it('renders all 36 portrait and specialty consumer pairs without a fallback route', () => {
@@ -116,7 +142,7 @@ describe('one-screen hero dashboard', () => {
     }
   });
 
-  it('renders every reused skill, artifact, item, unit, and resource family without fallback', () => {
+  it('renders every reused skill, artifact, item, unit, and resource family with its exact native/staged disposition', () => {
     const html = renderToStaticMarkup(<>
       {(Object.keys(SKILLS) as Array<keyof typeof SKILLS>).map((id) =>
         <ContentIcon key={`skill-${id}`} kind="skill" id={id} decorative />)}
@@ -129,14 +155,17 @@ describe('one-screen hero dashboard', () => {
       {(['gold', 'timber', 'iron', 'essence'] as const).map((id) =>
         <ResourceIcon key={`resource-${id}`} resource={id} />)}
     </>);
-    expect(Object.keys(SKILLS)).toHaveLength(21);
-    expect(Object.keys(ARTIFACTS)).toHaveLength(90);
-    expect(Object.keys(ITEMS)).toHaveLength(37);
-    expect(Object.keys(UNITS)).toHaveLength(50);
+    expect(Object.keys(SKILLS)).toHaveLength(30);
+    expect(Object.keys(ARTIFACTS)).toHaveLength(148);
+    expect(Object.keys(ITEMS)).toHaveLength(50);
+    expect(Object.keys(UNITS)).toHaveLength(63);
     for (const resource of ['gold', 'timber', 'iron', 'essence'] as const) {
       expect(html).toContain(ASSET_MANIFEST[assetId.mapObject('pile', resource)].file);
     }
-    expect(html).not.toMatch(/(?:artifact|item|unit-portrait|resource-icon)-fallback/);
+    expect((html.match(/item-sprite-fallback/g) ?? [])).toHaveLength(0);
+    expect((html.match(/artifact-sprite-fallback/g) ?? [])).toHaveLength(0);
+    expect((html.match(/unit-portrait-fallback/g) ?? [])).toHaveLength(0);
+    expect(html).not.toMatch(/resource-icon-fallback/);
   });
 
   it('uses effective primary stats and effective Knowledge for the visible mana maximum', () => {
@@ -148,7 +177,7 @@ describe('one-screen hero dashboard', () => {
     const html = renderDashboard(state, hero);
     expect(html).toContain(`Attack, ${effectivePrimaryStat(hero, 'attack')}: open stat details`);
     expect(html).toContain('Knowledge, 6: open stat details');
-    expect(html).toContain(`Mana, ${hero.mana} / 60: open vital details`);
+    expect(html).toContain(`Mana, ${hero.mana} / 72: open vital details`);
   });
 
   it('derives six or eight consumable positions from the core Provisioner helper', () => {
@@ -162,6 +191,23 @@ describe('one-screen hero dashboard', () => {
     const eight = renderDashboard(state, hero);
     expect(eight).toContain('Consumables · 0/8');
     expect(eight).toContain('Consumable position 8, empty');
+  });
+
+  it('offers a bounded count input for Quartermaster remote recruitment', () => {
+    const [state, hero] = fixture();
+    hero.skills.quartermaster = 3;
+    hero.army.push(null);
+    state.players.p1.resources.gold = 100_000;
+    const castle = state.castles.find((candidate) => candidate.owner === hero.owner)!;
+    castle.available[0] = 7;
+    const html = renderDashboard(state, hero);
+    expect(html).toContain('Quartermaster remote recruitment');
+    expect(html).toContain('type="number"');
+    expect(html).toContain('min="1"');
+    expect(html).toContain('Recruit 1 remotely');
+    const source = readFileSync(new URL('../components/AdventureHeroDetails.tsx', import.meta.url), 'utf8');
+    expect(source).toContain("count })}");
+    expect(source).not.toContain("tier: (index + 1) as 1 | 2 | 3 | 4 | 5 | 6, count: 1");
   });
 
   it('keeps all item timings inspectable and exposes Use only after adventure-item detail', () => {

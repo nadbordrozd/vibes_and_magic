@@ -25,12 +25,12 @@ function battle() {
 }
 
 describe('Phase C complete consumable catalog', () => {
-  it('defines fourteen combat and ten adventure consumables plus the scroll rule', () => {
+  it('defines the expanded combat and adventure consumables plus the scroll rule', () => {
     const definitions = Object.values(ITEMS);
     expect(definitions.filter((item) => item.use === 'combat'
-      && item.behavior !== 'scroll')).toHaveLength(14);
+      && item.behavior !== 'scroll')).toHaveLength(23);
     expect(definitions.filter((item) => item.use === 'adventure'
-      && item.id !== 'overseersCharter')).toHaveLength(10);
+      && item.id !== 'overseersCharter')).toHaveLength(13);
     expect(ITEMS.spellScroll.behavior).toBe('scroll');
     expect(() => validateItems()).not.toThrow();
   });

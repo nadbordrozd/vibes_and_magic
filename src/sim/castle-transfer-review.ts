@@ -1,6 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import puppeteer from 'puppeteer-core';
-import { makeArmy } from '../core/army';
+import { heroArmyCapacity, makeArmy, setQuartermasterRank } from '../core/army';
 import { createGame } from '../core/game';
 import { castleEntrance } from '../core/map/occupancy';
 import { actionSave } from '../ui/persistence';
@@ -19,9 +19,10 @@ const state = createGame({
 const hero = state.players.p1.hero!;
 const castle = state.castles.find((candidate) => candidate.owner === 'p1')!;
 hero.position = castleEntrance(castle);
+setQuartermasterRank(hero, 1);
 hero.army = makeArmy([
   { unitId: 'yeoman', count: 9 }, { unitId: 'longbowman', count: 4 },
-]);
+], heroArmyCapacity(hero));
 castle.garrison = makeArmy([
   { unitId: 'yeoman', count: 2 }, { unitId: 'bannerman', count: 6 },
 ]);
@@ -108,7 +109,7 @@ try {
       count: Number(slot.querySelector('b')?.textContent ?? 0),
     })));
   if (result[0]?.unit !== 'yeoman' || result[0].count !== 6
-      || result[9]?.unit !== 'yeoman' || result[9].count !== 3) {
+      || result[10]?.unit !== 'yeoman' || result[10].count !== 3) {
     throw new Error(`Keyboard exact transfer produced the wrong slots: ${JSON.stringify(result)}`);
   }
   await page.$eval('.direct-exchange', (node) => node.scrollIntoView({ block: 'center' }));
@@ -135,11 +136,13 @@ try {
       overflow: row.scrollWidth - row.clientWidth,
     })),
   }));
-  if (layout.overflow > 2 || layout.rows.some((row) => row.slots !== 7 || row.overflow > 2)) {
+  if (layout.overflow > 2 || layout.rows.length !== 2
+      || layout.rows[0]?.slots !== 8 || layout.rows[1]?.slots !== 7
+      || layout.rows.some((row) => row.overflow > 2)) {
     throw new Error(`Narrow castle transfer overflowed: ${JSON.stringify(layout)}`);
   }
   await page.screenshot({ path: `${output}/keyboard-narrow.png` });
-  console.log('Castle transfer review passed: Enter/Space selection, exact keyboard transfer, Escape cancel, desktop/narrow 7-slot layout.');
+  console.log('Castle transfer review passed: Enter/Space selection, exact keyboard transfer, Escape cancel, desktop/narrow 8-slot hero and 7-slot garrison layout.');
 } finally {
   await browser.close();
 }

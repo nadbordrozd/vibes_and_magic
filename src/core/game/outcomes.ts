@@ -3,30 +3,35 @@ import {
 } from '../../content/constants';
 import { UNITS } from '../../content/units';
 import {
-  addUnits, compactArmy, emptyArmy,
+  addUnits, assertHeroArmyFitsCapacity, compactArmy, emptyArmy,
+  synchronizeHeroArmyCapacity,
 } from '../army';
 import { armyAfterBattle } from '../combat/battle';
-import { specialtyHandler, skillRank } from '../heroBehaviors';
+import { isOriginallyOwnedBy, originalOwnerSide } from '../combat/ownership';
+import { gainExperience, specialtyHandler, skillRank } from '../heroBehaviors';
 import {
   defeatHero, findHero, findOwnedHero, syncAllHeroViews,
 } from '../heroes';
 import {
   addArtifact, artifactEffectTotal, cloneArtifacts, dropAllArtifacts, hasEquippedArtifact,
+  markBurdenRemovalReady,
 } from '../artifacts';
 import { revealForMovementPath } from '../map/visibility';
 import { randomInt } from '../rng';
 import { resolveDebtEvent } from '../debts';
 import { buildingIsActive } from './buildingStatus';
 import { SKILLS } from '../../content/skills';
+import { FACTIONS } from '../../content/factions';
 import type {
-  BattleSide, BattleState, GameState, Hero, PlayerId, SpellId,
+  ArtifactId, ArtifactInstance, BattleSide, BattleState, GameState, Hero, PlayerId, SpellId,
 } from '../types';
 import { PLAYER_IDS } from '../types';
 import { visitShrine } from './magic';
-import { addItem, sellTradeGoods } from './items';
+import { addItem, claimSpellTome, sellTradeGoods } from './items';
 import { offerChestChoice } from './chests';
 import { checkLevel } from './levelUps';
 import { castleEntrance } from '../map/occupancy';
+import { learnSpell } from './spellLearning';
 export { checkLevel };
 
 export function recoverSpareParts(
@@ -34,19 +39,42 @@ export function recoverSpareParts(
   side: BattleSide,
   rate: number,
 ): Partial<Record<keyof typeof UNITS, number>> {
-  const arkBonus = battle.stacks.some((stack) => stack.side === side && stack.count > 0
+  const arkBonus = battle.stacks.some((stack) => isOriginallyOwnedBy(stack, side) && stack.count > 0
     && UNITS[stack.unitId].abilities.includes('hallowed_cargo')) ? 0.15 : 0;
   const recovered: Partial<Record<keyof typeof UNITS, number>> = {};
   for (const stack of battle.stacks) {
-    if (stack.side !== side || stack.count <= 0 || stack.summoned
+    if (!isOriginallyOwnedBy(stack, side) || stack.summoned
         || UNITS[stack.unitId].faction !== 'woundWrights') continue;
     const losses = Math.max(0, (battle.initialCounts[stack.id] ?? stack.count) - stack.count);
     const restored = Math.floor(losses * (rate + arkBonus));
     if (restored <= 0) continue;
     stack.count += restored;
+    if (stack.topHp <= 0) stack.topHp = UNITS[stack.unitId].hp;
     recovered[stack.unitId] = (recovered[stack.unitId] ?? 0) + restored;
   }
   battle.recovered[side] = recovered;
+  return recovered;
+}
+
+function recoverReaperCasualties(
+  battle: BattleState, side: BattleSide, rate: number, skipWoundWrights: boolean,
+): Partial<Record<keyof typeof UNITS, number>> {
+  const recovered: Partial<Record<keyof typeof UNITS, number>> = {};
+  for (const stack of battle.stacks) {
+    if (!isOriginallyOwnedBy(stack, side) || stack.summoned
+        || (skipWoundWrights && UNITS[stack.unitId].faction === 'woundWrights')) continue;
+    const initial = battle.initialCounts[stack.id] ?? stack.count;
+    const losses = Math.max(0, initial - stack.count);
+    const restored = Math.min(losses, Math.floor(losses * rate));
+    if (restored <= 0) continue;
+    stack.count += restored;
+    if (stack.topHp <= 0) stack.topHp = UNITS[stack.unitId].hp;
+    recovered[stack.unitId] = (recovered[stack.unitId] ?? 0) + restored;
+  }
+  for (const [unitId, count] of Object.entries(recovered)) {
+    battle.recovered[side][unitId as keyof typeof UNITS] =
+      (battle.recovered[side][unitId as keyof typeof UNITS] ?? 0) + (count ?? 0);
+  }
   return recovered;
 }
 
@@ -120,17 +148,20 @@ export function chooseChest(state: GameState, choice: 'gold' | 'xp' | 'item'): v
   if (choice === 'gold') state.players[pending.playerId].resources.gold += CHEST_GOLD;
   else if (choice === 'xp') {
     const hero = findOwnedHero(state, pending.playerId, pending.heroId);
-    if (hero) hero.xp += CHEST_XP;
+    if (hero) gainExperience(hero, CHEST_XP);
   } else {
     const hero = findOwnedHero(state, pending.playerId, pending.heroId);
     if (!hero) throw new Error('Hero missing');
     if (pending.artifact) addArtifact(hero, pending.artifact);
+    else if (pending.item.id === 'spellTome') claimSpellTome(hero, pending.item);
     else if (!addItem(hero, pending.item)) throw new Error('Inventory full');
   }
   state.pendingChoice = null;
   state.lastMessage = choice === 'gold' ? 'Claimed 1500 gold.'
     : choice === 'xp' ? 'Claimed 1000 XP.'
-      : pending.artifact ? 'Claimed a rare artifact.' : 'Claimed an item.';
+      : pending.artifact ? 'Claimed a rare artifact.'
+        : pending.item.id === 'spellTome' ? `Learned ${pending.item.storedSpellId}.`
+          : 'Claimed an item.';
   checkLevel(state, pending.playerId, pending.heroId);
 }
 
@@ -141,18 +172,32 @@ export function chooseStolenSpell(state: GameState, spellId: SpellId): void {
   }
   const hero = findOwnedHero(state, pending.playerId, pending.heroId);
   if (!hero) throw new Error('Spellthief missing');
-  if (!hero.knownSpells.includes(spellId)) hero.knownSpells.push(spellId);
+  learnSpell(hero, spellId);
   if (skillRank(hero, 'spellthief') >= 2) {
     const upgrade = [...pending.upgradeOptions].sort().find((id) =>
       !hero.upgradedSpells.includes(id));
     if (upgrade) {
-      if (!hero.knownSpells.includes(upgrade)) hero.knownSpells.push(upgrade);
+      learnSpell(hero, upgrade);
       hero.upgradedSpells.push(upgrade);
     }
   }
   state.pendingChoice = null;
   state.lastMessage = `${hero.name} stole ${spellId}.`;
   checkLevel(state, pending.playerId, hero.id);
+}
+
+export function recordArtifactFactionHistory(
+  state: GameState, attackerHero: Hero, defenderHero: Hero | null,
+  context: BattleState['context'],
+): void {
+  if (context.attackerOpponentFaction) {
+    const history = state.players[attackerHero.owner].artifactState.priorBattlesByFaction;
+    history[context.attackerOpponentFaction] = (history[context.attackerOpponentFaction] ?? 0) + 1;
+  }
+  if (defenderHero && context.defenderOpponentFaction) {
+    const history = state.players[defenderHero.owner].artifactState.priorBattlesByFaction;
+    history[context.defenderOpponentFaction] = (history[context.defenderOpponentFaction] ?? 0) + 1;
+  }
 }
 
 export function finalizeBattle(state: GameState): void {
@@ -165,6 +210,31 @@ export function finalizeBattle(state: GameState): void {
     ? findHero(state, context.defenderHeroId) : null;
   const remoteDefenderHero = context.remoteDefenderHeroId
     ? findHero(state, context.remoteDefenderHeroId) : null;
+  const defeatedHero = battle.winner === 'attacker' ? defenderHero : attackerHero;
+  const winningHero = battle.winner === 'attacker' ? attackerHero : defenderHero;
+  if (defeatedHero && winningHero && !battle.duelistTrophyResolved
+      && skillRank(winningHero, 'duelist') >= 3) {
+    const losingBattleHero = battle.winner === 'attacker'
+      ? battle.defenderHero : battle.attackerHero;
+    const losingSide = battle.winner === 'attacker' ? 'defender' : 'attacker';
+    const options = losingBattleHero
+      ? [...Object.values(losingBattleHero.artifacts.equipment),
+        ...losingBattleHero.artifacts.backpack]
+        .filter((artifact): artifact is ArtifactInstance => artifact !== null)
+        .map((artifact) => artifact.id)
+        .filter((artifactId) => duelistArtifactCanTransfer(
+          battle, losingBattleHero, losingSide, artifactId,
+        ))
+      : [];
+    if (options.length) {
+      state.pendingChoice = {
+        kind: 'duelistArtifact', playerId: winningHero.owner, heroId: winningHero.id,
+        loserHeroId: defeatedHero.id, options: [...new Set(options)], transferOnChoice: true,
+      };
+      return;
+    }
+    battle.duelistTrophyResolved = true;
+  }
   attackerHero.mana = battle.attackerHero.mana;
   attackerHero.inventory = [...battle.attackerHero.inventory];
   attackerHero.artifacts = cloneArtifacts(battle.attackerHero.artifacts);
@@ -186,8 +256,6 @@ export function finalizeBattle(state: GameState): void {
       0, defenderHero.adventureEffects.noRetaliationBattles - 1,
     );
   }
-  const defeatedHero = battle.winner === 'attacker' ? defenderHero : attackerHero;
-  const winningHero = battle.winner === 'attacker' ? attackerHero : defenderHero;
   learnCastSpells(attackerHero, battle.spellsCastAgainst.attacker);
   if (defenderHero) learnCastSpells(defenderHero, battle.spellsCastAgainst.defender);
   if (defeatedHero && !battle.withdrawal) {
@@ -197,6 +265,9 @@ export function finalizeBattle(state: GameState): void {
   if (defeatedHero && battle.withdrawal) applyRansomer(state, winningHero, defeatedHero);
 
   state.lastBattleRecovered = {};
+  const reaperRank = winningHero ? skillRank(winningHero, 'reaper') : 0;
+  const reaperRate = reaperRank >= 2
+    ? SKILLS.reaper.values.rank2 : reaperRank >= 1 ? SKILLS.reaper.values.rank1 : 0;
   if (winningHero?.faction === 'woundWrights') {
     const workshop = state.castles.some(
       (castle) => castle.owner === winningHero.owner
@@ -204,8 +275,17 @@ export function finalizeBattle(state: GameState): void {
     );
     const specialty = specialtyHandler(winningHero).recoveryBonus?.() ?? 0;
     state.lastBattleRecovered = recoverSpareParts(
-      battle, battle.winner, (workshop ? 0.5 : 0.3) + specialty,
+      battle, battle.winner, (workshop ? 0.5 : 0.3) + specialty + reaperRate,
     );
+  }
+  if (winningHero && reaperRate > 0) {
+    const extra = recoverReaperCasualties(
+      battle, battle.winner, reaperRate, winningHero.faction === 'woundWrights',
+    );
+    for (const [unitId, count] of Object.entries(extra)) {
+      state.lastBattleRecovered[unitId as keyof typeof UNITS] =
+        (state.lastBattleRecovered[unitId as keyof typeof UNITS] ?? 0) + (count ?? 0);
+    }
   }
   if (winningHero?.faction === 'vespiary') {
     const losingSide = battle.winner === 'attacker' ? 'defender' : 'attacker';
@@ -237,6 +317,9 @@ export function finalizeBattle(state: GameState): void {
   }
   if (context.kind === 'castle') {
     const castle = state.castles.find((candidate) => candidate.id === context.targetId);
+    if (castle && winningHero && castle.owner === winningHero.owner) {
+      markBurdenRemovalReady(winningHero, 'own-city-battle');
+    }
     if (castle && buildingIsActive(castle, 'pyreOfTheFallen')) {
       let returning = castle.returningDefenders;
       for (const [unitId, count] of Object.entries(battle.casualties.defender)) {
@@ -247,6 +330,19 @@ export function finalizeBattle(state: GameState): void {
       castle.returningDefenders = returning;
     }
   }
+  if (winningHero) {
+    const winningSide = battle.winner;
+    if ((battle.spellCastsBySide[winningSide] ?? 0) === 0) {
+      markBurdenRemovalReady(winningHero, 'no-cast-win');
+    }
+    const ownCasualties = Object.values(battle.casualties[battle.winner])
+      .reduce((sum, count) => sum + (count ?? 0), 0);
+    if (ownCasualties === 0) markBurdenRemovalReady(winningHero, 'flawless-battle');
+    if (defeatedHero && defeatedHero.level >= winningHero.level) {
+      markBurdenRemovalReady(winningHero, 'equal-level-hero');
+    }
+  }
+  recordArtifactFactionHistory(state, attackerHero, defenderHero, context);
   recordBattleMetrics(state, battle);
   const casualties = [...Object.values(battle.casualties.attacker),
     ...Object.values(battle.casualties.defender)]
@@ -257,7 +353,7 @@ export function finalizeBattle(state: GameState): void {
   ])];
   const statistics = {
     stacks: battle.stacks.map((stack) => ({
-      id: stack.id, unitId: stack.unitId, side: stack.side,
+      id: stack.id, unitId: stack.unitId, side: originalOwnerSide(stack),
       damageDealt: stack.damageDealt ?? 0, damageTaken: stack.damageTaken ?? 0,
       extraActions: stack.extraActionsTaken ?? 0,
     })),
@@ -280,6 +376,14 @@ export function finalizeBattle(state: GameState): void {
 
   if (battle.winner === 'attacker') {
     attackerHero.army = compactArmy(armyAfterBattle(battle, 'attacker'));
+    if (reaperRank >= 3 && winningHero === attackerHero) {
+      const dead = Object.values(battle.casualties.defender)
+        .reduce((sum, count) => sum + (count ?? 0), 0);
+      const raised = Math.floor(dead * SKILLS.reaper.values.enemyRaise);
+      const tierOne = FACTIONS[attackerHero.faction].startingArmy[0].unitId;
+      if (raised > 0) attackerHero.army = addUnits(attackerHero.army, tierOne, raised)
+        ?? attackerHero.army;
+    }
     attackerHero.position = { ...(context.completeMoveTo ?? context.destination) };
     if (context.completeMoveTo) {
       const player = state.players[attackerHero.owner];
@@ -294,30 +398,42 @@ export function finalizeBattle(state: GameState): void {
         sum + UNITS[unitId as keyof typeof UNITS].hp * (count ?? 0),
       context.kind === 'guardian' ? GUARDIAN_VICTORY_XP : 0,
     );
-    attackerHero.xp += xp;
+    const gainedXp = gainExperience(attackerHero, xp);
     if (defenderHero && battle.withdrawal?.side === 'defender') {
       defeatHero(state, defenderHero.id, battle.withdrawal.kind === 'surrender'
         ? compactArmy(armyAfterBattle(battle, 'defender')) : undefined);
     }
     applyAttackerVictory(state, attackerHero);
     state.lastMessage = battle.withdrawal
-      ? `The defender ${battle.withdrawal.kind}ed.` : `Victory! ${xp} XP gained.`;
+      ? `The defender ${battle.withdrawal.kind}ed.` : `Victory! ${gainedXp} XP gained.`;
     if (defeatedHero && !battle.withdrawal) offerSpellthief(state, attackerHero, defeatedHero);
   } else {
     defeatHero(state, attackerHero.id, battle.withdrawal?.kind === 'surrender'
       ? compactArmy(armyAfterBattle(battle, 'attacker')) : undefined);
     applyDefenderVictory(state, defenderHero);
+    if (reaperRank >= 3 && winningHero === defenderHero && defenderHero) {
+      const dead = Object.values(battle.casualties.attacker)
+        .reduce((sum, count) => sum + (count ?? 0), 0);
+      const raised = Math.floor(dead * SKILLS.reaper.values.enemyRaise);
+      const tierOne = FACTIONS[defenderHero.faction].startingArmy[0].unitId;
+      if (raised > 0) defenderHero.army = addUnits(defenderHero.army, tierOne, raised)
+        ?? defenderHero.army;
+    }
     state.lastMessage = battle.withdrawal
       ? `The attacker ${battle.withdrawal.kind}ed.` : 'The attacking hero was defeated.';
   }
   for (const battleHero of [attackerHero, defenderHero]) {
-    if (!battleHero?.alive || !hasEquippedArtifact(battleHero, 'hungryBlade')) continue;
+    if (!battleHero?.alive || artifactEffectTotal(battleHero, 'post_battle_stack_loss', 'percent') <= 0) continue;
     const largest = battleHero.army.flatMap((stack, slot) => stack ? [{ stack, slot }] : [])
       .sort((a, b) => b.stack.count - a.stack.count || a.slot - b.slot)[0];
     if (largest) {
-      largest.stack.count -= Math.max(1, Math.ceil(largest.stack.count * 0.05));
+      const percent = artifactEffectTotal(battleHero, 'post_battle_stack_loss', 'percent');
+      largest.stack.count -= Math.max(1, Math.ceil(largest.stack.count * percent / 100));
       if (largest.stack.count <= 0) battleHero.army[largest.slot] = null;
     }
+  }
+  for (const player of Object.values(state.players)) {
+    for (const hero of player.heroes) if (hero.alive) synchronizeHeroArmyCapacity(hero);
   }
   state.battle = null;
   state.phase = 'adventure';
@@ -328,10 +444,75 @@ export function finalizeBattle(state: GameState): void {
   }
 }
 
+export function chooseDuelistArtifact(state: GameState, artifactId: ArtifactId): void {
+  const pending = state.pendingChoice;
+  const battle = state.battle;
+  if (pending?.kind !== 'duelistArtifact' || !battle
+      || !pending.options.includes(artifactId)) throw new Error('Invalid Duelist trophy');
+  const winner = battle.winner === 'attacker' ? battle.attackerHero : battle.defenderHero;
+  const loser = battle.winner === 'attacker' ? battle.defenderHero : battle.attackerHero;
+  const losingSide = battle.winner === 'attacker' ? 'defender' : 'attacker';
+  if (!winner || !loser) throw new Error('Duelist trophy heroes are missing');
+  if (!duelistArtifactCanTransfer(battle, loser, losingSide, artifactId)) {
+    throw new Error('That artifact cannot be taken while it supports surviving army companies');
+  }
+  let trophy: ArtifactInstance | null = null;
+  for (const slot of Object.keys(loser.artifacts.equipment) as Array<keyof typeof loser.artifacts.equipment>) {
+    if (loser.artifacts.equipment[slot]?.id !== artifactId) continue;
+    const projected = cloneArtifacts(loser.artifacts);
+    projected.equipment[slot] = null;
+    if (battle.withdrawal?.side === losingSide && battle.withdrawal.kind === 'surrender') {
+      try {
+        assertHeroArmyFitsCapacity(armyAfterBattle(battle, losingSide), {
+          ...loser, artifacts: projected,
+        });
+      } catch {
+        continue;
+      }
+    }
+    trophy = loser.artifacts.equipment[slot];
+    loser.artifacts.equipment[slot] = null;
+    break;
+  }
+  if (!trophy) {
+    const index = loser.artifacts.backpack.findIndex((artifact) => artifact.id === artifactId);
+    if (index >= 0) [trophy] = loser.artifacts.backpack.splice(index, 1);
+  }
+  if (!trophy) throw new Error('Chosen Duelist trophy is missing');
+  winner.artifacts.backpack.push({ ...trophy });
+  battle.duelistTrophyResolved = true;
+  state.pendingChoice = null;
+  finalizeBattle(state);
+}
+
+function duelistArtifactCanTransfer(
+  battle: BattleState,
+  loser: NonNullable<BattleState['attackerHero']>,
+  losingSide: BattleSide,
+  artifactId: ArtifactId,
+): boolean {
+  if (loser.artifacts.backpack.some((artifact) => artifact.id === artifactId)) return true;
+  if (battle.withdrawal?.side !== losingSide || battle.withdrawal.kind !== 'surrender') return true;
+  return Object.keys(loser.artifacts.equipment).some((slot) => {
+    const equipmentSlot = slot as keyof typeof loser.artifacts.equipment;
+    if (loser.artifacts.equipment[equipmentSlot]?.id !== artifactId) return false;
+    const projected = cloneArtifacts(loser.artifacts);
+    projected.equipment[equipmentSlot] = null;
+    try {
+      assertHeroArmyFitsCapacity(armyAfterBattle(battle, losingSide), {
+        ...loser, artifacts: projected,
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  });
+}
+
 export function learnCastSpells(hero: Hero, spells: SpellId[]): void {
   if (skillRank(hero, 'spellthief') !== 3) return;
   for (const spell of spells) {
-    if (!hero.knownSpells.includes(spell)) hero.knownSpells.push(spell);
+    learnSpell(hero, spell);
   }
 }
 
@@ -358,6 +539,7 @@ export function applyRansomer(
   }
   if (rank >= 3) {
     loser.rehireMultiplier = SKILLS.ransomer.values.rehireMultiplier;
+    loser.rehireBlockedUntilDay = state.day + SKILLS.ransomer.values.lockDays;
   }
 }
 
@@ -384,9 +566,9 @@ function recordBattleMetrics(state: GameState, battle: BattleState): void {
     const owner = sideOwners[side];
     if (!owner) continue;
     const totals = state.metrics.playerTotals[owner];
-    totals.damageDealt += battle.stacks.filter((stack) => stack.side === side)
+    totals.damageDealt += battle.stacks.filter((stack) => isOriginallyOwnedBy(stack, side))
       .reduce((sum, stack) => sum + (stack.damageDealt ?? 0), 0);
-    totals.damageTaken += battle.stacks.filter((stack) => stack.side === side)
+    totals.damageTaken += battle.stacks.filter((stack) => isOriginallyOwnedBy(stack, side))
       .reduce((sum, stack) => sum + (stack.damageTaken ?? 0), 0);
     totals.spellsCast += battle.spellCastsBySide[side] ?? 0;
     totals.extraActions += battle.extraActions[side];
@@ -429,9 +611,7 @@ function applyAttackerVictory(state: GameState, hero: Hero): void {
         state.players[hero.owner].resources.essence += reward.essence ?? 0;
         for (const item of reward.items ?? []) addItem(hero, item);
         for (const artifact of reward.artifacts ?? []) addArtifact(hero, artifact);
-        if (reward.teachesSpell && !hero.knownSpells.includes(reward.teachesSpell)) {
-          hero.knownSpells.push(reward.teachesSpell);
-        }
+        if (reward.teachesSpell) learnSpell(hero, reward.teachesSpell);
         reward.gold = undefined; reward.essence = undefined;
         reward.items = []; reward.artifacts = []; reward.teachesSpell = undefined;
         protectedObject.cleared = true;

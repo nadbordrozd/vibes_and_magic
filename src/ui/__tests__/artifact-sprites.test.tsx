@@ -8,6 +8,7 @@ import job from '../../../assets/jobs/artifact-sprites-built-in.json';
 import { ASSET_MANIFEST, assetId } from '../../../assets/manifest';
 import provenance from '../../../assets/provenance/artifact-sprite-generation.json';
 import itemProvenance from '../../../assets/provenance/item-sprite-generation.json';
+import v2Provenance from '../../../assets/provenance/docs-60-67-native-generation.json';
 import {
   ARTIFACTS, BURDEN_ARTIFACT_IDS, CHARM_ARTIFACT_IDS, INSTALLED_ARTIFACT_IDS,
   KIT_ARTIFACT_IDS, KIT_PIECES, RELIC_ARTIFACT_IDS, TRINKET_ARTIFACT_IDS,
@@ -44,16 +45,18 @@ describe('complete Vanilla artifact sprite batch', () => {
     }
   });
 
-  it('preserves exactly all 22 Charm definitions inside the cumulative installed set', () => {
-    expect(CHARM_ARTIFACT_IDS).toHaveLength(22);
-    expect(new Set(CHARM_ARTIFACT_IDS)).toHaveLength(22);
+  it('preserves the accepted 22-Charm native prefix and catalogs twenty-two development Charms', () => {
+    expect(CHARM_ARTIFACT_IDS).toHaveLength(44);
+    expect(new Set(CHARM_ARTIFACT_IDS)).toHaveLength(44);
     expect(CHARM_ARTIFACT_IDS.every((id) => ARTIFACTS[id].class === 'charm')).toBe(true);
     expect(Object.values(ARTIFACTS).filter((artifact) => artifact.class === 'charm')
       .map((artifact) => artifact.id)).toEqual(CHARM_ARTIFACT_IDS);
-    const vanillaAndCharm = [...VANILLA_ARTIFACT_IDS, ...CHARM_ARTIFACT_IDS];
+    const nativeCharms = CHARM_ARTIFACT_IDS.filter((id) => provenance.selections
+      .some((selection) => selection.catalog_key === id));
+    const vanillaAndCharm = [...VANILLA_ARTIFACT_IDS, ...nativeCharms];
     expect(vanillaAndCharm).toHaveLength(58);
     expect(new Set(vanillaAndCharm)).toHaveLength(58);
-    expect(Object.keys(ARTIFACTS)).toHaveLength(90);
+    expect(Object.keys(ARTIFACTS)).toHaveLength(148);
 
     const entries = vanillaAndCharm.map((id) =>
       ASSET_MANIFEST[assetId.mapObject('artifact', id)]);
@@ -64,7 +67,7 @@ describe('complete Vanilla artifact sprite batch', () => {
     expect(new Set(hashes)).toHaveLength(58);
 
     const charmSelections = provenance.selections.filter((selection) =>
-      CHARM_ARTIFACT_IDS.includes(selection.catalog_key as ArtifactId));
+      nativeCharms.includes(selection.catalog_key as ArtifactId));
     expect(charmSelections).toHaveLength(22);
     for (const selection of charmSelections) {
       expect(selection.accepted).toBe(true);
@@ -76,18 +79,22 @@ describe('complete Vanilla artifact sprite batch', () => {
     }
   });
 
-  it('adds exactly all 18 Relic definitions without changing the accepted 76-sprite prefix', () => {
-    expect(RELIC_ARTIFACT_IDS).toHaveLength(18);
-    expect(new Set(RELIC_ARTIFACT_IDS)).toHaveLength(18);
+  it('retains the accepted 18-Relic native prefix and catalogs twenty-seven development Relics', () => {
+    expect(RELIC_ARTIFACT_IDS).toHaveLength(45);
+    expect(new Set(RELIC_ARTIFACT_IDS)).toHaveLength(45);
     expect(RELIC_ARTIFACT_IDS.every((id) => ARTIFACTS[id].class === 'relic')).toBe(true);
     expect(Object.values(ARTIFACTS).filter((artifact) => artifact.class === 'relic')
       .map((artifact) => artifact.id)).toEqual(RELIC_ARTIFACT_IDS);
+    const nativeCharms = CHARM_ARTIFACT_IDS.filter((id) => provenance.selections
+      .some((selection) => selection.catalog_key === id));
+    const nativeRelics = RELIC_ARTIFACT_IDS.filter((id) => provenance.selections
+      .some((selection) => selection.catalog_key === id));
     const throughRelic = [
-      ...VANILLA_ARTIFACT_IDS, ...CHARM_ARTIFACT_IDS, ...RELIC_ARTIFACT_IDS,
+      ...VANILLA_ARTIFACT_IDS, ...nativeCharms, ...nativeRelics,
     ];
     expect(throughRelic).toHaveLength(76);
     expect(new Set(throughRelic)).toHaveLength(76);
-    expect(Object.keys(ARTIFACTS)).toHaveLength(90);
+    expect(Object.keys(ARTIFACTS)).toHaveLength(148);
 
     const entries = throughRelic.map((id) =>
       ASSET_MANIFEST[assetId.mapObject('artifact', id)]);
@@ -98,7 +105,7 @@ describe('complete Vanilla artifact sprite batch', () => {
     expect(new Set(hashes)).toHaveLength(76);
 
     const relicSelections = provenance.selections.filter((selection) =>
-      RELIC_ARTIFACT_IDS.includes(selection.catalog_key as ArtifactId));
+      nativeRelics.includes(selection.catalog_key as ArtifactId));
     expect(relicSelections).toHaveLength(18);
     for (const selection of relicSelections) {
       expect(selection.accepted).toBe(true);
@@ -110,16 +117,19 @@ describe('complete Vanilla artifact sprite batch', () => {
     }
   });
 
-  it('completes exact 90/90 coverage with 4 Burdens, 4 Kit pieces, and 6 Trinkets', () => {
-    expect(BURDEN_ARTIFACT_IDS).toHaveLength(4);
+  it('retains the original 90 records and adds 58 distinct docs-63/65 native artifacts', () => {
+    expect(BURDEN_ARTIFACT_IDS).toHaveLength(13);
     expect(KIT_ARTIFACT_IDS).toHaveLength(4);
     expect(TRINKET_ARTIFACT_IDS).toHaveLength(6);
-    expect(INSTALLED_ARTIFACT_IDS).toHaveLength(90);
-    expect(new Set(INSTALLED_ARTIFACT_IDS)).toHaveLength(90);
+    expect(INSTALLED_ARTIFACT_IDS).toHaveLength(148);
+    expect(new Set(INSTALLED_ARTIFACT_IDS)).toHaveLength(148);
     expect(new Set(INSTALLED_ARTIFACT_IDS)).toEqual(new Set(Object.keys(ARTIFACTS)));
-    expect(job.requests.map((request) => request.catalog_key)).toEqual(INSTALLED_ARTIFACT_IDS);
+    expect(new Set(job.requests.map((request) => request.catalog_key)))
+      .toEqual(new Set(Object.keys(ARTIFACTS).slice(0, 90)));
     expect(provenance.selections.map((selection) => selection.catalog_key))
-      .toEqual(INSTALLED_ARTIFACT_IDS);
+      .toEqual(job.requests.map((request) => request.catalog_key));
+    expect(v2Provenance.selections.filter((selection) => selection.family === 'artifact'))
+      .toHaveLength(58);
 
     expect(new Set(job.requests.map((request) => request.output))).toHaveLength(90);
     expect(new Set(job.requests.map((request) => request.final))).toHaveLength(90);
@@ -156,19 +166,24 @@ describe('complete Vanilla artifact sprite batch', () => {
     expect(finalHashes).toHaveLength(90);
   });
 
-  it('keeps all 127 collectible paths and bitmap bytes distinct across both families', () => {
+  it('keeps all 198 collectible paths and bitmap bytes distinct across both families', () => {
     const entries = [
-      ...Object.keys(ITEMS).map((id) => ASSET_MANIFEST[assetId.mapObject('item', id)]),
+      ...Object.keys(ITEMS).flatMap((id) => {
+        const entry = ASSET_MANIFEST[assetId.mapObject('item', id)];
+        return entry ? [entry] : [];
+      }),
       ...INSTALLED_ARTIFACT_IDS.map((id) => ASSET_MANIFEST[assetId.mapObject('artifact', id)]),
     ];
-    expect(entries).toHaveLength(127);
-    expect(new Set(entries.map((entry) => entry.file))).toHaveLength(127);
+    expect(entries).toHaveLength(198);
+    expect(new Set(entries.map((entry) => entry.file))).toHaveLength(198);
     expect(new Set(entries.map((entry) => createHash('sha256')
       .update(readFileSync(resolve(process.cwd(), 'public', entry.file))).digest('hex'))))
-      .toHaveLength(127);
-    const selections = [...itemProvenance.selections, ...provenance.selections];
-    expect(new Set(selections.map((selection) => selection.source))).toHaveLength(127);
-    expect(new Set(selections.map((selection) => selection.source_sha256))).toHaveLength(127);
+      .toHaveLength(198);
+    const v2Collectibles = v2Provenance.selections.filter((selection) =>
+      selection.family === 'item' || selection.family === 'artifact');
+    const selections = [...itemProvenance.selections, ...provenance.selections, ...v2Collectibles];
+    expect(new Set(selections.map((selection) => selection.source))).toHaveLength(198);
+    expect(new Set(selections.map((selection) => selection.source_sha256))).toHaveLength(198);
   });
 
   it('uses one canonical sprite for reward pickups and HTML surfaces while metadata stays text', () => {
@@ -205,18 +220,25 @@ describe('complete Vanilla artifact sprite batch', () => {
 
     for (const id of Object.keys(ARTIFACTS) as ArtifactId[]) {
       const sprite = renderToStaticMarkup(<ArtifactSprite artifact={{ id }} />);
-      expect(sprite, id).toContain(ASSET_MANIFEST[assetId.mapObject('artifact', id)].file);
-      expect(sprite, id).not.toContain('artifact-sprite-fallback');
+      const manifest = ASSET_MANIFEST[assetId.mapObject('artifact', id)];
+      if (manifest) {
+        expect(sprite, id).toContain(manifest.file);
+        expect(sprite, id).not.toContain('artifact-sprite-fallback');
+      } else expect(sprite, id).toContain('artifact-sprite-fallback');
     }
 
     expect(KIT_PIECES).toEqual(KIT_ARTIFACT_IDS);
-    for (const id of [...BURDEN_ARTIFACT_IDS, ...KIT_ARTIFACT_IDS, ...TRINKET_ARTIFACT_IDS]) {
+    for (const id of [...BURDEN_ARTIFACT_IDS, ...KIT_ARTIFACT_IDS, ...TRINKET_ARTIFACT_IDS]
+      .filter((candidate) => INSTALLED_ARTIFACT_IDS.includes(candidate))) {
       const artifact = ARTIFACTS[id];
-      const request = job.requests.find((candidate) => candidate.catalog_key === id)!;
-      expect(request.prompt).not.toContain(artifact.description);
+      const request = job.requests.find((candidate) => candidate.catalog_key === id);
+      const v2Request = v2Provenance.selections.find((candidate) => candidate.canonical_id === `artifact:${id}`);
+      const prompt = request?.prompt ?? v2Request?.prompt;
+      expect(prompt).toBeTruthy();
+      expect(prompt).not.toContain(artifact.description);
       if (artifact.class === 'burden') {
         expect(artifact.burdenRemoval).toBeTruthy();
-        expect(request.prompt).not.toContain(artifact.burdenRemoval!);
+        expect(prompt).not.toContain(artifact.burdenRemoval!);
       }
     }
   });

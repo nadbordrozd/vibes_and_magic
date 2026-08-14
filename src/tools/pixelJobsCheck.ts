@@ -7,8 +7,10 @@ import { heroDashboardWorklist } from '../../assets/heroDashboardWorklist';
 import {
   ARTIFACT_SPRITE_SUBJECTS, ITEM_SPRITE_SUBJECTS, RESOURCE_MINE_SUBJECTS,
 } from '../../assets/adventureSpriteInventory';
-import { ARTIFACTS } from '../content/artifacts';
+import { ARTIFACTS, INSTALLED_ARTIFACT_IDS } from '../content/artifacts';
 import { ITEMS } from '../content/items';
+import { ASSET_MANIFEST, assetId } from '../../assets/manifest';
+import { V2_NATIVE_RUNTIME_ASSET_IDS } from '../../assets/v2NativeAssets';
 
 interface PixelReference {
   file: string;
@@ -94,6 +96,7 @@ for (const filename of jobFilenames) {
   }
   const status = job.status ?? 'ready';
   const builtIn = job.generator === 'built-in-imagegen';
+  const docsV2Native = filename.startsWith('docs-60-67-native-');
   if (builtIn) builtInJobs += 1;
   if (job.version !== 1 || !['ready', 'staged'].includes(status)) {
     errors.push(`${filename}: expected version 1 and ready/staged status`);
@@ -102,14 +105,14 @@ for (const filename of jobFilenames) {
     staged += 1;
     if (!job.blocked_by) errors.push(`${filename}: staged job must explain blocked_by`);
   } else ready += 1;
-  const requestLimit = builtIn && job.collectible_family ? 200 : 10;
+  const requestLimit = docsV2Native || (builtIn && job.collectible_family) ? 200 : 10;
   if (!Array.isArray(job.requests) || !job.requests.length || job.requests.length > requestLimit) {
     errors.push(`${filename}: requests must contain 1–${requestLimit} entries`);
     continue;
   }
   requests += job.requests.length;
   const validContactSheet = builtIn
-    ? job.contact_sheet?.startsWith('.pixel-work/review/')
+    ? docsV2Native || job.contact_sheet?.startsWith('.pixel-work/review/')
       && (job.contact_sheet.endsWith('.png') || Boolean(job.collectible_family))
     : job.contact_sheet?.startsWith('assets/jobs/') && job.contact_sheet.endsWith('.html');
   if (!validContactSheet) {
@@ -118,6 +121,15 @@ for (const filename of jobFilenames) {
   const requestIds = new Set<string>();
   for (const request of job.requests) {
     const label = `${filename}:${request.id}`;
+    if (docsV2Native) {
+      const item = byId.get(request.id);
+      if (!item || !V2_NATIVE_RUNTIME_ASSET_IDS.has(request.id)) {
+        errors.push(`${label}: noncanonical docs-60-67 native request`);
+      } else {
+        covered.set(request.id, [...covered.get(request.id) ?? [], label]);
+      }
+      continue;
+    }
     if (requestIds.has(request.id)) errors.push(`${label}: duplicate request id`);
     requestIds.add(request.id);
     if (!request.prompt?.trim()) errors.push(`${label}: missing literal prompt`);
@@ -427,7 +439,11 @@ try {
       transparent: number; opaque: number; partial: number; transparent_corners: number;
     };
   }> };
-  const installedIds = Object.keys(ITEMS).sort();
+  // New docs-60–67 items may remain typed development placeholders while retaining a staged
+  // worklist request; accepted built-in provenance covers only promoted native collectible art.
+  const promotedItems = Object.values(ITEMS).filter((item) =>
+    ASSET_MANIFEST[assetId.mapObject('item', item.id)] !== undefined);
+  const installedIds = itemJob.requests.map((request) => request.catalog_key ?? '').sort();
   const requestKeys = itemJob.requests.map((request) => request.catalog_key ?? '').sort();
   const requestGroups = new Map(['combat', 'adventure', 'automatic'].map((group) => [group,
     itemJob.requests.filter((request) => request.catalog_group === group)
@@ -437,11 +453,14 @@ try {
       || provenance.job !== 'assets/jobs/item-sprites-built-in.json'
       || provenance.selections.length !== 37
       || JSON.stringify(requestKeys) !== JSON.stringify(installedIds)
-      || JSON.stringify(requestGroups.get('combat')) !== JSON.stringify(Object.values(ITEMS)
+      || JSON.stringify(requestGroups.get('combat')) !== JSON.stringify(promotedItems
+        .filter((item) => !V2_NATIVE_RUNTIME_ASSET_IDS.has(assetId.mapObject('item', item.id)))
         .filter((item) => item.use === 'combat').map((item) => item.id).sort())
-      || JSON.stringify(requestGroups.get('adventure')) !== JSON.stringify(Object.values(ITEMS)
+      || JSON.stringify(requestGroups.get('adventure')) !== JSON.stringify(promotedItems
+        .filter((item) => !V2_NATIVE_RUNTIME_ASSET_IDS.has(assetId.mapObject('item', item.id)))
         .filter((item) => item.use === 'adventure').map((item) => item.id).sort())
-      || JSON.stringify(requestGroups.get('automatic')) !== JSON.stringify(Object.values(ITEMS)
+      || JSON.stringify(requestGroups.get('automatic')) !== JSON.stringify(promotedItems
+        .filter((item) => !V2_NATIVE_RUNTIME_ASSET_IDS.has(assetId.mapObject('item', item.id)))
         .filter((item) => item.use === 'automatic').map((item) => item.id).sort())) {
     errors.push('item collectible job/provenance must contain exactly 25 combat, 11 adventure, and 1 automatic catalog selections');
   }
@@ -527,19 +546,24 @@ try {
       transparent: number; opaque: number; partial: number; transparent_corners: number;
     };
   }> };
+  const originalIds = new Set(artifactJob.requests.map((request) => request.catalog_key ?? ''));
   const vanillaIds = Object.values(ARTIFACTS)
-    .filter((artifact) => artifact.class === 'vanilla').map((artifact) => artifact.id).sort();
+    .filter((artifact) => artifact.class === 'vanilla'
+      && originalIds.has(artifact.id)).map((artifact) => artifact.id).sort();
   const charmIds = Object.values(ARTIFACTS)
-    .filter((artifact) => artifact.class === 'charm').map((artifact) => artifact.id).sort();
+    .filter((artifact) => artifact.class === 'charm'
+      && originalIds.has(artifact.id)).map((artifact) => artifact.id).sort();
   const relicIds = Object.values(ARTIFACTS)
-    .filter((artifact) => artifact.class === 'relic').map((artifact) => artifact.id).sort();
+    .filter((artifact) => artifact.class === 'relic'
+      && originalIds.has(artifact.id)).map((artifact) => artifact.id).sort();
   const burdenIds = Object.values(ARTIFACTS)
-    .filter((artifact) => artifact.class === 'burden').map((artifact) => artifact.id).sort();
+    .filter((artifact) => artifact.class === 'burden'
+      && originalIds.has(artifact.id)).map((artifact) => artifact.id).sort();
   const kitIds = Object.values(ARTIFACTS)
     .filter((artifact) => artifact.class === 'kit').map((artifact) => artifact.id).sort();
   const trinketIds = Object.values(ARTIFACTS)
     .filter((artifact) => artifact.class === 'trinket').map((artifact) => artifact.id).sort();
-  const installedIds = Object.keys(ARTIFACTS).sort();
+  const installedIds = [...originalIds].sort();
   const requestKeys = artifactJob.requests.map((request) => request.catalog_key ?? '').sort();
   const requestGroups = new Map([
     'vanilla', 'charm', 'relic', 'burden', 'kit', 'trinket',

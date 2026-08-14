@@ -16,6 +16,8 @@ import { validateSkills } from '../content/skills';
 import { validateSpells } from '../content/spells';
 import { validateSpellPresentation } from '../content/spellPresentation';
 import { validateUnits } from '../content/units';
+import { validateKnacks } from '../content/knacks';
+import { validateV2AcquisitionSites } from '../content/acquisitionSites';
 import { INSPECTION_KINDS } from '../ui/inspection';
 import { validateAdventureObjectInteractionRoutes } from '../ui/adventureStructureInteractions';
 import { validateNonAdventureSurfaceCoverage } from '../ui/nonAdventureSurfaceCoverage';
@@ -31,7 +33,7 @@ const validators = [
   validateAbilityPresentation, validateArtifacts, validateBattleTiles, validateBuildings,
   validateFactionPresentation, validateFactions, validateHeroes, validateItems,
   validateMapObjectRegistry, validateOmens, validateSkills, validateSpells,
-  validateSpellPresentation, validateUnits,
+  validateSpellPresentation, validateUnits, validateKnacks, validateV2AcquisitionSites,
   validateAdventureObjectInteractionRoutes,
   validateNonAdventureSurfaceCoverage,
 ];

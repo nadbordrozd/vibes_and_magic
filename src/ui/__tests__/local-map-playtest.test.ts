@@ -5,7 +5,7 @@ import {
   createBlankEditorMap, createDefaultEditorCastle, createDefaultEditorHero,
   createDefaultEditorPlayer,
 } from '../../core/mapEditor';
-import { createGame } from '../../core/game';
+import { apply, createGame } from '../../core/game';
 import { encodeLocalMapReference, parseLocalMapReference } from '../../core/mapReference';
 import {
   actionSave, CONTENT_HASH, createGameLink, loadGameDetailed, loadGameLink,
@@ -104,6 +104,41 @@ describe('exact local map campaign references', () => {
     newer.metadata.name = 'A Different Draft';
     value(saveEditorMapDraft(newer, storage));
     expect(stateHash(replaySave(save, true, undefined, repository))).toBe(stateHash(first));
+  });
+
+  it('round-trips an authored Quartermaster eighth slot through the five-field action save', () => {
+    const storage = new MemoryStorage();
+    const document = playable();
+    const authored = document.heroes[0];
+    authored.skills = { quartermaster: 1 };
+    authored.army = [
+      { unitId: 'yeoman', count: 9 }, { unitId: 'longbowman', count: 8 },
+      { unitId: 'bannerman', count: 7 }, { unitId: 'lanceKnight', count: 6 },
+      { unitId: 'oriflammeWarden', count: 5 }, { unitId: 'oriflammeWyvern', count: 4 },
+      { unitId: 'tinSoldier', count: 3 },
+    ];
+    const frozen = value(freezeEditorMapRevision(document, storage));
+    const mapId = encodeLocalMapReference({
+      documentId: frozen.document.id, revision: frozen.document.revision,
+      mapHash: frozen.mapHash,
+    });
+    const repository = createGameMapRepository(storage);
+    const initial = createGame({ seed: 7011, mapId, p1: 'human', p2: 'dormant' }, repository);
+    const hero = initial.players.p1.heroes.find((candidate) => candidate.id === authored.id)!;
+    expect(hero.army).toHaveLength(8);
+    expect(hero.army[7]).toBeNull();
+    const next = apply(initial, {
+      type: 'SPLIT_ARMY', holder: { kind: 'hero', id: hero.id },
+      sourceSlot: 0, destinationSlot: 7, count: 2,
+    });
+    const save = actionSave(next);
+    expect(Object.keys(save).sort()).toEqual(
+      ['actionLog', 'contentHash', 'difficulty', 'mapId', 'seed'],
+    );
+    const replayed = replaySave(save, true, undefined, repository);
+    expect(stateHash(replayed)).toBe(stateHash(next));
+    expect(replayed.players.p1.heroes.find((candidate) => candidate.id === authored.id)!.army[7])
+      .toEqual({ unitId: 'yeoman', count: 2 });
   });
 
   it('refuses missing revisions and hash mismatches without fallback', () => {

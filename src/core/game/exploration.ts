@@ -1,8 +1,7 @@
-import {
-  addUnits, armyAlive, armyPower, canAfford, makeArmy, pay,
-} from '../army';
+import { addUnits, armyAlive, armyPower, heroArmyCapacity, makeArmy } from '../army';
 import { SKILLS } from '../../content/skills';
 import { UNITS } from '../../content/units';
+import { SPELLS } from '../../content/spells';
 import { HERO_MOVE_POINTS, RANGED_PICKUP_MOVE_COST } from '../../content/constants';
 import {
   createBattle, splitGuardianArmy,
@@ -16,7 +15,7 @@ import {
   isObjectActive,
 } from '../map/occupancy';
 import { revealForMovementPath, revealForPlayer } from '../map/visibility';
-import { foragerRate, logisticsRate, skillRank } from '../heroBehaviors';
+import { foragerRate, gainExperience, logisticsRate, maximumMana, skillRank } from '../heroBehaviors';
 import { activeHero as selectedActiveHero, findHero, findOwnedHero } from '../heroes';
 import type {
   Army, Castle, GameState, Hero, MapObject,
@@ -26,17 +25,23 @@ import { checkVictory } from './outcomes';
 import { TERRAIN, terrainIdAt } from '../../content/terrain';
 import { learnGuildSpells, visitShrine } from './magic';
 import { diplomacyTerms } from '../skills/diplomacy';
-import { addItem, sellTradeGoods } from './items';
+import { addItem, claimSpellTome, sellTradeGoods } from './items';
 import { offerChestChoice } from './chests';
-import { adventureMovementCost, adventurePath } from './navigation';
+import {
+  adventureMovementCost, adventurePath, terrainIgnoreAppliesToStep,
+} from './navigation';
 import { dealBargains } from './bargains';
 import { claimGuardianReward, visitCreativeObject } from './mapObjects';
-import { artifactEffectTotal } from '../artifacts';
-import { addArtifact, consumeEquippedArtifact, hasEquippedArtifact } from '../artifacts';
+import {
+  addArtifact, artifactEffectTotal, canPlayerAfford, consumeEquippedArtifact,
+  hasArtifactEffect, hasEquippedArtifact, payPlayer,
+} from '../artifacts';
 import { canClaimWeeklyBeast } from '../skills/expansionHooks';
 import { canCastIntoGarrison } from '../skills/expansionHooks';
 import { emptyArtifacts } from '../artifacts';
 import { buildingIsActive } from './buildingStatus';
+import { applyPrebattleConditions } from './adventurePrimitives';
+import { learnSpell } from './spellLearning';
 export { adventurePath } from './navigation';
 export { diplomacyTerms } from '../skills/diplomacy';
 
@@ -59,6 +64,22 @@ function objectAt(
   });
 }
 
+export function captureArtifactSpellLoans(
+  state: GameState, source: Hero,
+  target: NonNullable<ReturnType<typeof createBattle>[0]['defenderHero']>,
+): void {
+  if (!hasArtifactEffect(source, 'borrow_nearby_spell')) return;
+  const borrowed = state.players[source.owner].heroes.filter((candidate) => candidate.alive
+    && candidate.id !== source.id
+    && Math.max(Math.abs(candidate.position.x - source.position.x),
+      Math.abs(candidate.position.y - source.position.y))
+      <= Math.max(1, artifactEffectTotal(source, 'borrow_nearby_spell')))
+    .flatMap((candidate) => candidate.knownSpells)
+    .filter((spellId) => !source.knownSpells.includes(spellId));
+  target.borrowedSpellIds = [...new Set(borrowed)].sort();
+  target.knownSpells = [...new Set([...target.knownSpells, ...target.borrowedSpellIds])];
+}
+
 function beginBattle(
   state: GameState,
   defenderArmy: Army,
@@ -75,6 +96,22 @@ function beginBattle(
     onSeam: state.map.seams?.some((seam) => sameCoord(seam, context.destination)) ?? false,
     battlefield: context.battlefield ?? (battleTerrain === 'water' ? 'sea'
       : battleTerrain === 'mire' ? 'mire' : 'land'),
+    attackerOwnedHeroCount: state.players[hero.owner].heroes.filter((candidate) => candidate.alive).length,
+    defenderOwnedHeroCount: defenderHero
+      ? state.players[defenderHero.owner].heroes.filter((candidate) => candidate.alive).length : 0,
+    attackerRosterHasHeroCountStats: state.players[hero.owner].heroes.some((candidate) =>
+      candidate.alive && hasArtifactEffect(candidate, 'exact_hero_count_stats')),
+    defenderRosterHasHeroCountStats: defenderHero ? state.players[defenderHero.owner].heroes
+      .some((candidate) => candidate.alive && hasArtifactEffect(candidate, 'exact_hero_count_stats')) : false,
+    attackerPriorFactionBattles: state.players[hero.owner].artifactState.priorBattlesByFaction[
+      defenderHero?.faction ?? (defenderArmy.find(Boolean)
+        ? UNITS[defenderArmy.find(Boolean)!.unitId].faction : hero.faction)
+    ] ?? 0,
+    defenderPriorFactionBattles: defenderHero
+      ? state.players[defenderHero.owner].artifactState.priorBattlesByFaction[hero.faction] ?? 0 : 0,
+    attackerOpponentFaction: defenderHero?.faction ?? (defenderArmy.find(Boolean)
+      ? UNITS[defenderArmy.find(Boolean)!.unitId].faction : undefined),
+    defenderOpponentFaction: hero.faction,
   };
   const [battle, nextRng] = createBattle(
     hero.army, defenderArmy, hero, defenderHero, battleContext, state.rng, walls,
@@ -83,8 +120,10 @@ function beginBattle(
   state.rng = nextRng;
   state.battle = battle;
   battle.attackerHero.withdrawalGold = state.players[hero.owner].resources.gold;
+  captureArtifactSpellLoans(state, hero, battle.attackerHero);
   if (battle.defenderHero && defenderHero) {
     battle.defenderHero.withdrawalGold = state.players[defenderHero.owner].resources.gold;
+    captureArtifactSpellLoans(state, defenderHero, battle.defenderHero);
   }
   battle.attackerHero.luck += hero.adventureEffects.nextBattleLuckBonus;
   hero.adventureEffects.nextBattleLuckBonus = 0;
@@ -108,14 +147,16 @@ function beginBattle(
       .forEach((stack) => { stack.morale += bonus; });
     combatant.adventureEffects.nextBattleMeterBonus = 0;
   }
+  applyPrebattleConditions(state, battle, hero, 'attacker');
+  if (defenderHero) applyPrebattleConditions(state, battle, defenderHero, 'defender');
   if (battle.timingSpeedBonus.attacker || battle.timingSpeedBonus.defender) {
     battle.stacks.forEach((stack) => {
       const bonus = battle.timingSpeedBonus[stack.side];
       if (bonus) stack.roundSpeedBonus = (stack.roundSpeedBonus ?? 0) + bonus;
     });
-    battle.order = turnOrder(battle.stacks);
-    battle.currentStackId = battle.order[0] ?? null;
   }
+  battle.order = turnOrder(battle.stacks, battle);
+  battle.currentStackId = battle.order[0] ?? null;
   const terrain = battleTerrain;
   const object = state.map.objects.find((item) =>
     sameCoord(item.position, context.destination));
@@ -148,13 +189,21 @@ function beginBattle(
 function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
   discoverMapObject(state.players[hero.owner], object);
   if (object.kind === 'pile') {
-    const amount = Math.floor(object.amount * (1 + foragerRate(hero)));
+    const prospect = hero.adventureEffects.prospectDoublePileWeek === state.week;
+    const amount = Math.floor(object.amount * (1 + foragerRate(hero)) * (prospect ? 2 : 1));
+    if (prospect) hero.adventureEffects.prospectDoublePileWeek = undefined;
     state.players[hero.owner].resources[object.resource] += amount;
     object.collected = true;
     state.lastMessage = `Collected ${amount} ${object.resource}.`;
     return;
   }
   if (object.kind === 'item') {
+    if (object.item.id === 'spellTome') {
+      const learned = claimSpellTome(hero, object.item);
+      object.collected = true;
+      state.lastMessage = `The Spell Tome teaches ${SPELLS[learned].name}.`;
+      return;
+    }
     if (!addItem(hero, object.item)) {
       state.lastMessage = 'Inventory full.';
       return;
@@ -194,7 +243,7 @@ function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
     return;
   }
   if (object.kind === 'castaway') {
-    hero.xp += 500;
+    gainExperience(hero, 500);
     if (object.item) addItem(hero, object.item);
     object.collected = true;
     state.lastMessage = `${object.story} (+500 XP)`;
@@ -214,7 +263,8 @@ function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
     if (object.visitedWeek[hero.id] === state.week) {
       state.lastMessage = 'The spring is quiet for this hero this week.';
     } else {
-      object.visitedWeek[hero.id] = state.week; hero.mana = hero.knowledge * 10;
+      object.visitedWeek[hero.id] = state.week;
+      hero.mana = maximumMana(hero, state.players[hero.owner]);
       state.lastMessage = 'The spring restores full mana.';
     }
     return;
@@ -257,6 +307,15 @@ function enterMapObject(state: GameState, object: MapObject, hero: Hero): void {
     return;
   }
   if (object.kind === 'mine') {
+    const formerOwner = object.owner;
+    if (formerOwner && formerOwner !== hero.owner
+        && state.players[formerOwner].heroes.some((candidate) => candidate.alive
+          && hasArtifactEffect(candidate, 'lost_mine_income'))) {
+      object.productionRedirect = {
+        recipient: formerOwner, originalOwner: hero.owner,
+        startsDay: state.day, throughDay: state.day + 3, hidden: false,
+      };
+    }
     object.owner = hero.owner;
     object.cleared = true;
     state.lastMessage = `${object.resource} mine claimed.`;
@@ -312,12 +371,13 @@ function claimLock(
   object.reward.timber = undefined;
   object.reward.iron = undefined;
   object.reward.essence = undefined;
-  object.reward.items = (object.reward.items ?? []).filter((item) => !addItem(hero, item));
+  object.reward.items = (object.reward.items ?? []).filter((item) => {
+    if (item.id === 'spellTome') { claimSpellTome(hero, item); return false; }
+    return !addItem(hero, item);
+  });
   for (const artifact of object.reward.artifacts ?? []) addArtifact(hero, artifact);
   object.reward.artifacts = [];
-  if (object.reward.teachesSpell && !hero.knownSpells.includes(object.reward.teachesSpell)) {
-    hero.knownSpells.push(object.reward.teachesSpell);
-  }
+  if (object.reward.teachesSpell) learnSpell(hero, object.reward.teachesSpell);
   object.reward.teachesSpell = undefined;
   state.lastMessage = `${object.name} yields.`;
 }
@@ -391,19 +451,27 @@ export function chooseDiplomacy(
     throw new Error('Diplomacy encounter missing');
   }
   const guardian = object;
-  state.pendingChoice = null;
   if (choice === 'fight') {
+    state.pendingChoice = null;
     beginGuardianBattle(
       state, guardian, hero, hero.position, Boolean(pending.completeMoveTo),
     );
     return;
   }
   const cost = choice === 'recruit' ? pending.recruitCost : pending.disbandCost;
-  if (cost === null || !canAfford(state.players[pending.playerId].resources, { gold: cost })) {
+  if (cost === null || !canPlayerAfford(state.players[pending.playerId], { gold: cost })) {
     throw new Error('Cannot afford diplomacy');
   }
-  state.players[pending.playerId].resources =
-    pay(state.players[pending.playerId].resources, { gold: cost });
+  let joinedArmy: Army | null = null;
+  if (choice === 'recruit') {
+    joinedArmy = hero.army.map((stack) => stack ? { ...stack } : null);
+    for (const stack of guardian.army) {
+      joinedArmy = addUnits(joinedArmy, stack.unitId, stack.count);
+      if (!joinedArmy) throw new Error('Every guardian company must fit or merge');
+    }
+  }
+  state.pendingChoice = null;
+  payPlayer(state.players[pending.playerId], { gold: cost });
   if (choice === 'standAside') {
     if (!pending.canStandAside) throw new Error('Stand aside is unavailable');
     guardian.stoodAsideFor = [
@@ -413,9 +481,7 @@ export function chooseDiplomacy(
     return;
   }
   if (choice === 'recruit') {
-    for (const stack of guardian.army) {
-      hero.army = addUnits(hero.army, stack.unitId, stack.count)!;
-    }
+    hero.army = joinedArmy!;
   }
   clearGuardian(state, guardian, hero);
   if (pending.completeMoveTo) {
@@ -434,10 +500,10 @@ export function chooseToll(state: GameState, choice: 'pay' | 'fight'): void {
   if (!hero || !object) throw new Error('Toll Gate missing');
   state.pendingChoice = null;
   if (choice === 'pay') {
-    if (state.players[hero.owner].resources.gold < pending.cost) {
+    if (!canPlayerAfford(state.players[hero.owner], { gold: pending.cost })) {
       throw new Error('Cannot pay the toll');
     }
-    state.players[hero.owner].resources.gold -= pending.cost;
+    payPlayer(state.players[hero.owner], { gold: pending.cost });
     object.paidBy.push(hero.id);
     state.lastMessage = 'The Keeper raises the bar for this passage.';
   } else {
@@ -456,9 +522,7 @@ function claimSeaReward(state: GameState, reward: Extract<MapObject,
   state.players[hero.owner].resources.essence += reward.essence ?? 0;
   for (const item of reward.items ?? []) addItem(hero, item);
   for (const artifact of reward.artifacts ?? []) addArtifact(hero, artifact);
-  if (reward.teachesSpell && !hero.knownSpells.includes(reward.teachesSpell)) {
-    hero.knownSpells.push(reward.teachesSpell);
-  }
+  if (reward.teachesSpell) learnSpell(hero, reward.teachesSpell);
   reward.gold = undefined; reward.timber = undefined; reward.iron = undefined;
   reward.essence = undefined;
   reward.items = []; reward.artifacts = []; reward.teachesSpell = undefined;
@@ -493,6 +557,26 @@ function encounterGuardian(
   trigger: { x: number; y: number }, deliberate: boolean,
 ): void {
   discoverMapObject(state.players[hero.owner], guardian);
+  if (!deliberate && hero.adventureEffects.terrainIgnore?.day === state.day
+      && hero.adventureEffects.terrainIgnore.ignoreGuardianAggro) {
+    state.lastMessage = 'The spell-borne route passes beyond the guardian’s reach.';
+    return;
+  }
+  if (!deliberate && (hero.adventureEffects.ignoreGuardianAggroThroughDay ?? 0) >= state.day) {
+    state.lastMessage = 'The Nightjar Feather carries the hero beyond every guardian alarm today.';
+    return;
+  }
+  const beastExemption = hero.adventureEffects.beastGuardianIgnore;
+  const playerBeastExemption = state.players[hero.owner].adventureEffects.beastGuardianIgnore;
+  if (!deliberate && guardian.army.every((stack) =>
+    UNITS[stack.unitId].abilities.includes('beast'))
+      && ((beastExemption?.throughDay ?? 0) >= state.day
+        && beastExemption!.guardianIds.includes(guardian.id)
+        || (playerBeastExemption?.throughDay ?? 0) >= state.day
+        && playerBeastExemption!.guardianIds.includes(guardian.id))) {
+    state.lastMessage = 'Beast Sense carries the hero past the guardian without alarm.';
+    return;
+  }
   if (!deliberate && hasEquippedArtifact(hero, 'thirdBoot')
       && hero.adventureEffects.ignoredAggroDay !== state.day) {
     hero.adventureEffects.ignoredAggroDay = state.day;
@@ -530,8 +614,11 @@ function encounterGuardian(
 
 function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
   const entrance = castleEntrance(castle);
+  if (hasArtifactEffect(hero, 'city_entry_block')) {
+    throw new Error('The Faithful Hound prevents this hero from entering any city');
+  }
   if (castle.owner === hero.owner) {
-    hero.mana = hero.knowledge * 10;
+    hero.mana = maximumMana(hero, state.players[hero.owner]);
     const learned = learnGuildSpells(hero, castle);
     const sold = sellTradeGoods(state, hero, entrance);
     state.lastMessage = sold > 0
@@ -540,7 +627,8 @@ function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
       ? `Hero learned ${learned.length} Mage Guild spell${learned.length === 1 ? '' : 's'}.`
       : 'Hero entered the city.';
     if (buildingIsActive(castle, 'bargainPost')
-        && castle.bargainOfferWeek !== state.week && hero.debts.length < 2) {
+        && castle.bargainOfferWeek !== state.week
+        && hero.debts.length < (hasArtifactEffect(hero, 'debt_slot_bonus') ? 3 : 2)) {
       castle.bargainOfferWeek = state.week;
       dealBargains(state, hero, 2, 'post');
     }
@@ -555,7 +643,7 @@ function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
   const wardenCanCast = Boolean(remoteWarden && canCastIntoGarrison(
     remoteWarden, remoteWarden.position, entrance,
   ));
-  const battleCommander: Hero | null = defenderHero ?? (remoteWarden ? {
+  const battleCommander: (Hero & { knackEnabled?: boolean }) | null = defenderHero ?? (remoteWarden ? {
     ...remoteWarden,
     luck: 0, moraleBonus: 0,
     knownSpells: wardenCanCast ? [...remoteWarden.knownSpells] : [],
@@ -566,14 +654,19 @@ function enterCastle(state: GameState, castle: Castle, hero: Hero): void {
         ? { command: remoteWarden.skills.command } : {}),
     },
     artifacts: emptyArtifacts(), inventory: Array(remoteWarden.inventory.length).fill(null),
+    knackEnabled: wardenCanCast,
   } : null);
   const combined = castle.garrison.map((stack) => stack ? { ...stack } : null);
   if (defenderHero) {
+    while (combined.length < heroArmyCapacity(defenderHero)) combined.push(null);
+    let fits = true;
     for (const stack of defenderHero.army) {
       if (!stack) continue;
       const withUnits = addUnits(combined, stack.unitId, stack.count);
-      if (withUnits) combined.splice(0, combined.length, ...withUnits);
+      if (!withUnits) { fits = false; break; }
+      combined.splice(0, combined.length, ...withUnits);
     }
+    if (!fits) throw new Error('The defending hero and garrison exceed commanded army capacity');
   }
   if (!armyAlive(combined)) {
     if (castle.vault) {
@@ -611,8 +704,13 @@ export function moveHero(
   state: GameState,
   destination: { x: number; y: number },
   avoidAggro = true,
+  useWayfaring = false,
 ): void {
   const hero = selectedActiveHero(state);
+  if (useWayfaring && (skillRank(hero, 'wayfaring') < 3
+      || hero.skillUses.daily.wayfaring === state.day)) {
+    throw new Error('Wayfaring aggro passage is unavailable');
+  }
   if (sameCoord(hero.position, destination)) {
     const castle = state.castles.find((item) => sameCoord(castleEntrance(item), destination));
     const object = objectAt(state, destination);
@@ -630,8 +728,22 @@ export function moveHero(
     && effect.entrances.some((entry) => sameCoord(entry, destination)));
   const freeForest = state.players[hero.owner].adventureEffects.greenTideUntilWeek
     >= state.week;
+  const terrainIgnore = hero.adventureEffects.terrainIgnore?.day === state.day
+    ? hero.adventureEffects.terrainIgnore : undefined;
+  const usesTerrainIgnore = Boolean(terrainIgnore && path.slice(1).some((step, index) =>
+    terrainIgnoreAppliesToStep(state.map, terrainIgnore, path[index], step)));
+  if (usesTerrainIgnore && hero.embarkedBoatId) {
+    const boat = state.map.objects.find((object) => object.kind === 'boat'
+      && object.id === hero.embarkedBoatId);
+    if (boat?.kind === 'boat') {
+      boat.position = { ...hero.position };
+      boat.occupiedBy = null;
+    }
+    hero.embarkedBoatId = null;
+  }
   let reached = path[0];
   let exitedWhirlpoolId: string | null = null;
+  let wayfaringPassageAvailable = useWayfaring;
   for (let index = 1; index < path.length; index += 1) {
     const step = path[index];
     const cost = passage ? 0 : adventureMovementCost(state, hero, reached, step, freeForest);
@@ -643,7 +755,9 @@ export function moveHero(
       && sameCoord(object.position, reached)
       && state.map.objects.some((paired) => paired.id === object.pairedId
         && sameCoord(paired.position, step)));
-    if (whirlpool?.kind === 'whirlpool') {
+    if (terrainIgnore && terrainIgnoreAppliesToStep(state.map, terrainIgnore, reached, step)) {
+      // Terrain-ignore travel moves only the hero; water, boats and whirlpools are inert.
+    } else if (whirlpool?.kind === 'whirlpool') {
       exitedWhirlpoolId = crossWhirlpool(state, whirlpool, hero).id;
     } else if (!fromWater && toWater) {
       const boat = state.map.objects.find((object) => object.kind === 'boat'
@@ -680,6 +794,12 @@ export function moveHero(
       return;
     }
     if (guardian) {
+      if (wayfaringPassageAvailable && !direct) {
+        hero.skillUses.daily.wayfaring = state.day;
+        wayfaringPassageAvailable = false;
+        state.lastMessage = `${hero.name} passes one guardian aggro tile without combat.`;
+        continue;
+      }
       hero.pathMemory = path.slice(index).map((coord) => ({ ...coord }));
       const beforeEncounter = { ...hero.position };
       encounterGuardian(state, guardian, hero, step, Boolean(direct));

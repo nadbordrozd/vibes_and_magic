@@ -2,14 +2,14 @@ import { ARTIFACTS } from '../../content/artifacts';
 import { BUILDINGS, buildingBelongsToFaction } from '../../content/buildings';
 import { FACTIONS } from '../../content/factions';
 import { HEROES } from '../../content/heroes';
-import { ITEMS } from '../../content/items';
+import { ITEMS, validateSpellTomeInstance } from '../../content/items';
 import { MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
 import { SKILLS } from '../../content/skills';
 import { SPELLS } from '../../content/spells';
 import { TERRAIN } from '../../content/terrain';
 import { UNITS } from '../../content/units';
 import { adventurePropByName } from '../../content/adventureProps';
-import { PLAYER_IDS } from '../types';
+import { PLAYER_IDS, type ItemInstance } from '../types';
 import { CITY_ENTRANCE, CITY_FOOTPRINT } from '../map/occupancy';
 import { EDITOR_CATALOG_HASH, LEGACY_3X2_EDITOR_CATALOG_HASH } from './catalog';
 import { EDITOR_CASTLE_VARIANTS_BY_FACTION, isEditorArmyUnitId } from './defaults';
@@ -20,6 +20,7 @@ import type {
 import {
   EDITOR_MAP_DOCUMENT_TYPE, EDITOR_MAP_SCHEMA_VERSION,
 } from './types';
+import { deriveHeroArmyCapacity } from '../army';
 
 const TOP_LEVEL_FIELDS = new Set([
   'documentType', 'schemaVersion', 'id', 'revision', 'metadata', 'compatibility',
@@ -43,7 +44,8 @@ export const AUTHORABLE_OBJECT_PROPERTY_FIELDS: Record<string, readonly string[]
   shrine: ['school', 'teaches'], item: ['item'], richVein: ['owner', 'income', 'days'],
   waystation: [], lock: ['name', 'tell'], dwelling: ['unitId', 'available'],
   tinkersCart: ['route', 'stock'], monastery: [], gloamingRing: [],
-  storyteller: [], chrysalis: [], bridge: ['opens'], hedgeSchool: [], reliquaryCairn: [],
+  storyteller: [], chrysalis: [], bridge: ['opens'], hedgeSchool: [], reliquaryCairn: ['tomeSpellId'],
+  stacks: [], wildShrine: [], reliquaryOfPages: ['tomeSpellId'],
   tollGate: [], omenStone: [], crone: [], barrowField: ['scroll'], boat: ['owner'],
   manaSpring: [], flotsam: ['timber', 'gold'], sealedCask: [],
   castaway: ['item', 'story'], messageBottle: ['rumour'], whirlpool: ['pairedId'],
@@ -66,6 +68,7 @@ const OBJECT_REQUIRED_FIELDS: Record<string, readonly string[]> = {
   tinkersCart: ['route'], barrowField: ['scroll'], flotsam: ['timber', 'gold'],
   castaway: ['story'], messageBottle: ['rumour'], whirlpool: ['pairedId'],
   hutOnTheHill: ['skill'], mercenaryCamp: ['roster'], patientStone: ['cacheId'],
+  reliquaryOfPages: ['tomeSpellId'],
   obstacle: ['prop'],
 };
 
@@ -316,11 +319,12 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
   const validateArmy = (
     army: unknown, target: EditorDiagnosticTarget, emptyAllowed: boolean,
     emptyCode = 'hero.army.empty', emptyMessage = 'A starting hero needs a nonempty army.',
-    allowRandomTier = false,
+    allowRandomTier = false, capacity = 7,
   ) => {
     if (!Array.isArray(army)) { report('army.invalid', 'Army must be an array.', 'structure', target); return; }
     if (!emptyAllowed && army.length === 0) report(emptyCode, emptyMessage, 'playable', target);
-    if (army.length > 7) report('army.too_many_stacks', 'An army may contain at most seven stacks.',
+    if (army.length > capacity) report('army.too_many_stacks',
+      `This army may contain at most ${capacity} stacks.`,
       'structure', target);
     army.forEach((stack, index) => {
       if (!isRecord(stack)) { report('army.stack.invalid', `Army stack ${index} is invalid.`, 'structure', target); return; }
@@ -472,7 +476,12 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
     else if (definition.faction !== hero.faction) report('hero.definition.faction_mismatch',
       `${definition.id} belongs to ${definition.faction}, not ${String(hero.faction)}.`,
       'catalog', target);
-    validateArmy(hero.army, target, false);
+    const heroCapacity = deriveHeroArmyCapacity({
+      quartermasterRank: isRecord(hero.skills) && typeof hero.skills.quartermaster === 'number'
+        ? hero.skills.quartermaster : 0,
+    });
+    validateArmy(hero.army, target, false,
+      'hero.army.empty', 'A starting hero needs a nonempty army.', false, heroCapacity);
     if (Array.isArray(hero.army)) {
       const units = hero.army.flatMap((stack) => isRecord(stack)
         && typeof stack.unitId === 'string' ? [stack.unitId] : []);
@@ -570,6 +579,13 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
           `${SPELLS[object.properties.teaches as keyof typeof SPELLS].name} is not a ${String(object.properties.school)} spell.`,
           'catalog', target);
       }
+      if (object.kind === 'shrine' && typeof object.properties.teaches === 'string'
+          && Object.hasOwn(SPELLS, object.properties.teaches)
+          && (SPELLS[object.properties.teaches as keyof typeof SPELLS].tier ?? 5) > 2) {
+        report('object.shrine.tier',
+          'Ordinary shrines may teach only tier-1 or tier-2 spells.',
+          'catalog', target);
+      }
       for (const key of ['route', 'opens']) if (object.properties[key] !== undefined) {
         const route = object.properties[key];
         if (!Array.isArray(route) || !route.length) report('object.route.empty',
@@ -654,6 +670,16 @@ export function validateEditorMapDocument(value: unknown): EditorMapDiagnostic[]
       `Guardian target ${guardian.protects} is not a compatible portable object or reward record.`,
       'reference', { kind: 'entity', entityId: String(guardian.id) });
   });
+  for (const object of objects) {
+    if (!isRecord(object) || object.kind !== 'reliquaryOfPages'
+        || typeof object.id !== 'string') continue;
+    if (!guardians.some((guardian) => isRecord(guardian)
+        && guardian.protects === object.id)) report(
+      'object.reliquary_pages.guard_required',
+      'Reliquary of Pages must be protected by a guardian.', 'reference',
+      { kind: 'entity', entityId: object.id },
+    );
+  }
   rewards.forEach((reward) => {
     if (!isRecord(reward) || !isRecord(reward.delivery) || reward.delivery.kind !== 'site') return;
     const carrier = objectById.get(String(reward.delivery.objectId));
@@ -806,7 +832,7 @@ function validateItem(
     report('catalog.item.unknown', `Unknown item: ${isRecord(value) ? String(value.id) : String(value)}.`,
       'catalog', target); return;
   }
-  const allowed = new Set(['id', 'plus', 'origin', 'storedSpellId']);
+  const allowed = new Set(['id', 'plus', 'origin', 'storedSpellId', 'tomeSource']);
   for (const key of Object.keys(value)) if (!allowed.has(key)) report(
     'item.instance.field.unsupported', `Item instances do not support ${key}.`, 'catalog', target);
   if (value.plus !== undefined && typeof value.plus !== 'boolean') report(
@@ -823,7 +849,8 @@ function validateItem(
   if (value.origin !== undefined && value.id !== 'tradeGoods') report(
     'item.instance.origin.unsupported', `${definition.name} does not store a pickup origin.`,
     'catalog', target);
-  if (value.storedSpellId !== undefined && value.id !== 'spellScroll') report(
+  if (value.storedSpellId !== undefined
+      && value.id !== 'spellScroll' && value.id !== 'spellTome') report(
     'item.instance.stored_spell.unsupported', `${definition.name} has a fixed effect and does not store a spell.`,
     'catalog', target);
   if (definition.behavior === 'scroll' && definition.id === 'spellScroll'
@@ -833,6 +860,17 @@ function validateItem(
   if (value.storedSpellId !== undefined && !Object.hasOwn(SPELLS, String(value.storedSpellId))) {
     report('catalog.spell.unknown', `Unknown stored spell: ${String(value.storedSpellId)}.`,
       'catalog', target);
+  }
+  if (value.tomeSource !== undefined && value.id !== 'spellTome') report(
+    'item.instance.tome_source.unsupported', `${definition.name} does not store Tome provenance.`,
+    'catalog', target);
+  if (value.id === 'spellTome') {
+    try {
+      validateSpellTomeInstance(value as unknown as ItemInstance);
+    } catch (error) {
+      report('item.instance.tome.invalid',
+        error instanceof Error ? error.message : 'Invalid Spell Tome.', 'catalog', target);
+    }
   }
 }
 

@@ -27,6 +27,7 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
 - **Anomaly:** the old banner’s cloth is not from this world, and heraldic beasts step from it as
   flat, bold emblem-creatures.
 - **Roster silhouette:** levy, bow, banner, lance, then heraldry made flesh.
+- **Knack:** **Hearten**—plain and proud: a word down the line before the charge.
 
 ### The Wound-Wrights
 
@@ -37,6 +38,7 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
   round-headed silhouettes with seams.
 - **Law:** constructs are built and ritually copied, never grown. The Guild never recognizes the
   original purpose of its sacred forms.
+- **Knack:** **Patch**—reverent guild-speech: nothing is broken, merely between repairs.
 
 ### The Unfinished
 
@@ -46,6 +48,7 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
 - **Look:** bone, funeral linen, candlelight, grave goods; white, ash, candle-gold, never green-black;
   draped hollow silhouettes carrying the object of an obligation.
 - **Law:** they are unresolved, not evil. Voice stays gentle, present, and precise.
+- **Knack:** **The Errand Remembered**—gentle and unresolved: *You had not finished. Go on.*
 
 ### The Vespiary
 
@@ -56,6 +59,7 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
   papery wings.
 - **Law:** Queens half-woke into speech at the Mending and negotiate with formal, sincere courtesy.
   Broad-World domestic debris is rationed to one landmark anomaly per region.
+- **Knack:** **Lay Resin**—the Hive formally extends the courtesy of a difficult floor.
 
 ### The Hagwood
 
@@ -65,6 +69,7 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
 - **Look:** birch, wicker, bone fence, crow feather; white, black, berry red; crooked asymmetry.
 - **Law:** heroes are Crones; everything is grown or bargained, never built. Folkloric names belong
   here more freely than elsewhere.
+- **Knack:** **Ill-Wish**—folktale bargain cadence: *It would be a shame if that went badly for you.*
 
 ### The Wildergrass Clans
 
@@ -73,6 +78,7 @@ laws, and writing register in [`S01_RATIONALE.md`](S01_RATIONALE.md) are canon.
 - **Magic:** Rite + Wild.
 - **Look:** hide, horn, ash; ochre, ash-grey, blood; low, fast, horned, plural/herd silhouettes.
 - **Voice:** terse and rhythmic. Grief is neither gothic nor abstract; it is spent forward.
+- **Knack:** **Blood Drum**—grief given a terse, drum-rhythmic forward beat.
 
 The canonical no-shared-school rivalries are Hearthguard↔Hagwood, Unfinished↔Vespiary, and
 Wildergrass↔Wound-Wrights. They guide authored maps and flavor, not automatic combat modifiers.
@@ -118,7 +124,9 @@ Seamborn are creatures of the stitching itself, native to no contributing world.
 city or town and are not a playable faction. They appear around essence springs, seams,
 anomalies, provenance encounters, and puzzle locks. Encountering them is the quiet delivery channel
 for the world’s true shape. The faction ID remains reserved. Any future recruitable catalog belongs
-in the backlog until a numbered document makes it current.
+in the backlog until a numbered document makes it current. Work orders 63–64 are that numbered
+exception: Seam Moth, Chalk Wight, Bone Orchard, Stitch-Ox, and the Nine-Mouthed Well are the exact
+recruitable Seamborn set. Their dwellings remain seam-side anomalies, never a hidden city tree.
 
 ## Neutral cultures
 
@@ -128,12 +136,18 @@ The world has more cultures than city factions.
   supply masked duelists, hounds, stolen faces, ring dwellings, and Borrow Shape provenance.
 - **Order of the Unstruck Bell:** monks tending the place where time broke and mechanisms they did
   not make. Their monastery supplies timing blessings and Hourglass Crack; the Hour-Beasts remain
-  legendary lock guardians.
+  legendary lock guardians. Lantern Bearer and Bellfounder are recruitable monks, not a city roster.
 - **Driftfolk/sea cultures:** current sea creatures and drowned sites are advance traces, not yet a
   playable faction.
 
 Neutral cultures may be promoted only by a future numbered rule document; present sites and units
 must not imply a functioning hidden city tree.
+
+The docs 63–64 neutral pool is exactly thirteen creatures: the five Seamborn above; Gloaming
+Court Glass Hound and Tallyman; neutral beasts Ember Toad and Kiln Drake; Lantern Bearer and
+Bellfounder of the Unstruck Bell; folkloric Whistling Nan; and the Unfinished Unbaptized. Their
+homely names, masks, monastic mechanisms, seam clustering, and folkloric reserve obey the same laws
+as their parent cultures. Cross-culture recruitment retains the ordinary mixed-army morale cost.
 
 ## Geography and seams
 

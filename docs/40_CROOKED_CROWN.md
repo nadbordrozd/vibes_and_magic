@@ -57,10 +57,12 @@ and landmarks.
 ## Calibrated guardian progression
 
 Every authored count calls doc 39's centralized `unitStrength` and divides a named target rating by
-the selected unit rating. The twenty normal-difficulty armies span 89.00–350.79 with a 178.01 median.
-Twelve guard the optional artifact/recruit reward sites; eight guard non-start mines. The usual
-difficulty multiplier applies later in canonical game setup. This keeps map progression on the same
-rating consumed by strategic AI, Diplomacy, artifacts, skills, Sirens, and bargains.
+the selected unit rating. After the docs 63–64 stable-direction recalibration, the twenty exact
+derived normal-difficulty counts span 90.79–350.79 with a 181.57 median; the complete roster is
+pinned in the generated calibration report and focused test. Twelve guard the optional
+artifact/recruit reward sites; eight guard non-start mines. The usual difficulty multiplier applies
+later in canonical game setup. This keeps map progression on the same rating consumed by strategic
+AI, Diplomacy, artifacts, skills, Sirens, and bargains.
 
 ## Integration and replay contract
 

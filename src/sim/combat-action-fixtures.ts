@@ -42,9 +42,10 @@ function fixture(
   battle.tiles = [];
   const actor = battle.stacks.find((stack) => stack.side === 'attacker' && stack.slot === 0)!;
   const ally = battle.stacks.find((stack) => stack.side === 'attacker' && stack.slot === 1);
+  if (abilityId === 'altar' && ally) ally.summoned = true;
   const enemies = battle.stacks.filter((stack) => stack.side === 'defender');
   actor.position = { x: 0, y: 4 };
-  if (ally) ally.position = { x: 2, y: 4 };
+  if (ally) ally.position = { x: abilityId === 'altar' ? 1 : 2, y: 4 };
   enemies[0].position = abilityId === 'trample' ? { x: 2, y: 4 } : { x: 8, y: 4 };
   enemies[1].position = { x: 10, y: 6 };
   battle.currentStackId = actor.id;
@@ -65,5 +66,8 @@ export function combatAbilityFixtures(): CombatAbilityFixture[] {
     fixture('the-lure', 'the_lure', 'lanternAngler'),
     fixture('crossing', 'crossing', 'ferry', ['candleWisps']),
     fixture('trample', 'trample', 'aurochsHerd'),
+    fixture('blink-step', 'blink_step', 'marionette'),
+    fixture('altar', 'altar', 'larvalTide', ['tinSoldier']),
+    fixture('creature-caster', 'caster', 'boneChoir'),
   ];
 }

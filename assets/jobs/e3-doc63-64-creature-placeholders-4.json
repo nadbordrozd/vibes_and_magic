@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Issue 98f.18 owns native creature production and accepted provenance; issue 98f.12 stages distinct literal subjects without claiming bitmap coverage.",
+  "contact_sheet": "assets/jobs/e3-doc63-64-creature-placeholders-4-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:dwelling:tallyman",
+      "assets": [
+        "map-object:dwelling:tallyman"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-tallyman",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: narrow masked counting house with hooked tally rail; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981245
+    },
+    {
+      "id": "map-object:dwelling:lanternBearer",
+      "assets": [
+        "map-object:dwelling:lanternBearer"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-lantern-bearer",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: humble lantern cloister around one tall hooded lamp; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981246
+    },
+    {
+      "id": "map-object:dwelling:boneOrchard",
+      "assets": [
+        "map-object:dwelling:boneOrchard"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-bone-orchard",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: white jointed orchard trained across a bone arbor; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981247
+    },
+    {
+      "id": "map-object:dwelling:stitchOx",
+      "assets": [
+        "map-object:dwelling:stitchOx"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-stitch-ox",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: broad yoke shed straddling a luminous ground seam; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981248
+    },
+    {
+      "id": "map-object:dwelling:nineMouthedWell",
+      "assets": [
+        "map-object:dwelling:nineMouthedWell"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-nine-mouthed-well",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: thirteen-coped stone well with nine open spouts and four capped; one entrance; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981249
+    },
+    {
+      "id": "map-object:dwelling:kilnDrake",
+      "assets": [
+        "map-object:dwelling:kilnDrake"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-kiln-drake",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: brick walking kiln with chimney roost and clawed footings; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981250
+    },
+    {
+      "id": "map-object:dwelling:whistlingNan",
+      "assets": [
+        "map-object:dwelling:whistlingNan"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-whistling-nan",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: bent black-wicker gate with thorn roof and hanging whistle; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981251
+    },
+    {
+      "id": "map-object:dwelling:unbaptized",
+      "assets": [
+        "map-object:dwelling:unbaptized"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-unbaptized",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: dry stone font inside an unfinished ash-white chapel; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981252
+    },
+    {
+      "id": "map-object:dwelling:bellfounder",
+      "assets": [
+        "map-object:dwelling:bellfounder"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-bellfounder",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: quiet timber foundry with empty bell frame and paired hammers; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981253
+    }
+  ]
+}

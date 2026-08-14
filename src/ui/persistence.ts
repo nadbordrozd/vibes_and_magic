@@ -4,7 +4,9 @@ import type { GameMapRepository } from '../core/mapRepository';
 import { builtInMapRepository, builtInPortableMapDocuments } from '../content/maps/catalog';
 import { parseLocalMapReference } from '../core/mapReference';
 import { createGameMapRepository } from './mapRepository';
-import { UNITS } from '../content/units';
+import {
+  CREATURE_ASSET_REQUIREMENTS, NEUTRAL_CREATURE_ACQUISITION, UNITS,
+} from '../content/units';
 import { BUILDINGS, DWELLINGS } from '../content/buildings';
 import { SPELLS } from '../content/spells';
 import { FACTIONS } from '../content/factions';
@@ -29,6 +31,14 @@ import { createCrookedCrown } from '../content/maps/crookedCrown';
 import { createSixfoldTrial } from '../content/maps/sixfoldTrial';
 import { TERRAIN } from '../content/terrain';
 import { MAP_OBJECT_KINDS } from '../content/mapObjectRegistry';
+import { CONTENT_V2_HASH_INPUT } from '../content/v2/registries';
+import { V2_ACQUISITION_SITES } from '../content/acquisitionSites';
+import { KNACKS, KNACK_ASSET_REQUIREMENTS } from '../content/knacks';
+import { P1_RITE_CRAFT_SPELL_ASSET_REQUIREMENTS } from '../content/spells/p1RiteCraft';
+import { P1_GRAVE_WILD_SPELL_ASSET_REQUIREMENTS } from '../content/spells/p1GraveWild';
+import {
+  DOCS_60_67_SPELL_LEXICON_ASSET_REQUIREMENTS, SPELL_LEXICON,
+} from '../content/spellLexicon';
 
 const SAVE_KEY = 'border-marches.save.v4';
 const META_SUFFIX = '.meta';
@@ -52,10 +62,18 @@ function stableStringify(value: unknown): string {
 
 const PORTABLE_BUILT_IN_MAPS = builtInPortableMapDocuments();
 
+/** Last content hash before the docs 60–67 schema contract joined replay authority. */
+export const PRE_V2_CONTENT_HASH = '06c84a97' as const;
+
 export const CONTENT_HASH = hashText(stableStringify({
   UNITS, BUILDINGS, DWELLINGS, SPELLS, FACTIONS, ARTIFACTS, ITEMS, SKILLS, OMENS,
   HEROES, FACTION_HEROES, BARGAINS, BATTLE_TILE_TYPES, CONSTANTS, MARKETPLACE,
-  TERRAIN, MAP_OBJECT_KINDS,
+  TERRAIN, MAP_OBJECT_KINDS, CONTENT_V2_HASH_INPUT, V2_ACQUISITION_SITES,
+  KNACKS, KNACK_ASSET_REQUIREMENTS,
+  CREATURE_ASSET_REQUIREMENTS, NEUTRAL_CREATURE_ACQUISITION,
+  SPELL_LEXICON, P1_RITE_CRAFT_SPELL_ASSET_REQUIREMENTS,
+  P1_GRAVE_WILD_SPELL_ASSET_REQUIREMENTS,
+  DOCS_60_67_SPELL_LEXICON_ASSET_REQUIREMENTS,
   BATTLE_TILE_PRESENTATION, BUILDING_FLAVOR, MAP_OBJECT_FLAVOR, TERRAIN_PRESENTATION,
   maps: {
     borderMarches: createBorderMarches(1),

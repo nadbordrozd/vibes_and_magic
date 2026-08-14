@@ -11,9 +11,9 @@ type Props = {
 
 /** One manifest-backed bitmap component shared by every spell and secondary-skill surface. */
 export function ContentIcon(props: Props) {
-  const entry = props.kind === 'spell' ? spellIcon(props.id) : skillIcon(props.id);
   const name = props.kind === 'spell' ? SPELLS[props.id].name : SKILLS[props.id].name;
   const displaySize = props.large ? 64 : 32;
+  const entry = props.kind === 'spell' ? spellIcon(props.id) : skillIcon(props.id);
   return <img
     className={`content-icon ${props.kind}-icon ${props.className ?? ''}`}
     src={`/${entry.file}`}

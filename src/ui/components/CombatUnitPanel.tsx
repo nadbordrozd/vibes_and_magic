@@ -72,7 +72,7 @@ export function CombatUnitPanel({
             <span>Damage <b>{unit.damage[0]}–{unit.damage[1]}</b></span>
             <span>Attack <b>{unit.attack} unit + {shownHero?.attack ?? 0} hero</b></span>
             <span>Defense <b>{unit.defense} unit + {shownHero?.defense ?? 0} hero</b></span>
-            <span>Speed <b>{effectiveSpeed(shown)} now · {unit.speed} base</b></span>
+            <span>Speed <b>{effectiveSpeed(shown, battle)} now · {unit.speed} base</b></span>
             <span>
               <SpellGlossaryReference termId="morale" /> <b>{shown.morale}/{shown.meterThreshold ?? 100}</b>
             </span>
@@ -88,6 +88,10 @@ export function CombatUnitPanel({
               </i>)
               : <i>no special abilities</i>}
           </div>
+          {unit.caster && <p className="combat-faction-rule">
+            <b>Creature spell source</b>
+            <span>{unit.caster.repertoire.map((spellId) => SPELLS[spellId].name).join(', ')} · {unit.caster.charges} charge{unit.caster.charges === 1 ? '' : 's'} · fixed Spell Power {unit.caster.castPower}</span>
+          </p>}
           {shownHero && <p className="combat-faction-rule">
             <b>{FACTION_PASSIVES[shownHero.faction].name}</b>
             <span><SemanticSpellText>{FACTION_PASSIVES[shownHero.faction].description}</SemanticSpellText></span>

@@ -3,7 +3,8 @@ import type { MapObject } from '../core/types';
 export const MAP_OBJECT_KINDS = [
   'mine', 'pile', 'chest', 'shrine', 'item', 'rewardPickup', 'richVein', 'waystation', 'lock',
   'dwelling', 'tinkersCart', 'monastery', 'gloamingRing', 'storyteller', 'chrysalis',
-  'bridge', 'hedgeSchool', 'reliquaryCairn', 'tollGate', 'omenStone', 'crone',
+  'bridge', 'hedgeSchool', 'reliquaryCairn', 'stacks', 'wildShrine', 'reliquaryOfPages',
+  'tollGate', 'omenStone', 'crone',
   'barrowField', 'guardian', 'boat', 'manaSpring', 'flotsam', 'sealedCask',
   'castaway', 'messageBottle', 'whirlpool', 'shipwreck', 'drownedBell',
   'sirenRocks', 'lighthouse',

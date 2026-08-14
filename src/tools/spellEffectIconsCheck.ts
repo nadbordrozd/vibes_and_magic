@@ -70,7 +70,19 @@ try {
   errors.push(`provenance: ${error instanceof Error ? error.message : String(error)}`);
 }
 
+const v2Ids = new Set(['impact-damage', 'resurrection', 'stun', 'clone', 'mass',
+  'mind-control', 'damage-link', 'detonate']);
 const byId = new Map(selections.map((entry) => [entry.id, entry]));
+let v2Selections: Selection[] = [];
+try {
+  v2Selections = (JSON.parse(readFileSync(resolve(root,
+    'assets/provenance/docs-60-67-native-generation.json'), 'utf8')) as {
+    selections: Selection[];
+  }).selections.filter((entry) => entry.id.startsWith('spell-effect-icon:'));
+} catch (error) {
+  errors.push(`docs-60-67 provenance: ${error instanceof Error ? error.message : String(error)}`);
+}
+const v2ById = new Map(v2Selections.map((entry) => [entry.id, entry]));
 if (byId.size !== selections.length) errors.push('duplicate provenance ids');
 const jobRequests = new Map<string, {
   assets: string[]; output: string; final: string; prompt: string; literal_subject: string;
@@ -98,6 +110,23 @@ const sources = new Set<string>(); const sourceHashes = new Set<string>();
 const prompts = new Set<string>();
 for (const item of spellEffectIconWorklist()) {
   const id = item.id.replace('spell-effect-icon:', '') as keyof typeof SPELL_LEXICON;
+  if (v2Ids.has(id)) {
+    const manifest = SPELL_EFFECT_ICON_MANIFEST[id]; const record = v2ById.get(item.id);
+    if (!manifest || manifest.generator !== 'built-in-imagegen' || !record?.accepted) {
+      errors.push(`${item.id}: missing accepted docs-60-67 built-in asset`); continue;
+    }
+    try {
+      const bytes = readFileSync(resolve(root, 'public', manifest.file));
+      const audit = pngAudit(bytes);
+      if (audit.width !== 32 || audit.height !== 32 || !audit.transparent || !audit.opaque || audit.partial) {
+        errors.push(`${item.id}: final is not visible hard-alpha 32x32 RGBA`);
+      }
+      if (sha(bytes) !== record.final_sha256) errors.push(`${item.id}: final hash drift`);
+      finals.add(record.final); finalHashes.add(record.final_sha256);
+      sources.add(record.source); sourceHashes.add(record.source_sha256); prompts.add(record.prompt_sha256);
+    } catch (error) { errors.push(`${item.id}: final missing or unreadable`); }
+    continue;
+  }
   const manifest = SPELL_EFFECT_ICON_MANIFEST[id]; const record = byId.get(item.id);
   if (!manifest || manifest.generator !== 'built-in-imagegen') {
     errors.push(`${item.id}: missing built-in manifest entry`); continue;
@@ -150,9 +179,9 @@ for (const item of spellEffectIconWorklist()) {
 
 for (const [label, set] of [['final paths', finals], ['final hashes', finalHashes],
   ['source paths', sources], ['source hashes', sourceHashes], ['prompts', prompts]] as const) {
-  if (set.size !== 30) errors.push(`${label}: expected 30 unique values, found ${set.size}`);
+  if (set.size !== spellEffectIconWorklist().length) errors.push(`${label}: expected ${spellEffectIconWorklist().length} unique values, found ${set.size}`);
 }
-if (Object.keys(SPELL_EFFECT_ICON_MANIFEST).length !== 30 || byId.size !== 30) {
+if (Object.keys(SPELL_EFFECT_ICON_MANIFEST).length !== byId.size + v2ById.size) {
   errors.push('catalog/manifest/provenance coverage must be exactly 30');
 }
 const renderer = readFileSync(resolve(root, 'src/ui/components/SpellEffectIcon.tsx'), 'utf8');
@@ -160,7 +189,7 @@ if (/fallback(?:Src|Icon|Path)|onError/.test(renderer) || !renderer.includes('sp
   errors.push('shared renderer must be manifest-backed with no fallback path');
 }
 
-console.log(`Spell-effect icons: ${finalHashes.size}/30 unique hard-alpha finals · ${byId.size}/30 accepted records`);
+console.log(`Spell-effect icons: ${finalHashes.size}/${spellEffectIconWorklist().length} unique hard-alpha finals · ${byId.size + v2ById.size}/${spellEffectIconWorklist().length} accepted records`);
 if (errors.length) {
   console.error('\nSpell-effect icon validation failed:');
   errors.forEach((error) => console.error(`- ${error}`));

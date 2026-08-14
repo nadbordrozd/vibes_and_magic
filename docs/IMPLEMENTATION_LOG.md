@@ -6,6 +6,26 @@ next concrete work moved to Beads on 2026-08-05; use `bd prime`, `bd ready`, and
 New implementation checkpoints may still be recorded here when they preserve useful technical
 provenance, but this file is no longer the task tracker.
 
+## 2026-08-14 — Docs 60–67 deterministic release acceptance
+
+- Audited work orders 60–67 against S00–S09, the supersession rulings, executable catalogs,
+  handler registries, maps, saves, replay, assets, and browser surfaces. Updated S05, S06, S09, and
+  doc 61 status copy to the shipped 124-spell, 30-skill, 148-artifact, 50-item, 63-creature, six-
+  combat-Knack, and all-native release truth.
+- Fixed one product integration gap: generic combat targeting now renders the legal creature-caster
+  `spellId` choice (and the already-modeled school choice) as named, inspectable native-icon
+  controls. Updated stale review automation from the former tabbed dashboard and one-click spell
+  cards to the one-screen dashboard and selection-first stitched spellbook, and refreshed final
+  catalog/native counts.
+- Static release validation, production build, map lint, guardian calibration, browser smoke,
+  aggregate setup/save/service/targeting/outcome/UX/walkthrough acceptance, content-icon, Mage Guild
+  reveal, Sixfold Trial, spellbook, collectible, and hero-dashboard reviews pass. The authored
+  walkthrough completes 54 actions through day 6 with 30 screenshots.
+- Strict replay proof: content hash `03e209e7`; seed-424242 human/human two-turn state and replay both
+  hash to `97dc3c06`, with byte-identical state and the unchanged five-field save envelope. The only
+  full-suite failure is the approved `vibes_and_magic-xm5.1` seed-1/day-56 no-winner regression;
+  adventure Knacks remain explicitly deferred in `vibes_and_magic-0yv`.
+
 ## 2026-08-11 — Complete canonical item sprite family
 
 - Added all 37 canonical native item sprites from separate built-in image-generation calls, generic

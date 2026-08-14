@@ -6,7 +6,9 @@ import type {
 
 export interface AbilityHandler {
   id: AbilityId;
-  stage?: 'damage-routing' | 'turn-advance';
+  stage?: 'target-selection' | 'damage-computation' | 'damage-routing' | 'apply'
+    | 'death-triggers' | 'retaliation' | 'turn-advance' | 'turn-start'
+    | 'activated' | 'hero-cost';
   canRangedAttack?: (stack: BattleStack) => boolean;
   ignoresMovementBlockers?: () => boolean;
   attackMultiplier?: (stack: BattleStack) => number;
@@ -96,6 +98,66 @@ export const ABILITY_REGISTRY: Record<AbilityId, AbilityHandler> = {
   still_aboard: { id: 'still_aboard' },
   shellback: { id: 'shellback' },
   the_lure: { id: 'the_lure' },
+  hex_feeder: { id: 'hex_feeder', stage: 'damage-computation' },
+  counter_eater: { id: 'counter_eater', stage: 'turn-start' },
+  burn_conduit: { id: 'burn_conduit', stage: 'apply' },
+  bloomshare: { id: 'bloomshare', stage: 'turn-start' },
+  echoing: { id: 'echoing', stage: 'apply' },
+  spell_battery: { id: 'spell_battery', stage: 'hero-cost', targetPriority: 1.5 },
+  mana_leech: { id: 'mana_leech', stage: 'apply' },
+  spell_shrug: { id: 'spell_shrug', stage: 'damage-routing' },
+  spellbound: { id: 'spellbound', stage: 'target-selection' },
+  sniper: { id: 'sniper', stage: 'damage-computation' },
+  chain_shot: { id: 'chain_shot', stage: 'apply' },
+  first_strike: { id: 'first_strike', stage: 'retaliation' },
+  phalanx: { id: 'phalanx', stage: 'damage-routing', targetPriority: 1.5 },
+  unstable: { id: 'unstable', stage: 'death-triggers' },
+  soul_tithe: { id: 'soul_tithe', stage: 'death-triggers', targetPriority: 1.5 },
+  blink_step: { id: 'blink_step', stage: 'activated' },
+  altar: { id: 'altar', stage: 'activated' },
+  hedge_caster: { id: 'hedge_caster', stage: 'activated' },
+  ward_bearer: { id: 'ward_bearer', stage: 'target-selection', targetPriority: 1.5 },
+  siphon: { id: 'siphon', stage: 'apply', targetPriority: 1.5 },
+  caster: { id: 'caster', stage: 'activated', targetPriority: 1.5 },
+  warded_hide: { id: 'warded_hide', stage: 'damage-routing' },
+  low_magic_immune: { id: 'low_magic_immune', stage: 'target-selection' },
+  school_resistant: { id: 'school_resistant', stage: 'target-selection' },
+  unburnable: { id: 'unburnable', stage: 'apply' },
+  unchillable: { id: 'unchillable', stage: 'apply' },
+  unhexable: { id: 'unhexable', stage: 'apply' },
+  spell_ward: { id: 'spell_ward', stage: 'target-selection' },
+  spell_deflect: { id: 'spell_deflect', stage: 'target-selection' },
+  spell_frail: { id: 'spell_frail', stage: 'damage-routing' },
+  all_adjacent: { id: 'all_adjacent', stage: 'target-selection' },
+  breath: { id: 'breath', stage: 'target-selection' },
+  cleave: { id: 'cleave', stage: 'target-selection' },
+  line_strike: { id: 'line_strike', stage: 'target-selection' },
+  blast_shot: { id: 'blast_shot', stage: 'target-selection' },
+  arc_shot: { id: 'arc_shot', stage: 'target-selection' },
+  dread: { id: 'dread', stage: 'turn-start' },
+  hearth: { id: 'hearth', stage: 'turn-start' },
+  standard_bearer: { id: 'standard_bearer', stage: 'turn-start', targetPriority: 1.5 },
+  quench: { id: 'quench', stage: 'apply', targetPriority: 1.5 },
+  cornered: { id: 'cornered', stage: 'damage-computation' },
+  first_blood: { id: 'first_blood', stage: 'damage-computation' },
+  last_stand: { id: 'last_stand', stage: 'damage-routing' },
+  ambush: { id: 'ambush', stage: 'target-selection' },
+  burrow: { id: 'burrow', stage: 'activated' },
+  rear_guard: { id: 'rear_guard', stage: 'target-selection' },
+  wall_walker: { id: 'wall_walker', stage: 'target-selection' },
+  pathfinder: { id: 'pathfinder' },
+  beast_of_burden: { id: 'beast_of_burden' },
+  ley_touched: { id: 'ley_touched' },
+  tithe_bearer: { id: 'tithe_bearer' },
+  far_sighted: { id: 'far_sighted' },
+  carrion_sense: { id: 'carrion_sense' },
+  sea_legs: { id: 'sea_legs' },
+  mindless: { id: 'mindless', stage: 'turn-start' },
+  feral: { id: 'feral', stage: 'turn-start' },
+  hungry: { id: 'hungry' },
+  slow_witted: { id: 'slow_witted', stage: 'turn-start' },
+  brittle_bones: { id: 'brittle_bones', stage: 'damage-routing' },
+  unruly: { id: 'unruly', stage: 'target-selection' },
 };
 
 export function abilityHandlers(unitId: UnitId): AbilityHandler[] {
@@ -114,10 +176,13 @@ function abilitiesSuppressed(stack: BattleStack): boolean {
 
 export function stackAbilityHandlers(stack: BattleStack): AbilityHandler[] {
   if (abilitiesSuppressed(stack)) return [];
-  return [
+  const handlers = [
     ...abilityHandlers(stack.unitId),
     ...(stack.temporaryAbilities ?? []).map((abilityId) => ABILITY_REGISTRY[abilityId]),
   ];
+  return stack.effects.some((effect) => effect.spellId === 'rootTheSky'
+    && effect.id.includes(':grounded')) ? handlers.filter((handler) => handler.id !== 'flying')
+    : handlers;
 }
 
 export function battleAbilityHandlers(

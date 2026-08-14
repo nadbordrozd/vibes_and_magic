@@ -65,7 +65,7 @@ try {
       return box.left < 0 || box.right > document.documentElement.clientWidth;
     }).length,
   }));
-  if (sheetAudit.count !== 119 || sheetAudit.uniqueSources !== 119
+  if (sheetAudit.count !== 192 || sheetAudit.uniqueSources !== 192
       || sheetAudit.unloaded || sheetAudit.overflowing) {
     throw new Error(`Content icon sheet audit failed: ${JSON.stringify(sheetAudit)}`);
   }
@@ -94,21 +94,18 @@ try {
     button.click();
   });
   await page.waitForSelector('.hero-details-dialog');
-  await page.$$eval('.hero-details-tabs button', (buttons) => {
-    const button = buttons.find((candidate) => candidate.textContent?.trim() === 'Special skills');
-    if (!(button instanceof HTMLButtonElement)) throw new Error('Special skills tab missing');
-    button.click();
-  });
-  await page.waitForSelector('.hero-details-skills .skill-icon');
+  await page.$eval('[data-dashboard-region="secondary-skills"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  await page.waitForSelector('.hero-dashboard-skill-grid .skill-icon');
   const narrowAudit = await page.evaluate(() => ({
-    count: document.querySelectorAll('.hero-details-skills .skill-icon').length,
+    count: document.querySelectorAll('.hero-dashboard-skill-grid .skill-icon').length,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     dialogOverflow: (() => {
       const dialog = document.querySelector('.hero-details-dialog') as HTMLElement;
       return dialog.scrollWidth - dialog.clientWidth;
     })(),
   }));
-  if (narrowAudit.count !== 21 || narrowAudit.overflow > 0 || narrowAudit.dialogOverflow > 0) {
+  if (narrowAudit.count !== 30 || narrowAudit.overflow > 0 || narrowAudit.dialogOverflow > 0) {
     throw new Error(`Narrow skill icon audit failed: ${JSON.stringify(narrowAudit)}`);
   }
   await page.screenshot({ path: `${output}/narrow-hero-skills-390.png`, fullPage: true });

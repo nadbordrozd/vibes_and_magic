@@ -15,6 +15,7 @@ import {
   castleEntrance, guardianAggroTiles, guardiansCovering, objectEntranceTile,
   objectFootprint,
 } from '../../core/map/occupancy';
+import { heroVisibleToPlayer } from '../../core/map/visibility';
 import { skillRank } from '../../core/heroBehaviors';
 import { SKILLS } from '../../content/skills';
 import { RANGED_PICKUP_MOVE_COST } from '../../content/constants';
@@ -76,6 +77,9 @@ function objectTitle(object: MapObject): string {
   if (object.kind === 'bridge') return object.completed ? 'Completed Bridge' : 'Half-Built Bridge';
   if (object.kind === 'hedgeSchool') return 'Hedge School';
   if (object.kind === 'reliquaryCairn') return 'Reliquary Cairn';
+  if (object.kind === 'stacks') return 'The Stacks';
+  if (object.kind === 'wildShrine') return 'Wild Shrine';
+  if (object.kind === 'reliquaryOfPages') return 'Reliquary of Pages';
   if (object.kind === 'tollGate') return 'Toll Gate';
   if (object.kind === 'omenStone') return 'Omen Stone';
   if (object.kind === 'crone') return 'A Wayward Crone';
@@ -268,7 +272,8 @@ function MapObjectGlyph({
   const marks: Partial<Record<MapObject['kind'], string>> = {
     dwelling: '⌂', tinkersCart: '♧', monastery: '♩', gloamingRing: '○',
     storyteller: '♨', chrysalis: '◉', bridge: '═', hedgeSchool: '⌁',
-    reliquaryCairn: '◇', tollGate: '▥', omenStone: '☼', crone: '☾', barrowField: '†',
+    reliquaryCairn: '◇', stacks: '☷', wildShrine: '✾', reliquaryOfPages: '◈',
+    tollGate: '▥', omenStone: '☼', crone: '☾', barrowField: '†',
     boat: '⛵', manaSpring: '✦', flotsam: '▤', sealedCask: '▣', castaway: '♙',
     messageBottle: '!', whirlpool: '◌', shipwreck: '⌁', drownedBell: '♩',
     sirenRocks: '♪', lighthouse: '☼',
@@ -399,8 +404,8 @@ export function AdventureMap({
     || Boolean(hero && castle.owner === 'neutral'
       && hasEquippedArtifact(hero, 'crownHollowTown')));
   const visibleHeroes = Object.values(state.players).flatMap((mapPlayer) =>
-    mapPlayer.heroes.filter((mapHero) => mapHero.alive
-      && explored.has(`${mapHero.position.x},${mapHero.position.y}`)).map((mapHero) => ({
+    mapPlayer.heroes.filter((mapHero) =>
+      heroVisibleToPlayer(state.activePlayer, mapHero, explored)).map((mapHero) => ({
       mapHero, mapPlayer,
       position: movement && mapHero.id === hero?.id
         ? movement.path[movement.index] : mapHero.position,
@@ -704,6 +709,10 @@ export function AdventureMap({
           if (item.kind === 'castle') {
             const { castle } = item;
             const entrance = castleEntrance(castle);
+            const censusCity = Boolean(hero && castle.owner !== 'neutral'
+              && castle.owner !== hero.owner
+              && state.players[hero.owner].adventureEffects.censusUntilDay >= state.day
+              && state.players[hero.owner].explored.includes(`${castle.position.x},${castle.position.y}`));
             return <g className="map-overlay-glyph castle-map-object" key={item.key}
               data-inspect-kind="castle" data-inspect-id={castle.id}
               onClick={(event) => { event.stopPropagation(); onTile(entrance); }}
@@ -712,7 +721,8 @@ export function AdventureMap({
                 ? 'Neutral' : state.players[castle.owner].name}${castle.flavor ? ` · ${castle.flavor}` : ''}${
                 hero && castle.owner === 'neutral' && hasEquippedArtifact(hero, 'crownHollowTown')
                   ? ` · garrison ${castle.garrison.flatMap((stack) => stack ? [stack.count] : []).join('/') || 'empty'}`
-                  : ''}`}</title>
+                  : censusCity ? ` · garrison ${castle.garrison.flatMap((stack) => stack
+                    ? [`${stack.count} ${UNITS[stack.unitId].name}`] : []).join(', ') || 'empty'}` : ''}`}</title>
               <PixelSprite id={castleSpriteId(castle)} x={castle.position.x * TILE}
                 y={castle.position.y * TILE} className="castle-pixel" fallback={<g
                   transform={`translate(${castle.position.x * TILE + 80} ${castle.position.y * TILE + 32})`}>
@@ -734,6 +744,25 @@ export function AdventureMap({
           const selected = mapHero.id === hero?.id;
           const friendlyTarget = Boolean(hero && !selected && mapHero.owner === hero.owner);
           const enemyTarget = Boolean(hero && mapHero.owner !== hero.owner);
+          const census = Boolean(enemyTarget && hero
+            && state.players[hero.owner].adventureEffects.censusUntilDay >= state.day
+            && state.players[hero.owner].explored.includes(`${mapHero.position.x},${mapHero.position.y}`));
+          const censusExtended = Boolean(census && hero
+            && state.players[hero.owner].adventureEffects.censusShowsMovement);
+          const equippedArtifactText = Object.values(mapHero.artifacts.equipment)
+            .flatMap((artifact) => artifact ? [ARTIFACTS[artifact.id].name] : [])
+            .join(', ') || 'none';
+          const extendedIntel = censusExtended
+            ? ` · mana ${mapHero.mana} · spells ${
+              mapHero.knownSpells.map((id) => SPELLS[id].name).join(', ') || 'none'
+            } · artifacts ${equippedArtifactText}`
+            : hero?.skills.scouting === 3 || (hero?.skills.beguiler ?? 0) >= 2
+              ? ` · mana ${mapHero.mana} · spells ${
+                mapHero.knownSpells.map((id) => SPELLS[id].name).join(', ') || 'none'
+              }${hero?.skills.scouting === 3 ? ` · items ${
+                mapHero.inventory.filter(Boolean).map(itemName).join(', ') || 'none'
+              }` : ''} · artifacts ${equippedArtifactText}`
+              : '';
           const intent = friendlyTarget ? 'exchange' : enemyTarget ? 'attack' : 'select';
           const accessibleLabel = friendlyTarget
             ? `Exchange with ${mapHero.name}. Move to a safe adjacent tile first if needed.`
@@ -772,21 +801,10 @@ export function AdventureMap({
               transform: `translate(${position.x * TILE + HALF_TILE}px, ${position.y * TILE + HALF_TILE}px)`,
             }}>
             <title>{`${mapHero.name} · ${mapPlayer.name}${
-              mapPlayer.id !== state.activePlayer && (hero?.skills.scouting ?? 0) >= 2
-                ? ` · ${mapHero.army.filter(Boolean).map((stack) =>
-                  `${stack!.count} ${UNITS[stack!.unitId].name}`).join(', ')}${
-                  hero?.skills.scouting === 3
-                    ? ` · mana ${mapHero.mana} · spells ${
-                      mapHero.knownSpells.map((id) => SPELLS[id].name).join(', ') || 'none'
-                    } · items ${
-                      mapHero.inventory.filter(Boolean).map(itemName).join(', ') || 'none'
-                    } · artifacts ${
-                      Object.values(mapHero.artifacts.equipment)
-                        .flatMap((artifact) => artifact ? [ARTIFACTS[artifact.id].name] : [])
-                        .join(', ') || 'none'
-                    }`
-                    : ''
-                }`
+              mapPlayer.id !== state.activePlayer && ((hero?.skills.scouting ?? 0) >= 2
+                || (hero?.skills.beguiler ?? 0) >= 2 || census)
+                ? ` · level ${mapHero.level} · ${mapHero.army.filter(Boolean).map((stack) =>
+                  `${stack!.count} ${UNITS[stack!.unitId].name}`).join(', ')}${extendedIntel}`
                 : ''
             }`}</title>
             {selected && <>

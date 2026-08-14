@@ -2,6 +2,9 @@ import { readFileSync } from 'node:fs';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { SPELLS, SPELL_IDS } from '../../content/spells';
+import { P1_RITE_CRAFT_SPELL_IDS } from '../../content/spells/p1RiteCraft';
+import { P1_GRAVE_WILD_SPELL_IDS } from '../../content/spells/p1GraveWild';
+import { P2_NEW_SPELL_IDS } from '../../content/spells/p2';
 import {
   SPELL_SCHOOL_NAMES, SPELL_SCHOOL_ORDER,
 } from '../../content/spellPresentation';
@@ -57,9 +60,13 @@ function genericEntries(): SpellbookEntry[] {
 }
 
 describe('shared stitched spellbook contract', () => {
-  it('audits all 68 catalog entries, icons, and concrete Standard/Upgraded copy', () => {
-    expect(SPELL_IDS).toHaveLength(68);
-    const iconFiles = SPELL_IDS.map((id) =>
+  it('audits all 124 catalog entries, icon dispositions, and concrete Standard/Upgraded copy', () => {
+    expect(SPELL_IDS).toHaveLength(124);
+    const nativeIds = SPELL_IDS.filter((id) =>
+      !(P1_RITE_CRAFT_SPELL_IDS as readonly string[]).includes(id)
+      && !(P1_GRAVE_WILD_SPELL_IDS as readonly string[]).includes(id)
+      && !(P2_NEW_SPELL_IDS as readonly string[]).includes(id));
+    const iconFiles = nativeIds.map((id) =>
       `public/assets/icons/spells/${id}.png`);
     expect(new Set(iconFiles).size).toBe(68);
     for (const id of SPELL_IDS) {
@@ -67,13 +74,12 @@ describe('shared stitched spellbook contract', () => {
       expect(spell.name.trim(), id).not.toBe('');
       expect(spell.base.trim(), `${id} Standard`).not.toBe('');
       expect(spell.plus.trim(), `${id} Upgraded`).not.toBe('');
-      if (['standardOfDawn', 'unmake', 'standingMirror', 'shedSkin', 'hedgerowMarch'].includes(id)) {
-        expect(spell.plus, `${id} resolver-identical versions`).toBe(spell.base);
-      } else {
-        expect(spell.plus, `${id} mechanical delta`).not.toBe(spell.base);
-      }
+      expect(spell.plus, `${id} mechanical delta`).not.toBe(spell.base);
       expect(spell.plus, `${id} obsolete wording`).not.toMatch(/(?:\+|base|plus|current) face/i);
-      expect(readFileSync(iconFiles[SPELL_IDS.indexOf(id)]).byteLength, `${id} icon`).toBeGreaterThan(0);
+      if (nativeIds.includes(id)) {
+        expect(readFileSync(`public/assets/icons/spells/${id}.png`).byteLength, `${id} icon`)
+          .toBeGreaterThan(0);
+      }
     }
   });
 
@@ -83,7 +89,9 @@ describe('shared stitched spellbook contract', () => {
     expect(ordered.map((entry) => entry.id)).toEqual(SPELL_IDS);
     for (const school of SPELL_SCHOOL_ORDER) {
       const expected = SPELL_IDS.filter((id) => SPELLS[id].school === school);
-      expect(expected, SPELL_SCHOOL_NAMES[school]).toHaveLength(17);
+      expect(expected, SPELL_SCHOOL_NAMES[school]).toHaveLength(
+        31,
+      );
       expect(ordered.filter((entry) => SPELLS[entry.id].school === school)
         .map((entry) => entry.id)).toEqual(expected);
     }
@@ -113,14 +121,14 @@ describe('shared stitched spellbook contract', () => {
   it('keeps all learned spells in both adapters with exact disabled reasons', () => {
     const state = gameWithEverySpell();
     const adventure = adventureSpellbookEntries(state);
-    expect(adventure).toHaveLength(68);
+    expect(adventure).toHaveLength(124);
     expect(adventure.find((entry) => entry.id === 'rally')?.disabledReason)
       .toBe('Combat-only spell. Cast it during a battle.');
     expect(adventure.find((entry) => entry.id === 'beacon')?.movementCost).toBe('300 movement');
 
     const battle = battleWithEverySpell();
     const combat = combatSpellbookEntries(battle, 'attacker');
-    expect(combat).toHaveLength(68);
+    expect(combat).toHaveLength(124);
     expect(combat.find((entry) => entry.id === 'beacon')?.disabledReason)
       .toBe('Adventure-only spell. Cast it from the adventure map.');
     expect(combat.find((entry) => entry.id === 'rally')?.upgrade)
@@ -139,7 +147,7 @@ describe('shared stitched spellbook contract', () => {
     const adventure = renderToStaticMarkup(<AdventureSpellbook state={state}
       onClose={() => undefined} onCast={() => { throw new Error('must select first'); }} />);
     expect(adventure).toContain('stitched-spellbook');
-    expect(adventure).toContain('17 learned');
+    expect(adventure.match(/31 learned/g)).toHaveLength(4);
     expect(JSON.stringify(state)).toBe(before);
 
     const battle = battleWithEverySpell();

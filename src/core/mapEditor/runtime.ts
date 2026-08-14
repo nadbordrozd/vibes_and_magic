@@ -1,9 +1,9 @@
 import type { GuardianReward, MapObject, Resources, TerrainTile } from '../types';
 import type { GameMap, ItemInstance } from '../types';
-import { emptyArmy, makeArmy } from '../army';
+import { emptyArmy, heroArmyCapacity, makeArmy } from '../army';
 import { createInitialCastle, createInitialHero } from '../game/setup';
 import { CITY_ENTRANCE, CITY_FOOTPRINT } from '../map/occupancy';
-import { logisticsRate } from '../heroBehaviors';
+import { logisticsRate, maximumMana } from '../heroBehaviors';
 import { HERO_MOVE_POINTS } from '../../content/constants';
 import { cloneEditorMapDocument } from './codec';
 import { hashEditorMapDocument } from './codec';
@@ -37,9 +37,11 @@ function runtimeDefaults(kind: EditorMapObject['kind']): JsonObject {
     case 'warmTable': case 'coldSpring': case 'idolOfSomebody': case 'wishingWell':
       return { visitedWeek: {} };
     case 'bridge': return { completed: false };
+    case 'reliquaryCairn': return { tomeClaimed: false };
     case 'hedgeSchool': case 'omenStone': case 'drownedBell': case 'sparringStone':
     case 'listeningStones': case 'longDraught': case 'grinningIdol':
-    case 'treeSecondThoughts': return { visitedBy: [] };
+    case 'treeSecondThoughts': case 'stacks': case 'wildShrine': return { visitedBy: [] };
+    case 'reliquaryOfPages': return { claimed: false };
     case 'tollGate': return { paidBy: [], cleared: false };
     case 'boat': return { owner: null, occupiedBy: null };
     case 'sirenRocks': return { cleared: false, approachedBy: [] };
@@ -202,17 +204,17 @@ export function convertEditorMapDocument(
   });
   const heroes = document.heroes.map((authored) => {
     const hero = createInitialHero(
-      authored.owner, authored.faction, authored.definitionId, authored.position,
+      authored.owner, authored.faction, authored.definitionId, authored.position, seed,
     );
     hero.id = authored.id;
-    hero.army = makeArmy(authored.army);
     if (authored.level !== undefined) hero.level = authored.level;
     if (authored.xp !== undefined) hero.xp = authored.xp;
     if (authored.stats) Object.assign(hero, authored.stats);
     if (authored.skills) hero.skills = { ...authored.skills };
+    hero.army = makeArmy(authored.army, heroArmyCapacity(hero));
     if (authored.knownSpells) hero.knownSpells = [...authored.knownSpells];
     if (authored.upgradedSpells) hero.upgradedSpells = [...authored.upgradedSpells];
-    hero.mana = hero.knowledge * 10;
+    hero.mana = maximumMana(hero);
     hero.movement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero)));
     return hero;
   });

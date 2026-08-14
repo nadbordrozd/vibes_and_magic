@@ -40,6 +40,7 @@ export interface DamageContext {
   rollPosition?: 'luck' | 'minimum' | 'maximum';
   abilityMultiplier?: number;
   ignoreAdjacentRangedPenalty?: boolean;
+  ignoreLongRangePenalty?: boolean;
 }
 
 export function computeDamage(context: DamageContext): number {
@@ -57,7 +58,8 @@ export function computeDamage(context: DamageContext): number {
     * attackDefenseMultiplier(attack, defense);
   damage *= context.abilityMultiplier ?? 1;
   if (context.ranged && ((context.adjacentEnemy && !context.ignoreAdjacentRangedPenalty)
-      || stackDistance(context.attacker, context.defender) > 7)) {
+      || (stackDistance(context.attacker, context.defender) > 7
+        && !context.ignoreLongRangePenalty))) {
     damage *= 0.5;
   }
   if (context.ranged && context.wallsPenalty) damage *= 0.7;

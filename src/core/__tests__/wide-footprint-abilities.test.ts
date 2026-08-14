@@ -51,10 +51,11 @@ describe('wide-footprint ability audit', () => {
 
   it('does not continue a skim after retaliation kills the cavalry', () => {
     const state = battle(
-      [{ unitId: 'dragonflyCavalry', count: 1 }],
+      [{ unitId: 'yeoman', count: 1 }],
       [{ unitId: 'woodenColossus', count: 10 }, { unitId: 'longbowman', count: 20 }],
     );
     const actor = state.stacks[0];
+    actor.temporaryAbilities = ['skim'];
     const first = state.stacks[1];
     const second = state.stacks[2];
     actor.position = { x: 2, y: 4 };

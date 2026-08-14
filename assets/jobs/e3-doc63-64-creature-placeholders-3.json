@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Issue 98f.18 owns native creature production and accepted provenance; issue 98f.12 stages distinct literal subjects without claiming bitmap coverage.",
+  "contact_sheet": "assets/jobs/e3-doc63-64-creature-placeholders-3-candidates.html",
+  "requests": [
+    {
+      "id": "guardian-unit:stitchOx",
+      "assets": [
+        "guardian-unit:stitchOx"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-stitch-ox",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: massive patched ox with luminous seam and yoke; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981228
+    },
+    {
+      "id": "guardian-unit:nineMouthedWell",
+      "assets": [
+        "guardian-unit:nineMouthedWell"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-nine-mouthed-well",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: walking stone well with nine carved mouths; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981229
+    },
+    {
+      "id": "guardian-unit:kilnDrake",
+      "assets": [
+        "guardian-unit:kilnDrake"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-kiln-drake",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: brick-red winged drake with chimney back; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981230
+    },
+    {
+      "id": "guardian-unit:whistlingNan",
+      "assets": [
+        "guardian-unit:whistlingNan"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-whistling-nan",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: bent hedge-witch with shawl and thorn staff; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981231
+    },
+    {
+      "id": "guardian-unit:unbaptized",
+      "assets": [
+        "guardian-unit:unbaptized"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-unbaptized",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: broad clay penitent with empty stone font; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981232
+    },
+    {
+      "id": "guardian-unit:bellfounder",
+      "assets": [
+        "guardian-unit:bellfounder"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-bellfounder",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: tonsured monk with paired hammers and bell frame; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981233
+    },
+    {
+      "id": "map-object:dwelling:seamMoth",
+      "assets": [
+        "map-object:dwelling:seamMoth"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-seam-moth",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: split moonlit cocoon hung across a stitched standing stone; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981241
+    },
+    {
+      "id": "map-object:dwelling:chalkWight",
+      "assets": [
+        "map-object:dwelling:chalkWight"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-chalk-wight",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: low chalk verge and white gate whose boundary line does not close; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981242
+    },
+    {
+      "id": "map-object:dwelling:emberToad",
+      "assets": [
+        "map-object:dwelling:emberToad"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-ember-toad",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: warm black-stone pool with one kiln-orange culvert; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981243
+    },
+    {
+      "id": "map-object:dwelling:glassHound",
+      "assets": [
+        "map-object:dwelling:glassHound"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/dwelling-glass-hound",
+      "prompt": "Native 32x48 transparent high-oblique field dwelling: plum masque kennel with silver-glass roof and many collars; one doorway; no unit figure UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981244
+    }
+  ]
+}

@@ -5,7 +5,8 @@ import {
   SIREN_LISTEN_STRENGTH_RATIO,
 } from '../../content/constants';
 import {
-  armyPower, makeArmy, unitStrength,
+  abilityStrengthMultiplier, armyPower, makeArmy, STRENGTH_ABILITY_ADJUSTMENTS,
+  STRENGTH_ABILITY_MULTIPLIER_MAX, STRENGTH_ABILITY_MULTIPLIER_MIN, unitStrength,
 } from '../army';
 import { createGame } from '../game';
 import { chooseBargain } from '../game/bargains';
@@ -47,6 +48,53 @@ describe('guardian and army strength rating', () => {
     expect(unitStrength('hobbyKnight')).toBeGreaterThan(unitStrength('longbowman'));
     expect(unitStrength('thunderbird')).toBeGreaterThan(unitStrength('hullTurtle'));
     expect(unitStrength('siegeWall')).toBeGreaterThan(0);
+  });
+
+  it('contains exactly the authorized stable-direction ability adjustments', () => {
+    expect(STRENGTH_ABILITY_ADJUSTMENTS).toEqual({
+      ranged: 0.15,
+      flying: 0.05,
+      no_retaliation: 0.08,
+      soft_body: 0.06,
+      still_on_watch: 0.08,
+      full_heal: 0.25,
+      melee_reflect: 0.25,
+      immobile: -0.15,
+      sniper: 0.08,
+      first_strike: 0.10,
+      phalanx: 0.06,
+      spell_shrug: 0.05,
+      all_adjacent: 0.20,
+      breath: 0.12,
+      line_strike: 0.10,
+      cleave: 0.08,
+      blast_shot: 0.12,
+      arc_shot: 0.10,
+      warded_hide: 0.06,
+      low_magic_immune: 0.08,
+      spellbound: 0.05,
+      caster: 0.10,
+      spell_frail: -0.06,
+      slow_witted: -0.10,
+      hungry: -0.05,
+      mindless: -0.04,
+      brittle_bones: -0.06,
+    });
+    for (const excluded of [
+      'hex_feeder', 'counter_eater', 'burn_conduit', 'bloomshare', 'echoing',
+      'spell_battery', 'mana_leech', 'chain_shot', 'unstable', 'soul_tithe',
+      'blink_step', 'altar', 'ward_bearer', 'siphon', 'school_resistant', 'spell_ward',
+      'spell_deflect', 'unburnable', 'unchillable', 'unhexable', 'cornered', 'ley_touched',
+    ] as const) expect(STRENGTH_ABILITY_ADJUSTMENTS[excluded], excluded).toBeUndefined();
+  });
+
+  it('retains the combined ability multiplier clamp at 0.85–1.35', () => {
+    expect(STRENGTH_ABILITY_MULTIPLIER_MIN).toBe(0.85);
+    expect(STRENGTH_ABILITY_MULTIPLIER_MAX).toBe(1.35);
+    expect(abilityStrengthMultiplier(['immobile', 'slow_witted', 'spell_frail']))
+      .toBe(0.85);
+    expect(abilityStrengthMultiplier(['full_heal', 'melee_reflect', 'all_adjacent']))
+      .toBe(1.35);
   });
 
   it('pins the deliberately recalibrated AI and Siren safety margins', () => {

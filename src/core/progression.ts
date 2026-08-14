@@ -2,10 +2,12 @@ import { LEVEL_THRESHOLD } from '../content/constants';
 import { FACTIONS } from '../content/factions';
 import { HEROES } from '../content/heroes';
 import { SKILLS, SKILL_IDS, skillWeight } from '../content/skills';
+import { SPELLS } from '../content/spells';
 import type {
   Hero, LevelChoice, PrimaryStat, SecondarySkillId,
 } from './types';
 import { nextRandom } from './rng';
+import { maximumDebtSlots } from './artifacts';
 
 const STATS: PrimaryStat[] = ['attack', 'defense', 'spellPower', 'knowledge'];
 export const MAX_SECONDARY_SKILLS = 6;
@@ -16,6 +18,14 @@ export function levelThreshold(level: number): number {
 
 export function needsLevel(hero: Hero): boolean {
   return hero.xp >= levelThreshold(hero.level + 1);
+}
+
+export function grimoirePool(hero: Hero, resultingLevel = hero.level + 1) {
+  const schools = new Set(hero.knownSpells.map((id) => SPELLS[id].school));
+  const tierCap = Math.min(5, Math.ceil(resultingLevel / 3));
+  return Object.values(SPELLS).filter((spell) => schools.has(spell.school)
+    && spell.tier! <= tierCap && spell.acquisition?.guild
+    && !hero.knownSpells.includes(spell.id)).sort((a, b) => a.id.localeCompare(b.id));
 }
 
 export function drawLevelOptions(
@@ -29,11 +39,19 @@ export function drawLevelOptions(
     ...STATS,
     ...SKILL_IDS.filter((skillId) => {
       const rank = hero.skills[skillId] ?? 0;
-      return rank < 3 && (rank > 0 || distinctSkills < MAX_SECONDARY_SKILLS);
+      const gate = SKILLS[skillId].offerGate?.minimumHeroLevel ?? 1;
+      return rank < 3 && (rank > 0 || (hero.level >= gate
+        && distinctSkills < MAX_SECONDARY_SKILLS));
     }),
     ...(hero.level >= 4 && hero.knownSpells.some((id) =>
       !hero.upgradedSpells.includes(id)) ? ['inscribe' as const] : []),
-    ...(hero.faction === 'hagwood' && hero.level >= 3 && hero.debts.length < 2
+    ...(hero.level >= 6 && hero.knownSpells.some((id) => {
+      const mana = SPELLS[id].mana;
+      return mana !== 'X' && Math.max(1, mana - (hero.spellManaReductions[id] ?? 0)) > 1;
+    }) ? ['adept' as const] : []),
+    ...(hero.level >= 6 && grimoirePool(hero).length > 0 ? ['grimoire' as const] : []),
+    ...(hero.faction === 'hagwood' && hero.level >= 3
+      && hero.debts.length < maximumDebtSlots(hero)
       ? ['bargain' as const] : []),
   ];
   const result: LevelChoice[] = [];
@@ -75,6 +93,7 @@ function isPrimary(option: LevelChoice): option is PrimaryStat {
 
 function optionWeight(hero: Hero, option: LevelChoice): number {
   if (option === 'inscribe') return 10;
+  if (option === 'adept' || option === 'grimoire') return 2;
   if (option === 'bargain') return 6;
   if (isPrimary(option)) return FACTIONS[hero.faction].classWeights[option] / 2;
   return skillWeight(option, HEROES[hero.definitionId].heroClass);
@@ -88,6 +107,7 @@ function aiOptionScore(hero: Hero, option: LevelChoice): number {
   }
   if (isPrimary(option)) return FACTIONS[hero.faction].classWeights[option];
   if (option === 'inscribe') return 10;
+  if (option === 'adept' || option === 'grimoire') return 20;
   if (option === 'bargain') return 25;
   return optionWeight(hero, option as SecondarySkillId);
 }

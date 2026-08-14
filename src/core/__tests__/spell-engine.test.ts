@@ -6,11 +6,13 @@ import {
 } from '../combat/battle';
 import { runAttackPipeline } from '../combat/pipeline';
 import {
-  addCounter, addTimedEffect, beginStackTurn, endStackTurn,
+  addCounter, addSpellCounter, addTimedEffect, beginStackTurn, endStackTurn,
   scaledCounter, scaledDuration, scaledPercent,
 } from '../combat/magicEffects';
-import { castSpell } from '../combat/spells';
+import { castSpell, legalSpellCasts } from '../combat/spells';
+import { P2_SPELL_AUDIT_IDS } from '../../content/spells/p2';
 import { createBattleTile, placeBattleTile } from '../combat/tiles';
+import { applyEffectTwister } from '../combat/twisters';
 import { createGame } from '../game';
 import { recoverSpareParts } from '../game/outcomes';
 import type {
@@ -55,10 +57,17 @@ function preparedCast(id: SpellId, upgraded: boolean): [BattleState, Cast] {
   const action: Cast = { type: 'BATTLE_CAST', spellId: id, targetId: enemy.id };
   if (['rally', 'blessing', 'sanctuary', 'oathOfIron', 'consecrate',
     'ward', 'quicksilver', 'mournersVeil', 'remembrance', 'clarion',
-    'bloom', 'shedSkin', 'hourglassCrack', 'loyalUntoDeath'].includes(id)) {
+    'bloom', 'shedSkin', 'hourglassCrack', 'loyalUntoDeath', 'steadyHands',
+    'secondWind', 'reprise', 'rivet', 'whetstone', 'shrapnel', 'clockworkDouble',
+    'overclock'].includes(id)) {
     action.targetId = ally.id;
   }
   if (id === 'rally') action.secondaryTargetId = ally2.id;
+  if (id === 'steadyHands' && upgraded) action.secondaryTargetId = ally2.id;
+  if (id === 'secondWind') {
+    state.initialCounts[ally.id] = 10;
+    ally.count = 1;
+  }
   if (id === 'amplify') {
     addCounter(enemy, 'hex', 2);
     action.effectId = `counter:${enemy.id}:hex`;
@@ -76,6 +85,7 @@ function preparedCast(id: SpellId, upgraded: boolean): [BattleState, Cast] {
   if (id === 'unmake') {
     addCounter(enemy, 'burn', 3);
     action.effectId = `counter:${enemy.id}:burn`;
+    if (upgraded) action.targetId = ally.id;
   }
   if (id === 'overgrow') {
     addCounter(enemy, 'hex', 2);
@@ -83,6 +93,12 @@ function preparedCast(id: SpellId, upgraded: boolean): [BattleState, Cast] {
   }
   if (id === 'wallOfTheMaker') {
     action.positions = [{ x: 5, y: 1 }, { x: 5, y: 3 }, { x: 5, y: 4 }];
+  }
+  if (id === 'detonate') addCounter(enemy, 'burn', 3);
+  if (id === 'clockworkDouble') action.positions = [{ x: 3, y: 3 }];
+  if (id === 'blink') {
+    action.positions = [{ x: 8, y: 3 }];
+    if (upgraded) action.actImmediately = true;
   }
   if (id === 'thicket') {
     action.positions = [{ x: 4, y: 1 }, { x: 4, y: 3 }, { x: 4, y: 5 }];
@@ -100,6 +116,30 @@ function preparedCast(id: SpellId, upgraded: boolean): [BattleState, Cast] {
     state.initialCounts[ally.id] = 10;
     ally.count = 5;
   }
+  if (['tithe', 'graveBargain', 'sapAndSinew'].includes(id)) action.targetId = ally.id;
+  if (id === 'puppetStrings') {
+    enemy.count = 1; enemy.topHp = 1;
+  }
+  if (id === 'shedSkin') {
+    const burnId = `counter:${ally.id}:burn`;
+    action.targetId = ally.id; action.effectId = burnId;
+    if (upgraded) {
+      enemy.position = { x: ally.position.x + 1, y: ally.position.y };
+      action.secondaryTargetId = enemy.id;
+    }
+  }
+  const canonicalP1 = [
+    'tithe', 'yoke', 'graveBargain', 'puppetStrings', 'bramblelash', 'wildcall',
+    'sapAndSinew', 'verdantSurge', 'theTurningYear', 'shedSkin', 'hedgerowMarch',
+  ].includes(id) || (P2_SPELL_AUDIT_IDS as readonly SpellId[]).includes(id)
+    ? legalSpellCasts(state).find((candidate) => candidate.spellId === id) : undefined;
+  if (canonicalP1) {
+    delete action.targetId; delete action.secondaryTargetId; delete action.effectId;
+    delete action.counterId; delete action.replaceEnchantment; delete action.positions;
+    Object.assign(action, canonicalP1);
+  }
+  if (id === 'bramblelash' && !upgraded) action.positions = [{ x: enemy.position.x - 1, y: enemy.position.y }];
+  if (id === 'wildcall') action.positions = [{ x: 5, y: 4 }];
   return [state, action];
 }
 
@@ -108,6 +148,17 @@ describe('spell engine', () => {
     expect(scaledDuration(2, 12)).toBe(4);
     expect(scaledCounter(3, 10)).toBe(5);
     expect(scaledPercent(8, 5)).toBe(10);
+  });
+
+  it('scales spell counters by default and permits an explicit catalog opt-out', () => {
+    const state = magicBattle();
+    const stack = state.stacks.find((candidate) => candidate.side === 'defender')!;
+    state.attackerHero.spellPower = 10;
+    addSpellCounter(state, stack, 'burn', 3, 'attacker');
+    expect(stack.counters.burn).toBe(5);
+    stack.counters.burn = 0;
+    addSpellCounter(state, stack, 'burn', 3, 'attacker', { scalesWithSpellPower: false });
+    expect(stack.counters.burn).toBe(3);
   });
 
   it('ticks and uniformly decays counters at stack turn boundaries', () => {
@@ -185,6 +236,44 @@ describe('spell engine', () => {
     });
     expect(enemy.counters.bloom).toBe(0);
     expect(enemy.counters.hex).toBe(8);
+  });
+
+  it('does not apply Spell Power a second time when twisters move existing counter magnitude', () => {
+    const sour = magicBattle();
+    sour.attackerHero.spellPower = 50;
+    const sourSource = sour.stacks.find((stack) => stack.side === 'defender')!;
+    sourSource.counters.bloom = 3;
+    applyEffectTwister(sour, 'attacker', {
+      type: 'BATTLE_CAST', spellId: 'sour',
+      effectId: `counter:${sourSource.id}:bloom`,
+    }, 'sour', false);
+    expect(sourSource.counters).toMatchObject({ bloom: 0, hex: 3 });
+
+    const reflect = magicBattle();
+    reflect.attackerHero.spellPower = 50;
+    const reflectSource = reflect.stacks.find((stack) => stack.side === 'defender')!;
+    const reflectTarget = reflect.stacks.find((stack) => stack.side === 'attacker')!;
+    reflectSource.counters.chill = 4;
+    applyEffectTwister(reflect, 'attacker', {
+      type: 'BATTLE_CAST', spellId: 'reflect', targetId: reflectTarget.id,
+      effectId: `counter:${reflectSource.id}:chill`,
+    }, 'reflect', false);
+    expect(reflectTarget.counters.chill).toBe(4);
+
+    const overgrow = magicBattle();
+    overgrow.attackerHero.spellPower = 50;
+    const overgrowSource = overgrow.stacks.find((stack) => stack.side === 'attacker')!;
+    const overgrowTarget = overgrow.stacks.find((stack) =>
+      stack.side === 'attacker' && stack.id !== overgrowSource.id)!;
+    overgrowTarget.position = {
+      x: overgrowSource.position.x + 1, y: overgrowSource.position.y,
+    };
+    overgrowSource.counters.hex = 2;
+    applyEffectTwister(overgrow, 'attacker', {
+      type: 'BATTLE_CAST', spellId: 'overgrow',
+      effectId: `counter:${overgrowSource.id}:hex`,
+    }, 'overgrow', false);
+    expect(overgrowTarget.counters.hex).toBe(2);
   });
 
   it('Sour+ destroys Forgefire and Hexes every enemy stack', () => {

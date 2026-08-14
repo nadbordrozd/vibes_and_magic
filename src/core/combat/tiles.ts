@@ -9,7 +9,12 @@ import type {
 } from '../types';
 import { isAdjacent } from './hex';
 import { stackHexes } from './footprint';
-import { addBattleCounter, grantMeter } from './magicEffects';
+import { addBattleCounter, addSpellCounter, grantMeter } from './magicEffects';
+import { stackUnitHp } from './damage';
+import { occupiedByStacks, footprintFits } from './footprint';
+import { applyRoutedCombatDamage } from './damageRouting';
+import { skillRank } from '../heroBehaviors';
+import { hasArtifactEffect } from '../artifacts';
 
 interface TileHookContext {
   battle: BattleState;
@@ -21,6 +26,30 @@ interface TileAbilityHandler {
   tag: BattleTileAbilityTag;
   stage: BattleTileHookStage;
   apply?: (context: TileHookContext) => void;
+}
+
+function hazardTrigger(tile: BattleTile): 'on-enter' | 'on-turn-start' {
+  return tile.hazard?.trigger
+    ?? (tile.hazard?.kind === 'teleport' ? 'on-enter' : 'on-turn-start');
+}
+
+function applyHazard(battle: BattleState, tile: BattleTile, stack: BattleStack): void {
+  if (!tile.hazard || !stackHexes(stack).some((hex) => sameCoord(tile.position, hex))) return;
+  if (tile.hazard.kind === 'teleport') {
+    const blockers = new Set([...battle.obstacles, ...battle.tiles
+      .filter((candidate) => candidate.id !== tile.id)
+      .map((candidate) => candidate.position)]
+      .map((position) => `${position.x},${position.y}`));
+    if (footprintFits(
+      stack, tile.hazard.destination, occupiedByStacks(battle.stacks, stack.id), blockers,
+    )) stack.position = { ...tile.hazard.destination };
+  } else if (tile.hazard.kind === 'damage') {
+    applyRoutedCombatDamage(battle, stack, tile.hazard.amount);
+  } else if (tile.hazard.kind === 'heal' && stack.count > 0) {
+    stack.topHp = Math.min(stackUnitHp(stack), stack.topHp + tile.hazard.amount);
+  } else if (tile.hazard.kind === 'chill') {
+    addBattleCounter(battle, stack, 'chill', tile.hazard.amount, tile.sourceSide);
+  }
 }
 
 export const BATTLE_TILE_ABILITY_REGISTRY: Record<
@@ -38,7 +67,7 @@ export const BATTLE_TILE_ABILITY_REGISTRY: Record<
         && stack.side !== candidate.sourceSide
         && stackHexes(stack).some((hex) => isAdjacent(candidate.position, hex)));
       if (first?.id === tile.id) {
-        addBattleCounter(
+        addSpellCounter(
           battle, stack, 'burn',
           BATTLE_TILE_TYPES[tile.type].values?.adjacentBurn ?? 0,
           tile.sourceSide,
@@ -49,7 +78,16 @@ export const BATTLE_TILE_ABILITY_REGISTRY: Record<
   resin_chill: {
     tag: 'resin_chill', stage: BATTLE_TILE_ABILITY_STAGES.resin_chill,
     apply: ({ battle, tile, stack }) => {
-      if (stack && stack.side !== tile.sourceSide
+      if (stack && !tile.upgraded && stack.side !== tile.sourceSide
+          && stackHexes(stack).some((hex) => sameCoord(tile.position, hex))) {
+        addBattleCounter(battle, stack, 'chill', 1, tile.sourceSide);
+      }
+    },
+  },
+  knack_resin_chill: {
+    tag: 'knack_resin_chill', stage: BATTLE_TILE_ABILITY_STAGES.knack_resin_chill,
+    apply: ({ battle, tile, stack }) => {
+      if (stack && tile.upgraded
           && stackHexes(stack).some((hex) => sameCoord(tile.position, hex))) {
         addBattleCounter(battle, stack, 'chill', 1, tile.sourceSide);
       }
@@ -63,8 +101,20 @@ export const BATTLE_TILE_ABILITY_REGISTRY: Record<
     apply: ({ battle, tile, stack }) => {
       if (stack && tile.upgraded && stack.side !== tile.sourceSide
           && stackHexes(stack).some((hex) => sameCoord(tile.position, hex))) {
-        addBattleCounter(battle, stack, 'chill', 1, tile.sourceSide);
+        addSpellCounter(battle, stack, 'chill', 1, tile.sourceSide);
       }
+    },
+  },
+  hazard_enter: {
+    tag: 'hazard_enter', stage: BATTLE_TILE_ABILITY_STAGES.hazard_enter,
+    apply: ({ battle, tile, stack }) => {
+      if (stack && hazardTrigger(tile) === 'on-enter') applyHazard(battle, tile, stack);
+    },
+  },
+  hazard_turn_start: {
+    tag: 'hazard_turn_start', stage: BATTLE_TILE_ABILITY_STAGES.hazard_turn_start,
+    apply: ({ battle, tile, stack }) => {
+      if (stack && hazardTrigger(tile) === 'on-turn-start') applyHazard(battle, tile, stack);
     },
   },
   test_enter_meter: {
@@ -111,7 +161,15 @@ export function placeBattleTile(battle: BattleState, tile: BattleTile): void {
   if (battle.tiles.some((candidate) => sameCoord(candidate.position, tile.position))) {
     throw new Error('A persistent tile already occupies that hex');
   }
-  battle.tiles.push({ ...tile, position: { ...tile.position } });
+  const hero = tile.sourceSide === 'attacker' ? battle.attackerHero : battle.defenderHero;
+  const siegewright = hero ? skillRank(hero, 'siegewright') : 0;
+  battle.tiles.push({
+    ...tile,
+    ...(siegewright >= 2 ? { hp: (tile.hp ?? 0) + 10 } : {}),
+    ...(siegewright >= 3 && tile.duration > 0 ? { duration: -1 } : {}),
+    ...(hero && hasArtifactEffect(hero, 'created_hex_bonus') ? { duration: -1 } : {}),
+    position: { ...tile.position },
+  });
 }
 
 function handlers(tile: BattleTile, stage: BattleTileHookStage): TileAbilityHandler[] {

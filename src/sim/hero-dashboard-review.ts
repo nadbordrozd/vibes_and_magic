@@ -17,14 +17,14 @@ function fixture(mapId: 'grand-muster' | 'manywhere' = 'grand-muster'): GameStat
   const state = createGame({ seed: 5903, mapId, p1: 'human', p2: 'dormant' });
   const hero = state.players.p1.hero!;
   hero.skills = { logistics: 3, scouting: 3, attunement: 3, ritualist: 3,
-    provisioner: 3, command: 3 };
+    provisioner: 3, quartermaster: 1 };
   const unitIds = Object.keys(UNITS) as Array<keyof typeof UNITS>;
-  hero.army = Array.from({ length: 7 }, (_, index) => ({ unitId: unitIds[index], count: index + 2 }));
+  hero.army = Array.from({ length: 8 }, (_, index) => ({ unitId: unitIds[index], count: index + 2 }));
   const equipped: Record<EquipmentSlotId, ArtifactId> = {
     head: 'leadenCrown', cloak: 'travelersCloak', amulet: 'goldenThread',
     weapon: 'tailorsNeedle', shield: 'yeomansBuckler', armor: 'quiltedCoat',
     ring1: 'tailorsThimble', ring2: 'ringOfTheSteadyHand', boots: 'cobblersPride',
-    misc1: 'patternbook', misc2: 'mirrorMask',
+    misc1: 'patternbook', misc2: 'mirrorMask', misc3: 'knucklebonesOfTheSaint',
   };
   for (const slot of EQUIPMENT_SLOTS) hero.artifacts.equipment[slot] = {
     id: equipped[slot], ...(equipped[slot] === 'seamstone' ? { chosenSchool: 'rite' as const } : {}),
@@ -101,7 +101,9 @@ async function install(page: Page, state: GameState): Promise<void> {
   await page.waitForSelector('.hero-dashboard-dialog');
 }
 
-async function audit(page: Page, name: string, expectedBackpack = 7): Promise<void> {
+async function audit(
+  page: Page, name: string, expectedBackpack = 7, expectedFallbacks = 0,
+): Promise<void> {
   await page.evaluate(async () => {
     const body = document.querySelector<HTMLElement>('.hero-dashboard-body')!;
     for (const top of [0, Math.floor(body.scrollHeight / 2), body.scrollHeight]) {
@@ -180,11 +182,13 @@ async function audit(page: Page, name: string, expectedBackpack = 7): Promise<vo
     };
   });
   const expectedRegions = ['identity', 'primary-stats', 'vitals-status', 'army',
-    'secondary-skills', 'equipped-artifacts', 'artifact-backpack', 'consumables', 'special-controls'];
+    'secondary-skills', 'equipped-artifacts', 'artifact-backpack', 'artifact-actions',
+    'consumables', 'special-controls'];
   if (result.documentOverflow > 0 || result.bodyOverflow > 0 || result.tabs
-      || result.army !== 7 || result.equipment !== 11 || result.backpack !== expectedBackpack || result.items !== 8
-      || result.headings.length !== 9 || result.failedImages.length || result.wrongIntrinsic.length
-      || result.transformedImages.length || result.fallbacks || result.regionOverflow.length
+      || result.army !== 8 || result.equipment !== 11 || result.backpack !== expectedBackpack || result.items !== 8
+      || result.headings.length !== 10 || result.failedImages.length || result.wrongIntrinsic.length
+      || result.transformedImages.length || result.fallbacks !== expectedFallbacks
+      || result.regionOverflow.length
       || result.outOfBounds.length || result.unnamed.length || result.undersized.length
       || result.verticalScrollers.length !== 1 || !result.bodyScrolls || !result.closeFocused || !result.pageLocked
       || JSON.stringify(result.regions) !== JSON.stringify(expectedRegions)
@@ -553,7 +557,7 @@ try {
     await page.screenshot({ path: `${outputDir}/empty-dashboard-${viewport.name}.png` });
 
     await install(page, longBackpackFixture());
-    await audit(page, `${viewport.name} long backpack`, Object.keys(ARTIFACTS).length);
+    await audit(page, `${viewport.name} long backpack`, Object.keys(ARTIFACTS).length, 0);
     await page.$eval('.hero-dashboard-backpack', (region) => region.scrollIntoView({ block: 'start' }));
     await page.screenshot({ path: `${outputDir}/long-backpack-${viewport.name}.png` });
 

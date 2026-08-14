@@ -1,5 +1,6 @@
 import {
-  ASSET_MANIFEST, assetId, type AssetCategory, type AssetManifestEntry,
+  ASSET_MANIFEST, NON_SPRITE_REPRESENTATIONS, assetId,
+  type AssetCategory, type AssetManifestEntry,
 } from '../../assets/manifest';
 import {
   AUTHORED_MAPS, assetWorklist, mapObjectAssetId, type AssetWorkItem,
@@ -55,7 +56,8 @@ export interface InteractionHierarchyFixture {
 const ADVENTURE_CATEGORY_SET = new Set<AssetCategory>(ADVENTURE_SHOWCASE_CATEGORIES);
 
 export function adventureShowcaseInventory(): AdventureShowcaseItem[] {
-  return assetWorklist().filter((item) => ADVENTURE_CATEGORY_SET.has(item.category)).map((item) => {
+  return assetWorklist().filter((item) => ADVENTURE_CATEGORY_SET.has(item.category)
+    && !NON_SPRITE_REPRESENTATIONS[item.id]).map((item) => {
     const entry = ASSET_MANIFEST[item.id];
     if (!entry) throw new Error(`Adventure showcase asset has no manifest entry: ${item.id}`);
     return { ...item, entry };
@@ -180,6 +182,7 @@ export function representativeMapObjects(): Map<string, MapObject> {
   for (const map of AUTHORED_MAPS) for (const object of map.objects) {
     if (object.kind === 'guardian') continue;
     const id = mapObjectAssetId(object);
+    if (NON_SPRITE_REPRESENTATIONS[id]) continue;
     if (!representatives.has(id)) representatives.set(id, object);
     if (object.kind === 'bridge' && !object.completed) {
       const completed = { ...object, completed: true };
@@ -189,7 +192,8 @@ export function representativeMapObjects(): Map<string, MapObject> {
   for (const item of Object.values(ITEMS)) {
     const object: MapObject = { id: `showcase-item-${item.id}`, kind: 'item',
       position: { x: 0, y: 0 }, item: { id: item.id }, collected: false };
-    representatives.set(mapObjectAssetId(object), object);
+    const id = mapObjectAssetId(object);
+    if (!NON_SPRITE_REPRESENTATIONS[id]) representatives.set(id, object);
   }
   for (const artifactId of INSTALLED_ARTIFACT_IDS) {
     const object: MapObject = {

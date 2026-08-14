@@ -3,7 +3,9 @@ import {
 } from 'react';
 import { autoResolveBattle, chooseCombatAction } from '../ai/combat';
 import { runStrategyTurn } from '../ai/strategy';
-import { activeBattleStack } from '../core/combat/battle';
+import {
+  activeBattleStack, beguilerOpeningSide, counterRedirectOpeningSide,
+} from '../core/combat/battle';
 import { apply, applyAutomaticChoice, createGame } from '../core/game';
 import {
   battleStackController,
@@ -313,7 +315,16 @@ export function App() {
       return () => clearTimeout(timer);
     }
     if (game.phase === 'combat' && game.battle) {
-      const stack = game.battle.pendingFreeMove
+      const openingSide = game.battle.pendingAmbushStackId
+        ? game.battle.stacks.find((stack) => stack.id === game.battle!.pendingAmbushStackId)?.side
+        : game.battle.pendingSpellDeflection?.defenderSide
+        ?? game.battle.pendingMirrorCopy?.chooserSide
+        ?? counterRedirectOpeningSide(game.battle)
+        ?? beguilerOpeningSide(game.battle);
+      const stack = openingSide
+        ? game.battle.stacks.find((candidate) => candidate.count > 0
+          && candidate.side === openingSide) ?? null
+        : game.battle.pendingFreeMove
         ? game.battle.stacks.find((candidate) =>
           candidate.count > 0 && candidate.side === game.battle!.pendingFreeMove!.side) ?? null
         : activeBattleStack(game.battle);
@@ -388,7 +399,16 @@ export function App() {
     onReady={() => setPassPlayer(null)} /><ContextHelp state={game} context="adventure" /></>;
 
   const castle = game.castles.find((item) => item.id === openCastleId) ?? null;
-  const battleStack = game.battle?.pendingFreeMove
+  const openingSide = game.battle ? game.battle.pendingAmbushStackId
+    ? game.battle.stacks.find((stack) => stack.id === game.battle!.pendingAmbushStackId)?.side
+    : game.battle.pendingSpellDeflection?.defenderSide
+    ?? game.battle.pendingMirrorCopy?.chooserSide
+    ?? counterRedirectOpeningSide(game.battle)
+    ?? beguilerOpeningSide(game.battle) : null;
+  const battleStack = openingSide && game.battle
+    ? game.battle.stacks.find((candidate) => candidate.count > 0
+      && candidate.side === openingSide) ?? null
+    : game.battle?.pendingFreeMove
     ? game.battle.stacks.find((candidate) =>
       candidate.count > 0 && candidate.side === game.battle!.pendingFreeMove!.side) ?? null
     : game.battle ? activeBattleStack(game.battle) : null;

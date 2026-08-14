@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Issue 98f.18 owns native creature production and accepted provenance; issue 98f.12 stages distinct literal subjects without claiming bitmap coverage.",
+  "contact_sheet": "assets/jobs/e3-doc63-64-creature-placeholders-1-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:seamMoth",
+      "assets": [
+        "battle-unit:seamMoth"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-seam-moth",
+      "prompt": "Native 128x128 transparent side-view battle company: broad pale moth whose wings meet along one dark stitched seam; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981201
+    },
+    {
+      "id": "battle-unit:chalkWight",
+      "assets": [
+        "battle-unit:chalkWight"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-chalk-wight",
+      "prompt": "Native 128x128 transparent side-view battle company: stooped chalk-white spirit trailing one continuous boundary line; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981202
+    },
+    {
+      "id": "battle-unit:emberToad",
+      "assets": [
+        "battle-unit:emberToad"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-ember-toad",
+      "prompt": "Native 128x128 transparent side-view battle company: squat soot-black toad with furnace-orange throat; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981203
+    },
+    {
+      "id": "battle-unit:glassHound",
+      "assets": [
+        "battle-unit:glassHound"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-glass-hound",
+      "prompt": "Native 128x128 transparent side-view battle company: long masked hunting hound made from plum and silver glass; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981204
+    },
+    {
+      "id": "battle-unit:tallyman",
+      "assets": [
+        "battle-unit:tallyman"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-tallyman",
+      "prompt": "Native 128x128 transparent side-view battle company: narrow masked courtier carrying one hooked counting staff; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981205
+    },
+    {
+      "id": "battle-unit:lanternBearer",
+      "assets": [
+        "battle-unit:lanternBearer"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-lantern-bearer",
+      "prompt": "Native 128x128 transparent side-view battle company: humble tonsured monk carrying a tall hooded lantern; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981206
+    },
+    {
+      "id": "battle-unit:boneOrchard",
+      "assets": [
+        "battle-unit:boneOrchard"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-bone-orchard",
+      "prompt": "Native 128x128 transparent side-view battle company: rooted orchard of white jointed boughs strung like a siege bow; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981207
+    },
+    {
+      "id": "battle-unit:stitchOx",
+      "assets": [
+        "battle-unit:stitchOx"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-stitch-ox",
+      "prompt": "Native 192x128 transparent side-view wide battle company: massive patched ox crossed by one luminous seam and broad yoke; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        192,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981208
+    },
+    {
+      "id": "battle-unit:nineMouthedWell",
+      "assets": [
+        "battle-unit:nineMouthedWell"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-nine-mouthed-well",
+      "prompt": "Native 256x128 transparent side-view three-hex battle company: walking stone well with nine snapping carved mouths; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        256,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981209
+    },
+    {
+      "id": "battle-unit:kilnDrake",
+      "assets": [
+        "battle-unit:kilnDrake"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-kiln-drake",
+      "prompt": "Native 128x128 transparent side-view battle company: brick-red winged drake with chimney back and kiln-bright chest; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981210
+    }
+  ]
+}

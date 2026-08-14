@@ -81,16 +81,17 @@ describe('pixel-art manifest worklist', () => {
     ]).map((item) => item.key)).toEqual(['tree', 'hero', 'castle']);
   });
 
-  it('gives every authored guardian creature a manifest-backed adventure-map sprite', () => {
+  it('keeps accepted guardians native and the thirteen docs 63–64 silhouettes explicitly staged', () => {
     const guardianUnits = new Set(AUTHORED_MAPS.flatMap((map) => map.objects
       .filter((object) => object.kind === 'guardian')
       .flatMap((guardian) => guardian.kind === 'guardian'
         ? guardian.army.map((stack) => stack.unitId) : [])));
-    expect(guardianUnits.size).toBe(18);
+    expect(guardianUnits.size).toBe(31);
     for (const unitId of guardianUnits) {
       const entry = ASSET_MANIFEST[`guardian-unit:${unitId}`];
-      expect(entry, unitId).toBeDefined();
-      expect(existsSync(resolve('public', entry.file)), unitId).toBe(true);
+      if (entry) expect(existsSync(resolve('public', entry.file)), unitId).toBe(true);
+      else expect(NON_SPRITE_REPRESENTATIONS[`guardian-unit:${unitId}`], unitId)
+        .toContain('typed creature placeholder');
     }
   });
 });

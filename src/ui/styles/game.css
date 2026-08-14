@@ -395,6 +395,8 @@
 .meter { height: 5px; background: #090c09; }.meter i { display: block; height: 100%; background: var(--gold); }
 .army-block { margin: 20px 0; }.army-block h4 { margin: 0 0 8px; }
 .army-slots { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.army-slots[data-army-capacity="8"] { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+.army-slots[data-army-capacity="9"] { grid-template-columns: repeat(9, minmax(0, 1fr)); }
 .army-slot {
   aspect-ratio: .83; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: #eee9d9; border: 1px solid #424c40; background: #0c110d; padding: 2px;
@@ -694,6 +696,12 @@ kbd { color: #48412c; border: 1px solid #76663c; padding: 2px 5px; font: inherit
   width: 100%; min-width: 0; max-width: 100%; overflow: clip;
 }
 .rail-hero-summary .army-slots { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.rail-hero-summary .army-slots[data-army-capacity="8"] {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+.rail-hero-summary .army-slots[data-army-capacity="9"] {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
 .rail-hero-summary .army-slot { aspect-ratio: .88; }
 .rail-hero-summary .unit-portrait, .rail-hero-summary .unit-portrait-fallback { height: 26px; }
 .rail-hero-summary .army-slot b { font-size: 8px; }
@@ -796,6 +804,8 @@ kbd { color: #48412c; border: 1px solid #76663c; padding: 2px 5px; font: inherit
 .hero-dashboard-status-list :is(.content-icon, .hero-dashboard-bitmap) { width: 24px; height: 24px; }
 .hero-dashboard-status-list .unit-portrait { width: 32px; height: 28px; }
 .hero-dashboard-army-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.hero-dashboard-army-grid[data-army-capacity="8"] { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+.hero-dashboard-army-grid[data-army-capacity="9"] { grid-template-columns: repeat(9, minmax(0, 1fr)); }
 .hero-dashboard-army-grid button, .hero-dashboard-army-grid .hero-dashboard-empty-cell {
   position: relative; min-width: 0; min-height: 96px; padding: 4px; border: 1px solid #4d574a;
   background: #0b100c; color: #eee9d9; text-align: center;
@@ -922,6 +932,10 @@ kbd { color: #48412c; border: 1px solid #76663c; padding: 2px 5px; font: inherit
 }
 
 @media (max-width: 560px) {
+  .exchange-screen .army-slots[data-army-capacity="8"],
+  .exchange-screen .army-slots[data-army-capacity="9"] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
   .adventure-status-strip .resource-bar b { font-size: 9px; }
   .hero-details-backdrop { padding: 8px; }
   .hero-details-dialog, .command-menu-dialog { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
@@ -930,7 +944,11 @@ kbd { color: #48412c; border: 1px solid #76663c; padding: 2px 5px; font: inherit
   .hero-dashboard-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 8px; }
   .hero-dashboard-body > .hero-dashboard-region { grid-column: 1; grid-row: auto; width: 100%; }
   .hero-dashboard-portrait-button { grid-template-columns: 96px minmax(0, 1fr); }
-  .hero-dashboard-army-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .hero-dashboard-army-grid,
+  .hero-dashboard-army-grid[data-army-capacity="8"],
+  .hero-dashboard-army-grid[data-army-capacity="9"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
   .hero-dashboard-army-grid button, .hero-dashboard-army-grid .hero-dashboard-empty-cell { min-height: 82px; }
   .hero-dashboard-army-grid button { grid-template-rows: 48px auto auto; }
   .hero-dashboard-army-grid .unit-portrait { height: 48px; }

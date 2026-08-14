@@ -97,7 +97,8 @@ try {
   await page.locator('.help-dialog button[aria-label="Close help"]').click();
   await page.locator('.victory-dialog .primary').click();
   await page.waitForSelector('.menu-shell');
-  if (!await page.$('.map-options')) throw new Error('Return to title did not restore campaign setup');
+  await page.locator('.menu-modes button:first-child').click();
+  if (!await page.$('label select')) throw new Error('Return to title did not restore campaign setup');
 
   console.log(`Campaign outcome review passed. Screenshots written to ${output}.`);
 } finally {

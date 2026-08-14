@@ -1,5 +1,226 @@
 # Implementation Decisions
 
+## 2026-08-14 — Docs 60–67 release acceptance is native, replay-stable, and UI-complete
+
+- The final release profile resolves all docs-60–67 presentation by canonical ID: 192/192 v2 jobs
+  and provenance records pass, the shipped manifest contains 808 entries with 804 unique byte
+  payloads and four explicit aliases, and artifact/item coverage is 148/148 and 50/50. The
+  development placeholder mechanism remains available for future migrations, but no current release
+  surface may count a placeholder or fallback as installed coverage.
+- Generic combat targeting must render every target-draft field produced by legal actions. In
+  particular, creature `caster` actions expose their `spellId` choices as named, native-icon,
+  inspectable buttons, and item school choices use the same visible choice group. This closes the
+  acceptance-found gap where the reducer generated legal creature casts but the combat screen could
+  not advance beyond the spell-choice stage.
+- The canonical built-in content hash is `03e209e7`. A seed-424242 two-turn human/human proof retains
+  the five-field action save, three logged actions, byte-identical strict replay, and matching state
+  hashes `97dc3c06`. Schema v4 remains unchanged.
+- Release acceptance excludes only the separately tracked adventure Knacks in
+  `vibes_and_magic-0yv` and the user-deferred seed-1/day-56 no-winner regression in
+  `vibes_and_magic-xm5.1`. The former remains intentionally outside the combat-Knack release; the
+  latter is the sole expected full-suite failure and is not weakened or reclassified by this gate.
+
+## 2026-08-13 — Docs 63–64 recalibrate only stable-direction strategic strength
+
+- The docs 63 and 64 adjustment lists are exhaustive. Their nineteen stable-direction entries join
+  the eight existing doc-39 roles at the printed values; matchup-, terrain-, casualty-, spellbook-,
+  and player-choice-dependent traits remain outside the scalar. Additive ability value is still
+  clamped to `[0.85,1.35]`, now through exported named bounds covered by exact catalog and clamp
+  tests.
+- The deterministic paired-seat calibration now reaches 13.6% median break-even count error versus
+  24.6% for the legacy estimator and orders 6/6 decisive mixed matchups correctly. The existing
+  guarded-object, assault, Siren, Gatherer, Diplomacy, artifact, skill, and bargain ratios remain
+  unchanged; no consumer received a private strength formula.
+- The generated report now derives its stable-adjustment table and both authored showcase rosters
+  from executable authority. Crooked Crown pins twenty derived counts at strength 90.79–350.79 with
+  median 181.57. Sixfold Trial pins eighteen derived counts and retains its published band thresholds,
+  populated 4/4/5/4 across skirmish/field/elite/ordeal. Map lint, focused tests, and report drift
+  checks fail if those progression fixtures move without an explicit recalibration.
+
+## 2026-08-13 — Doc-62 combos, loop bounds, exposure, and stalls are executable
+
+- All twenty numbered combo examples now own deterministic integration fixtures. Each complete
+  JSON-safe operation log records setup transformations, loadout, round advances, casts, and attacks.
+  A fresh fixture interprets the captured log through public battle/game reducers, asserts a
+  qualitative state outcome rather than balance parity, and reaches byte-stable canonical state.
+- Every one of doc 62's seventeen numbered loop rules has a direct executable rejection or bounded
+  resolution. Stable public reason codes cover illegal copy/control/link/action/resurrection cases;
+  legal finite effects expose their serialized cap, ownership, expiry, or consumption state.
+- Quiet Yard, Standing Cold, and Attrition Wall first construct their relevant state through Wall of
+  the Maker; Grave-Chill/Overgrow/Amplify/Ashen Pall; and Second Grave/Mourner's Veil/Hold the Line,
+  respectively. Ordinary Defend actions then cross multiple complete rounds and resolve with the
+  visible `round-limit` reason. No new tuning value or hidden anti-combo clamp was introduced.
+- Two acceptance-found runtime gaps are resolved at their generic ownership boundaries. Upgraded
+  Silence the Passing doubles each owning-side destruction trigger, including Ossuary, while the
+  Bellows preserves Burn according to the pile's recorded source side rather than the afflicted
+  company's side. Because a company stores one magnitude per counter, the latest successful
+  positive application that increases the pile deterministically owns a mixed-source pile for
+  source-side effects until another increasing application replaces that attribution or the pile is
+  consumed/decays to zero. An application against an already-capped pile does not steal ownership;
+  zero piles clear source and delayed-decay provenance. Unrelated opposing Burn still decays normally.
+  Enemy Silence suppresses all of the owner's death triggers before any own Upgraded Silence
+  doubling is considered, including Ossuary summons.
+- Standard mind-control snapshots counter source and delayed-decay provenance with its existing
+  magnitude/effect snapshot. Expiry restores that provenance when it clamps controller-era counter
+  gains, preventing temporary control from changing later Bellows or decay ownership.
+- Doc 62's global 124-spell denominator was arithmetically impossible for two 14-slot guilds and is
+  corrected by S01/S09's authoritative “each relevant pool” rule. Two same-faction cities therefore
+  measure their shared two-school pool of 62 spells. Across deterministic seeds 0–199, two complete
+  Hearthguard guilds surface a mean 20.125 distinct Rite/Craft spells, or 32.46%. The authoritative
+  4/3/3/2/2 deal remains unchanged.
+
+## 2026-08-12 — Combat primitives share one typed boundary and stalls resolve at the fixed limit
+
+- The eighteen doc-60 combat primitive contracts now each own exactly one executable handler at the
+  contract's named stage in `src/core/combat/primitives.ts`. Catalog content composes these handlers;
+  spell IDs do not define alternate copies of their rules.
+- Invalid primitive requests return a stable code and inspectable English reason. Control history,
+  links, clone provenance, granted-action counts, delayed triggers, resonance, hazards, destruction
+  save claims, and termination reasons are serialized state rather than ambient resolver memory.
+- Damage links are duration-bound serialized pairs between living companies. Every current combat
+  damage path uses the shared one-hop router; already-computed damage routes once, never recursively,
+  and either endpoint's destruction clears both directions. Impact damage consumes Ward as the next
+  damage instance and applies its Upgraded rider when a source company is available.
+  Counter copy/spread/convert/detonate similarly preserves or consumes resolved magnitude without a
+  second Spell Power/application pass; detonation clears its pile before computing the payoff.
+- Round 100 remains the last playable round. A still-live battle that would enter round 101 resolves
+  by surviving original-owner non-summoned HP proportion (`originalSide ?? side`, including active
+  mind control), with defender winning an exact tie, and records
+  the visible `round-limit` reason. This makes the existing fixed simulation limit an engine rule for
+  Quiet Yard, Standing Cold, and Attrition Wall stalls rather than introducing a new tuning value.
+- `BattleStack.side` is tactical allegiance and therefore governs targeting, actions, friendly
+  effects, and Grave Bargain eligibility during control. `originalSide ?? side` is persistent army
+  ownership and governs elimination, surrender value, casualties, owner saves, metrics, and campaign
+  army reconstruction; temporary control can neither eliminate nor transfer its original company.
+- Executable primitive semantics advance `CONTENT_SCHEMA_VERSION`; the built-in content hash moves
+  from the magic-foundation `f9402dc2` to `9d5eaa94`. The canonical five-field action-log save and
+  local schema v4 do not change, and the seed-424242 two-turn state hash remains `8518cf35`.
+
+## 2026-08-12 — Current magic uses a playable five-tier transition
+
+- The binding starting-spell contract is one deterministic tier-1 spell from each faction school,
+  not exactly two total known spells. Authored entries are retained and de-duplicated first. Corwin's
+  Rally and Silas's Wither satisfy their matching tier-1 slot, while an authored spell never
+  suppresses the other faction school. Above-tier identity spells such as Maud's Trial remain bonus
+  entries beside both required tier-1 starts.
+- Existing mana values are clamped into the doc-60 tier bands so all 68 current definitions are
+  immediately valid and playable. The band invariant wins over doc 61's stale Trial prose: Trial is
+  8 mana in this transition, because tier 3 cannot legally cost 6.
+- Mage Guild dealing uses a dedicated seed/key stream and does not consume campaign RNG. Each slot
+  rolls tier and school weighting explicitly. Because the current eligible catalog contains no
+  ordinary tier-5 spell, setup emits a complete guaranteed 12-card level-1–4 prefix and Mage Guild
+  5 construction fails with a concrete catalog message. It does not silently substitute a lower
+  tier or weaken the level-5 own-tier guarantee; the generic dealer supports the full 14-card
+  contract when eligible entries arrive.
+- Default spell counter scaling is centralized at +1 magnitude per five Spell Power. Non-spell
+  counter sources retain fixed behavior, and future catalog exceptions call the spell helper with
+  an explicit opt-out rather than relying on an omitted scaler. Existing counter magnitude is
+  already resolved state: Sour conversion, Reflect copying, Overgrow spreading, Shed Skin transfer,
+  and future detonations use the raw counter path and do not receive Spell Power a second time.
+- Daily and weekly use ledgers are ordinary JSON state on each hero and each player. The action-log
+  save remains its exact five-field format and local schema v4: setup recreates empty ledgers and
+  later explicit casts will replay their writes, so no parallel save envelope or migration is added.
+- The complete current magic metadata, tier-aware pools, guild buildings, and seeded setup deal join
+  replay authority through the existing catalog hash. At this phase boundary the built-in content
+  hash is `f9402dc2` and the checked-in seed-424242 two-turn state hash is `8518cf35`.
+
+## 2026-08-12 — Docs 60–67 use later explicit supersessions and a split asset gate
+
+- The S-files remain the current authority under S00. Docs 60–67 are accepted implementation work
+  orders, not a second specification layer: each rule becomes current only when its owning phase
+  updates the affected S-file, executable catalog or handler, and this decision log in the same
+  change. Until then, the existing S-file and executable data continue to describe shipped behavior.
+- The final magic contract is exactly **124 spells**: 31 per school, with each school's tiers
+  distributed 8/8/7/5/3. The final skill contract is exactly **30 skills** with the six-skill hero
+  cap unchanged. Doc 66 supersedes doc 63 §4: it retains doc 63's three new skills and six reworks,
+  then adds the six further skills and rank-three audit in doc 66. Doc 60's and doc 63's earlier
+  24-skill amendment language is therefore an intermediate proposal, not the final count.
+- Doc 65 extends rather than replaces doc 63 §2. The artifact catalog may pass through doc 63's
+  110-definition intermediate state, but the final contract is exactly **148 definitions**:
+  36 Vanilla, 44 Charm, 45 Relic, 13 Burden, 4 Kit, and 6 Trinket. No existing definition is
+  removed to reach that composition.
+- Docs 63 and 64 add exactly **thirteen** neutral/showcase creatures: the eight in doc 63 plus the
+  five in doc 64. Doc 64's generic `caster` block governs creature casting; `hedge_caster` remains
+  only its one-spell, one-charge case. Doc 64 also amends doc 62 §4: a hidden universal magic-
+  resistance stat remains forbidden, while rationed deterministic resistance and immunity are
+  permitted as printed, inspectable per-creature abilities.
+- The current Knack scope is exactly **six combat Knacks**, one per playable faction. Doc 67 §6's
+  six adventure Knacks remain deferred pending combat-Knack playtest and are tracked separately in
+  `vibes_and_magic-0yv`; they do not enter this epic's schemas, catalogs, asset counts, or release
+  acceptance.
+
+### Development and release asset gates
+
+- Development, automated-test, and playtest builds may resolve missing art for new docs 60–67
+  content through deterministic typed placeholders. A placeholder is selected from semantic type
+  metadata, never from ambient randomness or UI inference; artifacts use class and slot, and the
+  other families use their declared content family/type. Placeholder identity is presentation-only
+  and cannot supply or alter a content ID, rule, target, value, rarity, or accessibility name.
+- This leniency applies only to the development readiness of new content. It does not turn a missing
+  manifest subject, invalid content reference, unregistered handler, or missing semantic text into a
+  warning, and it does not relax the accepted native assets of existing content.
+- Release/shipping validation remains strict and fail-closed. Every shipped spell, skill, Knack,
+  creature, artifact, item, site, and lexicon term must resolve by its own canonical ID to the
+  required distinct native asset with the existing manifest, provenance, dimension, alpha, prompt,
+  and uniqueness gates. A release build has no placeholder/fallback resolver; any unresolved ID or
+  placeholder use fails the build. Completing those per-ID assets remains a release prerequisite,
+  not a mechanics-development prerequisite.
+
+### Implementation-phase amendment matrix
+
+The rows below assign ownership of the required canonical amendments. A phase updates only rules
+that its executable work has actually made true; later rows extend the same S-file rather than
+pre-announcing unimplemented behavior.
+
+| S-file | Owning implementation phase(s) | Required amendment when that phase lands |
+|---|---|---|
+| **S01** | magic foundation (`98f.3`); combo acceptance (`98f.20`) | Split target scaling into target-derived Toll effects and army-curve-bounded SP-scaled impact damage; record high finite draw/combo variance as intentional while loops, strictly-correct openings, and stalls remain degeneracy. |
+| **S04** | combat primitives (`98f.4`); creature traits (`98f.11`); combat Knacks (`98f.9`); strength/termination acceptance (`98f.19`, `98f.20`) | Add impact-damage routing, control/link/copy/resurrection/action bounds, multi-hex retaliation and proportionality ordering, the shared Knack hero act, and the verified strategic-strength/termination rules. |
+| **S05** | magic/acquisition foundation (`98f.3`–`98f.5`); spell batches (`98f.6`, `98f.7`, `98f.17`); Knacks and creature casting (`98f.9`, `98f.11`); items/sites and loop acceptance (`98f.16`, `98f.20`) | Add five tiers, mana/counter scaling, mass/time gates, generic primitives, five-level guild/acquisition rules, creature spell sources and printed resistance vocabulary, the non-spell Knack boundary, final spell behavior, and all visible loop bounds. |
+| **S06** | hero/magic foundation (`98f.3`); Skills v2 (`98f.8`); combat Knacks (`98f.9`); artifacts/items and derived capacity (`98f.13`–`98f.16`) | Add two seeded tier-1 starting spells, the final 30-skill roster and draft gates, derived Knack/rank thresholds, 148-artifact and new-item ownership rules, and per-hero army capacity capped at nine. |
+| **S07** | guild foundation (`98f.3`); adventure/economy artifacts (`98f.15`) | Extend the common Mage Guild chain through levels 4 and 5 with its costs/deal reveal, then record printed artifact exceptions to build, market, growth, debt, and income rules. |
+| **S08** | combat Knacks (`98f.9`); thirteen creatures (`98f.12`); final presentation/assets (`98f.18`) | Add each faction's combat-Knack name/voice, place all thirteen creatures in their documented neutral cultures, and keep every new flavor, silhouette, and native-art subject within the existing faction/canon laws. |
+| **S09** | schema and split-gate infrastructure (`98f.2`); every catalog/content batch (`98f.3`, `98f.6`–`98f.18`); final release acceptance (`98f.21`) | First define typed schemas, handler coverage, and distinct development/release asset validation; then update catalog-derived counts and invariants only as each batch becomes executable; finally pin 124 spells, 30 skills, 148 artifacts with 36/44/45/13/4/6 classes, thirteen new creatures, six combat Knacks, and strict per-ID release art. |
+
+S02 and S03 still receive the deterministic action/state and adventure amendments named by their
+own implementation issues; their omission from this ruling's required seven-file matrix does not
+waive S00's same-change rule. Every implementation phase appends its concrete resolver or
+compatibility rulings here rather than treating this prospective ownership map as evidence that the
+code already conforms.
+
+## 2026-08-12 — V2 schemas are phase-aware and schema contracts join replay authority
+
+- The shared schema exposes all later docs 60–67 fields now, while executable catalogs migrate in
+  dependency order. In the transition profile, a legacy definition may omit v2 fields completely;
+  once any spell v2 field appears its tier/scaling/targeting core is atomic and all applicable mana,
+  cantrip, time-gate, and handler checks apply. Final-mode count and distribution assertions are
+  callable but are not run against the still-current 68-spell, 21-skill, and 90-artifact catalogs.
+- Primitive contracts and executable handlers are deliberately separate registries. A known name or
+  correct stage descriptor does not count as implemented behavior: a referencing definition fails
+  coverage until exactly one concrete handler is registered at the contract's canonical stage.
+  This prevents later content batches from making unimplemented mechanics valid through metadata
+  alone and leaves the behavior work to their owning phases.
+- Artifact-effect metadata, Knack definitions, and acquisition-site definitions also consult typed
+  live executable registries; a nonempty handler string is never coverage. Their validators reject
+  missing functions and stage mismatches, while registration rejects unknown and duplicate IDs.
+  Final Knack validation compares against the exact six playable faction IDs, not a count of six
+  arbitrary unique strings.
+- Creature `caster` charges and cast power are represented only at company-definition scope; there
+  is no unit-count multiplier field. Resistance rationing is catalog-derived (`resistant × 5 <=
+  catalog size`), with the two-per-faction low-tier/school and three-global `spellbound` ceilings.
+  Artifact-set membership is reciprocal and set thresholds strictly increase; skill offer gates are
+  positive whole hero levels; Knack rank is derived from level at 1/6/12 rather than serialized.
+- Development placeholder resolution accepts only entries explicitly marked as new docs 60–67
+  content and derives a stable key solely from typed semantic metadata. Existing accepted content
+  is fail-closed in every mode. Release mode accepts only distinct canonical native asset IDs and
+  never returns a placeholder.
+- `CONTENT_SCHEMA_VERSION`, the complete primitive contract table, and the typed artifact/Knack/site
+  handler-ID catalogs now participate in the content hash. The built-in hash deliberately changes
+  from `06c84a97` to `7fbf1d23`; the save remains the
+  exact five-field payload and the local envelope remains schema v4. Old local saves use the
+  existing visible content-mismatch warning, while URL/replay strict mode refuses them. No action or
+  state migration is guessed.
+
 ## 2026-08-11 — City geometry and neutral defense have one canonical boundary (doc 51)
 
 - Internal `Castle`/`castles` identifiers remain save and API compatibility names, while every
@@ -977,3 +1198,326 @@
 - Deterministic local chroma removal, content fitting, restrained palette, and hard-alpha baking own
   production bytes. Manifest-backed shared renderers expose no fallback. This installs the asset
   family only and does not claim one-screen dashboard UI integration.
+
+## 2026-08-12 — Adventure magic uses registered primitives and authored acquisition (docs 60–63)
+
+- Seven generic adventure handlers own teleport, same-day terrain traversal, remote mana,
+  production redirection, movement denial, prebattle conditions, and guardian intelligence. They
+  return stable visible failure reasons, reject malformed replay payloads before mutation, and
+  store every lasting result in replay/save state. Terrain-ignore movement crosses declared
+  Mountain/Water domains through `MOVE_HERO` without a boat but cannot end there; it and radius
+  teleport leave an embarked boat unoccupied at the hero's departure tile.
+- Every shipped tier-4/5 adventure spell is time-gated. Beacon and Summon Skiff use per-hero daily
+  ledgers; the player-wide Fickle Weather effect uses the player's weekly ledger. Death's Ledger is
+  the only current spell mapped to a new primitive, and only its Upgraded guardian-intelligence rule
+  uses that mapping; future spell IDs are not predeclared.
+- Spell Tomes store one setup-seeded named spell. Chest and Reliquary Cairn sources cap at tier 3;
+  tier-4/5 generic Tomes require locks or barrows; Reliquary of Pages is exactly tier 4. Generic
+  pools fail closed for provenance spells and Summon Skiff. The Cairn Tome is globally consumed on
+  first claim while the Cairn's artifact exchange remains repeatable.
+- The Stacks, Wild Shrine, and Reliquary of Pages are registered map objects with explicit actions,
+  inspection and editor routes. Manywhere and Border Marches each contain all three, and each Pages
+  site is guarded. Their missing new art uses typed docs-60–67 development placeholders backed by
+  staged production worklist requests, never an untracked asset omission.
+
+## 2026-08-12 — Doc-61 P1 Rite/Craft is a complete executable 24-row batch
+
+- The current transition adds eighteen spells and retunes Blessing, Census, Standard of Dawn,
+  Trial, Forge-Spark, and Unmake, producing 86 total spells: 26 Rite, 26 Craft, 17 Grave, and 17
+  Wild. Trial remains 8 mana because the already accepted tier-3 band supersedes doc 61's stale
+  6-mana line; its 30%/45% effect is the retune. The eighteen additions are guild-eligible and use
+  ordinary-scroll eligibility only where the tier/kind rule permits it.
+- Wellspring and Dimension Door compose the registered remote-mana and explored-radius teleport
+  adventure primitives. A failed primitive request precedes all debit/gate mutation. The existing
+  per-hero daily ledger gains a JSON-safe count map so Upgraded Dimension Door permits exactly two
+  uses per day without weakening one-use gates. Census's existing same-day record is now consumed
+  by the adventure map: Standard shows exact explored enemy armies/levels and Upgraded additionally
+  shows mana, known spells, and equipped artifacts; inventory items remain Scouting-rank-3 intel.
+- Combat spells compose the shared registered primitives and attack/damage pipelines. Extra actions
+  retain the global two-grants-per-company-per-round cap; delayed Reprise/Overclock state is explicit
+  and serialized. Rivet's Defense, doubled-retaliation rider, and upgraded additional retaliation
+  use separate timed records, as do Whetstone's two-round Attack bonus and its upgraded one-shot
+  retaliation suppression, so consuming a rider cannot erase the continuing statistic bonus.
+  Standard Clockwork Double clears counters/timed effects and Upgraded inherits them; neither form
+  can copy a summoned/clone source or produce a persistent army member.
+- Targeting and timing are executable rather than inferred: Wellspring requires an explicit living
+  owned hero; Dimension Door uses the legal map-target draft for both upgraded daily casts; and
+  Clockwork Double/Blink use staged source/branch/destination choices with lazy footprint legality.
+  Reprise, Overclock, and Blink write serialized immediate, round-end, or pre-order company actions,
+  and the battle scheduler resolves each at the printed boundary before returning to normal order.
+  Forged branches and the two-granted-actions cap fail before mutation or debit.
+- Second Wind may restore a count-zero original company only if its original footprint is empty and
+  unblocked. Hold the Line's upgraded base Bloom 3 goes through `addSpellCounter`, including the
+  universal +1 per 5 SP and application hooks. Standard Clockwork Double clears temporary/copied
+  ability state as well as counters/effects; Upgraded inherits all active temporary ability state
+  together so downstream borrow guards still see its copied provenance.
+- Consecrated Ground Standard deliberately writes symmetric Rite resonance and Upgraded writes only
+  the caster-side mid-battle resonance. Hold the Line's first lethal allied damage each round routes
+  through the shared damage layer, leaves one unit at 1 HP, and adds Bloom 3 only when upgraded.
+  Upgraded Unmake's choice is exclusive: a protected enchantment can be removed despite its seal,
+  or an ordinary selected effect can also cleanse a second distinct company. Enchantment removal
+  applies Chill 2 to the removed enchantment's owner.
+- The eighteen new spell icons and eight new reusable lexicon icons have complete typed subjects and
+  deterministic school/tier or category development placeholders. Existing 68 spell icons and 30
+  lexicon icons remain native and hash/provenance gated. Release resolution rejects every new
+  placeholder until distinct native art lands. The built-in content hash after this batch and the
+  preceding docs-60–63 foundation is `c7a64245`; the seed-424242 two-turn state hash is `1b312b47`.
+
+## 2026-08-12 — Doc-61 P1 Grave/Wild is a cause-aware executable 16-row batch
+
+- This decision supersedes doc 56's historical equal-face gap for Shed Skin and Hedgerow March.
+- Thirteen additions and three retunes bring the catalog to 99 spells: 26 Rite, 26 Craft, 23 Grave,
+  and 24 Wild. Grave Bargain's named 0-mana rule is the sole narrow exception to the catalog's
+  non-X tier-band invariant; the validator rejects any other exception and rejects a nonzero Bargain.
+- Tithe's exact spell face supersedes doc 62's stale generalized resource-loop sentence: it grants
+  flat 4/6 mana after the 2-mana debit and loses a 10%/8% current-HP base amount. That percentage
+  follows the binding `+1 percentage point per 2 SP` rule. Grave Bargain alone derives this batch's
+  mana return from starting maximum HP.
+- Destruction settlement records its cause. Attacks, deliberate sacrifice, and spell impact share
+  casualty attribution, destruction metrics, delayed destroyed-company triggers, proportionality,
+  and original-owner saves. Spell impact grants ordinary side-wide morale without inventing a
+  company killer or triggering attack-only Standard of Dawn; Tithe and Grave Bargain explicitly
+  opt into the sacrifice interactions named by their catalog entries.
+- Standard Puppet Strings removes state gained during control by delta: gained counter magnitude is
+  discarded, newly added effects and links are removed reciprocally, and effects/links removed while
+  controlled are not time-travelled back. Upgraded retains gained state. Upgraded Shed Skin transfers
+  a Standard Yoke only when it can construct a valid reciprocal link to the selected adjacent enemy;
+  the former link is removed atomically and protection cannot be transferred because protected Yoke
+  is not removable.
+- Grudge, Yoke, Puppet Strings, and Sap and Sinew apply the global `+1 round per 6 SP` rule to their
+  printed base durations; their explicit round records do not imply a fixed-scaling opt-out.
+  Hedgerow March and Wildcall speed are battle-aware rather than per-turn residue; Sap and Sinew's
+  upgraded Beast rider inherits the extra retaliation and applies Bloom once at actual round start.
+  Grudge/Yoke/Sap records use round expiry, unaffected by extra actions.
+- The resulting built-in content hash is `eea6c5b4`; the seed-424242 two-turn state hash is
+  `4aa4417b`.
+
+## 2026-08-13 — Skills v2 is a thirty-skill, choice-complete system (docs 63/66)
+
+- The catalog is exactly thirty three-rank skills with all six positive class weights. Reaper,
+  Beguiler, Duelist, and Quartermaster are absent from new offers below level 5, while already-held
+  copies remain upgradeable; the six-distinct-skill cap is unchanged. Rare exposure accounting is
+  Chronicler R3, Twicetold R3, Reaper R3, Beguiler R3, Duelist R3, and Loremaster R3.
+- Adept and Grimoire enter the ordinary offer from level 6. Adept is an explicit replayed known-spell
+  choice and clamps at one mana. Grimoire consumes the campaign RNG for an unknown guild-eligible
+  outcome from a known school within `ceil(resulting level / 3)` and is not offered with an empty
+  legal pool. AI resolves both deterministic choice boundaries.
+- Tactician persists only the adventure-map slot designation. Setup silently chooses the
+  furthest-forward footprint-legal anchor on that side, breaking center-row ties by row number;
+  this is not a prebattle deployment phase. Beguiler R1 and Curse-Eater R3 instead use serialized
+  opening target choices that gate normal battle actions; AI chooses the stable first legal target.
+- Duelist R3 always pauses hero-defeat settlement for a replayed trophy choice. On surrender it is
+  the explicit exception to equipment protection; on ordinary defeat it resolves before mandatory
+  transfer. Reaper reconstructs casualties by original owner and raises the winner faction's tier-1
+  unit. Loremaster R3 upgrades existing tier-1–3 spells immediately and all later acquisitions.
+- Nine new skill icons use typed deterministic development placeholders with literal physical
+  subjects. Development permits them; release validation remains fail-closed until distinct native
+  production assets and provenance replace every placeholder.
+- Logistics records the complete day-start movement pool after Lighthouse, movement-denial,
+  dormancy, Borrowed Time, Leaden Crown, artifact, carry, and skill modifiers; its weekly refresh
+  restores that snapshot and clears carry rather than recomputing a divergent formula. Wayfaring's
+  explicit daily opt-in passes at most the first non-direct aggro entry on its route. Quartermaster's
+  remote verb accepts a player-selected positive count bounded by stock, affordability, and army
+  capacity rather than an implicit one-unit purchase.
+- The seed-424242 two-turn state hash after the Skills-v2 serialized hero fields is `f5060329`.
+
+## 2026-08-13 — Doc-67 combat Knacks are derived, bounded non-spell hero acts
+
+- The executable catalog contains exactly six faction Knacks and no adventure variants: Hearten,
+  Patch, The Errand Remembered, Lay Resin, Ill-Wish, and Blood Drum. Their three ranks derive from
+  hero level at 1/6/12 and are never persisted on the hero. Their action and per-round use ledger are
+  explicit and replayable; a zero-mana level-1 hero retains the faction's legal fallback.
+- Knacks consume the shared bounded hero-act ledger used by spells and combat items. Named waivers
+  are consumed before the ordinary act, preventing Twicetold, Evoker, or Alchemist from erasing the
+  base act; Sundered Hourglass may spend its even-round second act on a Knack. Pocket Sundial's more
+  precise doc-60 contract wins doc 67's broad parenthetical: it is a pre-first-stack spell cast that
+  replaces the normal round-1 cast, not a prebattle Knack phase. The Long Oath remains doc-61 P2;
+  its eventual second-act credit must enter the shared ledger and accept a Knack.
+- Knacks are not spell casts and do not touch mana, Spell Power, copy/Echo/reflection, Sanctuary, or
+  resonance state. Ill-Wish deliberately uses the raw counter boundary so universal application
+  hooks still apply. Blood Drum uses cause-aware sacrifice/destruction settlement, bypassing Ward
+  and damage links without inventing a spell source. The Rusted Tongue's typed `knack_block` is the
+  sole printed disable.
+- Knack Resin is an upgraded persistent Resin marker: entering costs two extra movement for either
+  side and any company ending there gains Chill 1. Existing creature-placed Resin retains its prior
+  behavior. The broad every-round floor is necessarily target-conditional: a saturated battlefield
+  with fewer legal empty Resin hexes than the rank requires offers no executable Resin action, and
+  the permanent control states that exact placement reason instead of exposing a generic incomplete
+  draft. Rank-3 Errand exposes only same-round fallen originals whose original footprint is free;
+  fatal last-company Blood Drum resolves winner/death accounting without throwing.
+- A Warden garrison gets the installer's Knack only inside the exact rank-3 five-tile remote-casting
+  boundary. Human controls remain permanently visible with exact rank/effect/disabled reason; AI
+  uses the six stable doc-67 fallbacks only after declining spells and items.
+- Six `knack:<faction>` icon identities carry distinct literal subjects and deterministic typed
+  development placeholders. Release validation stays fail-closed until six distinct native icons
+  and provenance land. The executable Knack and asset catalogs are content-hash authority.
+- The resulting built-in content hash is `56207b86`; the seed-424242 two-turn state hash remains
+  `f5060329` because Knack authority is derived and no battle exists in that replay.
+
+## 2026-08-13 — Doc-63 existing-creature support uses provenance and stable event boundaries
+
+- The twenty support abilities run at their printed pipeline boundaries. Hex Feeder's +10% and
+  ordinary Hex +5% are additive (+15% per pip), not multiplicatively compounded. Chain Shot inherits
+  ordinary light-shot friendly fire, spends one shot total, and makes one stable non-recursive
+  secondary choice. Phalanx is a single nonstacking reducer.
+- Burn moved by Burn Conduit is already-resolved state and receives no application bonuses; its
+  empty branch is fixed non-spell Burn 1. Mana Leech and Siphon key on actual HP removed, not routed
+  request or overkill. Unstable deaths use a stable finite settlement queue; Silence the Passing
+  suppresses or doubles both Unstable and Soul Tithe as ordinary death triggers.
+- Spellbound blocks explicit spell selection and Borrow Shape but not untargeted mass effects.
+  Echoing requires an explicitly selected allied company and direct hero/hero-scroll provenance;
+  mass/incidental recipients, hostile targets, creature sources, and copies do not qualify. Ward
+  validates the original target before a stable legal redirection and spends its use only on success.
+- Bone Choir's transitional Hedge Caster row is superseded by doc 64; its general Caster repertoire
+  is Wither/Grave-Chill with two company-action charges at fixed Spell Power 3. Battlefield/side
+  resonance applies, while commander-personal Spell Power,
+  Kit, specialty, Tallykeeper, and artifact bonuses do not leak into the cast or a mirror copy.
+  Company casting works for heroless guardians and otherwise uses the ordinary spell legality,
+  Sanctuary, current target legality, copy, statistics, clone, replay, and persistence boundaries.
+
+## 2026-08-13 — Doc-64 creature traits use printed metadata and shared deterministic boundaries
+
+- Doc 64 supersedes Bone Choir's transitional Hedge row. The five existing caster repertoires and
+  twelve pattern rows are exact; the named table's three Wildergrass patterns override the stale
+  “no more than two” prose without weakening the one-pattern-per-unit rule. The explicit Familiar
+  carrying example assigns Ley-Touched; no other §4 assignment is invented.
+- Reliquary Ark's printed Blast Shot implies Ranged but supplies no ammunition count. It receives
+  six shots, matching the existing tier-three Silk-Spinners baseline; every blast spends one.
+- Spell Deflect is a serialized defender-owned pause after commitment, not a caster-authored target
+  field. Resistance-blocked casts still consume their act/mana or company charge/action.
+- Creature-cast enumeration resolves the same resonance face as execution and includes every
+  required serialized placement. Combat AI applies each repertoire spell's existing timing and
+  target hints; it does not choose by spell ID or bypass ordinary legality.
+- Cornered adds one point to the Attack statistic per complete 20% of starting count lost. It is
+  not a separate flat damage multiplier.
+- Adventure traits evaluate live army presence. Hungry pays 100 gold daily when possible; an unpaid
+  stack remains until the next week start, then leaves before that day's other creature benefits.
+- The executable content schema advances to `docs-60-67-v2-creature-traits.2`; resistance, caster,
+  and six shared-pattern metadata are bidirectional with their printed vocabulary.
+
+## 2026-08-13 — Doc-63 artifacts dispatch by tag and expose every bounded cost
+
+- The intermediate artifact catalog is exactly 110 definitions: 36 Vanilla, 30 Charm, 26 Relic,
+  eight Burden, four Kit, and six migrated Trinket. The twenty doc-63 additions each own authored
+  flavor, inspection copy, a literal sprite subject, and a typed class/slot development placeholder;
+  release mode remains fail-closed until twenty distinct native sprites and provenance exist.
+- The twenty-three doc-63 effect tags register at their actual pipeline stage and runtime consumers
+  query equipped effect tags, never artifact IDs. The three prior orphan tags follow the same rule:
+  `push_bonus` spends one serialized side credit, `reduce_enemy_death` floors counter/morale trigger
+  magnitude without weakening proportional damage, and `eat_counter` is a target-bearing replay
+  action with one serialized use per battle.
+- Empty Reliquary stores the last explicit hero spell action by spending the shared hero act and
+  releases that recorded action later without consuming an act. Cracked Prism records a distinct
+  second legal target and resolves the second application with half Spell Power. The Second Sunrise,
+  Grafted Hand, and other action/mana artifacts use finite per-side ledgers; no artifact grants an
+  unbounded cast or company action.
+- Counter caps remain nine except printed Hex application cap increases, with a global ceiling of
+  fifteen. Existing-pile doubling is not an application. Summoned-company, control-once,
+  resurrection-starting-count, two-granted-action, two/three-enchantment-slot, and maximum-mana
+  bounds remain authoritative under artifact modifiers.
+- Each Burden definition owns a visible removal trigger. Equip confirmation repeats its upside,
+  downside, lock, and removal condition. Satisfying Hedge-School spell teaching, own-city battle,
+  no-cast victory, or Mage Guild 5 completion records removal eligibility; Reliquarian rank 3 remains
+  the single game-long waiver.
+
+## 2026-08-13 — Hero army capacity is derived, capped, and lossless
+
+- A commanded hero has seven base army positions, +1 once Quartermaster reaches rank 1, and +1 per
+  equipped `army_slot_bonus` amount, capped at nine. The Long Table uses that generic artifact effect;
+  no consumer branches on its artifact ID. Higher Quartermaster ranks do not add more positions.
+  Garrisons, guardians, and other heroless armies remain fixed at seven.
+- The rules core derives capacity from serialized skills and equipment and synchronizes the hero's
+  army array to exactly that size. Capacity is not another stored field, so setup, selectors, AI,
+  canonical five-field saves, and action-log replay share one authority and prior seven-position
+  states remain valid.
+- Recruitment and joining, splitting and merging, friendly-hero/garrison exchange, authored setup,
+  battle setup and results, casualties, retreat, and surrender all preserve the destination hero's
+  derived shape. Battle reconstruction reads the serialized hero snapshots rather than inferring
+  capacity from the highest occupied company.
+- Any skill or equipment mutation that would shrink below an occupied tail position rejects before
+  changing state. This includes equipment replacement and forced Duelist trophies. Multi-company
+  joins preflight the complete result before spending, clearing the source, or changing a pending
+  choice; no partial success may strand or delete a company.
+
+## 2026-08-13 — Doc-63 consumables share bounded action, copy, and destruction seams
+
+- The verified authored item total is 50: the pre-v2 37 native items, Spell Tome, and twelve
+  doc-63 consumables. Spell Tome and those twelve items have literal subjects and typed development
+  placeholders. They do not masquerade as native manifest entries; release validation remains
+  fail-closed until thirteen distinct PNGs and provenance records are promoted.
+- Counterfeit Coin copies the enemy side's last explicit hero action rather than the battle-global
+  last spell. It preserves that action's Standard/Upgraded face, uses the Coin user's Spell Power,
+  and spends zero mana. Echo is excluded to close direct copy recursion. Target and branch fields
+  are enumerated from the recorded face, staged placement is dry-run before consumption, and AI uses
+  the same deterministic first-legal completion.
+- Vial of Borrowed Hours reserves through the shared two-granted-actions-per-company-per-round
+  ledger before activating the first immediate action. Alchemist rank 3 may add one distinct legal
+  company, but global, school, enchantment, and next-destruction items remain single/global effects.
+- Grave-Dust Sachet consumes its pending claim on the next destruction event even when that company
+  is summoned, cloned, or already claimed by another save; prohibited companies do not cause it to
+  skip forward to a later death. A legal company returns on the claimant side at ceil(25% of its
+  starting count), with casualties reduced for the restored units.
+- Tome contents derive from seed plus stable authored source key rather than gameplay RNG. Chest and
+  Reliquary Cairn pools stop at tier 3; only lock/barrow generic sources reach tiers 4–5; Reliquary
+  of Pages is exactly tier 4 and map lint requires its guardian. Editor instances carry the same
+  named spell and source fields and cannot author an invalid source/tier pair.
+
+## 2026-08-13 — Docs 63–64 creatures are neutral discoveries, not a seventh city roster
+
+- The executable unit catalog advances from 50 to 63 definitions: exactly the eight doc-63 neutrals
+  and five doc-64 showcases. Where the work orders specify tier and traits but no numeric body,
+  authored HP, damage, Attack, Defense, speed, growth, and costs are balanced against adjacent
+  faction tiers; later strategic recalibration remains owned by `98f.19`.
+- Every row owns one distinct named Manywhere field dwelling guarded by its own creature. The same
+  ordinary explicit dwelling action governs recruitment for humans and AI; Diplomacy applies to
+  the guardians, and only printed Beasts gain Beast Tongue/Beastmaster channels. Culture is unit
+  data, so cross-culture companies produce the existing mixed-army morale penalty without a new
+  exception or hidden neutral faction.
+- Unit inspection is the recruitment-card authority and now prints culture, footprint, full stats
+  and cost, caster repertoire/charges/power, every ability and drawback, named dwelling, channels,
+  and the mixed-culture warning before purchase.
+- Thirteen distinct battle subjects, thirteen adventure-guardian silhouettes, and thirteen
+  dwelling subjects have staged production jobs. Only battle and guardian subjects enter the typed
+  creature asset gate; development resolves deterministic culture/tier placeholders and release
+  remains fail-closed. No staged entry is added to the native manifest or reported as installed.
+- The replay/content schema advances to `docs-60-67-v2-creature-content.3`; the thirteen acquisition
+  rows and 26 typed creature art requirements join hash authority alongside the unit/map catalogs.
+  The resulting cumulative built-in content hash is `bf004a8b`.
+
+## 2026-08-13 — Doc 65 ships all 38 named artifacts
+
+- Spare Tongue is a named Magic row and is included. Doc 65 therefore adds 38 artifacts, not 37;
+  the final catalog is 148 definitions with class totals 36 Vanilla, 44 Charm, 45 Relic, 13 Burden,
+  4 Kit, and 6 Trinket. This arithmetic is authoritative for validators, UI, docs, and asset gates.
+- Every adventure, economy, magic, combat, conditional, burden, and set rule dispatches through an
+  effect/removal/set registry. Serialized action and instance state carries timing, choices, seeded
+  results, faction history, and pending battle decisions; artifact IDs do not select runtime rules.
+- The 38 doc-65 subjects join the 20 doc-63 subjects as typed staged artifact requirements. Native
+  raster production remains owned by `98f.18`; development placeholders are honest and deterministic,
+  and the release gate continues to fail closed for all 58 unresolved IDs.
+- The replay/content schema advances to `docs-60-67-v2-artifact-content.4`; the resulting cumulative
+  built-in content hash is `dac70e42`.
+- Empty Frame copies the selected artifact's generic effect tags, values, and set membership; its
+  physical slot, class, Burden contract, and legacy identity-only behavior remain those of the Frame.
+  Hollow Key's guarded reward is the explicit serialized `rewardPickup`; guarded sites stay
+  encounters, and the pickup's guardian reference remains in place.
+- Tinker's Rounds halves the final Marketplace buy rate with floor rounding and doubles ordinary
+  sell yield before flooring. Open Purse doubles scheduled daily income—cities, current or retained
+  mines, mills, and daily artifact income—before difficulty/suppression. Tallystick balancing and
+  Tithe refunds are grants/refunds, not scheduled income, and are not doubled.
+
+## 2026-08-13 — Doc 61 P2 closes the 124-spell catalog
+
+- Twenty-five new spells plus the False Colors and Standing Mirror retunes complete the catalog:
+  31 spells per school and 8/8/7/5/3 tiers per school. Every Standard/Upgraded pair now differs.
+- P2 combat rules use bounded state for hero-act credits, extra-action payoffs, weather, Ledger
+  half-strength triggers, copying, destruction saves, and upkeep. Mirror Hall copies once and
+  excludes mana/action generators, Echo, mirrors, and Twisters; only Upgraded may copy tier 5 at
+  half magnitude. Standing Mirror+ alone admits enemy Twisters. Composite spell faces validate each
+  recipient once, so Ward or immunity suppresses both impact and every rider for that recipient.
+- P2 adventure casts use explicit serialized targets and existing generic adventure primitives.
+  False Colors changes deterministic AI perception; other effects retain printed time scopes.
+  “Next N days” production windows begin at `D+1` and end at `D+N`; movement denial through a
+  following day includes that hero's start turn on the named day.
+- The schema advances to `docs-60-67-v2-spell-catalog.5`. The 25 new spell icons have literal typed
+  development requirements; release validation stays fail-closed until distinct native PNGs land.

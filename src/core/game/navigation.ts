@@ -10,6 +10,11 @@ import {
 import type { GameState, Hero } from '../types';
 import { terrainIdAt } from '../../content/terrain';
 import { PriorityQueue } from '../map/priorityQueue';
+import { UNITS } from '../../content/units';
+
+export const creatureShoreCost = (hero: Hero) => hero.army.some((stack) => stack
+  && UNITS[stack.unitId].abilities.includes('sea_legs')) ? 150 : null;
+const shoreCost = creatureShoreCost;
 
 export interface FriendlyHeroMeetingPlan {
   targetHeroId: string;
@@ -52,6 +57,9 @@ function blockedMapTiles(
       }
     }
     if (options.avoidAggro && object.kind === 'guardian'
+        && !(hero.adventureEffects.terrainIgnore?.day === state.day
+          && hero.adventureEffects.terrainIgnore.ignoreGuardianAggro)
+        && (hero.adventureEffects.ignoreGuardianAggroThroughDay ?? 0) < state.day
         && object.id !== options.fightGuardianId
         && !object.stoodAsideFor?.includes(hero.id)) {
       guardianAggroTiles(object, state.map).forEach((tile) => blocked.add(coordKey(tile)));
@@ -71,6 +79,14 @@ function blockedMapTiles(
   return blocked;
 }
 
+/** Shared occupancy boundary for effects that place a hero without path traversal. */
+export function legalAdventurePlacement(
+  state: GameState, hero: Hero, destination: { x: number; y: number },
+): boolean {
+  return inBounds(state.map, destination)
+    && !blockedMapTiles(state, hero, { avoidAggro: false }).has(coordKey(destination));
+}
+
 export function adventurePath(
   state: GameState,
   destination: { x: number; y: number },
@@ -83,6 +99,11 @@ export function adventurePath(
   }
   if (state.map.objects.some((object) => object.kind === 'obstacle'
       && objectFootprintTiles(object).some((tile) => same(tile, destination)))) return null;
+  const terrainIgnore = hero.adventureEffects.terrainIgnore?.day === state.day
+    ? hero.adventureEffects.terrainIgnore : undefined;
+  if (terrainIgnore?.domains.includes(terrainIdAt(state.map, destination) as 'mountain' | 'water')) {
+    return null;
+  }
   const passage = state.mapEffects.find((effect) => effect.kind === 'passage'
     && effect.owner === hero.owner && effect.expiresDay >= state.day
     && ((same(effect.entrances[0], hero.position) && same(effect.entrances[1], destination))
@@ -102,7 +123,7 @@ export function adventurePath(
     >= state.week;
   return findMixedPathResult(
     state.map, hero.position, destination, blockedMapTiles(state, hero, pathOptions), hero, state.omen,
-    freeForest,
+    freeForest, state.day,
   )?.path ?? null;
 }
 
@@ -150,7 +171,7 @@ export function friendlyHeroMeetingPlan(
     const result = passage
       ? { path: [{ ...hero.position }, { ...destination }], cost: 0 }
       : findMixedPathResult(
-        state.map, hero.position, destination, blocked, hero, state.omen, freeForest,
+        state.map, hero.position, destination, blocked, hero, state.omen, freeForest, state.day,
       );
     return result ? [{ destination, ...result }] : [];
   }).sort((a, b) => a.cost - b.cost
@@ -230,6 +251,10 @@ export function adventureMovementCost(
   state: GameState, hero: Hero, from: { x: number; y: number }, to: { x: number; y: number },
   freeForest = false,
 ): number {
+  const ignore = hero.adventureEffects.terrainIgnore;
+  if (ignore?.day === state.day && terrainIgnoreAppliesToStep(state.map, ignore, from, to)) {
+    return ignore.movementCost;
+  }
   const whirlpool = state.map.objects.find((object) => object.kind === 'whirlpool'
     && same(object.position, from) && state.map.objects.some((paired) =>
       paired.id === object.pairedId && same(paired.position, to)));
@@ -237,24 +262,39 @@ export function adventureMovementCost(
   const fromWater = terrainIdAt(state.map, from) === 'water';
   const toWater = terrainIdAt(state.map, to) === 'water';
   if (fromWater && toWater) return hero.embarkedBoatId ? SEA_MOVE_COST : Infinity;
-  if (fromWater && !toWater) return hero.embarkedBoatId ? DISEMBARK_MOVE_COST : Infinity;
+  if (fromWater && !toWater) return hero.embarkedBoatId ? shoreCost(hero) ?? DISEMBARK_MOVE_COST : Infinity;
   if (!fromWater && toWater) {
     const boat = state.map.objects.find((object) => object.kind === 'boat'
       && same(object.position, to) && (!object.occupiedBy || object.occupiedBy === hero.id));
-    return boat ? EMBARK_MOVE_COST : Infinity;
+    return boat ? shoreCost(hero) ?? EMBARK_MOVE_COST : Infinity;
   }
   return movementCost(state.map, from, to, hero, state.omen, freeForest);
+}
+
+export function terrainIgnoreAppliesToStep(
+  map: GameState['map'], ignore: NonNullable<Hero['adventureEffects']['terrainIgnore']>,
+  from: { x: number; y: number }, to: { x: number; y: number },
+): boolean {
+  const special = [terrainIdAt(map, from), terrainIdAt(map, to)]
+    .filter((terrain): terrain is 'mountain' | 'water' =>
+      terrain === 'mountain' || terrain === 'water');
+  return special.length > 0 && special.every((terrain) => ignore.domains.includes(terrain));
 }
 
 function findMixedPathResult(
   map: GameState['map'], start: { x: number; y: number }, goal: { x: number; y: number },
   blocked: ReadonlySet<string>, hero: Hero, omen: GameState['omen'], freeForest: boolean,
+  day: number,
 ): { path: { x: number; y: number }[]; cost: number } | null {
   const directions = [-1, 0, 1].flatMap((dx) => [-1, 0, 1]
     .filter((dy) => dx !== 0 || dy !== 0).map((dy) => ({ x: dx, y: dy })));
   type Node = { position: { x: number; y: number }; embarked: boolean };
   const key = (node: Node) => `${coordKey(node.position)}:${node.embarked ? 1 : 0}`;
-  const initial: Node = { position: start, embarked: Boolean(hero.embarkedBoatId) };
+  const terrainIgnore = hero.adventureEffects.terrainIgnore?.day === day
+    ? hero.adventureEffects.terrainIgnore : undefined;
+  const initial: Node = {
+    position: start, embarked: terrainIgnore ? false : Boolean(hero.embarkedBoatId),
+  };
   const open = new PriorityQueue<Node>();
   open.push(key(initial), 0, initial);
   const distance = new Map([[key(initial), 0]]);
@@ -288,18 +328,22 @@ function findMixedPathResult(
       const { position, routePenalty } = candidateNode;
       if (!inBounds(map, position)
           || (blocked.has(coordKey(position)) && !same(position, goal))) continue;
+      const ignore = terrainIgnore;
       const fromWater = terrainIdAt(map, current.position) === 'water';
       const toWater = terrainIdAt(map, position) === 'water';
       let embarked = current.embarked;
       let cost: number;
       const crossingWhirlpool = routePenalty > 0;
-      if (crossingWhirlpool) cost = embarked ? 0 : Infinity;
+      if (ignore && terrainIgnoreAppliesToStep(map, ignore, current.position, position)) {
+        cost = ignore.movementCost;
+      }
+      else if (crossingWhirlpool) cost = embarked ? 0 : Infinity;
       else if (fromWater && toWater) cost = embarked ? SEA_MOVE_COST : Infinity;
-      else if (fromWater && !toWater) { cost = embarked ? DISEMBARK_MOVE_COST : Infinity; embarked = false; }
+      else if (fromWater && !toWater) { cost = embarked ? shoreCost(hero) ?? DISEMBARK_MOVE_COST : Infinity; embarked = false; }
       else if (!fromWater && toWater) {
         const boat = map.objects.find((object) => object.kind === 'boat'
           && same(object.position, position) && (!object.occupiedBy || object.occupiedBy === hero.id));
-        cost = boat ? EMBARK_MOVE_COST : Infinity; embarked = Boolean(boat);
+        cost = boat ? shoreCost(hero) ?? EMBARK_MOVE_COST : Infinity; embarked = Boolean(boat);
       } else cost = movementCost(map, current.position, position, hero, omen, freeForest);
       if (!Number.isFinite(cost)) continue;
       const next = { position, embarked };
@@ -336,7 +380,11 @@ export function reachableAdventureTileKeys(state: GameState, hero: Hero): Set<st
     }
   }
   const freeForest = state.players[hero.owner].adventureEffects.greenTideUntilWeek >= state.week;
-  const initial: Node = { position: hero.position, embarked: Boolean(hero.embarkedBoatId) };
+  const terrainIgnore = hero.adventureEffects.terrainIgnore?.day === state.day
+    ? hero.adventureEffects.terrainIgnore : undefined;
+  const initial: Node = {
+    position: hero.position, embarked: terrainIgnore ? false : Boolean(hero.embarkedBoatId),
+  };
   const initialKey = nodeKey(initial);
   const distance = new Map([[initialKey, 0]]);
   const open = new PriorityQueue<Node>();
@@ -377,15 +425,19 @@ export function reachableAdventureTileKeys(state: GameState, hero: Hero): Set<st
       const toWater = terrainIdAt(state.map, position) === 'water';
       let embarked = current.embarked;
       let cost: number;
-      if (routePenalty > 0) cost = embarked ? 0 : Infinity;
+      if (terrainIgnore
+          && terrainIgnoreAppliesToStep(state.map, terrainIgnore, current.position, position)) {
+        cost = terrainIgnore.movementCost;
+      }
+      else if (routePenalty > 0) cost = embarked ? 0 : Infinity;
       else if (fromWater && toWater) cost = embarked ? SEA_MOVE_COST : Infinity;
       else if (fromWater && !toWater) {
-        cost = embarked ? DISEMBARK_MOVE_COST : Infinity;
+        cost = embarked ? shoreCost(hero) ?? DISEMBARK_MOVE_COST : Infinity;
         embarked = false;
       } else if (!fromWater && toWater) {
         const boat = state.map.objects.find((object) => object.kind === 'boat'
           && same(object.position, position) && (!object.occupiedBy || object.occupiedBy === hero.id));
-        cost = boat ? EMBARK_MOVE_COST : Infinity;
+        cost = boat ? shoreCost(hero) ?? EMBARK_MOVE_COST : Infinity;
         embarked = Boolean(boat);
       } else {
         cost = movementCost(state.map, current.position, position, hero, state.omen, freeForest);
@@ -407,6 +459,14 @@ export function reachableAdventureTileKeys(state: GameState, hero: Hero): Set<st
     }
     if (same(effect.entrances[0], hero.position)) result.add(coordKey(effect.entrances[1]));
     if (same(effect.entrances[1], hero.position)) result.add(coordKey(effect.entrances[0]));
+  }
+  if (terrainIgnore) {
+    for (const key of [...result]) {
+      const [x, y] = key.split(',').map(Number);
+      if (terrainIgnore.domains.includes(
+        terrainIdAt(state.map, { x, y }) as 'mountain' | 'water',
+      )) result.delete(key);
+    }
   }
   return result;
 }

@@ -78,6 +78,93 @@ try {
     'The Sixfold Trial · Six-player advanced combat proving ground'));
   if (!selectable) throw new Error('The Sixfold Trial is absent from campaign setup');
 
+  await page.select('.menu-fields select', 'sixfold-trial');
+  await page.$eval('input[inputmode="numeric"]', (input) => {
+    const setValue = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
+    setValue?.call(input, '4900');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await page.locator('.start-button').click();
+  await page.waitForSelector('.adventure-map', { timeout: 30_000 });
+  if (await page.$('.objective-primer')) {
+    await page.$eval('.choice-dialog .primary', (button) => (button as HTMLButtonElement).click());
+    await page.waitForSelector('.objective-primer', { hidden: true });
+  }
+  await page.waitForSelector('.end-turn:not(:disabled)', { timeout: 30_000 });
+  await page.evaluate(() => {
+    const samples: Array<{ bodyTextLength: number; adventureMap: boolean; day: string }> = [];
+    const running = { samples, blank: false, observer: null as MutationObserver | null, timer: 0 };
+    (window as typeof window & { __sixfoldRenderAudit?: unknown }).__sixfoldRenderAudit = running;
+    const sample = Function(`
+      const audit = window.__sixfoldRenderAudit;
+      const entry = {
+        bodyTextLength: document.body?.innerText.trim().length ?? 0,
+        adventureMap: Boolean(document.querySelector('.adventure-map')),
+        day: document.querySelector('.turn-badge b')?.textContent ?? '',
+      };
+      audit.blank ||= entry.bodyTextLength === 0;
+      const previous = audit.samples.at(-1);
+      if (!previous || JSON.stringify(previous) !== JSON.stringify(entry)) audit.samples.push(entry);
+    `) as () => void;
+    const observer = new MutationObserver(sample);
+    observer.observe(document.body, { childList: true, subtree: true });
+    const timer = window.setInterval(sample, 50);
+    running.observer = observer;
+    running.timer = timer;
+    sample();
+  });
+  await page.locator('.end-turn').click();
+  const transitionFrame = await page.evaluate(() => ({
+    bodyTextLength: document.body?.innerText.trim().length ?? 0,
+    adventureMap: Boolean(document.querySelector('.adventure-map')),
+    viewport: [document.documentElement.clientWidth, document.documentElement.clientHeight],
+  }));
+  if (!transitionFrame.adventureMap || transitionFrame.bodyTextLength === 0) {
+    throw new Error(`First-turn AI transition rendered blank: ${JSON.stringify(transitionFrame)}`);
+  }
+  await capture(page, '00-first-turn-ai-progress-desktop.png', ['.notice-toast']);
+  await page.waitForFunction(() => document.querySelector('.turn-badge b')?.textContent === 'Day 2'
+    && Boolean(document.querySelector('.end-turn:not(:disabled)')), { timeout: 90_000 });
+  const transitionAudit = await page.evaluate(() => {
+    const running = (window as typeof window & { __sixfoldRenderAudit?: {
+      samples: Array<{ bodyTextLength: number; adventureMap: boolean; day: string }>;
+      observer: MutationObserver; timer: number; blank: boolean;
+    } }).__sixfoldRenderAudit;
+    if (!running) return null;
+    running.observer.disconnect();
+    window.clearInterval(running.timer);
+    return { blank: running.blank, samples: running.samples };
+  });
+  if (!transitionAudit || transitionAudit.blank) {
+    throw new Error(`First-turn render audit detected a blank frame: ${JSON.stringify(transitionAudit)}`);
+  }
+  audit.firstTurnTransition = { immediate: transitionFrame, ...transitionAudit };
+  const firstTurnSave = await page.evaluate(() => {
+    const cursor = Number(localStorage.getItem('border-marches.save.v4.auto-cursor'));
+    const slot = (cursor + 2) % 3;
+    return JSON.parse(localStorage.getItem(`border-marches.save.v4.auto-${slot}`) ?? 'null') as {
+      mapId?: string; seed?: number; actionLog?: Array<{ type?: string }>;
+    } | null;
+  });
+  const firstTurnActions = firstTurnSave?.actionLog ?? [];
+  const revealDismissals = firstTurnActions.filter((action) =>
+    action.type === 'DISMISS_GUILD_REVEAL').length;
+  const endedTurns = firstTurnActions.filter((action) => action.type === 'END_TURN').length;
+  if (firstTurnSave?.mapId !== 'sixfold-trial' || firstTurnSave.seed !== 4900
+      || firstTurnActions.at(-1)?.type !== 'END_TURN'
+      || revealDismissals !== 5 || endedTurns !== 6) {
+    throw new Error(`First-turn autosave is not replay-authoritative: ${JSON.stringify(firstTurnSave)}`);
+  }
+  await page.waitForSelector('.notice-toast', { hidden: true, timeout: 5_000 });
+  await capture(page, '00-first-turn-return-desktop.png');
+  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+  await capture(page, '00-first-turn-return-390.png');
+  audit.firstTurn = {
+    day: 2, activePlayer: 'p1', seed: firstTurnSave.seed,
+    actionCount: firstTurnActions.length, revealDismissals, endedTurns,
+    finalAction: firstTurnActions.at(-1)?.type,
+  };
+
   const adventure = baseState();
   await loadState(page, adventure, '.adventure-map');
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
@@ -107,7 +194,7 @@ try {
   await page.locator('.town-list button').click();
   await page.waitForSelector('.castle-screen');
   const castleText = await page.$eval('.castle-screen', (node) => node.textContent ?? '');
-  for (const expected of ['City Hall', 'Keep', 'Mage Guild 3']) {
+  for (const expected of ['City Hall', 'Keep', 'Mage Guild 4']) {
     if (!castleText.includes(expected)) throw new Error(`Developed castle omits ${expected}`);
   }
   await capture(page, '02-developed-castle-desktop.png');
@@ -122,28 +209,23 @@ try {
     if (!button) throw new Error('Hero details command missing'); button.click();
   });
   await page.waitForSelector('.hero-details-dialog');
-  await page.$eval('.hero-details-tabs', (tabs) => {
-    const button = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
-      .find((candidate) => candidate.textContent?.includes('Army'))!; button.click();
-  });
-  const armySlots = await page.$$('.hero-details-dialog .army-slot[data-inspect-kind="unit"]');
+  await page.$eval('[data-dashboard-region="army"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  const armySlots = await page.$$('.hero-dashboard-army-grid > button');
   if (armySlots.length !== 6) throw new Error(`Expected full six-tier roster, got ${armySlots.length}`);
   await capture(page, '04-full-army-desktop.png');
-  await page.$eval('.hero-details-tabs', (tabs) => {
-    const button = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
-      .find((candidate) => candidate.textContent?.includes('Special skills'))!; button.click();
-  });
-  const skillCount = await page.$$('.hero-details-skills article');
+  await page.$eval('[data-dashboard-region="secondary-skills"]', (region) =>
+    region.scrollIntoView({ block: 'center' }));
+  const skillCount = await page.$$('.hero-dashboard-skill-grid > button');
   if (skillCount.length !== 6) throw new Error(`Expected six advanced skills, got ${skillCount.length}`);
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   await capture(page, '05-hero-skills-390.png');
-  await page.locator('.hero-details-tabs button').click();
   await page.$eval('.hero-details-dialog', (dialog) => {
     const button = [...dialog.querySelectorAll<HTMLButtonElement>('button')]
       .find((candidate) => candidate.textContent?.includes('Open adventure spellbook'))!; button.click();
   });
   await page.waitForSelector('.adventure-spellbook');
-  const spellCount = await page.$$('.adventure-spellbook .spell-card');
+  const spellCount = await page.$$('.adventure-spellbook .spell-grid-cell');
   if (spellCount.length < 8) throw new Error(`Expected the complete adventure subset, got ${spellCount.length}`);
   await capture(page, '06-adventure-spellbook-390.png', ['.inspection-backdrop']);
 
@@ -163,9 +245,9 @@ try {
   await capture(page, '06-advanced-neutral-combat-desktop.png');
   await page.locator('.spellbook-button').click();
   await page.waitForSelector('.spellbook');
-  const combatSpellCount = await page.$$('.spellbook .spell-card');
-  if (combatSpellCount.length !== 34) {
-    throw new Error(`Expected all 34 faction-school spells, got ${combatSpellCount.length}`);
+  const combatSpellCount = await page.$$('.spellbook .spell-grid-cell');
+  if (combatSpellCount.length !== 31) {
+    throw new Error(`Expected the complete 31-spell selected school, got ${combatSpellCount.length}`);
   }
   await capture(page, '07-combat-spells-and-abilities-desktop.png');
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });

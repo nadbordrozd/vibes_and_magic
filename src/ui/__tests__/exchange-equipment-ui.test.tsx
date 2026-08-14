@@ -9,6 +9,7 @@ import {
 import {
   ArtifactPaperDoll, compatibleEquipmentSlots, equipmentResultPreview,
 } from '../components/ArtifactPaperDoll';
+import { AdventureHeroDetails } from '../components/AdventureHeroDetails';
 import { ExchangeScreen, itemTransferAction } from '../components/ExchangeScreen';
 
 function heroes(): [ReturnType<typeof createGame>, Hero, Hero] {
@@ -113,5 +114,19 @@ describe('explicit exchange and equipment UI', () => {
     expect(html).toContain('Throw 5000 gold into a Wishing Well');
     expect(html).toContain('choose 2 compatible slots');
     expect(JSON.stringify(hero.artifacts)).toBe(before);
+  });
+
+  it('exposes completed Burden removal instead of leaving the UI permanently locked', () => {
+    const [state, hero] = heroes();
+    hero.artifacts.equipment.misc1 = { id: 'greedyGrimoire' };
+    hero.removableBurdens = ['greedyGrimoire'];
+    const paperDoll = renderToStaticMarkup(<ArtifactPaperDoll state={state} hero={hero}
+      dispatch={() => undefined} />);
+    const dashboard = renderToStaticMarkup(<AdventureHeroDetails state={state} hero={hero}
+      dispatch={() => undefined} onClose={() => undefined} onOpenSpellbook={() => undefined}
+      onUseItem={() => undefined} onUnstitch={() => undefined} />);
+    expect(paperDoll).toContain('Burden · removal ready');
+    expect(paperDoll).toContain('Burden — removal ready: Teach a spell at a Hedge School.');
+    expect(dashboard).toContain('Burden removal ready');
   });
 });

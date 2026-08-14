@@ -1,10 +1,12 @@
 import type {
   Action, BattleSide, BattleState, CounterId,
 } from '../types';
+import { hasArtifactEffect } from '../artifacts';
 import { stacksAdjacent } from './footprint';
 import {
-  addBattleCounter, clearCounters,
+  addBattleCounter, addSpellCounter, clearCounterPile, clearCounters,
 } from './magicEffects';
+import { removeYokeFromEffect } from './p1GraveWildSpellEffects';
 
 type CastAction = Extract<Action, { type: 'BATTLE_CAST' }>;
 export type TwisterMode = 'amplify' | 'sour' | 'unmake' | 'reflect' | 'overgrow';
@@ -32,7 +34,7 @@ export function applyEffectTwister(
       );
     } else if (mode === 'sour' && counter === 'bloom') {
       const amount = source.counters.bloom;
-      source.counters.bloom = 0;
+      clearCounterPile(source, 'bloom');
       addBattleCounter(battle, source, 'hex', amount, side);
     } else if (mode === 'unmake') {
       clearCounters(source, battle);
@@ -45,11 +47,12 @@ export function applyEffectTwister(
         );
       }
     } else if (mode === 'overgrow') {
+      const amount = source.counters[counter];
       battle.stacks.filter((stack) => stack.count > 0
         && stack.id !== action.secondaryTargetId
         && (stack.id === source.id || stacksAdjacent(stack, source)))
         .forEach((stack) => addBattleCounter(
-          battle, stack, counter, source.counters[counter], side,
+          battle, stack, counter, amount, side,
         ));
     } else throw new Error('Effect cannot be twisted');
     return;
@@ -59,12 +62,18 @@ export function applyEffectTwister(
     const effect = source?.effects.find((item) =>
       item.id === parts.slice(2).join(':'));
     if (!source || !effect) throw new Error('Invalid timed effect target');
+    if (effect.spellId === 'yoke') {
+      if ((mode !== 'sour' && mode !== 'unmake') || !removeYokeFromEffect(battle, source)) {
+        throw new Error('This damage link is protected');
+      }
+      return;
+    }
     if (mode === 'amplify') {
       effect.magnitude *= 2;
       if (upgraded) effect.duration += 1;
     } else if (mode === 'sour' && effect.beneficial) {
       source.effects = source.effects.filter((item) => item.id !== effect.id);
-      addBattleCounter(battle, source, 'hex', 2, side);
+      addSpellCounter(battle, source, 'hex', 2, side);
     } else if (mode === 'reflect') {
       for (const id of [action.targetId, action.secondaryTargetId]
         .filter(Boolean).slice(0, upgraded ? 2 : 1)) {
@@ -87,17 +96,28 @@ export function applyEffectTwister(
     const index = row.findIndex((item) =>
       item.id === parts.slice(2).join(':'));
     if (index < 0) throw new Error('Invalid enchantment target');
-    if (battle.sealedEnchantments.includes(row[index].id)) {
+    if (battle.sealedEnchantments.includes(row[index].id) && !(mode === 'unmake' && upgraded)) {
       throw new Error('The enchantment is protected by a Wax Seal');
+    }
+    const owner = targetSide === 'attacker' ? battle.attackerHero : battle.defenderHero;
+    if (owner && hasArtifactEffect(owner, 'enchantment_protection')
+        && (mode === 'sour' || (mode === 'unmake' && !upgraded))) {
+      throw new Error('The enchantment is protected by its artifact');
     }
     if (mode === 'amplify') row[index].multiplier *= 2;
     else if (mode === 'sour' || mode === 'unmake') {
+      const removedId = row[index].id;
       row.splice(index, 1);
+      battle.sealedEnchantments = battle.sealedEnchantments.filter((id) => id !== removedId);
+      if (mode === 'unmake' && upgraded) {
+        battle.stacks.filter((stack) => stack.side === targetSide && stack.count > 0)
+          .forEach((stack) => addSpellCounter(battle, stack, 'chill', 2, side));
+      }
       if (mode === 'sour' && upgraded) {
         battle.stacks.filter((stack) =>
           stack.side === enemySide(side) && stack.count > 0)
           .forEach((stack) =>
-            addBattleCounter(battle, stack, 'hex', 3, side));
+            addSpellCounter(battle, stack, 'hex', 3, side));
       }
     } else throw new Error('Enchantment cannot be reflected');
     return;

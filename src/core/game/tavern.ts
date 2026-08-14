@@ -2,8 +2,9 @@ import {
   HERO_HIRE_COST, HERO_MOVE_POINTS, HERO_REHIRE_COST, MAX_HEROES_PER_PLAYER,
 } from '../../content/constants';
 import { FACTIONS } from '../../content/factions';
-import { canAfford, makeArmy, pay } from '../army';
-import { logisticsRate } from '../heroBehaviors';
+import { heroArmyCapacity, makeArmy, synchronizeHeroArmyCapacity } from '../army';
+import { canPlayerAfford, payPlayer } from '../artifacts';
+import { logisticsRate, maximumMana } from '../heroBehaviors';
 import { syncHeroView } from '../heroes';
 import { randomInt } from '../rng';
 import { castleEntrance } from '../map/occupancy';
@@ -64,20 +65,25 @@ export function hireHero(
   const index = player.tavernPool.findIndex((hero) => hero.id === heroId);
   if (index < 0) throw new Error('Hero is not in the tavern pool');
   const hero = player.tavernPool[index];
+  if (hero.rehireBlockedUntilDay > state.day) {
+    throw new Error(`${hero.name} cannot be re-hired until day ${hero.rehireBlockedUntilDay}`);
+  }
   const cost = heroHireCost(hero);
-  if (!canAfford(player.resources, { gold: cost })) throw new Error('Cannot afford hero');
-  player.resources = pay(player.resources, { gold: cost });
+  if (!canPlayerAfford(player, { gold: cost })) throw new Error('Cannot afford hero');
+  payPlayer(player, { gold: cost });
   player.tavernPool.splice(index, 1);
   player.tavernOffers = player.tavernOffers.filter((id) => id !== heroId);
   const returning = hero.defeated;
   hero.alive = true;
   hero.position = castleEntrance(castle);
-  hero.mana = hero.knowledge * 10;
+  hero.mana = maximumMana(hero, player);
   hero.movement = Math.round(HERO_MOVE_POINTS * (1 + logisticsRate(hero)));
+  hero.dailyMovementMaximum = hero.movement;
   hero.pathMemory = [];
   hero.army = returning
-    ? (hero.tavernArmyRetained ? hero.army : makeArmy([]))
-    : makeArmy(FACTIONS[player.faction].hireArmy);
+    ? (hero.tavernArmyRetained ? hero.army : makeArmy([], heroArmyCapacity(hero)))
+    : makeArmy(FACTIONS[player.faction].hireArmy, heroArmyCapacity(hero));
+  synchronizeHeroArmyCapacity(hero);
   hero.tavernArmyRetained = false;
   hero.defeated = false;
   hero.rehireMultiplier = 1;

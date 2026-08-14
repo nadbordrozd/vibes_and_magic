@@ -45,13 +45,13 @@ describe('mechanics regressions', () => {
     expect(state.players.p1.resources.gold).toBe(5000);
   });
 
-  it('regenerates one mana per day in the field', () => {
+  it('regenerates two mana per day in the field', () => {
     let state = createGame({ seed: 1, p1: 'human', p2: 'human' });
     state.players.p1.hero!.position = { x: 4, y: 10 };
     state.players.p1.hero!.mana = 0;
     state = apply(state, { type: 'END_TURN' });
     state = apply(state, { type: 'END_TURN' });
-    expect(state.players.p1.hero!.mana).toBe(1);
+    expect(state.players.p1.hero!.mana).toBe(2);
   });
 
   it('restores mana fully in a friendly castle', () => {

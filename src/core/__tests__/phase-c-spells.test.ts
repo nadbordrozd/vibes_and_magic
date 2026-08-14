@@ -6,7 +6,7 @@ import { createBattle } from '../combat/battle';
 import { canUseRanged } from '../combat/damage';
 import { addBattleCounter, addTimedEffect } from '../combat/magicEffects';
 import { runAttackPipeline } from '../combat/pipeline';
-import { canCastSpell, castSpell, castStoredSpell } from '../combat/spells';
+import { canCastSpell, castSpell, castStoredSpell, resolvePendingMirrorCopy } from '../combat/spells';
 import { createGame } from '../game';
 import type { BattleState, SpellId, UnitId } from '../types';
 
@@ -35,18 +35,16 @@ function stored(
 }
 
 describe('Phase C complete spell catalog', () => {
-  it('contains 68 spells with 16 entries per school plus four provenance spells', () => {
-    expect(Object.keys(SPELLS)).toHaveLength(68);
-    for (const school of ['rite', 'craft', 'grave', 'wild'] as const) {
-      expect(SCHOOL_SPELLS(school)).toHaveLength(16 + (
-        school === 'rite' || school === 'craft' || school === 'grave' || school === 'wild'
-          ? 1 : 0
-      ));
-    }
+  it('contains the complete 124-spell catalog', () => {
+    expect(Object.keys(SPELLS)).toHaveLength(124);
+    expect(SCHOOL_SPELLS('rite')).toHaveLength(31);
+    expect(SCHOOL_SPELLS('craft')).toHaveLength(31);
+    expect(SCHOOL_SPELLS('grave')).toHaveLength(31);
+    expect(SCHOOL_SPELLS('wild')).toHaveLength(31);
     expect(Object.values(SPELLS).reduce((counts, spell) => ({
       ...counts, [spell.rarity!]: counts[spell.rarity!] + 1,
     }), { common: 0, uncommon: 0, rare: 0 })).toEqual({
-      common: 20, uncommon: 32, rare: 16,
+      common: 20, uncommon: 88, rare: 16,
     });
   });
 
@@ -136,7 +134,9 @@ describe('Phase C complete spell catalog', () => {
     state.destroyedStacks = 3;
     const mana = state.defenderHero!.mana;
     stored(state, 'defender', 'theToll', undefined, true);
-    expect(state.defenderHero!.mana).toBe(mana + 9);
+    expect(state.defenderHero!.mana).toBe(Math.min(
+      mana + 9, state.defenderHero!.manaMaximum!,
+    ));
     stored(state, 'defender', 'loyalUntoDeath', 'defender-0', true);
     const attacker = state.stacks[0];
     const defender = state.stacks[1];
@@ -144,7 +144,9 @@ describe('Phase C complete spell catalog', () => {
     const before = attacker.topHp;
     runAttackPipeline(state, attacker.id, defender.id);
     expect(attacker.topHp).toBeLessThan(before);
-    expect(state.defenderHero!.mana).toBe(mana + 12);
+    expect(state.defenderHero!.mana).toBe(Math.min(
+      mana + 12, state.defenderHero!.manaMaximum!,
+    ));
   });
 
   it('Standing Mirror copies an enemy spell without spending its hero act', () => {
@@ -156,5 +158,23 @@ describe('Phase C complete spell catalog', () => {
     expect(state.stacks[1].counters.hex).toBeGreaterThan(0);
     expect(state.stacks[0].counters.hex).toBeGreaterThan(0);
     expect(state.castRound.defender).toBe(0);
+  });
+
+  it('Upgraded Standing Mirror exposes one bounded target choice and resolves only that copy', () => {
+    const state = battle(
+      [{ unitId: 'yeoman', count: 20 }, { unitId: 'longbowman', count: 10 }],
+      [{ unitId: 'tinSoldier', count: 20 }],
+    );
+    stored(state, 'defender', 'standingMirror', undefined, true);
+    state.attackerHero.knownSpells.push('wither');
+    state.attackerHero.mana = 20;
+    castSpell(state, { type: 'BATTLE_CAST', spellId: 'wither', targetId: 'defender-0' });
+    expect(state.pendingMirrorCopy?.legalTargetIds).toEqual(['attacker-0', 'attacker-1']);
+    expect(state.stacks[0].counters.hex).toBe(0);
+    expect(state.stacks[1].counters.hex).toBe(0);
+    resolvePendingMirrorCopy(state, 'defender', 'attacker-1');
+    expect(state.stacks[0].counters.hex).toBe(0);
+    expect(state.stacks[1].counters.hex).toBeGreaterThan(0);
+    expect(state.pendingMirrorCopy).toBeUndefined();
   });
 });

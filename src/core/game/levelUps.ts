@@ -1,14 +1,19 @@
-import { consumableSlotCount, skillRank } from '../heroBehaviors';
+import { consumableSlotCount, gainExperience, maximumMana, skillRank } from '../heroBehaviors';
 import { SKILLS } from '../../content/skills';
 import { findOwnedHero, selectedHero } from '../heroes';
 import {
-  drawLevelOptions, MAX_SECONDARY_SKILLS, needsLevel,
+  drawLevelOptions, grimoirePool, MAX_SECONDARY_SKILLS, needsLevel,
 } from '../progression';
 import type {
   GameState, LevelChoice, PlayerId, PrimaryStat, SecondarySkillId,
 } from '../types';
 import { resolveDebtEvent } from '../debts';
 import { dealBargains } from './bargains';
+import { SPELLS } from '../../content/spells';
+import { nextRandom } from '../rng';
+import { applyLoremasterRetroactiveUpgrades, learnSpell } from './spellLearning';
+import { markBurdenRemovalReady } from '../artifacts';
+import { setQuartermasterRank } from '../army';
 
 const PRIMARY_STATS: PrimaryStat[] = [
   'attack', 'defense', 'spellPower', 'knowledge',
@@ -42,7 +47,7 @@ export function skipLevel(state: GameState): void {
   const hero = findOwnedHero(state, pending.playerId, pending.heroId);
   if (!hero) throw new Error('Hero missing');
   hero.level += 1;
-  hero.xp += SKILLS.chronicler.values.skipXp;
+  gainExperience(hero, SKILLS.chronicler.values.skipXp);
   state.pendingChoice = null;
   state.lastMessage =
     `Level ${hero.level}: draft skipped for ${SKILLS.chronicler.values.skipXp} XP.`;
@@ -69,6 +74,7 @@ export function chooseLevel(state: GameState, choice: LevelChoice): void {
   }
   const hero = findOwnedHero(state, pending.playerId, pending.heroId);
   if (!hero) throw new Error('Hero missing');
+  const fromHedgeSchool = pending.source === 'hedgeSchool';
   hero.level += 1;
   if (choice === 'bargain') {
     dealBargains(state, hero, 1, 'level');
@@ -79,10 +85,30 @@ export function chooseLevel(state: GameState, choice: LevelChoice): void {
       kind: 'inscribe', playerId: pending.playerId, heroId: hero.id, options,
     };
     state.lastMessage = `Level ${hero.level}: choose a spell to inscribe.`;
+  } else if (choice === 'adept') {
+    const options = hero.knownSpells.filter((id) => {
+      const mana = SPELLS[id].mana;
+      return mana !== 'X' && Math.max(1, mana - (hero.spellManaReductions[id] ?? 0)) > 1;
+    });
+    if (!options.length) throw new Error('Adept needs a known spell costing at least 2 mana');
+    state.pendingChoice = {
+      kind: 'adept', playerId: pending.playerId, heroId: hero.id, options,
+    };
+    state.lastMessage = `Level ${hero.level}: choose a spell for Adept.`;
+  } else if (choice === 'grimoire') {
+    const pool = grimoirePool(hero, hero.level);
+    if (!pool.length) throw new Error('Grimoire has no legal unknown spell outcome');
+    let random: number;
+    [random, state.rng] = nextRandom(state.rng);
+    const learned = pool[Math.min(pool.length - 1, Math.floor(random * pool.length))].id;
+    learnSpell(hero, learned);
+    if (fromHedgeSchool) markBurdenRemovalReady(hero, 'hedge-school-spell');
+    state.pendingChoice = null;
+    state.lastMessage = `Level ${hero.level}: Grimoire teaches ${SPELLS[learned].name}.`;
   } else if (PRIMARY_STATS.includes(choice as PrimaryStat)) {
     hero[choice as PrimaryStat] += 1;
     if (choice === 'knowledge') {
-      hero.mana = Math.min(hero.mana, hero.knowledge * 10);
+      hero.mana = Math.min(hero.mana, maximumMana(hero, state.players[hero.owner]));
     }
     state.pendingChoice = null;
     state.lastMessage = `Level ${hero.level}: +1 ${choice}.`;
@@ -93,7 +119,12 @@ export function chooseLevel(state: GameState, choice: LevelChoice): void {
         >= MAX_SECONDARY_SKILLS) {
       throw new Error('A hero may know at most six secondary skills');
     }
-    hero.skills[skillId] = Math.min(3, held + 1) as 1 | 2 | 3;
+    const rank = Math.min(3, held + 1) as 1 | 2 | 3;
+    if (skillId === 'quartermaster') setQuartermasterRank(hero, rank);
+    else hero.skills[skillId] = rank;
+    if (skillId === 'loremaster' && hero.skills.loremaster === 3) {
+      applyLoremasterRetroactiveUpgrades(hero);
+    }
     while (hero.inventory.length < consumableSlotCount(hero)) {
       hero.inventory.push(null);
     }
@@ -102,4 +133,21 @@ export function chooseLevel(state: GameState, choice: LevelChoice): void {
       `Level ${hero.level}: ${skillId} rank ${hero.skills[skillId]}.`;
   }
   if (!state.pendingChoice) checkLevel(state, pending.playerId, hero.id);
+}
+
+export function chooseAdeptSpell(state: GameState, spellId: import('../types').SpellId): void {
+  const pending = state.pendingChoice;
+  if (pending?.kind !== 'adept' || !pending.options.includes(spellId)) {
+    throw new Error('Invalid Adept spell');
+  }
+  const hero = findOwnedHero(state, pending.playerId, pending.heroId);
+  if (!hero) throw new Error('Hero missing');
+  const mana = SPELLS[spellId].mana;
+  if (mana === 'X') throw new Error('Adept cannot reduce an X-cost spell');
+  hero.spellManaReductions[spellId] = Math.min(mana - 1,
+    (hero.spellManaReductions[spellId] ?? 0) + 2);
+  state.pendingChoice = null;
+  state.lastMessage = `${SPELLS[spellId].name} now costs ${Math.max(1,
+    mana - hero.spellManaReductions[spellId]!)} mana.`;
+  checkLevel(state, pending.playerId, hero.id);
 }

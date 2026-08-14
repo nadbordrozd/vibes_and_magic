@@ -32,8 +32,10 @@ castle. The field contains 36 reachable chests and 18 ordinary artifact rewards.
 behind a separately authored linked guardian; relic-class rewards occupy later masterwork seals.
 The 18 static encounters use ability-rich faction and neutral units and cover four executable
 army-strength bands: skirmish 100–220, field 240–440, elite 500–800, and ordeal 850–1,300, with at
-least four encounters in each. Six independently owned developed castles and full heroes provide
-immediate hero-versus-hero and Walls/Keep siege opportunities.
+least four encounters in each. The docs 63–64 recalibration preserves those thresholds and pins the
+18 exact derived counts at 4/4/5/4 encounters across the four bands; the generated calibration
+report records every count and realized strength. Six independently owned developed castles and
+full heroes provide immediate hero-versus-hero and Walls/Keep siege opportunities.
 
 ## Acceptance
 

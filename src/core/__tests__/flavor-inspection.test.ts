@@ -142,7 +142,7 @@ describe('new named specialty registry', () => {
     sentry.position = { x: 1, y: hollisActor.position.y };
     const before = hollisActor.topHp;
     runAttackPipeline(hollisBattle, hollisActor.id, sentry.id);
-    expect(before - hollisActor.topHp).toBe(5);
+    expect(before - hollisActor.topHp).toBe(9);
   });
 
   it('applies retaliation and skirmish specialties inside combat resolution', () => {

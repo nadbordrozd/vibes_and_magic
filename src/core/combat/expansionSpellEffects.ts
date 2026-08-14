@@ -4,11 +4,10 @@ import type {
   Action, BattleHero, BattleSide, BattleStack, BattleState, CounterId, Coord,
 } from '../types';
 import { stackHasAbility, stackIgnoresMovementBlockers } from './abilities';
-import { applyDamage } from './damage';
 import { hexNeighbors, nearestReachableToTarget, reachableHexes } from './hex';
 import {
-  addBattleCounter, addTimedEffect, clearCounters, grantMeter, scaledDuration,
-  totalStackHp,
+  addBattleCounter, addSpellCounter, addTimedEffect, clearCounterPile, clearCounters, grantMeter,
+  scaledDuration, totalStackHp,
 } from './magicEffects';
 import { applyEffectTwister } from './twisters';
 import { createBattleTile, placeBattleTile, tileBlocksMovement } from './tiles';
@@ -16,6 +15,12 @@ import {
   footprintFits, occupiedByStacks, stackDistance, stackHexes, stacksAdjacent,
 } from './footprint';
 import { coordKey } from '../map/pathfinding';
+import {
+  addManaClamped, applySpellDamage, eligibleBorrowAbilities, grantExtraAction,
+} from './primitives';
+import { spellRecipientAllowed } from './creatureTraits';
+import { artifactEffectTotal, hasArtifactEffect } from '../artifacts';
+import { forcedMovementDistance } from './primitives';
 
 type CastAction = Extract<Action, { type: 'BATTLE_CAST' }>;
 const stackById = (battle: BattleState, id?: string) =>
@@ -30,16 +35,17 @@ function enchant(
     id: `${action.spellId}-${side}-${battle.round}`, spellId: action.spellId,
     side, multiplier: 1, upgraded, duration,
   };
-  if (row.length < 2) row.push(effect);
+  const hero = side === 'attacker' ? battle.attackerHero : battle.defenderHero;
+  const slots = hero && hasArtifactEffect(hero, 'enchantment_slots') ? 3 : 2;
+  if (row.length < slots) row.push(effect);
   else row.splice(action.replaceEnchantment ?? 0, 1, effect);
 }
 
-function percentDamage(battle: BattleState, stack: BattleStack, percent: number): void {
+function percentDamage(
+  battle: BattleState, stack: BattleStack, percent: number, sourceSide: BattleSide,
+): void {
   const damage = Math.max(1, Math.ceil(totalStackHp(stack) * percent / 100));
-  const kills = applyDamage(stack, damage);
-  battle.casualties[stack.side][stack.unitId] =
-    (battle.casualties[stack.side][stack.unitId] ?? 0) + kills;
-  if (stack.count === 0) battle.destroyedStacks += 1;
+  applySpellDamage(battle, stack, damage, { sourceSide });
 }
 
 function freeHexes(battle: BattleState, mover: BattleStack): Coord[] {
@@ -59,6 +65,7 @@ function push(
   distance: number, collisionPercent: number, chill: boolean,
 ): void {
   if (!source) return;
+  distance = forcedMovementDistance(battle, target, source.side, distance);
   let moved = 0;
   for (let step = 0; step < distance; step += 1) {
     const occupied = occupiedByStacks(battle.stacks, target.id);
@@ -76,8 +83,8 @@ function push(
     moved += 1;
   }
   if (moved < distance) {
-    percentDamage(battle, target, collisionPercent);
-    if (chill && target.count > 0) addBattleCounter(battle, target, 'chill', 1, source.side);
+    percentDamage(battle, target, collisionPercent, source.side);
+    if (chill && target.count > 0) addSpellCounter(battle, target, 'chill', 1, source.side);
   }
 }
 
@@ -90,23 +97,25 @@ function resolveWild(
     const source = battle.stacks.find((stack) => stack.id === battle.currentStackId);
     push(battle, target!, source, plus ? 3 : 2, plus ? 6 : 3, plus);
   } else if (action.spellId === 'bloom') {
-    addBattleCounter(battle, target!, 'bloom', plus ? 4 : 3, side);
+    addSpellCounter(battle, target!, 'bloom', plus ? 4 : 3, side);
     if (plus) battle.stacks.filter((stack) => stack.count > 0 && stack.side === side
       && stack.id !== target!.id
       && stacksAdjacent(target!, stack))
-      .forEach((stack) => addBattleCounter(battle, stack, 'bloom', 1, side));
+      .forEach((stack) => addSpellCounter(battle, stack, 'bloom', 1, side));
   } else if (action.spellId === 'overgrow') {
     applyEffectTwister(battle, side, action, 'overgrow', plus);
   } else if (action.spellId === 'thicket') {
-    if (action.positions?.length !== 3) throw new Error('Choose three undergrowth hexes');
+    const expected = 3 + artifactEffectTotal(hero, 'created_hex_bonus');
+    if (action.positions?.length !== expected) throw new Error(`Choose ${expected} undergrowth hexes`);
     action.positions.forEach((position) => placeBattleTile(
       battle, createBattleTile(battle, 'undergrowth', position, -1, side, plus),
     ));
   } else if (action.spellId === 'rains') {
     battle.stacks.filter((stack) => stack.count > 0).forEach((stack) => {
-      stack.counters.burn = 0;
-      if (stack.side === side) addBattleCounter(battle, stack, 'bloom', 1, side);
-      else if (plus) addBattleCounter(battle, stack, 'chill', 1, side);
+      if (!spellRecipientAllowed(battle, stack)) return;
+      clearCounterPile(stack, 'burn');
+      if (stack.side === side) addSpellCounter(battle, stack, 'bloom', 1, side);
+      else if (plus) addSpellCounter(battle, stack, 'chill', 1, side);
     });
   } else if (action.spellId === 'stampedeCall') {
     battle.stacks.filter((stack) => stack.count > 0 && stack.side === side
@@ -120,7 +129,8 @@ function resolveWild(
     });
   } else if (action.spellId === 'storm') {
     battle.stacks.filter((stack) => stack.count > 0).forEach((stack) =>
-      percentDamage(battle, stack, stackHasAbility(stack, 'flying') ? (plus ? 18 : 12) : 6));
+      percentDamage(battle, stack, stackHasAbility(stack, 'flying') ? (plus ? 18 : 12) : 6,
+        side));
   } else if (action.spellId === 'shedSkin') {
     const effect = target!.effects.shift();
     let magnitude = effect?.magnitude ?? 0;
@@ -129,7 +139,7 @@ function resolveWild(
         .find((id) => target!.counters[id] > 0);
       if (counter) {
         magnitude = target!.counters[counter];
-        target!.counters[counter] = 0;
+        clearCounterPile(target!, counter);
       }
     }
     addBattleCounter(battle, target!, 'bloom', Math.max(1, magnitude), side);
@@ -147,17 +157,17 @@ export function resolveExpansionCombatSpell(
   if (SPELLS[action.spellId].school === 'wild'
       && resolveWild(battle, side, hero, action, plus)) return true;
   if (action.spellId === 'clarion') {
-    target!.morale = plus ? 100 : 80;
-    grantMeter(target!, 0);
+    if (spellRecipientAllowed(battle, target!)) target!.morale = plus ? 100 : 80;
+    grantMeter(target!, 0, battle);
   } else if (action.spellId === 'vigilOfTheHost') {
     enchant(battle, side, action, plus);
   } else if (action.spellId === 'oathbind') {
     addTimedEffect(target!, action.spellId, scaledDuration(plus ? 3 : 2, hero.spellPower),
-      plus ? 2 : 1, false, side);
+      plus ? 2 : 1, false, side, battle);
   } else if (action.spellId === 'brittle') {
     addTimedEffect(target!, action.spellId, scaledDuration(plus ? 3 : 2, hero.spellPower),
-      1, false, side);
-    if (plus) addBattleCounter(battle, target!, 'burn', 2, side);
+      1, false, side, battle);
+    if (plus) addSpellCounter(battle, target!, 'burn', 2, side);
   } else if (action.spellId === 'standingMirror') {
     const occupied = new Set([
       ...occupiedByStacks(battle.stacks),
@@ -179,14 +189,18 @@ export function resolveExpansionCombatSpell(
       bonusActions: 0, attacksMade: 0, movedHexes: 0,
       overwindPrimed: false, overwindUsed: false, skipRound: null,
       summoned: true, counters: { burn: 0, chill: 0, hex: 0, bloom: 0 },
-      effects: [], abilityUses: {}, countAtTurnStart: 1, temporaryAbilities: [],
+      effects: plus ? [{
+        id: `standing-mirror-upgraded-${battle.round}`, spellId: 'standingMirror',
+        duration: 99, magnitude: 2, beneficial: true, sourceSide: side,
+      }] : [], abilityUses: {}, countAtTurnStart: 1, temporaryAbilities: [],
     });
   } else if (action.spellId === 'silenceThePassing') {
     enchant(battle, side, action, plus, scaledDuration(3, hero.spellPower));
   } else if (action.spellId === 'theToll') {
-    hero.mana += battle.destroyedStacks * (plus ? 3 : 2);
+    addManaClamped(hero, battle.destroyedStacks * (plus ? 3 : 2));
   } else if (action.spellId === 'hourglassCrack') {
-    target!.bonusActions += 1;
+    const grant = grantExtraAction(battle, target!.id);
+    if (!grant.ok) throw new Error(grant.reason.text);
     if (plus && action.skipRound !== undefined && action.skipRound <= battle.round) {
       throw new Error('Choose a future round to skip');
     }
@@ -196,11 +210,17 @@ export function resolveExpansionCombatSpell(
     if (!source || source.side === side || (!plus && !stacksAdjacent(target!, source))) {
       throw new Error('Borrow Shape needs an eligible enemy source');
     }
+    const abilities = eligibleBorrowAbilities(source);
+    if (abilities.length === 0) throw new Error('Borrow Shape source has no eligible abilities');
     target!.temporaryAbilities = [...new Set([
-      ...(target!.temporaryAbilities ?? []), ...UNITS[source.unitId].abilities,
+      ...(target!.temporaryAbilities ?? []), ...abilities,
     ])];
+    if (abilities.includes('unburnable')) clearCounterPile(target!, 'burn');
+    if (abilities.includes('unchillable')) clearCounterPile(target!, 'chill');
+    if (abilities.includes('unhexable')) clearCounterPile(target!, 'hex');
+    target!.copiedAbilityIds = [...new Set([...(target!.copiedAbilityIds ?? []), ...abilities])];
   } else if (action.spellId === 'loyalUntoDeath') {
-    addTimedEffect(target!, action.spellId, 99, plus ? 2 : 1, true, side);
+    addTimedEffect(target!, action.spellId, 99, plus ? 2 : 1, true, side, battle);
   } else return false;
   return true;
 }

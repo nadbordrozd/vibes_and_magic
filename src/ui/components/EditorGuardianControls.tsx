@@ -1,12 +1,14 @@
 import { ITEMS } from '../../content/items';
 import { SCROLL_SPELL_IDS, SPELLS } from '../../content/spells';
 import { UNITS } from '../../content/units';
-import type { ItemId, UnitId, UnitTier } from '../../core/types';
+import type { ItemId, SpellId, UnitId, UnitTier } from '../../core/types';
 import { defaultEditorGuardianCount, EDITOR_GUARDIAN_TIERS } from '../../core/mapEditor';
 import type {
   EditorGuardianStack, EditorMapDocument, EditorMapGuardian,
 } from '../../core/mapEditor';
-import { createDefaultEditorItemInstance } from '../mapEditorInstances';
+import {
+  createDefaultEditorItemInstance, EDITOR_TOME_SOURCES, editorTomeSpellChoices,
+} from '../mapEditorInstances';
 import {
   EDITOR_GUARDIAN_GROUPS, editorGuardianProtectChoices, editorGuardianUnitChoices,
   nextEditorGuardianUnit, type EditorGuardianUpdate,
@@ -101,6 +103,23 @@ export function EditorGuardianInspector({
           </option>)}
         </select>
       </label>}
+      {guardian.drop?.id === 'spellTome' && <>
+        <label>Tome source<select aria-label="Guardian drop Tome source"
+          value={guardian.drop.tomeSource} onChange={(event) => {
+            const tomeSource = event.target.value as typeof EDITOR_TOME_SOURCES[number];
+            const choices = editorTomeSpellChoices(tomeSource);
+            onUpdate({ drop: { ...guardian.drop!, tomeSource,
+              storedSpellId: choices.includes(guardian.drop!.storedSpellId as SpellId)
+                ? guardian.drop!.storedSpellId : choices[0] } });
+          }}>{EDITOR_TOME_SOURCES.map((source) => <option key={source} value={source}>
+            {source}
+          </option>)}</select></label>
+        <label>Tome spell<select aria-label="Guardian drop Tome spell"
+          value={guardian.drop.storedSpellId} onChange={(event) => onUpdate({ drop: {
+            ...guardian.drop!, storedSpellId: event.target.value,
+          } })}>{editorTomeSpellChoices(guardian.drop.tomeSource!).map((spellId) =>
+            <option key={spellId} value={spellId}>{SPELLS[spellId].name}</option>)}</select></label>
+      </>}
       {guardian.drop?.id === 'tradeGoods' && <p>Trade Goods origin: {
         guardian.drop.origin?.x ?? guardian.position.x
       },{guardian.drop.origin?.y ?? guardian.position.y}</p>}

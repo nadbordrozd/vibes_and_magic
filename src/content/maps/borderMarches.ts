@@ -7,6 +7,8 @@ import { terrainId, terrainIdAt, tile } from '../terrain';
 import {
   materializeGuardians, trimRoadsForCities, type AuthoredGuardian,
 } from './occupancyAuthoring';
+import { seededSpellTome } from '../../core/game/chests';
+import { validateSpellTomeInstance } from '../items';
 
 export const BORDER_MARCHES_CITY_ENTRANCES: readonly Coord[] = [
   { x: 3, y: 10 }, { x: 24, y: 10 },
@@ -130,7 +132,8 @@ function makeObjects(seed: number): MapObject[] {
       tell: 'It does not wake. It mends. Whatever is done to it must be done in one breath.',
       reward: {
         gold: 6000, essence: 12,
-        items: [scrollAt(seed, 211, true), scrollAt(seed, 223, true)],
+        items: [scrollAt(seed, 211, true), scrollAt(seed, 223, true),
+          seededSpellTome(seed, 'the-sleeper', 'lock')],
         teachesSpell: 'loyalUntoDeath',
       },
       cleared: false,
@@ -196,13 +199,18 @@ function makeObjects(seed: number): MapObject[] {
       id: 'border-hedge-school', kind: 'hedgeSchool', position: { x: 12, y: 9 },
       visitedBy: [],
     },
+    { id: 'border-stacks', kind: 'stacks', position: { x: 5, y: 12 }, visitedBy: [] },
+    { id: 'border-wild-shrine', kind: 'wildShrine', position: { x: 8, y: 12 }, visitedBy: [] },
+    { id: 'border-pages', kind: 'reliquaryOfPages', position: { x: 22, y: 12 }, claimed: false,
+      tomeSpellId: seededSpellTome(seed, 'border-pages', 'reliquary-pages').storedSpellId! },
   ];
   const barrows = [
     { x: 6, y: 3 }, { x: 21, y: 3 }, { x: 8, y: 17 }, { x: 19, y: 17 },
   ];
   barrows.forEach((position, index) => objects.push({
-    id: `barrow-scroll-${index + 1}`, kind: 'item', position,
-    item: scrollAt(seed, 307 + index * 13, true), collected: false,
+    id: `barrow-${index + 1}`, kind: 'item', position,
+    item: index === 0 ? seededSpellTome(seed, 'border-barrow-1', 'barrow')
+      : scrollAt(seed, 307 + index * 13, true), collected: false,
   }));
   objects.push({
     id: 'border-mana-spring', kind: 'manaSpring', position: { x: 15, y: 11 },
@@ -240,6 +248,7 @@ function authoredGuardians(seed: number): AuthoredGuardian[] {
     },
     guard('grave-shrine', 'marionette', 8),
     guard('border-mana-spring', 'boneChoir', 6),
+    guard('border-pages', 'boneChoir', 12),
     guard('the-sleeper', 'sleeper', 18, undefined, false, true),
     guard('the-mirror-bound', 'mirrorBound', 30, undefined, false, true),
   ];
@@ -294,6 +303,29 @@ export function validateMap(map: GameMap): void {
     }
     if (object.kind === 'guardian' && object.army.some((stack) => stack.count <= 0)) {
       throw new Error(`Invalid guardian: ${object.id}`);
+    }
+    const validateNestedTomes = (value: unknown): void => {
+      if (!value || typeof value !== 'object') return;
+      if ('id' in value && value.id === 'spellTome') {
+        validateSpellTomeInstance(value as ItemInstance);
+      }
+      for (const nested of Object.values(value)) validateNestedTomes(nested);
+    };
+    validateNestedTomes(object);
+    if (object.kind === 'reliquaryCairn' && object.tomeSpellId) {
+      validateSpellTomeInstance({ id: 'spellTome', storedSpellId: object.tomeSpellId,
+        tomeSource: 'reliquary-cairn' });
+    }
+    if (object.kind === 'reliquaryOfPages') {
+      validateSpellTomeInstance({ id: 'spellTome', storedSpellId: object.tomeSpellId,
+        tomeSource: 'reliquary-pages' });
+    }
+  }
+  for (const object of map.objects.filter((candidate) =>
+    candidate.kind === 'reliquaryOfPages')) {
+    if (!map.objects.some((candidate) =>
+      candidate.kind === 'guardian' && candidate.protects === object.id)) {
+      throw new Error(`Reliquary of Pages ${object.id} requires a guarding company`);
     }
   }
 }

@@ -1,5 +1,6 @@
 import { ITEM_SPRITE_SUBJECTS } from './adventureSpriteInventory';
-import { INSTALLED_ARTIFACT_IDS } from '../src/content/artifacts';
+import { NATIVE_ARTIFACT_IDS } from '../src/content/artifacts';
+import { V2_NATIVE_ASSET_WORKLIST } from './v2NativeAssets';
 
 // Adventure-map art is authored and displayed at its native size. Review tools may still enlarge
 // screenshots with nearest-neighbour scaling, but production world coordinates stay 32px per tile.
@@ -93,6 +94,18 @@ function guardianUnitSet(): Record<string, AssetManifestEntry> {
   ]));
 }
 
+const V2_STAGED_ITEM_IDS = new Set([
+  'spellTome', 'vialBorrowedHours', 'wildfireFlask', 'counterfeitCoin',
+  'graveDustSachet', 'tuningFork', 'sealingWaxCord', 'ironFilings', 'looseThread',
+  'ledgerPage', 'nightjarFeather', 'surveyorsTwine', 'spellbookPage',
+]);
+
+const V2_STAGED_CREATURE_IDS = [
+  'seamMoth', 'chalkWight', 'emberToad', 'glassHound', 'tallyman',
+  'lanternBearer', 'boneOrchard', 'stitchOx', 'nineMouthedWell', 'kilnDrake',
+  'whistlingNan', 'unbaptized', 'bellfounder',
+] as const;
+
 function collectibleItemSet(): Record<string, AssetManifestEntry> {
   return Object.fromEntries(Object.keys(ITEM_SPRITE_SUBJECTS).map((itemId) => [
     `map-object:item:${itemId}`,
@@ -101,7 +114,7 @@ function collectibleItemSet(): Record<string, AssetManifestEntry> {
 }
 
 function collectibleArtifactSet(): Record<string, AssetManifestEntry> {
-  return Object.fromEntries(INSTALLED_ARTIFACT_IDS.map((artifactId) => [
+  return Object.fromEntries(NATIVE_ARTIFACT_IDS.map((artifactId) => [
     `map-object:artifact:${artifactId}`,
     { file: `assets/artifacts/${artifactId}.png`, w: 32, h: 32, anchor: { x: 0, y: 0 } },
   ]));
@@ -144,6 +157,14 @@ const LEGACY_ASSET_CANDIDATES: Readonly<Record<string, AssetManifestEntry>> = {
   ...heroDirectionSet('wildergrass'),
   ...heroDirectionSet('woundWrights', 'wound-wrights'),
   ...guardianUnitSet(),
+  ...Object.fromEntries(V2_NATIVE_ASSET_WORKLIST.filter((item) =>
+    ['battle-creature', 'guardian-creature', 'dwelling', 'artifact', 'item', 'site']
+      .includes(item.family)).map((item) => [item.runtimeAssetId, {
+    file: item.file, w: item.w, h: item.h,
+    anchor: item.family === 'battle-creature' ? { x: Math.floor(item.w / 2), y: item.h - 8 }
+      : item.family === 'guardian-creature' ? { x: 16, y: 40 }
+        : item.family === 'dwelling' ? { x: 0, y: 16 } : { x: 0, y: 0 },
+  }])),
   'overlay:seam:default': {
     file: 'assets/overlays/seam-default.png', w: 32, h: 32, anchor: { x: 0, y: 0 },
   },
@@ -1331,8 +1352,12 @@ const REGENERATED_ASSET_IDS = new Set<string>([
   ...['hagwood', 'hearthguard', 'unfinished', 'vespiary', 'wildergrass', 'woundWrights']
     .flatMap((faction) => HERO_DIRECTIONS.map((direction) => `hero:${faction}:${direction}`)),
   ...AUTHORED_GUARDIAN_UNIT_IDS.map((unitId) => `guardian-unit:${unitId}`),
-  ...Object.keys(ITEM_SPRITE_SUBJECTS).map((itemId) => `map-object:item:${itemId}`),
-  ...INSTALLED_ARTIFACT_IDS.map((artifactId) => `map-object:artifact:${artifactId}`),
+  ...Object.keys(ITEM_SPRITE_SUBJECTS).filter((itemId) => !V2_STAGED_ITEM_IDS.has(itemId))
+    .map((itemId) => `map-object:item:${itemId}`),
+  ...NATIVE_ARTIFACT_IDS.map((artifactId) => `map-object:artifact:${artifactId}`),
+  ...V2_NATIVE_ASSET_WORKLIST.filter((item) =>
+    ['battle-creature', 'guardian-creature', 'dwelling', 'artifact', 'item', 'site']
+      .includes(item.family)).map((item) => item.runtimeAssetId),
 ]);
 
 function groundContactHeight(id: string): number | null {
@@ -1405,7 +1430,8 @@ export const assetId = {
  * are sprited, so this seam is intentionally empty until a future renderable is explicitly
  * declared unsuitable for bitmap art.
  */
-export const NON_SPRITE_REPRESENTATIONS: Readonly<Record<string, string>> = Object.freeze({});
+export const NON_SPRITE_REPRESENTATIONS: Readonly<Record<string, string>> = Object.freeze({
+});
 
 export function manifestEntry(id: string): AssetManifestEntry | undefined {
   return ASSET_MANIFEST[id];

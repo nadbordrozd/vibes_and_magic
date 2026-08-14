@@ -1,8 +1,8 @@
 import {
-  BUILDINGS, COMMON_BUILDING_SLOT_ROOTS, FACTION_BUILDING_SLOTS, buildingPresentation,
+  BUILDINGS, COMMON_BUILDING_SLOT_ROOTS, FACTION_BUILDING_SLOTS,
+  buildingPrerequisites, buildingPresentation,
 } from '../content/buildings';
 import { FACTION_UNITS, UNITS } from '../content/units';
-import { canAfford } from './army';
 import { battleReachableHexes, legalBattleActions } from './combat/battle';
 import { sameCoord } from './map/pathfinding';
 import { reachablePathPrefix } from './map/pathfinding';
@@ -16,7 +16,7 @@ import type {
 import { selectedHero } from './heroes';
 import { skillRank } from './heroBehaviors';
 import { SKILLS } from '../content/skills';
-import { artifactEffectTotal } from './artifacts';
+import { artifactEffectTotal, canPlayerAfford, hasArtifactEffect } from './artifacts';
 import { itemName } from '../content/items';
 import { buildingIsActive } from './game/buildingStatus';
 import { guardianAt, guardiansCovering } from './map/occupancy';
@@ -50,15 +50,21 @@ export function buildingStatus(
     reasons: ['Cannot be built in this city.'],
   };
   const reasons: string[] = [];
-  if (definition.prerequisite && !castle.buildings.includes(definition.prerequisite)) {
-    reasons.push(`Requires ${buildingPresentation(
-      definition.prerequisite, castle.faction,
-    ).name}.`);
+  if (state.day % 2 === 1 && state.players[castle.owner].heroes.some((hero) =>
+    hero.alive && hasArtifactEffect(hero, 'odd_day_build_block'))) {
+    reasons.push('The Open Purse forbids building on odd-numbered days.');
   }
+  const missingPrerequisites = buildingPrerequisites(buildingId)
+    .filter((id) => !castle.buildings.includes(id));
+  if (missingPrerequisites.length) reasons.push(`Requires ${missingPrerequisites
+    .map((id) => buildingPresentation(id, castle.faction).name).join(' and ')}.`);
   if (castle.builtOnDay === state.day) {
-    reasons.push('Already built today.');
+    const doubleBuilder = state.players[castle.owner].heroes.some((hero) => hero.alive
+      && hasArtifactEffect(hero, 'weekly_double_build') && (state.day - 1) % 7 === 0
+      && hero.artifactState.weeklyUses.weekly_double_build !== state.week);
+    if (!doubleBuilder) reasons.push('Already built today.');
   }
-  if (!canAfford(state.players[castle.owner].resources, definition.cost)) {
+  if (!canPlayerAfford(state.players[castle.owner], definition.cost)) {
     reasons.push('Not enough resources.');
   }
   if (reasons.length) return {
@@ -91,7 +97,7 @@ export function maxRecruitable(
   if (!buildingIsActive(castle, `dwelling${tier}` as BuildingId)) return 0;
   const unit = UNITS[FACTION_UNITS[castle.faction][tier - 1]];
   let count = castle.available[tier - 1];
-  while (count > 0 && !canAfford(state.players[castle.owner].resources, unit.cost, count)) {
+  while (count > 0 && !canPlayerAfford(state.players[castle.owner], unit.cost, count)) {
     count -= 1;
   }
   return count;
@@ -111,14 +117,16 @@ export function reachableAdventureTiles(state: GameState): Set<string> {
   return hero ? reachableAdventureTileKeys(state, hero) : new Set<string>();
 }
 
-export function previewPath(state: GameState, destination: Coord): Coord[] {
+export function previewPath(state: GameState, destination: Coord, useWayfaring = false): Coord[] {
   return selectedHero(state.players[state.activePlayer])
-    ? adventurePath(state, destination) ?? [] : [];
+    ? adventurePath(state, destination, { avoidAggro: !useWayfaring }) ?? [] : [];
 }
 
-export function animatedAdventurePath(state: GameState, destination: Coord): Coord[] {
+export function animatedAdventurePath(
+  state: GameState, destination: Coord, useWayfaring = false,
+): Coord[] {
   const hero = selectedHero(state.players[state.activePlayer]);
-  const path = hero ? adventurePath(state, destination) : null;
+  const path = hero ? adventurePath(state, destination, { avoidAggro: !useWayfaring }) : null;
   const passage = hero && state.mapEffects.some((effect) => effect.kind === 'passage'
     && effect.owner === hero.owner && effect.expiresDay >= state.day
     && effect.entrances.some((entry) => sameCoord(entry, hero.position))
@@ -128,13 +136,15 @@ export function animatedAdventurePath(state: GameState, destination: Coord): Coo
   const reachable = path ? passage ? path : reachablePathPrefix(
     state.map, path, hero!.movement, hero!, state.omen, freeForest,
   ) : [];
-  return hero ? truncateAtMovementInterruption(state, reachable, hero) : reachable;
+  return hero ? truncateAtMovementInterruption(state, reachable, hero, useWayfaring) : reachable;
 }
 
-function truncateAtMovementInterruption(state: GameState, path: Coord[], hero: Hero): Coord[] {
+function truncateAtMovementInterruption(
+  state: GameState, path: Coord[], hero: Hero, useWayfaring = false,
+): Coord[] {
   const index = path.findIndex((coord, step) => step > 0
     && (Boolean(guardianAt(state.map, coord))
-      || guardiansCovering(state.map, coord, hero.id).length > 0
+      || (!useWayfaring && guardiansCovering(state.map, coord, hero.id).length > 0)
       || state.map.objects.some((object) => object.kind === 'sirenRocks'
         && !object.cleared && !(object.approachedBy ?? []).includes(hero.id)
         && Math.max(Math.abs(object.position.x - coord.x),
@@ -197,6 +207,7 @@ export interface GuardianIntel {
   units: Array<{ unitId: UnitId; name: string; label: string; count: number | null }>;
   tell?: string;
   drop?: string;
+  protectedRewardId?: string;
 }
 
 export interface EnemyHeroIntel {
@@ -204,16 +215,21 @@ export interface EnemyHeroIntel {
   spells: Hero['knownSpells'] | null;
   items: Hero['inventory'] | null;
   mana: number | null;
+  artifacts: Hero['artifacts']['equipment'] | null;
 }
 
 export function enemyHeroIntel(viewer: Hero, target: Hero): EnemyHeroIntel {
   const rank = skillRank(viewer, 'scouting');
+  const beguiler = skillRank(viewer, 'beguiler') >= 2;
   return {
     army: rank >= 2 ? target.army.map((stack) => stack && { ...stack }) : null,
-    spells: rank >= 3 ? [...target.knownSpells] : null,
+    spells: rank >= 3 || beguiler ? [...target.knownSpells] : null,
     items: rank >= 3 ? target.inventory.map((item) =>
       item && typeof item !== 'string' ? { ...item } : item) : null,
-    mana: rank >= 3 ? target.mana : null,
+    mana: rank >= 3 || beguiler ? target.mana : null,
+    artifacts: rank >= 3 || beguiler
+      ? Object.fromEntries(Object.entries(target.artifacts.equipment).map(([slot, artifact]) =>
+        [slot, artifact ? { ...artifact } : null])) as Hero['artifacts']['equipment'] : null,
   };
 }
 
@@ -234,7 +250,12 @@ export function guardianIntel(
   const exact = distance <= 1 || Boolean(hero
     && skillRank(hero, 'scouting') >= 1
     && distance <= SKILLS.scouting.values.inspectRange)
-    || Boolean(hero && artifactEffectTotal(hero, 'scouting') >= distance);
+    || Boolean(hero && artifactEffectTotal(hero, 'scouting') >= distance)
+    || Boolean(state.players[state.activePlayer].adventureEffects.guardianIntel?.[guardian.id]
+      && state.players[state.activePlayer].adventureEffects.guardianIntel![guardian.id]! >= state.day);
+  const rewardKnown = Boolean(state.players[state.activePlayer].adventureEffects
+    .guardianRewardIntel?.[guardian.id]
+    && state.players[state.activePlayer].adventureEffects.guardianRewardIntel![guardian.id]! >= state.day);
   const abilities = exact
     ? [...new Set(guardian.army.flatMap((stack) => UNITS[stack.unitId].abilities))]
     : [];
@@ -253,5 +274,6 @@ export function guardianIntel(
     ...(exact && object.kind === 'lock' ? { tell: object.tell } : {}),
     ...(hero && artifactEffectTotal(hero, 'reveal_drops') > 0 && guardian.drop
       ? { drop: itemName(guardian.drop) } : {}),
+    ...(rewardKnown && guardian.protects ? { protectedRewardId: guardian.protects } : {}),
   };
 }

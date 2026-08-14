@@ -4,6 +4,8 @@ import type { BattleStack, Coord, UnitId } from '../types';
 import { coordKey, sameCoord } from '../map/pathfinding';
 import { hexDistance, isAdjacent } from './hex';
 
+export const stackIsOnField = (stack: BattleStack): boolean => !stack.burrowReturnRound;
+
 export function unitHexes(unitId: UnitId, anchor: Coord): Coord[] {
   return Array.from({ length: UNITS[unitId].hexSize }, (_unused, index) => ({
     x: anchor.x + index, y: anchor.y,

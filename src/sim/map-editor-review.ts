@@ -229,25 +229,37 @@ async function auditIconPalette(page: Page, label: string): Promise<void> {
     const guardians = [...document.querySelectorAll<HTMLButtonElement>('.editor-guardian-choice')];
     const randomTiers = [...document.querySelectorAll<HTMLButtonElement>('.editor-random-guardian')];
     const cityImages = cities.map((button) => button.querySelector<HTMLImageElement>('img')!);
-    const guardianImages = guardians.map((button) => button.querySelector<HTMLImageElement>('img')!);
+    const guardianImages = guardians.flatMap((button) => {
+      const image = button.querySelector<HTMLImageElement>('img');
+      return image ? [image] : [];
+    });
+    const guardianFallbacks = [...document.querySelectorAll<HTMLElement>('.editor-guardian-fallback')];
     return {
       cities: cities.length,
       guardians: guardians.length,
       randomTiers: randomTiers.length,
       namedCities: cities.every((button) => Boolean(button.getAttribute('aria-label'))),
       namedGuardians: guardians.every((button) => Boolean(button.getAttribute('aria-label'))),
-      iconOnlyGuardians: guardians.every((button) => (button.textContent ?? '').trim() === ''),
+      iconOnlyGuardians: guardians.every((button) =>
+        [...button.childNodes].every((node) => node.nodeType !== Node.TEXT_NODE
+          || !(node.textContent ?? '').trim())
+        && [...button.children].every((child) => child.getAttribute('aria-hidden') === 'true')),
       cityNativeSizes: [...new Set(cityImages.map((image) =>
         `${image.naturalWidth}x${image.naturalHeight}`))],
       minCityIcon: Math.min(...cityImages.map((image) => image.getBoundingClientRect().width)),
+      minGuardianButton: Math.min(...guardians.map((button) =>
+        button.getBoundingClientRect().width)),
       minGuardianIcon: Math.min(...guardianImages.map((image) => image.getBoundingClientRect().width)),
-      guardianFallbacks: document.querySelectorAll('.editor-guardian-fallback').length,
+      minGuardianFallback: Math.min(...guardianFallbacks.map((fallback) =>
+        fallback.getBoundingClientRect().width)),
+      guardianFallbacks: guardianFallbacks.length,
     };
   });
-  if (audit.cities !== 6 || audit.guardians !== 50 || audit.randomTiers !== 6
+  if (audit.cities !== 6 || audit.guardians !== 63 || audit.randomTiers !== 6
       || !audit.namedCities || !audit.namedGuardians || !audit.iconOnlyGuardians
       || audit.cityNativeSizes.join(',') !== '160x160'
-      || audit.minCityIcon < 63 || audit.minGuardianIcon < 45 || audit.guardianFallbacks) {
+      || audit.minCityIcon < 63 || audit.minGuardianButton < 45 || audit.minGuardianIcon < 45
+      || audit.minGuardianFallback < 30 || audit.guardianFallbacks !== 13) {
     throw new Error(`${label} icon palette audit failed: ${JSON.stringify(audit)}`);
   }
 }
@@ -458,7 +470,7 @@ try {
     )].map((image) => image.getAttribute('src'))).size,
   }));
   if (collectiblePalette.artifacts !== 90 || collectiblePalette.items !== 37
-      || collectiblePalette.fallbacks || collectiblePalette.uniquePaths !== 127) {
+      || collectiblePalette.fallbacks !== 33 || collectiblePalette.uniquePaths !== 127) {
     throw new Error(`Collectible editor palette is incomplete: ${JSON.stringify(collectiblePalette)}`);
   }
   await page.$$eval('.editor-player-slots article', (players) => {
@@ -782,7 +794,7 @@ try {
     ).length,
   }));
   if (narrowCollectibles.artifacts !== 90 || narrowCollectibles.items !== 37
-      || narrowCollectibles.fallbacks) {
+      || narrowCollectibles.fallbacks !== 33) {
     throw new Error(`Narrow collectible editor palette is incomplete: ${JSON.stringify(narrowCollectibles)}`);
   }
   await page.screenshot({ path: join(output, '04-workspace-390.png') });

@@ -8,7 +8,8 @@ army, item, artifact, equipment, save, replay, or action rules.
 ## 1. Outcome and non-goals
 
 Hero Details becomes one coherent, scrollable dashboard. It has **no tabs, segmented modes, or
-hidden content families**. Portrait and identity, four primary stats, hero vitals, seven army slots,
+hidden content families**. Portrait and identity, four primary stats, hero vitals, every derived
+army position (normally seven and at most nine),
 up to six secondary skills, eleven equipped-artifact positions, the unlimited artifact backpack,
 six to eight consumable positions, specialty, and current special/status controls all exist in one
 DOM reading order and one visual composition. Every occupied graphical entry opens concise details
@@ -60,7 +61,7 @@ The binding DOM and narrow-screen order is:
 3. **Primary stats:** Attack, Defense, Spell Power, and Knowledge as four graphical value tiles.
 4. **Vitals and current status:** movement/current maximum, mana/current maximum, luck, experience,
    and only the non-default status chips relevant to this hero.
-5. **Army:** seven stable company positions in slot order.
+5. **Army:** every current derived company position, seven to nine, in slot order.
 6. **Secondary skills:** zero to six learned skills in stable catalog/hero record order, with rank.
 7. **Equipped artifacts:** eleven stable, uniformly drawn positions in canonical
    `EQUIPMENT_SLOTS` order.
@@ -86,7 +87,7 @@ taller than `100dvh - 32px`. Its useful composition is:
 
 - top band: 260 px identity column; flexible primary/vitals area; up to 260 px specialty/status and
   ordinary hero actions;
-- second band: one full-width seven-company row;
+- second band: one full-width seven-to-nine-company row;
 - lower band: secondary skills on the left, equipped artifacts plus backpack in the center, and
   consumables plus contextual special controls on the right;
 - one vertical `.hero-dashboard-body` scroller when content genuinely exceeds the viewport. The
@@ -101,7 +102,8 @@ scroll; they never create tabs or a second page.
 
 At **390×844 CSS px**, the dialog is `calc(100vw - 16px)` wide and at most
 `calc(100dvh - 16px)` high. The header/Close control stays visible and the body is the only scroller.
-All regions follow the numbered single-column order above. Army uses four cells then three;
+All regions follow the numbered single-column order above. Army uses four cells per row, then the
+remaining three, four, or one;
 secondary skills use three columns; equipped artifacts, backpack, and consumables use four columns
 where 44 px targets and labels still fit, otherwise three through one shared breakpoint. No content
 uses fixed desktop widths, clipped labels, viewport-wide transforms, or horizontal overflow.
@@ -126,7 +128,7 @@ detail; it does not require a decorative crest.
 
 ### Army
 
-All seven company positions remain visible. An occupied cell is a focusable button containing the
+All positions in the hero's current derived seven-to-nine capacity remain visible. An occupied cell is a focusable button containing the
 shared unit portrait and count; its accessible name is, for example, “Army slot 2, 18 Bannermen,
 occupied.” Activation opens unit/company details: name, count, tier, footprint, current catalog
 stats, abilities, and the separate Split action when the existing adventure rules permit it.
@@ -377,7 +379,8 @@ explicit deterministic fixture data rather than ambient time or random selection
 
 - all four primary stats with base/equipment breakdown;
 - one distinct portrait/specialty from each faction across the review matrix;
-- seven occupied army slots including one-, two-, and three-hex unit art;
+- seven occupied base army slots including one-, two-, and three-hex unit art, plus derived
+  eight- and nine-position capacity fixtures;
 - zero-skill and six-rank-three-skill states;
 - all eleven equipped positions, both ring and both Misc destinations, a locked Burden, Seamstone,
   all four Kit pieces, empty and populated backpack states, and the full 90-artifact sprite sheet;
@@ -392,7 +395,7 @@ item detail/use handoff, special controls, empty states, and long backpack. The 
 
 - zero `.hero-details-tabs`, tab buttons, `role="tab"`, or hidden category panels;
 - one visible heading for every required region in the same rendered dashboard;
-- all expected 4 stats, 7 army positions, learned skills, 11 equipment positions, every backpack
+- all expected 4 stats, the fixture's 7–9 army positions, learned skills, 11 equipment positions, every backpack
   instance, and 6–8 inventory positions are in the DOM with unique stable keys and accessible names;
 - every image loads, has the declared intrinsic native dimensions, preserves aspect ratio, and has
   no renderer fallback after the 79-asset family is installed;

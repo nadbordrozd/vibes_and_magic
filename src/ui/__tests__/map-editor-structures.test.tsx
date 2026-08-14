@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { manifestEntry } from '../../../assets/manifest';
+import { NON_SPRITE_REPRESENTATIONS, manifestEntry } from '../../../assets/manifest';
 import { MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
 import {
   cloneEditorMapDocument, convertEditorMapDocument, createBlankEditorMap,
@@ -109,10 +109,10 @@ describe('registered structure authoring', () => {
     }
   });
 
-  it('places every safe standalone kind with catalog-derived defaults and native runtime sprites', () => {
+  it('places every safe standalone kind with catalog-derived defaults and an explicit render path', () => {
     const excluded = new Set([
       ...EDITOR_REWARD_CARRIER_KINDS, ...EDITOR_DIRECT_REWARD_OBJECT_KINDS,
-      'whirlpool', 'patientStone',
+      'whirlpool', 'patientStone', 'reliquaryOfPages',
     ]);
     for (const [index, kind] of EDITOR_STRUCTURE_KINDS.filter((entry) => !excluded.has(entry)).entries()) {
       const map = document();
@@ -120,8 +120,9 @@ describe('registered structure authoring', () => {
       const result = createStructurePlacementEdit(map, kind as Exclude<typeof kind, 'whirlpool'>, position);
       expect(result, kind).toMatchObject({ ok: true });
       if (!result.ok || !result.object) continue;
-      expect(manifestEntry(mapObjectSpriteId(editorStructurePresentationObject(result.object))), kind)
-        .toBeDefined();
+      const spriteId = mapObjectSpriteId(editorStructurePresentationObject(result.object));
+      expect(Boolean(manifestEntry(spriteId) || NON_SPRITE_REPRESENTATIONS[spriteId]), kind)
+        .toBe(true);
       const changed = commitTerrainEdit(map, EMPTY_TERRAIN_HISTORY, result.edit).document;
       expect(validateEditorMapDocument(changed).filter((diagnostic) =>
         diagnostic.target.kind === 'entity' && diagnostic.target.entityId === result.object?.id), kind)
@@ -229,6 +230,18 @@ describe('registered structure authoring', () => {
     expect(editorItemInstance('spellScroll')).toMatchObject({
       id: 'spellScroll', storedSpellId: expect.any(String), plus: false,
     });
+    expect(editorItemInstance('spellTome')).toMatchObject({
+      id: 'spellTome', storedSpellId: expect.any(String), tomeSource: 'chest',
+    });
+  });
+
+  it('lints the Reliquary of Pages guard contract in portable maps', () => {
+    const map = document();
+    map.objects = [object('pages', 'reliquaryOfPages', 4, 4)];
+    expect(validateEditorMapDocument(map)).toContainEqual(expect.objectContaining({
+      code: 'object.reliquary_pages.guard_required',
+      target: expect.objectContaining({ entityId: 'pages' }),
+    }));
   });
 
   it('requires an existing Cache for Patient Stones and exposes canonical footprint/entrance', () => {

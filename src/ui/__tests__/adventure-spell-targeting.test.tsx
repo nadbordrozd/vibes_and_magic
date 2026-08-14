@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { createGame } from '../../core/game';
-import { castAdventureSpell } from '../../core/game/adventureSpells';
+import { canCastAdventureSpell, castAdventureSpell } from '../../core/game/adventureSpells';
 import type { Action, GameState, Hero, SpellId } from '../../core/types';
 import {
   adventureDraftIncompleteReason, legalMapTargets, mapDraftAction, mapTargetReason,
@@ -138,5 +138,44 @@ describe('explicit adventure spell targeting', () => {
     expect(other.army[0]).toEqual({ unitId: 'yeoman', count: 3 });
     expect(hero.inventory[0]).toEqual({ id: 'waybread' });
     expect(other.inventory[0]).toEqual({ id: 'saltedMeat' });
+  });
+
+  it('requires an explicit Wellspring hero and executes both Upgraded Dimension Door drafts', () => {
+    const [state, hero] = fixture('wellspring', 'dimensionDoor');
+    hero.upgradedSpells.push('wellspring', 'dimensionDoor');
+    const target = state.players.p1.heroes.find((candidate) => candidate.id !== hero.id)!;
+    target.alive = true;
+    target.mana = 0;
+    target.movement = 0;
+    expect(adventureDraftIncompleteReason(state, {
+      type: 'CAST_ADVENTURE_SPELL', spellId: 'wellspring',
+    })).toContain('living hero you own');
+    const wellspring: Cast = {
+      type: 'CAST_ADVENTURE_SPELL', spellId: 'wellspring', targetHeroId: target.id,
+    };
+    const html = render(state, wellspring);
+    expect(html).toContain('Owned hero anywhere');
+    expect(html).toContain(target.name);
+    expect(html).toContain('grant 150 movement');
+    castAdventureSpell(state, wellspring);
+    expect(target.movement).toBe(150);
+
+    const nextDestination = () => {
+      const key = [...legalMapTargets(state, hero, 'dimensionDoor', [])]
+        .find((candidate) => candidate !== `${hero.position.x},${hero.position.y}`)!;
+      const [x, y] = key.split(',').map(Number);
+      return { x, y };
+    };
+    let destination = nextDestination();
+    expect(mapTargetReason(state, hero, 'dimensionDoor', destination, [])).toBeNull();
+    let door = mapDraftAction('dimensionDoor', hero, [destination]);
+    expect(adventureDraftIncompleteReason(state, door)).toBeNull();
+    castAdventureSpell(state, door);
+    expect(canCastAdventureSpell(state, 'dimensionDoor')).toBe(true);
+    destination = nextDestination();
+    door = mapDraftAction('dimensionDoor', hero, [destination]);
+    castAdventureSpell(state, door);
+    expect(hero.spellUses.dailyCounts?.dimensionDoor).toEqual({ day: state.day, count: 2 });
+    expect(canCastAdventureSpell(state, 'dimensionDoor')).toBe(false);
   });
 });

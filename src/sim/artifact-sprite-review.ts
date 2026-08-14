@@ -19,7 +19,7 @@ hero.artifacts.equipment = {
   shield: { id: 'yeomansBuckler' }, armor: { id: 'patternlessCoat' },
   ring1: { id: 'beggarsRing' }, ring2: { id: 'tailorsThimble' },
   boots: { id: 'sevenLeagueBoots' }, misc1: { id: 'patternbook' },
-  misc2: { id: 'mirrorMask' },
+  misc2: { id: 'mirrorMask' }, misc3: null,
 };
 const equipped = new Set(Object.values(hero.artifacts.equipment).flatMap((artifact) =>
   artifact ? [artifact.id] : []));
@@ -51,25 +51,21 @@ try {
     button.click();
   });
   await page.waitForSelector('.hero-details-dialog');
-  await page.$eval('.hero-details-tabs', (tabs) => {
-    const button = [...tabs.querySelectorAll<HTMLButtonElement>('button')]
-      .find((candidate) => candidate.textContent?.includes('Equipment'));
-    if (!button) throw new Error('Equipment tab missing');
-    button.click();
-  });
-  await page.waitForSelector('.artifact-paper-doll .artifact-sprite');
+  await page.waitForSelector('.hero-dashboard-dialog .artifact-sprite');
   await page.waitForFunction((expected) => {
     const images = [...document.querySelectorAll<HTMLImageElement>(
-      '.artifact-paper-doll .artifact-sprite',
+      '.hero-dashboard-dialog .artifact-sprite',
     )];
     return images.length === expected && images.every((image) =>
       image.complete && image.naturalWidth === 32 && image.naturalHeight === 32);
   }, { timeout: 30_000 }, INSTALLED_ARTIFACT_IDS.length);
   const audit = await page.evaluate(() => ({
-    sprites: document.querySelectorAll('.artifact-paper-doll .artifact-sprite').length,
-    semanticCards: document.querySelectorAll('.artifact-paper-doll [data-inspect-kind="artifact"]').length,
-    fallbacks: document.querySelectorAll('.artifact-paper-doll .artifact-sprite-fallback').length,
-    broken: [...document.querySelectorAll<HTMLImageElement>('.artifact-paper-doll .artifact-sprite')]
+    sprites: document.querySelectorAll('.hero-dashboard-dialog .artifact-sprite').length,
+    semanticCards: document.querySelectorAll(
+      '.hero-dashboard-equipment-grid button.occupied, .hero-dashboard-backpack-grid button',
+    ).length,
+    fallbacks: document.querySelectorAll('.hero-dashboard-dialog .artifact-sprite-fallback').length,
+    broken: [...document.querySelectorAll<HTMLImageElement>('.hero-dashboard-dialog .artifact-sprite')]
       .filter((image) => !image.complete || image.naturalWidth !== 32 || image.naturalHeight !== 32)
       .map((image) => image.src),
     rootOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,

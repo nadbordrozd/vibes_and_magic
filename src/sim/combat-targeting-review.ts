@@ -1,5 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import puppeteer, { type Page } from 'puppeteer-core';
+import { SPELLS } from '../content/spells';
 import { makeArmy } from '../core/army';
 import { createBattle } from '../core/combat/battle';
 import { addTimedEffect } from '../core/combat/magicEffects';
@@ -38,6 +39,7 @@ function reviewState() {
   battle.currentStackId = 'attacker-0';
   battle.attackerHero.knownSpells = [
     'rally', 'reflect', 'standardOfDawn', 'wallOfTheMaker', 'rains', 'amplify',
+    'bulwark',
   ];
   battle.attackerHero.upgradedSpells = ['rally', 'reflect'];
   battle.attackerHero.mana = 100;
@@ -77,13 +79,17 @@ async function install(page: Page, state: ReturnType<typeof reviewState>) {
   await page.waitForSelector('.combat-shell');
 }
 
-async function openSpell(page: Page, spellId: string, effect = false) {
+async function selectSpell(page: Page, spellId: keyof typeof SPELLS) {
   await page.click('.spellbook-button');
-  await page.waitForSelector(`.spell-card[data-inspect-id="${spellId}"]`);
-  const selector = effect
-    ? `.spell-card[data-inspect-id="${spellId}"] .effect-targets button:not(:disabled)`
-    : `.spell-card[data-inspect-id="${spellId}"] > button:not(:disabled)`;
-  await page.click(selector);
+  await page.click(`.spell-school-tab.${SPELLS[spellId].school}`);
+  await page.waitForSelector(`.spell-grid-cell[data-spell-id="${spellId}"]`);
+  await page.click(`.spell-grid-cell[data-spell-id="${spellId}"]`);
+}
+
+async function openSpell(page: Page, spellId: keyof typeof SPELLS) {
+  await selectSpell(page, spellId);
+  await page.waitForSelector(`[data-cast-spell-id="${spellId}"]:not(:disabled)`);
+  await page.click(`[data-cast-spell-id="${spellId}"]`);
   await page.waitForSelector('.combat-targeting-banner');
 }
 
@@ -140,6 +146,31 @@ try {
   await page.screenshot({ path: `${outputDir}/wall-placement-narrow.png`, fullPage: true });
   await page.click('.combat-targeting-controls button:nth-child(2)');
 
+  await install(page, reviewState());
+  await openSpell(page, 'bulwark');
+  await page.waitForSelector('[data-target-stage="positions"]');
+  if (await page.$$eval('polygon.placement-choice', (nodes) => nodes.length) < 1) {
+    throw new Error('Bulwark exposed no legal column placement');
+  }
+  await page.click('polygon.placement-choice');
+  await page.waitForSelector('[data-target-stage="confirm"]');
+  await page.screenshot({ path: `${outputDir}/p2-bulwark-placement-desktop.png` });
+  await page.click('.combat-targeting-controls button:nth-child(2)');
+
+  const mirrorChoice = reviewState();
+  mirrorChoice.players.p2.controller = 'human';
+  mirrorChoice.battle!.pendingMirrorCopy = {
+    chooserSide: 'defender', sourceSide: 'attacker', spellPower: 3,
+    action: { type: 'BATTLE_CAST', spellId: 'wither', targetId: 'defender-0' },
+    plus: true, manaSpent: 3, legalTargetIds: ['attacker-0', 'attacker-1'],
+  };
+  await install(page, mirrorChoice);
+  const mirrorButtons = await page.$$eval('button', (nodes) => nodes.filter((node) =>
+    node.textContent?.includes('Standing Mirror · copy to')).length);
+  if (mirrorButtons !== 2) throw new Error(`Standing Mirror exposed ${mirrorButtons} copy choices`);
+  await page.screenshot({ path: `${outputDir}/p2-standing-mirror-choice-desktop.png` });
+
+  await install(page, reviewState());
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
   await page.click('.combat-items button[data-inspect-id="bannerWhistle"]');
   await page.waitForSelector('[data-target-stage="confirm"]');
@@ -156,13 +187,13 @@ try {
   noTarget.battle!.enchantments = { attacker: [], defender: [] };
   noTarget.battle!.attackerHero.knownSpells = ['amplify', 'rains'];
   await install(page, noTarget);
-  await page.click('.spellbook-button');
-  await page.waitForSelector('.spell-card[data-inspect-id="amplify"] .spell-unavailable');
+  await selectSpell(page, 'amplify');
+  await page.waitForSelector('.spell-detail-disabled');
   const reason = await page.$eval(
-    '.spell-card[data-inspect-id="amplify"] .spell-unavailable',
+    '.spell-detail-disabled',
     (node) => node.textContent ?? '',
   );
-  if (!reason.includes('active counter or enchantment')) {
+  if (!reason.includes('No active effect satisfies')) {
     throw new Error(`Missing no-target reason: ${reason}`);
   }
   await page.screenshot({ path: `${outputDir}/no-effect-target-unavailable.png` });

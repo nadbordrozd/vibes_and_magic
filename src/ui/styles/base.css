@@ -394,6 +394,13 @@ body:has(.stitched-spellbook) :is(.help-toggle, .inspect-toggle) {
   image-rendering: pixelated;
   filter: drop-shadow(0 1px 0 #0008);
 }
+.content-icon-development {
+  box-sizing: border-box; display: inline-grid; place-items: center; overflow: hidden;
+  border: 1px dashed #d7bd75; border-radius: 4px; color: #f4dda0; background: #29271f;
+  font: 700 10px/1 Georgia, serif; letter-spacing: -.5px; filter: none;
+}
+.content-icon-development.rite { border-color: #e5d37c; background: #3a351d; }
+.content-icon-development.craft { border-color: #de936a; background: #3c281f; }
 .content-icon-label { display: flex; align-items: center; gap: 8px; }
 .spell-rule-text { display: inline; }
 .spell-glossary-reference {

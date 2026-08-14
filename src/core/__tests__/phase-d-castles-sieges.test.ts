@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BUILDINGS } from '../../content/buildings';
 import { makeArmy } from '../army';
-import { createBattle } from '../combat/battle';
+import { createBattle, legalBattleActions } from '../combat/battle';
 import { runAttackPipeline } from '../combat/pipeline';
 import { castSpell } from '../combat/spells';
 import { createGame, incomeForPlayer } from '../game';
@@ -104,6 +104,35 @@ describe('phase D castles and siege-lite', () => {
       attack: 11, skills: { warden: 3, command: 2 },
     });
     expect(state.battle?.defenderHero?.knownSpells).toEqual(warden.knownSpells);
+    state.battle!.currentStackId = state.battle!.stacks.find((stack) =>
+      stack.side === 'defender')!.id;
+    expect(legalBattleActions(state.battle!).some((action) =>
+      action.type === 'BATTLE_USE_KNACK')).toBe(true);
+  });
+
+  it('withholds a remote Warden Knack outside the exact rank-3 five-tile authority', () => {
+    for (const [rank, distance, expected] of [[3, 6, false], [2, 1, false]] as const) {
+      const state = createGame({ seed: 7051 + rank + distance, p1: 'human', p2: 'human' });
+      const warden = state.players.p1.hero!;
+      const attacker = state.players.p2.hero!;
+      const castle = state.castles[0];
+      const entrance = castleEntrance(castle);
+      warden.skills.warden = rank;
+      warden.position = { x: entrance.x + 1, y: entrance.y };
+      transferArmy(state, {
+        type: 'TRANSFER_ARMY', source: { kind: 'hero', id: warden.id }, sourceSlot: 0,
+        destination: { kind: 'garrison', id: castle.id }, destinationSlot: 0, count: 1,
+      });
+      warden.position = { x: entrance.x + distance, y: entrance.y };
+      attacker.position = { x: entrance.x + 1, y: entrance.y };
+      attacker.movement = 1_000;
+      state.activePlayer = 'p2';
+      moveHero(state, entrance);
+      state.battle!.currentStackId = state.battle!.stacks.find((stack) =>
+        stack.side === 'defender')!.id;
+      expect(legalBattleActions(state.battle!).some((action) =>
+        action.type === 'BATTLE_USE_KNACK')).toBe(expected);
+    }
   });
 
   it('turns Siegewright R2 Maker walls into attackable 40-HP stacks', () => {

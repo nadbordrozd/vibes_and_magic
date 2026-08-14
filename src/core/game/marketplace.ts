@@ -15,7 +15,10 @@ import { randomInt } from '../rng';
 import { ARTIFACTS } from '../../content/artifacts';
 import type { ArtifactInstance } from '../types';
 import { buildingIsActive } from './buildingStatus';
-import { artifactEffectTotal, priceMultiplier } from '../artifacts';
+import {
+  artifactEffectTotal, canPlayerAfford, hasArtifactEffect, hasArtifactSetBonus, payPlayer,
+  priceMultiplier,
+} from '../artifacts';
 
 type MarketResource = Exclude<ResourceId, 'gold'>;
 export const MARKET_SCROLL_PRICE = 1_000;
@@ -49,28 +52,38 @@ export function refreshMarketScrolls(state: GameState): void {
   }
 }
 
-function visitingPeddler(state: GameState, castleId: string) {
+function visitingPeddler(
+  state: GameState, castleId: string, allowRemote = false, requestedHeroId?: string,
+) {
   const castle = state.castles.find((candidate) => candidate.id === castleId);
-  const hero = castle && state.players[state.activePlayer].heroes.find((candidate) =>
-    candidate.alive && sameCoord(candidate.position, castleEntrance(castle))
+  const visiting = castle && state.players[state.activePlayer].heroes.find((candidate) =>
+    candidate.alive && (!requestedHeroId || candidate.id === requestedHeroId)
+    && sameCoord(candidate.position, castleEntrance(castle))
     && skillRank(candidate, 'peddler') >= 2);
+  const remote = allowRemote && castle && state.players[state.activePlayer].heroes.find((candidate) =>
+    candidate.alive && (!requestedHeroId || candidate.id === requestedHeroId)
+    && skillRank(candidate, 'peddler') >= 3
+    && candidate.skillUses.weekly.peddler !== state.week);
+  const hero = visiting ?? remote;
   if (!castle || castle.owner !== state.activePlayer
       || !buildingIsActive(castle, 'marketplace') || !hero) {
-    throw new Error('A rank-2 Peddler must visit this Marketplace');
+    throw new Error('A rank-2 Peddler must visit, or a rank-3 Peddler must have a weekly remote purchase');
   }
-  return { castle, hero, player: state.players[state.activePlayer] };
+  return { castle, hero, player: state.players[state.activePlayer], remote: !visiting };
 }
 
-export function buyMarketScroll(state: GameState, castleId: string): void {
-  const { castle, hero, player } = visitingPeddler(state, castleId);
+export function buyMarketScroll(state: GameState, castleId: string, heroId?: string): void {
+  if (state.phase !== 'adventure') throw new Error('Marketplace scroll buying is adventure-only');
+  const { castle, hero, player, remote } = visitingPeddler(state, castleId, true, heroId);
   const price = Math.ceil(MARKET_SCROLL_PRICE * priceMultiplier(hero));
-  if (!castle.marketScroll || player.resources.gold < price) {
+  if (!castle.marketScroll || !canPlayerAfford(player, { gold: price })) {
     throw new Error('The weekly scroll is unavailable');
   }
   if (!addItem(hero, castle.marketScroll)) throw new Error('Inventory full');
-  player.resources.gold -= price;
+  payPlayer(player, { gold: price });
   state.lastMessage = `${ITEMS.spellScroll.name} bought for ${price} gold.`;
   castle.marketScroll = null;
+  if (remote) hero.skillUses.weekly.peddler = state.week;
 }
 
 export function sellMarketItem(
@@ -131,22 +144,49 @@ export function marketTrade(
   const rate = peddler === 1 || peddler === 2
     ? SKILLS.peddler.values.rank1Rate
     : peddler === 3 ? SKILLS.peddler.values.rank3Rate : 1;
+  const setRate = hasArtifactSetBonus(hero, 'tinkersRounds', 3) ? 0.5 : 1;
   if (direction === 'sell') {
     if (player.resources[resource] < amount) throw new Error('Not enough resources');
     player.resources[resource] -= amount;
-    player.resources.gold += Math.floor(MARKET_SELL_GOLD * amount / priceMultiplier(hero));
+    player.resources.gold += Math.floor(MARKET_SELL_GOLD * amount
+      / priceMultiplier(hero) / setRate);
   } else {
-    const price = Math.floor(MARKET_BUY_GOLD[resource] * amount * rate
+    const price = Math.floor(MARKET_BUY_GOLD[resource] * amount * rate * setRate
       * priceMultiplier(hero));
-    if (player.resources.gold < price) throw new Error('Not enough gold');
-    player.resources.gold -= price;
+    if (!canPlayerAfford(player, { gold: price })) throw new Error('Not enough gold');
+    payPlayer(player, { gold: price });
     player.resources[resource] += amount;
   }
   state.lastMessage = direction === 'sell'
     ? `Sold ${amount} ${resource} for ${Math.floor(
-      MARKET_SELL_GOLD * amount / priceMultiplier(hero),
+      MARKET_SELL_GOLD * amount / priceMultiplier(hero) / setRate,
     )} gold.`
     : `Bought ${amount} ${resource} for ${
-      Math.floor(MARKET_BUY_GOLD[resource] * amount * rate * priceMultiplier(hero))
+      Math.floor(MARKET_BUY_GOLD[resource] * amount * rate * setRate * priceMultiplier(hero))
     } gold.`;
+}
+
+export function marketDirectExchange(
+  state: GameState,
+  action: Extract<import('../types').Action, { type: 'MARKET_DIRECT_EXCHANGE' }>,
+): void {
+  if (!Number.isInteger(action.amount) || action.amount <= 0 || action.from === action.to) {
+    throw new Error('Invalid direct exchange');
+  }
+  const castle = state.castles.find((candidate) => candidate.id === action.castleId);
+  const player = state.players[state.activePlayer];
+  const remote = state.map.objects.some((object) => object.kind === 'tradingCamp'
+    && object.owner === player.id);
+  const hero = castle && (player.heroes.find((candidate) => candidate.alive
+    && sameCoord(candidate.position, castleEntrance(castle))) ?? (remote ? player.hero : null));
+  if (!castle || castle.owner !== player.id || !buildingIsActive(castle, 'marketplace')
+      || !hero || !hasArtifactEffect(hero, 'direct_exchange')) {
+    throw new Error("Miser's Thumb requires a visiting or remote Marketplace hero");
+  }
+  const setRate = hasArtifactSetBonus(hero, 'tinkersRounds', 3) ? 0.5 : 1;
+  const cost = Math.ceil(action.amount * 2 * setRate);
+  if (player.resources[action.from] < cost) throw new Error('Not enough resources');
+  player.resources[action.from] -= cost;
+  player.resources[action.to] += action.amount;
+  state.lastMessage = `Exchanged ${cost} ${action.from} directly for ${action.amount} ${action.to}.`;
 }

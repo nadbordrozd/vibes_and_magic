@@ -1,0 +1,1542 @@
+{
+  "version": 1,
+  "contract": "One distinct accepted built-in generation call, retained provider source, installed-helper alpha source, and unique exact native final per docs-60–67 runtime asset ID.",
+  "entries": [
+    {
+      "id": "spell-icon:kindle",
+      "nativeAssetId": "spell:kindle",
+      "source": "assets/sources/docs-60-67/spell-icon-kindle-source.png",
+      "file": "assets/icons/spells/kindle.png",
+      "accepted": true,
+      "review": "Accepted: clear flame striking one wooden marker; complete readable silhouette."
+    },
+    {
+      "id": "spell-icon:sunlance",
+      "nativeAssetId": "spell:sunlance",
+      "source": "assets/sources/docs-60-67/spell-icon-sunlance-source.png",
+      "file": "assets/icons/spells/sunlance.png",
+      "accepted": true,
+      "review": "Accepted retry: one descending dawn spear and one plain wooden marker."
+    },
+    {
+      "id": "spell-icon:steadyHands",
+      "nativeAssetId": "spell:steadyHands",
+      "source": "assets/sources/docs-60-67/spell-icon-steadyHands-source.png",
+      "file": "assets/icons/spells/steadyHands.png",
+      "accepted": true,
+      "review": "Accepted retry: complete gloved hands and forearms fasten one bright wrist ribbon."
+    },
+    {
+      "id": "spell-icon:wellspring",
+      "nativeAssetId": "spell:wellspring",
+      "source": "assets/sources/docs-60-67/spell-icon-wellspring-source.png",
+      "file": "assets/icons/spells/wellspring.png",
+      "accepted": true,
+      "review": "Accepted: two distinct cups joined by one rising stream."
+    },
+    {
+      "id": "spell-icon:secondWind",
+      "nativeAssetId": "spell:secondWind",
+      "source": "assets/sources/docs-60-67/spell-icon-secondWind-source.png",
+      "file": "assets/icons/spells/secondWind.png",
+      "accepted": true,
+      "review": "Accepted: fallen wooden company figure visibly returns under one handbell."
+    },
+    {
+      "id": "spell-icon:litanyOfDawn",
+      "nativeAssetId": "spell:litanyOfDawn",
+      "source": "assets/sources/docs-60-67/spell-icon-litanyOfDawn-source.png",
+      "file": "assets/icons/spells/litanyOfDawn.png",
+      "accepted": true,
+      "review": "Accepted: sunrise hymn ribbon reaches a complete three-marker company line."
+    },
+    {
+      "id": "spell-icon:holdTheLine",
+      "nativeAssetId": "spell:holdTheLine",
+      "source": "assets/sources/docs-60-67/spell-icon-holdTheLine-source.png",
+      "file": "assets/icons/spells/holdTheLine.png",
+      "accepted": true,
+      "review": "Accepted: one last marker visibly braces behind a low banner."
+    },
+    {
+      "id": "spell-icon:consecratedGround",
+      "nativeAssetId": "spell:consecratedGround",
+      "source": "assets/sources/docs-60-67/spell-icon-consecratedGround-source.png",
+      "file": "assets/icons/spells/consecratedGround.png",
+      "accepted": true,
+      "review": "Accepted: single complete battlefield hex with physical Rite tuning ring."
+    },
+    {
+      "id": "spell-icon:reprise",
+      "nativeAssetId": "spell:reprise",
+      "source": "assets/sources/docs-60-67/spell-icon-reprise-source.png",
+      "file": "assets/icons/spells/reprise.png",
+      "accepted": true,
+      "review": "Accepted: one company marker followed by two readable action arrows."
+    },
+    {
+      "id": "spell-icon:rivet",
+      "nativeAssetId": "spell:rivet",
+      "source": "assets/sources/docs-60-67/spell-icon-rivet-source.png",
+      "file": "assets/icons/spells/rivet.png",
+      "accepted": true,
+      "review": "Accepted: bright brass rivet fastening one shield plate."
+    },
+    {
+      "id": "spell-icon:whetstone",
+      "nativeAssetId": "spell:whetstone",
+      "source": "assets/sources/docs-60-67/spell-icon-whetstone-source.png",
+      "file": "assets/icons/spells/whetstone.png",
+      "accepted": true,
+      "review": "Accepted: compact whetstone, blade, and one clean spark."
+    },
+    {
+      "id": "spell-icon:shrapnel",
+      "nativeAssetId": "spell:shrapnel",
+      "source": "assets/sources/docs-60-67/spell-icon-shrapnel-source.png",
+      "file": "assets/icons/spells/shrapnel.png",
+      "accepted": true,
+      "review": "Accepted: central ranged impact visibly splits toward neighboring markers."
+    },
+    {
+      "id": "spell-icon:ammunitionCart",
+      "nativeAssetId": "spell:ammunitionCart",
+      "source": "assets/sources/docs-60-67/spell-icon-ammunitionCart-source.png",
+      "file": "assets/icons/spells/ammunitionCart.png",
+      "accepted": true,
+      "review": "Accepted: compact arrow cart and two refilled quivers."
+    },
+    {
+      "id": "spell-icon:detonate",
+      "nativeAssetId": "spell:detonate",
+      "source": "assets/sources/docs-60-67/spell-icon-detonate-source.png",
+      "file": "assets/icons/spells/detonate.png",
+      "accepted": true,
+      "review": "Accepted: counter-pip ring collapses into one contained blast."
+    },
+    {
+      "id": "spell-icon:clockworkDouble",
+      "nativeAssetId": "spell:clockworkDouble",
+      "source": "assets/sources/docs-60-67/spell-icon-clockworkDouble-source.png",
+      "file": "assets/icons/spells/clockworkDouble.png",
+      "accepted": true,
+      "review": "Accepted: brass pattern wheel produces a second matching company marker."
+    },
+    {
+      "id": "spell-icon:blink",
+      "nativeAssetId": "spell:blink",
+      "source": "assets/sources/docs-60-67/spell-icon-blink-source.png",
+      "file": "assets/icons/spells/blink.png",
+      "accepted": true,
+      "review": "Accepted: one marker crosses between two hinged empty hexes."
+    },
+    {
+      "id": "spell-icon:overclock",
+      "nativeAssetId": "spell:overclock",
+      "source": "assets/sources/docs-60-67/spell-icon-overclock-source.png",
+      "file": "assets/icons/spells/overclock.png",
+      "accepted": true,
+      "review": "Accepted: wound spring drives two arrows before a stopped gear."
+    },
+    {
+      "id": "spell-icon:dimensionDoor",
+      "nativeAssetId": "spell:dimensionDoor",
+      "source": "assets/sources/docs-60-67/spell-icon-dimensionDoor-source.png",
+      "file": "assets/icons/spells/dimensionDoor.png",
+      "accepted": true,
+      "review": "Accepted: folded map passes through one freestanding brass door."
+    },
+    {
+      "id": "spell-icon:pinchOfAsh",
+      "nativeAssetId": "spell:pinchOfAsh",
+      "source": "assets/sources/docs-60-67/spell-icon-pinchOfAsh-source.png",
+      "file": "assets/icons/spells/pinchOfAsh.png",
+      "accepted": true,
+      "review": "Accepted: gloved fingers scatter ash across one company token."
+    },
+    {
+      "id": "spell-icon:tithe",
+      "nativeAssetId": "spell:tithe",
+      "source": "assets/sources/docs-60-67/spell-icon-tithe-source.png",
+      "file": "assets/icons/spells/tithe.png",
+      "accepted": true,
+      "review": "Accepted: dark offering bowl receives exactly one red counter."
+    },
+    {
+      "id": "spell-icon:grudge",
+      "nativeAssetId": "spell:grudge",
+      "source": "assets/sources/docs-60-67/spell-icon-grudge-source.png",
+      "file": "assets/icons/spells/grudge.png",
+      "accepted": true,
+      "review": "Accepted: knotted black thread visibly tightens around one marker."
+    },
+    {
+      "id": "spell-icon:yoke",
+      "nativeAssetId": "spell:yoke",
+      "source": "assets/sources/docs-60-67/spell-icon-yoke-source.png",
+      "file": "assets/icons/spells/yoke.png",
+      "accepted": true,
+      "review": "Accepted: two markers are joined by one gravewood yoke."
+    },
+    {
+      "id": "spell-icon:graveBargain",
+      "nativeAssetId": "spell:graveBargain",
+      "source": "assets/sources/docs-60-67/spell-icon-graveBargain-source.png",
+      "file": "assets/icons/spells/graveBargain.png",
+      "accepted": true,
+      "review": "Accepted: fallen company token beside a replenished dark mana cup."
+    },
+    {
+      "id": "spell-icon:puppetStrings",
+      "nativeAssetId": "spell:puppetStrings",
+      "source": "assets/sources/docs-60-67/spell-icon-puppetStrings-source.png",
+      "file": "assets/icons/spells/puppetStrings.png",
+      "accepted": true,
+      "review": "Accepted: bone strings pull a marker across one battle seam."
+    },
+    {
+      "id": "spell-icon:nettle",
+      "nativeAssetId": "spell:nettle",
+      "source": "assets/sources/docs-60-67/spell-icon-nettle-source.png",
+      "file": "assets/icons/spells/nettle.png",
+      "accepted": true,
+      "review": "Accepted: stinging nettle lies across a chilled company marker."
+    },
+    {
+      "id": "spell-icon:bramblelash",
+      "nativeAssetId": "spell:bramblelash",
+      "source": "assets/sources/docs-60-67/spell-icon-bramblelash-source.png",
+      "file": "assets/icons/spells/bramblelash.png",
+      "accepted": true,
+      "review": "Accepted: thorn whip strikes beside fresh undergrowth."
+    },
+    {
+      "id": "spell-icon:wildcall",
+      "nativeAssetId": "spell:wildcall",
+      "source": "assets/sources/docs-60-67/spell-icon-wildcall-source.png",
+      "file": "assets/icons/spells/wildcall.png",
+      "accepted": true,
+      "review": "Accepted: antler horn calls a distinct woodland beast to an empty hex."
+    },
+    {
+      "id": "spell-icon:sapAndSinew",
+      "nativeAssetId": "spell:sapAndSinew",
+      "source": "assets/sources/docs-60-67/spell-icon-sapAndSinew-source.png",
+      "file": "assets/icons/spells/sapAndSinew.png",
+      "accepted": true,
+      "review": "Accepted: green sap binds a swift beast limb as a taut tendon."
+    },
+    {
+      "id": "spell-icon:verdantSurge",
+      "nativeAssetId": "spell:verdantSurge",
+      "source": "assets/sources/docs-60-67/spell-icon-verdantSurge-source.png",
+      "file": "assets/icons/spells/verdantSurge.png",
+      "accepted": true,
+      "review": "Accepted: green counter pips flow across both company lines."
+    },
+    {
+      "id": "spell-icon:theTurningYear",
+      "nativeAssetId": "spell:theTurningYear",
+      "source": "assets/sources/docs-60-67/spell-icon-theTurningYear-source.png",
+      "file": "assets/icons/spells/theTurningYear.png",
+      "accepted": true,
+      "review": "Accepted: four physical seasonal pips turn around one chosen pip."
+    },
+    {
+      "id": "spell-icon:fly",
+      "nativeAssetId": "spell:fly",
+      "source": "assets/sources/docs-60-67/spell-icon-fly-source.png",
+      "file": "assets/icons/spells/fly.png",
+      "accepted": true,
+      "review": "Accepted: broad wings carry a hero pennant across mountains and water."
+    },
+    {
+      "id": "spell-icon:scrying",
+      "nativeAssetId": "spell:scrying",
+      "source": "assets/sources/docs-60-67/spell-icon-scrying-source.png",
+      "file": "assets/icons/spells/scrying.png",
+      "accepted": true,
+      "review": "Accepted: brass seeing-glass casts a measured circle across a map."
+    },
+    {
+      "id": "spell-icon:bellBookAndCandle",
+      "nativeAssetId": "spell:bellBookAndCandle",
+      "source": "assets/sources/docs-60-67/spell-icon-bellBookAndCandle-source.png",
+      "file": "assets/icons/spells/bellBookAndCandle.png",
+      "accepted": true,
+      "review": "Accepted: complete bell, blank open book, candle, and joining dawn thread."
+    },
+    {
+      "id": "spell-icon:processionOfLamps",
+      "nativeAssetId": "spell:processionOfLamps",
+      "source": "assets/sources/docs-60-67/spell-icon-processionOfLamps-source.png",
+      "file": "assets/icons/spells/processionOfLamps.png",
+      "accepted": true,
+      "review": "Accepted: five hooded lamps lead two pennants along a readable road."
+    },
+    {
+      "id": "spell-icon:dayspring",
+      "nativeAssetId": "spell:dayspring",
+      "source": "assets/sources/docs-60-67/spell-icon-dayspring-source.png",
+      "file": "assets/icons/spells/dayspring.png",
+      "accepted": true,
+      "review": "Accepted: a sunrise visibly raises a fallen allied company line."
+    },
+    {
+      "id": "spell-icon:theLongOath",
+      "nativeAssetId": "spell:theLongOath",
+      "source": "assets/sources/docs-60-67/spell-icon-theLongOath-source.png",
+      "file": "assets/icons/spells/theLongOath.png",
+      "accepted": true,
+      "review": "Accepted: one unbroken blank oath ribbon winds around a complete standard."
+    },
+    {
+      "id": "spell-icon:prospect",
+      "nativeAssetId": "spell:prospect",
+      "source": "assets/sources/docs-60-67/spell-icon-prospect-source.png",
+      "file": "assets/icons/spells/prospect.png",
+      "accepted": true,
+      "review": "Accepted: surveyor pick and gridded map reveal bright ore marks."
+    },
+    {
+      "id": "spell-icon:counterweight",
+      "nativeAssetId": "spell:counterweight",
+      "source": "assets/sources/docs-60-67/spell-icon-counterweight-source.png",
+      "file": "assets/icons/spells/counterweight.png",
+      "accepted": true,
+      "review": "Accepted: brass plumb visibly steadies a company marker against arrows."
+    },
+    {
+      "id": "spell-icon:bulwark",
+      "nativeAssetId": "spell:bulwark",
+      "source": "assets/sources/docs-60-67/spell-icon-bulwark-source.png",
+      "file": "assets/icons/spells/bulwark.png",
+      "accepted": true,
+      "review": "Accepted: straight portable wall has one clear central watchtower."
+    },
+    {
+      "id": "spell-icon:theUnmakingEngine",
+      "nativeAssetId": "spell:theUnmakingEngine",
+      "source": "assets/sources/docs-60-67/spell-icon-theUnmakingEngine-source.png",
+      "file": "assets/icons/spells/theUnmakingEngine.png",
+      "accepted": true,
+      "review": "Accepted: toothed engine visibly draws three enchantment threads from army pieces."
+    },
+    {
+      "id": "spell-icon:mirrorHall",
+      "nativeAssetId": "spell:mirrorHall",
+      "source": "assets/sources/docs-60-67/spell-icon-mirrorHall-source.png",
+      "file": "assets/icons/spells/mirrorHall.png",
+      "accepted": true,
+      "review": "Accepted: three standing mirrors repeat one spell toward a second target."
+    },
+    {
+      "id": "spell-icon:secondGrave",
+      "nativeAssetId": "spell:secondGrave",
+      "source": "assets/sources/docs-60-67/spell-icon-secondGrave-source.png",
+      "file": "assets/icons/spells/secondGrave.png",
+      "accepted": true,
+      "review": "Accepted: company marker rises at a clearly second marked grave."
+    },
+    {
+      "id": "spell-icon:ashenPall",
+      "nativeAssetId": "spell:ashenPall",
+      "source": "assets/sources/docs-60-67/spell-icon-ashenPall-source.png",
+      "file": "assets/icons/spells/ashenPall.png",
+      "accepted": true,
+      "review": "Accepted: ash veil and chill hexes settle across three enemy markers."
+    },
+    {
+      "id": "spell-icon:theLedgerBalanced",
+      "nativeAssetId": "spell:theLedgerBalanced",
+      "source": "assets/sources/docs-60-67/spell-icon-theLedgerBalanced-source.png",
+      "file": "assets/icons/spells/theLedgerBalanced.png",
+      "accepted": true,
+      "review": "Accepted: ledger-mounted scale balances fallen allies against one enemy."
+    },
+    {
+      "id": "spell-icon:ossuary",
+      "nativeAssetId": "spell:ossuary",
+      "source": "assets/sources/docs-60-67/spell-icon-ossuary-source.png",
+      "file": "assets/icons/spells/ossuary.png",
+      "accepted": true,
+      "review": "Accepted: open bone cabinet releases one candle-lit company marker."
+    },
+    {
+      "id": "spell-icon:stealAway",
+      "nativeAssetId": "spell:stealAway",
+      "source": "assets/sources/docs-60-67/spell-icon-stealAway-source.png",
+      "file": "assets/icons/spells/stealAway.png",
+      "accepted": true,
+      "review": "Accepted: mine cart changes tracks toward a distinct rival pennant."
+    },
+    {
+      "id": "spell-icon:theLongSilence",
+      "nativeAssetId": "spell:theLongSilence",
+      "source": "assets/sources/docs-60-67/spell-icon-theLongSilence-source.png",
+      "file": "assets/icons/spells/theLongSilence.png",
+      "accepted": true,
+      "review": "Accepted: dark bell is visibly wrapped shut while five mana coins fall."
+    },
+    {
+      "id": "spell-icon:harvest",
+      "nativeAssetId": "spell:harvest",
+      "source": "assets/sources/docs-60-67/spell-icon-harvest-source.png",
+      "file": "assets/icons/spells/harvest.png",
+      "accepted": true,
+      "review": "Accepted: grave sickle transfers red life beads into restored allies."
+    },
+    {
+      "id": "spell-icon:theDebtCalled",
+      "nativeAssetId": "spell:theDebtCalled",
+      "source": "assets/sources/docs-60-67/spell-icon-theDebtCalled-source.png",
+      "file": "assets/icons/spells/theDebtCalled.png",
+      "accepted": true,
+      "review": "Accepted: open blank ledger chains one distant hero pennant in place."
+    },
+    {
+      "id": "spell-icon:beastSense",
+      "nativeAssetId": "spell:beastSense",
+      "source": "assets/sources/docs-60-67/spell-icon-beastSense-source.png",
+      "file": "assets/icons/spells/beastSense.png",
+      "accepted": true,
+      "review": "Accepted: clear pawprint and antler are read through a scouting glass."
+    },
+    {
+      "id": "spell-icon:illWind",
+      "nativeAssetId": "spell:illWind",
+      "source": "assets/sources/docs-60-67/spell-icon-illWind-source.png",
+      "file": "assets/icons/spells/illWind.png",
+      "accepted": true,
+      "review": "Accepted: cold wind carries chill pips toward three distinct banners."
+    },
+    {
+      "id": "spell-icon:rootTheSky",
+      "nativeAssetId": "spell:rootTheSky",
+      "source": "assets/sources/docs-60-67/spell-icon-rootTheSky-source.png",
+      "file": "assets/icons/spells/rootTheSky.png",
+      "accepted": true,
+      "review": "Accepted: thick roots visibly pull two winged companies toward the field."
+    },
+    {
+      "id": "spell-icon:beastSovereign",
+      "nativeAssetId": "spell:beastSovereign",
+      "source": "assets/sources/docs-60-67/spell-icon-beastSovereign-source.png",
+      "file": "assets/icons/spells/beastSovereign.png",
+      "accepted": true,
+      "review": "Accepted: antlered green crown governs three distinct beast figures."
+    },
+    {
+      "id": "spell-icon:windShear",
+      "nativeAssetId": "spell:windShear",
+      "source": "assets/sources/docs-60-67/spell-icon-windShear-source.png",
+      "file": "assets/icons/spells/windShear.png",
+      "accepted": true,
+      "review": "Accepted: radial gust scatters four markers from one chosen hex."
+    },
+    {
+      "id": "spell-icon:theLongGreen",
+      "nativeAssetId": "spell:theLongGreen",
+      "source": "assets/sources/docs-60-67/spell-icon-theLongGreen-source.png",
+      "file": "assets/icons/spells/theLongGreen.png",
+      "accepted": true,
+      "review": "Accepted: green wave restores two allies and thorn-binds two enemies."
+    },
+    {
+      "id": "spell-icon:theWeatherItself",
+      "nativeAssetId": "spell:theWeatherItself",
+      "source": "assets/sources/docs-60-67/spell-icon-theWeatherItself-source.png",
+      "file": "assets/icons/spells/theWeatherItself.png",
+      "accepted": true,
+      "review": "Accepted: one physical five-part wheel clearly depicts all named weather states."
+    },
+    {
+      "id": "spell-effect-icon:impact-damage",
+      "nativeAssetId": "spell-effect-icon:impact-damage",
+      "source": "assets/sources/docs-60-67/spell-effect-icon-impact-damage-source.png",
+      "file": "assets/icons/effects/impact-damage.png",
+      "accepted": true,
+      "review": "Accepted: impact, marker, and plain measuring rod read clearly."
+    },
+    {
+      "id": "spell-effect-icon:resurrection",
+      "nativeAssetId": "spell-effect-icon:resurrection",
+      "source": "assets/sources/docs-60-67/spell-effect-icon-resurrection-source.png",
+      "file": "assets/icons/effects/resurrection.png",
+      "accepted": true,
+      "review": "Accepted: fallen marker visibly returns beneath a sunrise."
+    },
+    {
+      "id": "spell-effect-icon:stun",
+      "nativeAssetId": "spell-effect-icon:stun",
+      "source": "assets/sources/docs-60-67/spell-effect-icon-stun-source.png",
+      "file": "assets/icons/effects/stun.png",
+      "accepted": true,
+      "review": "Accepted: stopped gear and crossed action arrow clearly disable a marker."
+    },
+    {
+      "id": "spell-effect-icon:clone",
+      "nativeAssetId": "spell-effect-icon:clone",
+      "source": "assets/sources/docs-60-67/spell-effect-icon-clone-source.png",
+      "file": "assets/icons/effects/clone.png",
+      "accepted": true,
+      "review": "Accepted: matching wooden and translucent glass markers read as original and clone."
+    },
+    {
+      "id": "spell-effect-icon:mass",
+      "nativeAssetId": "spell-effect-icon:mass",
+      "source": "assets/sources/docs-60-67/spell-effect-icon-mass-source.png",
+      "file": "assets/icons/effects/mass.png",
+      "accepted": true,
+      "review": "Accepted: one source branches cleanly to four markers."
+    },
+    {
+      "id": "spell-effect-icon:mind-control",
+      "nativeAssetId": "spell-effect-icon:mind-control",
+      "source": "assets/sources/docs-60-67/spell-effect-icon-mind-control-source.png",
+      "file": "assets/icons/effects/mind-control.png",
+      "accepted": true,
+      "review": "Accepted: puppet ribbon pulls a marker across a center line."
+    },
+    {
+      "id": "spell-effect-icon:damage-link",
+      "nativeAssetId": "spell-effect-icon:damage-link",
+      "source": "assets/sources/docs-60-67/spell-effect-icon-damage-link-source.png",
+      "file": "assets/icons/effects/damage-link.png",
+      "accepted": true,
+      "review": "Accepted: taut red cord carries one damage spark between markers."
+    },
+    {
+      "id": "spell-effect-icon:detonate",
+      "nativeAssetId": "spell-effect-icon:detonate",
+      "source": "assets/sources/docs-60-67/spell-effect-icon-detonate-source.png",
+      "file": "assets/icons/effects/detonate.png",
+      "accepted": true,
+      "review": "Accepted: ordered ember pips vanish into one contained burst."
+    },
+    {
+      "id": "skill-icon:evoker",
+      "nativeAssetId": "skill:evoker",
+      "source": "assets/sources/docs-60-67/skill-icon-evoker-source.png",
+      "file": "assets/icons/skills/evoker.png",
+      "accepted": true,
+      "review": "Accepted: bright evocation impact breaks one iron plate."
+    },
+    {
+      "id": "skill-icon:tallykeeper",
+      "nativeAssetId": "skill:tallykeeper",
+      "source": "assets/sources/docs-60-67/skill-icon-tallykeeper-source.png",
+      "file": "assets/icons/skills/tallykeeper.png",
+      "accepted": true,
+      "review": "Accepted: compact board has four distinct colored tally rows."
+    },
+    {
+      "id": "skill-icon:reliquarian",
+      "nativeAssetId": "skill:reliquarian",
+      "source": "assets/sources/docs-60-67/skill-icon-reliquarian-source.png",
+      "file": "assets/icons/skills/reliquarian.png",
+      "accepted": true,
+      "review": "Accepted: complete careful gloved hand holds one small reliquary."
+    },
+    {
+      "id": "skill-icon:tactician",
+      "nativeAssetId": "skill:tactician",
+      "source": "assets/sources/docs-60-67/skill-icon-tactician-source.png",
+      "file": "assets/icons/skills/tactician.png",
+      "accepted": true,
+      "review": "Accepted: three company markers visibly advance across a field map."
+    },
+    {
+      "id": "skill-icon:reaper",
+      "nativeAssetId": "skill:reaper",
+      "source": "assets/sources/docs-60-67/skill-icon-reaper-source.png",
+      "file": "assets/icons/skills/reaper.png",
+      "accepted": true,
+      "review": "Accepted: curved hook gathers three pale battlefield ribbons."
+    },
+    {
+      "id": "skill-icon:quartermaster",
+      "nativeAssetId": "skill:quartermaster",
+      "source": "assets/sources/docs-60-67/skill-icon-quartermaster-source.png",
+      "file": "assets/icons/skills/quartermaster.png",
+      "accepted": true,
+      "review": "Accepted: key ring and blank tied supply ledger read clearly."
+    },
+    {
+      "id": "skill-icon:beguiler",
+      "nativeAssetId": "skill:beguiler",
+      "source": "assets/sources/docs-60-67/skill-icon-beguiler-source.png",
+      "file": "assets/icons/skills/beguiler.png",
+      "accepted": true,
+      "review": "Accepted: half-smiling silver mask trails a blue ribbon."
+    },
+    {
+      "id": "skill-icon:loremaster",
+      "nativeAssetId": "skill:loremaster",
+      "source": "assets/sources/docs-60-67/skill-icon-loremaster-source.png",
+      "file": "assets/icons/skills/loremaster.png",
+      "accepted": true,
+      "review": "Accepted: turned blank page reveals a second hidden parchment layer."
+    },
+    {
+      "id": "skill-icon:duelist",
+      "nativeAssetId": "skill:duelist",
+      "source": "assets/sources/docs-60-67/skill-icon-duelist-source.png",
+      "file": "assets/icons/skills/duelist.png",
+      "accepted": true,
+      "review": "Accepted: complete bright glove overlays two crossed practice blades."
+    },
+    {
+      "id": "knack:hearthguard",
+      "nativeAssetId": "knack:hearthguard",
+      "source": "assets/sources/docs-60-67/knack-hearthguard-source.png",
+      "file": "assets/icons/knacks/hearthguard.png",
+      "accepted": true,
+      "review": "Accepted: complete gloved hand lifts an upright red-and-cream field banner."
+    },
+    {
+      "id": "knack:woundWrights",
+      "nativeAssetId": "knack:woundWrights",
+      "source": "assets/sources/docs-60-67/knack-woundWrights-source.png",
+      "file": "assets/icons/knacks/woundWrights.png",
+      "accepted": true,
+      "review": "Accepted: two jointed hands visibly fasten one brass repair patch."
+    },
+    {
+      "id": "knack:unfinished",
+      "nativeAssetId": "knack:unfinished",
+      "source": "assets/sources/docs-60-67/knack-unfinished-source.png",
+      "file": "assets/icons/knacks/unfinished.png",
+      "accepted": true,
+      "review": "Accepted: candle and unfinished blank letter are tied with pale funeral thread."
+    },
+    {
+      "id": "knack:vespiary",
+      "nativeAssetId": "knack:vespiary",
+      "source": "assets/sources/docs-60-67/knack-vespiary-source.png",
+      "file": "assets/icons/knacks/vespiary.png",
+      "accepted": true,
+      "review": "Accepted: heavy amber resin drop spreads across a ridged honey tile."
+    },
+    {
+      "id": "knack:hagwood",
+      "nativeAssetId": "knack:hagwood",
+      "source": "assets/sources/docs-60-67/knack-hagwood-source.png",
+      "file": "assets/icons/knacks/hagwood.png",
+      "accepted": true,
+      "review": "Accepted: crooked birch token is bound with one black feather and red thread."
+    },
+    {
+      "id": "knack:wildergrass",
+      "nativeAssetId": "knack:wildergrass",
+      "source": "assets/sources/docs-60-67/knack-wildergrass-source.png",
+      "file": "assets/icons/knacks/wildergrass.png",
+      "accepted": true,
+      "review": "Accepted: low hide drum, beater, and ochre horn bindings read clearly."
+    },
+    {
+      "id": "battle-unit:seamMoth",
+      "nativeAssetId": "battle-unit:seamMoth",
+      "source": "assets/sources/docs-60-67/battle-unit-seamMoth-source.png",
+      "file": "assets/battle-units/seamMoth.png",
+      "accepted": true,
+      "review": "Accepted: complete broad pale moth with a dominant stitched central seam."
+    },
+    {
+      "id": "battle-unit:chalkWight",
+      "nativeAssetId": "battle-unit:chalkWight",
+      "source": "assets/sources/docs-60-67/battle-unit-chalkWight-source.png",
+      "file": "assets/battle-units/chalkWight.png",
+      "accepted": true,
+      "review": "Accepted: stooped chalk-white spirit trails a continuous pale boundary."
+    },
+    {
+      "id": "battle-unit:emberToad",
+      "nativeAssetId": "battle-unit:emberToad",
+      "source": "assets/sources/docs-60-67/battle-unit-emberToad-source.png",
+      "file": "assets/battle-units/emberToad.png",
+      "accepted": true,
+      "review": "Accepted: squat soot-black toad has a furnace-orange throat."
+    },
+    {
+      "id": "battle-unit:glassHound",
+      "nativeAssetId": "battle-unit:glassHound",
+      "source": "assets/sources/docs-60-67/battle-unit-glassHound-source.png",
+      "file": "assets/battle-units/glassHound.png",
+      "accepted": true,
+      "review": "Accepted: long masked hound reads as faceted plum and silver glass."
+    },
+    {
+      "id": "battle-unit:tallyman",
+      "nativeAssetId": "battle-unit:tallyman",
+      "source": "assets/sources/docs-60-67/battle-unit-tallyman-source.png",
+      "file": "assets/battle-units/tallyman.png",
+      "accepted": true,
+      "review": "Accepted: narrow masked courtier carries one hooked counting staff."
+    },
+    {
+      "id": "battle-unit:lanternBearer",
+      "nativeAssetId": "battle-unit:lanternBearer",
+      "source": "assets/sources/docs-60-67/battle-unit-lanternBearer-source.png",
+      "file": "assets/battle-units/lanternBearer.png",
+      "accepted": true,
+      "review": "Accepted: complete tonsured monk carries one tall hooded lantern."
+    },
+    {
+      "id": "battle-unit:boneOrchard",
+      "nativeAssetId": "battle-unit:boneOrchard",
+      "source": "assets/sources/docs-60-67/battle-unit-boneOrchard-source.png",
+      "file": "assets/battle-units/boneOrchard.png",
+      "accepted": true,
+      "review": "Accepted: rooted white jointed orchard is physically strung as a siege bow."
+    },
+    {
+      "id": "battle-unit:stitchOx",
+      "nativeAssetId": "battle-unit:stitchOx",
+      "source": "assets/sources/docs-60-67/battle-unit-stitchOx-source.png",
+      "file": "assets/battle-units/stitchOx.png",
+      "accepted": true,
+      "review": "Accepted: massive patched ox has one luminous seam and broad yoke."
+    },
+    {
+      "id": "battle-unit:nineMouthedWell",
+      "nativeAssetId": "battle-unit:nineMouthedWell",
+      "source": "assets/sources/docs-60-67/battle-unit-nineMouthedWell-source.png",
+      "file": "assets/battle-units/nineMouthedWell.png",
+      "accepted": true,
+      "review": "Accepted: massive walking well has nine distinct snapping mouths."
+    },
+    {
+      "id": "battle-unit:kilnDrake",
+      "nativeAssetId": "battle-unit:kilnDrake",
+      "source": "assets/sources/docs-60-67/battle-unit-kilnDrake-source.png",
+      "file": "assets/battle-units/kilnDrake.png",
+      "accepted": true,
+      "review": "Accepted: brick-red drake has complete wings, chimney back, and kiln chest."
+    },
+    {
+      "id": "battle-unit:whistlingNan",
+      "nativeAssetId": "battle-unit:whistlingNan",
+      "source": "assets/sources/docs-60-67/battle-unit-whistlingNan-source.png",
+      "file": "assets/battle-units/whistlingNan.png",
+      "accepted": true,
+      "review": "Accepted: complete bent hedge-witch carries whistle, shawl, and thorn staff."
+    },
+    {
+      "id": "battle-unit:unbaptized",
+      "nativeAssetId": "battle-unit:unbaptized",
+      "source": "assets/sources/docs-60-67/battle-unit-unbaptized-source.png",
+      "file": "assets/battle-units/unbaptized.png",
+      "accepted": true,
+      "review": "Accepted: broad unfinished clay penitent carries an empty stone font."
+    },
+    {
+      "id": "battle-unit:bellfounder",
+      "nativeAssetId": "battle-unit:bellfounder",
+      "source": "assets/sources/docs-60-67/battle-unit-bellfounder-source.png",
+      "file": "assets/battle-units/bellfounder.png",
+      "accepted": true,
+      "review": "Accepted: sturdy tonsured monk uses two timing hammers beside an empty bell frame."
+    },
+    {
+      "id": "guardian-unit:seamMoth",
+      "nativeAssetId": "guardian-unit:seamMoth",
+      "source": "assets/sources/docs-60-67/guardian-unit-seamMoth-source.png",
+      "file": "assets/guardian-units/seamMoth.png",
+      "accepted": true,
+      "review": "Accepted: upright perched moth closes around one central stitched seam."
+    },
+    {
+      "id": "guardian-unit:chalkWight",
+      "nativeAssetId": "guardian-unit:chalkWight",
+      "source": "assets/sources/docs-60-67/guardian-unit-chalkWight-source.png",
+      "file": "assets/guardian-units/chalkWight.png",
+      "accepted": true,
+      "review": "Accepted: compact chalk sentinel trails one continuous boundary line."
+    },
+    {
+      "id": "guardian-unit:emberToad",
+      "nativeAssetId": "guardian-unit:emberToad",
+      "source": "assets/sources/docs-60-67/guardian-unit-emberToad-source.png",
+      "file": "assets/guardian-units/emberToad.png",
+      "accepted": true,
+      "review": "Accepted: upright soot-black toad sentinel has a bright furnace throat."
+    },
+    {
+      "id": "guardian-unit:glassHound",
+      "nativeAssetId": "guardian-unit:glassHound",
+      "source": "assets/sources/docs-60-67/guardian-unit-glassHound-source.png",
+      "file": "assets/guardian-units/glassHound.png",
+      "accepted": true,
+      "review": "Accepted: alert masked hound sentinel reads as plum and silver glass."
+    },
+    {
+      "id": "guardian-unit:tallyman",
+      "nativeAssetId": "guardian-unit:tallyman",
+      "source": "assets/sources/docs-60-67/guardian-unit-tallyman-source.png",
+      "file": "assets/guardian-units/tallyman.png",
+      "accepted": true,
+      "review": "Accepted: vertical masked courtier sentinel holds one hooked counting staff."
+    },
+    {
+      "id": "guardian-unit:lanternBearer",
+      "nativeAssetId": "guardian-unit:lanternBearer",
+      "source": "assets/sources/docs-60-67/guardian-unit-lanternBearer-source.png",
+      "file": "assets/guardian-units/lanternBearer.png",
+      "accepted": true,
+      "review": "Accepted: complete monk sentinel holds a tall hooded lantern upright."
+    },
+    {
+      "id": "guardian-unit:boneOrchard",
+      "nativeAssetId": "guardian-unit:boneOrchard",
+      "source": "assets/sources/docs-60-67/guardian-unit-boneOrchard-source.png",
+      "file": "assets/guardian-units/boneOrchard.png",
+      "accepted": true,
+      "review": "Accepted: upright white jointed bough sentinel is strung as a bow."
+    },
+    {
+      "id": "guardian-unit:stitchOx",
+      "nativeAssetId": "guardian-unit:stitchOx",
+      "source": "assets/sources/docs-60-67/guardian-unit-stitchOx-source.png",
+      "file": "assets/guardian-units/stitchOx.png",
+      "accepted": true,
+      "review": "Accepted: vertically posed patched ox has luminous seam and yoke."
+    },
+    {
+      "id": "guardian-unit:nineMouthedWell",
+      "nativeAssetId": "guardian-unit:nineMouthedWell",
+      "source": "assets/sources/docs-60-67/guardian-unit-nineMouthedWell-source.png",
+      "file": "assets/guardian-units/nineMouthedWell.png",
+      "accepted": true,
+      "review": "Accepted: upright walking well sentinel has nine distinct mouths."
+    },
+    {
+      "id": "guardian-unit:kilnDrake",
+      "nativeAssetId": "guardian-unit:kilnDrake",
+      "source": "assets/sources/docs-60-67/guardian-unit-kilnDrake-source.png",
+      "file": "assets/guardian-units/kilnDrake.png",
+      "accepted": true,
+      "review": "Accepted: upright kiln drake has folded high wings, chimney, and bright chest."
+    },
+    {
+      "id": "guardian-unit:whistlingNan",
+      "nativeAssetId": "guardian-unit:whistlingNan",
+      "source": "assets/sources/docs-60-67/guardian-unit-whistlingNan-source.png",
+      "file": "assets/guardian-units/whistlingNan.png",
+      "accepted": true,
+      "review": "Accepted: compact witch sentinel retains whistle, shawl, and thorn staff."
+    },
+    {
+      "id": "guardian-unit:unbaptized",
+      "nativeAssetId": "guardian-unit:unbaptized",
+      "source": "assets/sources/docs-60-67/guardian-unit-unbaptized-source.png",
+      "file": "assets/guardian-units/unbaptized.png",
+      "accepted": true,
+      "review": "Accepted: upright clay penitent carries an empty font."
+    },
+    {
+      "id": "guardian-unit:bellfounder",
+      "nativeAssetId": "guardian-unit:bellfounder",
+      "source": "assets/sources/docs-60-67/guardian-unit-bellfounder-source.png",
+      "file": "assets/guardian-units/bellfounder.png",
+      "accepted": true,
+      "review": "Accepted: compact monk sentinel has two timing hammers and empty bell frame."
+    },
+    {
+      "id": "map-object:dwelling:seamMoth",
+      "nativeAssetId": "map-object:dwelling:seamMoth",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-seamMoth-source.png",
+      "file": "assets/map-objects/dwelling-seamMoth.png",
+      "accepted": true,
+      "review": "Accepted: winged cocoon chapel has a clear seam-shaped visit doorway."
+    },
+    {
+      "id": "map-object:dwelling:chalkWight",
+      "nativeAssetId": "map-object:dwelling:chalkWight",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-chalkWight-source.png",
+      "file": "assets/map-objects/dwelling-chalkWight.png",
+      "accepted": true,
+      "review": "Accepted: chalk shrine carries one continuous pale boundary into its doorway."
+    },
+    {
+      "id": "map-object:dwelling:emberToad",
+      "nativeAssetId": "map-object:dwelling:emberToad",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-emberToad-source.png",
+      "file": "assets/map-objects/dwelling-emberToad.png",
+      "accepted": true,
+      "review": "Accepted: squat toad-shaped soot kiln has a furnace-bright visit doorway."
+    },
+    {
+      "id": "map-object:dwelling:glassHound",
+      "nativeAssetId": "map-object:dwelling:glassHound",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-glassHound-source.png",
+      "file": "assets/map-objects/dwelling-glassHound.png",
+      "accepted": true,
+      "review": "Accepted: faceted glass kennel pavilion has a masked-hound visit arch."
+    },
+    {
+      "id": "map-object:dwelling:tallyman",
+      "nativeAssetId": "map-object:dwelling:tallyman",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-tallyman-source.png",
+      "file": "assets/map-objects/dwelling-tallyman.png",
+      "accepted": true,
+      "review": "Accepted: narrow counting pavilion uses blank boards, a mask arch, and hooked finial."
+    },
+    {
+      "id": "map-object:dwelling:lanternBearer",
+      "nativeAssetId": "map-object:dwelling:lanternBearer",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-lanternBearer-source.png",
+      "file": "assets/map-objects/dwelling-lanternBearer.png",
+      "accepted": true,
+      "review": "Accepted: compact pilgrim hospice has a hooded lantern tower and open visit door."
+    },
+    {
+      "id": "map-object:dwelling:boneOrchard",
+      "nativeAssetId": "map-object:dwelling:boneOrchard",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-boneOrchard-source.png",
+      "file": "assets/map-objects/dwelling-boneOrchard.png",
+      "accepted": true,
+      "review": "Accepted: rooted jointed-bough grove house is visibly tensioned like a bow."
+    },
+    {
+      "id": "map-object:dwelling:stitchOx",
+      "nativeAssetId": "map-object:dwelling:stitchOx",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-stitchOx-source.png",
+      "file": "assets/map-objects/dwelling-stitchOx.png",
+      "accepted": true,
+      "review": "Accepted: low patched-hide byre has a luminous seam and broad yoke doorway."
+    },
+    {
+      "id": "map-object:dwelling:nineMouthedWell",
+      "nativeAssetId": "map-object:dwelling:nineMouthedWell",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-nineMouthedWell-source.png",
+      "file": "assets/map-objects/dwelling-nineMouthedWell.png",
+      "accepted": true,
+      "review": "Accepted after two retries: exactly nine face-forward mouths remain countable above the visit door."
+    },
+    {
+      "id": "map-object:dwelling:kilnDrake",
+      "nativeAssetId": "map-object:dwelling:kilnDrake",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-kilnDrake-source.png",
+      "file": "assets/map-objects/dwelling-kilnDrake.png",
+      "accepted": true,
+      "review": "Accepted: compact brick-red aerie has a winged roof, chimney, and kiln-bright door."
+    },
+    {
+      "id": "map-object:dwelling:whistlingNan",
+      "nativeAssetId": "map-object:dwelling:whistlingNan",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-whistlingNan-source.png",
+      "file": "assets/map-objects/dwelling-whistlingNan.png",
+      "accepted": true,
+      "review": "Accepted: bent shawl-draped thorn hut has a whistle charm and clear crooked door."
+    },
+    {
+      "id": "map-object:dwelling:unbaptized",
+      "nativeAssetId": "map-object:dwelling:unbaptized",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-unbaptized-source.png",
+      "file": "assets/map-objects/dwelling-unbaptized.png",
+      "accepted": true,
+      "review": "Accepted: unfinished clay sanctuary is visibly built around an empty stone font."
+    },
+    {
+      "id": "map-object:dwelling:bellfounder",
+      "nativeAssetId": "map-object:dwelling:bellfounder",
+      "source": "assets/sources/docs-60-67/map-object-dwelling-bellfounder-source.png",
+      "file": "assets/map-objects/dwelling-bellfounder.png",
+      "accepted": true,
+      "review": "Accepted: compact foundry has two crossed timing hammers and an empty bell frame doorway."
+    },
+    {
+      "id": "map-object:artifact:bellows",
+      "nativeAssetId": "map-object:artifact:bellows",
+      "source": "assets/sources/docs-60-67/map-object-artifact-bellows-source.png",
+      "file": "assets/artifacts/bellows.png",
+      "accepted": true,
+      "review": "Accepted: compact leather bellows has ashwood handles and a copper nozzle."
+    },
+    {
+      "id": "map-object:artifact:ninePipCord",
+      "nativeAssetId": "map-object:artifact:ninePipCord",
+      "source": "assets/sources/docs-60-67/map-object-artifact-ninePipCord-source.png",
+      "file": "assets/artifacts/ninePipCord.png",
+      "accepted": true,
+      "review": "Accepted: dark blue cord visibly carries exactly nine pale bone pips."
+    },
+    {
+      "id": "map-object:artifact:ashCenser",
+      "nativeAssetId": "map-object:artifact:ashCenser",
+      "source": "assets/sources/docs-60-67/map-object-artifact-ashCenser-source.png",
+      "file": "assets/artifacts/ashCenser.png",
+      "accepted": true,
+      "review": "Accepted: copper censer has a deep ash bowl, short chain, and no smoke."
+    },
+    {
+      "id": "map-object:artifact:sappersChalk",
+      "nativeAssetId": "map-object:artifact:sappersChalk",
+      "source": "assets/sources/docs-60-67/map-object-artifact-sappersChalk-source.png",
+      "file": "assets/artifacts/sappersChalk.png",
+      "accepted": true,
+      "review": "Accepted: three red-white survey chalks are tied to one brass plumb."
+    },
+    {
+      "id": "map-object:artifact:loomSmallRepairs",
+      "nativeAssetId": "map-object:artifact:loomSmallRepairs",
+      "source": "assets/sources/docs-60-67/map-object-artifact-loomSmallRepairs-source.png",
+      "file": "assets/artifacts/loomSmallRepairs.png",
+      "accepted": true,
+      "review": "Accepted: palm-sized ashwood loom holds a neat cream-red repair patch."
+    },
+    {
+      "id": "map-object:artifact:puppeteersThimble",
+      "nativeAssetId": "map-object:artifact:puppeteersThimble",
+      "source": "assets/sources/docs-60-67/map-object-artifact-puppeteersThimble-source.png",
+      "file": "assets/artifacts/puppeteersThimble.png",
+      "accepted": true,
+      "review": "Accepted: blackened silver thimble is threaded by two fine red puppet cords."
+    },
+    {
+      "id": "map-object:artifact:quietLedger",
+      "nativeAssetId": "map-object:artifact:quietLedger",
+      "source": "assets/sources/docs-60-67/map-object-artifact-quietLedger-source.png",
+      "file": "assets/artifacts/quietLedger.png",
+      "accepted": true,
+      "review": "Accepted: narrow charcoal ledger is shut by a silent brass clasp."
+    },
+    {
+      "id": "map-object:artifact:beastCallersCord",
+      "nativeAssetId": "map-object:artifact:beastCallersCord",
+      "source": "assets/sources/docs-60-67/map-object-artifact-beastCallersCord-source.png",
+      "file": "assets/artifacts/beastCallersCord.png",
+      "accepted": true,
+      "review": "Accepted: green hide cord carries one horn whistle and one leaf bead."
+    },
+    {
+      "id": "map-object:artifact:emptyReliquary",
+      "nativeAssetId": "map-object:artifact:emptyReliquary",
+      "source": "assets/sources/docs-60-67/map-object-artifact-emptyReliquary-source.png",
+      "file": "assets/artifacts/emptyReliquary.png",
+      "accepted": true,
+      "review": "Accepted: open brass reliquary has a visibly empty velvet recess and loose clasp."
+    },
+    {
+      "id": "map-object:artifact:crackedPrism",
+      "nativeAssetId": "map-object:artifact:crackedPrism",
+      "source": "assets/sources/docs-60-67/map-object-artifact-crackedPrism-source.png",
+      "file": "assets/artifacts/crackedPrism.png",
+      "accepted": true,
+      "review": "Accepted: triangular prism is cleanly split and carries two restrained color edges."
+    },
+    {
+      "id": "map-object:artifact:secondSunrise",
+      "nativeAssetId": "map-object:artifact:secondSunrise",
+      "source": "assets/sources/docs-60-67/map-object-artifact-secondSunrise-source.png",
+      "file": "assets/artifacts/secondSunrise.png",
+      "accepted": true,
+      "review": "Accepted: round amber amulet visibly shows two overlapping suns."
+    },
+    {
+      "id": "map-object:artifact:hexwrightsTally",
+      "nativeAssetId": "map-object:artifact:hexwrightsTally",
+      "source": "assets/sources/docs-60-67/map-object-artifact-hexwrightsTally-source.png",
+      "file": "assets/artifacts/hexwrightsTally.png",
+      "accepted": true,
+      "review": "Accepted: wooden tally carries exactly fifteen plum notches and a brass ring."
+    },
+    {
+      "id": "map-object:artifact:graftedHand",
+      "nativeAssetId": "map-object:artifact:graftedHand",
+      "source": "assets/sources/docs-60-67/map-object-artifact-graftedHand-source.png",
+      "file": "assets/artifacts/graftedHand.png",
+      "accepted": true,
+      "review": "Accepted: empty red casting glove has one articulated brass second thumb."
+    },
+    {
+      "id": "map-object:artifact:discordantFork",
+      "nativeAssetId": "map-object:artifact:discordantFork",
+      "source": "assets/sources/docs-60-67/map-object-artifact-discordantFork-source.png",
+      "file": "assets/artifacts/discordantFork.png",
+      "accepted": true,
+      "review": "Accepted: black tuning fork has two subtly unequal diverging tines."
+    },
+    {
+      "id": "map-object:artifact:whistlingKettle",
+      "nativeAssetId": "map-object:artifact:whistlingKettle",
+      "source": "assets/sources/docs-60-67/map-object-artifact-whistlingKettle-source.png",
+      "file": "assets/artifacts/whistlingKettle.png",
+      "accepted": true,
+      "review": "Accepted: squat blue-black kettle has a crooked silver whistle and tight lid."
+    },
+    {
+      "id": "map-object:artifact:tuningPeg",
+      "nativeAssetId": "map-object:artifact:tuningPeg",
+      "source": "assets/sources/docs-60-67/map-object-artifact-tuningPeg-source.png",
+      "file": "assets/artifacts/tuningPeg.png",
+      "accepted": true,
+      "review": "Accepted: large ivory peg is wrapped in exactly three colored strings."
+    },
+    {
+      "id": "map-object:artifact:greedyGrimoire",
+      "nativeAssetId": "map-object:artifact:greedyGrimoire",
+      "source": "assets/sources/docs-60-67/map-object-artifact-greedyGrimoire-source.png",
+      "file": "assets/artifacts/greedyGrimoire.png",
+      "accepted": true,
+      "review": "Accepted: swollen green-black grimoire is cinched by an excess of brass clasps."
+    },
+    {
+      "id": "map-object:artifact:loudBell",
+      "nativeAssetId": "map-object:artifact:loudBell",
+      "source": "assets/sources/docs-60-67/map-object-artifact-loudBell-source.png",
+      "file": "assets/artifacts/loudBell.png",
+      "accepted": true,
+      "review": "Accepted: polished red-brass hand bell has an oversized clapper and leather loop."
+    },
+    {
+      "id": "map-object:artifact:ironTongue",
+      "nativeAssetId": "map-object:artifact:ironTongue",
+      "source": "assets/sources/docs-60-67/map-object-artifact-ironTongue-source.png",
+      "file": "assets/artifacts/ironTongue.png",
+      "accepted": true,
+      "review": "Accepted: heavy black iron tongue-shaped pendant hangs from a short red cord."
+    },
+    {
+      "id": "map-object:artifact:splitReed",
+      "nativeAssetId": "map-object:artifact:splitReed",
+      "source": "assets/sources/docs-60-67/map-object-artifact-splitReed-source.png",
+      "file": "assets/artifacts/splitReed.png",
+      "accepted": true,
+      "review": "Accepted: pale casting reed is split down its length and blue-bound at the grip."
+    },
+    {
+      "id": "map-object:artifact:longLadder",
+      "nativeAssetId": "map-object:artifact:longLadder",
+      "source": "assets/sources/docs-60-67/map-object-artifact-longLadder-source.png",
+      "file": "assets/artifacts/longLadder.png",
+      "accepted": true,
+      "review": "Accepted: compact folded ashwood ladder has brass hinges and chalked feet."
+    },
+    {
+      "id": "map-object:artifact:ferrymansLantern",
+      "nativeAssetId": "map-object:artifact:ferrymansLantern",
+      "source": "assets/sources/docs-60-67/map-object-artifact-ferrymansLantern-source.png",
+      "file": "assets/artifacts/ferrymansLantern.png",
+      "accepted": true,
+      "review": "Accepted: green-brass river lantern has three blue panes and a short ferry hook."
+    },
+    {
+      "id": "map-object:artifact:backwardBoot",
+      "nativeAssetId": "map-object:artifact:backwardBoot",
+      "source": "assets/sources/docs-60-67/map-object-artifact-backwardBoot-source.png",
+      "file": "assets/artifacts/backwardBoot.png",
+      "accepted": true,
+      "review": "Accepted: one weathered boot has an unmistakably backward-pointing toe and buckle."
+    },
+    {
+      "id": "map-object:artifact:milestoneStone",
+      "nativeAssetId": "map-object:artifact:milestoneStone",
+      "source": "assets/sources/docs-60-67/map-object-artifact-milestoneStone-source.png",
+      "file": "assets/artifacts/milestoneStone.png",
+      "accepted": true,
+      "review": "Accepted: framed grey milestone has one simple red route notch."
+    },
+    {
+      "id": "map-object:artifact:cartwrightsWheel",
+      "nativeAssetId": "map-object:artifact:cartwrightsWheel",
+      "source": "assets/sources/docs-60-67/map-object-artifact-cartwrightsWheel-source.png",
+      "file": "assets/artifacts/cartwrightsWheel.png",
+      "accepted": true,
+      "review": "Accepted: sturdy ashwood wheel has exactly eight red spokes and a brass hub."
+    },
+    {
+      "id": "map-object:artifact:patientCompass",
+      "nativeAssetId": "map-object:artifact:patientCompass",
+      "source": "assets/sources/docs-60-67/map-object-artifact-patientCompass-source.png",
+      "file": "assets/artifacts/patientCompass.png",
+      "accepted": true,
+      "review": "Accepted: broad ivory compass has a blue needle and object-shaped marker ring."
+    },
+    {
+      "id": "map-object:artifact:hollowKey",
+      "nativeAssetId": "map-object:artifact:hollowKey",
+      "source": "assets/sources/docs-60-67/map-object-artifact-hollowKey-source.png",
+      "file": "assets/artifacts/hollowKey.png",
+      "accepted": true,
+      "review": "Accepted: dark-brass key has a visibly hollow bow and shaft threaded by red cord."
+    },
+    {
+      "id": "map-object:artifact:crowsErrand",
+      "nativeAssetId": "map-object:artifact:crowsErrand",
+      "source": "assets/sources/docs-60-67/map-object-artifact-crowsErrand-source.png",
+      "file": "assets/artifacts/crowsErrand.png",
+      "accepted": true,
+      "review": "Accepted: folded black courier cloak is pinned by a brass crow carrying a parcel."
+    },
+    {
+      "id": "map-object:artifact:misersThumb",
+      "nativeAssetId": "map-object:artifact:misersThumb",
+      "source": "assets/sources/docs-60-67/map-object-artifact-misersThumb-source.png",
+      "file": "assets/artifacts/misersThumb.png",
+      "accepted": true,
+      "review": "Accepted: gilded thumb seal visibly pinches two unequal resource stones."
+    },
+    {
+      "id": "map-object:artifact:foundersTrowel",
+      "nativeAssetId": "map-object:artifact:foundersTrowel",
+      "source": "assets/sources/docs-60-67/map-object-artifact-foundersTrowel-source.png",
+      "file": "assets/artifacts/foundersTrowel.png",
+      "accepted": true,
+      "review": "Accepted: narrow brass mason trowel has a red handle and pale mortar."
+    },
+    {
+      "id": "map-object:artifact:borrowedPurse",
+      "nativeAssetId": "map-object:artifact:borrowedPurse",
+      "source": "assets/sources/docs-60-67/map-object-artifact-borrowedPurse-source.png",
+      "file": "assets/artifacts/borrowedPurse.png",
+      "accepted": true,
+      "review": "Accepted: open blue purse borrows its red drawstring from a tiny second clasp purse."
+    },
+    {
+      "id": "map-object:artifact:titheBox",
+      "nativeAssetId": "map-object:artifact:titheBox",
+      "source": "assets/sources/docs-60-67/map-object-artifact-titheBox-source.png",
+      "file": "assets/artifacts/titheBox.png",
+      "accepted": true,
+      "review": "Accepted: cream offering box has one brass coin slot and red handle."
+    },
+    {
+      "id": "map-object:artifact:growingLedger",
+      "nativeAssetId": "map-object:artifact:growingLedger",
+      "source": "assets/sources/docs-60-67/map-object-artifact-growingLedger-source.png",
+      "file": "assets/artifacts/growingLedger.png",
+      "accepted": true,
+      "review": "Accepted: green ledger has six stepped tabs sprouting golden leaves."
+    },
+    {
+      "id": "map-object:artifact:saltSack",
+      "nativeAssetId": "map-object:artifact:saltSack",
+      "source": "assets/sources/docs-60-67/map-object-artifact-saltSack-source.png",
+      "file": "assets/artifacts/saltSack.png",
+      "accepted": true,
+      "review": "Accepted: cream sack is salt-crusted at the seam and carries a blue mine token."
+    },
+    {
+      "id": "map-object:artifact:tallystick",
+      "nativeAssetId": "map-object:artifact:tallystick",
+      "source": "assets/sources/docs-60-67/map-object-artifact-tallystick-source.png",
+      "file": "assets/artifacts/tallystick.png",
+      "accepted": true,
+      "review": "Accepted: split tally has four resource colors plus one fresh pale notch."
+    },
+    {
+      "id": "map-object:artifact:spareTongue",
+      "nativeAssetId": "map-object:artifact:spareTongue",
+      "source": "assets/sources/docs-60-67/map-object-artifact-spareTongue-source.png",
+      "file": "assets/artifacts/spareTongue.png",
+      "accepted": true,
+      "review": "Accepted: articulated silver tongue headband has exactly five blue distance beads."
+    },
+    {
+      "id": "map-object:artifact:paupersGrimoire",
+      "nativeAssetId": "map-object:artifact:paupersGrimoire",
+      "source": "assets/sources/docs-60-67/map-object-artifact-paupersGrimoire-source.png",
+      "file": "assets/artifacts/paupersGrimoire.png",
+      "accepted": true,
+      "review": "Accepted: thin patched spellbook is twine-tied open to two blank simple pages."
+    },
+    {
+      "id": "map-object:artifact:waxSealedEnvelope",
+      "nativeAssetId": "map-object:artifact:waxSealedEnvelope",
+      "source": "assets/sources/docs-60-67/map-object-artifact-waxSealedEnvelope-source.png",
+      "file": "assets/artifacts/waxSealedEnvelope.png",
+      "accepted": true,
+      "review": "Accepted: cream battle letter has an oversized unbroken red seal and short gold thread."
+    },
+    {
+      "id": "map-object:artifact:nestingDoll",
+      "nativeAssetId": "map-object:artifact:nestingDoll",
+      "source": "assets/sources/docs-60-67/map-object-artifact-nestingDoll-source.png",
+      "file": "assets/artifacts/nestingDoll.png",
+      "accepted": true,
+      "review": "Accepted: two open red-cream dolls show the smaller emerging at half scale."
+    },
+    {
+      "id": "map-object:artifact:mirrorbackCloak",
+      "nativeAssetId": "map-object:artifact:mirrorbackCloak",
+      "source": "assets/sources/docs-60-67/map-object-artifact-mirrorbackCloak-source.png",
+      "file": "assets/artifacts/mirrorbackCloak.png",
+      "accepted": true,
+      "review": "Accepted: folded blue cloak has one bright mirror lining and red clasp."
+    },
+    {
+      "id": "map-object:artifact:quietBell",
+      "nativeAssetId": "map-object:artifact:quietBell",
+      "source": "assets/sources/docs-60-67/map-object-artifact-quietBell-source.png",
+      "file": "assets/artifacts/quietBell.png",
+      "accepted": true,
+      "review": "Accepted: blue-black bell is tightly wrapped at its clapper with cream ribbon."
+    },
+    {
+      "id": "map-object:artifact:ninthPip",
+      "nativeAssetId": "map-object:artifact:ninthPip",
+      "source": "assets/sources/docs-60-67/map-object-artifact-ninthPip-source.png",
+      "file": "assets/artifacts/ninthPip.png",
+      "accepted": true,
+      "review": "Accepted retry: brass ring has exactly nine separately countable colored stones."
+    },
+    {
+      "id": "map-object:artifact:longTable",
+      "nativeAssetId": "map-object:artifact:longTable",
+      "source": "assets/sources/docs-60-67/map-object-artifact-longTable-source.png",
+      "file": "assets/artifacts/longTable.png",
+      "accepted": true,
+      "review": "Accepted retry: narrow folding table has exactly eight empty plate-and-cup settings."
+    },
+    {
+      "id": "map-object:artifact:oddBoot",
+      "nativeAssetId": "map-object:artifact:oddBoot",
+      "source": "assets/sources/docs-60-67/map-object-artifact-oddBoot-source.png",
+      "file": "assets/artifacts/oddBoot.png",
+      "accepted": true,
+      "review": "Accepted: high berry-red boot has one blue sole and off-center brass buckle."
+    },
+    {
+      "id": "map-object:artifact:handMeDownArmor",
+      "nativeAssetId": "map-object:artifact:handMeDownArmor",
+      "source": "assets/sources/docs-60-67/map-object-artifact-handMeDownArmor-source.png",
+      "file": "assets/artifacts/handMeDownArmor.png",
+      "accepted": true,
+      "review": "Accepted: empty armor suit is visibly assembled from three mismatched owners."
+    },
+    {
+      "id": "map-object:artifact:regimentalColors",
+      "nativeAssetId": "map-object:artifact:regimentalColors",
+      "source": "assets/sources/docs-60-67/map-object-artifact-regimentalColors-source.png",
+      "file": "assets/artifacts/regimentalColors.png",
+      "accepted": true,
+      "review": "Accepted: folded red-cream company flag shows one central marker with two ghosted silhouettes."
+    },
+    {
+      "id": "map-object:artifact:crackedWhistle",
+      "nativeAssetId": "map-object:artifact:crackedWhistle",
+      "source": "assets/sources/docs-60-67/map-object-artifact-crackedWhistle-source.png",
+      "file": "assets/artifacts/crackedWhistle.png",
+      "accepted": true,
+      "review": "Accepted: silver command whistle is split through its bell and red-cord tied."
+    },
+    {
+      "id": "map-object:artifact:grudgeBook",
+      "nativeAssetId": "map-object:artifact:grudgeBook",
+      "source": "assets/sources/docs-60-67/map-object-artifact-grudgeBook-source.png",
+      "file": "assets/artifacts/grudgeBook.png",
+      "accepted": true,
+      "review": "Accepted: black campaign ledger has many faction ribbons and deeply scored marks."
+    },
+    {
+      "id": "map-object:artifact:deadmansWedge",
+      "nativeAssetId": "map-object:artifact:deadmansWedge",
+      "source": "assets/sources/docs-60-67/map-object-artifact-deadmansWedge-source.png",
+      "file": "assets/artifacts/deadmansWedge.png",
+      "accepted": true,
+      "review": "Accepted: black iron shield wedge is funeral-cloth wrapped with one brass stop pin."
+    },
+    {
+      "id": "map-object:artifact:twinCoin",
+      "nativeAssetId": "map-object:artifact:twinCoin",
+      "source": "assets/sources/docs-60-67/map-object-artifact-twinCoin-source.png",
+      "file": "assets/artifacts/twinCoin.png",
+      "accepted": true,
+      "review": "Accepted: one thick joined coin has distinct blue and red split faces."
+    },
+    {
+      "id": "map-object:artifact:emptyFrame",
+      "nativeAssetId": "map-object:artifact:emptyFrame",
+      "source": "assets/sources/docs-60-67/map-object-artifact-emptyFrame-source.png",
+      "file": "assets/artifacts/emptyFrame.png",
+      "accepted": true,
+      "review": "Accepted: ornate empty miniature frame backs one faint shifting silhouette."
+    },
+    {
+      "id": "map-object:artifact:secondFace",
+      "nativeAssetId": "map-object:artifact:secondFace",
+      "source": "assets/sources/docs-60-67/map-object-artifact-secondFace-source.png",
+      "file": "assets/artifacts/secondFace.png",
+      "accepted": true,
+      "review": "Accepted: two-layer porcelain half-mask has a movable cheek and brass adjustment pin."
+    },
+    {
+      "id": "map-object:artifact:debtLedger",
+      "nativeAssetId": "map-object:artifact:debtLedger",
+      "source": "assets/sources/docs-60-67/map-object-artifact-debtLedger-source.png",
+      "file": "assets/artifacts/debtLedger.png",
+      "accepted": true,
+      "review": "Accepted: plum-black ledger has three promise cords and six gold stat tabs."
+    },
+    {
+      "id": "map-object:artifact:gluttonsBit",
+      "nativeAssetId": "map-object:artifact:gluttonsBit",
+      "source": "assets/sources/docs-60-67/map-object-artifact-gluttonsBit-source.png",
+      "file": "assets/artifacts/gluttonsBit.png",
+      "accepted": true,
+      "review": "Accepted: heavy toothed iron bit has red straps and one empty ration hook."
+    },
+    {
+      "id": "map-object:artifact:sleeplessCrown",
+      "nativeAssetId": "map-object:artifact:sleeplessCrown",
+      "source": "assets/sources/docs-60-67/map-object-artifact-sleeplessCrown-source.png",
+      "file": "assets/artifacts/sleeplessCrown.png",
+      "accepted": true,
+      "review": "Accepted: tall unpadded pale crown is filled with open staring blue eyes."
+    },
+    {
+      "id": "map-object:artifact:openPurse",
+      "nativeAssetId": "map-object:artifact:openPurse",
+      "source": "assets/sources/docs-60-67/map-object-artifact-openPurse-source.png",
+      "file": "assets/artifacts/openPurse.png",
+      "accepted": true,
+      "review": "Accepted: permanently open red purse spills two distinct streams of gold."
+    },
+    {
+      "id": "map-object:artifact:faithfulHound",
+      "nativeAssetId": "map-object:artifact:faithfulHound",
+      "source": "assets/sources/docs-60-67/map-object-artifact-faithfulHound-source.png",
+      "file": "assets/artifacts/faithfulHound.png",
+      "accepted": true,
+      "review": "Accepted: small brass hound sits loyally before a separate barred cream city gate."
+    },
+    {
+      "id": "map-object:artifact:rustedTongue",
+      "nativeAssetId": "map-object:artifact:rustedTongue",
+      "source": "assets/sources/docs-60-67/map-object-artifact-rustedTongue-source.png",
+      "file": "assets/artifacts/rustedTongue.png",
+      "accepted": true,
+      "review": "Accepted: rust-red tongue pendant has three chain links and a silent bell impression."
+    },
+    {
+      "id": "map-object:item:spellTome",
+      "nativeAssetId": "map-object:item:spellTome",
+      "source": "assets/sources/docs-60-67/map-object-item-spellTome-source.png",
+      "file": "assets/items/spellTome.png",
+      "accepted": true,
+      "review": "Accepted: closed indigo tome has four colored tabs and one plain brass clasp."
+    },
+    {
+      "id": "map-object:item:vialBorrowedHours",
+      "nativeAssetId": "map-object:item:vialBorrowedHours",
+      "source": "assets/sources/docs-60-67/map-object-item-vialBorrowedHours-source.png",
+      "file": "assets/items/vialBorrowedHours.png",
+      "accepted": true,
+      "review": "Accepted: blue-violet vial suspends exactly two brass clock hands in clear liquid."
+    },
+    {
+      "id": "map-object:item:wildfireFlask",
+      "nativeAssetId": "map-object:item:wildfireFlask",
+      "source": "assets/sources/docs-60-67/map-object-item-wildfireFlask-source.png",
+      "file": "assets/items/wildfireFlask.png",
+      "accepted": true,
+      "review": "Accepted: soot-dark corked flask contains vivid oil beneath thorny copper wire."
+    },
+    {
+      "id": "map-object:item:counterfeitCoin",
+      "nativeAssetId": "map-object:item:counterfeitCoin",
+      "source": "assets/sources/docs-60-67/map-object-item-counterfeitCoin-source.png",
+      "file": "assets/items/counterfeitCoin.png",
+      "accepted": true,
+      "review": "Accepted: flaking false-gold coin shows two visibly contradictory stamped faces."
+    },
+    {
+      "id": "map-object:item:graveDustSachet",
+      "nativeAssetId": "map-object:item:graveDustSachet",
+      "source": "assets/sources/docs-60-67/map-object-item-graveDustSachet-source.png",
+      "file": "assets/items/graveDustSachet.png",
+      "accepted": true,
+      "review": "Accepted: black funeral sachet has one bone clasp and a restrained trail of grey grave dust."
+    },
+    {
+      "id": "map-object:item:tuningFork",
+      "nativeAssetId": "map-object:item:tuningFork",
+      "source": "assets/sources/docs-60-67/map-object-item-tuningFork-source.png",
+      "file": "assets/items/tuningFork.png",
+      "accepted": true,
+      "review": "Accepted: silver tuning fork has exactly four separately countable colored binding knots."
+    },
+    {
+      "id": "map-object:item:sealingWaxCord",
+      "nativeAssetId": "map-object:item:sealingWaxCord",
+      "source": "assets/sources/docs-60-67/map-object-item-sealingWaxCord-source.png",
+      "file": "assets/items/sealingWaxCord.png",
+      "accepted": true,
+      "review": "Accepted: cream cord carries exactly three separately countable red sealing-wax wafers."
+    },
+    {
+      "id": "map-object:item:ironFilings",
+      "nativeAssetId": "map-object:item:ironFilings",
+      "source": "assets/sources/docs-60-67/map-object-item-ironFilings-source.png",
+      "file": "assets/items/ironFilings.png",
+      "accepted": true,
+      "review": "Accepted: white paper packet spills a readable crescent of dark magnetic iron filings."
+    },
+    {
+      "id": "map-object:item:looseThread",
+      "nativeAssetId": "map-object:item:looseThread",
+      "source": "assets/sources/docs-60-67/map-object-item-looseThread-source.png",
+      "file": "assets/items/looseThread.png",
+      "accepted": true,
+      "review": "Accepted: one continuous red thread loops impossibly through one brass needle without a knot."
+    },
+    {
+      "id": "map-object:item:ledgerPage",
+      "nativeAssetId": "map-object:item:ledgerPage",
+      "source": "assets/sources/docs-60-67/map-object-item-ledgerPage-source.png",
+      "file": "assets/items/ledgerPage.png",
+      "accepted": true,
+      "review": "Accepted: one cream ledger leaf has exactly three blank red tally boxes and no readable writing."
+    },
+    {
+      "id": "map-object:item:nightjarFeather",
+      "nativeAssetId": "map-object:item:nightjarFeather",
+      "source": "assets/sources/docs-60-67/map-object-item-nightjarFeather-source.png",
+      "file": "assets/items/nightjarFeather.png",
+      "accepted": true,
+      "review": "Accepted: one broad mottled nightjar feather is bound at the quill with one dark-blue thread."
+    },
+    {
+      "id": "map-object:item:surveyorsTwine",
+      "nativeAssetId": "map-object:item:surveyorsTwine",
+      "source": "assets/sources/docs-60-67/map-object-item-surveyorsTwine-source.png",
+      "file": "assets/items/surveyorsTwine.png",
+      "accepted": true,
+      "review": "Accepted: compact wooden survey reel and single brass plumb bob remain recognizable at item scale."
+    },
+    {
+      "id": "map-object:item:spellbookPage",
+      "nativeAssetId": "map-object:item:spellbookPage",
+      "source": "assets/sources/docs-60-67/map-object-item-spellbookPage-source.png",
+      "file": "assets/items/spellbookPage.png",
+      "accepted": true,
+      "review": "Accepted: loose vellum leaf has exactly four colored edge tabs and blank circular diagrams without readable writing."
+    },
+    {
+      "id": "map-object:stacks:default",
+      "nativeAssetId": "map-object:stacks",
+      "source": "assets/sources/docs-60-67/map-object-stacks-default-source.png",
+      "file": "assets/map-objects/stacks.png",
+      "accepted": true,
+      "review": "Accepted retry: exactly three separately visible leaning bookshelves form a compact site beneath one patched awning."
+    },
+    {
+      "id": "map-object:wildShrine:default",
+      "nativeAssetId": "map-object:wildShrine",
+      "source": "assets/sources/docs-60-67/map-object-wildShrine-default-source.png",
+      "file": "assets/map-objects/wildShrine.png",
+      "accepted": true,
+      "review": "Accepted: root-wrapped stone shrine and closed books form one distinct visitable acquisition site."
+    },
+    {
+      "id": "map-object:reliquaryOfPages:default",
+      "nativeAssetId": "map-object:reliquaryOfPages",
+      "source": "assets/sources/docs-60-67/map-object-reliquaryOfPages-default-source.png",
+      "file": "assets/map-objects/reliquaryOfPages.png",
+      "accepted": true,
+      "review": "Accepted: sealed stone reliquary clearly displays one clasped vellum page behind glass."
+    }
+  ]
+}

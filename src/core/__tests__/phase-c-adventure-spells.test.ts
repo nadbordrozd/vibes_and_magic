@@ -84,7 +84,7 @@ describe('phase C adventure spells', () => {
     });
     expect(state.castles[0].growthEffects.map((effect) => effect.multiplier))
       .toEqual([1.25, 1.5]);
-    expect(hero.mana).toBe(85);
+    expect(hero.mana).toBe(83);
   });
 
   it('raises a temporary Pale Procession and replays Grave-Speech records', () => {

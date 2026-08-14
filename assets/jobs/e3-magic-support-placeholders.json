@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Docs 60–67 permit deterministic typed development placeholders until final bitmap review.",
+  "contact_sheet": "assets/jobs/e3-magic-support-placeholders-candidates.html",
+  "requests": [
+    {
+      "id": "map-object:item:spellTome",
+      "assets": ["map-object:item:spellTome"],
+      "output": ".pixel-work/pixelgen/e3-magic-support/map-object-item-spellTome",
+      "prompt": "Native 32x32 transparent adventure-map pickup sprite of one weighty closed spell tome with a brass clasp and blank vellum label. High-oblique storybook strategy-game pixel art; no readable text, terrain, glow, UI, logo or watermark.",
+      "endpoint": "map-objects",
+      "size": [32, 32],
+      "candidates": 2,
+      "seed": 836501
+    },
+    {
+      "id": "map-object:stacks:default",
+      "assets": ["map-object:stacks:default"],
+      "output": ".pixel-work/pixelgen/e3-magic-support/map-object-stacks-default",
+      "prompt": "Native 32x32 transparent adventure-map site sprite of three leaning outdoor bookshelves beneath a patched awning with a clear foreground visit point. High-oblique storybook strategy-game pixel art; no readable text, terrain patch, glow, UI, logo or watermark.",
+      "endpoint": "map-objects",
+      "size": [32, 32],
+      "candidates": 2,
+      "seed": 836519
+    },
+    {
+      "id": "map-object:wildShrine:default",
+      "assets": ["map-object:wildShrine:default"],
+      "output": ".pixel-work/pixelgen/e3-magic-support/map-object-wildShrine-default",
+      "prompt": "Native 32x32 transparent adventure-map site sprite of a root-wrapped stone shrine with closed books tucked into its hollows and a clear foreground visit point. High-oblique storybook strategy-game pixel art; no readable text, terrain patch, glow, UI, logo or watermark.",
+      "endpoint": "map-objects",
+      "size": [32, 32],
+      "candidates": 2,
+      "seed": 836537
+    },
+    {
+      "id": "map-object:reliquaryOfPages:default",
+      "assets": ["map-object:reliquaryOfPages:default"],
+      "output": ".pixel-work/pixelgen/e3-magic-support/map-object-reliquaryOfPages-default",
+      "prompt": "Native 32x32 transparent adventure-map site sprite of a sealed stone reliquary holding one clasped vellum page with a clear foreground visit point. High-oblique storybook strategy-game pixel art; no readable text, terrain patch, glow, UI, logo or watermark.",
+      "endpoint": "map-objects",
+      "size": [32, 32],
+      "candidates": 2,
+      "seed": 836555
+    }
+  ]
+}

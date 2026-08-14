@@ -4,6 +4,14 @@ import { resolve } from 'node:path';
 import { inflateSync } from 'node:zlib';
 import { CONTENT_ICON_MANIFEST, CONTENT_ICON_SIZE } from '../../assets/iconManifest';
 import { contentIconWorklist } from '../../assets/iconWorklist';
+import { DOCS_60_67_SKILL_IDS } from '../content/skills';
+import { KNACKS } from '../content/knacks';
+import { P2_NEW_SPELL_IDS } from '../content/spells/p2';
+
+interface V2ProvenanceEntry {
+  id: string; accepted: boolean; generator: string; job: string; prompt_sha256: string;
+  final: string; final_sha256: string;
+}
 
 interface ProvenanceEntry {
   id: string;
@@ -76,13 +84,33 @@ try {
   errors.push(`provenance: ${error instanceof Error ? error.message : String(error)}`);
 }
 const provenance = new Map(provenanceEntries.map((entry) => [entry.id, entry]));
+let v2Entries: V2ProvenanceEntry[] = [];
+try {
+  v2Entries = (JSON.parse(readFileSync(resolve(root,
+    'assets/provenance/docs-60-67-native-generation.json'), 'utf8')) as {
+    selections: V2ProvenanceEntry[];
+  }).selections;
+} catch (error) {
+  errors.push(`docs-60-67 provenance: ${error instanceof Error ? error.message : String(error)}`);
+}
+const v2Provenance = new Map(v2Entries.map((entry) => [entry.id, entry]));
 if (provenance.size !== provenanceEntries.length) errors.push('provenance contains duplicate ids');
 const files = new Set<string>(); const hashes = new Map<string, string>();
+const developmentPlaceholders = new Set([
+  ...P2_NEW_SPELL_IDS.map((id) => `spell-icon:${id}`),
+  ...DOCS_60_67_SKILL_IDS.map((id) => `skill-icon:${id}`),
+  ...Object.keys(KNACKS).map((id) => `knack:${id}`),
+]);
 
 for (const item of worklist) {
   const manifest = CONTENT_ICON_MANIFEST[item.id];
   const record = provenance.get(item.id);
-  if (!manifest) { errors.push(`${item.id}: missing manifest mapping`); continue; }
+  const v2Record = v2Provenance.get(item.id);
+  if (!manifest) {
+    if (!developmentPlaceholders.has(item.id)) errors.push(`${item.id}: missing manifest mapping`);
+    if (record) errors.push(`${item.id}: placeholder must not claim accepted native provenance`);
+    continue;
+  }
   if (manifest.w !== CONTENT_ICON_SIZE || manifest.h !== CONTENT_ICON_SIZE) {
     errors.push(`${item.id}: manifest must declare native 32x32`);
   }
@@ -99,6 +127,16 @@ for (const item of worklist) {
     hashes.set(fingerprint, item.id);
   } catch (error) {
     errors.push(`${item.id}: ${error instanceof Error ? error.message : String(error)}`);
+  }
+  if (manifest.generator === 'built-in-imagegen') {
+    if (!v2Record?.accepted || v2Record.generator !== 'built-in-imagegen') {
+      errors.push(`${item.id}: missing accepted docs-60-67 built-in provenance`); continue;
+    }
+    if (bytes && (sha(bytes) !== v2Record.final_sha256
+        || v2Record.final !== `public/${manifest.file}`)) {
+      errors.push(`${item.id}: built-in promoted bytes/path drift from provenance`);
+    }
+    continue;
   }
   if (!record) { errors.push(`${item.id}: missing PixelLab provenance`); continue; }
   if (record.generator !== 'pixellab' || record.endpoint !== 'generate-image-v2'
@@ -137,7 +175,7 @@ for (const id of provenance.keys()) {
   if (!CONTENT_ICON_MANIFEST[id]) errors.push(`${id}: provenance entry is not canonical`);
 }
 
-console.log(`Content icons: ${hashes.size}/${worklist.length} unique native PNGs · ${provenance.size}/${worklist.length} accepted PixelLab records`);
+console.log(`Content icons: ${hashes.size}/${worklist.length} unique native PNGs · ${provenance.size} PixelLab + ${worklist.filter((item) => v2Provenance.has(item.id)).length} docs-60-67 records`);
 if (errors.length) {
   console.error('\nContent icon validation failed:');
   errors.forEach((error) => console.error(`- ${error}`));

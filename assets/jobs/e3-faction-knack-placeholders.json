@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Doc 67 permits deterministic typed development placeholders until six distinct final bitmaps pass review and provenance.",
+  "contact_sheet": "assets/jobs/e3-faction-knack-placeholders-candidates.html",
+  "requests": [
+    {
+      "id": "knack:hearthguard",
+      "assets": ["knack:hearthguard"],
+      "output": ".pixel-work/pixelgen/e3-faction-knacks/hearthguard-hearten",
+      "prompt": "Native 32x32 transparent combat Knack icon of a small upright red-and-cream field banner lifted by a gloved hand. Warm storybook strategy-game pixel art; no text, frame, background, UI, logo or watermark.",
+      "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836741
+    },
+    {
+      "id": "knack:woundWrights",
+      "assets": ["knack:woundWrights"],
+      "output": ".pixel-work/pixelgen/e3-faction-knacks/wound-wrights-patch",
+      "prompt": "Native 32x32 transparent combat Knack icon of two lacquered jointed wooden hands fastening a bright brass repair patch. Warm storybook strategy-game pixel art; no text, frame, background, UI, logo or watermark.",
+      "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836759
+    },
+    {
+      "id": "knack:unfinished",
+      "assets": ["knack:unfinished"],
+      "output": ".pixel-work/pixelgen/e3-faction-knacks/unfinished-errand",
+      "prompt": "Native 32x32 transparent combat Knack icon of a candle beside an unfinished folded letter tied with pale funeral thread. Warm storybook strategy-game pixel art; no readable text, frame, background, UI, logo or watermark.",
+      "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836777
+    },
+    {
+      "id": "knack:vespiary",
+      "assets": ["knack:vespiary"],
+      "output": ".pixel-work/pixelgen/e3-faction-knacks/vespiary-resin",
+      "prompt": "Native 32x32 transparent combat Knack icon of a heavy amber resin drop spreading into a ridged honey-gold floor tile. Warm storybook strategy-game pixel art; no text, frame, background, UI, logo or watermark.",
+      "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836795
+    },
+    {
+      "id": "knack:hagwood",
+      "assets": ["knack:hagwood"],
+      "output": ".pixel-work/pixelgen/e3-faction-knacks/hagwood-ill-wish",
+      "prompt": "Native 32x32 transparent combat Knack icon of a crooked birch curse token bound with black crow feather and berry-red thread. Warm storybook strategy-game pixel art; no text, frame, background, UI, logo or watermark.",
+      "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836813
+    },
+    {
+      "id": "knack:wildergrass",
+      "assets": ["knack:wildergrass"],
+      "output": ".pixel-work/pixelgen/e3-faction-knacks/wildergrass-blood-drum",
+      "prompt": "Native 32x32 transparent combat Knack icon of a low hide blood drum with ashwood beater and ochre horn bindings. Warm storybook strategy-game pixel art; no text, frame, background, UI, logo or watermark.",
+      "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836831
+    }
+  ]
+}

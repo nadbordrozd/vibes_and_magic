@@ -31,6 +31,33 @@ describe('The Crooked Crown dense adventure map', () => {
     expect(metrics.interactionPerPassableTile).toBeGreaterThanOrEqual(0.05);
     expect(metrics.guardianStrength.minimum).toBeGreaterThan(70);
     expect(metrics.guardianStrength.maximum).toBeLessThan(400);
+    expect(metrics.guardianStrength.minimum).toBeCloseTo(90.7850139065, 8);
+    expect(metrics.guardianStrength.median).toBeCloseTo(181.570027813, 8);
+    expect(metrics.guardianStrength.maximum).toBeCloseTo(350.7865270845, 8);
+    expect(map.objects.filter((object) => object.kind === 'guardian').map((guardian) =>
+      guardian.kind === 'guardian'
+        ? [guardian.id, guardian.army[0].unitId, guardian.army[0].count] : null)).toEqual([
+      ['crooked-crown-reward-1-guardian', 'yeoman', 30],
+      ['crooked-crown-reward-2-guardian', 'tinSoldier', 58],
+      ['crooked-crown-reward-3-guardian', 'boneChoir', 7],
+      ['crooked-crown-reward-4-guardian', 'silkSpinners', 14],
+      ['crooked-crown-reward-5-guardian', 'ashmaneWolves', 16],
+      ['crooked-crown-reward-6-guardian', 'maskedDuelist', 16],
+      ['crooked-crown-reward-7-guardian', 'marionette', 25],
+      ['crooked-crown-reward-8-guardian', 'bannerman', 17],
+      ['crooked-crown-reward-9-guardian', 'woodenColossus', 2],
+      ['crooked-crown-reward-10-guardian', 'hearthHound', 25],
+      ['crooked-crown-reward-11-guardian', 'oriflammeWarden', 3],
+      ['crooked-crown-reward-12-guardian', 'waxServitor', 14],
+      ['crooked-crown-mine-2-guardian', 'ashmaneWolves', 11],
+      ['crooked-crown-mine-3-guardian', 'maskedDuelist', 8],
+      ['crooked-crown-mine-5-guardian', 'bannerman', 7],
+      ['crooked-crown-mine-6-guardian', 'woodenColossus', 1],
+      ['crooked-crown-mine-7-guardian', 'hearthHound', 8],
+      ['crooked-crown-mine-8-guardian', 'oriflammeWarden', 1],
+      ['crooked-crown-mine-10-guardian', 'yeoman', 40],
+      ['crooked-crown-mine-11-guardian', 'tinSoldier', 48],
+    ]);
     for (const id of CROOKED_CROWN_GATE_IDS) {
       expect(map.objects.find((object) => object.id === id)).toMatchObject({
         kind: 'guardian', protects: expect.any(String),

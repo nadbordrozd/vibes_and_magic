@@ -5,7 +5,7 @@ import { apply, createGame } from '../../core/game';
 import { castleEntrance } from '../../core/map/occupancy';
 import type { Army, GameState } from '../../core/types';
 import {
-  projectArmyTransfer, splitEvenlyCount, type ArmyExchangeSide,
+  ArmyExchange, projectArmyTransfer, splitEvenlyCount, type ArmyExchangeSide,
 } from '../components/ArmyExchange';
 import { CastleScreen } from '../components/CastleScreen';
 
@@ -114,5 +114,22 @@ describe('direct castle army transfer', () => {
     expect(html).not.toContain('split-stack');
     expect(html).not.toContain('Split this company');
     expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it('renders a visiting Quartermaster hero with eight destinations and a fixed seven-slot garrison', () => {
+    const { state } = fixture();
+    const hero = state.players.p1.hero!;
+    const castle = state.castles.find((candidate) => candidate.owner === 'p1')!;
+    hero.skills.quartermaster = 1;
+    hero.army.push(null);
+    const html = renderToStaticMarkup(<ArmyExchange
+      left={{ label: hero.name, holder: { kind: 'hero', id: hero.id }, army: hero.army }}
+      right={{ label: 'City garrison', holder: { kind: 'garrison', id: castle.id },
+        army: castle.garrison }}
+      state={state} direct dispatch={() => undefined} />);
+    expect(html).toContain('data-army-capacity="8"');
+    expect(html).toContain('data-army-capacity="7"');
+    expect(html).toContain('2/8');
+    expect(html).toContain('2/7');
   });
 });

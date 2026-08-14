@@ -189,7 +189,7 @@ function DirectArmyExchange({
       <div className="transfer-identity">
         {value.identity}
         <span><small>{value.kindLabel ?? 'Army'}</small><strong>{value.label}</strong></span>
-        <b>{usedSlots(value.army)}/7</b>
+        <b>{usedSlots(value.army)}/{value.army.length}</b>
       </div>
       <ArmySlots army={value.army}
         title={`${value.label} companies`}
@@ -314,7 +314,7 @@ function ConfirmedArmyExchange({
     const isSourceSide = source?.side === side;
     const isDestinationSide = source && !isSourceSide;
     return <ArmySlots army={value.army}
-      title={`${value.label} · ${usedSlots(value.army)}/7 companies`}
+      title={`${value.label} · ${usedSlots(value.army)}/${value.army.length} companies`}
       selected={isSourceSide ? source.slot : destinationSlot}
       onSelect={(slot) => select(side, slot)}
       slotDisabled={(slot) => !isDestinationSide && !value.army[slot]}
@@ -368,8 +368,10 @@ function ConfirmedArmyExchange({
             <p className="transfer-preview">
               Result · {draft.source.label} slot {draft.sourceSlot + 1}: {preview.sourceAfter}. {
                 draft.destination.label} slot {draft.destinationSlot + 1}: {preview.destinationAfter}. Occupied capacity: {
-                draft.source.label} {usedSlots(draft.source.army)}/7 → {preview.sourceSlotsAfter}/7; {
-                draft.destination.label} {usedSlots(draft.destination.army)}/7 → {preview.destinationSlotsAfter}/7.
+                draft.source.label} {usedSlots(draft.source.army)}/{draft.source.army.length} → {
+                preview.sourceSlotsAfter}/{draft.source.army.length}; {draft.destination.label} {
+                usedSlots(draft.destination.army)}/{draft.destination.army.length} → {
+                preview.destinationSlotsAfter}/{draft.destination.army.length}.
             </p>
             <div className="dialog-actions">
               <button onClick={() => setDestinationSlot(null)}>Cancel · move nothing</button>

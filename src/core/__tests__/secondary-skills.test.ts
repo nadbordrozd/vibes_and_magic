@@ -12,7 +12,7 @@ import {
 import { visitShrine } from '../game/magic';
 import { finalizeBattle } from '../game/outcomes';
 import {
-  foragerRate, logisticsRate,
+  foragerRate, logisticsRate, maximumMana,
 } from '../heroBehaviors';
 import { movementCost } from '../map/pathfinding';
 import {
@@ -111,8 +111,8 @@ describe('secondary skill ranks', () => {
     expect(diplomacyTerms(hero, object)).toBeNull();
   });
 
-  it('Attunement adds 2/4 field mana and grants two shrine upgrade choices at rank two', () => {
-    for (const [rank, expected] of [[1, 3], [2, 5]] as const) {
+  it('Attunement adds 2/4 field mana over the base two, discounts spells, and raises max mana', () => {
+    for (const [rank, expected] of [[1, 4], [2, 6]] as const) {
       let game = createGame({ seed: 34 + rank, p1: 'human', p2: 'human' });
       const hero = selected(game);
       hero.position = { x: 4, y: 10 };
@@ -122,23 +122,12 @@ describe('secondary skill ranks', () => {
       game = apply(game, { type: 'END_TURN' });
       expect(selected(game).mana).toBe(expected);
     }
-    let game = createGame({ seed: 37, p1: 'human', p2: 'human' });
+    const game = createGame({ seed: 37, p1: 'human', p2: 'human' });
     const hero = selected(game);
     hero.skills.attunement = 2;
-    hero.knownSpells.push('ward');
-    const shrine = game.map.objects.find((object) => object.id === 'craft-shrine')!;
-    if (shrine.kind !== 'shrine') throw new Error('shrine missing');
-    shrine.cleared = true;
-    visitShrine(game, shrine.id, hero);
-    const first = game.pendingChoice?.kind === 'shrine'
-      ? game.pendingChoice.options[0] : 'forgeSpark';
-    game = apply(game, { type: 'CHOOSE_SPELL_UPGRADE', spellId: first });
-    expect(game.pendingChoice?.kind).toBe('shrine');
-    const second = game.pendingChoice?.kind === 'shrine'
-      ? game.pendingChoice.options[0] : 'ward';
-    game = apply(game, { type: 'CHOOSE_SPELL_UPGRADE', spellId: second });
-    expect(game.pendingChoice).toBeNull();
-    expect(selected(game).upgradedSpells).toHaveLength(2);
+    hero.skills.attunement = 3;
+    hero.knowledge = 7;
+    expect(maximumMana(hero)).toBe(84);
   });
 
   it('Command grants 3 and 6 meter per allied stack at round start', () => {
@@ -224,7 +213,8 @@ describe('secondary skill ranks', () => {
 
   it('puts every skill into the draft and upgrades held cards to rank two', () => {
     const hero = selected(createGame({ seed: 50, p1: 'human', p2: 'human' }));
-    const seen = new Set(Array.from({ length: 400 }, (_, seed) =>
+    hero.level = 5;
+    const seen = new Set(Array.from({ length: 800 }, (_, seed) =>
       drawLevelOptions(hero, seed)[0]).flat());
     expect(SKILL_IDS.every((skill) => seen.has(skill))).toBe(true);
     hero.skills.logistics = 1;

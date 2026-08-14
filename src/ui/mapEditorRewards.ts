@@ -22,7 +22,10 @@ import {
   isValidEditorArtifactInstance, isValidEditorItemInstance,
 } from './mapEditorInstances';
 
-export { createDefaultEditorArtifactInstance, createDefaultEditorItemInstance }
+export {
+  createDefaultEditorArtifactInstance, createDefaultEditorItemInstance,
+  EDITOR_TOME_SOURCES, editorTomeSpellChoices,
+}
   from './mapEditorInstances';
 
 export const EDITOR_RESOURCE_IDS = ['gold', 'timber', 'iron', 'essence'] as const satisfies readonly ResourceId[];

@@ -5,6 +5,7 @@ import { createBattle } from '../../core/combat/battle';
 import { addTimedEffect } from '../../core/combat/magicEffects';
 import { legalCombatItemUses } from '../../core/combat/items';
 import { canCastSpell, legalSpellCasts } from '../../core/combat/spells';
+import { isP1PlacementCastLegal } from '../../core/combat/spells';
 import { createGame } from '../../core/game';
 import type { BattleState, SpellId } from '../../core/types';
 import {
@@ -147,6 +148,53 @@ describe('explicit combat targeting', () => {
       spellId: 'wallOfTheMaker', positions: draft.positions,
     });
     expect(battle).toEqual(before);
+  });
+
+  it('stages Clockwork Double and both bounded Upgraded Blink branches explicitly', () => {
+    const battle = targetingBattle();
+    let clockwork = beginSpellTargeting(battle, 'clockworkDouble')!;
+    expect(combatTargetStage(battle, clockwork)).toBe('targetId');
+    clockwork = chooseCombatTarget(
+      clockwork, 'targetId', combatTargetChoices(clockwork, 'targetId')[0],
+    );
+    expect(combatTargetStage(battle, clockwork)).toBe('positions');
+    clockwork = toggleCombatPosition(battle, clockwork, legalCombatPlacements(battle, clockwork)[0]);
+    const clockworkAction = confirmedCombatTargetAction(battle, clockwork);
+    expect(clockworkAction).toMatchObject({ spellId: 'clockworkDouble', positions: expect.any(Array) });
+    expect(isP1PlacementCastLegal(battle, clockworkAction as never)).toBe(true);
+
+    battle.attackerHero.upgradedSpells.push('blink');
+    let paired = beginSpellTargeting(battle, 'blink')!;
+    expect(combatTargetStage(battle, paired)).toBe('actImmediately');
+    expect(combatTargetChoices(paired, 'actImmediately')).toEqual([true, false]);
+    paired = chooseCombatTarget(paired, 'actImmediately', false);
+    paired = chooseCombatTarget(paired, 'targetId', combatTargetChoices(paired, 'targetId')[0]);
+    paired = chooseCombatTarget(
+      paired, 'secondaryTargetId', combatTargetChoices(paired, 'secondaryTargetId')[0],
+    );
+    expect(requiredCombatPositions(battle, paired.source, paired)).toBe(2);
+    paired = toggleCombatPosition(battle, paired, legalCombatPlacements(battle, paired)[0]);
+    paired = toggleCombatPosition(battle, paired, legalCombatPlacements(battle, paired)[0]);
+    const pairedAction = confirmedCombatTargetAction(battle, paired);
+    expect(pairedAction).toMatchObject({
+      spellId: 'blink', actImmediately: false,
+      secondaryTargetId: expect.any(String), positions: expect.any(Array),
+    });
+    expect(isP1PlacementCastLegal(battle, pairedAction as never)).toBe(true);
+
+    let immediate = beginSpellTargeting(battle, 'blink')!;
+    immediate = chooseCombatTarget(immediate, 'actImmediately', true);
+    immediate = chooseCombatTarget(
+      immediate, 'targetId', combatTargetChoices(immediate, 'targetId')[0],
+    );
+    immediate = toggleCombatPosition(
+      battle, immediate, legalCombatPlacements(battle, immediate)[0],
+    );
+    expect(confirmedCombatTargetAction(battle, immediate)).toMatchObject({
+      spellId: 'blink', actImmediately: true, positions: expect.any(Array),
+    });
+    expect(legalSpellCasts(battle).filter((action) => action.spellId === 'blink').length)
+      .toBeLessThan(500);
   });
 
   it('inherits multistage target shapes for Echo and stored items', () => {

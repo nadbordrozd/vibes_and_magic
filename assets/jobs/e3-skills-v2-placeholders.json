@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Doc 66 permits deterministic typed development placeholders until final bitmap review.",
+  "contact_sheet": "assets/jobs/e3-skills-v2-placeholders-candidates.html",
+  "requests": [
+    { "id": "skill-icon:evoker", "assets": ["skill-icon:evoker"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-evoker", "prompt": "Native 32x32 transparent skill icon of a bright impact spark breaking a small iron plate; no text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836573 },
+    { "id": "skill-icon:tallykeeper", "assets": ["skill-icon:tallykeeper"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-tallykeeper", "prompt": "Native 32x32 transparent skill icon of a compact counting board with four colored tally rows; no text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836591 },
+    { "id": "skill-icon:reliquarian", "assets": ["skill-icon:reliquarian"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-reliquarian", "prompt": "Native 32x32 transparent skill icon of a careful gloved hand holding a tiny old reliquary; no text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836609 },
+    { "id": "skill-icon:tactician", "assets": ["skill-icon:tactician"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-tactician", "prompt": "Native 32x32 transparent skill icon of three company markers advanced across a folded field map; no text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836627 },
+    { "id": "skill-icon:reaper", "assets": ["skill-icon:reaper"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-reaper", "prompt": "Native 32x32 transparent skill icon of a curved harvest hook gathering pale battlefield ribbons; no text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836645 },
+    { "id": "skill-icon:quartermaster", "assets": ["skill-icon:quartermaster"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-quartermaster", "prompt": "Native 32x32 transparent skill icon of a labeled key ring beside a neatly tied supply ledger; no readable text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836663 },
+    { "id": "skill-icon:beguiler", "assets": ["skill-icon:beguiler"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-beguiler", "prompt": "Native 32x32 transparent skill icon of a half-smiling mask trailing one cool blue ribbon; no text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836681 },
+    { "id": "skill-icon:loremaster", "assets": ["skill-icon:loremaster"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-loremaster", "prompt": "Native 32x32 transparent skill icon of an open book with a second text visible beneath the page; no readable text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836699 },
+    { "id": "skill-icon:duelist", "assets": ["skill-icon:duelist"], "output": ".pixel-work/pixelgen/e3-skills-v2/skill-duelist", "prompt": "Native 32x32 transparent skill icon of two crossed practice blades beneath one bright glove; no text, UI, logo or watermark.", "endpoint": "icons", "size": [32, 32], "candidates": 2, "seed": 836717 }
+  ]
+}

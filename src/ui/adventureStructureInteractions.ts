@@ -11,7 +11,8 @@ export type AdventureObjectInteractionRoute =
 
 export const CONTEXTUAL_STRUCTURE_KINDS = [
   'dwelling', 'tinkersCart', 'monastery', 'gloamingRing', 'chrysalis', 'bridge',
-  'hedgeSchool', 'reliquaryCairn', 'mercenaryCamp', 'wagonCamp', 'titheBarn',
+  'hedgeSchool', 'reliquaryCairn', 'stacks', 'wildShrine', 'reliquaryOfPages',
+  'mercenaryCamp', 'wagonCamp', 'titheBarn',
 ] as const satisfies readonly MapObject['kind'][];
 
 export type ContextualStructureKind = typeof CONTEXTUAL_STRUCTURE_KINDS[number];
@@ -41,6 +42,9 @@ export const ADVENTURE_OBJECT_INTERACTION_ROUTES = {
   bridge: 'contextual-dialog',
   hedgeSchool: 'contextual-dialog',
   reliquaryCairn: 'contextual-dialog',
+  stacks: 'contextual-dialog',
+  wildShrine: 'contextual-dialog',
+  reliquaryOfPages: 'contextual-dialog',
   tollGate: 'rules-choice-dialog',
   omenStone: 'transient-result',
   crone: 'rules-choice-dialog',

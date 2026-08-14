@@ -10,22 +10,35 @@ import { findOwnedHero, selectedHero } from '../heroes';
 import { skillRank } from '../heroBehaviors';
 import { SKILLS } from '../../content/skills';
 import { buildingIsActive } from './buildingStatus';
-import { consumeEquippedArtifact, hasEquippedArtifact } from '../artifacts';
+import {
+  consumeEquippedArtifact, hasArtifactSetBonus, hasEquippedArtifact,
+} from '../artifacts';
+import { MAGE_GUILD_CUMULATIVE_DEALS } from './guildDeals';
+import { learnSpell } from './spellLearning';
+
+export type MageGuildLevel = 1 | 2 | 3 | 4 | 5;
+
+export function guildDealAtLevel(castle: Castle, level: MageGuildLevel): SpellId[] {
+  const start = level === 1 ? 0 : MAGE_GUILD_CUMULATIVE_DEALS[level - 2];
+  const end = MAGE_GUILD_CUMULATIVE_DEALS[level - 1];
+  return castle.guildDeck.slice(start, end);
+}
 
 export function guildSpellCount(castle: Castle): number {
-  if (buildingIsActive(castle, 'mageGuild3')) return 8;
-  if (buildingIsActive(castle, 'mageGuild2')) return 6;
-  if (buildingIsActive(castle, 'mageGuild1')) return 3;
+  if (buildingIsActive(castle, 'mageGuild5')) return 14;
+  if (buildingIsActive(castle, 'mageGuild4')) return 12;
+  if (buildingIsActive(castle, 'mageGuild3')) return 10;
+  if (buildingIsActive(castle, 'mageGuild2')) return 7;
+  if (buildingIsActive(castle, 'mageGuild1')) return 4;
   return 0;
 }
 
 export function learnGuildSpells(hero: Hero, castle: Castle): SpellId[] {
   const learned: SpellId[] = [];
-  for (const spellId of castle.guildDeck.slice(0, guildSpellCount(castle))) {
-    if (!hero.knownSpells.includes(spellId)) {
-      hero.knownSpells.push(spellId);
-      learned.push(spellId);
-    }
+  const count = guildSpellCount(castle)
+    + (skillRank(hero, 'loremaster') >= 2 ? SKILLS.loremaster.values.choices : 0);
+  for (const spellId of castle.guildDeck.slice(0, count)) {
+    if (learnSpell(hero, spellId)) learned.push(spellId);
   }
   return learned;
 }
@@ -38,6 +51,9 @@ export function visitShrine(
   const shrine = state.map.objects.find((object) =>
     object.id === objectId && object.kind === 'shrine');
   if (!shrine || shrine.kind !== 'shrine' || !shrine.cleared) return;
+  if ((SPELLS[shrine.teaches].tier ?? 5) > 2) {
+    throw new Error(`Ordinary shrines cannot teach tier-${SPELLS[shrine.teaches].tier} spells`);
+  }
   if (hasEquippedArtifact(hero, 'leadenCrown')) {
     const player = state.players[hero.owner];
     if (player.resources.essence >= 5) {
@@ -46,11 +62,11 @@ export function visitShrine(
       state.eventLog.push('The shrine takes five essence and lifts the Leaden Crown.');
     }
   }
-  if (!hero.knownSpells.includes(shrine.teaches)) hero.knownSpells.push(shrine.teaches);
-  const maxChoices = skillRank(hero, 'ritualist') >= 1
-    || skillRank(hero, 'attunement') >= 2 ? 2 : 1;
-  const choicesThisVisit = skillRank(hero, 'attunement') >= 2
-    ? SKILLS.attunement.values.rank2ShrineChoices : 1;
+  learnSpell(hero, shrine.teaches);
+  const extraChoice = skillRank(hero, 'loremaster') >= 2
+    ? SKILLS.loremaster.values.choices : 0;
+  const maxChoices = (skillRank(hero, 'ritualist') >= 1 ? 2 : 1) + extraChoice;
+  const choicesThisVisit = 1 + extraChoice;
   const used = hero.shrineChoices[shrine.id] ?? 0;
   if (used < maxChoices) {
     hero.shrineChoices[shrine.id] = used;
@@ -118,8 +134,9 @@ export function guildInscribe(
         .some((id) => SPELLS[id].school === SPELLS[spellId].school)) {
     throw new Error('Spell cannot be inscribed here');
   }
-  if (player.resources.essence < 4) throw new Error('Need 4 essence');
-  player.resources = pay(player.resources, { essence: 4 });
+  const inscriptionCost = hasArtifactSetBonus(hero, 'tinkersRounds', 2) ? 2 : 4;
+  if (player.resources.essence < inscriptionCost) throw new Error(`Need ${inscriptionCost} essence`);
+  player.resources = pay(player.resources, { essence: inscriptionCost });
   hero.upgradedSpells.push(spellId);
-  state.lastMessage = `${SPELLS[spellId].name}+ inscribed for 4 essence.`;
+  state.lastMessage = `${SPELLS[spellId].name}+ inscribed for ${inscriptionCost} essence.`;
 }

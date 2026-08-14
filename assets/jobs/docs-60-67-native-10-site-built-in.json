@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "status": "ready",
+  "generator": "built-in-imagegen",
+  "contract": "one distinct accepted built-in generation call and retained immutable provider source per runtime asset ID",
+  "requests": [
+    {
+      "id": "map-object:stacks:default",
+      "native_asset_id": "map-object:stacks",
+      "canonical_id": "site:stacks",
+      "family": "site",
+      "accessible_name": "The Stacks",
+      "literal_subject": "three leaning outdoor bookshelves beneath a patched awning",
+      "prompt": "Create one complete high-oblique dark-fantasy adventure acquisition site showing exactly three leaning outdoor bookshelves beneath a patched awning. Transparent-ready isolated subject on a flat solid pure green chroma-key background #00ff00; no frame, border, UI, logo, watermark, letters, numbers, or readable text.",
+      "selected_output": "/home/nadbor/.codex/generated_images/019ffbb3-c2a6-7b10-9afc-6f0d3808a6bd/exec-921bb57e-0252-45db-8ce5-f485b1561297.png",
+      "discarded_outputs": [
+        {
+          "output": "/home/nadbor/.codex/generated_images/019ffbb3-c2a6-7b10-9afc-6f0d3808a6bd/exec-022fc6aa-2028-462e-8bd1-facb2d260d48.png",
+          "reason": "Rejected: first attempt added extensive market scenery and read as an oversized stall rather than a compact three-shelf map site.",
+          "prompt": "Retained rejected built-in attempt; see review reason and selected replacement prompt."
+        }
+      ],
+      "provider_source": "assets/sources/docs-60-67/provider/map-object-stacks-default.png",
+      "source": "assets/sources/docs-60-67/map-object-stacks-default-source.png",
+      "file": "assets/map-objects/stacks.png",
+      "w": 32,
+      "h": 32,
+      "chroma_key": "#00ff00",
+      "review": "Accepted retry: exactly three separately visible leaning bookshelves form a compact site beneath one patched awning."
+    },
+    {
+      "id": "map-object:wildShrine:default",
+      "native_asset_id": "map-object:wildShrine",
+      "canonical_id": "site:wildShrine",
+      "family": "site",
+      "accessible_name": "Wild Shrine",
+      "literal_subject": "a root-wrapped stone shrine with closed books tucked into its hollows",
+      "prompt": "Create one complete high-oblique dark-fantasy adventure acquisition site showing exactly a root-wrapped stone shrine with closed books tucked into its hollows. Transparent-ready isolated subject on a flat solid pure magenta chroma-key background #ff00ff; no frame, border, UI, logo, watermark, letters, numbers, or readable text.",
+      "selected_output": "/home/nadbor/.codex/generated_images/019ffbb3-c2a6-7b10-9afc-6f0d3808a6bd/exec-8729a87a-13e5-45fa-9421-a64b27413490.png",
+      "discarded_outputs": [],
+      "provider_source": "assets/sources/docs-60-67/provider/map-object-wildShrine-default.png",
+      "source": "assets/sources/docs-60-67/map-object-wildShrine-default-source.png",
+      "file": "assets/map-objects/wildShrine.png",
+      "w": 32,
+      "h": 32,
+      "chroma_key": "#ff00ff",
+      "review": "Accepted: root-wrapped stone shrine and closed books form one distinct visitable acquisition site."
+    },
+    {
+      "id": "map-object:reliquaryOfPages:default",
+      "native_asset_id": "map-object:reliquaryOfPages",
+      "canonical_id": "site:reliquaryOfPages",
+      "family": "site",
+      "accessible_name": "Reliquary of Pages",
+      "literal_subject": "a sealed stone reliquary holding one clasped vellum page",
+      "prompt": "Create one complete high-oblique dark-fantasy adventure acquisition site showing exactly a sealed stone reliquary holding one clasped vellum page. Transparent-ready isolated subject on a flat solid pure green chroma-key background #00ff00; no frame, border, UI, logo, watermark, letters, numbers, or readable text.",
+      "selected_output": "/home/nadbor/.codex/generated_images/019ffbb3-c2a6-7b10-9afc-6f0d3808a6bd/exec-26883d12-b1f8-4a70-b668-c54db15e1a90.png",
+      "discarded_outputs": [],
+      "provider_source": "assets/sources/docs-60-67/provider/map-object-reliquaryOfPages-default.png",
+      "source": "assets/sources/docs-60-67/map-object-reliquaryOfPages-default-source.png",
+      "file": "assets/map-objects/reliquaryOfPages.png",
+      "w": 32,
+      "h": 32,
+      "chroma_key": "#00ff00",
+      "review": "Accepted: sealed stone reliquary clearly displays one clasped vellum page behind glass."
+    }
+  ]
+}

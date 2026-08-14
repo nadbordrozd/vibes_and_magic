@@ -43,6 +43,11 @@ function withChoice(
 
 export function pendingChoiceFixtures(): PendingChoiceFixture[] {
   return [
+    withChoice('acquisition-site', 3700, (state, hero) => ({
+      kind: 'acquisitionSite', objectId: state.map.objects.find((object) =>
+        object.kind === 'stacks')!.id,
+      playerId: 'p1', heroId: hero.id, options: ['forgeSpark', 'ward', 'blessing'],
+    }), ['The Stacks', 'keeps one spell', 'Choose one named spell', 'cannot be cancelled'], 3),
     withChoice('site-stat', 3701, (state, hero) => ({
       kind: 'siteStat', objectId: objectOfKind(state, 'sparringStone').id,
       playerId: 'p1', heroId: hero.id, options: ['attack', 'defense'],
@@ -87,6 +92,15 @@ export function pendingChoiceFixtures(): PendingChoiceFixture[] {
     withChoice('inscription', 3708, (_state, hero) => ({
       kind: 'inscribe', playerId: 'p1', heroId: hero.id, options: ['rally', 'blessing'],
     }), ['Level-up reward · Inscribe', 'Permanently learn the Upgraded rules'], 2),
+    withChoice('adept', 3717, (_state, hero) => ({
+      kind: 'adept', playerId: 'p1', heroId: hero.id, options: ['ward', 'forgeSpark'],
+    }), ['Adept · permanent spell refinement', 'Choose a spell to cost two less mana',
+      'Permanent reduction, minimum one mana'], 2),
+    withChoice('duelist-artifact', 3718, (_state, hero) => ({
+      kind: 'duelistArtifact', playerId: 'p1', heroId: hero.id,
+      loserHeroId: 'p2-hero', options: ['mirrorMask', 'travelersCloak'], transferOnChoice: true,
+    }), ['Duelist · claimed trophy', 'Choose one enemy artifact',
+      'Transfer this trophy before resolving the remaining battle outcome'], 2),
     withChoice('diplomacy-affordable', 3709, (state, hero) => {
       const guardian = objectOfKind(state, 'guardian');
       guardian.army = [{ unitId: 'yeoman', count: 12 }];

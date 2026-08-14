@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { MAP_OBJECT_KINDS, RUNTIME_ONLY_MAP_OBJECT_KINDS } from '../../content/mapObjectRegistry';
+import { NON_SPRITE_REPRESENTATIONS, assetId } from '../../../assets/manifest';
 import {
   DEFAULT_TERRAIN_DECORATION_DENSITY, LARGE_MAP_TERRAIN_DECORATION_DENSITY,
   TERRAIN, TERRAIN_DECORATIONS, terrainIdAt,
@@ -14,15 +15,15 @@ import {
 describe('adventure visual showcase', () => {
   it('covers every manifest-backed adventure renderable from the executable worklist', () => {
     const inventory = adventureShowcaseInventory();
-    expect(inventory).toHaveLength(447);
+    expect(inventory).toHaveLength(547);
     expect(new Set(inventory.map(({ id }) => id)).size).toBe(inventory.length);
     expect(new Set(inventory.map(({ category }) => category)))
       .toEqual(new Set(ADVENTURE_SHOWCASE_CATEGORIES));
     expect(Object.fromEntries(ADVENTURE_SHOWCASE_CATEGORIES.map((category) => [
       category, inventory.filter((item) => item.category === category).length,
     ]))).toEqual({
-      terrain: 43, overlay: 13, decoration: 88, 'map-object': 227,
-      castle: 10, hero: 48, 'guardian-unit': 18,
+      terrain: 43, overlay: 13, decoration: 88, 'map-object': 314,
+      castle: 10, hero: 48, 'guardian-unit': 31,
     });
   });
 
@@ -43,7 +44,8 @@ describe('adventure visual showcase', () => {
     expect(representatives.size).toBe(inventory.length);
     inventory.forEach((item) => expect(representatives.has(item.id), item.id).toBe(true));
     for (const kind of MAP_OBJECT_KINDS.filter((kind) => kind !== 'guardian'
-      && !RUNTIME_ONLY_MAP_OBJECT_KINDS.includes(kind as never))) {
+      && !RUNTIME_ONLY_MAP_OBJECT_KINDS.includes(kind as never)
+      && !NON_SPRITE_REPRESENTATIONS[assetId.mapObject(kind, 'default')])) {
       expect([...representatives.values()].some((object) => object.kind === kind), kind).toBe(true);
     }
   });

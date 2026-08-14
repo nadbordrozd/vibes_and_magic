@@ -1,4 +1,4 @@
-import { ITEMS } from '../../content/items';
+import { ITEMS, validateSpellTomeInstance } from '../../content/items';
 import { SKILLS } from '../../content/skills';
 import { findOwnedHero } from '../heroes';
 import { inBounds, sameCoord } from '../map/pathfinding';
@@ -7,14 +7,16 @@ import { revealArea } from '../map/visibility';
 import type {
   GameState, Hero, ItemInstance, MapObject,
 } from '../types';
-import { artifactEffectTotal } from '../artifacts';
+import { artifactEffectTotal, hasArtifactEffect } from '../artifacts';
 import { skillRank } from '../heroBehaviors';
 import { addUnits } from '../army';
 import { FACTION_UNITS, UNITS } from '../../content/units';
-import { canAfford, pay } from '../army';
+import { canPlayerAfford, payPlayer } from '../artifacts';
 import { randomInt } from '../rng';
 import { terrainIdAt } from '../../content/terrain';
 import type { SpellId } from '../types';
+import { SPELLS } from '../../content/spells';
+import { learnSpell } from './spellLearning';
 
 export function addItem(hero: Hero, item: ItemInstance): boolean {
   const slot = hero.inventory.findIndex((candidate) => candidate === null);
@@ -24,6 +26,15 @@ export function addItem(hero: Hero, item: ItemInstance): boolean {
     origin: item.origin ? { ...item.origin } : undefined,
   };
   return true;
+}
+
+export function claimSpellTome(hero: Hero, item: ItemInstance): SpellId {
+  validateSpellTomeInstance(item);
+  if (item.id !== 'spellTome' || !item.storedSpellId
+      || !SPELLS[item.storedSpellId as SpellId]) throw new Error('Spell Tome has no legal named spell');
+  const spellId = item.storedSpellId as SpellId;
+  learnSpell(hero, spellId);
+  return spellId;
 }
 
 export function tradeGoodsPrice(item: ItemInstance, castlePosition: {
@@ -111,6 +122,9 @@ export function useAdventureItem(
   const item = hero?.inventory[inventorySlot];
   if (!hero || inventorySlot < 0 || inventorySlot >= hero.inventory.length
       || !item || typeof item === 'string') throw new Error('Adventure item missing');
+  if (hasArtifactEffect(hero, 'no_consumables')) {
+    throw new Error('An equipped Burden prevents consumable use');
+  }
   const definition = ITEMS[item.id];
   if (definition.use !== 'adventure') throw new Error('Item cannot be used on the map');
   if (definition.behavior === 'movement') {
@@ -128,6 +142,32 @@ export function useAdventureItem(
     player.explored = revealArea(
       player.explored, state.map, target, definition.radius ?? 0,
     );
+  } else if (definition.behavior === 'ignoreAggroDay') {
+    hero.adventureEffects.ignoreGuardianAggroThroughDay = state.day;
+  } else if (definition.behavior === 'survey') {
+    if (!target || !inBounds(state.map, target)) throw new Error('Choose any map tile to survey');
+    const radius = definition.radius ?? 8;
+    player.explored = revealArea(player.explored, state.map, target, radius);
+    player.adventureEffects.guardianIntel ??= {};
+    state.map.objects.filter((object) => object.kind === 'guardian'
+      && (object.position.x - target.x) ** 2 + (object.position.y - target.y) ** 2
+        <= radius ** 2).sort((a, b) => a.id.localeCompare(b.id)).forEach((guardian) => {
+      player.adventureEffects.guardianIntel![guardian.id] = Math.max(
+        state.day, player.adventureEffects.guardianIntel![guardian.id] ?? 0,
+      );
+    });
+  } else if (definition.behavior === 'learnRandomSpell') {
+    const knownSchools = new Set(hero.knownSpells.map((spellId) => SPELLS[spellId].school));
+    const pool = (Object.keys(SPELLS) as SpellId[]).filter((spellId) => {
+      const spell = SPELLS[spellId];
+      return (spell.tier ?? 1) <= 3 && knownSchools.has(spell.school)
+        && !hero.knownSpells.includes(spellId) && !spell.acquisition?.provenance
+        && spellId !== 'summonSkiff';
+    }).sort();
+    if (!pool.length) throw new Error('No unknown tier-1–3 spell belongs to a known school');
+    let index: number;
+    [index, state.rng] = randomInt(state.rng, pool.length);
+    learnSpell(hero, pool[index]);
   } else if (definition.behavior === 'charter') {
     const mine = state.map.objects.find(
       (object): object is Extract<MapObject, { kind: 'mine' }> =>
@@ -169,13 +209,13 @@ export function useAdventureItem(
     const doubled = Object.fromEntries(Object.entries(UNITS[unitId].cost).map(
       ([resource, amount]) => [resource, (amount ?? 0) * 2],
     ));
-    if (count <= 0 || !canAfford(player.resources, doubled, count)) {
+    if (count <= 0 || !canPlayerAfford(player, doubled, count)) {
       throw new Error('The Writ cannot be paid');
     }
     const army = addUnits(castle.garrison, unitId, count);
     if (!army) throw new Error('No army slot for the militia');
     castle.garrison = army;
-    player.resources = pay(player.resources, doubled, count);
+    payPlayer(player, doubled, count);
     castle.available[0] = 0;
   } else if (definition.behavior === 'draftBoost') {
     hero.draftBonusCards += definition.amount ?? 1;

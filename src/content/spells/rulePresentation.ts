@@ -6,16 +6,25 @@ import {
   type SpellRuleToken,
   type SpellRuleVersions,
 } from '../spellLexicon';
+import { P2_NEW_SPELL_RULES } from './p2Rules';
 
 const rule = (...tokens: SpellRuleToken[]): SpellRulePresentation => tokens;
 
 export const RITE_CRAFT_SPELL_IDS = [
   'rally', 'blessing', 'standardOfDawn', 'amplify', 'sanctuary', 'oathOfIron',
-  'consecrate', 'hymnOfTheHost', 'trial', 'beacon', 'census', 'feastDay', 'clarion',
-  'vigilOfTheHost', 'oathbind', 'waysideShrine', 'echo',
+  'consecrate', 'hymnOfTheHost', 'trial',
+  'kindle', 'sunlance', 'steadyHands', 'wellspring', 'secondWind', 'litanyOfDawn',
+  'holdTheLine', 'consecratedGround', 'reprise',
+  'scrying', 'bellBookAndCandle', 'processionOfLamps', 'dayspring', 'theLongOath',
+  'beacon', 'census', 'feastDay', 'clarion', 'vigilOfTheHost', 'oathbind',
+  'waysideShrine', 'echo',
   'forgeSpark', 'ward', 'reflect', 'forgefire', 'clockworkEscort', 'wallOfTheMaker',
-  'quicksilver', 'unmake', 'ironclad', 'gate', 'saltTheVein', 'falseColors',
-  'clockworkCourier', 'brittle', 'standingMirror', 'summonSkiff', 'hourglassCrack',
+  'quicksilver', 'unmake', 'ironclad',
+  'rivet', 'whetstone', 'shrapnel',
+  'ammunitionCart', 'detonate', 'clockworkDouble', 'blink', 'overclock', 'dimensionDoor',
+  'prospect', 'counterweight', 'bulwark', 'theUnmakingEngine', 'mirrorHall',
+  'gate', 'saltTheVein', 'falseColors', 'clockworkCourier', 'brittle', 'standingMirror',
+  'summonSkiff', 'hourglassCrack',
 ] as const satisfies readonly SpellId[];
 
 export type RiteCraftSpellId = typeof RITE_CRAFT_SPELL_IDS[number];
@@ -24,15 +33,18 @@ export type RiteCraftSpellId = typeof RITE_CRAFT_SPELL_IDS[number];
  * Canonical structured rules for the first two schools. Grave and Wild can add parallel records
  * and join SPELL_RULE_PRESENTATIONS without changing the catalog or token contract.
  */
-export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions> = {
+export const RITE_CRAFT_SPELL_RULES = {
+  ...Object.fromEntries([
+    'scrying', 'bellBookAndCandle', 'processionOfLamps', 'dayspring', 'theLongOath',
+    'prospect', 'counterweight', 'bulwark', 'theUnmakingEngine', 'mirrorHall',
+  ].map((id) => [id, P2_NEW_SPELL_RULES[id as keyof typeof P2_NEW_SPELL_RULES]])),
   rally: {
     standard: rule(text('One allied company gains 50 '), term('morale'), text('.')),
     upgraded: rule(text('Two different allied companies each gain 50 '), term('morale'), text('.')),
   },
   blessing: {
     standard: rule(text('One allied company’s next attack rolls maximum damage.')),
-    upgraded: rule(text('One allied company gains 10 '), term('morale'),
-      text(', and its next attack rolls maximum damage.')),
+    upgraded: rule(text('Every allied company’s next attack rolls maximum damage.')),
   },
   standardOfDawn: {
     standard: rule(text('Create a '), term('battle-enchantment'),
@@ -40,7 +52,8 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
       term('morale'), text('. The gain is reduced proportionally if the destroyed company began with less than 10% of its side’s starting army HP.')),
     upgraded: rule(text('Create a '), term('battle-enchantment'),
       text('. When an allied attack destroys an enemy company, every surviving allied company gains 10 '),
-      term('morale'), text('. The gain is reduced proportionally if the destroyed company began with less than 10% of its side’s starting army HP.')),
+      term('morale'), text('. On the first such kill each round, the killer also gains +2 speed and one '),
+      term('extra-action'), text('.')),
   },
   amplify: {
     standard: rule(text('Choose one '), term('active-effect'), text('—a '), term('counter'),
@@ -83,9 +96,9 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
       text(' for each '), term('extra-action'), text(' your side has taken in this battle.')),
   },
   trial: {
-    standard: rule(text('Choose an enemy company with more units than your largest surviving company. It loses at least 25% of its current HP; '),
+    standard: rule(text('Choose an enemy company with more units than your largest surviving company. It loses at least 30% of its current HP; '),
       term('spell-power'), text(' can increase the percentage.')),
-    upgraded: rule(text('Choose an enemy company with more units than your largest surviving company. It loses at least 35% of its current HP; '),
+    upgraded: rule(text('Choose an enemy company with more units than your largest surviving company. It loses at least 45% of its current HP; '),
       term('spell-power'), text(' can increase the percentage.')),
   },
   beacon: {
@@ -93,8 +106,8 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
     upgraded: rule(text('Move the casting hero to the entrance of any chosen owned City.')),
   },
   census: {
-    standard: rule(text('This spell has no gameplay effect. Census expires at the end of today.')),
-    upgraded: rule(text('This spell has no gameplay effect. Census expires at the end of tomorrow.')),
+    standard: rule(text('Until day end, explored enemy heroes and Cities show exact army composition and hero level.')),
+    upgraded: rule(text('Until day end, explored enemy heroes and Cities show exact armies and levels; heroes also show mana, known spells, and equipped artifacts.')),
   },
   feastDay: {
     standard: rule(text('Every City you own when this is cast gains 25% '), term('growth'),
@@ -142,20 +155,91 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
     upgraded: rule(text('Cast the last non-Echo spell again with new legal targets, your '),
       term('spell-power'), text(', and its previous X-mana spend, but always use that spell’s Upgraded rules.')),
   },
+  kindle: {
+    standard: rule(text('Deal 12 fixed '), term('impact-damage'), text(' to one enemy company. This does not scale with '), term('spell-power'), text('.')),
+    upgraded: rule(text('Deal 16 fixed '), term('impact-damage'), text(' to one enemy company and reduce its '), term('morale'), text(' by 10. This does not scale with '), term('spell-power'), text('.')),
+  },
+  sunlance: {
+    standard: rule(text('Deal 8 + 4 × '), term('spell-power'), text(' '), term('impact-damage'), text(', capped at 40, to one enemy. Increase it by half if that company destroyed an ally this battle.')),
+    upgraded: rule(text('Deal 8 + 4 × '), term('spell-power'), text(' '), term('impact-damage'), text(', capped at 40, to one enemy. Increase it by half if it destroyed an ally, then give the nearest living ally 10 '), term('morale'), text('.')),
+  },
+  steadyHands: {
+    standard: rule(text('One ally gains +1 speed until round end and its next attack cannot be retaliated against.')),
+    upgraded: rule(text('Two different allies each gain +1 speed until round end and their next attack cannot be retaliated against.')),
+  },
+  wellspring: {
+    standard: rule(text('Restore 10 + 2 × '), term('spell-power'), text(' mana to one owned hero anywhere on the map. Once per day.')),
+    upgraded: rule(text('Restore 16 + 3 × '), term('spell-power'), text(' mana to one owned hero anywhere on the map and give that hero 150 movement. Once per day.')),
+  },
+  secondWind: {
+    standard: rule(term('resurrection', 'Restore'), text(' 20 × '), term('spell-power'), text(' HP to one allied non-'), term('summon', 'summoned'), text(' company, reviving units only up to its starting count.')),
+    upgraded: rule(term('resurrection', 'Restore'), text(' 30 × '), term('spell-power'), text(' HP to one allied non-'), term('summon', 'summoned'), text(' company, reviving units only up to its starting count.')),
+  },
+  litanyOfDawn: {
+    standard: rule(text('Every allied company gains 25 '), term('morale'), text(' and its next attack rolls maximum damage.')),
+    upgraded: rule(text('Every allied company gains 40 '), term('morale'), text(', its next attack rolls maximum damage, and it ignores the adjacent-enemy ranged penalty this round.')),
+  },
+  holdTheLine: {
+    standard: rule(text('Create a '), term('battle-enchantment'), text('. Once each round, the first allied company that would be destroyed instead survives with one unit at 1 HP.')),
+    upgraded: rule(text('Create a '), term('battle-enchantment'), text('. Once each round, the first allied company that would be destroyed instead survives with one unit at 1 HP and gains '), term('bloom', 'Bloom 3'), text('.')),
+  },
+  consecratedGround: {
+    standard: rule(text('Make the battlefield Rite-'), term('resonance', 'resonant'), text(' for both sides for the rest of the battle.')),
+    upgraded: rule(text('Give only your side Rite '), term('resonance'), text(' for the rest of the battle.')),
+  },
+  reprise: {
+    standard: rule(text('One ally takes an '), term('extra-action'), text(' now and another before normal order at the start of the next round.')),
+    upgraded: rule(text('One ally takes two consecutive '), term('extra-action', 'extra actions'), text(' now.')),
+  },
   forgeSpark: {
-    standard: rule(text('Give one enemy '), term('burn', 'Burn 3'),
-      text(', increased by '), term('spell-power'), text(' and other '), term('burn', 'Burn'),
+    standard: rule(text('Deal 8 + 4 × '), term('spell-power'), text(' '), term('impact-damage'),
+      text(', capped at 40, then give one enemy '), term('burn', 'Burn 3'), text(' increased by other '), term('burn', 'Burn'),
       text(' bonuses.')),
-    upgraded: rule(text('Give one enemy '), term('burn', 'Burn 4'),
-      text(', increased by '), term('spell-power'),
-      text(' and other '), term('burn', 'Burn'),
-      text(' bonuses, and give every adjacent enemy '), term('burn', 'Burn 1'), text('.')),
+    upgraded: rule(text('Deal 8 + 4 × '), term('spell-power'), text(' '), term('impact-damage'),
+      text(', capped at 40, give the target '), term('burn', 'Burn 4'),
+      text(', and give every adjacent enemy '), term('burn', 'Burn 2'), text('.')),
+  },
+  rivet: {
+    standard: rule(text('One ally gains +2 Defense until its next turn and its next retaliation this round deals double damage.')),
+    upgraded: rule(text('One ally gains +3 Defense until its next turn, its next retaliation this round deals double damage, and it may retaliate once more this round.')),
+  },
+  whetstone: {
+    standard: rule(text('One ally gains +3 Attack for 2 rounds.')),
+    upgraded: rule(text('One ally gains +3 Attack for 2 rounds, and its first attack this round prevents retaliation.')),
+  },
+  shrapnel: {
+    standard: rule(text('One allied ranged company’s next shot also deals half damage to every company adjacent to its target.')),
+    upgraded: rule(text('One allied ranged company’s next shot also deals half damage to every company adjacent to its target and consumes no ammunition.')),
+  },
+  ammunitionCart: {
+    standard: rule(text('Every allied ranged company regains its full printed ammunition.')),
+    upgraded: rule(text('Every allied ranged company regains its full printed ammunition and ignores the ranged damage penalty for targets beyond distance 7 for this battle.')),
+  },
+  detonate: {
+    standard: rule(term('detonate', 'Detonate'), text(' one enemy’s entire '), term('burn', 'Burn'), text(' pile for pile × (8 + 3 × '), term('spell-power'), text(') '), term('impact-damage'), text('.')),
+    upgraded: rule(term('detonate', 'Detonate'), text(' one enemy’s entire '), term('burn', 'Burn'), text(' pile for pile × (8 + 3 × '), term('spell-power'), text(') '), term('impact-damage'), text(', then deal half that damage to every adjacent company.')),
+  },
+  clockworkDouble: {
+    standard: rule(term('clone', 'Summon a copy'), text(' of one eligible allied company at 25% + 5% × '), term('spell-power'), text(' of its current count, capped at 100%. It cannot be revived, duplicated, or survive the battle.')),
+    upgraded: rule(term('clone', 'Summon a copy'), text(' of one eligible allied company at 25% + 5% × '), term('spell-power'), text(' of its current count, capped at 100%. It also copies current '), term('counter', 'counters'), text(' and '), term('timed-effect', 'timed effects'), text('.')),
+  },
+  blink: {
+    standard: rule(text('Teleport one company on either side to any legal empty position.')),
+    upgraded: rule(text('Teleport two different companies to legal empty positions, or teleport one and let it act immediately if it has not acted this round.')),
+  },
+  overclock: {
+    standard: rule(text('One ally takes an '), term('extra-action'), text(' now and another at round end, then is '), term('stun', 'stunned'), text(' for the following round.')),
+    upgraded: rule(text('One ally takes an '), term('extra-action'), text(' now and another at round end, acts normally next round, then is '), term('stun', 'stunned'), text(' one round later.')),
+  },
+  dimensionDoor: {
+    standard: rule(text('Teleport this hero to a legal unoccupied explored tile within 6 + '), term('spell-power'), text(' tiles, ignoring intervening terrain and blockers. Once per day.')),
+    upgraded: rule(text('Teleport this hero to a legal unoccupied explored tile within 10 + '), term('spell-power'), text(' tiles, ignoring intervening terrain and blockers. Twice per day.')),
   },
   ward: {
     standard: rule(text('Give one allied company a '), term('timed-effect'),
-      text(' that makes the next attack against it deal 0 damage, then ends.')),
+      text(' that makes the next damage instance against it deal 0 damage, then ends.')),
     upgraded: rule(text('Give one allied company a '), term('timed-effect'),
-      text(' that makes the next attack against it deal 0 damage, gives the attacker '),
+      text(' that makes the next damage instance against it deal 0 damage, gives the attacker '),
       term('burn', 'Burn 2'), text(', then ends.')),
   },
   reflect: {
@@ -201,9 +285,9 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
       text(' from one chosen company. Protected '), term('battle-enchantment', 'enchantments'),
       text(' cannot be removed.')),
     upgraded: rule(text('Remove one chosen '), term('battle-enchantment'),
-      text(', or '), term('cleanse'), text(' every '), term('counter'),
-      text(' from one chosen company. Protected '), term('battle-enchantment', 'enchantments'),
-      text(' cannot be removed.')),
+      text(', including a protected one, or '), term('cleanse'), text(' every '), term('counter'),
+      text(' from two chosen companies. Removing a '), term('battle-enchantment'), text(' gives its owner’s living companies '),
+      term('chill', 'Chill 2'), text('.')),
   },
   ironclad: {
     standard: rule(text('Create a '), term('battle-enchantment'),
@@ -220,9 +304,10 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
     upgraded: rule(text('Choose an explored enemy mine with an owner. It produces no resources for 8 days, including today.')),
   },
   falseColors: {
-    standard: rule(text('This spell has no gameplay effect. False Colors expires when an enemy hero comes adjacent.')),
-    upgraded: rule(text('Choose a '), term('guardian'),
-      text(' band size when casting. This choice has no gameplay effect. False Colors expires when an enemy hero comes adjacent.')),
+    standard: rule(text('Choose a displayed '), term('guardian'),
+      text(' band. Enemy threat evaluation uses it instead of this hero’s true army until an enemy hero comes adjacent.')),
+    upgraded: rule(text('Choose a displayed '), term('guardian'),
+      text(' band. Enemy threat evaluation uses it, and enemies judging the displayed fight unfavourable will not attack this turn.')),
   },
   clockworkCourier: {
     standard: rule(text('Swap one item slot or one army slot between the casting hero and another owned hero.')),
@@ -243,9 +328,9 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
       term('spell-power'), text(' and that spell’s Standard or Upgraded rules. It cannot copy Standing Mirror, Echo, or '),
       term('twister', 'Twisters'), text('; a copy without a valid opposing target does nothing.')),
     upgraded: rule(term('summon', 'Summon'),
-      text(' a 30-HP immobile Standing Mirror, replacing the old one. While it survives, it copies each enemy spell once using your '),
-      term('spell-power'), text(' and that spell’s Standard or Upgraded rules. It cannot copy Standing Mirror, Echo, or '),
-      term('twister', 'Twisters'), text('; a copy without a valid opposing target does nothing.')),
+      text(' a 30-HP immobile Standing Mirror. It copies enemy spells and '), term('twister', 'Twisters'),
+      text(' once using your '), term('spell-power'),
+      text('; you choose each legal copy target, and Standing Mirror, Echo, and Mirror Hall remain excluded.')),
   },
   summonSkiff: {
     standard: rule(term('summon', 'Summon'),
@@ -259,12 +344,20 @@ export const RITE_CRAFT_SPELL_RULES: Record<RiteCraftSpellId, SpellRuleVersions>
     upgraded: rule(text('Give one company one '), term('extra-action'),
       text(' and choose which one of the next three rounds it skips.')),
   },
-};
+} as Record<RiteCraftSpellId, SpellRuleVersions>;
 
 export const GRAVE_WILD_SPELL_IDS = [
   'wither', 'graveChill', 'mournersVeil', 'dirge', 'lastCandle', 'sour',
-  'remembrance', 'reckoning', 'quiet', 'coldRoad', 'borrowedTime', 'paleProcession',
-  'silenceThePassing', 'theToll', 'deathsLedger', 'graveSpeech', 'loyalUntoDeath',
+  'remembrance', 'reckoning', 'quiet',
+  'pinchOfAsh', 'tithe', 'grudge', 'yoke', 'graveBargain', 'puppetStrings',
+  'secondGrave', 'ashenPall', 'theLedgerBalanced', 'ossuary', 'stealAway',
+  'theLongSilence', 'harvest', 'theDebtCalled',
+  'coldRoad', 'borrowedTime', 'paleProcession', 'silenceThePassing', 'theToll',
+  'deathsLedger', 'graveSpeech', 'loyalUntoDeath',
+  'nettle', 'bramblelash', 'wildcall', 'sapAndSinew', 'verdantSurge',
+  'theTurningYear', 'fly',
+  'beastSense', 'illWind', 'rootTheSky', 'beastSovereign', 'windShear',
+  'theLongGreen', 'theWeatherItself',
   'gale', 'bloom', 'overgrow', 'thicket', 'rains', 'beastTongue', 'stampedeCall',
   'storm', 'greenway', 'wildGrowth', 'murmuration', 'greenTide', 'rootAndRuin',
   'fickleWeather', 'shedSkin', 'hedgerowMarch', 'borrowShape',
@@ -273,11 +366,18 @@ export const GRAVE_WILD_SPELL_IDS = [
 export type GraveWildSpellId = typeof GRAVE_WILD_SPELL_IDS[number];
 
 /** Canonical structured rules for Grave and Wild, derived from their runtime branches. */
-export const GRAVE_WILD_SPELL_RULES: Record<GraveWildSpellId, SpellRuleVersions> = {
+export const GRAVE_WILD_SPELL_RULES = {
+  ...Object.fromEntries([
+    'secondGrave', 'ashenPall', 'theLedgerBalanced', 'ossuary', 'stealAway',
+    'theLongSilence', 'harvest', 'theDebtCalled', 'beastSense', 'illWind',
+    'rootTheSky', 'beastSovereign', 'windShear', 'theLongGreen', 'theWeatherItself',
+  ].map((id) => [id, P2_NEW_SPELL_RULES[id as keyof typeof P2_NEW_SPELL_RULES]])),
   wither: {
-    standard: rule(text('Give one enemy '), term('hex', 'Hex 6'), text(', increased by '),
+    standard: rule(text('Deal 6 + 3 × '), term('spell-power'), text(' '), term('impact-damage'),
+      text(', capped at 40, then give one enemy '), term('hex', 'Hex 6'), text(', increased by '),
       term('spell-power'), text(' and other '), term('hex', 'Hex'), text(' bonuses.')),
-    upgraded: rule(text('Give one enemy '), term('hex', 'Hex 8'), text(', increased by '),
+    upgraded: rule(text('Deal 6 + 3 × '), term('spell-power'), text(' '), term('impact-damage'),
+      text(', capped at 40, then give one enemy '), term('hex', 'Hex 8'), text(', increased by '),
       term('spell-power'), text(' and other '), term('hex', 'Hex'),
       text(' bonuses, and give it '), term('chill', 'Chill 2'), text('.')),
   },
@@ -496,16 +596,73 @@ export const GRAVE_WILD_SPELL_RULES: Record<GraveWildSpellId, SpellRuleVersions>
       term('hex', 'Hex'), text(', then '), term('bloom', 'Bloom'),
       text(' order. Give the ally '), term('bloom', 'Bloom'),
       text(' equal to the removed magnitude, with a minimum of 1.')),
-    upgraded: rule(text('Remove the oldest '), term('timed-effect'),
-      text(' from one ally. If none exists, remove its first nonzero '), term('counter'),
-      text(' pile in '), term('burn', 'Burn'), text(', '), term('chill', 'Chill'), text(', '),
-      term('hex', 'Hex'), text(', then '), term('bloom', 'Bloom'),
-      text(' order. Give the ally '), term('bloom', 'Bloom'),
-      text(' equal to the removed magnitude, with a minimum of 1.')),
+    upgraded: rule(text('Remove one chosen '), term('timed-effect'), text(' or one chosen '),
+      term('counter'), text(' pile from an ally and give it '), term('bloom', 'Bloom'),
+      text(' equal to that magnitude, minimum 1. Apply the removed effect or pile at the same magnitude to one adjacent enemy.')),
   },
   hedgerowMarch: {
-    standard: rule(text('Create a '), term('battle-enchantment'), text('. It has no gameplay effect.')),
-    upgraded: rule(text('Create a '), term('battle-enchantment'), text('. It has no gameplay effect.')),
+    standard: rule(text('Create a '), term('battle-enchantment'), text('. Allies ignore '),
+      term('undergrowth'), text(' movement cost and gain +1 speed; enemies ending on '),
+      term('undergrowth'), text(' gain '), term('chill', 'Chill 1'), text('.')),
+    upgraded: rule(text('Create a '), term('battle-enchantment'), text('. Allies ignore '),
+      term('undergrowth'), text(' movement cost, gain +2 speed, and move through enemies as if '), term('phase', 'phased'),
+      text('; enemies ending on '), term('undergrowth'), text(' gain '), term('chill', 'Chill 1'), text('.')),
+  },
+  pinchOfAsh: {
+    standard: rule(text('Give one enemy fixed '), term('hex', 'Hex 2'), text(' and reduce its '), term('morale'), text(' by 10. This does not scale with '), term('spell-power'), text('.')),
+    upgraded: rule(text('Give one enemy fixed '), term('hex', 'Hex 3'), text(' and reduce its '), term('morale'), text(' by 20. This does not scale with '), term('spell-power'), text('.')),
+  },
+  tithe: {
+    standard: rule(text('Your hero gains 4 mana, capped at maximum. One ally loses 10% of its current HP.')),
+    upgraded: rule(text('Your hero gains 6 mana, capped at maximum. One ally loses 8% of its current HP and gains '), term('bloom', 'Bloom 2'), text('.')),
+  },
+  grudge: {
+    standard: rule(text('Mark one enemy for 3 rounds. Allied companies deal 10% more damage to it and each allied attack gives it '), term('hex', 'Hex 1'), text('.')),
+    upgraded: rule(text('Mark one enemy for 3 rounds. Allied companies deal 15% more damage to it and each allied attack gives it '), term('hex', 'Hex 2'), text('.')),
+  },
+  yoke: {
+    standard: rule(text('Link two different living companies for 3 rounds. Damage to either deals 50% of that damage to the other once; ordinary '), term('cleanse', 'cleansing'), text(' can remove the link.')),
+    upgraded: rule(text('Link two different living companies for 3 rounds. Damage to either deals 75% of that damage to the other once; the protected link cannot be removed by Unmake, Sour, or Shed Skin.')),
+  },
+  graveBargain: {
+    standard: rule(text('Destroy one allied non-'), term('summon', 'summoned'), text(' company other than your last. Gain mana equal to 10% of its starting maximum HP, capped at 20; surviving allies gain 25 '), term('morale'), text(' and '), term('bloom', 'Bloom 3'), text('.')),
+    upgraded: rule(text('As Standard, and every surviving enemy gains '), term('hex', 'Hex 3'), text('. Flat rewards obey destruction proportionality.')),
+  },
+  puppetStrings: {
+    standard: rule(text('Control one enemy with current HP at most 40 × '), term('spell-power'), text(' for 2 rounds. It returns with its control-time effects discarded and '), term('hex', 'Hex 3'), text('. Each company can be controlled once.')),
+    upgraded: rule(text('Control one enemy with current HP at most 40 × '), term('spell-power'), text(' for 3 rounds. It retains control-time effects when it returns with '), term('hex', 'Hex 3'), text('. Each company can be controlled once.')),
+  },
+  nettle: {
+    standard: rule(text('Deal 10 fixed '), term('impact-damage'), text(' and give one enemy fixed '), term('chill', 'Chill 1'), text('. Neither scales with '), term('spell-power'), text('.')),
+    upgraded: rule(text('Deal 10 fixed '), term('impact-damage'), text(', give one enemy fixed '), term('chill', 'Chill 2'), text(', and prevent speed bonuses until its next turn.')),
+  },
+  bramblelash: {
+    standard: rule(text('Deal 8 + 4 × '), term('spell-power'), text(' '), term('impact-damage'), text(', capped at 40, and create '), term('undergrowth'), text(' on one chosen empty adjacent position.')),
+    upgraded: rule(text('Deal 8 + 4 × '), term('spell-power'), text(' '), term('impact-damage'), text(', capped at 40, and create '), term('undergrowth'), text(' on every empty adjacent position.')),
+  },
+  wildcall: {
+    standard: rule(term('summon', 'Summon'), text(' a deterministic neutral '), term('beast', 'Beast'), text(' for this battle with unit-strength budget 12 × '), term('spell-power'), text('.')),
+    upgraded: rule(term('summon', 'Summon'), text(' a deterministic neutral '), term('beast', 'Beast'), text(' for this battle with unit-strength budget 18 × '), term('spell-power'), text(' and +2 speed.')),
+  },
+  sapAndSinew: {
+    standard: rule(text('One ally gains +3 speed and +2 Attack for 3 rounds; a '), term('beast', 'Beast'), text(' also gains one extra retaliation each round.')),
+    upgraded: rule(text('One ally gains +4 speed and +3 Attack for 3 rounds; a '), term('beast', 'Beast'), text(' also gains '), term('bloom', 'Bloom 2'), text(' each round start.')),
+  },
+  verdantSurge: {
+    standard: rule(text('Every ally gains '), term('bloom', 'Bloom 3'), text('; every enemy gains '), term('chill', 'Chill 2'), text('.')),
+    upgraded: rule(text('Every ally gains '), term('bloom', 'Bloom 4'), text(' without next-turn decay; every enemy gains '), term('chill', 'Chill 3'), text('.')),
+  },
+  theTurningYear: {
+    standard: rule(text('Choose one '), term('counter'), text(' type. Every company converts all other '),
+      term('counter', 'counters'), text(' into it one for one, capped at 9, without '),
+      term('counter', 'counter'), text('-application bonuses.')),
+    upgraded: rule(text('As Standard, but converted '), term('counter', 'counters'),
+      text(' on your companies are doubled before the cap.')),
+  },
+  fly: {
+    standard: rule(text('For today, this hero pays 65 movement per tile and may cross Mountain and Water but cannot stop there. Once per day.')),
+    upgraded: rule(text('As Standard, and the hero ignores '), term('guardian', 'guardian'),
+      text(' aggression for today. Once per day.')),
   },
   borrowShape: {
     standard: rule(text('One allied company copies every '), term('ability'),
@@ -513,13 +670,13 @@ export const GRAVE_WILD_SPELL_RULES: Record<GraveWildSpellId, SpellRuleVersions>
     upgraded: rule(text('One allied company copies every '), term('ability'),
       text(' from any living enemy for the rest of the battle, while retaining its own.')),
   },
-};
+} as Record<GraveWildSpellId, SpellRuleVersions>;
 
 /** Single extension point consumed by catalogs and semantic rule surfaces. */
 export const SPELL_RULE_PRESENTATIONS: Record<SpellId, SpellRuleVersions> = {
-  ...RITE_CRAFT_SPELL_RULES,
-  ...GRAVE_WILD_SPELL_RULES,
-};
+  ...Object.fromEntries(RITE_CRAFT_SPELL_IDS.map((id) => [id, RITE_CRAFT_SPELL_RULES[id]])),
+  ...Object.fromEntries(GRAVE_WILD_SPELL_IDS.map((id) => [id, GRAVE_WILD_SPELL_RULES[id]])),
+} as Record<SpellId, SpellRuleVersions>;
 
 export function spellRuleVersions(spellId: SpellId): SpellRuleVersions {
   return SPELL_RULE_PRESENTATIONS[spellId];

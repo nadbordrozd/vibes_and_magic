@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "status": "staged",
+  "blocked_by": "Issue 98f.18 owns native creature production and accepted provenance; issue 98f.12 stages distinct literal subjects without claiming bitmap coverage.",
+  "contact_sheet": "assets/jobs/e3-doc63-64-creature-placeholders-2-candidates.html",
+  "requests": [
+    {
+      "id": "battle-unit:whistlingNan",
+      "assets": [
+        "battle-unit:whistlingNan"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-whistling-nan",
+      "prompt": "Native 128x128 transparent side-view battle company: bent folkloric hedge-witch with whistle shawl and thorn staff; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981211
+    },
+    {
+      "id": "battle-unit:unbaptized",
+      "assets": [
+        "battle-unit:unbaptized"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-unbaptized",
+      "prompt": "Native 128x128 transparent side-view battle company: broad unfinished clay penitent carrying an empty stone font; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981212
+    },
+    {
+      "id": "battle-unit:bellfounder",
+      "assets": [
+        "battle-unit:bellfounder"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/battle-bellfounder",
+      "prompt": "Native 128x128 transparent side-view battle company: sturdy tonsured monk with two timing hammers and an uncast bell frame; unique complete silhouette; warm storybook pixel art; no UI or text.",
+      "endpoint": "create-image-bitforge",
+      "size": [
+        128,
+        128
+      ],
+      "candidates": 2,
+      "seed": 981213
+    },
+    {
+      "id": "guardian-unit:seamMoth",
+      "assets": [
+        "guardian-unit:seamMoth"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-seam-moth",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: broad pale moth with one dark stitched wing seam; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981221
+    },
+    {
+      "id": "guardian-unit:chalkWight",
+      "assets": [
+        "guardian-unit:chalkWight"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-chalk-wight",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: chalk-white spirit trailing one boundary line; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981222
+    },
+    {
+      "id": "guardian-unit:emberToad",
+      "assets": [
+        "guardian-unit:emberToad"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-ember-toad",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: squat black ember toad with orange throat; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981223
+    },
+    {
+      "id": "guardian-unit:glassHound",
+      "assets": [
+        "guardian-unit:glassHound"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-glass-hound",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: long plum-and-silver glass hound in a mask; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981224
+    },
+    {
+      "id": "guardian-unit:tallyman",
+      "assets": [
+        "guardian-unit:tallyman"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-tallyman",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: narrow masked tallyman with hooked staff; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981225
+    },
+    {
+      "id": "guardian-unit:lanternBearer",
+      "assets": [
+        "guardian-unit:lanternBearer"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-lantern-bearer",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: tonsured monk with tall hooded lantern; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981226
+    },
+    {
+      "id": "guardian-unit:boneOrchard",
+      "assets": [
+        "guardian-unit:boneOrchard"
+      ],
+      "output": ".pixel-work/pixelgen/e3-creatures/guardian-bone-orchard",
+      "prompt": "Native 32x48 transparent high-oblique map guardian: rooted white jointed orchard shaped like a bow; bold distinct silhouette; no UI or text.",
+      "endpoint": "create-image-pixflux",
+      "size": [
+        32,
+        48
+      ],
+      "candidates": 2,
+      "seed": 981227
+    }
+  ]
+}
